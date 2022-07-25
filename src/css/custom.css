@@ -337,6 +337,12 @@ main.max-w-screen-lg {
   font-display: swap;
 }
 
+h2,
+h3 {
+  font-weight: 700;
+  letter-spacing: -2px;
+}
+
 h1,
 h2,
 h3,
@@ -363,7 +369,7 @@ h1 {
 }
 
 .h2-landing {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 2.5rem;
   letter-spacing: -2px;
   margin-top: 2.5rem;
@@ -421,10 +427,6 @@ h1 {
     position: relative;
     top: -1.75%;
   }
-}
-
-.logos {
-  /* margin-bottom: 2.5rem; */
 }
 
 .list-logo {
@@ -485,9 +487,6 @@ h1 {
   margin-bottom: 0;
 }
 
-.code-logo {
-}
-
 .header-link {
   text-decoration: none;
 }
@@ -506,8 +505,8 @@ h1 {
   color: #6d28d9;
   background-color: #ede9fe;
   border-radius: 0.125rem;
-  margin: 0rem 1rem;
   padding: 0 0.5rem;
+  width: fit-content;
 }
 
 .badge-blue {
@@ -517,8 +516,34 @@ h1 {
   color: #1d4ed8;
   background-color: #dbeafe;
   border-radius: 0.125rem;
-  margin: 0rem 1rem;
   padding: 0 0.5rem;
+  width: fit-content;
+}
+
+.badge-header {
+  flex-direction: column;
+  display: flex;
+}
+
+@media (min-width: 640px) {
+  .badge-header {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .badge-purple {
+    margin: 0rem 1rem 0rem 0rem;
+  }
+
+  .badge-blue {
+    margin: 2.5rem 1rem 0rem 1rem;
+  }
+}
+
+@media (min-width: 710px) {
+  .badge-purple {
+    margin: 2.5rem 1rem 0rem 1rem;
+  }
 }
 
 .aside {
@@ -562,6 +587,13 @@ h1 {
 }
 /* Leadership page css */
 
+.main-subhead {
+  font-size: 24px;
+  position: relative;
+  top: -1.05%;
+  height: 0;
+}
+
 .leadership-container {
   max-width: 800px;
   margin: auto;
@@ -593,6 +625,22 @@ h1 {
 .dropdown__link,
 .table-of-contents__link {
   text-decoration: none;
+}
+
+.DocSearch-Hit-title,
+.DocSearch-Hit-icon,
+.DocSearch-Hit-action {
+  --docsearch-hit-active-color: black;
+}
+
+.announcementBar_node_modules-\@docusaurus-theme-classic-lib-next-theme-AnnouncementBar-styles-module {
+  --docusaurus-announcement-bar-height: 4rem;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.close {
+  color: #ffffff;
 }
 
 .app-dev-landing-page-lang-logo {

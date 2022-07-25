@@ -50,7 +50,7 @@ The following Workflow interface has a Query method `getCount()` to handle Queri
   }
 ```
 
-The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous exmaple.
+The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous example.
 
 ```java
   public static class HelloWorldImpl implements HelloWorld {
