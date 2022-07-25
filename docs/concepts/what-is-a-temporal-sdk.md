@@ -20,6 +20,7 @@ Temporal currently offers the following SDKs:
 - [How to use the Go SDK](/go/index)
 - [How to use the Java SDK](/java/)
 - [How to use the PHP SDK](/php/introduction)
+- [How to use the Python SDK](/python/index)
 - [How to use the TypeScript SDK](/typescript/introduction)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.

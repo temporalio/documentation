@@ -10,7 +10,7 @@ tags:
 
 A Child Workflow Execution is a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is spawned from within another Workflow.
 
-- [How to start a Child Workflow Execution](/application-development-guide/#child-workflows)
+- [How to start a Child Workflow Execution](/application-development/features#child-workflows)
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
@@ -34,12 +34,12 @@ An individual Workflow Execution has an [Event History](/concepts/what-is-an-eve
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/concepts/what-is-an-activity-execution).
-But a Parent Workflow Execution can spawn 1000 Child Workflow Executions that each spawn 1000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
+But a Parent Workflow Execution can spawn 1,000 Child Workflow Executions that each spawn 1,000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
-On the other hand, because a Parent Workflow Execution Event History contains [Events](/concepts/what-is-an-event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1000 Child Workflow Executions.
+On the other hand, because a Parent Workflow Execution Event History contains [Events](/concepts/what-is-an-event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
-Because each entry in an Event History is a "cost" in terms of compute resources, this could become a factor in very large workloads.
+Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
 Therefore, we recommend starting with a single Workflow implementation that uses Activities until there is a clear need for Child Workflows.
 
 **Consider each Child Workflow Execution as a separate service.**
@@ -50,5 +50,5 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 **Consider that a single Child Workflow Execution can represent a single resource.**
 
-As all Workflow Executions, a Child Workflow Execution can create a 1:1 mapping with a resource.
+As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.

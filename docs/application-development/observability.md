@@ -207,6 +207,8 @@ Content is not available
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
+The SDK core uses `WARN` for its default logging level.
+
 #### Custom logging
 
 Use a custom logger for logging.
@@ -436,7 +438,39 @@ The injected sink function contributes to the overall Workflow Task processing d
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+You can log from a Workflow using Python's standard library, by importing the logging module `import logging`.
+
+Set your logging configuration to a level you want to expose logs to.
+The following example sets the logging information level to `INFO`.
+
+```python
+logging.basicConfig(level=logging.INFO)
+```
+
+Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
+
+```python
+@workflow.defn
+class SayHelloWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        workflow.logger.info(f"Running workflow with parameter {name}")
+        return await workflow.execute_activity(
+            your_activity, name, start_to_close_timeout=timedelta(seconds=10)
+        )
+```
+
+The following is an example output:
+
+```
+INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
+```
+
+:::note
+
+Logs are skipped during replay by default.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -529,11 +563,11 @@ Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg
 Search Attributes are represented as `map[string]interface{}`.
 The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute/#types):
 
-- Keyword = `string`
-- Int = `int64`
-- Double = `float64`
 - Bool = `bool`
 - Datetime = `time.Time`
+- Double = `float64`
+- Int = `int64`
+- Keyword = `string`
 - Text = `string`
 
 If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
