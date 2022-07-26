@@ -79,7 +79,7 @@ module.exports = {
           activeBasePath: "none",
         },
         {
-          label: "Docs Change Log",
+          label: "Docs change log",
           to: "/change-log",
           activeBasePath: "change-log",
           position: "left",
@@ -385,9 +385,9 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "change-log",
-        blogTitle: "Temporal Platform documentation - Docs Change Log",
+        blogTitle: "Temporal Platform documentation change log",
         blogDescription: "A log of changes to this site's content.",
-        blogSidebarTitle: "Docs Change Log",
+        blogSidebarTitle: "Docs change log",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",

@@ -454,7 +454,7 @@ module.exports = {
     "glossary",
     {
       type: "link",
-      label: "Docs Change Log",
+      label: "Docs change log",
       href: "/change-log",
     },
     {
