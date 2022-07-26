@@ -399,7 +399,8 @@ module.exports = {
         path: "kb",
         blogTitle: "Temporal Platform knowledge base",
         blogSidebarTitle: "Recent KB articles",
-        blogDescription: "User facing Temporal Platform knowledge base articles",
+        blogDescription:
+          "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
