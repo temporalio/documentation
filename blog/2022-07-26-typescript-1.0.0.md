@@ -12,7 +12,7 @@ author_title: Engineering
 author_image_url: /img/roey-loren.jpg
 ---
 
-After almost 2 years of development, 730 commits, 434 pull requests, and 48 releases, we've finally published the stable
+After almost 2 years of development, 736 commits, 441 pull requests, and 49 releases, we've finally published the stable
 `1.0.0` version of the Temporal TypeScript SDK. In this post, we'll share what's special about this SDK, how it's been
 built, how we've improved the API, and our future plans.
 
@@ -65,7 +65,7 @@ When we released the first alpha version of the SDK back in March of 2021, we se
 have asked our community of users to help us shape it.
 
 We've been very fortunate to have received such wide adoption for the SDK, especially at such an early stage. The SDK's
-Slack channel ([#typescript-sdk](https://temporal.io/slack)) has grown to more than 1000 members, and we've been
+Slack channel ([#typescript-sdk](https://temporal.io/slack)) has grown to more than 1200 members, and we've been
 actively responding to and supporting users on a daily basis.
 
 The feedback and trust we've gotten from our early adopters has been invaluable. We wouldn't have been able to reach API
