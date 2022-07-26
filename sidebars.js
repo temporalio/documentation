@@ -49,7 +49,7 @@ module.exports = {
         {
           type: "link",
           label: "Release notes",
-          href: "https://docs.temporal.io/cloud/release-notes",
+          href: "/cloud/release-notes",
         },
         "cloud/tcld/how-to-install-tcld",
         {
@@ -452,6 +452,11 @@ module.exports = {
     },
     "external-resources",
     "glossary",
+    {
+      type: "link",
+      label: "Docs change log",
+      href: "/change-log",
+    },
     {
       type: "link",
       label: "Feedback",

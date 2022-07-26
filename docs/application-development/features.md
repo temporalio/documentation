@@ -3118,3 +3118,126 @@ await client.start_workflow(
 
 </TabItem>
 </Tabs>
+
+## Environment variables
+
+Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
+They can't be used normally with Workflow code, as that would be nondeterministic (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+
+Most of the time, we don't need to get environment variables into Workflow code, as it's sufficient to just provide them to Activities.
+But if we do need to environment variables into Workflow code, the two options are:
+
+- Providing them as arguments when starting the Workflow.
+- Calling a Local Activity at the beginning of the Workflow that returns environment variables.
+
+In either case, the environment variables will appear in Event History, so you may want to use an [encryption Data Converter](/concepts/what-is-a-data-converter/#encryption).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+**Using in Activity code**
+
+```ts
+async function runWorker(): Promise<void> {
+  const activities = createActivities({apiKey: process.env.MAILGUN_API_KEY});
+
+  const worker = await Worker.create({
+    taskQueue: "example",
+    activities,
+    workflowsPath: require.resolve("./workflows"),
+  });
+  await worker.run();
+}
+
+const createActivities = (envVars: {apiKey: string}) => ({
+  async sendNotificationEmail(): Promise<void> {
+    // ...
+    await axios({
+      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      method: "post",
+      params: {to, from, subject, html},
+      auth: {
+        username: "api",
+        password: envVars.apiKey,
+      },
+    });
+  },
+});
+```
+
+**Getting into Workflow**
+
+If we needed environment variables in our Workflow, here's how we'd use a Local Activity:
+
+```ts
+const worker = await Worker.create({
+  taskQueue: "example",
+  activities: createActivities(process.env),
+  workflowsPath: require.resolve("./workflows"),
+});
+
+type EnvVars = Record<string, string>;
+
+const createActivities = (envVars: EnvVars) => ({
+  async getEnvVars(): Promise<EnvVars> {
+    return envVars;
+  },
+  async sendNotificationEmail(apiKey: string): Promise<void> {
+    // ...
+    await axios({
+      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      method: "post",
+      params: {to, from, subject, html},
+      auth: {
+        username: "api",
+        password: apiKey,
+      },
+    });
+  },
+});
+```
+
+```ts
+const {getEnvVars} = proxyLocalActivities({
+  startToCloseTimeout: "1m",
+});
+
+const {sendNotificationEmail} = proxyActivities({
+  startToCloseTimeout: "1m",
+});
+
+async function myWorkflow() {
+  const envVars = await getEnvVars();
+  if (!envVars.apiKey) {
+    throw new Error("missing env var apiKey");
+  }
+  await sendNotificationEmail(envVars.apiKey);
+}
+```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
+</Tabs>
