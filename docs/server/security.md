@@ -39,6 +39,18 @@ import DataConverter from '../concepts/what-is-a-data-converter.md'
 
 <DataConverter />
 
+### Codec Server
+
+import CodecServer from '/docs/concepts/what-is-a-codec-server.md'
+
+<CodecServer />
+
+### Codec Server setup
+
+import CodecServerSetup from '/docs/clusters/how-to-set-up-codec-server.md'
+
+<CodecServerSetup />
+
 ## Authentication
 
 There are a few authentication protocols available to prevent unwanted access such as authentication of servers, clients, and users.

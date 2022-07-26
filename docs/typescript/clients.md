@@ -40,8 +40,10 @@ Create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.wo
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
-const connection = new Connection(); // to configure for production
-const client = new WorkflowClient(connection.service);
+const connection = await Connection.connect({
+  address: 'temporal.prod.my.org',
+}); // to configure for production
+const client = new WorkflowClient({ connection });
 ```
 
 If you omit the connection and just call `new WorkflowClient()`, it creates a default connection that will work locally. Just remember you will need to configure your Connection and Namespace when [deploying to production](/typescript/security#encryption-in-transit-with-mtls).
@@ -131,17 +133,18 @@ const result = await client.execute(example /*...*/); // Alternative API for sta
 
 The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) let you externally control your Workflow:
 
-| Handle API      | Description                                                                                                                               |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `client`        | Readonly accessor to the underlying Workflow Client.                                                                                      |
-| `workflowId`    | The `workflowId` of the current Workflow.                                                                                                 |
-| `originalRunId` | The `runId` of the initial run of the bound Workflow.                                                                                     |
-| `query()`       | Call to query a Workflow after it's been started even if it has already completed. `const value = await handle.query(getValue, ...args);` |
-| `signal()`      | Call to signal a _running_ Workflow. `await handle.signal(increment, ...args);`                                                           |
-| `cancel()`      | Cancels a running Workflow.                                                                                                               |
-| `terminate()`   | Terminates a running Workflow.                                                                                                            |
-| `describe()`    | Describes the current Workflow Execution.                                                                                                 |
-| `result()`      | Promise that resolves when Workflow Execution completes.                                                                                  |
+| Handle API            | Description                                                                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `client`              | Readonly accessor to the underlying Workflow Client.                                                                                      |
+| `workflowId`          | The `workflowId` of the current Workflow.                                                                                                 |
+| `firstExecutionRunId` | The `runId` of the initial run of the bound Workflow (available on handles created with `start`).                                         |
+| `signaledRunId`       | The `runId` of the signalled run of the bound Workflow (available on handles created with `startWithStart`).                              |
+| `query()`             | Call to query a Workflow after it's been started even if it has already completed. `const value = await handle.query(getValue, ...args);` |
+| `signal()`            | Call to signal a _running_ Workflow. `await handle.signal(increment, ...args);`                                                           |
+| `cancel()`            | Cancels a running Workflow.                                                                                                               |
+| `terminate()`         | Terminates a running Workflow.                                                                                                            |
+| `describe()`          | Describes the current Workflow Execution.                                                                                                 |
+| `result()`            | Promise that resolves when Workflow Execution completes.                                                                                  |
 
 The following covers how to use many of these APIs, you will want to be fluent with them as they cover the basics of Workflow manipulation.
 

@@ -25,7 +25,7 @@ import { Worker, NativeConnection } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  const connection = await NativeConnection.create({
+  const connection = await NativeConnection.connect({
     address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
@@ -81,4 +81,4 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 **Operation guides:**
 
-- [How to tune Workers](/operation/how-to-tune-workers)
+- [How to tune Workers](/application-development/worker-performance)

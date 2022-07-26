@@ -14,15 +14,15 @@ Alias : `adm`
 
 ## tctl admin commands
 
-- [`tctl admin workflow`](/tctl/admin/workflow/index)
-- [`tctl admin shard`](/tctl/admin/shard/index)
-- `tctl history_host`
-- `tctl taskqueue`
-- `tctl membership`
-- [`tctl cluster`](/tctl/admin/cluster/index)
-- `tctl dlq`
-- `tctl db`
-- `tctl decode`
+- [`tctl admin cluster`](/tctl/admin/cluster)
+- [`tctl admin db`](/tctl/admin/db)
+- [`tctl admin decode`](/tctl/admin/decode)
+- [`tctl admin dlq`](/tctl/admin/dlq)
+- [`tctl admin history_host`](/tctl/admin/history_host)
+- [`tctl admin membership`](/tctl/admin/membership)
+- [`tctl admin shard`](/tctl/admin/shard)
+- `tctl admin taskqueue`
+- [`tctl admin workflow`](/tctl/admin/workflow)
 
 ## Modifiers
 

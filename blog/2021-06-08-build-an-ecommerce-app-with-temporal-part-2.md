@@ -202,4 +202,6 @@ err := workflow.ExecuteActivity(ctx, SendAbandonedCartEmail, state.Email).Get(ct
 
 Long-living Workflows in Temporal are excellent for scheduled tasks.
 You can build durable time-based logic, like checking whether the user hasn't modified their shopping cart for a given period of time without using a job queue.
-In the next post, we'll look at patterns for unit testing Temporal Workflows.
+In the [next post](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-3-testing/), you'll learn about patterns for unit testing Temporal Workflows.
+
+> Update: You can now [find Part 3 here](https://docs.temporal.io/blog/build-an-ecommerce-app-with-temporal-part-3-testing/)!

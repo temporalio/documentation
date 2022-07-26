@@ -15,7 +15,7 @@ Temporal Clusters explained.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/application-development-guide/#run-a-dev-cluster)
+- [How to quickly install a Temporal Cluster for testing and development](/application-development/foundations#run-a-dev-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/visibility/#advanced-visibility).
+An Elasticsearch database can be added to enable [Advanced Visibility](/visibility#advanced-visibility).
 
 **Versions**
 
@@ -69,8 +69,8 @@ Any software that can pull metrics that supports the same format could be used, 
 
 #### Visibility
 
-Temporal has built-in [Visibility](/visibility/#) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide/#advanced-visibility).
+Temporal has built-in [Visibility](/visibility#) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#advanced-visibility).
 
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
@@ -80,10 +80,10 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 
 The Temporal Server consists of four independently scalable services:
 
-- Frontend gateway: for rate limiting, routing, authorizing
-- History subsystem: maintains data (mutable state, queues, and timers)
-- Matching subsystem: hosts Task Queues for dispatching
-- Worker service: for internal background workflows
+- Frontend gateway: for rate limiting, routing, authorizing.
+- History subsystem: maintains data (mutable state, queues, and timers).
+- Matching subsystem: hosts Task Queues for dispatching.
+- Worker service: for internal background Workflows.
 
 For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker services per cluster.
 
@@ -192,7 +192,7 @@ A Retention Period is the amount of time a Workflow Execution Event History rema
 
 - [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
 
-A Retention Period applies to a single [Namespace](/namespaces/#) and is set when the Namespace is registered.
+A Retention Period applies to a single [Namespace](/namespaces#) and is set when the Namespace is registered.
 
 If the Retention Period isn't set, it defaults to 2 days.
 The minimum Retention Period is 1 day.
@@ -201,10 +201,10 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 
 ## Archival
 
-Archival is a feature that automatically backs up [Event Histories](/workflows/#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to set up Archival](/cluster-deployment-guide/#set-up)
-- [How to create a custom Archiver](/cluster-deployment-guide/#custom-archiver)
+- [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
+- [How to set up Archival](/cluster-deployment-guide#set-up)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -215,7 +215,7 @@ This feature is helpful for compliance and debugging.
 
 Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
-Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
+Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
 ## Multi-Cluster Replication
 
@@ -223,6 +223,16 @@ Multi-Cluster Replication is a feature which asynchronously replicates Workflow 
 When necessary, for higher availability, Cluster operators can failover to any of the backup Clusters.
 
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
+
+Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
+This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
+
+When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
+
+All Visibility APIs can be used against active and standby Clusters.
+This enables [Temporal Web](https://github.com/temporalio/temporal-web) to work seamlessly for Global Namespaces.
+Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
+However, they might see a lag due to replication delay when querying the Workflow execution state from a standby Cluster.
 
 #### Namespace Versions
 
@@ -495,13 +505,24 @@ T = 2: replication task from Cluster B arrives in Cluster C, same as above
 
 #### Conflict resolution
 
-When a Workflow Execution History diverges, proper conflict resolution should be applied.
+When a Workflow Execution History diverges, proper conflict resolution is applied.
 
-In Multi-cluster Replication, Workflow Execution History entries (events) are modeled as a tree, as shown in the second example in [Version History](#version-history).
+In Multi-cluster Replication, Workflow Execution History Events are modeled as a tree, as shown in the second example in [Version History](#version-history).
 
 Workflow Execution Histories that diverge will have more than one history branch.
 Among all history branches, the history branch with the highest version is considered the `current branch` and the Workflow Execution's mutable state is a summary of the current branch.
 Whenever there is a switch between Workflow Execution History branches, a complete rebuild of the Workflow Execution's mutable state will occur.
+
+Temporal Multi-Cluster Replication relies on asynchronous replication of Events across Clusters, so in the case of a failover it is possible to have an Activity Task dispatched again to the newly active Cluster due to a replication task lag.
+This also means that whenever a Workflow Execution is updated after a failover by the new Cluster, any previous replication tasks for that Execution cannot be applied.
+This results in loss of some progress made by the Workflow Execution in the previous active Cluster.
+During such conflict resolution, Temporal re-injects any external Events like Signals in the new Event History before discarding replication tasks.
+Even though some progress could roll back during failovers, Temporal provides the guarantee that Workflow Executions won’t get stuck and will continue to make forward progress.
+
+Activity Execution completions are not forwarded across Clusters.
+Any outstanding Activities will eventually time out based on the configuration.
+Your application should have retry logic in place so that the Activity gets retried and dispatched again to a Worker after the failover to the new Cluster.
+Handling this is similar to handling an Activity Task timeout caused by a Worker restarting.
 
 #### Zombie Workflows
 

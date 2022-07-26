@@ -1,9 +1,9 @@
 ---
 id: index
-title: Documentation.
+title: Documentation
 sidebar_label: Home
 ---
 
-import {Intro} from './components/Intro.js'
+import {Intro} from '/docs/components/Intro.js'
 
 <Intro/>

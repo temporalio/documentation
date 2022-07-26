@@ -19,8 +19,8 @@ The API to schedule an Activity Execution provides an "effectively once" experie
 
 Once an Activity Task finishes execution, the Worker responds to the Cluster with a specific Event:
 
+- ActivityTaskCanceled
 - ActivityTaskCompleted
 - ActivityTaskFailed
-- ActivityTaskTimedOut
-- ActivityTaskCanceled
 - ActivityTaskTerminated
+- ActivityTaskTimedOut

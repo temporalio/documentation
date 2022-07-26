@@ -11,8 +11,8 @@ A Temporal Client is available in each SDK and provides a set of APIs to communi
 
 The most common operations that a Temporal Client enables you to perform are the following:
 
-- Start a Workflow Execution.
 - Get the result of Workflow Execution.
-- Signal a Workflow Execution.
-- Query a Workflow Execution.
 - List Workflow Executions.
+- Query a Workflow Execution.
+- Signal a Workflow Execution.
+- Start a Workflow Execution.

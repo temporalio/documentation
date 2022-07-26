@@ -9,4 +9,4 @@ tags:
 
 An Activity Type is the mapping of a name to an Activity Definition.
 
-Activity Types are scoped via Task Queues.
+Activity Types are scoped through Task Queues.

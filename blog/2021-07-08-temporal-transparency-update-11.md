@@ -63,7 +63,7 @@ We are also fortunate to have public cloud customers. Each of these companies is
 
 ![cloud-customers](/img/cloud-customers.png)
 
-If you are interested in the cloud, we are still being selective with onboarding but are taking new partners. Please fill out our newly updated cloud survey to help us understand if your use case would be a good fit [https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a](https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a).
+If you are interested in the cloud, we are still being selective with onboarding but are taking new partners. ~~Please fill out our newly updated cloud survey to help us understand if your use case would be a good fit.~~ [Survey closed—thanks for your feedback!]
 
 ## Node.js
 
@@ -71,7 +71,7 @@ Temporal's ultimate goal is to make application development fundamentally more a
 
 The Node.js SDK is unlike any other SDK as determinism is guaranteed at the workflow level using V8 isolates. It's also the first SDK built on top of our next generation Rust core. By guaranteeing determinism at the workflow level, we eliminate an entire class of problems that exist with our other SDKs. This significantly reduces the mental overhead of writing and debugging workflows.
 
-The SDK is currently in alpha ([source](https://github.com/temporalio/sdk-typescript), [docs](https://docs.temporal.io/typescript/hello-world/)) but even today it provides a completely unique and incredibly simple Temporal experience. We believe it represents the fundamental direction and level of accessibility Temporal is aiming for in the future. That being said, we are desperately in need of additional feedback, so if you have opinions on JavaScript and/or Temporal please share it with us (and join the #nodejs-sdk channel in Slack). Together we can drastically lower the barrier of entry for building connected applications.
+The SDK is currently in alpha ([source](https://github.com/temporalio/sdk-typescript), [docs](https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/)) but even today it provides a completely unique and incredibly simple Temporal experience. We believe it represents the fundamental direction and level of accessibility Temporal is aiming for in the future. That being said, we are desperately in need of additional feedback, so if you have opinions on JavaScript and/or Temporal please share it with us (and join the #nodejs-sdk channel in Slack). Together we can drastically lower the barrier of entry for building connected applications.
 
 ## Visibility
 

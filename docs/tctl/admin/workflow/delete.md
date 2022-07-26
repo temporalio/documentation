@@ -1,6 +1,7 @@
 ---
 id: delete
 title: tctl admin workflow delete
+sidebar_label: delete
 description: Deleting the Workflow Execution.
 tags:
   - reference
@@ -96,9 +97,9 @@ Skip any errors that occur in the Workflow Execution.
 
 Enables TLS over the database connection.
 
-::: note
+:::note
 
-TLS must be enabled to use the modifiers below
+TLS must be enabled to use the following modifiers.
 
 :::
 
