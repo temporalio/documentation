@@ -354,6 +354,32 @@ module.exports = {
         },
       },
     ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "change-log",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "change-log",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "change-log",
+        blogTitle: "Temporal documentation change log",
+        blogDescription: "A log of changes to this site's content.",
+        blogSidebarTitle: "Most recent changes",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
   ],
 };
 
