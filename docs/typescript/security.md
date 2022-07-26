@@ -5,16 +5,6 @@ sidebar_label: Connection & Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-Custom DataConverters are a standard SDK security feature that is not yet available in the TypeScript Beta.
-
-The Connection API is not final and may change slightly before the full launch.
-
-</CustomWarning>
-
 Temporal Workers and Clients connect with your Temporal Cluster via gRPC, and must be configured securely for production.
 There are three main features to know:
 
