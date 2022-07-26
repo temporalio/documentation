@@ -788,9 +788,9 @@ export class UpdatableTimer implements PromiseLike<void> {
 
 ### Triggers
 
-[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are an experimental Promise-like concept in the TypeScript SDK.
+[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a Promise-like concept in the TypeScript SDK.
 
-Triggers, like Promises, can be awaited and expose a `then` method.
+Triggers, like the [`condition()`](#condition) return value and other Promises, can be awaited and expose a `then` method.
 Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.
 
 <details>
@@ -819,8 +819,6 @@ export async function myWorkflow(userId: string) {
 `Trigger` is `CancellationScope`-aware. It is linked to the current scope on construction and throws when that scope is cancelled.
 
 </details>
-
-In most cases, you should now be able to use `condition` instead of Triggers, and we may deprecate Triggers in future.
 
 ## Child Workflows
 
