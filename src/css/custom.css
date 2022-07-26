@@ -647,10 +647,26 @@ h1 {
   max-width: 100px;
 }
 
-.navbar__items--right {
-  width: 15rem;
+@media only screen and (min-width: 751px) {
+  .navbar__items--right {
+    width: 35vw;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .DocSearch {
+    width: 30vw;
+  }
 }
 
-.DocSearch {
-  width: 15rem;
+@media only screen and (min-width: 1400px) {
+  .navbar__items--right {
+    width: 65vw;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .DocSearch {
+    width: 30vw;
+  }
 }
