@@ -25,8 +25,8 @@ Before you can begin implementing your Temporal application, you should run a Cl
 
 ## Run a dev Cluster
 
-Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/next/clusters#) up and running.
-We can interact with a Cluster through [Temporal Client](/next/temporal#temporal-client) APIs and [tctl](/tctl) commands.
+Whenever we are developing Temporal Applications, we want to have a [Temporal Cluster](/clusters#) up and running.
+We can interact with a Cluster through [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands.
 
 There are four ways to quickly install and run a Temporal Cluster:
 
@@ -82,7 +82,7 @@ When it is running, you can customize the application samples.
 
 ## Add your SDK
 
-Add a [Temporal SDK](/next/temporal#temporal-sdk) to your project.
+Add a [Temporal SDK](/temporal#temporal-sdk) to your project.
 
 The Temporal SDK provides a framework for Temporal application development.
 
@@ -258,7 +258,7 @@ You can find a complete list of executable code samples in [Temporal's GitHub re
 
 The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages. For more information, see the [Polyglot Microservice Orchestration](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTLo5URV5IK6lCmiM3ir3f5) video on YouTube.
 
-Additionally, several of the [Tutorials](/learning-paths) are backed by a fully executable template application.
+Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 
 <Tabs
 defaultValue="go"
@@ -267,25 +267,32 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [Go samples library](https://github.com/temporalio/samples-go) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Go SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlRYHYaTPnsvE46szyMIZLdk).
+- [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
+- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentaion](https://learn.temporal.io/examples/go/background-checks/).
+- [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
+  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
+- [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
+- [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
+- [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
+  This application sample works in conjunction with the [eCommerce in Go tutorial](/blog/tags/go-ecommerce-tutorial).
 
 </TabItem>
 <TabItem value="java">
 
-Use the [Java samples library](https://github.com/temporalio/samples-java) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Java SDK YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlQ8KsM6m9cFfCeQegq_B8x4)
+- [Java samples library](https://github.com/temporalio/samples-java)
+- [Hello world application template in Java](https://github.com/temporalio/hello-world-project-template-java): Provides a quick-start development app for users.
+  Works in conjunction with the ["Hello World!" from scratch tutorial in Java](https://learn.temporal.io/getting_started/java/hello_world_in_java/).
+- [Money transfer application template in Java](https://github.com/temporalio/money-transfer-project-template-java): Provides a quick-start development app for users.
+  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Java](https://learn.temporal.io/getting_started/java/first_program_in_java/).
+- [Subscription-style Workflow Definition in Java](https://github.com/temporalio/subscription-workflow-project-template-java): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 </TabItem>
 <TabItem value="php">
 
-Use the [PHP samples library](https://github.com/temporalio/samples-php) stored on GitHub to demonstrate various capabilities of Temporal.
+- [PHP samples repo](https://github.com/temporalio/samples-php)
+
+- [Subscription-style Workflow Definition in PHP](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 </TabItem>
 <TabItem value="typescript">
@@ -299,18 +306,14 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 </TabItem>
 <TabItem value="python">
 
-Use the [Python samples library](https://github.com/temporalio/samples-python) stored on GitHub to demonstrate various capabilities of Temporal.
-
-**Where can I find video demos?**
-
-[Temporal Python Release Highlights](https://youtu.be/yPZK82Kwe3o?t=1397).
+- [Python samples library](https://github.com/temporalio/samples-python)
 
 </TabItem>
 </Tabs>
 
 ## Develop Workflows
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/next/workflows#workflow-definitions).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definitions).
 
 <Tabs
 defaultValue="go"
@@ -319,7 +322,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/next/workflows#workflow-definitions) is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definitions) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -439,7 +442,7 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 
@@ -555,7 +558,24 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`.
+These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
+Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
+For example:
+
+```python
+@dataclass
+class YourParams:
+    your_int_param: int
+    your_str_param: str
+
+
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, params: YourParams) -> None:
+        ...
+```
 
 </TabItem>
 </Tabs>
@@ -649,7 +669,29 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+A Workflow Execution can return the results of a Workflow.
+
+To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+
+```python
+handle = await client.start_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
+
+result = await handle.result()
+```
+
+`execute_workflow()` is a helper function for `start_workflow()` and `handle.result()`.
+
+```python
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
+```
 
 </TabItem>
 </Tabs>
@@ -685,7 +727,7 @@ w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
 <TabItem value="java">
 
 The Workflow Type defaults to the short name of the Workflow interface.
-In the following example, the Workflow Type defaults to "NotifyUserAccounts".
+In the following example, the Workflow Type defaults to `NotifyUserAccounts`.
 
 ```java
   @WorkflowInterface
@@ -697,7 +739,7 @@ In the following example, the Workflow Type defaults to "NotifyUserAccounts".
 ```
 
 To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
-In the following example, the Workflow Type is set to "Abc".
+In the following example, the Workflow Type is set to `Abc`.
 
 ```java
 @WorkflowInterface
@@ -731,7 +773,7 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            say_hello_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
 
@@ -846,7 +888,16 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Workflow code must be deterministic. This means:
+
+- no threading
+- no randomness
+- no external calls to processes
+- no network I/O
+- no global state mutation
+- no system date or time
+
+All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be _deterministic_.
 
 </TabItem>
 </Tabs>
@@ -855,7 +906,7 @@ Content is not available
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 Activities are normal function/method executions that can interact with the world.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/next/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
 
 <Tabs
 defaultValue="go"
@@ -909,7 +960,7 @@ Because this is such a common need, the rest of this guide shows Activities writ
 </TabItem>
 <TabItem value="java">
 
-An [Activity Definition](/next/activities#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+An [Activity Definition](/activities#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
 To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
@@ -1042,7 +1093,7 @@ You can develop an Activity Definition by using the [`@activity.defn`](https://p
 
 ```python
 @activity.defn
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
@@ -1050,7 +1101,7 @@ You can register the function as an Activity with a custom name through a decora
 
 ```python
 @activity.defn(name="your-activity")
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
@@ -1103,8 +1154,8 @@ These require special primitives for heartbeating and cancellation. The `shared_
 
 All Activity parameters must be serializable.
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/next/workflows#event-history).
-A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/next/tasks#workflow-task).
+There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
+A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/tasks#workflow-task).
 
 <Tabs
 defaultValue="go"
@@ -1191,7 +1242,22 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Activity parameters are the function parameters of the function decorated with `@activity.defn`.
+These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
+Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
+For example:
+
+```python
+@dataclass
+class YourParams:
+    your_int_param: int
+    your_str_param: str
+
+
+@activity.defn
+async def your_activity(params: YourParams) -> None:
+    ...
+```
 
 </TabItem>
 </Tabs>
@@ -1200,7 +1266,7 @@ Content is not available
 
 All Activity results must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/next/workflows#event-history).
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
 
 <Tabs
 defaultValue="go"
@@ -1233,7 +1299,7 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 
 Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
 
-The `execute` method for `DynamicActivity can return type Object.
+The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
 - [What is a Data Converter?](/concepts/what-is-a-data-converter)
@@ -1264,7 +1330,15 @@ export async function example(name: string): Promise<string> {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+An Activity Execution can return inputs and other Activity values.
+
+The following example defines an Activity that takes a string as input and returns a string.
+
+```python
+@activity.defn
+async def say_hello(name: str) -> str:
+    return f"Hello, {name}!"
+```
 
 </TabItem>
 </Tabs>
@@ -1335,8 +1409,8 @@ Public interface GreetingActivities {
 }
 ```
 
-In this example, the Activity type for the first method is set to "A_SendGreeting".
-The Activity type for the method annotated with `@ActivityMethod` is set to "A_abc".
+In this example, the Activity type for the first method is set to `A_SendGreeting`.
+The Activity type for the method annotated with `@ActivityMethod` is set to `A_abc`.
 
 </TabItem>
 <TabItem value="php">
@@ -1358,9 +1432,9 @@ Content is not available
 
 ## Start Activity Execution
 
-Calls to spawn [Activity Executions](/next/activities#activity-execution) are written within a [Workflow Definition](/next/workflows#workflow-definitions).
+Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definitions).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/next/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Therefore, the Activity implementation code must be _stateless_.
@@ -1379,7 +1453,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn an [Activity Execution](/next/activities#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
+To spawn an [Activity Execution](/activities#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
 
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
@@ -1426,7 +1500,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either [`setStartToCloseTimeout`](/next/activities#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/next/activities#schedule-to-close-timeout) are required) must be set for the Activity.
+- Activity options (either [`setStartToCloseTimeout`](/activities#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/activities#schedule-to-close-timeout) are required) must be set for the Activity.
   For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
   See [Worker Program](#none)
@@ -1691,7 +1765,24 @@ This imports the individual Activities and declares the type alias for each Acti
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To spawn an Activity Execution, use the [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) operation from within your Workflow Definition.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
+```
+
+`execute_activity()` is a shortcut for [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
+
+To get just the handle to wait and cancel separately, use `start_activity()`.
+In most cases, use `execute_activity()` unless advanced task capabilities are needed.
+
+A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
 </TabItem>
 </Tabs>
@@ -1699,12 +1790,12 @@ Content is not available
 ### Required timeout
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/next/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/next/activities#start-to-close-timeout).
+The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
 These values are set in the Activity Options.
 
 ### Get Activity results
 
-The call to spawn an [Activity Execution](/next/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 <Tabs
@@ -1873,7 +1964,21 @@ The `proxyActivities()` returns an object that calls the Activities in the funct
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
+
+You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
+
+`execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
+```
 
 </TabItem>
 </Tabs>
@@ -2149,15 +2254,16 @@ other_ns_client = Client(**config)
 
 ## Run Worker Processes
 
-The [Worker Process](/next/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
-Each [Worker Entity](/next/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-Each Worker Entity must also associate itself with exactly one [Task Queue](/next/tasks#task-queues).
-Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
-A [Worker Entity](/next/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/tasks#task-queues).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/operation/how-to-tune-workers).
+For more information, see the [Worker tuning guide](/application-development/worker-performance).
 
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
@@ -2168,11 +2274,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available via the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
+Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available through the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
 
 1. An instance of the Temporal Go SDK `Client`.
-2. The name of the Task Queue that it will poll.
-3. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
+1. The name of the Task Queue that it will poll.
+1. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
@@ -2250,7 +2356,7 @@ A Worker can be registered with just Workflows, just Activities, or both.
 
 **Operation guides:**
 
-- [How to tune Workers](/operation/how-to-tune-workers)
+- [How to tune Workers](/application-development/worker-performance)
 
 </TabItem>
 <TabItem value="php">
@@ -2406,12 +2512,45 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 **Operation guides:**
 
-- [How to tune Workers](/operation/how-to-tune-workers)
+- [How to tune Workers](/application-development/worker-performance)
 
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.worker#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
+
+The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
+
+```python
+worker = Worker(
+    client,
+    task_queue="your-task-queue",
+    workflows=[YourWorkflow],
+    activities=[your_activity],
+)
+```
+
+The following code example shows a Worker hosting Workflows and Activities.
+
+```python
+async def run_worker(stop_event: asyncio.Event):
+    # Create Client connected to server at the given address
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+
+    # Run the worker until the event is set
+    worker = Worker(
+        client,
+        task_queue="your-task-queue",
+        workflows=[YourWorkflow],
+        activities=[your_activity],
+    )
+    async with worker:
+        await stop_event.wait()
+```
+
+The `asyncio.Event` that will be set when the Worker should stop.
+Although this example accepts a stop event and uses `async with`, you can also use [`run()`](https://python.temporal.io/temporalio.worker.Worker.html#run) and [`shutdown()`](https://python.temporal.io/temporalio.worker.Worker.html#shutdown).
+The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown might never complete.
 
 </TabItem>
 </Tabs>
@@ -2534,14 +2673,23 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the `activities` parameter, or both.
+
+```python
+worker = Worker(
+    client,
+    task_queue="your-task-queue",
+    workflows=[YourWorkflow1, YourWorkflow2],
+    activities=[your_activity_1, your_activity_2],
+)
+```
 
 </TabItem>
 </Tabs>
 
 ## Start Workflow Execution
 
-[Workflow Execution](/next/workflows#workflow-executions) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflows#workflow-executions) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
@@ -2558,7 +2706,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a [Workflow Execution](/next/workflows#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
+To spawn a [Workflow Execution](/workflows#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -2611,7 +2759,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/next/application-development/features#send-signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/application-development/features#send-signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -2757,14 +2905,42 @@ Workflow Execution run in a separate V8 isolate context in order to provide a [d
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods in the Client.
+
+The following code example starts a Workflow and returns its handle.
+
+```python
+async def main():
+    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+
+    handle = await client.start_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+```
+
+The following code example starts a Workflow and waits for completion.
+
+```python
+async def main():
+    client = await Client.connect("http://localhost:7233")
+
+    handle = await client.execute_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+```
 
 </TabItem>
 </Tabs>
 
 ### Set Task Queue
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/next/tasks#task-queues).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/tasks#task-queues).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
@@ -2986,14 +3162,23 @@ Optionally, in Workflow code, when calling an Activity, you can specify the Task
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+
+```python
+result = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
+```
 
 </TabItem>
 </Tabs>
 
 ### Set Workflow Id
 
-Although it is not required, we recommend providing your own [Workflow Id](/next/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
@@ -3090,7 +3275,18 @@ This starts a new Client with the given Workflow Id, Task Queue name, and an arg
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+
+The `id` argument should be a unique identifier for the Workflow Execution.
+
+```python
+result = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
+```
 
 </TabItem>
 </Tabs>
@@ -3170,7 +3366,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 **Get last completion result**
 
-In the case of a [Temporal Cron Job](/next/workflows#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a [Temporal Cron Job](/workflows#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
@@ -3355,7 +3551,23 @@ try {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle) to return a Workflow handle.
+Then use the [`result`](https://python.temporal.io/temporalio.client.workflowhandle#result) method to await on the result of the Workflow.
+
+```python
+handle = await client.start_workflow(
+    YourWorkflow.run, "some arg", id="your-workflow-id", task_queue="your-task-queue"
+)
+
+# Wait for result
+result = await handle.result()
+print(f"Result: {result}")
+```
+
+To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety.
+
+Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
+If the Workflow does not exist, this call fails.
 
 </TabItem>
 </Tabs>

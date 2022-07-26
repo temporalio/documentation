@@ -13,10 +13,12 @@
       return entries;
     }, {});
 
-  if (entries.language === "js") {
+  if (entries.lang === "js") {
     window.localStorage.setItem("docusaurus.tab.language", "js");
-  } else if (entries.language === "ts") {
+    window.localStorage.setItem("docusaurus.tab.site-lang", "typescript");
+  } else if (entries.lang === "ts") {
     window.localStorage.setItem("docusaurus.tab.language", "ts");
+    window.localStorage.setItem("docusaurus.tab.site-lang", "typescript");
   }
 
   // for app dev guide
