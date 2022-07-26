@@ -27,4 +27,4 @@ Here is a list of many hard (error) or soft (warn) limits that you could run int
   - We warn at 10,000 events: `history size exceeds warn limit.`
   - We error at 50,000 events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
-- [Search Attributes maximums](/visibility#search-attributes-maximums)
+- [Search Attributes maximums](/visibility/#search-attributes-maximums)

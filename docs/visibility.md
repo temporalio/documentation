@@ -118,12 +118,12 @@ order by CustomIntField asc
 
 ### Search Attributes
 
-A Search Attribute is an indexed field used in a [List Filter](#list-filters) to filter a list of [Workflow Executions](/next/workflows#workflow-executions) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](#list-filters) to filter a list of [Workflow Executions](/workflows#workflow-executions) that have the Search Attribute in their metadata.
 
-If a [Temporal Cluster](/next/clusters#) does not have [Elasticsearch integrated](/next/cluster-deployment-guide#advanced-visibility), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
+If a [Temporal Cluster](/clusters#) does not have [Elasticsearch integrated](/cluster-deployment-guide#advanced-visibility), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use [Advanced Visibility](#advanced-visibility) List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#cron-jobs), Search Attributes are carried over to the new Run by default.
+When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#cron-jobs), Search Attributes are carried over to the new Workflow Run by default.
 
 #### Search Attributes maximums
 
