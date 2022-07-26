@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Cloud Namespace Id is a globally unique identifier for a [Namespace](namespaces) in Temporal Cloud.
+A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
 1. A [Namespace Name](/concepts/what-is-a-cloud-namespace-name)

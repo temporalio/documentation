@@ -19,7 +19,7 @@ The benefits of using a CA certificate include the following:
 
 ## Requirements for client certificates
 
-Certificates provided to Temporal for your [Namespaces](namespaces) _must_ meet one of the following two sets of requirements.
+Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet one of the following two sets of requirements.
 
 ### Option 1: End-entity certificates
 
@@ -125,11 +125,11 @@ The following values are not valid:
 - `code.*.com`
 - `*`
 
-To set or clear certificate filters, use the following [tcld](cloud/tcld/) commands:
+To set or clear certificate filters, use the following [tcld](/cloud/tcld/) commands:
 
-- [tcld namespace certificate-filters import](cloud/tcld/namespace/certificate-filters/import)
-- [tcld namespace certificate-filters clear](cloud/tcld/namespace/certificate-filters/clear)
+- [tcld namespace certificate-filters import](/cloud/tcld/namespace/certificate-filters/import)
+- [tcld namespace certificate-filters clear](/cloud/tcld/namespace/certificate-filters/clear)
 
 ## Add, update, and remove certificates in a Cloud Namespace
 
-To manage certificates for Cloud Namespaces, use the [tcld namespace accepted-client-ca](cloud/tcld/namespace/accepted-client-ca/) commands.
+To manage certificates for Cloud Namespaces, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca/) commands.
