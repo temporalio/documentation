@@ -13,6 +13,6 @@ You can customize the Activity name with a custom name in the decorator argument
 
 ```python
 @activity.defn(name="your-activity")
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```

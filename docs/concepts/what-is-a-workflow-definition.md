@@ -9,7 +9,7 @@ tags:
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [How to develop a Workflow Definition](/application-development-guide/#develop-workflows)
+- [How to develop a Workflow Definition](/application-development/foundations#develop-workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -30,7 +30,7 @@ If a corresponding Event already exists within the Event History that maps to th
 
 For example, using an SDK's "Execute Activity" API generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 When this API is called upon re-execution, that Command is compared with the Event that is in the same location within the sequence.
-The Event in the sequence must be an [ActivityTaskScheduled](/references/events/#activitytaskscheduled) Event, where the Activity Name and the Task Queue name are the same as what is in the Command.
+The Event in the sequence must be an [ActivityTaskScheduled](/references/events/#activitytaskscheduled) Event, where the Activity name is the same as what is in the Command.
 
 If a generated Command doesn't match what it needs to in the existing Event History, then the Workflow Execution returns a _non-deterministic_ error.
 
@@ -46,23 +46,23 @@ To alleviate non-deterministic issues that arise from code changes, we recommend
 
 For example, let's say we have a Workflow Definition that defines the following sequence:
 
-1. Start and wait on a Timer/sleep
-2. Spawn and wait on an Activity Execution
-3. Complete
+1. Start and wait on a Timer/sleep.
+2. Spawn and wait on an Activity Execution.
+3. Complete.
 
 We start a Worker and spawn a Workflow Execution that uses that Workflow Definition.
 The Worker would emit the [StartTimer](/references/commands/#starttimer) Command and the Workflow Execution would become suspended.
 
 Before the Timer is up, we change the Workflow Definition to the following sequence:
 
-1. Spawn and wait on an Activity Execution
-2. Start and wait on a Timer/sleep
-3. Complete
+1. Spawn and wait on an Activity Execution.
+2. Start and wait on a Timer/sleep.
+3. Complete.
 
 When the Timer fires, the next Workflow Task will cause the Workflow Function to re-execute.
-The first Command the Worker sees would be be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events/#timerstarted) Event.
+The first Command the Worker sees would be ScheduleActivityTask Command, which wouldn't match up to the expected [TimerStarted](/references/events/#timerstarted) Event.
 
-The Workflow Execution would fail, and return a non-deterministic error.
+The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 

@@ -17,10 +17,10 @@ However, Local Activities are subject to shorter durations and a lack of rate li
 
 Consider using Local Activities for functions that are the following:
 
-- no longer than a few seconds, inclusive of retries (shorter than the Workflow Task Timeout, which is 10 seconds by default).
+- can be implemented in the same binary as the Workflow that calls them.
 - do not require global rate limiting.
 - do not require routing to a specific Worker or Worker pool.
-- can be implemented in the same binary as the Workflow that calls them.
+- no longer than a few seconds, inclusive of retries (shorter than the Workflow Task Timeout, which is 10 seconds by default).
 
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**

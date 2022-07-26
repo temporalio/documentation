@@ -1,13 +1,6 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import {
-  Community,
-  TemporalCloud,
-  Intro,
-  Resources,
-  Newsletter,
-} from "../components";
 
 export default function Home() {
   const context = useDocusaurusContext();
@@ -19,9 +12,7 @@ export default function Home() {
         title={`${siteConfig.title}`}
         description={`${siteConfig.tagline}`}
       >
-        <main className="mx-auto max-w-screen-lg p-6 md:p-10">
-          <Intro />
-        </main>
+        <main className="mx-auto max-w-screen-lg p-6 md:p-10"></main>
       </Layout>
     </div>
   );

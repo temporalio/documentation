@@ -24,13 +24,13 @@ There is no limit to the number of Task Queues a Temporal Application can use or
 Workers poll for Tasks in Task Queues via synchronous RPC.
 This implementation offers several benefits:
 
-- Worker Processes do not need to have any open ports, which is more secure.
-- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
-- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
-- In effect, Task Queues enable load balancing across a large number of Worker Processes.
-- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- In effect, Task Queues enable load balancing across many Worker Processes.
 - Task Queues enable what we call [Task Routing](/concepts/what-is-task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
+- When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
+- Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
+- Worker Processes do not need to have any open ports, which is more secure.
 
 All Workers listening to a given Task Queue must have identical registrations of Activities and/or Workflows.
 The one exception is during a Server upgrade, where it is okay to have registration temporarily misaligned while the binary rolls out.
@@ -41,12 +41,12 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to start a Workflow Execution using an SDK](/application-development-guide#set-task-queue)
+- [How to start a Workflow Execution using an SDK](/application-development/foundations#set-task-queue)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to develop a Worker Program](/application-development-guide#run-worker-processes)
+- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -58,11 +58,11 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to start an Activity Execution](/application-development-guide#start-activity-execution)
+- [How to start an Activity Execution](/application-development/foundations#start-activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to start a Child Workflow Execution](/application-development-guide#child-workflows)
+- [How to start a Child Workflow Execution](/application-development/features#child-workflows)

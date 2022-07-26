@@ -58,67 +58,31 @@ For more information, see the [Go sample for metrics](https://github.com/tempora
 </TabItem>
 <TabItem value="java">
 
-To emit metrics in Java, you should use the following steps:
+To emit metrics with the Java SDK, use [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
+[Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
 
-- Set the scope
-- Set the scrape end point
-- Initialize the Workflow service stub
-- Add metrics scope in the Workflow service stubs options
-- Initialize the Client
-
-In addition to the `client workflow workflowservicestubs workflowservicestubsoptions` options, set the following:
+The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
 
 ```java
-import com.sun.net.httpserver.HttpServer;
-import com.uber.m3.tally.RootScopeBuilder;
-import com.uber.m3.tally.Scope;
-import com.uber.m3.util.ImmutableMap;
-import io.micrometer.prometheus.PrometheusConfig;
-import io.micrometer.prometheus.PrometheusMeterRegistry;
-import io.temporal.common.reporter.MicrometerClientStatsReporter;
+//...
+   // see the Micrometer documentation for configuration details on other supported monitoring systems.
+   // in this example shows how to set up Prometheus registry and stats reported.
+   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
+    // set up a new scope, report every 10 seconds
+     Scope scope = new RootScopeBuilder()
+             .reporter(reporter)
+             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
+   // for Prometheus collection, expose a scrape endpoint.
+   //...
+   // add metrics scope to WorkflowServiceStub options
+   WorkflowServiceStubsOptions stubOptions =
+       WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
+//...
 ```
 
-The following code example demonstrates how to emit metrics from your Workflow.
-
-```java
-// task queue to be used for this sample
-  public static final String DEFAULT_TASK_QUEUE_NAME = "metricsqueue";
-
-  public static void main(String[] args) {
-
-    PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-```
-
-Set your scope.
-In this example, the scope will report once a second.
-
-```java
-Scope scope =
-        new RootScopeBuilder()
-            .reporter(new MicrometerClientStatsReporter(registry))
-            .reportEvery(com.uber.m3.util.Duration.ofSeconds(1));
-```
-
-Next, set an endpoint to allow Prometheus to scrape metrics from. In this example, the endpoint is set to a http server at `8080`.
-
-```java
-HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8080);
-```
-
-Stopping the Worker will stop the http server that exposes the scrape endpoint.
-
-```java
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> scrapeEndpoint.stop(1)));
-```
-
-Add the metrics scope to Workflow service stub options.
-
-```java
- WorkflowServiceStubsOptions stubOptions =
-        WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
-```
-
-For more information, see the [Setting up SDK metrics](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics) in the Java Samples repository.
+For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
+For details on configuring a Prometheus scrape endpoint with Micrometer, see <https://micrometer.io/docs/registry/prometheus#_configuring>.
 
 </TabItem>
 <TabItem value="php">
@@ -242,6 +206,8 @@ Content is not available
 ## Logging
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
+
+The SDK core uses `WARN` for its default logging level.
 
 #### Custom logging
 
@@ -472,7 +438,39 @@ The injected sink function contributes to the overall Workflow Task processing d
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+You can log from a Workflow using Python's standard library, by importing the logging module `import logging`.
+
+Set your logging configuration to a level you want to expose logs to.
+The following example sets the logging information level to `INFO`.
+
+```python
+logging.basicConfig(level=logging.INFO)
+```
+
+Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
+
+```python
+@workflow.defn
+class SayHelloWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        workflow.logger.info(f"Running workflow with parameter {name}")
+        return await workflow.execute_activity(
+            your_activity, name, start_to_close_timeout=timedelta(seconds=10)
+        )
+```
+
+The following is an example output:
+
+```
+INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
+```
+
+:::note
+
+Logs are skipped during replay by default.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -565,11 +563,11 @@ Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg
 Search Attributes are represented as `map[string]interface{}`.
 The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute/#types):
 
-- Keyword = `string`
-- Int = `int64`
-- Double = `float64`
 - Bool = `bool`
 - Datetime = `time.Time`
+- Double = `float64`
+- Int = `int64`
+- Keyword = `string`
 - Text = `string`
 
 If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
