@@ -34,14 +34,7 @@
         {
           "header": "none",
           "type": "explanation",
-          "path": "concepts/what-is-a-temporal-application",
-          "h4_sections": [
-            {
-              "header": "Temporal Client",
-              "type": "explanation",
-              "path": "concepts/what-is-a-temporal-client"
-            }
-          ]
+          "path": "concepts/what-is-a-temporal-application"
         }
       ]
     },
@@ -52,6 +45,11 @@
           "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-a-temporal-sdk"
+        },
+        {
+          "header": "Temporal Client",
+          "type": "explanation",
+          "path": "concepts/what-is-a-temporal-client"
         }
       ]
     }
