@@ -12,7 +12,7 @@ A Signal is an external asynchronous request to a [Workflow Execution](/concepts
 
 A Signal is meant to deliver data to a running Workflow Execution which can be used to change variable values and the state of Workflow Execution.
 A Signal can not return data to the caller, use [Queries](/concepts/what-is-a-query) for that.
-A Signal can be sent using a Temporal Client or from within a Workflow.
+A Signal can be sent with [tctl workflow signal](/tctl/workflow/signal#signals-with-tctl) commands , from a Temporal Client, or from within a Workflow.
 When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution Event History.
 The Cluster will deduplicate Signals and use the first Signal with a particular Id.
 The next scheduled Workflow Task contains the Signal Event.

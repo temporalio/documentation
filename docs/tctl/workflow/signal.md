@@ -10,6 +10,8 @@ tags:
 
 The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
+## Signals with tctl
+
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names. The Workflow below listens for instances of "HelloSignal":
 
 ```bash
