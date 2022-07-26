@@ -58,7 +58,7 @@ module.exports = {
     announcementBar: {
       id: "how_are_we_doing",
       content:
-        'Take the <a target="_blank" rel="noopener noreferrer" href="#">User Survey</a> and let us know how we are doing!',
+        'Take the <a target="_blank" rel="noopener noreferrer" href="https://forms.gle/1kASKmmm2XrBDhzr5">User Survey</a> and let us know how we are doing!',
       backgroundColor: "#141414",
       textColor: "#ffffff",
       isCloseable: true,
@@ -312,6 +312,11 @@ module.exports = {
       async: true,
       defer: true,
     },
+    {
+      src: "/scripts/set-tab-language.js",
+      async: true,
+      defer: true,
+    },
     // {
     //   src: "/scripts/feedback.js",
     //   async: true,
@@ -355,6 +360,33 @@ module.exports = {
         /**
          * Required for any multi-instance plugin
          */
+        id: "change-log",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "change-log",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "change-log",
+        blogTitle: "Temporal documentation change log",
+        blogSidebarTitle: "Docs change log",
+        routeBasePath: "change-log",
+        blogDescription: "A log of changes to this site's content.",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
         id: "kb",
         /**
          * URL route for the blog section of your site.
@@ -365,8 +397,9 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "kb",
-        blogTitle: "Knowledge base",
-        blogSidebarTitle: "Most recent articles",
+        blogTitle: "Temporal Platform knowledge base",
+        blogSidebarTitle: "Recent KB articles",
+        blogDescription: "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
