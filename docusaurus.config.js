@@ -72,8 +72,16 @@ module.exports = {
       },
       items: [
         {
+          label: "Docs change log",
+          to: "/change-log",
+          activeBasePath: "change-log",
+          position: "left",
+        },
+        {
           label: "Blog",
-          href: "/blog",
+          to: "/blog",
+          activeBasePath: "blog",
+          position: "left",
         },
       ],
     },
@@ -372,7 +380,7 @@ module.exports = {
         path: "change-log",
         blogTitle: "Temporal documentation change log",
         blogDescription: "A log of changes to this site's content.",
-        blogSidebarTitle: "Most recent changes",
+        blogSidebarTitle: "Most recent doc changes",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
