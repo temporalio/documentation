@@ -15,4 +15,4 @@ date: 2022-05-23T00:00:00Z
 
 - The Temporal Application development guide is **new** and represents the next generation of application development documentation. Let us know what you think!
 
-- Older, “legacy” SDK pages are still available but the focusing moving forward is on the [Application development guide](/application-development).
+- Older, “legacy” SDK pages are still available, but our focus moving forward is on the [Application development guide](/application-development).
