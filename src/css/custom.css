@@ -647,7 +647,7 @@ h1 {
   max-width: 100px;
 }
 
-@media only screen and (min-width: 751px) {
+@media only screen and (min-width: 1400px) {
   .navbar__items--right {
     width: 35vw;
     flex-direction: row-reverse;
@@ -659,14 +659,6 @@ h1 {
   }
 }
 
-@media only screen and (min-width: 1400px) {
-  .navbar__items--right {
-    width: 65vw;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-
-  .DocSearch {
-    width: 30vw;
-  }
+.DocSearch-Container {
+  min-width: 100vw;
 }
