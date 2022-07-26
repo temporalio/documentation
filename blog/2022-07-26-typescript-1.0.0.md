@@ -53,8 +53,8 @@ evolved over time.
 
 Most of the complex concurrency management and state machine logic is in Core, which means that:
 
-- We can build new SDKs much faster. For example, our [Python SDK](https://github.com/temporalio/sdk-python) (currently
-  in alpha) was built in just a few months.
+- We can build new SDKs and features much faster. For example, our [Python
+  SDK](https://github.com/temporalio/sdk-python) (currently in alpha) was built in just a few months.
 - Our SDKs are more reliable: When a problem is fixed in Core, it is fixed for all Core-based SDKs. Our previous SDKs
   implemented the complex logic differently, and have had very different bugs and quirks.
 
