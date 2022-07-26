@@ -107,6 +107,7 @@ AuthorizedClientCertificate {
   O : "Example Code Inc."
 }
 ```
+
 The values for the fields are case-insensitive.
 If no wildcard is used, each specified value must match its field exactly.
 
