@@ -4,9 +4,9 @@ title: Temporal Cloud documentation
 sidebar_label: Temporal Cloud
 ---
 
-Temporal Cloud is a managed, hosted Temporal environment that provides a platform for [Temporal Applications](temporal/#temporal-application)—an alternative to deploying and operating your own [Temporal Cluster](https://docs.temporal.io/clusters).
+Temporal Cloud is a managed, hosted Temporal environment that provides a platform for [Temporal Applications](/temporal/#temporal-application)—an alternative to deploying and operating your own [Temporal Cluster](/clusters).
 
-Temporal Cloud is offered in units of isolation known as [Namespaces](https://docs.temporal.io/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
+Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
 :::tip Updated UI
 
@@ -21,9 +21,9 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
-- [Manage certificates in Temporal Cloud](/cloud-context/how-to-manage-certificates-in-temporal-cloud)
+- [Manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud)
 - [Temporal Cloud release notes](/cloud/release-notes)
-- [Upgrade policy](/cloud-context/upgrade-policy-for-temporal-cloud)
+- [Upgrade policy](/cloud/upgrade-policy-for-temporal-cloud)
 
 ## Tools
 

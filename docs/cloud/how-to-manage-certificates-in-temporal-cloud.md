@@ -8,14 +8,12 @@ description: Access to Temporal Cloud requires a certificate from you.
 Access to Temporal Cloud is secured with the mutual Transport Layer Security (mTLS) protocol.
 This protocol requires a certificate from you.
 
-Temporal strongly recommends that you provide an certificate from a certificate authority (CA) for authenticating SDK client connections.
 The benefits of using a CA certificate include the following:
 
 - You can use your CA to generate client certificates to comply with your security policies for certificate expiration and rotation.
-  Intermediate and leaf certificates can be generated and rotated without having to configure or update public certificates shared with Temporal.
+  Client certificates can be generated and rotated without having to configure or update public certificates shared with Temporal.
 - Temporal does not need to receive certificate private keys.
-  You share the public key, which is used to encrypt data in transit to the SDK clients.
-  The clients decrypt data by using the private key that is secured in your environment.
+  When you configure access to Temporal Cloud, no exchange of secrets is required.
 
 ## Requirements for client certificates
 
@@ -45,7 +43,7 @@ CA bundle certificates _must_ meet the following criteria:
 
 ## Generate CA and client certificates
 
-Temporal Cloud authenticates a client connection by validating the client certificate against the CA certificate that is configured for the specified Namespace.
+Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
 ### You already have certificate management infrastructure
 
