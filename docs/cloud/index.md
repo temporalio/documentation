@@ -4,7 +4,9 @@ title: Temporal Cloud documentation
 sidebar_label: Temporal Cloud
 ---
 
-Temporal Cloud is a fully managed public cloud service for the [Temporal Platform](/temporal#temporal-platform), offered as an alternative to deploying and operating your own [Temporal Cluster](/clusters).
+Temporal Cloud is a managed, hosted Temporal environment that provides a platform for [Temporal Applications](temporal/#temporal-application)—an alternative to deploying and operating your own [Temporal Cluster](https://docs.temporal.io/clusters).
+
+Temporal Cloud is offered in units of isolation known as [Namespaces](https://docs.temporal.io/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
 :::tip Updated UI
 
@@ -19,18 +21,9 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
-## Release notes
-
-For the latest release notes, see [Temporal Cloud release notes](/cloud/release-notes).
-
-## Upgrade policy
-
-All customers will automatically be upgraded to the latest minor version.
-
-Maintenance support, for major versions, will be provided for at least 18 months after a GA release, and there will be at least 6 months' notice before EOL/deprecating support.
-
-This versioning policy is intended to serve as a minimum set of guidelines for customers who rely on us for their critical business operations.
-If you have any further questions, please do not hesitate to reach out via community or customer channels.
+- [Manage certificates in Temporal Cloud](/cloud-context/how-to-manage-certificates-in-temporal-cloud)
+- [Temporal Cloud release notes](/cloud/release-notes)
+- [Upgrade policy](/cloud-context/upgrade-policy-for-temporal-cloud)
 
 ## Tools
 
