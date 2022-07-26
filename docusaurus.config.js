@@ -73,13 +73,13 @@ module.exports = {
       },
       items: [
         {
-          label: "Docs home",
+          label: "Home",
           to: "/",
           position: "left",
           activeBasePath: "none",
         },
         {
-          label: "Docs change log",
+          label: "Docs Change Log",
           to: "/change-log",
           activeBasePath: "change-log",
           position: "left",
@@ -385,9 +385,9 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "change-log",
-        blogTitle: "Temporal documentation change log",
+        blogTitle: "Temporal Platform documentation - Docs Change Log",
         blogDescription: "A log of changes to this site's content.",
-        blogSidebarTitle: "Most recent doc changes",
+        blogSidebarTitle: "Docs Change Log",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
