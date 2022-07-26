@@ -8,9 +8,34 @@ tags:
   - tctl
 ---
 
-The `tctl workflow query` command sends a Query to a [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The `tctl workflow query` command sends a Query to a [Workflow Executions](/concepts/what-is-a-workflow-execution). Queries require a running worker process to execute its callback code.
 
-`tctl workflow query [<modifiers>]`
+Queries can be used to retrieve all or part of the Workflow state with given parameters.
+
+```bash
+$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
+Query result as JSON:
+3
+```
+
+Queries can also be used on completed Workflows.
+Let's complete a Workflow by updating its greeting, and then query the now-finished Workflow.
+
+```bash
+$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
+Signal workflow succeeded.
+$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
+Query result as JSON:
+4
+```
+
+## Modifiers
+
+Queries are written as follows:
+
+```bash
+tctl workflow query [modifiers]
+```
 
 The following modifiers control the behavior of the command.
 

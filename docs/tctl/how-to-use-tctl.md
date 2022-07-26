@@ -788,31 +788,6 @@ The worker output:
 17:36:16.204 [workflow-root] INFO  c.u.c.samples.hello.GettingStarted - 3: Welcome World!
 ```
 
-## Queries
-
-Now let's query the Workflow using the CLI:
-
-```bash
-$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
-Query result as JSON:
-3
-```
-
-One limitation of the query is that it requires a worker process running because it is executing callback code.
-An interesting feature of the query is that it works for completed Workflows as well.
-Let's complete the Workflow by sending "Bye" and query it.
-
-```bash
-$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
-Signal workflow succeeded.
-$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
-Query result as JSON:
-4
-```
-
-The Query method can accept parameters.
-This might be useful if only part of the Workflow state should be returned.
-
 ## Securing `tctl`
 
 `tctl` supports plugins that can be used to set headers on outgoing requests.
