@@ -12,13 +12,15 @@ author_title: Engineering
 author_image_url: /img/roey-loren.jpg
 ---
 
+*💬 Discuss on [Hacker News](https://news.ycombinator.com/item?id=32240586), [Reddit](https://www.reddit.com/r/node/comments/w8ohkv/100_release_of_the_temporal_typescript_sdk/?), [Twitter](https://twitter.com/lorendsr/status/1551971037667098624?s=20&t=rTTXWjVPqRJ3IwibrjZSkA), or [LinkedIn](https://www.linkedin.com/posts/lorensr_typescript-javascript-temporal-activity-6957736682683039744-z29P?utm_source=linkedin_share&utm_medium=member_desktop_web).*
+
 After almost 2 years of development, 736 commits, 441 pull requests, and 49 releases, we've finally published the stable
 `1.0.0` version of the Temporal TypeScript SDK. In this post, we'll share what's special about this SDK, how it's been
 built, how we've improved the API, and our future plans.
 
 <!--truncate-->
 
-> For those new to [Temporal](https://temporal.io/), We think of it as a "durable code execution framework." We execute
+> For those new to [Temporal](https://temporal.io/), we think of it as a "durable code execution framework." We execute
 > your backend code in a durable fashion: by persisting each step your program takes, we can recover your program's
 > state in the event of failure—even if the machine goes offline or loses power in the middle of execution. We also
 > durably retry and timeout external calls, so if your services or databases are unreachable or returning errors, we
@@ -164,3 +166,5 @@ tutorials](https://docs.temporal.io/typescript/introduction/). If you have quest
 `#typescript-sdk` tag on our [community forum](https://community.temporal.io/).
 
 We're building Temporal because we want to enable developers to easily build highly reliable applications. We hope you find it useful!
+
+*💬 Discuss on [Hacker News](https://news.ycombinator.com/item?id=32240586), [Reddit](https://www.reddit.com/r/node/comments/w8ohkv/100_release_of_the_temporal_typescript_sdk/?), [Twitter](https://twitter.com/lorendsr/status/1551971037667098624?s=20&t=rTTXWjVPqRJ3IwibrjZSkA), or [LinkedIn](https://www.linkedin.com/posts/lorensr_typescript-javascript-temporal-activity-6957736682683039744-z29P?utm_source=linkedin_share&utm_medium=member_desktop_web).*
