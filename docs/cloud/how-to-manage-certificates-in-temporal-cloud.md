@@ -45,13 +45,13 @@ CA bundle certificates _must_ meet the following criteria:
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
-### You already have certificate management infrastructure
+### Option 1: You already have certificate management infrastructure
 
 If your existing certificate management infrastructure supports generating CA and leaf certificates, it satisfies the requirements.
 We recommend that you generate an intermediate CA certificate for interacting with your Temporal Namespace.
-When you configure the client SDK, you must present a complete certificate chain up to, but not including, the CA certificate given to Temporal.
+When you configure the client SDK, you must present a complete certificate chain up to the CA certificate given to Temporal.
 
-### You have no certificate management infrastructure
+### Option 2: You have no certificate management infrastructure
 
 If you don't have existing certificate management infrastructure (or want to use a separate certificate management solution), you can generate the CA and client certificates by using tools such as OpenSSL.
 

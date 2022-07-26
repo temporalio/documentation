@@ -46,7 +46,7 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
-        "cloud-context/how-to-manage-certificates-in-temporal-cloud",
+        "cloud/how-to-manage-certificates-in-temporal-cloud",
         {
           type: "category",
           label: "tcld commands",
