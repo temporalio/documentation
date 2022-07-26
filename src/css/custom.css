@@ -646,3 +646,11 @@ h1 {
 .app-dev-landing-page-lang-logo {
   max-width: 100px;
 }
+
+.navbar__items--right {
+  width: 15rem;
+}
+
+.DocSearch {
+  width: 15rem;
+}
