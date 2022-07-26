@@ -454,6 +454,11 @@ module.exports = {
     "glossary",
     {
       type: "link",
+      label: "Docs change log",
+      href: "/change-log",
+    },
+    {
+      type: "link",
       label: "Feedback",
       href: "https://github.com/temporalio/documentation/issues",
     },

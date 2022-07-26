@@ -15,6 +15,6 @@ Set the `Namespace` field on an instance of the Client Options.
 clientOptions := client.Options{
   Namespace: "your-namespace",
 }
-temporalClient, err := client.NewClient(clientOptions)
+temporalClient, err := client.Dial(clientOptions)
 // ...
 ```

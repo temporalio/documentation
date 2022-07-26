@@ -10,7 +10,7 @@ tags:
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to set a Start-To-Close Timeout in Go](/go/how-to-set-a-start-to-close-timeout-in-go)
+- [How to set a Start-To-Close Timeout](/go/how-to-set-a-start-to-close-timeout-in-go)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout).**
 
