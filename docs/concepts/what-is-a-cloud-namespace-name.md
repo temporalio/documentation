@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-A Cloud Namespace Name is a customer-supplied name for a [Namespace](namespaces) in Temporal Cloud.
+A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud.
 Each Namespace Name, such as `accounting-production`, is unique within the scope of a customer's account.
 It cannot be changed after the Namespace is provisioned.
 
