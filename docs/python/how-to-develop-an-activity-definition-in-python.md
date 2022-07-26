@@ -13,7 +13,7 @@ You can develop an Activity Definition by using the [`@activity.defn`](https://p
 
 ```python
 @activity.defn
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
@@ -21,7 +21,7 @@ You can register the function as an Activity with a custom name through a decora
 
 ```python
 @activity.defn(name="your-activity")
-async def say_hello_activity(name: str) -> str:
+async def your_activity(name: str) -> str:
     return f"Hello, {name}!"
 ```
 

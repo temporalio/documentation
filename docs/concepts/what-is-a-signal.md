@@ -25,6 +25,6 @@ Signal handlers are Workflow functions that listen for Signals by the Signal nam
 Signals are delivered in the order they are received by the Cluster.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
 
-- [How to use Signals](/application-development-guide/#signals)
+- [How to use Signals](/application-development/features#signals)
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.

@@ -5,7 +5,7 @@ sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
 ---
 
-A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl/index) or the [Web UI](/web-ui/how-to-use-a-list-filter-in-the-temporal-web-ui).
+A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl) or the [Web UI](/web-ui).
 
 - [How to set up a Codec Server](/clusters/how-to-set-up-codec-server/)
 
@@ -27,7 +27,7 @@ You can use [tctl workflow showid](/tctl/workflow/showid) to view a Workflow Exe
     tctl workflow showid <workflowID>
 ```
 
-With a Codec Server, the Payload is decoded after being deserialized by tctl's default Data Converter. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
+With a Codec Server, the Payload is decoded before being deserialized by tctl's default Data Converter. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
 
 The Data Converter passes this result back to the command line, which prints the decoded result.
 

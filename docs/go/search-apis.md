@@ -22,11 +22,11 @@ Go samples for Search Attributes can be found at [`temporalio/samples-go`](https
 
 Here are the [Search Attribute value types](/concepts/what-is-a-search-attribute/#types) and their corresponding types in Go:
 
-- Keyword = string
-- Int = int64
-- Double = float64
 - Bool = bool
 - Datetime = time.Time
+- Double = float64
+- Int = int64
+- Keyword = string
 - Text = string
 
 ## Tagging Search Attributes at Workflow creation
