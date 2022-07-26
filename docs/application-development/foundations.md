@@ -326,7 +326,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client)
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client)
 
 ```go
 import (
@@ -336,7 +336,7 @@ import (
 )
 
 func main() {
-  temporalClient, err := client.NewClient(client.Options{})
+  temporalClient, err := client.Dial(client.Options{})
   if err != nil {
     // ...
   }
@@ -489,7 +489,7 @@ const client = new WorkflowClient({
 });
 ```
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
+[The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
 When signing up to Temporal Cloud you should receive a Namespace, a Server address and a Client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
@@ -594,7 +594,7 @@ Set the `Namespace` field on an instance of the Client Options.
 clientOptions := client.Options{
   Namespace: "your-namespace",
 }
-temporalClient, err := client.NewClient(clientOptions)
+temporalClient, err := client.Dial(clientOptions)
 // ...
 ```
 
@@ -632,8 +632,6 @@ const client = new WorkflowClient({
 </TabItem>
 <TabItem value="python">
 
-If you don't specify a Namespace, Temporal defaults the `namespace` parameter to the value `default`.
-
 To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
 
 ```python
@@ -665,7 +663,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definitions) is an exportable function.
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client)
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -1796,8 +1794,8 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn an [Activity Execution](/activities#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow#ExecuteActivity) API call inside your Workflow Definition.
-The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/workflow) package.
+To spawn an [Activity Execution](/activities#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) API call inside your Workflow Definition.
+The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
 
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
 
@@ -2369,7 +2367,7 @@ import (
 )
 
 func main() {
-   c, err := client.NewClient(client.Options{})
+   c, err := client.Dial(client.Options{})
    if err != nil {
        // ...
    }
@@ -2780,9 +2778,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a [Workflow Execution](/workflows#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client).
+To spawn a [Workflow Execution](/workflows#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
+The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
 
 ```go
@@ -2795,7 +2793,7 @@ import (
 )
 
 func main() {
-  temporalClient, err := client.NewClient(client.Options{})
+  temporalClient, err := client.Dial(client.Options{})
   if err != nil {
     // ...
   }

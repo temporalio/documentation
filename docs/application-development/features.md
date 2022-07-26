@@ -2117,7 +2117,7 @@ You can also Heartbeat an Activity from an external source:
 
 ```go
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 // Record heartbeat.
 err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
 ```
@@ -2484,7 +2484,7 @@ return "", activity.ErrResultPending
 // Instantiate a Temporal service client.
 // The same client can be used to complete or fail any number of Activities.
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 
 // Complete the Activity.
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)

@@ -30,7 +30,7 @@ import (
 )
 
 func main() {
-   c, err := client.NewClient(client.Options{})
+   c, err := client.Dial(client.Options{})
    if err != nil {
        // ...
    }

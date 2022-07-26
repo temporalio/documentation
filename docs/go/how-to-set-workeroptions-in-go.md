@@ -250,7 +250,7 @@ If this Worker crashes, the sticky Workflow Task will timeout after `StickySched
 ```go
 // ...
 workerOptions := worker.Options{
-	DisableStickyExecution: false,
+	StickyScheduleToStartTimeout: time.Second(5),
   // ...
 }
 w := worker.New(c, "your_task_queue_name", workerOptions)
