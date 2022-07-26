@@ -69,8 +69,15 @@ module.exports = {
         alt: "Temporal logo",
         src: "img/temporal-logo-dark.svg",
         srcDark: "img/temporal-logo.svg",
+        href: 'https://temporal.io',
       },
       items: [
+        {
+          label: "Docs home",
+          to: "/",
+          position: "left",
+          activeBasePath: "none",
+        },
         {
           label: "Docs change log",
           to: "/change-log",
