@@ -81,7 +81,7 @@ This configuration includes two sections that serve to separate intra-cluster an
 - `internode`: configuration for encrypting communication between nodes within the Cluster.
 - `frontend`: configuration for encrypting the Frontend's public endpoints
 
-### Client connections
+### Temporal Client connections
 
 A client's network access can be limited to clients with certificates issued by a specific Certificate Authority.
 
