@@ -57,18 +57,6 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 
 Therefore, a Temporal Workflow Execution executes a [Temporal Workflow Definition](/workflows#workflow-definitions), also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
-#### Temporal Client
-
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/clusters#).
-
-The most common operations that a Temporal Client enables you to perform are the following:
-
-- Get the result of Workflow Execution.
-- List Workflow Executions.
-- Query a Workflow Execution.
-- Signal a Workflow Execution.
-- Start a Workflow Execution.
-
 ## Temporal SDK
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
@@ -81,11 +69,37 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [How to use the Go SDK](/application-development/foundations#none)
-- [How to use the Java SDK](/java/)
-- [How to use the PHP SDK](/php/introduction)
-- [How to use the Python SDK](/application-development/foundations#none)
-- [How to use the TypeScript SDK](/typescript/introduction)
+- [Get started with the Go SDK](/application-development/foundations/?lang=go#add-your-sdk)
+- [Get started with the Java SDK](/application-development/foundations/?lang=java#add-your-sdk)
+- [Get started with the PHP SDK](/application-development/foundations/?lang=php)
+- [Get started with the Python SDK](/application-development/foundations/?lang=python#add-your-sdk)
+- [How to use the TypeScript SDK](/application-development/foundations/?lang=typescript#add-your-sdk)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
+
+### SDKs in development
+
+The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the application development guide:
+
+- [.NET](https://github.com/temporalio/sdk-dotnet)
+- [Rust](https://github.com/temporalio/sdk-core)
+- [Ruby](https://github.com/temporalio/sdk-ruby)
+
+### Third-party SDKs
+
+The following third party SDKs exist, but are not supported in the application development guide:
+
+- [coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby)
+
+### Temporal Client
+
+A Temporal Client is available in each SDK and provides a set of APIs to communicate with a [Temporal Cluster](/clusters#).
+
+The most common operations that a Temporal Client enables you to perform are the following:
+
+- Get the result of Workflow Execution.
+- List Workflow Executions.
+- Query a Workflow Execution.
+- Signal a Workflow Execution.
+- Start a Workflow Execution.

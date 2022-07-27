@@ -481,13 +481,17 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development">
-          <h2 className="h2-landing">Legacy docs for SDKs</h2>
+        <a className="header-link" href="/sdks">
+          <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
           Application development by language.{" "}
           <span className="bold">
-            Now included in the application development guide.
+            Most of this information is now included in the{" "}
+            <a className="nowrap" href="/application-development">
+              application development guide
+            </a>
+            .
           </span>
         </p>
         <ul className="landing-card-list">{displayLinks(appByLang.listOne)}</ul>

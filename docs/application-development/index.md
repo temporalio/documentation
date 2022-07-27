@@ -12,11 +12,11 @@ Information may change at any time.
 
 :::
 
-This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/concepts/what-is-a-temporal-application) development.
+This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
 ## Supported SDKs
 
-The following language SDKs are supported.
+The following [language SDKs](/temporal#temporal-sdk) are supported.
 Language tab selection is preserved through a browser cookie.
 The following language is selected:
 
@@ -72,20 +72,6 @@ TypeScript / JavaScript is currently selected!
 
 </TabItem>
 </Tabs>
-
-### SDKs in development
-
-The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the application development guide:
-
-- [.NET](https://github.com/temporalio/sdk-dotnet)
-- [Rust](https://github.com/temporalio/sdk-core)
-- [Ruby](https://github.com/temporalio/sdk-ruby)
-
-### Third-party SDKs
-
-The following third party SDKs exist, but are not supported in the application development guide:
-
-- [coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby)
 
 ## Guide structure
 
