@@ -6,7 +6,7 @@ sidebar_label: What is a ClaimMapper Plugin?
 
 `ClaimMapper` is a plugin that extracts claims from JSON Web Tokens (JWT). This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
 
-A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
+A `Role` (within Temporal) is a bit mask that combines one or more of the role constants. In the example below, the role is assigned constants that allow the caller to read and write information.
 
 ```go
 role := authorization.RoleReader | authorization.RoleWriter
@@ -14,7 +14,7 @@ role := authorization.RoleReader | authorization.RoleWriter
 
 `GetClaims` is customizable, and can be modified with the `temporal.WithClaimMapper` server option. Temporal also offers a default JWT `ClaimMapper` for your use.
 
-A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JWT access token, such as membership in groups, and map them to Temporal roles for the user. The subject information from the caller's TLS certificate can also be a parameter in determining roles.
+A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JSON Web Token (JWT), such as membership in groups, and map them to Temporal roles for the user. The subject information from the caller's TLS certificate can also be a parameter in determining roles.
 
 ### `AuthInfo`
 
@@ -30,7 +30,7 @@ A typical approach is for `ClaimMapper` to interpret custom `Claims` from a call
 
 ## Default JWT ClaimMapper
 
-Temporal offers a default JWT `ClaimMapper` that extracts the information needed to form Temporal `Claims`. This plugin requires a public key to validate digital signatures, and expects JWT tokens to be in a certain format.
+Temporal offers a default JSON Web Token (JWT) `ClaimMapper` that extracts the information needed to form Temporal `Claims`. This plugin requires a public key to validate digital signatures.
 
 To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMapper` and provide it with:
 
@@ -42,7 +42,7 @@ The code for the default `ClaimMapper` can also be used to build a custom `Claim
 
 ### Token Key Provider
 
-A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format. The default JWT ClaimMapper uses this component to obtain and refresh public keys over time.
+A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format. The default JWT Claim Mapper uses this component to obtain and refresh public keys over time.
 
 Temporal provides an `rsaTokenKeyProvider`. This component dynamically obtains public keys that follow the JWKS format. `rsaTokenKeyProvider` will only use the `RSAKey` and `Close` methods.
 
@@ -57,11 +57,13 @@ The `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKe
 <!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
 <!--SNIPEND-->
 
-:::
+:::note
 
 `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
 `RefreshInterval` defines how frequently keys should be refreshed.
 For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
+
+:::
 
 By default, "permissions" is used to name the `permissionsClaimName` value.
 
