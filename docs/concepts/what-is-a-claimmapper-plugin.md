@@ -31,7 +31,7 @@ This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=cer
 
 `Claims` is a struct that contains information about permission claims granted to the caller.
 
-`Authorizer` assumes that the caller has been properly [authenticated](/docs/security/authentication), and trusts the `Claims` when making an authorization decision.
+`Authorizer` assumes that the caller has been properly authenticated, and trusts the `Claims` when making an authorization decision.
 
 ## Default JWT ClaimMapper
 

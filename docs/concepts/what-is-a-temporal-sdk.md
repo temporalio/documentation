@@ -37,3 +37,9 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 - [.NET](https://github.com/temporalio/sdk-dotnet)
 - [Rust](https://github.com/temporalio/sdk-core)
 - [Ruby](https://github.com/temporalio/sdk-ruby)
+
+### Third-party SDKs
+
+The following third party SDKs exist, but are not supported in the application development guide:
+
+- [coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby)
