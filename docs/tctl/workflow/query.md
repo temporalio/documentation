@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow query` command sends a Query to a [Workflow Executions](/concepts/what-is-a-workflow-execution). Queries require a running worker process to execute its callback code.
+The `tctl workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
