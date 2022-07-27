@@ -101,16 +101,21 @@ For more information on mTLS configuration, refer to our [TLS configuration guid
 
 ### Auth
 
-Authorization is the verification of applications and data that a user on your Cluster or application has access to.
+**Authentication** is the process of verifying users that wish to access your application are actually the users you want accessing it.
+**Authorization** is the verification of applications and data that a user on your Cluster or application has access to.
 
-Temporal offers two plugin interfaces for implementing API call authorization.
+Temporal has several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
+
+Server attacks can be prevented by specifying the `serverName` in the `client` section of your mTLS configuration. This can be done for both `frontend` and `internode` endpoints.
+
+Client connections can be restricted to certain endpoints by requiring certificates from a specific Certificate Authority (CA). Modify the `clientCaFiles`/ `clientCaData` and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
+
+User access can be restricted through extensibility points and plugins. When implemented, the `frontend` invokes the plugin before executing the requested operation.
+
+Temporal offers two plugin interfaces for API call authentication and authorization.
 
 - [`ClaimMapper`](/clusters/how-to-use-claimmapper)
 
 - [`Authorizer`](/clusters/how-to-use-authorizer)
 
 The logic of both plugins can be customized to fit a variety of use cases. When provided, the front-end will invoke the implementation of the plugins before running the requested operation.
-
-Details about configuring the ClaimMapper plugin can be found in our [ClaimMapper guide](/clusters/how-to-use-claimmapper).
-
-For more information about the Authorizer plugin, refer to our [Authorizer setup guide](/clusters/how-to-use-authorizer).
