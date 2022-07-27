@@ -11,8 +11,8 @@ tags:
 A Signal is an asynchronous request to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 A Signal delivers data to a running Workflow Execution.
-It cannot return data to the caller (use [Queries](/concepts/what-is-a-query) for that).
-The Workflow code that handles a Signal may mutate Workflow state.
+It cannot return data to the caller; use a [Query](/concepts/what-is-a-query) instead.
+The Workflow code that handles a Signal can mutate Workflow state.
 A Signal can be sent from a Temporal Client or a Workflow.
 When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution [Event History](/concepts/what-is-an-event-history).
 A successful response from the Cluster means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
