@@ -243,7 +243,7 @@ func main() {
   clientOptions := client.Options{
     Logger: logger,
   }
-  temporalClient, err := client.NewClient(clientOptions)
+  temporalClient, err := client.Dial(clientOptions)
   // ...
 }
 ```

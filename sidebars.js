@@ -46,12 +46,7 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
-        {
-          type: "link",
-          label: "Release notes",
-          href: "/cloud/release-notes",
-        },
-        "cloud/tcld/how-to-install-tcld",
+        "cloud/how-to-manage-certificates-in-temporal-cloud",
         {
           type: "category",
           label: "tcld commands",
@@ -135,6 +130,11 @@ module.exports = {
             },
             "cloud/tcld/version",
           ],
+        },
+        {
+          type: "link",
+          label: "Release notes",
+          href: "https://docs.temporal.io/cloud/release-notes",
         },
       ],
     },
@@ -490,6 +490,9 @@ module.exports = {
         "concepts/what-is-advanced-visibility",
         "concepts/what-is-archival",
         "concepts/what-is-a-child-workflow-execution",
+        "concepts/what-is-a-cloud-account-id",
+        "concepts/what-is-a-cloud-namespace-id",
+        "concepts/what-is-a-cloud_namespace-name",
         "concepts/what-is-a-command",
         "concepts/what-is-continue-as-new",
         "concepts/what-is-a-data-converter",

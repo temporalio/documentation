@@ -144,6 +144,83 @@
       ]
     },
     {
+      "header": "Create Temporal Clients",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "app-dev-context/creating-temporal-clients"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-create-a-temporal-client-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-create-a-temporal-client-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "php/how-to-create-a-temporal-client-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-create-a-temporal-client-in-python"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-create-a-temporal-client-in-typescript"
+            }
+          ]
+        },
+        {
+          "header": "Set Namespace",
+          "type": "context",
+          "path": "app-dev-context/set-namespace"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-set-the-namespace-for-a-temporal-client-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-set-the-namespace-for-a-temporal-client-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-the-namespace-for-a-temporal-client-in-python"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "header": "Develop Workflows",
       "h3_sections": [
         {
@@ -554,47 +631,6 @@
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "header": "Create Temporal Clients",
-      "h3_sections": [
-        {
-          "header": "none",
-          "type": "context",
-          "path": "app-dev-context/creating-temporal-clients"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-create-a-temporal-client-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "java/how-to-create-a-temporal-client-in-java"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "php/how-to-create-a-temporal-client-in-php"
-            },
-            {
-              "lang": "python",
-              "title": "Python",
-              "path": "python/how-to-create-a-temporal-client-in-python"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-create-a-temporal-client-in-typescript"
             }
           ]
         }

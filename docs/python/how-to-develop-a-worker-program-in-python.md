@@ -27,7 +27,7 @@ The following code example shows a Worker hosting Workflows and Activities.
 ```python
 async def run_worker(stop_event: asyncio.Event):
     # Create Client connected to server at the given address
-    client = await Client.connect("http://localhost:7233", namespace="your-namespace")
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
 
     # Run the worker until the event is set
     worker = Worker(

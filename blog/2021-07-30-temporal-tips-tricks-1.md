@@ -47,7 +47,7 @@ This is a generally applicable developer productivity tip, but there will always
 // @description add new client
 
 // The client is a heavyweight object that should be created once
-// options https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/internal#ClientOptions
+// options https://pkg.go.dev/go.temporal.io/internal#ClientOptions
 ${0:newClient}, err := client.NewClient(client.Options{})
 if err != nil {
 	log.Fatalln("Unable to create client", err)
