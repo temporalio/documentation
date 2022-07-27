@@ -42,4 +42,3 @@ const client = new WorkflowClient({
   namespace: 'your.namespace',
 });
 ```
-

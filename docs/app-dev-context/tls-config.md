@@ -1,23 +1,16 @@
-Use the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) to generate Client-side certificates along with their keys and configuration files.
+When connecting to the Temporal Cloud, you must provide the following:
+
+- Your Namespace.
+- Your URL for the Temporal Cluster.
+- TLS Config:
+  - Client certificate for mTLS.
+  - Client private key for mTLS.
+
+For information on generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
 ​
 This docker image is to be used in conjunction with the Temporal SDK.
 Keys and their configuration files are valid for 365 days from creation.
-​
-**To generate the certificates**:
-​
 
-1. Pull the latest image from the registry.
-   `docker pull temporalio/client-certificate-generation:latest`
-2. Run the following docker command to generate the root CA.
-   `docker run -v $PWD:/work -it temporalio/client-certificate-generation ca.sh`
-3. Run the following docker command to generate an end-entity certificate.
-   `docker run -v $PWD:/work -it temporalio/client-certificate-generation end-entity.sh`
-   ​
-   ​
-   :::warning
-   ​
-   The client pem and key files are sensitive information and shouldn't be shared with anyone
-   ​
-   :::
+For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-For more information about TLS, see the [Certification]() guide.
+For more information about TLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
