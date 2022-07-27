@@ -35,15 +35,15 @@ function ExitSVG() {
       <path
         d="M18.75 5.25H14.25M18.75 5.25L12 12M18.75 5.25V9.75"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M18.75 12.75V17.25C18.75 18.0784 18.0784 18.75 17.25 18.75H6.75C5.92157 18.75 5.25 18.0784 5.25 17.25V6.75C5.25 5.92157 5.92157 5.25 6.75 5.25H11.25"
         stroke="currentColor"
-        stroke-width="1.125"
-        stroke-linecap="round"
+        strokeWidth="1.125"
+        strokeLinecap="round"
       />
     </svg>
   );

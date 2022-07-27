@@ -430,9 +430,14 @@ h1 {
 }
 
 .list-logo {
+  --ifm-list-item-margin: 0;
+  margin-bottom: 0.5rem;
   padding-right: 1rem;
   display: flex;
   align-items: center;
+}
+.list-logo a {
+  display: flex;
 }
 
 .landing-card-list li {
