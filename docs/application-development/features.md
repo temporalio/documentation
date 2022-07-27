@@ -236,6 +236,9 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
+Before completing the Workflow or [Continuing-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Otherwise, the Signals will be lost.
+
 </TabItem>
 <TabItem value="java">
 
@@ -2117,7 +2120,7 @@ You can also Heartbeat an Activity from an external source:
 
 ```go
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 // Record heartbeat.
 err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
 ```
@@ -2484,7 +2487,7 @@ return "", activity.ErrResultPending
 // Instantiate a Temporal service client.
 // The same client can be used to complete or fail any number of Activities.
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 
 // Complete the Activity.
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
@@ -3122,13 +3125,12 @@ await client.start_workflow(
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
-They can't be used normally with Workflow code, as that would be nondeterministic (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
 
-Most of the time, we don't need to get environment variables into Workflow code, as it's sufficient to just provide them to Activities.
-But if we do need to environment variables into Workflow code, the two options are:
+Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
 
-- Providing them as arguments when starting the Workflow.
-- Calling a Local Activity at the beginning of the Workflow that returns environment variables.
+- Provide environment variables as arguments when starting the Workflow.
+- Call a Local Activity at the beginning of the Workflow that returns environment variables.
 
 In either case, the environment variables will appear in Event History, so you may want to use an [encryption Data Converter](/concepts/what-is-a-data-converter/#encryption).
 

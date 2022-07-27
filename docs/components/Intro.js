@@ -23,6 +23,32 @@ function InfoSVG() {
   );
 }
 
+function ExitSVG() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M18.75 5.25H14.25M18.75 5.25L12 12M18.75 5.25V9.75"
+        stroke="currentColor"
+        stroke-width="1.125"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M18.75 12.75V17.25C18.75 18.0784 18.0784 18.75 17.25 18.75H6.75C5.92157 18.75 5.25 18.0784 5.25 17.25V6.75C5.25 5.92157 5.92157 5.25 6.75 5.25H11.25"
+        stroke="currentColor"
+        stroke-width="1.125"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+}
+
 function BookSVG() {
   return (
     <svg
@@ -230,8 +256,6 @@ const appDevGuideLinks = {
       path: "/application-development/features",
       name: "Features",
     },
-  ],
-  listTwo: [
     {
       book: true,
       path: "/application-development/observability",
@@ -241,6 +265,28 @@ const appDevGuideLinks = {
       book: true,
       path: "/application-development/worker-performance",
       name: "Worker Performance",
+    },
+  ],
+  listTwo: [
+    {
+      exit: true,
+      path: "https://pkg.go.dev/go.temporal.io/sdk",
+      name: "Go SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
+      name: "Java SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://typescript.temporal.io/",
+      name: "TypeScript SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://python.temporal.io",
+      name: "Python SDK API reference",
     },
   ],
 };
@@ -352,7 +398,7 @@ const displayTechListItems = () => {
       <li className="list-logo" key={tech.alt}>
         <a href={tech.link}>
           <img
-            className={`${tech.class} pl-1 transition hover:scale-110 code-logo`}
+            className={`${tech.class} pr-1 transition hover:scale-110 code-logo`}
             src={tech.image}
             alt={tech.alt}
           />
@@ -375,6 +421,7 @@ const displayLinks = (links) => {
     return (
       <li className="" key={`${link.name} ${i}`}>
         <div className="landing-card-list-item">
+          {link.exit && <ExitSVG />}
           {link.book && <BookSVG />}
           {link.hat && <HatSVG />}
           {link.cli && <CliSVG />}
