@@ -646,3 +646,19 @@ h1 {
 .app-dev-landing-page-lang-logo {
   max-width: 100px;
 }
+
+@media only screen and (min-width: 1400px) {
+  .navbar__items--right {
+    width: 35vw;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .DocSearch {
+    width: 30vw;
+  }
+}
+
+.DocSearch-Container {
+  min-width: 100vw;
+}
