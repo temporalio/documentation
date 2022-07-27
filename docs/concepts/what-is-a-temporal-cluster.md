@@ -83,7 +83,7 @@ This configuration includes two sections that serve to separate intra-cluster an
 
 ### Temporal Client connections
 
-A client's network access can be limited to clients with certificates issued by a specific Certificate Authority.
+A client's network access can be limited by using certificates issued by a specific Certificate Authority.
 
 To restrict access to Temporal Cluster endpoints, use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties.
 
