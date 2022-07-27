@@ -431,8 +431,7 @@ h1 {
 
 .list-logo {
   --ifm-list-item-margin: 0;
-  margin-bottom: 0.5rem;
-  padding-right: 1rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
 }
@@ -650,6 +649,15 @@ h1 {
 
 .app-dev-landing-page-lang-logo {
   max-width: 100px;
+}
+
+.app-dev-landing-page-lang-logos {
+  display: flex;
+  flex-direction: row;
+}
+.app-dev-landing-page-lang-logos img {
+  max-width: 100px;
+  margin-right: 40px;
 }
 
 @media only screen and (min-width: 1400px) {

@@ -195,6 +195,12 @@ const supportedTech = [
     alt: "TypeScript logo",
     class: "w-7 h-7",
   },
+  {
+    link: " /application-development?lang=js",
+    image: "/img/javascript.svg",
+    alt: "JavaScript logo",
+    class: "w-7 h-7",
+  },
 ];
 
 const coreConcepts = {
