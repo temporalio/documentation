@@ -181,7 +181,7 @@ const supportedTech = [
     link: " /application-development?lang=php",
     image: "/img/php.svg",
     alt: "php logo",
-    class: "w-10 h-8",
+    class: "w-10",
   },
   {
     link: " /application-development?lang=python",
