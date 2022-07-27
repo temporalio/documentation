@@ -21,6 +21,12 @@ Authorizer then returns one of two decisions:
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
 
+:::warning
+
+Authorizer allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
+
+:::
+
 Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/server/options/#withauthorizer).
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
