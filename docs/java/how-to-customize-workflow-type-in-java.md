@@ -9,7 +9,7 @@ tags:
 ---
 
 The Workflow Type defaults to the short name of the Workflow interface.
-In the following example, the Workflow Type defaults to "NotifyUserAccounts".
+In the following example, the Workflow Type defaults to `NotifyUserAccounts`.
 
 ```java
   @WorkflowInterface
@@ -21,7 +21,7 @@ In the following example, the Workflow Type defaults to "NotifyUserAccounts".
 ```
 
 To overwrite this default naming and assign a custom Workflow Type, use the `@WorkflowMethod` annotation with the `name` parameter.
-In the following example, the Workflow Type is set to "Abc".
+In the following example, the Workflow Type is set to `Abc`.
 
 ```java
 @WorkflowInterface

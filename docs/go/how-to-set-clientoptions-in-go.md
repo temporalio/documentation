@@ -35,7 +35,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#O
 clientOptions := client.Options{
   HostPort: client.DefaultHostPort,
 }
-temporalClient, err := client.NewClient(clientOptions)
+temporalClient, err := client.Dial(clientOptions)
 ```
 
 The `HostPort` value is a gRPC address and therefore can also support a special-formatted address of `<resolver>:///<value>` that will use a registered resolver.
@@ -51,7 +51,7 @@ For example, to manually provide multiple IPs to round-robin across, a `google.g
 builder := manual.NewBuilderWithScheme("myresolver")
 builder.InitialState(resolver.State{Addresses: []resolver.Address{{Addr: "1.2.3.4:1234"},{Addr: "2.3.4.5:2345"}}})
 resolver.Register(builder)
-temporalClient, err := client.NewClient(client.Options{HostPort: "myresolver:///ignoredvalue"})
+temporalClient, err := client.Dial(client.Options{HostPort: "myresolver:///ignoredvalue"})
 ```
 
 Other more advanced resolvers can also be registered.
@@ -89,7 +89,7 @@ func main() {
   clientOptions := client.Options{
     Logger: logger,
   }
-  temporalClient, err := client.NewClient(clientOptions)
+  temporalClient, err := client.Dial(clientOptions)
   // ...
 }
 ```
