@@ -15,7 +15,7 @@ To prevent a Workflow Execution Event History from exceeding this limit and fail
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
 A Temporal Cluster stores the full Event History of a Workflow Execution for the duration of a Namespace's retention period.
-A Workflow Execution that periodically executes a large number of Activities has the potential of hitting the size limit.
+A Workflow Execution that periodically executes many Activities has the potential of hitting the size limit.
 
 A very large Event History can adversely affect the performance of a Workflow Execution.
 For example, in the case of a Workflow Worker failure, the full Event History must be pulled from the Temporal Cluster and given to another Worker via a Workflow Task.
@@ -27,4 +27,4 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New](/application-development-guide/#continue-as-new)
+- [How to Continue-As-New](/application-development/features#continue-as-new)

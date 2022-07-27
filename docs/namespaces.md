@@ -12,12 +12,10 @@ Namespaces are a logical unit of isolation within the Temporal Platform.
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
-- [How to register a new Namespace using tctl](/tctl/namespace/register)
 - [How to list Namespaces in a Cluster using tctl](/tctl/namespace/list)
+- [How to register a new Namespace using tctl](/tctl/namespace/register)
+- [How to set the Namespace for a Temporal Client](/application-development/foundations#set-namespace)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl/namespace/describe)
-- [How to set the Namespace for a Temporal Client in Go](/go/how-to-set-the-namespace-for-a-temporal-client-in-go)
-- [How to set the Namespace for a Temporal Client in Java](/java/how-to-set-the-namespace-for-a-temporal-client-in-java)
-- [How to set the Namespace for a Temporal Client in Typescript](/typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript)
 
 A single Namespace is still multi-tenant.
 You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
@@ -29,15 +27,15 @@ Or you could use them to ensure Workflow Executions between different teams neve
     We recommend using the default Namespace if you aren’t using multiple Namespaces.
 - **Case Insensitive**: Because of DNS, Namespaces are case insensitive on the network and routing side.
   We recommend using lowercase for namespace names to avoid potential issues.
-- **Membership**: [Task Queue](/next/tasks#task-queues) names and [Workflow Ids](/next/workflows#workflow-id) must all correspond to a specific Namespace.
+- **Membership**: [Task Queue](/tasks#task-queues) names and [Workflow Ids](/workflows#workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/next/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl).
+- **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl).
 
 ## Global Namespace
 
-A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/next/clusters#multi-cluster-replication) is set up.
+A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
 
 - [How to register a Global Namespace](/tctl/namespace/register/#--global-namespace)
 - [How to change the active Cluster for a Global Namespace](/tctl/namespace/update/#--active-cluster)
@@ -51,7 +49,7 @@ For a failover to be successful, Worker Processes must be polling for Tasks for 
 A Global Namespace has a failover version.
 Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
-Only the active Cluster dispatches [Tasks](/next/tasks#); however, certain conflicts are possible.
+Only the active Cluster dispatches [Tasks](/tasks#); however, certain conflicts are possible.
 Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/concepts/what-is-multi-cluster-replication/#conflict-resolution)).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 

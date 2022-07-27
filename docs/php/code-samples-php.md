@@ -4,4 +4,6 @@ title: Code samples
 sidebar_label: Code samples
 ---
 
-Use the [PHP samples library](https://github.com/temporalio/samples-php) stored on GitHub to demonstrate various capabilities of Temporal.
+- [PHP samples repo](https://github.com/temporalio/samples-php)
+
+- [Subscription-style Workflow Definition in PHP](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription-style business process.

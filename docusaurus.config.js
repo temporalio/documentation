@@ -55,57 +55,40 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
+    announcementBar: {
+      id: "how_are_we_doing",
+      content:
+        'Take the <a target="_blank" rel="noopener noreferrer" href="https://forms.gle/1kASKmmm2XrBDhzr5">User Survey</a> and let us know how we are doing!',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {
         alt: "Temporal logo",
         src: "img/temporal-logo-dark.svg",
         srcDark: "img/temporal-logo.svg",
+        href: "https://temporal.io",
       },
       items: [
         {
+          label: "Home",
           to: "/",
+          position: "left",
           activeBasePath: "none",
-          label: "Docs",
         },
         {
-          activeBasePath: "none",
-          label: "Case Studies",
-          items: [
-            {
-              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
-              label: "Datadog",
-            },
-            {
-              to: "/blog/how-temporal-simplified-checkr-workflows",
-              label: "Checkr",
-            },
-            {
-              to: "/blog/temporal-a-central-brain-for-box",
-              label: "Box",
-            },
-            {
-              to: "/blog/reliable-crypto-transactions-at-coinbase",
-              label: "Coinbase",
-            },
-            {
-              to: "/blog/descript-case-study",
-              label: "Descript",
-            },
-            {
-              to: "/blog/zebra-medical-case-study",
-              label: "Zebra",
-            },
-            {
-              to: "/blog/airbyte-case-study",
-              label: "Airbyte",
-            },
-          ],
+          label: "Docs change log",
+          to: "/change-log",
+          activeBasePath: "change-log",
+          position: "left",
         },
         {
-          to: "/blog",
-          activeBasePath: "/blog",
           label: "Blog",
+          to: "/blog",
+          activeBasePath: "blog",
+          position: "left",
         },
       ],
     },
@@ -344,6 +327,11 @@ module.exports = {
       async: true,
       defer: true,
     },
+    {
+      src: "/scripts/set-tab-language.js",
+      async: true,
+      defer: true,
+    },
     // {
     //   src: "/scripts/feedback.js",
     //   async: true,
@@ -374,6 +362,32 @@ module.exports = {
         path: "cloud/release-notes",
         blogTitle: "Temporal Cloud release notes",
         blogSidebarTitle: "Recent release notes",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "change-log",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "change-log",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "change-log",
+        blogTitle: "Temporal Platform documentation change log",
+        blogDescription: "A log of changes to this site's content.",
+        blogSidebarTitle: "Docs change log",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
