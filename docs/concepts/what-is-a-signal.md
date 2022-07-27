@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A Signal is an asynchronous request to a [Workflow Execution](/concepts/what-is-a-workflow-execution). Signals can be [defined in code](/app-dev-context/signals)or executed on the [command line](/tctl/workflow/signal).
+A Signal is an asynchronous request to a [Workflow Execution](/concepts/what-is-a-workflow-execution). Signals can be [defined in code](/application-development/features#signals)or executed on the [command line](/tctl/workflow/signal).
 
 A Signal is meant to deliver data to a running Workflow Execution which can be used to change variable values and the state of Workflow Execution.
 A Signal can not return data to the caller, use [Queries](/concepts/what-is-a-query) for that.
