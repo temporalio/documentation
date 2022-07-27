@@ -430,9 +430,13 @@ h1 {
 }
 
 .list-logo {
-  padding-right: 1rem;
+  --ifm-list-item-margin: 0;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
+}
+.list-logo a {
+  display: flex;
 }
 
 .landing-card-list li {
@@ -645,6 +649,15 @@ h1 {
 
 .app-dev-landing-page-lang-logo {
   max-width: 100px;
+}
+
+.app-dev-landing-page-lang-logos {
+  display: flex;
+  flex-direction: row;
+}
+.app-dev-landing-page-lang-logos img {
+  max-width: 100px;
+  margin-right: 40px;
 }
 
 @media only screen and (min-width: 1400px) {
