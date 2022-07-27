@@ -28,7 +28,7 @@ See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
 
 ### Auth
 
-Authentication and authorization of Client API calls
+Temporal offers methods of authenticating and authorizing client API calls within our SDKs.
 
 ### SDKs in development
 

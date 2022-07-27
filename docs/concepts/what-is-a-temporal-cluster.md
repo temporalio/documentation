@@ -87,7 +87,7 @@ A client's network access can be limited by using certificates issued by a speci
 
 To restrict access to Temporal Cluster endpoints, use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties.
 
-These can be found in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration/#tls).
+These can be found in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
 
 #### Server name specification
 
