@@ -137,14 +137,14 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import {defineSignal} from "@temporalio/workflow";
+import { defineSignal } from '@temporalio/workflow';
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+const joinSignal = defineSignal<JoinInput>('join');
 ```
 
 </TabItem>
@@ -337,12 +337,12 @@ Content is not available
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import {setHandler} from "@temporalio/workflow";
+import { setHandler } from '@temporalio/workflow';
 
 export async function myWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
@@ -530,12 +530,12 @@ $workflow->setValue(true);
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-import {getExternalWorkflowHandle} from "@temporalio/workflow";
-import {joinSignal} from "./other-workflow";
+import { getExternalWorkflowHandle } from '@temporalio/workflow';
+import { joinSignal } from './other-workflow';
 
 export async function myWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle("workflow-id-123");
-  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+  const handle = getExternalWorkflowHandle('workflow-id-123');
+  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 }
 ```
 
@@ -660,16 +660,16 @@ $run = $workflowClient->startWithSignal(
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {myWorkflow, joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { myWorkflow, joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
 await client.signalWithStart(myWorkflow, {
-  workflowId: "workflow-id-123",
-  args: [{foo: 1}],
+  workflowId: 'workflow-id-123',
+  args: [{ foo: 1 }],
   signal: joinSignal,
-  signalArgs: [{userId: "user-1", groupId: "group-1"}],
+  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
 });
 ```
 
@@ -1074,22 +1074,22 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
+  console.log('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
+    console.log('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
+      console.log('Cancelled');
     }
     throw err;
   }
@@ -1609,11 +1609,11 @@ In this example, you can set the `scheduleToCloseTimeout` to 5 m.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1736,11 +1736,11 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '30s', // recommended
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1867,12 +1867,12 @@ In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  ScheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2024,11 +2024,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const {yourActivity} = proxyActivities<typeof activities>({
+const { yourActivity } = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -2249,9 +2249,9 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
 //...
 
 // workflow code calling activity
-const {example} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 hour",
-  heartbeatTimeout: "10s",
+const { example } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 hour',
+  heartbeatTimeout: '10s',
 });
 ```
 
@@ -2408,9 +2408,9 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 
 ```typescript
 // Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
+const { longRunningActivity } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m', // translates to 300000 ms
+  startToCloseTimeout: '30s', // translates to 30000 ms
   heartbeatTimeout: 10000, // equivalent to '10 seconds'
 });
 ```
@@ -3098,7 +3098,7 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: "* * * * *", // start every minute
+  cronSchedule: '* * * * *', // start every minute
 });
 ```
 
@@ -3122,13 +3122,12 @@ await client.start_workflow(
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
-They can't be used normally with Workflow code, as that would be nondeterministic (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
 
-Most of the time, we don't need to get environment variables into Workflow code, as it's sufficient to just provide them to Activities.
-But if we do need to environment variables into Workflow code, the two options are:
+Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
 
-- Providing them as arguments when starting the Workflow.
-- Calling a Local Activity at the beginning of the Workflow that returns environment variables.
+- Provide environment variables as arguments when starting the Workflow.
+- Call a Local Activity at the beginning of the Workflow that returns environment variables.
 
 In either case, the environment variables will appear in Event History, so you may want to use an [encryption Data Converter](/concepts/what-is-a-data-converter/#encryption).
 
@@ -3158,25 +3157,25 @@ Content is not available
 
 ```ts
 async function runWorker(): Promise<void> {
-  const activities = createActivities({apiKey: process.env.MAILGUN_API_KEY});
+  const activities = createActivities({ apiKey: process.env.MAILGUN_API_KEY });
 
   const worker = await Worker.create({
-    taskQueue: "example",
+    taskQueue: 'example',
     activities,
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
   });
   await worker.run();
 }
 
-const createActivities = (envVars: {apiKey: string}) => ({
+const createActivities = (envVars: { apiKey: string }) => ({
   async sendNotificationEmail(): Promise<void> {
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/my-domain/messages`,
-      method: "post",
-      params: {to, from, subject, html},
+      method: 'post',
+      params: { to, from, subject, html },
       auth: {
-        username: "api",
+        username: 'api',
         password: envVars.apiKey,
       },
     });
@@ -3190,9 +3189,9 @@ If we needed environment variables in our Workflow, here's how we'd use a Local 
 
 ```ts
 const worker = await Worker.create({
-  taskQueue: "example",
+  taskQueue: 'example',
   activities: createActivities(process.env),
-  workflowsPath: require.resolve("./workflows"),
+  workflowsPath: require.resolve('./workflows'),
 });
 
 type EnvVars = Record<string, string>;
@@ -3205,10 +3204,10 @@ const createActivities = (envVars: EnvVars) => ({
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/my-domain/messages`,
-      method: "post",
-      params: {to, from, subject, html},
+      method: 'post',
+      params: { to, from, subject, html },
       auth: {
-        username: "api",
+        username: 'api',
         password: apiKey,
       },
     });
@@ -3217,18 +3216,18 @@ const createActivities = (envVars: EnvVars) => ({
 ```
 
 ```ts
-const {getEnvVars} = proxyLocalActivities({
-  startToCloseTimeout: "1m",
+const { getEnvVars } = proxyLocalActivities({
+  startToCloseTimeout: '1m',
 });
 
-const {sendNotificationEmail} = proxyActivities({
-  startToCloseTimeout: "1m",
+const { sendNotificationEmail } = proxyActivities({
+  startToCloseTimeout: '1m',
 });
 
 async function myWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
-    throw new Error("missing env var apiKey");
+    throw new Error('missing env var apiKey');
   }
   await sendNotificationEmail(envVars.apiKey);
 }
@@ -3241,3 +3240,4 @@ Content is not available
 
 </TabItem>
 </Tabs>
+
