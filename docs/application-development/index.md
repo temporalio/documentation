@@ -63,10 +63,11 @@ Python is currently selected!
 </TabItem>
 <TabItem value="typescript">
 
-Typescript is currently selected!
+TypeScript / JavaScript is currently selected!
 
-<div class="app-dev-landing-page-lang-logo">
+<div class="app-dev-landing-page-lang-logos">
 <img src="/app-dev/typescript.svg" alt="TypeScript logo" />
+<img src="/img/javascript.svg" alt="JavaScript logo" />
 </div>
 
 </TabItem>
