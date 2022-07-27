@@ -662,3 +662,7 @@ h1 {
 .DocSearch-Container {
   min-width: 100vw;
 }
+
+.nowrap {
+  white-space: nowrap;
+}
