@@ -34,14 +34,14 @@ Query result as JSON:
 Queries are written as follows:
 
 ```bash
-tctl workflow query [modifiers]
+tctl workflow query --workflow_id [modifiers]
 ```
 
-The following modifiers control the behavior of the command.
+The following modifiers control the behavior of the command. Always include required modifiers when executing this command.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
 Aliases: `--wid`, `-w`
 

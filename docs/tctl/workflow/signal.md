@@ -10,8 +10,6 @@ tags:
 
 The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-## Signals with tctl
-
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names. The Workflow below listens for instances of "HelloSignal":
 
 ```bash
@@ -82,14 +80,14 @@ tctl workflow showid HelloSignal
 Signals are written as follows:
 
 ```bash
-tctl workflow signal [modifiers]
+tctl workflow signal --workflow_id [modifiers]
 ```
 
-The following modifiers control the behavior of the command.
+The following modifiers control the behavior of the command. Make sure to include required modifiers in all command executions.
 
 ### `--workflow_id`
 
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
 Aliases: `--wid`, `-w`
 

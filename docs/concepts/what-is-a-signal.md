@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A Signal is an asynchronous request to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+A Signal is an asynchronous request to a [Workflow Execution](/concepts/what-is-a-workflow-execution). Signals can be [defined in code](/app-dev-context/signals)or executed on the [command line](/tctl/workflow/signal).
 
 A Signal is meant to deliver data to a running Workflow Execution which can be used to change variable values and the state of Workflow Execution.
 A Signal can not return data to the caller, use [Queries](/concepts/what-is-a-query) for that.
@@ -23,7 +23,5 @@ It can include a list of arguments.
 Signal handlers are Workflow functions that listen for Signals by the Signal name.
 Signals are delivered in the order they are received by the Cluster.
 If multiple deliveries of a Signal would be a problem for your Workflow, add idempotency logic to your Signal handler that checks for duplicates.
-
-- [How to use Signals](/application-development/features#signals)
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
