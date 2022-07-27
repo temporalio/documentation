@@ -181,7 +181,7 @@ const supportedTech = [
     link: " /application-development?lang=php",
     image: "/img/php.svg",
     alt: "php logo",
-    class: "w-10 h-8",
+    class: "w-10",
   },
   {
     link: " /application-development?lang=python",
@@ -193,6 +193,12 @@ const supportedTech = [
     link: " /application-development?lang=typescript",
     image: "/img/typescript.svg",
     alt: "TypeScript logo",
+    class: "w-7 h-7",
+  },
+  {
+    link: " /application-development?lang=js",
+    image: "/img/javascript.svg",
+    alt: "JavaScript logo",
     class: "w-7 h-7",
   },
 ];
