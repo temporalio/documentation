@@ -5,16 +5,6 @@ sidebar_label: Connection & Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-Custom DataConverters are a standard SDK security feature that is not yet available in the TypeScript Beta.
-
-The Connection API is not final and may change slightly before the full launch.
-
-</CustomWarning>
-
 Temporal Workers and Clients connect with your Temporal Cluster via gRPC, and must be configured securely for production.
 There are three main features to know:
 
@@ -152,7 +142,7 @@ _Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sha
 
 ### Connecting to Temporal Cloud (with mTLS)
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) shows how to connect to a Temporal Cloud account.
+[The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) shows how to connect to a Temporal Cloud account.
 After signing up for Temporal Cloud, you should have a namespace, a server address, and a client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)

@@ -29,14 +29,14 @@ You can get started by:
  
 The minimum Node.js version is 14 but we recommend using 16.4.1 and up.
 
-When you spin up a project, you will notice a single `temporalio` dependency, which actually bundles 4 other dependencies you will use:
+When you spin up a project, you will notice four dependencies you will use:
 
 - `@temporalio/workflow` for Workflow APIs
 - `@temporalio/activity` for Activity APIs
 - `@temporalio/worker` for Worker APIs
 - `@temporalio/client` for Client APIs
 
-These represent the 4 core APIs you need to know to be productive with Temporal.
+These represent the four core APIs you need to know to be productive with Temporal.
 
 ## Workflows and Workflow APIs
 
@@ -147,7 +147,7 @@ The full Client docs are [here](https://docs.temporal.io/typescript/clients).
 
 The 4 concepts of Workflow, Activity, Worker, and Client are a simple but powerful way to break down any distributed system design that you may need. 
 
-- If you would like to run code and understand this yourself, check [our Hello World tutorial](https://docs.temporal.io/typescript/hello-world).
+- If you would like to run code and understand this yourself, check [our Hello World tutorial](https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/).
 - If you prefer a long form, guided Workshop with Q&A, [join our upcoming Intro Workshop on Nov 30](https://lu.ma/temporalintro)!
 
 > 2022 Edit - The workshop recording is up on YouTube!!

@@ -18,8 +18,22 @@ module.exports = {
         "namespaces",
       ],
     },
-    "application-development-guide",
-    "operation/how-to-tune-workers",
+    {
+      type: "category",
+      label: "Application development",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "application-development/index",
+      },
+      items: [
+        "application-development/foundations",
+        "application-development/features",
+        "application-development/observability",
+        "application-development/worker-performance",
+      ],
+    },
     "cluster-deployment-guide",
     "server/security",
     {
@@ -32,7 +46,7 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
-        "cloud/tcld/how-to-install-tcld",
+        "cloud/how-to-manage-certificates-in-temporal-cloud",
         {
           type: "category",
           label: "tcld commands",
@@ -74,6 +88,21 @@ module.exports = {
                 },
                 {
                   type: "category",
+                  label: "certificate-filters",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "cloud/tcld/namespace/certificate-filters/index",
+                  },
+                  items: [
+                    "cloud/tcld/namespace/certificate-filters/import",
+                    "cloud/tcld/namespace/certificate-filters/export",
+                    "cloud/tcld/namespace/certificate-filters/clear",
+                  ],
+                },
+                {
+                  type: "category",
                   label: "search-attributes",
                   collapsible: true,
                   collapsed: true,
@@ -102,100 +131,10 @@ module.exports = {
             "cloud/tcld/version",
           ],
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Tutorials",
-      collapsible: true,
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "learning-paths/index",
-      },
-      items: [
-        {
-          type: "category",
-          label: "Run your first app",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "learning-paths/run-your-first-app/index",
-          },
-          items: [
-            "go/tutorial-prerequisites",
-            "go/run-your-first-app-tutorial",
-            "java/tutorial-prerequisites",
-            "java/run-your-first-app-tutorial",
-            "go/sdk-video-tutorial",
-          ],
-        },
-        {
-          type: "category",
-          label: "Hello World",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "learning-paths/hello-world/index",
-          },
-          items: [
-            "go/hello-world-tutorial",
-            "java/hello-world-tutorial",
-            "php/hello-world",
-            "typescript/hello-world",
-          ],
-        },
-        {
-          type: "category",
-          label: "Trip Booking (Sagas)",
-          collapsed: true,
-          items: [
-            {
-              type: "link",
-              label: "Sagas in PHP",
-              href: "/php/booking-saga-tutorial",
-            },
-            {
-              type: "link",
-              label: "Sagas in Java",
-              href: "https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/bookingsaga/TripBookingWorkflowImpl.java",
-            },
-          ],
-        },
         {
           type: "link",
-          label: "eCommerce",
-          href: "/blog/tags/go-ecommerce-tutorial",
-        },
-        {
-          type: "category",
-          label: "Background Checks",
-          collapsed: true,
-          link: {
-            type: "doc",
-            id: "learning-paths/background-checks/index",
-          },
-          items: [
-            {
-              type: "link",
-              label: "Project repo",
-              href: "https://github.com/temporalio/background-checks",
-            },
-            "learning-paths/background-checks/project-narrative",
-            "learning-paths/background-checks/how-to-use",
-            "learning-paths/background-checks/application-requirements",
-            "learning-paths/background-checks/application-design",
-            "learning-paths/background-checks/main-background-check",
-            "learning-paths/background-checks/candidate-acceptance",
-            "learning-paths/background-checks/ssn-trace",
-            "learning-paths/background-checks/federal-criminal-search",
-            "learning-paths/background-checks/state-criminal-search",
-            "learning-paths/background-checks/motor-vehicle-search",
-            "learning-paths/background-checks/employment-verification",
-            "learning-paths/background-checks/application-deployment",
-            "learning-paths/background-checks/api-reference",
-            "learning-paths/background-checks/cli-reference",
-          ],
+          label: "Release notes",
+          href: "https://docs.temporal.io/cloud/release-notes",
         },
       ],
     },
@@ -365,6 +304,26 @@ module.exports = {
                     "tctl/admin/workflow/show",
                   ],
                 },
+                {
+                  type: "category",
+                  label: "schedule",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "tctl/schedule/index",
+                  },
+                  items: [
+                    "tctl/schedule/create",
+                    "tctl/schedule/describe",
+                    "tctl/schedule/update",
+                    "tctl/schedule/delete",
+                    "tctl/schedule/list",
+                    "tctl/schedule/toggle",
+                    "tctl/schedule/trigger",
+                    "tctl/schedule/backfill",
+                  ],
+                },
               ],
             },
             {
@@ -495,6 +454,11 @@ module.exports = {
     "glossary",
     {
       type: "link",
+      label: "Docs change log",
+      href: "/change-log",
+    },
+    {
+      type: "link",
       label: "Feedback",
       href: "https://github.com/temporalio/documentation/issues",
     },
@@ -526,6 +490,9 @@ module.exports = {
         "concepts/what-is-advanced-visibility",
         "concepts/what-is-archival",
         "concepts/what-is-a-child-workflow-execution",
+        "concepts/what-is-a-cloud-account-id",
+        "concepts/what-is-a-cloud-namespace-id",
+        "concepts/what-is-a-cloud_namespace-name",
         "concepts/what-is-a-command",
         "concepts/what-is-continue-as-new",
         "concepts/what-is-a-data-converter",
@@ -700,7 +667,6 @@ module.exports = {
         "go/how-to-set-executelocalactivityoptions-in-go",
         "go/how-to-heartbeat-an-activity-in-go",
         "go/workflows",
-        "go/activities",
         "go/how-to-use-signals-in-go",
         "go/how-to-send-a-query-to-a-workflow-execution-in-go",
         "go/how-to-handle-a-query-in-a-workflow-in-go",
@@ -796,19 +762,14 @@ module.exports = {
       items: [
         "typescript/introduction",
         {
-          type: "category",
-          label: "TS Tutorials",
-          items: [
-            "typescript/package-initializer",
-            "typescript/subscription-tutorial",
-            "typescript/chatbot-tutorial",
-            "typescript/nextjs-tutorial",
-            {
-              type: "link",
-              label: "Code Samples",
-              href: "https://github.com/temporalio/samples-typescript#samples",
-            },
-          ],
+          type: "link",
+          label: "TypeScript tutorials",
+          href: "https://learn.temporal.io",
+        },
+        {
+          type: "link",
+          label: "Code samples",
+          href: "https://github.com/temporalio/samples-typescript#samples",
         },
         {
           type: "category",

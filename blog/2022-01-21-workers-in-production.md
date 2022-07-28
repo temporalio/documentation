@@ -13,7 +13,7 @@ author_image_url: https://avatars.githubusercontent.com/u/6764957?v=4
 release_version: V1.14.3
 ---
 
-> Update: See also our new docs on [SDK metrics](https://docs.temporal.io/references/sdk-metrics/) and [Temporal Workers Tuning](https://docs.temporal.io/operation/how-to-tune-workers/) for detailed instructions.
+> Update: See also our new docs on [SDK metrics](https://docs.temporal.io/references/sdk-metrics/) and [Temporal Workers Tuning](https://docs.temporal.io/application-development/worker-performance/) for detailed instructions.
 
 Whether you are self hosting Temporal Server or using Temporal Cloud, a key part of the operational model of Temporal is running your own Workers. We recently hosted a chat with Temporal CTO Samar Abbas on the 4 main areas to note when productionizing your Temporal Workers:
 

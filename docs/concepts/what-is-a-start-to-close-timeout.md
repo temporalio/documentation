@@ -10,7 +10,7 @@ tags:
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to set a Start-To-Close Timeout in Go](/go/how-to-set-a-start-to-close-timeout-in-go)
+- [How to set a Start-To-Close Timeout](/go/how-to-set-a-start-to-close-timeout-in-go)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout).**
 
@@ -23,7 +23,7 @@ The main use case for the Start-To-Close timeout is to detect when a Worker cras
 ![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
 
 A [Retry Policy](/concepts/what-is-a-retry-policy) attached to an Activity Execution retries an Activity Task Execution.
-Thus the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
+Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 

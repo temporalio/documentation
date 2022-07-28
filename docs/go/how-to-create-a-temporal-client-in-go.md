@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-Use the [`NewClient()`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#NewClient) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk@v1.8.0/client#Client)
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client)
 
 ```go
 import (
@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-  temporalClient, err := client.NewClient(client.Options{})
+  temporalClient, err := client.Dial(client.Options{})
   if err != nil {
     // ...
   }
