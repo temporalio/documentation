@@ -1,5 +1,5 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export async function cleanUpTempDir(config) {
   console.log("cleaning up temporary storage files...");

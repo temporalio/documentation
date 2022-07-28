@@ -1,7 +1,7 @@
 {
-    "tempWriteDir": "assembly/temp",
-    "contentSourceDir": "docs",
-    "contentWriteDir": "docs",
-    "sourcePathsFileName": "source_paths.json",
-    "sourceObjectsFileName": "source_objects.json"
+  "tempWriteDir": "assembly/temp",
+  "contentSourceDir": "docs",
+  "contentWriteDir": "docs",
+  "sourcePathsFileName": "source_paths.json",
+  "sourceObjectsFileName": "source_objects.json"
 }

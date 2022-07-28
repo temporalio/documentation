@@ -1,1 +1,1 @@
-export { fullAssembly } from './fullAssembly.js';
+export {fullAssembly} from "./fullAssembly.js";
