@@ -52,19 +52,12 @@ A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to
 The default JWT Claim Mapper uses this component to obtain and refresh public keys over time.
 
 Temporal provides an `rsaTokenKeyProvider`.
-This component dynamically obtains public keys that follow the JWKS format.
+This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517).
 `rsaTokenKeyProvider` will only use the `RSAKey` and `Close` methods.
 
 ```go
 provider := authorization.NewRSAKeyProvider(cfg)
 ```
-
-:::note
-
-The `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKey` and `Close` methods, and returns an error from `EcdsaKey` and `HmacKey` methods. It is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
-
-<!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
-<!--SNIPEND-->
 
 :::note
 
