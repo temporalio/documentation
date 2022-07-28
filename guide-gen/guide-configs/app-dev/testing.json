@@ -1,0 +1,58 @@
+{
+    "file_name": "testing.md",
+    "id": "testing",
+    "file_dir": "application-development",
+    "title": "Application development testing",
+    "sidebar_label": "Testing",
+    "description": "This section provides documentation on how to test your Temporal application.",
+    "toc_max_heading_level": 2,
+    "add_tabs_support": false,
+    "h2_sections": [
+        {
+            "header": "Testing",
+            "h3_sections": [
+                {
+                    "header": "none",
+                    "type": "context",
+                    "path": "app-dev-context/testing"
+                }
+            ]
+        },
+        {
+            "header": "none",
+            "h3_sections": [
+                {
+                    "header": "none",
+                    "type": "context",
+                    "path": "app-dev-context/testing"
+                },
+                {
+                    "header": "none",
+                    "type": "lang-tabs",
+                    "langs": [
+                        {
+                            "lang": "go",
+                            "title": "Go",
+                            "path": "go/how-to-test-application-in-go"
+                        },
+                        {
+                            "lang": "java",
+                            "title": "Java",
+                            "path": "java/how-to-test-application-in-java"
+                        },
+                        {
+                            "lang": "php",
+                            "title": "PHP",
+                            "path": "php/how-to-test-application-in-php"
+                        },
+                        {
+                            "lang": "typescript",
+                            "title": "TypeScript",
+                            "path": "typescript/how-to-test-application-in-typescript"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
