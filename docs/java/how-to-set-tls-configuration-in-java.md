@@ -9,7 +9,7 @@ tags:
   - java
 ---
 
-To set the TLS configuration in Java, provide the certificate and private key.
+To set the TLS configuration in Java, provide the certificate and private key in an instance of the `WorkflowServiceStub`.
 
 The following example shows how to set up certificates and pass the `SSLContext` for the Client.
 
