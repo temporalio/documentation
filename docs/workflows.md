@@ -410,7 +410,6 @@ Signals can be defined in code or executed on the command line.
 - [How to develop, send, and handle Signals in code](/application-development/features#signals)
 - [How to send a Signal using tctl](/tctl/workflow/signal)
 
-
 A Signal delivers data to a running Workflow Execution.
 It cannot return data to the caller; to do so, use a [Query](#queries) instead.
 The Workflow code that handles a Signal can mutate Workflow state.
@@ -418,7 +417,6 @@ A Signal can be sent from a Temporal Client or a Workflow.
 When a Signal is sent, it is received by the Cluster and recorded as an Event to the Workflow Execution [Event History](#event-history).
 A successful response from the Cluster means that the Signal has been persisted and will be delivered at least once to the Workflow Execution.[^1]
 The next scheduled Workflow Task will contain the Signal Event.
-
 
 A Signal must include a destination (Namespace and Workflow Id) and name.
 It can include a list of arguments.
