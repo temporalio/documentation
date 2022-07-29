@@ -9,9 +9,7 @@ tags:
   - typescript
 ---
 
-Use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with TLS.
-
-, and the[`clientCertPair`](https://typescript.temporal.io/api/interfaces/client.TLSConfig#clientcertpair): `crt` and `key` for the Client.
+To set the TLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with TLS.
 
 ```typescript
 const connection = await Connection.connect({
