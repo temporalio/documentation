@@ -20,7 +20,7 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 :::info Reminder
 
-The [Application development guide](/application-development) is rapidly increasing its coverage of SDK how-to information, but if you can not find what you are looking for there, it may be in the [older docs for SDKs](/sdks).
+The [Application development guide](/application-development) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the [older docs for SDKs](/sdks).
 
 :::
 

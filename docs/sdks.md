@@ -7,9 +7,9 @@ title: Temporal SDKs
 
 The [Application development guide](/application-development) is new and is the focus moving forward.
 
-The documentation for the SDKs linked to from this page may still contain some information that is not yet represented in the Application development guide, and there could be new information in the Application development guide that is not available in older docs set.
+The documentation for the SDKs linked from this page might still contain some information that is not yet represented in the Application development guide, and new information in the Application development guide might not be available in older docs.
 
-We encourage users to make use of both sets of documentation at this time.
+We encourage users to use both sets of documentation at this time.
 
 :::
 
