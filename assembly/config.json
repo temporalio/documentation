@@ -2,6 +2,8 @@
   "tempWriteDir": "assembly/temp",
   "contentSourceDir": "docs",
   "contentWriteDir": "docs",
-  "sourcePathsFileName": "source_paths.json",
-  "sourceObjectsFileName": "source_objects.json"
+  "sourceObjectsFileName": "source_objects.json",
+  "guideConfigsPath": "guide-gen/guide-configs",
+  "outlineDiagramJSONFIleName": "outline_diagram.json",
+  "outlineDiagramFilePath": "docs/components"
 }
