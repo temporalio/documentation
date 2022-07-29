@@ -859,6 +859,42 @@
           ]
         }
       ]
+    },
+    {
+      "header": "Environment variables",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "app-dev-context/environment-variables"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "none"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-use-environment-variables-in-typescript"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

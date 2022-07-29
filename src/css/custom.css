@@ -340,7 +340,7 @@ main.max-w-screen-lg {
 h2,
 h3 {
   font-weight: 700;
-  letter-spacing: -2px;
+  letter-spacing: -0.5px;
 }
 
 h1,
@@ -371,7 +371,7 @@ h1 {
 .h2-landing {
   font-weight: 700;
   font-size: 2.5rem;
-  letter-spacing: -2px;
+  letter-spacing: -0.5px;
   margin-top: 2.5rem;
 }
 
@@ -430,9 +430,13 @@ h1 {
 }
 
 .list-logo {
-  padding-left: 1rem;
+  --ifm-list-item-margin: 0;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
+}
+.list-logo a {
+  display: flex;
 }
 
 .landing-card-list li {
@@ -645,4 +649,33 @@ h1 {
 
 .app-dev-landing-page-lang-logo {
   max-width: 100px;
+}
+
+.app-dev-landing-page-lang-logos {
+  display: flex;
+  flex-direction: row;
+}
+.app-dev-landing-page-lang-logos img {
+  max-width: 100px;
+  margin-right: 40px;
+}
+
+@media only screen and (min-width: 1400px) {
+  .navbar__items--right {
+    width: 35vw;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .DocSearch {
+    width: 30vw;
+  }
+}
+
+.DocSearch-Container {
+  min-width: 100vw;
+}
+
+.nowrap {
+  white-space: nowrap;
 }

@@ -23,6 +23,32 @@ function InfoSVG() {
   );
 }
 
+function ExitSVG() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M18.75 5.25H14.25M18.75 5.25L12 12M18.75 5.25V9.75"
+        stroke="currentColor"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M18.75 12.75V17.25C18.75 18.0784 18.0784 18.75 17.25 18.75H6.75C5.92157 18.75 5.25 18.0784 5.25 17.25V6.75C5.25 5.92157 5.92157 5.25 6.75 5.25H11.25"
+        stroke="currentColor"
+        strokeWidth="1.125"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function BookSVG() {
   return (
     <svg
@@ -155,7 +181,7 @@ const supportedTech = [
     link: " /application-development?lang=php",
     image: "/img/php.svg",
     alt: "php logo",
-    class: "w-10 h-8",
+    class: "w-10",
   },
   {
     link: " /application-development?lang=python",
@@ -167,6 +193,12 @@ const supportedTech = [
     link: " /application-development?lang=typescript",
     image: "/img/typescript.svg",
     alt: "TypeScript logo",
+    class: "w-7 h-7",
+  },
+  {
+    link: " /application-development?lang=js",
+    image: "/img/javascript.svg",
+    alt: "JavaScript logo",
     class: "w-7 h-7",
   },
 ];
@@ -230,8 +262,6 @@ const appDevGuideLinks = {
       path: "/application-development/features",
       name: "Features",
     },
-  ],
-  listTwo: [
     {
       book: true,
       path: "/application-development/observability",
@@ -241,6 +271,28 @@ const appDevGuideLinks = {
       book: true,
       path: "/application-development/worker-performance",
       name: "Worker Performance",
+    },
+  ],
+  listTwo: [
+    {
+      exit: true,
+      path: "https://pkg.go.dev/go.temporal.io/sdk",
+      name: "Go SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
+      name: "Java SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://typescript.temporal.io/",
+      name: "TypeScript SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://python.temporal.io",
+      name: "Python SDK API reference",
     },
   ],
 };
@@ -352,7 +404,7 @@ const displayTechListItems = () => {
       <li className="list-logo" key={tech.alt}>
         <a href={tech.link}>
           <img
-            className={`${tech.class} pl-1 transition hover:scale-110 code-logo`}
+            className={`${tech.class} pr-1 transition hover:scale-110 code-logo`}
             src={tech.image}
             alt={tech.alt}
           />
@@ -375,6 +427,7 @@ const displayLinks = (links) => {
     return (
       <li className="" key={`${link.name} ${i}`}>
         <div className="landing-card-list-item">
+          {link.exit && <ExitSVG />}
           {link.book && <BookSVG />}
           {link.hat && <HatSVG />}
           {link.cli && <CliSVG />}
@@ -428,13 +481,17 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/application-development">
-          <h2 className="h2-landing">Legacy docs for SDKs</h2>
+        <a className="header-link" href="/sdks">
+          <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
           Application development by language.{" "}
           <span className="bold">
-            Now included in the application development guide.
+            Most of this information is now included in the{" "}
+            <a className="nowrap" href="/application-development">
+              application development guide
+            </a>
+            .
           </span>
         </p>
         <ul className="landing-card-list">{displayLinks(appByLang.listOne)}</ul>

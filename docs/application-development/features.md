@@ -236,6 +236,9 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
+Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Otherwise, the Signals will be lost.
+
 </TabItem>
 <TabItem value="java">
 
@@ -2117,7 +2120,7 @@ You can also Heartbeat an Activity from an external source:
 
 ```go
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 // Record heartbeat.
 err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
 ```
@@ -2484,7 +2487,7 @@ return "", activity.ErrResultPending
 // Instantiate a Temporal service client.
 // The same client can be used to complete or fail any number of Activities.
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 
 // Complete the Activity.
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
@@ -3115,6 +3118,128 @@ await client.start_workflow(
     cron_schedule="* * * * *",
 )
 ```
+
+</TabItem>
+</Tabs>
+
+## Environment variables
+
+Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
+They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+
+Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
+
+- Provide environment variables as arguments when starting the Workflow.
+- Call a Local Activity at the beginning of the Workflow that returns environment variables.
+
+In either case, the environment variables will appear in Event History, so you may want to use an [encryption Data Converter](/concepts/what-is-a-data-converter/#encryption).
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+**Using in Activity code**
+
+```ts
+async function runWorker(): Promise<void> {
+  const activities = createActivities({apiKey: process.env.MAILGUN_API_KEY});
+
+  const worker = await Worker.create({
+    taskQueue: "example",
+    activities,
+    workflowsPath: require.resolve("./workflows"),
+  });
+  await worker.run();
+}
+
+const createActivities = (envVars: {apiKey: string}) => ({
+  async sendNotificationEmail(): Promise<void> {
+    // ...
+    await axios({
+      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      method: "post",
+      params: {to, from, subject, html},
+      auth: {
+        username: "api",
+        password: envVars.apiKey,
+      },
+    });
+  },
+});
+```
+
+**Getting into Workflow**
+
+If we needed environment variables in our Workflow, here's how we'd use a Local Activity:
+
+```ts
+const worker = await Worker.create({
+  taskQueue: "example",
+  activities: createActivities(process.env),
+  workflowsPath: require.resolve("./workflows"),
+});
+
+type EnvVars = Record<string, string>;
+
+const createActivities = (envVars: EnvVars) => ({
+  async getEnvVars(): Promise<EnvVars> {
+    return envVars;
+  },
+  async sendNotificationEmail(apiKey: string): Promise<void> {
+    // ...
+    await axios({
+      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      method: "post",
+      params: {to, from, subject, html},
+      auth: {
+        username: "api",
+        password: apiKey,
+      },
+    });
+  },
+});
+```
+
+```ts
+const {getEnvVars} = proxyLocalActivities({
+  startToCloseTimeout: "1m",
+});
+
+const {sendNotificationEmail} = proxyActivities({
+  startToCloseTimeout: "1m",
+});
+
+async function myWorkflow() {
+  const envVars = await getEnvVars();
+  if (!envVars.apiKey) {
+    throw new Error("missing env var apiKey");
+  }
+  await sendNotificationEmail(envVars.apiKey);
+}
+```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
 
 </TabItem>
 </Tabs>
