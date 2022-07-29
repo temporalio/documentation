@@ -137,7 +137,7 @@ function decrementX(iMeta) {
 
 function resetX(iMeta) {
   iMeta.x = 10;
-  return iMeta
+  return iMeta;
 }
 
 function newNode(id, content, x, y) {
