@@ -11,8 +11,7 @@ tags:
 To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
 
 ```python
-async def main():
-    client = await Client.connect("localhost:7233", namespace="your-custom-namespace")
+await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
 ```
 
 `Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.

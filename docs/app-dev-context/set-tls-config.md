@@ -1,7 +1,5 @@
-When connecting to the Temporal Cloud, you must provide the following:
+When connecting to the Temporal Cloud with TLS, you must provide the following:
 
-- Your Namespace.
-- Your URL for the Temporal Cluster.
 - TLS Config:
   - Client certificate for mTLS.
   - Client private key for mTLS.

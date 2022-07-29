@@ -1,8 +1,8 @@
 ---
-id: how-to-connect-to-a-client-with-tls-in-typescript
-title: How to connect to a Client with TLS in TypeScript
-sidebar_label: Connect to a Client with TLS
-description: Connect to a Client with TLS
+id: how-to-set-tls-configuration-in-typescript
+title: How to set TLS configuration in TypeScript
+sidebar_label: Set TLS configuration
+description: Set TLS configuration
 tags:
   - developer-guide
   - sdk
@@ -11,17 +11,15 @@ tags:
 
 Use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with TLS.
 
-Specify your Temporal Cluster [`address`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#address), and the[`clientCertPair`](https://typescript.temporal.io/api/interfaces/client.TLSConfig#clientcertpair): `crt` and `key` for the Client.
+, and the[`clientCertPair`](https://typescript.temporal.io/api/interfaces/client.TLSConfig#clientcertpair): `crt` and `key` for the Client.
 
 ```typescript
 const connection = await Connection.connect({
-  // This is the address of your temporal cluster.
   address: 'foo.bar.tmprl.cloud',
   tls: {
     clientCertPair: {
-      // Reading the client certificate and key from the file system.
-      crt: fs.readFileSync(clientCertPath),
-      key: fs.readFileSync(clientKeyPath),
+      crt: clientCertPath,
+      key: clientKeyPath,
     },
   },
 });
@@ -37,13 +35,13 @@ When signing up to Temporal Cloud you should receive a Namespace, a Server addre
 - **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
 
 You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
-There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hello-world-mtls'` but you can customize as needed.
+There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `hello-world-mtls`, but you can customize as needed.
 Example environment settings
 
 ```typescript
 export function getEnv(): Env {
   return {
-    address: 'web.<Namespace ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
+    address: 'web.<Namespace_ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
     namespace: 'your.namespace', // as assigned
     clientCertPath: 'foobar.pem', // in project root
     clientKeyPath: 'foobar.key', // in project root
@@ -56,11 +54,6 @@ export function getEnv(): Env {
 ```
 
 If you have misconfigured your connection somehow, you will get an opaque `[TransportError: transport error]` error. Read through your settings carefully and contact Temporal if you are sure you have checked everything.
-
-Note the difference between the gRPC and Temporal Web endpoints:
-
-- The gRPC endpoint has a DNS address of `<Namespace ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
-- The Temporal Web endpoint is `web.<Namespace ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
 
 If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
 
