@@ -20,7 +20,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
 
-For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal frontend service. 
+For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal frontend service.
 
 If your server is running on a different host or port from the default, you can set it as shown in the following example.
 

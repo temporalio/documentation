@@ -9,7 +9,7 @@ tags:
   - java
 ---
 
-To set the TLS configuration in Java, provide the certificate and private key. 
+To set the TLS configuration in Java, provide the certificate and private key.
 
 The following example shows how to set up certificates and pass the `SSLContext` for the Client.
 
