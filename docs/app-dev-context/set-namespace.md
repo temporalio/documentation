@@ -1,6 +1,6 @@
 [Namespaces](/concepts/what-is-a-namespace) are a logical unit of isolation within the Temporal Platform.
 
-To set a custom Namespace with the Client options in your Temporal Client, you must register your custom Namespace with the Temporal Cluster before setting it in the Temporal Client.
+To set a custom Namespace, register your custom Namespace with the Temporal Cluster first, and then set it in the Temporal Client with the Client Options.
 
 To register a Namespace, use:
 `tctl --namespace your-custom-namespace namespace register`.
