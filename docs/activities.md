@@ -207,7 +207,29 @@ That way if a Worker fails it can be handled in a timely manner.
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/tasks#activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
 
-**What Activities should Heartbeat?**
+Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
+
+#### Throttling
+
+Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
+The throttle interval is the smaller of:
+
+- `if heartbeatTimeout is provided, heartbeatTimeout * 0.8; else defaultHeartbeatThrottleInterval`
+- `maxHeartbeatThrottleInterval`
+
+`defaultHeartbeatThrottleInterval` is 30 seconds by default, and `maxHeartbeatThrottleInterval` is 60 seconds by default.
+Each can be set in Worker options.
+
+Throttling is implemented as follows:
+
+- After sending a Heartbeat, the Worker sets a timer for the throttle interval.
+- The Worker stops sending Heartbeats, but continues receiving Heartbeats from the Activity and remembers the most recent one.
+- When the timer fires, the Worker:
+  - Sends the most recent Heartbeat.
+  - Sets the timer again.
+
+#### Which Activities should Heartbeat
 
 Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
 For short-term operations, progress updates are not a requirement.

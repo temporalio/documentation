@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can not find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -1495,10 +1495,16 @@ These require special primitives for heartbeating and cancellation. The `shared_
 
 ### Activity parameters
 
-All Activity parameters must be serializable.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
-A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/tasks#workflow-task).
+<!--TODO link to gRPC limit section when available -->
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data, that is – data that is serialized and encoded into a Payload, we recommend that you use a single object as an argument that wraps around the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a function or method signature.
 
 <Tabs
 defaultValue="go"

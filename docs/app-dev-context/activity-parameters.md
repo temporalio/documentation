@@ -1,4 +1,19 @@
-All Activity parameters must be serializable.
+---
+id: activity-parameters
+title: Activity Parameters - Appplication development context
+sidebar_label: Activity Parameters
+description: When it comes to your application data, that is – data that is serialized and encoded into a Payload, we recommend that you use a single object as an argument that wraps around the application data passed to Activities.
+tags:
+  - guide-context
+---
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/concepts/what-is-an-event-history).
-A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/concepts/what-is-a-workflow-task).
+There is no explicit limit to the total number of parameters that an [Activity Definition](/concepts/what-is-an-activity-definition) may support.
+However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/concepts/what-is-an-event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/concepts/what-is-a-workflow-task).
+
+<!--TODO link to gRPC limit section when available -->
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data, that is – data that is serialized and encoded into a Payload, we recommend that you use a single object as an argument that wraps around the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a function or method signature.
