@@ -79,6 +79,12 @@ module.exports = {
           activeBasePath: "none",
         },
         {
+          label: "KB articles",
+          to: "/kb",
+          activeBasePath: "kb",
+          position: "left",
+        },
+        {
           label: "Docs change log",
           to: "/change-log",
           activeBasePath: "change-log",
