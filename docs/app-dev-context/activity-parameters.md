@@ -1,8 +1,8 @@
 ---
 id: activity-parameters
-title: Activity Parameters - Appplication development context
+title: Activity Parameters - Application development context
 sidebar_label: Activity Parameters
-description: When it comes to your application data, that is – data that is serialized and encoded into a Payload, we recommend that you use a single object as an argument that wraps around the application data passed to Activities.
+description: When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
 tags:
   - guide-context
 ---
@@ -15,5 +15,5 @@ This is because the entire Event History could be transferred to a Worker Proces
 <!--TODO link to gRPC limit section when available -->
 
 Some SDKs require that you pass context objects, others do not.
-When it comes to your application data, that is – data that is serialized and encoded into a Payload, we recommend that you use a single object as an argument that wraps around the application data passed to Activities.
+When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
 This is so that you can change what data is passed to the Activity without breaking a function or method signature.

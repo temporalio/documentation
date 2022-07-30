@@ -16,5 +16,5 @@ Heartbeats may not always be sent to the Cluster—they may be [throttled](/conc
 Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
-Heartbeats may contain a `details` field describing the Activity's current progress.
-If an Activity gets retried, the Activity can access the `details` from the last heartbeat that was sent to the Cluster.
+Heartbeats can contain a `details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Cluster.
