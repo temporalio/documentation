@@ -692,7 +692,7 @@ async def main():
         "some arg",
         id="your-workflow-id",
         task_queue="your-task-queue",
-        start_signal="your-signal-name"
+        start_signal="your-signal-name",
     )
 ```
 
@@ -2298,9 +2298,9 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 In order for an Activity to be notified of cancellation requests, you must invoke [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat).
 
 ```python
-    @activity.defn
-    async def some_activity() -> str:
-        activity.heartbeat("heartbeat details!")
+@activity.defn
+async def some_activity() -> str:
+    activity.heartbeat("heartbeat details!")
 ```
 
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity Retry. If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` will return an iterable containing `123` and `456` on the next run.
