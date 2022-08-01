@@ -190,6 +190,11 @@
               "path": "php/how-to-send-a-signal-with-start-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-send-a-signal-with-start-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-send-a-signal-with-start-in-typescript"
