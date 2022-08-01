@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To send a Signal-With-Start in Python, use the [`start_workflow`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of a traditional Workflow start.
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of a traditional Workflow start.
 
 ```python
 async def main():
