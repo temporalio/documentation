@@ -816,6 +816,11 @@
               "path": "php/how-to-continue-as-new-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-continue-as-new-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
