@@ -16,7 +16,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can not find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -132,7 +132,9 @@ Tracing allows you to view the call graph of a Workflow along with its Activitie
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
-For more information, see [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog).
+For information about Workflow tracing, see [Tracing Temporal Workflows with DataDog](https://spiralscout.com/blog/tracing-temporal-workflow-with-datadog).
+
+For information about configuring exporters and instrument your code, see [Tracing Temporal Services with OTEL](https://github.com/temporalio/temporal/blob/master/develop/docs/tracing.md).
 
 <Tabs
 defaultValue="go"
