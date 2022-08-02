@@ -25,16 +25,15 @@ const client = new WorkflowClient({ connection, namespace: 'foo.bar' });
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a Namespace, a Server address and a Client certificate and key. Use the following environment variables to set up the sample:
+When signing up to Temporal Cloud, you should receive a Namespace, a Server address, and a Client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
 - **TEMPORAL_CLIENT_CERT_PATH**: `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
 - **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
 
-You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
-There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `hello-world-mtls`, but you can customize as needed.
-Example environment settings
+You can leave the remaining variables, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH`, blank.
+If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaults to `hello-world-mtls`.
 
 ```typescript
 export function getEnv(): Env {
@@ -51,7 +50,8 @@ export function getEnv(): Env {
 }
 ```
 
-If you have misconfigured your connection somehow, you will get an opaque `[TransportError: transport error]` error. Read through your settings carefully and contact Temporal if you are sure you have checked everything.
+If you somehow misconfigure your connection, you get an opaque `[TransportError: transport error]` error.
+Read through your settings carefully, and contact Temporal if you are sure you have checked everything.
 
 If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
 

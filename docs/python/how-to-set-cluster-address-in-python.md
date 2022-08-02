@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-To use a custom Cluster address, set the `target_url` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class.
+To use a custom Cluster address, set the `target_url` parameter of the [`Client`](https://python.temporal.io/temporalio.client.client) class.
 
 ```python
 client = await Client.connect(

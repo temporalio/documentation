@@ -19,7 +19,8 @@ const client = new WorkflowClient({ connection });
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
-If you omit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
+If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
+However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
 The following example, creates a Client, connects to an account, and declares your Namespace.
 

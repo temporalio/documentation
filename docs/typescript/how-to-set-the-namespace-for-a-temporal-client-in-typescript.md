@@ -2,7 +2,7 @@
 id: how-to-set-the-namespace-for-a-temporal-client-in-typescript
 title: How to set a Namespace for a Temporal Client in TypeScript
 sidebar_label: Set Namespace
-description: Set the Namespace method on Workflow Client Options Builder.
+description: Set the Namespace in Workflow Client Options Builder.
 tags:
   - how-to
   - typescript

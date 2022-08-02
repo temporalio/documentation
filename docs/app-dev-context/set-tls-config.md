@@ -1,12 +1,11 @@
-When connecting to the Temporal Cloud with TLS, you must provide the following:
+When connecting to the Temporal Cloud with TLS, you must provide the following configuration details:
 
-- TLS Config:
-  - Client certificate for mTLS.
-  - Client private key for mTLS.
+- Client certificate for mTLS
+- Client private key for mTLS
 
 For information on generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
 ​
-This docker image is to be used in conjunction with the Temporal SDK.
+This Docker image is to be used in conjunction with the Temporal SDK.
 Keys and their configuration files are valid for 365 days from creation.
 
 For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).

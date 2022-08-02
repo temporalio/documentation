@@ -2,7 +2,6 @@
 
 To set a custom Namespace, register your custom Namespace with the Temporal Cluster first, and then set it in the Temporal Client with the Client Options.
 
-To register a Namespace, use:
-`tctl --namespace your-custom-namespace namespace register`.
+To register a Namespace, use `tctl --namespace your-custom-namespace namespace register`.
 
 For more information, see [tctl namespace reference](/tctl/namespace/register).
