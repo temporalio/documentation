@@ -9,7 +9,7 @@ tags:
   - Go
 ---
 
-Use [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with TLS.
+Use [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with TLS.
 
 ```go
 	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
