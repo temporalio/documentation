@@ -681,7 +681,7 @@ await client.signalWithStart(myWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of a traditional Workflow start.
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
 
 ```python
 async def main():
@@ -3018,7 +3018,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+
+```python
+workflow.continue_as_new("your-workflow-name")
+```
 
 </TabItem>
 </Tabs>
