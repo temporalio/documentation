@@ -11,7 +11,7 @@ tags:
 
 Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with TLS.
 
-The following example connects your Client to your address. The `tls_config` options uses variables that reference the certification and private key.
+The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 
 ```python
 await Client.connect(
