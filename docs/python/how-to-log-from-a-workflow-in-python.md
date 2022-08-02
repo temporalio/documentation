@@ -34,7 +34,7 @@ class SayHelloWorkflow:
 The following is an example output:
 
 ```
-INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
+INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-custom-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
 ```
 
 :::note
