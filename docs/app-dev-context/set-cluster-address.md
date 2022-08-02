@@ -1,6 +1,6 @@
 Specify a host and optional port.
-Host defaults to: `127.0.0.1`
-Port defaults to: `7233`
+Host default: `127.0.0.1`
+Port default: `7233`
 
 Your address will be in the following form: `web.<Namespace_ID>.tmprl.cloud`
 
