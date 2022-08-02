@@ -154,7 +154,7 @@
         {
           "header": "Connect to a Client",
           "type": "context",
-          "path": "app-dev-context/connecting-temporal-client"
+          "path": "app-dev-context/connect-to-a-cluster"
         },
         {
           "header": "none",
