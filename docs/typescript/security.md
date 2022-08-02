@@ -32,7 +32,7 @@ const connection = await Connection.connect();
 
 const client = new WorkflowClient({
   connection,
-  namespace: 'my-namespace-name', // defaults to 'default'
+  namespace: 'your-custom-namespace', // defaults to 'default'
 });
 ```
 
@@ -177,8 +177,8 @@ If you have misconfigured your connection somehow, you will get an opaque `[Tran
 
 Note the difference between the gRPC and Temporal Web endpoints:
 
-- The gRPC endpoint has a DNS address of `<Namespace ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
-- The Temporal Web endpoint is `web.<Namespace ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
+- The gRPC endpoint has a DNS address of `<Namespace_ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
+- The Temporal Web endpoint is `web.<Namespace_ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
 
 ### Local mTLS sample tutorial
 

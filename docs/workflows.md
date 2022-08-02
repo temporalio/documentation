@@ -405,6 +405,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 ## Signals
 
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-executions).
+Signals can be defined in code or executed on the command line.
 
 - [How to develop, send, and handle Signals in code](/application-development/features#signals)
 - [How to send a Signal using tctl](/tctl/workflow/signal)
