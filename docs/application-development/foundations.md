@@ -602,9 +602,9 @@ other_ns_client = Client(**config)
 </TabItem>
 </Tabs>
 
-### Set TLS configuration
+### Set mTLS configuration
 
-When connecting to the Temporal Cloud with TLS, you must provide the following configuration details:
+When connecting to the Temporal Cloud with mTLS, you must provide the following configuration details:
 
 - Client certificate for mTLS
 - Client private key for mTLS
@@ -616,7 +616,7 @@ Keys and their configuration files are valid for 365 days from creation.
 
 For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-For more information about TLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
+For more information about mTLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
 
 <Tabs
 defaultValue="go"
@@ -625,7 +625,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with TLS.
+Use [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with mTLS.
 
 ```go
 	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
@@ -644,7 +644,7 @@ Use [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/client#C
 </TabItem>
 <TabItem value="java">
 
-To set the TLS configuration in Java, provide the certificate and private key in an instance of the `WorkflowServiceStub`.
+To set the mTLS configuration in Java, provide the certificate and private key in an instance of the `WorkflowServiceStub`.
 
 The following example shows how to set up certificates and pass the `SSLContext` for the Client.
 
@@ -685,7 +685,7 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-To set the TLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with TLS.
+To set the mTLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with mTLS.
 
 ```typescript
 const connection = await Connection.connect({
@@ -761,7 +761,7 @@ if (certificateS3Bucket) {
 </TabItem>
 <TabItem value="python">
 
-Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with TLS.
+Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with mTLS.
 
 The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 

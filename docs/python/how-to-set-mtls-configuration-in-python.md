@@ -1,15 +1,15 @@
 ---
-id: how-to-set-tls-configuration-in-python
-title: How to set TLS configuration in Python
-sidebar_label: Set TLS configuration
-description: Set TLS configuration
+id: how-to-set-mtls-configuration-in-python
+title: How to set mTLS configuration in Python
+sidebar_label: Set mTLS configuration
+description: Set mTLS configuration
 tags:
   - developer-guide
   - sdk
   - python
 ---
 
-Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with TLS.
+Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with mTLS.
 
 The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 
