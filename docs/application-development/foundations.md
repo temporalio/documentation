@@ -316,24 +316,24 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 ## Create Temporal Clients
 
 A [Temporal Client](/temporal#temporal-client) is needed to [create Worker Entities](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
-Communication with the Temporal Cluster includes but is not limited to starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, and getting the result of a Workflow Execution.
+Communication with the Temporal Cluster includes, but is not limited to, starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, and getting the result of a Workflow Execution.
 
 A Temporal Client cannot be initialized and used inside Workflow code.
-However, it is acceptable and common to utilize a Temporal Client, to communicate with a Temporal Cluster, inside an Activity.
+However, it is acceptable and common to use a Temporal Client inside an Activity, to communicate with the Temporal Cluster.
 
 ### Connect to a Client
 
-When connecting to a Temporal Client, you must provide the address and port number, if the SDK doesn't default to an address you want to connect to.
+When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
 
 - To connect to our Docker image, use `127.0.0.1:7233`.
-- To connect custom Cluster address, use `web.<Namespace_ID>.tmprl.cloud`.
+- To connect to a Temporal Cloud Namespace use `web.<Namespace_ID>.tmprl.cloud`.
 
 :::note
 
 The difference between the gRPC and Temporal Web endpoints:
 
-- The gRPC endpoint has a DNS address of `<Namespace_ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
-- The Temporal Web endpoint is `web.<Namespace_ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
+- The gRPC endpoint has a DNS address of `<Namespace_ID>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud`.
+- The Temporal Web endpoint is `web.<Namespace_ID>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
 
 :::
 
@@ -346,7 +346,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client)
 
-If you don't provide a [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
 
 ```go
 import (
@@ -389,7 +389,7 @@ func main() {
 </TabItem>
 <TabItem value="java">
 
-To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod`).
+To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with `@WorkflowMethod`).
 
 To start a Workflow Execution, your Temporal Server must be running, and your front-end service must be accepting gRPC calls.
 
@@ -401,7 +401,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
 
-For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal frontend service.
+For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal Frontend service.
 
 If your server is running on a different host or port from the default, you can set it as shown in the following example.
 
@@ -478,7 +478,8 @@ const client = new WorkflowClient({connection});
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
-If you omit the connection and just call the `new WorkflowClient()`, you will create a default connection that works locally. However, configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
+If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
+However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
@@ -501,7 +502,7 @@ Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) m
 
 Specify the `target_host` parameter as a string.
 
-**Connect to docker**
+**Connect to Docker**
 
 ```python
 await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
@@ -524,10 +525,9 @@ A `Client` does not have an explicit close.
 
 [Namespaces](/namespaces#) are a logical unit of isolation within the Temporal Platform.
 
-To set a custom Namespace with the Client options in your Temporal Client, you must register your custom Namespace with the Temporal Cluster before setting it in the Temporal Client.
+To set a custom Namespace, register your custom Namespace with the Temporal Cluster first, and then set it in the Temporal Client with the Client Options.
 
-To register a Namespace, use:
-`tctl --namespace your-custom-namespace namespace register`.
+To register a Namespace, use `tctl --namespace your-custom-namespace namespace register`.
 
 For more information, see [tctl namespace reference](/tctl/namespace/register).
 
@@ -589,7 +589,7 @@ To specify a Namespace, set the `namespace` parameter from the [`connect()`](htt
 await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
 ```
 
-`Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
+`Client` can be directly instantiated with a service of another, such as when you need to create another Client to use an additional Namespace.
 
 Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
 
@@ -604,15 +604,14 @@ other_ns_client = Client(**config)
 
 ### Set TLS configuration
 
-When connecting to the Temporal Cloud with TLS, you must provide the following:
+When connecting to the Temporal Cloud with TLS, you must provide the following configuration details:
 
-- TLS Config:
-  - Client certificate for mTLS.
-  - Client private key for mTLS.
+- Client certificate for mTLS
+- Client private key for mTLS
 
 For information on generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
 ​
-This docker image is to be used in conjunction with the Temporal SDK.
+This Docker image is to be used in conjunction with the Temporal SDK.
 Keys and their configuration files are valid for 365 days from creation.
 
 For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
@@ -631,7 +630,7 @@ Content is not available
 </TabItem>
 <TabItem value="java">
 
-To set the TLS configuration in Java, provide the certificate and private key.
+To set the TLS configuration in Java, provide the certificate and private key in an instance of the `WorkflowServiceStub`.
 
 The following example shows how to set up certificates and pass the `SSLContext` for the Client.
 
@@ -688,16 +687,15 @@ const client = new WorkflowClient({connection, namespace: "foo.bar"});
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud you should receive a Namespace, a Server address and a Client certificate and key. Use the following environment variables to set up the sample:
+When signing up to Temporal Cloud, you should receive a Namespace, a Server address, and a Client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
 - **TEMPORAL_NAMESPACE**: looks like `foo.bar`
 - **TEMPORAL_CLIENT_CERT_PATH**: `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
 - **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
 
-You can leave the remaining vars, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH` blank.
-There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `hello-world-mtls`, but you can customize as needed.
-Example environment settings
+You can leave the remaining variables, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH`, blank.
+If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaults to `hello-world-mtls`.
 
 ```typescript
 export function getEnv(): Env {
@@ -714,7 +712,8 @@ export function getEnv(): Env {
 }
 ```
 
-If you have misconfigured your connection somehow, you will get an opaque `[TransportError: transport error]` error. Read through your settings carefully and contact Temporal if you are sure you have checked everything.
+If you somehow misconfigure your connection, you get an opaque `[TransportError: transport error]` error.
+Read through your settings carefully, and contact Temporal if you are sure you have checked everything.
 
 If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
 
@@ -750,7 +749,7 @@ if (certificateS3Bucket) {
 
 Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with TLS.
 
-The following example connects your Client to your address. The `tls_config` options uses variables that reference the certification and private key.
+The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 
 ```python
 await Client.connect(
@@ -1611,10 +1610,20 @@ These require special primitives for heartbeating and cancellation. The `shared_
 
 ### Activity parameters
 
-All Activity parameters must be serializable.
+There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
 
-There is no explicit limit to the amount of parameter data that can be passed to an Activity, but keep in mind that all parameters and return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
-A large Workflow Execution Event History can adversely impact the performance of your Workflow Executions, because the entire Event History is transferred to Worker Processes with every [Workflow Task](/tasks#workflow-task).
+A single argument is limited to a maximum size of 2 MB.
+And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
+Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
+
+<!--TODO link to gRPC limit section when available -->
+
+Some SDKs require that you pass context objects, others do not.
+When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
+This is so that you can change what data is passed to the Activity without breaking a function or method signature.
 
 <Tabs
 defaultValue="go"
