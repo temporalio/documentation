@@ -213,9 +213,9 @@ Heartbeat throttling may lead to Cancellation getting delivered later than expec
 #### Throttling
 
 Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
-The throttle interval is the smaller of:
+The throttle interval is the smaller of the following:
 
-- `if heartbeatTimeout is provided, heartbeatTimeout * 0.8; else defaultHeartbeatThrottleInterval`
+- If `heartbeatTimeout` is provided, `heartbeatTimeout * 0.8`; otherwise, `defaultHeartbeatThrottleInterval`
 - `maxHeartbeatThrottleInterval`
 
 `defaultHeartbeatThrottleInterval` is 30 seconds by default, and `maxHeartbeatThrottleInterval` is 60 seconds by default.
@@ -229,9 +229,9 @@ Throttling is implemented as follows:
   - Sends the most recent Heartbeat.
   - Sets the timer again.
 
-#### Which Activities should Heartbeat
+#### Which Activities should Heartbeat?
 
-Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress?"
 For short-term operations, progress updates are not a requirement.
 However, checking the progress and status of Activity Executions that run over long periods is almost always useful.
 

@@ -9,6 +9,10 @@ tags:
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/concepts/what-is-an-activity-definition) may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
+
+A single argument is limited to a maximum size of 2 MB.
+And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
+
 Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/concepts/what-is-an-event-history) and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/concepts/what-is-a-workflow-task).
 

@@ -2078,8 +2078,8 @@ Heartbeats may not always be sent to the Cluster—they may be [throttled](/conc
 Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
-Heartbeats may contain a `details` field describing the Activity's current progress.
-If an Activity gets retried, the Activity can access the `details` from the last heartbeat that was sent to the Cluster.
+Heartbeats can contain a `details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Cluster.
 
 <Tabs
 defaultValue="go"
@@ -2162,6 +2162,7 @@ public class YourActivityDefinitionImpl implements YourActivityDefinition {
 ```
 
 The method takes an optional argument, the `details` variable above that represents latest progress of the Activity Execution.
+This method can take a variety of types such as an exception object, custom object, or string.
 
 If the Activity Execution times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
 The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
@@ -2260,7 +2261,7 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 </TabItem>
 <TabItem value="python">
 
-To Heartbeat an Activity Execution in Python, us the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
+To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
 
 ```python
     @activity.defn
@@ -2269,7 +2270,7 @@ To Heartbeat an Activity Execution in Python, us the [`heartbeat()`](https://pyt
 ```
 
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
-If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` will return an iterable containing `123` and `456` on the next Run.
+If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
 
 </TabItem>
 </Tabs>
