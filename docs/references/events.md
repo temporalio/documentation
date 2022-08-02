@@ -65,7 +65,7 @@ This [Event](/concepts/what-is-an-event) indicates that the [Workflow Execution]
 
 ### WorkflowExecutionTimedOut
 
-This [Event](/concepts/what-is-an-event) type indicates that the [Workflow Execution](/concepts/what-is-a-workflow-execution) has timed out by the Temporal Server due to the [Workflow](/concepts/what-is-a-workflow) having not been completed within [timeout](/concepts/what-is-a-workflow-execution-timeout) settings.
+This [Event](/concepts/what-is-an-event) type indicates that the [Workflow Execution](/concepts/what-is-a-workflow-execution) has timed out by the [Temporal Server](/concepts/what-is-the-temporal-server) due to the [Workflow](/concepts/what-is-a-workflow) having not been completed within [timeout](/concepts/what-is-a-workflow-execution-timeout) settings.
 
 | Field                | Description                                                                                                                |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -168,7 +168,7 @@ This [Event](/concepts/what-is-an-event) type indicates that the [Workflow Task]
 | identity           | Identity of the [Worker](/concepts/what-is-a-worker) that completed this Task.                              |
 | binary_checksum    | Binary Id of the Worker that completed this Task.                                                           |
 
-The SDK client picked up the Workflow Task, processed new history events, and may or may not ask the Temporal Server to do additional work.
+The SDK client picked up the Workflow Task, processed new history events, and may or may not ask the [Temporal Server](/concepts/what-is-the-temporal-server) to do additional work.
 It is possible for the following events to still occur:
 
 - [ActivityTaskScheduled](#activitytaskscheduled)
@@ -273,7 +273,7 @@ This Event type contains [Activity Execution](/concepts/what-is-an-activity-exec
 
 ### ActivityTaskTimedOut
 
-This [Event](/concepts/what-is-an-event) type indicates that the Activity has timed out according to the Temporal Server, due to the [Activity](/concepts/what-is-an-activity) having not completed within the timeout settings.
+This [Event](/concepts/what-is-an-event) type indicates that the Activity has timed out according to the [Temporal Server](/concepts/what-is-the-temporal-server) , due to the [Activity](/concepts/what-is-an-activity) having not completed within the timeout settings.
 
 | Field              | Description                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -335,7 +335,7 @@ This [Event](/concepts/what-is-an-event) type indicates a Timer has been cancele
 
 ### RequestCancelExternalWorkflowExecutionInitiated
 
-This [Event](/concepts/what-is-an-event) type indicates that a [Workflow](/concepts/what-is-a-workflow) has requested that the Temporal Server try to cancel another Workflow.
+This [Event](/concepts/what-is-an-event) type indicates that a [Workflow](/concepts/what-is-a-workflow) has requested that the [Temporal Server](/concepts/what-is-the-temporal-server) try to cancel another Workflow.
 
 | Field                            | Description                                                                                              |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -347,7 +347,7 @@ This [Event](/concepts/what-is-an-event) type indicates that a [Workflow](/conce
 
 ### RequestCancelExternalWorkflowExecutionFailed
 
-This [Event](/concepts/what-is-an-event) type indicates that Temporal Server could not cancel the targeted [Workflow](/concepts/what-is-a-workflow).
+This [Event](/concepts/what-is-an-event) type indicates that [Temporal Server](/concepts/what-is-the-temporal-server) could not cancel the targeted [Workflow](/concepts/what-is-a-workflow).
 This is usually because the target Workflow could not be found.
 
 | Field                            | Description                                                                                              |
@@ -359,41 +359,41 @@ This is usually because the target Workflow could not be found.
 
 ### ExternalWorkflowExecutionCancelRequested
 
-This [Event](/concepts/what-is-an-event) type indicates that the Temporal Server has successfully requested the cancelation of the target [Workflow](/concepts/what-is-a-workflow).
+This [Event](/concepts/what-is-an-event) type indicates that the [Temporal Server](/concepts/what-is-the-temporal-server) has successfully requested the cancelation of the target [Workflow](/concepts/what-is-a-workflow).
 
 | Field              | Description                                                                                                                                                       |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | initiated_event_id | Id of the [RequestCancelExternalWorkflowExecutionInitiated](#requestcancelexternalworkflowexecutioninitiated) Event that this cancelation request corresponds to. |
 | namespace          | [Namespace](/concepts/what-is-a-namespace) of the Workflow that was requested to cancel.                                                                          |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                                                                    |
+| workflow_execution | Identifies the Workflow and the run of the [Workflow Execution](/concepts/what-is-a-workflow-execution).                                                          |
 
 ### ExternalWorkflowExecutionSignaled
 
-This [Event](/concepts/what-is-an-event) type indicates that the Temporal Server has successfully Signaled the targeted Workflow.
+This [Event](/concepts/what-is-an-event) type indicates that the [Temporal Server](/concepts/what-is-the-temporal-server) has successfully [Signaled](/concepts/what-is-a-signal) the targeted [Workflow](/concepts/what-is-a-workflow).
 
 | Field              | Description                                                                                                                      |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | initiated_event_id | Id of the [SignalExternalWorkflowExecutionInitiated](#signalexternalworkflowexecutioninitiated) Event this Event corresponds to. |
 | namespace          | [Namespace](/concepts/what-is-a-namespace) of the Workflow that was signaled to.                                                 |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                                   |
+| workflow_execution | Identifies the Workflow and the run of the [Workflow Execution](/concepts/what-is-a-workflow-execution).                         |
 
 ### MarkerRecorded
 
-This [Event](/concepts/what-is-an-event) type is transparent to the Temporal Server.
+This [Event](/concepts/what-is-an-event) type is transparent to the [Temporal Server](/concepts/what-is-the-temporal-server) .
 The Server will only store it and will not try to understand it.
 The SDK client may use it for local activities or side effects.
 
-| Field                            | Description                                                                                     |
-| -------------------------------- | ----------------------------------------------------------------------------------------------- |
-| marker_name                      | Identifies various markers.                                                                     |
-| details                          | Serialized information recorded in the marker.                                                  |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
-| header                           | Information passed by the sender of the Signal that is copied into the marker.                  |
-| failure                          | Serialized result of a Workflow failure.                                                        |
+| Field                            | Description                                                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| marker_name                      | Identifies various markers.                                                                                  |
+| details                          | Serialized information recorded in the marker.                                                               |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.              |
+| header                           | Information passed by the sender of the [Signal](/concepts/what-is-a-signal) that is copied into the marker. |
+| failure                          | Serialized result of a [Workflow](/concepts/what-is-a-workflow) failure.                                     |
 
 ### StartChildWorkflowExecutionInitiated
 
-This [Event](/concepts/what-is-an-event) type indicates that the Temporal Server will try to start a Child Workflow.
+This [Event](/concepts/what-is-an-event) type indicates that the [Temporal Server](/concepts/what-is-the-temporal-server) will try to start a Child Workflow.
 
 | Field         | Description                                                       |
 | ------------- | ----------------------------------------------------------------- |
@@ -408,7 +408,7 @@ It is usually due to a Child Workflow Id collision.
 
 | Field                            | Description                                                                                                              |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| namespace                        | [Namespace](/concepts/what-is-a-namespace) of the child Workflow.                                                        |
+| namespace                        | [Namespace](/concepts/what-is-a-namespace) of the Child Workflow.                                                        |
 | workflow_id                      | Identifies the Child Workflow.                                                                                           |
 | workflow_type                    | The name/type of Workflow that has failed.                                                                               |
 | initiated_event_id               | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
@@ -416,41 +416,41 @@ It is usually due to a Child Workflow Id collision.
 
 ### ChildWorkflowExecutionStarted
 
-This [Event](/concepts/what-is-an-event) type indicates a child Workflow Execution has successfully started / triggered.
+This [Event](/concepts/what-is-an-event) type indicates a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) has successfully started / triggered.
 This would also cause the [WorkflowExecutionStarted](#workflowexecutionstarted) to be recorded for the Workflow that has started.
 
-| Field              | Description                                                                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| namespace          | [Namespace](/concepts/what-is-a-namespace) of the child Workflow.                                                        |
-| initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                           |
-| workflow_type      | The name/type of Workflow that has started execution.                                                                    |
-| header             | Information passed by the sender of the Signal that is copied into the child Workflow Task.                              |
+| Field              | Description                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| namespace          | [Namespace](/concepts/what-is-a-namespace) of the Child Workflow.                                                         |
+| initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.  |
+| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                            |
+| workflow_type      | The name/type of Workflow that has started execution.                                                                     |
+| header             | Information passed by the sender of the [Signal](/concepts/what-is-a-signal) that is copied into the Child Workflow Task. |
 
 ### ChildWorkflowExecutionCompleted
 
-This [Event](/concepts/what-is-an-event) type indicates that the child Workflow Execution has successfully completed.
-This would also cause the [WorkflowExecutionCompleted](#workflowexecutioncompleted) to be recorded for the Workflow that has completed.
+This [Event](/concepts/what-is-an-event) type indicates that the [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) has successfully completed.
+This would also cause the [WorkflowExecutionCompleted](#workflowexecutioncompleted) to be recorded for the [Workflow](/concepts/what-is-a-workflow) that has completed.
 
 | Field              | Description                                                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| result             | Serialized result of the completed child Workflow.                                                                       |
-| namespace          | [Namespace](/concepts/what-is-a-namespace) of the completed child Workflow.                                              |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                           |
+| result             | Serialized result of the completed Child Workflow.                                                                       |
+| namespace          | [Namespace](/concepts/what-is-a-namespace) of the completed Child Workflow.                                              |
+| workflow_execution | Identifies the Workflow and the run of the [Workflow Execution](/concepts/what-is-a-workflow-execution).                 |
 | workflow_type      | The name/type of Workflow that was completed.                                                                            |
 | initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
 | started_event_id   | Id of the [ChildWorkflowExecutionStarted](#childworkflowexecutionstarted) Event this Event corresponds to.               |
 
 ### ChildWorkflowExecutionFailed
 
-This [Event](/concepts/what-is-an-event) type indicates that the child Workflow Execution has unsuccessfully completed.
+This [Event](/concepts/what-is-an-event) type indicates that the [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) has unsuccessfully completed.
 This would also cause the [WorkflowExecutionFailed](#workflowexecutionfailed) to be recorded for the Workflow that has failed.
 
 | Field              | Description                                                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| failure            | Serialized result of a Workflow failure.                                                                                 |
-| namespace          | [Namespace](/concepts/what-is-a-namespace) of the child Workflow that failed.                                            |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                           |
+| failure            | Serialized result of a [Workflow](/concepts/what-is-a-workflow) failure.                                                 |
+| namespace          | [Namespace](/concepts/what-is-a-namespace) of the Child Workflow that failed.                                            |
+| workflow_execution | Identifies the Workflow and the run of the [Workflow Execution](/concepts/what-is-a-workflow-execution).                 |
 | workflow_type      | The name/type of Workflow that has failed.                                                                               |
 | initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
 | started_event_id   | Id of the [ChildWorkflowExecutionStarted](#childworkflowexecutionstarted) Event this failure corresponds to.             |
@@ -458,26 +458,26 @@ This would also cause the [WorkflowExecutionFailed](#workflowexecutionfailed) to
 
 ### ChildWorkflowExecutionCanceled
 
-This [Event](/concepts/what-is-an-event) type indicates that the child Workflow Execution has been canceled.
+This [Event](/concepts/what-is-an-event) type indicates that the Child Workflow Execution has been canceled.
 This would also cause the [WorkflowExecutionCanceled](#workflowexecutioncanceled) to be recorded for the Workflow that was canceled.
 
 | Field              | Description                                                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| details            | Additional information reported by the child Workflow upon cancelation.                                                  |
-| namespace          | [Namespace](/concepts/what-is-a-namespace) of the child Workflow that was canceled.                                      |
-| workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                           |
+| details            | Additional information reported by the Child Workflow upon cancelation.                                                  |
+| namespace          | [Namespace](/concepts/what-is-a-namespace) of the Child Workflow that was canceled.                                      |
+| workflow_execution | Identifies the Workflow and the run of the [Workflow Execution](/concepts/what-is-a-workflow-execution).                 |
 | workflow_type      | The name/type of Workflow that was canceled.                                                                             |
 | initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
 | started_event_id   | Id of the [ChildWorkflowExecutionStarted](#childworkflowexecutionstarted) Event this cancelation corresponds to.         |
 
 ### ChildWorkflowExecutionTimedOut
 
-This Event type indicates that the child Workflow Execution has timed out by the Temporal Server.
+This Event type indicates that the [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) has timed out by the [Temporal Server](/concepts/what-is-the-temporal-server).
 This would also cause the [WorkflowExecutionTimeOut](#workflowexecutiontimedout) to be recorded for the Workflow that timed out.
 
 | Field              | Description                                                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| namespace          | [Namespace](/concepts/what-is-a-namespace) of the child Workflow.                                                        |
+| namespace          | [Namespace](/concepts/what-is-a-namespace) of the Child Workflow.                                                        |
 | workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                           |
 | workflow_type      | The name/type of Workflow that has timed out.                                                                            |
 | initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
@@ -486,12 +486,12 @@ This would also cause the [WorkflowExecutionTimeOut](#workflowexecutiontimedout)
 
 ### ChildWorkflowExecutionTerminated
 
-This [Event](/concepts/what-is-an-event) type indicates that the child Workflow Execution has been terminated.
+This [Event](/concepts/what-is-an-event) type indicates that the Child Workflow Execution has been terminated.
 This would also cause the [WorkflowExecutionTerminated](#workflowexecutionterminated) to be recorded for the Workflow that was terminated.
 
 | Field              | Description                                                                                                              |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| namespace          | [Namespace](/concepts/what-is-a-namespace) of the child Workflow.                                                        |
+| namespace          | [Namespace](/concepts/what-is-a-namespace) of the Child Workflow.                                                        |
 | workflow_execution | Identifies the Workflow and the run of the Workflow Execution.                                                           |
 | workflow_type      | The name/type of Workflow that was terminated.                                                                           |
 | initiated_event_id | Id of the [StartChildWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to. |
@@ -500,7 +500,7 @@ This would also cause the [WorkflowExecutionTerminated](#workflowexecutiontermin
 
 ### SignalExternalWorkflowExecutionInitiated
 
-This [Event](/concepts/what-is-an-event) type indicates that the Temporal Server will try to [Signal](/concepts/what-is-a-signal) the targeted [Workflow](/concepts/what-is-a-workflow).
+This [Event](/concepts/what-is-an-event) type indicates that the [Temporal Server](/concepts/what-is-the-temporal-server) will try to [Signal](/concepts/what-is-a-signal) the targeted [Workflow](/concepts/what-is-a-workflow).
 This Event type contains the Signal name, as well as a Signal payload.
 
 | Field                            | Description                                                                                              |
@@ -515,7 +515,7 @@ This Event type contains the Signal name, as well as a Signal payload.
 
 ### SignalExternalWorkflowExecutionFailed
 
-This [Event](/concepts/what-is-an-event) type indicates that the Temporal Server cannot Signal the targeted [Workflow](/concepts/what-is-a-workflow), usually because the Workflow could not be found.
+This [Event](/concepts/what-is-an-event) type indicates that the [Temporal Server](/concepts/what-is-the-temporal-server) cannot Signal the targeted [Workflow](/concepts/what-is-a-workflow), usually because the Workflow could not be found.
 
 | Field                            | Description                                                                                                                                                                           |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
