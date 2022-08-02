@@ -1,4 +1,4 @@
-When connecting to a Temporal Client, you must provide the address and port number, if the SDK doesn't default to an address you want to connect to.
+When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
 
 - To connect to our Docker image, use `127.0.0.1:7233`.
 - To connect to a Temporal Cloud Namespace use `web.<Namespace_ID>.tmprl.cloud`.
