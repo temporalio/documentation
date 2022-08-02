@@ -344,7 +344,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client)
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
 If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
 
@@ -625,7 +625,21 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is not available
+Use [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with TLS.
+
+```go
+	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+	if err != nil {
+		return err
+	}
+	client, err := client.Dial(client.Options{
+		HostPort:  "foo.bar.tmprl.cloud:7233",
+		Namespace: "foo.bar",
+		ConnectionOptions: client.ConnectionOptions{
+			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+		},
+	})
+```
 
 </TabItem>
 <TabItem value="java">
@@ -762,9 +776,11 @@ await Client.connect(
 )
 ```
 
-<!-- Update link once merged in -->
+<!-- Update link once merged in
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-python/pull/4/files#diff-851a07866061dda39a4607717f748af6c0251d4c10d29d9988686ba0cd13773c) demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
+[The Hello World mTLS sample]() demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
+
+-->
 
 </TabItem>
 </Tabs>

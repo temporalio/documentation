@@ -235,7 +235,7 @@
             {
               "lang": "go",
               "title": "Go",
-              "path": "none"
+              "path": "go/how-to-set-tls-configuration-in-go"
             },
             {
               "lang": "java",
