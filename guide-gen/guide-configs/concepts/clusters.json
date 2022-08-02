@@ -57,6 +57,26 @@
           "path": "concepts/what-is-multi-cluster-replication"
         }
       ]
+    },
+    {
+      "header": "Plugins",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "concept-context/cluster-plugins"
+        },
+        {
+          "header": "Claim Mapper",
+          "type": "explanation",
+          "path": "concepts/what-is-a-claimmapper-plugin"
+        },
+        {
+          "header": "Authorizer",
+          "type": "explanation",
+          "path": "concepts/what-is-an-authorizer-plugin"
+        }
+      ]
     }
   ]
 }

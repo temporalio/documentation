@@ -20,20 +20,20 @@ Temporal also offers a default JWT `ClaimMapper` for your use.
 A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JSON Web Token (JWT), such as membership in groups, and map them to Temporal roles for the user.
 The subject information from the caller's TLS certificate can also be a parameter in determining roles.
 
-### `AuthInfo`
+#### `AuthInfo`
 
 `AuthInfo` is a struct that is passed to `GetClaims`. `AuthInfo` contains an authorization token extracted from the `authorization` header of the gRPC request.
 
 `AuthInfo` includes a pointer to the `pkix.Name` struct.
 This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) distinguishable name from the caller's mTLS certificate.
 
-### `Claims`
+#### `Claims`
 
 `Claims` is a struct that contains information about permission claims granted to the caller.
 
 `Authorizer` assumes that the caller has been properly authenticated, and trusts the `Claims` when making an authorization decision.
 
-## Default JWT ClaimMapper
+#### Default JWT ClaimMapper
 
 Temporal offers a default JSON Web Token (JWT) `ClaimMapper` that extracts the information needed to form Temporal `Claims`.
 This plugin requires a public key to validate digital signatures.
@@ -46,7 +46,7 @@ To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMap
 
 The code for the default `ClaimMapper` can also be used to build a custom `ClaimMapper`.
 
-### Token Key Provider
+#### Token Key Provider
 
 A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format.
 The default JWT Claim Mapper uses this component to obtain and refresh public keys over time.
@@ -71,7 +71,7 @@ By default, "permissions" is used to name the `permissionsClaimName` value.
 
 Configure the plugin with `config.Config.Global.Authorization.JWTKeyProvider`.
 
-### JWT Web Token Format
+#### JWT Web Token Format
 
 The default JWT `ClaimMapper` expects authorization tokens to be formatted as follows:
 

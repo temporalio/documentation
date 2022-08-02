@@ -14,7 +14,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](/con
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
-#### Persistence
+### Persistence
 
 A Temporal Cluster's only required dependency for basic operation is a database.
 Multiple types of databases that are supported.
@@ -33,7 +33,7 @@ The database stores the following types of data:
 
 An Elasticsearch database can be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility).
 
-**Versions**
+#### Dependency versions
 
 Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
 As of time of writing, these specific versions are used in our test pipelines and actively tested before we release any version of Temporal:
@@ -52,7 +52,7 @@ The release notes of each Temporal Server declare when we plan to drop support f
 - Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is meant only for development and testing, not production usage.
   Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
-#### Monitoring & observation
+### Monitoring & observation
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Monitoring and observing those metrics is optional.
@@ -61,7 +61,7 @@ Any software that can pull metrics that supports the same format could be used, 
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-#### Visibility
+### Visibility
 
 Temporal has built-in [Visibility](/concepts/what-is-visibility) features.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
