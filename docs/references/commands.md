@@ -13,8 +13,8 @@ The following is a complete list of possible Commands.
 
 ### CompleteWorkflowExecution
 
-This Command is triggered when the [Workflow Function Execution](/concepts/what-is-a-workflow-execution) returns.
-It indicates to the Cluster that the Workflow Execution is complete.
+This Command is triggered when the Workflow Function Execution returns.
+It indicates to the Cluster that the [Workflow Execution](/concepts/what-is-a-workflow-execution) is complete.
 The corresponding [Event](/concepts/what-is-an-event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/concepts/what-is-an-event-history).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
