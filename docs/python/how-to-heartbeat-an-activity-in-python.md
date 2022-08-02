@@ -12,9 +12,9 @@ tags:
 To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
 
 ```python
-    @activity.defn
-    async def your_activity_definition() -> str:
-        activity.heartbeat("heartbeat details!")
+@activity.defn
+async def your_activity_definition() -> str:
+    activity.heartbeat("heartbeat details!")
 ```
 
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.

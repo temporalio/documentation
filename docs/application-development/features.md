@@ -681,7 +681,20 @@ await client.signalWithStart(myWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
+
+```python
+async def main():
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
+
+    handle = await client.start_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        start_signal="your-signal-name"
+    )
+```
 
 </TabItem>
 </Tabs>
@@ -2264,9 +2277,9 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
 
 ```python
-    @activity.defn
-    async def your_activity_definition() -> str:
-        activity.heartbeat("heartbeat details!")
+@activity.defn
+async def your_activity_definition() -> str:
+    activity.heartbeat("heartbeat details!")
 ```
 
 In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
@@ -2985,7 +2998,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+
+```python
+workflow.continue_as_new("your-workflow-name")
+```
 
 </TabItem>
 </Tabs>
