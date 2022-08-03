@@ -200,3 +200,4 @@
 /server/workflow-search        /visibility
 
 /content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
+/operation/how-to-tune-workers        /application-development/worker-performance
