@@ -4,7 +4,7 @@
   "file_dir": "cloud",
   "title": "Temporal Cloud documentation",
   "sidebar_label": "Temporal Cloud",
-  "description": "Teporal Cloud documentation explanation and usage information.",
+  "description": "Temporal Cloud documentation, including explanations and usage.",
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "h2_sections": [

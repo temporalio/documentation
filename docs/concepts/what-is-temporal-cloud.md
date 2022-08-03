@@ -1,7 +1,7 @@
 ---
 id: what-is-temporal-cloud
 title: What is Temporal Cloud?
-description: Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications—an alternative to deploying and operating your own Temporal Cluster.
+description: Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.
 sidebar_label: Temporal Cloud
 tags:
   - explanation
