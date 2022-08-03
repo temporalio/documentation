@@ -326,7 +326,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
 
 - To connect to our Docker image, use `127.0.0.1:7233`.
-- To connect to a Temporal Cloud Namespace use `web.<Namespace_ID>.tmprl.cloud`.
+- To connect to a Temporal Cloud Namespace use `<Namespace_ID>.tmprl.cloud`.
 
 :::note
 
