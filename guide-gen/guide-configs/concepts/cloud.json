@@ -25,9 +25,14 @@
           "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-a-cloud-namespace-name"
-        },
+        }
+      ]
+    },
+    {
+      "header": "Cloud Namespace Id",
+      "h3_sections": [
         {
-          "header": "Cloud Namespace Id",
+          "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-a-cloud-namespace-id"
         }
