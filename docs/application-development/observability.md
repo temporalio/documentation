@@ -623,7 +623,7 @@ The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[
 </TabItem>
 <TabItem value="python">
 
-To set custom search attributes, use the `search_attributes` parameter from the ['start_workflow()'](https://python.temporal.io/temporalio.client.client#start_workflow) method.
+To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.client#start_workflow) method.
 
 ```python
 handle = await client.start_workflow(
@@ -702,9 +702,9 @@ Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://ty
 </TabItem>
 <TabItem value="python">
 
-To upsert custom search attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function and set it to an empty list.
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function and set it to an empty list.
 
-The keys will be added or replaced on top of the existing search attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
+The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
 ```python
 workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": ["new-value"]})
@@ -757,7 +757,7 @@ async function myWorkflow() {
 </TabItem>
 <TabItem value="python">
 
-To remove a search attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function and an empty list as its value.
+To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
 ```python
 workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": []})

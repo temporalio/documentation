@@ -1,15 +1,15 @@
 ---
-id: how-to-set-tls-configuration-in-typescript
-title: How to set TLS configuration in TypeScript
-sidebar_label: Set TLS configuration
-description: Set TLS configuration
+id: how-to-set-mtls-configuration-in-typescript
+title: How to set mTLS configuration in TypeScript
+sidebar_label: Set mTLS configuration
+description: To set the mTLS configuration in TypeScript, use the `tls` connection option from the `Client` class to connect to a Temporal Client with mTLS.
 tags:
   - developer-guide
   - sdk
   - typescript
 ---
 
-To set the TLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with TLS.
+To set the mTLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with mTLS.
 
 ```typescript
 const connection = await Connection.connect({
