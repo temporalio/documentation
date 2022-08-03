@@ -2,7 +2,7 @@
 id: how-to-set-mtls-configuration-in-python
 title: How to set mTLS configuration in Python
 sidebar_label: Set mTLS configuration
-description: Set mTLS configuration
+description: Use the `tls_config` parameter from the `Client` class to connect a Client with mTLS.
 tags:
   - developer-guide
   - sdk
