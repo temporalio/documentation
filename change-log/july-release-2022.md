@@ -18,6 +18,12 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 - We added an [Observability section](/application-development/observability) to the Application Development guide.
 
+:::info Reminder
+
+The [Application development guide](/application-development) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the [older docs for SDKs](/sdks).
+
+:::
+
 - Temporal Cloud release notes are now available at [docs.temporal.io/cloud/release-notes](/cloud/release-notes/).
 
 - Experimental [Schedule feature](/workflows/#schedules) documentation is now available.
