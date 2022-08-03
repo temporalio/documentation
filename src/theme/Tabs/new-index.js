@@ -6,41 +6,12 @@ import {
   useScrollPositionBlocker,
   useTabGroupChoice,
 } from '@docusaurus/theme-common/internal';
-import styles from './styles.module.css'; // A very rough duck type, but good enough to guard against mistakes while
+import styles from './styles.module.css';
+// A very rough duck type, but good enough to guard against mistakes while
 // allowing customization
-
-// Temporal additions
-const allowedLanguages = new Set([
-  'js',
-  'ts',
-  'go',
-  'java',
-  'php',
-  'typescript',
-  'python',
-  'dotnet',
-  'ruby',
-  'rust',
-]);
-
-function updateTemporalLang(val) {
-  if (!allowedLanguages.has(val)) {
-    return;
-  }
-  const url = window.location.href;
-  const parts = url.split('#');
-  if (parts.length > 1) {
-    history.replaceState({}, "", `?lang=${val}#${parts.pop()}`);
-  } else {
-    history.replaceState({}, "", `?lang=${val}`);
-  }
-}
-// End Temporal additions
-
 function isTabItem(comp) {
-  return typeof comp.props.value !== "undefined";
+  return 'value' in comp.props;
 }
-
 function TabsComponent(props) {
   const {
     lazy,
@@ -53,59 +24,55 @@ function TabsComponent(props) {
   const children = React.Children.map(props.children, (child) => {
     if (isValidElement(child) && isTabItem(child)) {
       return child;
-    } // child.type.name will give non-sensical values in prod because of
+    }
+    // child.type.name will give non-sensical values in prod because of
     // minification, but we assume it won't throw in prod.
-
     throw new Error(
       `Docusaurus error: Bad <Tabs> child <${
         // @ts-expect-error: guarding against unexpected cases
-        typeof child.type === "string" ? child.type : child.type.name
-      }>: all children of the <Tabs> component should be <TabItem>, and every <TabItem> should have a unique "value" prop.`
+        typeof child.type === 'string' ? child.type : child.type.name
+      }>: all children of the <Tabs> component should be <TabItem>, and every <TabItem> should have a unique "value" prop.`,
     );
   });
   const values =
-    valuesProp ?? // Only pick keys that we recognize. MDX would inject some keys by default
+    valuesProp ??
+    // Only pick keys that we recognize. MDX would inject some keys by default
     children.map(({props: {value, label, attributes}}) => ({
       value,
       label,
       attributes,
     }));
   const dup = duplicates(values, (a, b) => a.value === b.value);
-
   if (dup.length > 0) {
     throw new Error(
       `Docusaurus error: Duplicate values "${dup
         .map((a) => a.value)
-        .join(", ")}" found in <Tabs>. Every value needs to be unique.`
+        .join(', ')}" found in <Tabs>. Every value needs to be unique.`,
     );
-  } // When defaultValueProp is null, don't show a default tab
-
+  }
+  // When defaultValueProp is null, don't show a default tab
   const defaultValue =
     defaultValueProp === null
       ? defaultValueProp
       : defaultValueProp ??
         children.find((child) => child.props.default)?.props.value ??
-        children[0]?.props.value;
-
+        children[0].props.value;
   if (defaultValue !== null && !values.some((a) => a.value === defaultValue)) {
     throw new Error(
       `Docusaurus error: The <Tabs> has a defaultValue "${defaultValue}" but none of its children has the corresponding value. Available values are: ${values
         .map((a) => a.value)
         .join(
-          ", "
-        )}. If you intend to show no default tab, use defaultValue={null} instead.`
+          ', ',
+        )}. If you intend to show no default tab, use defaultValue={null} instead.`,
     );
   }
-
   const {tabGroupChoices, setTabGroupChoices} = useTabGroupChoice();
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const tabRefs = [];
   const {blockElementScrollPositionUntilNextRender} =
     useScrollPositionBlocker();
-
   if (groupId != null) {
     const relevantTabGroupChoice = tabGroupChoices[groupId];
-
     if (
       relevantTabGroupChoice != null &&
       relevantTabGroupChoice !== selectedValue &&
@@ -114,62 +81,48 @@ function TabsComponent(props) {
       setSelectedValue(relevantTabGroupChoice);
     }
   }
-
   const handleTabChange = (event) => {
     const newTab = event.currentTarget;
     const newTabIndex = tabRefs.indexOf(newTab);
     const newTabValue = values[newTabIndex].value;
-
-    // Temporal addition
-    updateTemporalLang(newTabValue);
-    // End Temporal addition
-
     if (newTabValue !== selectedValue) {
       blockElementScrollPositionUntilNextRender(newTab);
       setSelectedValue(newTabValue);
-
       if (groupId != null) {
-        setTabGroupChoices(groupId, newTabValue);
+        setTabGroupChoices(groupId, String(newTabValue));
       }
     }
   };
-
   const handleKeydown = (event) => {
     let focusElement = null;
-
     switch (event.key) {
-      case "ArrowRight": {
+      case 'ArrowRight': {
         const nextTab = tabRefs.indexOf(event.currentTarget) + 1;
-        focusElement = tabRefs[nextTab] || tabRefs[0];
+        focusElement = tabRefs[nextTab] ?? tabRefs[0];
         break;
       }
-
-      case "ArrowLeft": {
+      case 'ArrowLeft': {
         const prevTab = tabRefs.indexOf(event.currentTarget) - 1;
-        focusElement = tabRefs[prevTab] || tabRefs[tabRefs.length - 1];
+        focusElement = tabRefs[prevTab] ?? tabRefs[tabRefs.length - 1];
         break;
       }
-
       default:
         break;
     }
-
     focusElement?.focus();
   };
-
   return (
-    <div className={clsx("tabs-container", styles.tabList)}>
+    <div className={clsx('tabs-container', styles.tabList)}>
       <ul
         role="tablist"
         aria-orientation="horizontal"
         className={clsx(
-          "tabs",
+          'tabs',
           {
-            "tabs--block": block,
+            'tabs--block': block,
           },
-          className
-        )}
-      >
+          className,
+        )}>
         {values.map(({value, label, attributes}) => (
           <li
             role="tab"
@@ -182,14 +135,13 @@ function TabsComponent(props) {
             onClick={handleTabChange}
             {...attributes}
             className={clsx(
-              "tabs__item",
+              'tabs__item',
               styles.tabItem,
               attributes?.className,
               {
-                "tabs__item--active": selectedValue === value,
-              }
-            )}
-          >
+                'tabs__item--active': selectedValue === value,
+              },
+            )}>
             {label ?? value}
           </li>
         ))}
@@ -198,11 +150,9 @@ function TabsComponent(props) {
       {lazy ? (
         cloneElement(
           children.filter(
-            (tabItem) => tabItem.props.value === selectedValue
+            (tabItem) => tabItem.props.value === selectedValue,
           )[0],
-          {
-            className: "margin-top--md",
-          }
+          {className: 'margin-top--md'},
         )
       ) : (
         <div className="margin-top--md">
@@ -210,18 +160,18 @@ function TabsComponent(props) {
             cloneElement(tabItem, {
               key: i,
               hidden: tabItem.props.value !== selectedValue,
-            })
+            }),
           )}
         </div>
       )}
     </div>
   );
 }
-
 export default function Tabs(props) {
   const isBrowser = useIsBrowser();
   return (
-    <TabsComponent // Remount tabs after hydration
+    <TabsComponent
+      // Remount tabs after hydration
       // Temporary fix for https://github.com/facebook/docusaurus/issues/5653
       key={String(isBrowser)}
       {...props}
