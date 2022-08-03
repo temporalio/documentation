@@ -1,26 +1,26 @@
-import React, {useState, cloneElement, isValidElement} from 'react';
-import clsx from 'clsx';
-import useIsBrowser from '@docusaurus/useIsBrowser';
-import {duplicates} from '@docusaurus/theme-common';
+import React, {useState, cloneElement, isValidElement} from "react";
+import clsx from "clsx";
+import useIsBrowser from "@docusaurus/useIsBrowser";
+import {duplicates} from "@docusaurus/theme-common";
 import {
   useScrollPositionBlocker,
   useTabGroupChoice,
-} from '@docusaurus/theme-common/internal';
-import styles from './styles.module.css'; // A very rough duck type, but good enough to guard against mistakes while
+} from "@docusaurus/theme-common/internal";
+import styles from "./styles.module.css"; // A very rough duck type, but good enough to guard against mistakes while
 // allowing customization
 
 // Temporal additions
 const allowedLanguages = new Set([
-  'js',
-  'ts',
-  'go',
-  'java',
-  'php',
-  'typescript',
-  'python',
-  'dotnet',
-  'ruby',
-  'rust',
+  "js",
+  "ts",
+  "go",
+  "java",
+  "php",
+  "typescript",
+  "python",
+  "dotnet",
+  "ruby",
+  "rust",
 ]);
 
 function updateTemporalLang(val) {
@@ -28,7 +28,7 @@ function updateTemporalLang(val) {
     return;
   }
   const url = window.location.href;
-  const parts = url.split('#');
+  const parts = url.split("#");
   if (parts.length > 1) {
     history.replaceState({}, "", `?lang=${val}#${parts.pop()}`);
   } else {
