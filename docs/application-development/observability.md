@@ -475,7 +475,7 @@ class SayHelloWorkflow:
 The following is an example output:
 
 ```
-INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
+INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-custom-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
 ```
 
 :::note
@@ -623,7 +623,16 @@ The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.client#start_workflow) method.
+
+```python
+handle = await client.start_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    search_attributes={"Your-Custom-Keyword-Field": ["value"]},
+)
+```
 
 </TabItem>
 </Tabs>
@@ -693,7 +702,13 @@ Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://ty
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function and set it to an empty list.
+
+The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
+
+```python
+workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": ["new-value"]})
+```
 
 </TabItem>
 </Tabs>
@@ -742,7 +757,11 @@ async function myWorkflow() {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
+
+```python
+workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": []})
+```
 
 </TabItem>
 </Tabs>

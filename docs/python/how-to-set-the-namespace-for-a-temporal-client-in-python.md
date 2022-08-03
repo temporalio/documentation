@@ -11,11 +11,10 @@ tags:
 To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
 
 ```python
-async def main():
-    client = await Client.connect("localhost:7233", namespace="your-custom-namespace")
+await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
 ```
 
-`Client` may be directly instantiated with a service of another. For example, if you need to create another Client to use an additional Namespace.
+`Client` can be directly instantiated with a service of another, such as when you need to create another Client to use an additional Namespace.
 
 Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
 
