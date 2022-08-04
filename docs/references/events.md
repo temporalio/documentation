@@ -17,7 +17,7 @@ It indicates that the Cluster received a request to spawn the Workflow Execution
 
 | Field                                                                        | Description                                                                                                                                              |
 | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| workflow_type                         | The [Name](/concepts/what-is-a-workflow-type) of [Workflow](/concepts/what-is-a-workflow) that was initiated.                                                                            |
+| workflow_type                                                                | The [Name](/concepts/what-is-a-workflow-type) of [Workflow](/concepts/what-is-a-workflow) that was initiated.                                            |
 | parent_workflow_namespace                                                    | The [Namespace](/concepts/what-is-a-namespace) of the Parent [Workflow Execution](/concepts/what-is-a-workflow-execution), if applicable.                |
 | parent_workflow_execution                                                    | Identifies the parent Workflow and the execution run.                                                                                                    |
 | parent_initiated_event_id                                                    | Id of the [StartWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                                      |
