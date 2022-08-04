@@ -190,6 +190,11 @@
               "path": "php/how-to-send-a-signal-with-start-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-send-a-signal-with-start-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-send-a-signal-with-start-in-typescript"
@@ -809,6 +814,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-continue-as-new-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-continue-as-new-in-python"
             },
             {
               "lang": "typescript",

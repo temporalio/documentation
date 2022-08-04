@@ -152,6 +152,11 @@
           "path": "app-dev-context/creating-temporal-clients"
         },
         {
+          "header": "Connect to a Client",
+          "type": "context",
+          "path": "app-dev-context/connect-to-a-cluster"
+        },
+        {
           "header": "none",
           "type": "lang-tabs",
           "langs": [
@@ -215,6 +220,42 @@
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript"
+            }
+          ]
+        },
+        {
+          "header": "Set mTLS configuration",
+          "type": "context",
+          "path": "app-dev-context/set-mtls-config"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-set-mtls-configuration-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-set-mtls-configuration-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-mtls-configuration-in-python"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-set-mtls-configuration-in-typescript"
             }
           ]
         }
