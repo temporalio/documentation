@@ -12,7 +12,8 @@ All possible Events that could appear in a Workflow Execution [Event History](/c
 
 ### WorkflowExecutionStarted
 
-This is always the first [Event](/concepts/what-is-an-event) in a Workflow Execution History. It indicates that the execution was invoked.
+This is always the first [Event](/concepts/what-is-an-event) in a Workflow Execution Event History.
+It indicates that the Cluster received a request to spawn the Workflow Execution.
 
 | Field                                                                        | Description                                                                                                                                              |
 | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
