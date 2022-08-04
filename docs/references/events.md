@@ -51,7 +51,7 @@ This indicates that the [Workflow Execution](/concepts/what-is-a-workflow-execut
 | -------------------------------- | ----------------------------------------------------------------------------------------------- |
 | result                           | Serialized result of completed [Workflow](/concepts/what-is-a-workflow).                        |
 | workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
-| new_execution_run_id             | The [Run Id](/concepts/what-is-a-run-id) of the new Workflow started by Cron.                   |
+| new_execution_run_id             | The [Run Id](/concepts/what-is-a-run-id) of the new Workflow Execution started as a result of a [Cron Schedule](/concepts/what-is-a-temporal-cron-job).                   |
 
 ### WorkflowExecutionFailed
 
