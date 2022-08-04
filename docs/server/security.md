@@ -21,10 +21,10 @@ The https://github.com/temporalio/samples-server repo offers two examples, which
 
 ## Encryption in transit with mTLS
 
-Temporal supports Mutual TLS (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a cluster.
+Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a Cluster.
 Self-signed or properly minted certificates can be used for mTLS.
-Mutual TLS is set in Temporal's [TLS configuration](/references/configuration/#tls).
-The configuration includes two sections such that intra-cluster and external traffic can be encrypted with different sets of certificates and settings:
+mTLS is set in Temporal's [TLS configuration](/references/configuration/#tls).
+The configuration includes two sections such that intra-Cluster and external traffic can be encrypted with different sets of certificates and settings:
 
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
@@ -58,7 +58,7 @@ There are a few authentication protocols available to prevent unwanted access su
 ### Servers
 
 To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) you can specify the `serverName` in the `client` section of your respective mTLS configuration.
-This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting client has the given server name in its CN property.
+This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the given server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
 More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/master/tls) and you can reach out to us for further guidance.
@@ -121,7 +121,7 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 
 ### `ClaimMapper` plugin interface
 
-`ClaimMapper` has a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mutual TLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
+`ClaimMapper` has a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mTLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
 This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/server/options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
@@ -134,7 +134,7 @@ See the [default JWT `ClaimMapper`](#default-jwt-claimmapper) as an example.
 #### `AuthInfo`
 
 The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contains an authorization token extracted from the `authorization` header of the gRPC request.
-It also includes a pointer to the `pkix.Name` struct that contains a X.509 distinguishable name from the caller's mutual TLS certificate.
+It also includes a pointer to the `pkix.Name` struct that contains a X.509 distinguishable name from the caller's mTLS certificate.
 
 <!--SNIPSTART temporal-common-authorization-authinfo-->
 <!--SNIPEND-->
@@ -178,7 +178,7 @@ To obtain public keys from issuers of JWT tokens and to refresh them over time, 
 <!--SNIPSTART temporal-common-authorization-tokenkeyprovider-interface-->
 <!--SNIPEND-->
 
-Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWKS format](https://tools.ietf.org/html/rfc7517).
+Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWK format](https://tools.ietf.org/html/rfc7517).
 
 ```go
 provider := authorization.NewRSAKeyProvider(cfg)
@@ -189,7 +189,7 @@ Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only impleme
 <!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
 <!--SNIPEND-->
 
-`KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
+`KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWK format](https://tools.ietf.org/html/rfc7517).
 `RefreshInterval` defines how frequently keys should be refreshed.
 For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
 
