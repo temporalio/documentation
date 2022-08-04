@@ -19,6 +19,8 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
+If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+
 :::
 
 This section covers the many features that are available to use in your [Temporal Application](/temporal#temporal-application).
@@ -679,7 +681,20 @@ await client.signalWithStart(myWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
+
+```python
+async def main():
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
+
+    handle = await client.start_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        start_signal="your-signal-name",
+    )
+```
 
 </TabItem>
 </Tabs>
@@ -2067,30 +2082,17 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 ## Activity Heartbeats
 
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-Each Heartbeat informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+An [Activity Heartbeat](/activities#activity-heartbeats) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters#).
+Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
-The throttle interval is the smaller of:
+Heartbeats may not always be sent to the Cluster—they may be [throttled](/concepts/what-is-an-activity-heartbeat#throttling) by the Worker.
 
-- `if heartbeatTimeout is provided, heartbeatTimeout * 0.8; else defaultHeartbeatThrottleInterval`
-- `maxHeartbeatThrottleInterval`
+Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
-`defaultHeartbeatThrottleInterval` is 30 seconds by default, and `maxHeartbeatThrottleInterval` is 60 seconds by default.
-Each can be set in Worker options.
-
-Throttling is implemented as follows:
-
-- After sending a Heartbeat, the Worker sets a timer for the throttle interval.
-- The Worker stops sending Heartbeats, but continues receiving Heartbeats from the Activity and remembers the most recent one.
-- When the timer fires, the Worker:
-  - Sends the most recent Heartbeat.
-  - Sets the timer again.
-
-Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation. Heartbeat throttling may lead to Cancellation getting delivered later than expected.
-
-Heartbeats may contain a `details` field describing the Activity's current progress. If an Activity gets retried, the Activity can access the `details` from the last heartbeat that was sent to the Cluster.
+Heartbeats can contain a `details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Cluster.
 
 <Tabs
 defaultValue="go"
@@ -2099,22 +2101,23 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To [Heartbeat](/activities#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
+To [Heartbeat](/activities#activity-heartbeats) in an Activity in Go, use the `RecordHeartbeat` API.
 
 ```go
-progress := 0
-for progress < 100 {
-    // Send heartbeat message to the server.
-    activity.RecordHeartbeat(ctx, progress)
-    // Do some work.
-    ...
-    progress++
+import (
+    // ...
+    "go.temporal.io/sdk/workflow"
+    // ...
+)
+
+func YourActivityDefinition(ctx, YourActivityDefinitionParam) (YourActivityDefinitionResult, error) {
+    // ...
+    activity.RecordHeartbeat(ctx, details)
+    // ...
 }
 ```
 
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
-above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
-with `TimeoutType` set to `Heartbeat`.
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the `details` variable above is returned to the calling Workflow in the `details` field of `TimeoutError` with `TimeoutType` set to `Heartbeat`.
 
 You can also Heartbeat an Activity from an external source:
 
@@ -2156,37 +2159,28 @@ func SampleActivity(ctx context.Context, inputArg InputParams) error {
 </TabItem>
 <TabItem value="java">
 
-To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
+To Heartbeat an Activity Execution in Java, use the `Activity.getExecutionContext().heartbeat()` Class method.
 
-The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
-If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
+```java
+public class YourActivityDefinitionImpl implements YourActivityDefinition {
+
+  @Override
+  public String yourActivityMethod(YourActivityMethodParam param) {
+    // ...
+    Activity.getExecutionContext().heartbeat(details);
+    // ...
+  }
+  // ...
+}
+```
+
+The method takes an optional argument, the `details` variable above that represents latest progress of the Activity Execution.
+This method can take a variety of types such as an exception object, custom object, or string.
+
+If the Activity Execution times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
 The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
 
 In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
-
-The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
-
-```java
-public class FileProcessingActivitiesImpl implements FileProcessingActivities {
-
-  @Override
-  public String download(String bucketName, String remoteName, String localName) {
-    InputStream inputStream = openInputStream(file);
-    try {
-      byte[] bytes = new byte[MAX_BUFFER_SIZE];
-      while ((read = inputStream.read(bytes)) != -1) {
-        totalRead += read;
-        f.write(bytes, 0, read);
-        // Let the Temporal Server know about the download progress.
-        Activity.getExecutionContext().heartbeat(totalRead);
-      }
-    } finally {
-      inputStream.close();
-    }
-  }
-  ...
-}
-```
 
 </TabItem>
 <TabItem value="php">
@@ -2280,15 +2274,16 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 </TabItem>
 <TabItem value="python">
 
-In order for an Activity to be notified of cancellation requests, you must invoke [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat).
+To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
 
 ```python
-    @activity.defn
-    async def some_activity() -> str:
-        activity.heartbeat("heartbeat details!")
+@activity.defn
+async def your_activity_definition() -> str:
+    activity.heartbeat("heartbeat details!")
 ```
 
-In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity Retry. If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` will return an iterable containing `123` and `456` on the next run.
+In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
+If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
 
 </TabItem>
 </Tabs>
@@ -3003,7 +2998,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+
+```python
+workflow.continue_as_new("your-workflow-name")
+```
 
 </TabItem>
 </Tabs>

@@ -462,11 +462,11 @@ module.exports = {
       label: "Feedback",
       href: "https://github.com/temporalio/documentation/issues",
     },
-    {
-      type: "link",
-      label: "Docs survey",
-      href: "https://docs.google.com/forms/d/16iIw8p8LSMJDA2a8_3y1pdnFDP5fVg2FLAc6jm__PVc/viewform?edit_requested=true",
-    },
+    //    {
+    //      type: "link",
+    //      label: "Docs survey",
+    //      href: "https://docs.google.com/forms/d/16iIw8p8LSMJDA2a8_3y1pdnFDP5fVg2FLAc6jm__PVc/viewform?edit_requested=true",
+    //    },
   ],
   sidebarConcepts: [
     {
