@@ -20,6 +20,6 @@ async def main():
         "some arg",
         id="your-workflow-id",
         task_queue="your-task-queue",
-        start_signal="your-signal-name"
+        start_signal="your-signal-name",
     )
 ```

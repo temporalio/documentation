@@ -1,4 +1,4 @@
-When connecting to the Temporal Cloud with TLS, you must provide the following configuration details:
+When connecting to the Temporal Cloud with mTLS, you must provide the following configuration details:
 
 - Client certificate for mTLS
 - Client private key for mTLS
@@ -10,4 +10,4 @@ Keys and their configuration files are valid for 365 days from creation.
 
 For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-For more information about TLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
+For more information about mTLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
