@@ -18,7 +18,7 @@ It indicates that the Cluster received a request to spawn the Workflow Execution
 | Field                                                                        | Description                                                                                                                                              |
 | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [workflow_type](/concepts/what-is-a-workflow-type)                           | The name/type of [Workflow](/concepts/what-is-a-workflow) that was initiated.                                                                            |
-| parent_workflow_namespace                                                    | The [Namespace](/concepts/what-is-a-namespace) of the Parent [Workflow Execution](/concepts/what-is-a-workflow-execution), if applicable.                                                                    |
+| parent_workflow_namespace                                                    | The [Namespace](/concepts/what-is-a-namespace) of the Parent [Workflow Execution](/concepts/what-is-a-workflow-execution), if applicable.                |
 | parent_workflow_execution                                                    | Identifies the parent Workflow and the execution run.                                                                                                    |
 | parent_initiated_event_id                                                    | Id of the [StartWorkflowExecutionInitiated](#startchildworkflowexecutioninitiated) Event this Event corresponds to.                                      |
 | task_queue                                                                   | The [Task Queue](/concepts/what-is-a-task-queue) that this [Workflow Task](/concepts/what-is-a-workflow-task) was enqueued in.                           |
@@ -32,10 +32,10 @@ It indicates that the Cluster received a request to spawn the Workflow Execution
 | last_completion_result                                                       | Information from the previously completed [Task](/concepts/what-is-a-task), if applicable.                                                               |
 | original_execution_run_id                                                    | The [Run Id](/concepts/what-is-a-run-id) of the original Workflow started.                                                                               |
 | identity                                                                     | Id of the [Worker](/concepts/what-is-a-worker) that requested the start of this Workflow.                                                                |
-| first_execution_run_id                                                       | The first [Run Id](/concepts/what-is-a-run-id), along the chain of [Continue-As-New](/concepts/what-is-continue-as-new) Runs and Reset.                                                       |
+| first_execution_run_id                                                       | The first [Run Id](/concepts/what-is-a-run-id), along the chain of [Continue-As-New](/concepts/what-is-continue-as-new) Runs and Reset.                  |
 | [retry_policy](/concepts/what-is-a-retry-policy)                             | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.            |
 | attempt                                                                      | The number of attempts that have been made to complete this Task.                                                                                        |
-| workflow_execution_expiration_time                                           | The absolute time at which the Workflow Execution will [time out](/concepts/what-is-a-workflow-execution-timeout).                                             |
+| workflow_execution_expiration_time                                           | The absolute time at which the Workflow Execution will [time out](/concepts/what-is-a-workflow-execution-timeout).                                       |
 | cron_schedule                                                                | Displays the Workflow's [Cron Schedule](/concepts/what-is-a-temporal-cron-job), if applicable.                                                           |
 | first_workflow_task_backoff                                                  | Contains the amount of time between when this iteration of the Workflow was scheduled, and when it should run next. Applies to Cron Scheduling.          |
 | memo                                                                         | Non-indexed information to show in the Workflow.                                                                                                         |
@@ -47,11 +47,11 @@ It indicates that the Cluster received a request to spawn the Workflow Execution
 
 This indicates that the [Workflow Execution](/concepts/what-is-a-workflow-execution) has successfully completed. The [Event](/concepts/what-is-an-event) contains Workflow Execution results.
 
-| Field                            | Description                                                                                     |
-| -------------------------------- | ----------------------------------------------------------------------------------------------- |
-| result                           | Serialized result of completed [Workflow](/concepts/what-is-a-workflow).                        |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with. |
-| new_execution_run_id             | The [Run Id](/concepts/what-is-a-run-id) of the new Workflow Execution started as a result of a [Cron Schedule](/concepts/what-is-a-temporal-cron-job).                   |
+| Field                            | Description                                                                                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| result                           | Serialized result of completed [Workflow](/concepts/what-is-a-workflow).                                                                                |
+| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.                                                         |
+| new_execution_run_id             | The [Run Id](/concepts/what-is-a-run-id) of the new Workflow Execution started as a result of a [Cron Schedule](/concepts/what-is-a-temporal-cron-job). |
 
 ### WorkflowExecutionFailed
 
