@@ -319,7 +319,7 @@ To create a Local Activity you should use `#[LocalActivityInterface]` (instead o
 ```php
 use Temporal\Activity\LocalActivityInterface;
 
-#[ActivityInterface]
+#[LocalActivityInterface]
 interface GreetingActivityInterface
 {
     #[ActivityMethod("greet")]
