@@ -233,6 +233,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-typescript"
@@ -262,6 +267,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-python"
             },
             {
               "lang": "typescript",
@@ -295,6 +305,11 @@
               "path": "php/how-to-remove-search-attributes-from-a-workflow-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-remove-search-attributes-from-a-workflow-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-remove-search-attributes-from-a-workflow-in-typescript"
@@ -311,7 +326,6 @@
           "type": "how-to",
           "path": "app-dev-context/replays"
         },
-
         {
           "header": "none",
           "type": "lang-tabs",
