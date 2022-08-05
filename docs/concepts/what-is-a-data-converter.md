@@ -51,7 +51,7 @@ The default converter also supports decoding binary Protobufs.
 
 Applications can create their own custom Data Converters to alter the format (for example using [MessagePack](https://msgpack.org/) instead of JSON) or add compression or encryption.
 
-To use a custom Data Converter, provide it to:
+To use a custom Data Converter, provide it in the following contexts:
 
 - The Client and Worker in the SDKs you use.
 - Temporal Web via [`tctl data-converter web`](/tctl/dataconverter/web) (for displaying decoded data in the Web UI).
@@ -60,7 +60,7 @@ To use a custom Data Converter, provide it to:
 Custom Data Converters are not applied to all data:
 
 - `searchAttributes` are always encoded with JSON.
-- Headers are not encoded by the SDK (the one exception will be—once implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
+- Headers are not encoded by the SDK (the one exception will be—when implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
 
 ### Payload Codecs
 
@@ -84,13 +84,13 @@ In codec implementations, we recommended running the function (whether it be com
 
 ### Encryption
 
-Doing encryption in a custom Data Converter ensures that all application data is encrypted while:
+Doing encryption in a custom Data Converter ensures that all application data is encrypted during the following actions:
 
 - Being sent to/from Temporal Server.
 - Moving inside Temporal Server.
 - Stored by Temporal Server.
 
-Then data only exists unencrypted in memory on the Client and in the Worker Process that is executing Workflows and Activities on hosts that the application developer controls.
+Then data exists unencrypted in memory only on the Client and in the Worker Process that is executing Workflows and Activities on hosts that the application developer controls.
 
 Our encryption samples use AES GCM with 256-bit keys:
 
