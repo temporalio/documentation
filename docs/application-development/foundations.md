@@ -23,7 +23,7 @@ If you can't find what you are looking for in the Application development guide,
 
 :::
 
-In this section you will find the following:
+In this section you can find the following:
 
 - [How to run a dev Cluster](#run-a-dev-cluster)
 - [How to add your SDK](#add-your-sdk)
