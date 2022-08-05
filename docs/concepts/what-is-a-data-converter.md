@@ -19,12 +19,12 @@ Data is encoded before it is sent to a Temporal Server, and it is decoded when i
 The main pieces of data that run through the Data Converter are arguments and return values:
 
 - The Client:
-  - Encodes Workflow, Signal, and Query arguments
-  - Decodes Workflow and Query return values
+  - Encodes Workflow, Signal, and Query arguments.
+  - Decodes Workflow and Query return values.
 - The Worker:
-  - Decodes Workflow, Signal, and Query arguments
-  - Encodes Workflow and Query return values
-  - Decodes and encodes Activity arguments and return values
+  - Decodes Workflow, Signal, and Query arguments.
+  - Encodes Workflow and Query return values.
+  - Decodes and encodes Activity arguments and return values.
 
 Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) Protobuf message, which consists of binary `data` and key-value `metadata`.
 
@@ -53,21 +53,21 @@ Applications can create their own custom Data Converters to alter the format (fo
 
 To use a custom Data Converter, provide it to:
 
-- The Client and Worker in the SDKs you use
-- Temporal Web via [`tctl data-converter web`](/tctl/dataconverter/web) (for displaying decoded data in the Web UI)
-- `tctl` via [`--data-converter-plugin`](/tctl/#--data-converter-plugin) (for displaying decoded headers in `tctl` output)
+- The Client and Worker in the SDKs you use.
+- Temporal Web via [`tctl data-converter web`](/tctl/dataconverter/web) (for displaying decoded data in the Web UI).
+- `tctl` via [`--data-converter-plugin`](/tctl/#--data-converter-plugin) (for displaying decoded headers in `tctl` output).
 
 Custom Data Converters are not applied to all data:
 
-- `searchAttributes` are always encoded with JSON
-- Headers are not encoded by the SDK (the one exception will be—once implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514))
+- `searchAttributes` are always encoded with JSON.
+- Headers are not encoded by the SDK (the one exception will be—once implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
 
 ### Payload Codecs
 
 In [TypeScript](/typescript/data-converters#custom-data-converter) and [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), data conversion happens in two stages:
 
-- First, a Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49)
-- Then, a Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads
+1. A Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49).
+2. A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.
 
 The Payload Codec is an optional step that happens between the wire and the Payload Converter:
 
@@ -86,9 +86,9 @@ In codec implementations, we recommended running the function (whether it be com
 
 Doing encryption in a custom Data Converter ensures that all application data is encrypted while:
 
-- Being sent to/from Temporal Server
-- Moving inside Temporal Server
-- Stored by Temporal Server
+- Being sent to/from Temporal Server.
+- Moving inside Temporal Server.
+- Stored by Temporal Server.
 
 Then data only exists unencrypted in memory on the Client and in the Worker Process that is executing Workflows and Activities on hosts that the application developer controls.
 
