@@ -460,7 +460,12 @@ function Explained() {
           </p>
           <p>
             Go to{" "}
-            <a className="aside-link" href={"https://docs.temporal.io/cloud/how-to-get-started-with-temporal-cloud"}>
+            <a
+              className="aside-link"
+              href={
+                "https://docs.temporal.io/cloud/how-to-get-started-with-temporal-cloud"
+              }
+            >
               How to get started with Temporal Cloud
             </a>
             .
