@@ -539,6 +539,7 @@ function Explained() {
           Temporal Cloud tools and how-to guides.
         </p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(cloudInfo.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <h2 className="h2-landing">Devtools</h2>
