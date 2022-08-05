@@ -449,6 +449,25 @@ function Explained() {
       <p className="main-subhead">
         Temporal Platform explanation and usage information.
       </p>
+      <div className="aside flex">
+        <div className="aside-svg">
+          <InfoSVG />
+        </div>
+        <div className="p-landing">
+          <h3 className="mb-1 aside-head">Temporal Cloud</h3>
+          <p className="mb-0">
+            Onboarding documentation for Temporal Cloud is now available.
+          </p>
+          <p>
+            Go to{" "}
+            <a className="aside-link" href={"https://docs.temporal.io/cloud/how-to-get-started-with-temporal-cloud"}>
+              How to get started with Temporal Cloud
+            </a>{" "}
+              .
+            </a>
+          </p>
+        </div>
+      </div>
       <div className="landing-card-section">
         <h2 className="h2-landing">Core concepts</h2>
         <p className="landing-card-p">

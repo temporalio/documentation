@@ -35,7 +35,6 @@ module.exports = {
       ],
     },
     "cluster-deployment-guide",
-    "server/security",
     {
       type: "category",
       label: "Temporal Cloud",
@@ -46,6 +45,7 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
+        "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
         {
           type: "category",
@@ -138,6 +138,7 @@ module.exports = {
         },
       ],
     },
+    "server/security",
     {
       type: "category",
       label: "tctl",
