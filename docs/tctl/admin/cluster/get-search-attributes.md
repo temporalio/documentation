@@ -1,7 +1,7 @@
 ---
 id: get-search-attributes
-title: tctl admin cluster get-search-attributes
-sidebar_label: get-search-attributes
+title: tctl admin cluster get_search_attributes
+sidebar_label: get_search_attributes
 description: Showing existing search attributes.
 tags:
   - reference
@@ -9,7 +9,9 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster get-search-attributes` command retrieves existing Search Attributes for a given Cluster.
+The `tctl admin cluster get_search_attributes` command retrieves existing Search Attributes for a given Cluster.
+
+Alias: `gsa`
 
 The following modifier will change the behavior of the command:
 
