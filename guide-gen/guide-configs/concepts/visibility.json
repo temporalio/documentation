@@ -5,6 +5,7 @@
   "title": "Visibility",
   "sidebar_label": "Visibility",
   "description": "This guide is meant to be a comprehensive overview of Temporal Visibility.",
+  "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "h2_sections": [

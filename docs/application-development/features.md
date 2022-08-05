@@ -2,7 +2,7 @@
 id: features
 title: Application development features
 sidebar_label: Features
-description: This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+description: The features section of the Temporal Application development guide provides basic implemenation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+The features section of the Temporal Application development guide provides basic implemenation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
 
@@ -23,7 +23,17 @@ If you can't find what you are looking for in the Application development guide,
 
 :::
 
-This section covers the many features that are available to use in your [Temporal Application](/temporal#temporal-application).
+In this section you will find the following:
+
+- [How to develop Signals](#signals)
+- [How to develop Queries](#queries)
+- [How to start a Child Workflow Execution](#child-workflows)
+- [How to start a Temporal Cron Job](#cron-jobs)
+- [How to use Continue-As-New](#continue-as-new)
+- [How to set Workflow timeouts & retries](#workflow-timeouts--retries)
+- [How to set Activity timeouts & retries](#activity-timeouts--retries)
+- [How to Heartbeat an Activity](#activity-heartbeats)
+- [How to Asynchronously complete an Activity](#async-activity-completion)
 
 ## Signals
 

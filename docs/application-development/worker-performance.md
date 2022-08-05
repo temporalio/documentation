@@ -10,8 +10,6 @@ tags:
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-# Temporal Workers Tuning
-
 _Note: All metrics in this article are prepended with the “temporal\_” prefix. The prefix is omitted in this article to make the names more descriptive._
 
 ## Metrics
