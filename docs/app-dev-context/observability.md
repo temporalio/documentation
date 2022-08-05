@@ -1,4 +1,4 @@
-The observability section of the Temporal Application development guide covers the many ways to view the current state of your [Temporal Application](/concepts/what-is-a-temporal-application) – that is, ways to view what [Workflow Executions](/concepts/what-is-a-workflow-execution) are tracked by the [Temporal Platform](/concepts/what-is-the-temporal-platform) and the state of any given Workflow Execution, either currently or at points of an execution.
+The observability section of the Temporal Application development guide covers the many ways to view the current state of your [Temporal Application](/concepts/what-is-a-temporal-application)—that is, ways to view which [Workflow Executions](/concepts/what-is-a-workflow-execution) are tracked by the [Temporal Platform](/concepts/what-is-the-temporal-platform) and the state of any specified Workflow Execution, either currently or at points of an execution.
 
 :::info WORK IN PROGRESS
 
