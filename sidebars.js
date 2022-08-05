@@ -39,7 +39,7 @@ module.exports = {
       type: "category",
       label: "Temporal Cloud",
       collapsible: true,
-      collapsed: true,
+      collapsed: false,
       link: {
         type: "doc",
         id: "cloud/index",
@@ -49,7 +49,7 @@ module.exports = {
         "cloud/how-to-manage-certificates-in-temporal-cloud",
         {
           type: "category",
-          label: "tcld commands",
+          label: "tcld",
           collapsible: true,
           collapsed: true,
           link: {

@@ -349,9 +349,26 @@ const clusterGuide = {
 const cloudInfo = {
   listOne: [
     {
+      book: true,
+      path: "/cloud/how-to-get-started-with-temporal-cloud",
+      name: "Get started",
+    },
+    {
+      book: true,
+      path: "/cloud/how-to-manage-certificates-in-temporal-cloud",
+      name: "Manage certificates",
+    },
+  ],
+  listTwo: [
+    {
       cli: true,
       path: "/cloud/tcld",
       name: "tcld",
+    },
+    {
+      exit: true,
+      path: "/cloud/release-notes",
+      name: "Release notes",
     },
   ],
 };
@@ -449,29 +466,6 @@ function Explained() {
       <p className="main-subhead">
         Temporal Platform explanation and usage information.
       </p>
-      <div className="aside flex">
-        <div className="aside-svg">
-          <InfoSVG />
-        </div>
-        <div className="p-landing">
-          <h3 className="mb-1 aside-head">Temporal Cloud</h3>
-          <p className="mb-0">
-            Onboarding documentation for Temporal Cloud is now available.
-          </p>
-          <p>
-            Go to{" "}
-            <a
-              className="aside-link"
-              href={
-                "https://docs.temporal.io/cloud/how-to-get-started-with-temporal-cloud"
-              }
-            >
-              How to get started with Temporal Cloud
-            </a>
-            .
-          </p>
-        </div>
-      </div>
       <div className="landing-card-section">
         <h2 className="h2-landing">Core concepts</h2>
         <p className="landing-card-p">
@@ -542,7 +536,7 @@ function Explained() {
           <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">
-          Tools and Temporal Cloud service information.
+          Temporal Cloud tools and how-to guides.
         </p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
       </div>
