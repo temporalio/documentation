@@ -155,8 +155,10 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 
 ## Community SDKs
 
-- [Ruby](https://github.com/coinbase/temporal-ruby)
 - [Python](https://github.com/firdaus/temporal-python-sdk)
+- [Ruby](https://github.com/coinbase/temporal-ruby)
+- [Scala](https://github.com/vitaliihonta/zio-temporal)
+
 
 ## Misc
 
