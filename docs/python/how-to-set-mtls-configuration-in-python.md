@@ -24,8 +24,4 @@ await Client.connect(
 )
 ```
 
-<!-- Update link once merged in
-
-[The Hello World mTLS sample]() demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
-
--->
+[The Hello World mTLS sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_mtls.py) demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
