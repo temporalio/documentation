@@ -1,7 +1,7 @@
 ---
 id: remove-search-attributes
-title: tctl admin cluster remove-search-attributes
-sidebar_label: remove-search-attributes
+title: tctl admin cluster remove_search_attributes
+sidebar_label: remove_search_attributes
 description: Removing custom search metadat from a Cluster.
 tags:
   - reference
