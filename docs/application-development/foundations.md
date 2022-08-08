@@ -726,9 +726,6 @@ export function getEnv(): Env {
 }
 ```
 
-If you somehow misconfigure your connection, you get an opaque `[TransportError: transport error]` error.
-Read through your settings carefully, and contact Temporal if you are sure you have checked everything.
-
 If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
 
 The following code example works for local development and for certifications hosted in an Amazon S3 bucket.
