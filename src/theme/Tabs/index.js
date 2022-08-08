@@ -1,11 +1,11 @@
 import React, {useState, cloneElement, isValidElement} from "react";
+import clsx from "clsx";
 import useIsBrowser from "@docusaurus/useIsBrowser";
+import {duplicates} from "@docusaurus/theme-common";
 import {
   useScrollPositionBlocker,
-  duplicates,
   useTabGroupChoice,
-} from "@docusaurus/theme-common";
-import clsx from "clsx";
+} from "@docusaurus/theme-common/internal";
 import styles from "./styles.module.css"; // A very rough duck type, but good enough to guard against mistakes while
 // allowing customization
 
@@ -27,7 +27,13 @@ function updateTemporalLang(val) {
   if (!allowedLanguages.has(val)) {
     return;
   }
-  history.replaceState({}, "", "?lang=" + val);
+  const url = window.location.href;
+  const parts = url.split("#");
+  if (parts.length > 1) {
+    history.replaceState({}, "", `?lang=${val}#${parts.pop()}`);
+  } else {
+    history.replaceState({}, "", `?lang=${val}`);
+  }
 }
 // End Temporal additions
 
