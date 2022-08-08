@@ -13,7 +13,7 @@ It cannot be changed after the Namespace is provisioned.
 
 Each Namespace Name must conform to the DNS naming rules:
 
+- A Namespace Name must contain at least 1 character and no more than 34 characters.
 - A Namespace Name must begin or end with a letter or number and can contain only letters, numbers, and the hyphen (-) character.
-- Each hyphen (-) character must be immediately preceded and followed by a letter or number; consecutive hyphens are not permitted.
+- Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are not permitted.
 - All letters in a Namespace Name must be lowercase.
-- Namespace Names must contain at least 3 characters and no more than 23 characters.

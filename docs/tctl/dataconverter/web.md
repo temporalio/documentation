@@ -10,7 +10,7 @@ tags:
 
 The `tctl dataconverter web` command specifies the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-converter) to use with Temporal Web.
 
-`tctl dataconverter web --web-ui-url <url>`
+`tctl dataconverter web --web_ui_url <url>`
 
 The following modifiers control the behavior of the command.
 
@@ -22,10 +22,10 @@ The default value is 0.
 **Example**
 
 ```bash
-tctl dataconverter web --web-ui-url <url> --port <value>
+tctl dataconverter web --web_ui_url <url> --port <value>
 ```
 
-### `--web-ui-url`
+### `--web_ui_url`
 
 _Required modifier_
 
@@ -34,5 +34,5 @@ Specify the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-
 **Example**
 
 ```bash
-tctl dataconverter web --web-ui-url <url>
+tctl dataconverter web --web_ui_url <url>
 ```
