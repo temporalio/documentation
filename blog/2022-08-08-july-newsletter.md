@@ -16,7 +16,7 @@ This month's newsletter features some exciting news and updates, including:
 *   Our Typescript SDK v1.0.0 is now available! [Read more in this blog post ›](https://docs.temporal.io/blog/typescript-1.0.0)
 *   [Replay](https://temporal.io/replay), Temporal's first-ever developer experience conference, is next month! Join us on August 26 in Seattle for talks from Temporal users at companies like Stripe, Datadog, Snap Inc, and Yum! Brands.
 
-For more information on what we've been working on, just keep reading! And as always, we'd love to hear from you—feel free to share feedback in our [Community Slack group](https://temporal.io/slack), or on Twitter ([@temporalio](https://twitter.com/temporalio)), or simply reply to this message.
+For more information on what we've been working on, just keep reading! And as always, we'd love to hear from you—feel free to share feedback in our [Community Slack group](https://temporal.io/slack) or on Twitter ([@temporalio](https://twitter.com/temporalio)).
 
 <!--truncate-->
 
