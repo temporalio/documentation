@@ -10,7 +10,7 @@ tags:
   - log
 ---
 
-In Workflow Definitions you can use `workflow.GetLogger(ctx)` to write logs.
+In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
 
 ```go
 import (
