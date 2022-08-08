@@ -3,7 +3,7 @@ tags:
   - newsletter
 posted_on_: 2022-08-08T00:00:00Z
 slug: july-newsletter
-title: 'Temporal Community Newsletter: July 2022'
+title: 'Community Newsletter: July 2022'
 author: Charles Zedlewski
 author_title: CPO
 author_image_url: /img/people/charles.jpg
