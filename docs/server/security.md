@@ -58,7 +58,7 @@ There are a few authentication protocols available to prevent unwanted access su
 ### Servers
 
 To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) you can specify the `serverName` in the `client` section of your respective mTLS configuration.
-This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the given server name in its CN property.
+This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the appropriate server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
 More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/master/tls) and you can reach out to us for further guidance.
@@ -121,7 +121,7 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 
 ### `ClaimMapper` plugin interface
 
-`ClaimMapper` has a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mTLS certificate of the caller into [Claims](#claims) about the callers roles within Temporal.
+`ClaimMapper` has a single method, `GetClaims` that is responsible for translating information from the authorization token and/or mTLS certificate of the caller into [Claims](#claims) about the caller's roles within Temporal.
 This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/server/options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
@@ -178,7 +178,7 @@ To obtain public keys from issuers of JWT tokens and to refresh them over time, 
 <!--SNIPSTART temporal-common-authorization-tokenkeyprovider-interface-->
 <!--SNIPEND-->
 
-Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from given issuers' URIs that adhere to the [JWK format](https://tools.ietf.org/html/rfc7517).
+Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from specified issuers' URIs that adhere to the [JWK format](https://tools.ietf.org/html/rfc7517).
 
 ```go
 provider := authorization.NewRSAKeyProvider(cfg)
