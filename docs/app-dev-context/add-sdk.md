@@ -1,9 +1,16 @@
-Add a [Temporal SDK](/concepts/what-is-a-temporal-sdk) to your project.
+---
+id: add-sdk
+title: How to add a Temporal SDK to your project
+description: A Temporal SDK provides a framework for Temporal application development.
+sidebar_label: Add SDK
+tags:
+  - guide-context
+---
 
-The Temporal SDK provides a framework for Temporal application development.
+A [Temporal SDK](/concepts/what-is-a-temporal-sdk) provides a framework for [Temporal Application](/concepts/what-is-a-temporal-application) development.
 
-The SDK contains the following tools:
+An SDK provides you with the following:
 
-- A Temporal Client to communicate with a Temporal Cluster.
-- APIs to use within your Workflows.
-- APIs to create and manage Worker Entities and Worker Processes.
+- A [Temporal Client](/concepts/what-is-a-temporal-client) to communicate with a [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
+- APIs to use within your [Workflows](/concepts/what-is-a-workflow).
+- APIs to create and manage [Worker Processes](/concepts/what-is-a-worker).

@@ -1,6 +1,6 @@
 ---
 id: activity-heartbeats
-title: Activity Heartbeats conceptual context
+title: How to Heartbeat an Activity
 sidebar_label: Activity Heartbeats
 description: An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 tags:
