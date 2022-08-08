@@ -211,7 +211,7 @@ Set to enable logging in Workflow Execution replays.
 - type: `bool`
 - Default: `false`
 
-In Workflow Definitions you can use `workflow.GetLogger(ctx)` to write logs.
+In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
 By default, the logger will skip logging during replays, so you do not see duplicate logs.
 
 This is only really useful for debugging purpose.
