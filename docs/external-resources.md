@@ -159,7 +159,6 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Ruby](https://github.com/coinbase/temporal-ruby)
 - [Scala](https://github.com/vitaliihonta/zio-temporal)
 
-
 ## Misc
 
 _Everything that doesn't fit above goes here._
