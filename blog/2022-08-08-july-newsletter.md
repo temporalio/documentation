@@ -1,6 +1,5 @@
 ---
 tags:
-  - temporal
   - newsletter
 posted_on_: 2022-08-08T00:00:00Z
 slug: july-newsletter
