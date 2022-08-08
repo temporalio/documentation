@@ -16,7 +16,7 @@ Alias: `shar`
 #### tctl admin shard commands
 
 - [`describe`](/tctl/admin/shard/describe)
-- [`describe-task`](/tctl/admin/shard/describe_task)
-- [`list-tasks`](/tctl/admin/shard/list_tasks)
-- [`close-shard`](/tctl/admin/shard/close_shard)
-- [`remove-task`](/tctl/admin/shard/remove_task)
+- [`describe_task`](/tctl/admin/shard/describe_task)
+- [`list_tasks`](/tctl/admin/shard/list_tasks)
+- [`close_shard`](/tctl/admin/shard/close_shard)
+- [`remove_task`](/tctl/admin/shard/remove_task)

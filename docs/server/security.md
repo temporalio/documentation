@@ -33,7 +33,7 @@ A customized configuration can be passed using either the [WithConfig](/server/o
 
 See [TLS configuration reference](/references/configuration/#tls) for more details.
 
-## Encryption at rest with DataConverter
+## Encryption at rest with Data Converter
 
 import DataConverter from '../concepts/what-is-a-data-converter.md'
 
