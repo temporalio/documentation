@@ -146,7 +146,7 @@ interface JoinInput {
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+export const joinSignal = defineSignal<[JoinInput]>("join");
 ```
 
 </TabItem>
@@ -439,7 +439,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+
+```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {joinSignal} from "./workflows";
+
+const client = new WorkflowClient();
+
+const handle = client.getHandle("workflow-id-123");
+
+await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+```
 
 </TabItem>
 <TabItem value="python">
