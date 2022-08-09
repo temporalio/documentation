@@ -12,7 +12,7 @@ tags:
 ```typescript
 import { upsertSearchAttributes } from '@temporalio/workflow';
 
-async function myWorkflow() {
+async function YourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
 
   // ... later, to remove:

@@ -194,7 +194,7 @@ Both TypeScript and JavaScript can be used with the TypeScript SDK.
 **Create a new project**
 
 ```bash
-npx @temporalio/create@latest ./my-app
+npx @temporalio/create@latest ./your-app
 ```
 
 **Add to an existing project**
@@ -1005,7 +1005,7 @@ import { example } from './workflows';
 ...
 await client.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
-  taskQueue: 'my-queue',
+  taskQueue: 'your-queue',
   workflowId: 'business-meaningful-id',
 });
 ```
@@ -1183,7 +1183,7 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := workflow.RegisterOptions{
-  Name: "CoolWorkflowTypeName",
+  Name: "YourWorkflowName",
   // ...
 }
 w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
@@ -1840,7 +1840,7 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
-  Name: "CoolActivityTypeName",
+  Name: "YourActivityName",
   // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
@@ -2296,8 +2296,8 @@ The type of the result parameter must match the type of the return value declare
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
- var yourActivityResult YourActivityResult
- if err := future.Get(ctx, &yourActivityResult); err != nil {
+ var YourActivityResult YourActivityResult
+ if err := future.Get(ctx, &YourActivityResult); err != nil {
    // ...
  }
  // ...
@@ -2312,8 +2312,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
  // ...
  if(future.IsReady()) {
-   var yourActivityResult YourActivityResult
-   if err := future.Get(ctx, &yourActivityResult); err != nil {
+   var YourActivityResult YourActivityResult
+   if err := future.Get(ctx, &YourActivityResult); err != nil {
      // ...
    }
  }
@@ -2611,7 +2611,7 @@ $factory->run();
 You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
 
 ```php
-$worker = $factory->newWorker('my-task-queue');
+$worker = $factory->newWorker('your-task-queue');
 ```
 
 As mentioned above you can create as many Task Queue connections inside a single Worker Process as you need.
@@ -2622,7 +2622,7 @@ To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 use Temporal\Worker\WorkerOptions;
 
 $worker = $factory->newWorker(
-    'my-task-queue',
+    'your-task-queue',
     WorkerOptions::new()
         ->withMaxConcurrentWorkflowTaskPollers(10)
 );
@@ -3350,7 +3350,7 @@ import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
 const client = new WorkflowClient({connection});
-const result = await client.execute(myWorkflow, {
+const result = await client.execute(YourWorkflow, {
   taskQueue: "your-task-queue", // required
   workflowId: "your-workflow-id", // required
 });

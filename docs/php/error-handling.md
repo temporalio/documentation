@@ -24,13 +24,13 @@ Here's an example of handling Activity errors within Workflow code that differen
 use Temporal\Exception\Failure;
 use Temporal\Api\Enums\V1\TimeoutType;
 
-$myActivity = Workflow::newActivityStub(
-    MyActivityInterface::class,
+$YourActivity = Workflow::newActivityStub(
+    YourActivityInterface::class,
     ActivityOptions::new()->withScheduleToStartTimeout(60)
 );
 
 try {
-    yield $myActivity->doSomething();
+    yield $YourActivity->doSomething();
 } catch(Failure\ActivityFailure $e) {
     $cause = $e->getPrevious();
 

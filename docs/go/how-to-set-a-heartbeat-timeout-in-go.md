@@ -15,8 +15,8 @@ activityoptions := workflow.ActivityOptions{
   HeartbeatTimeout: 10 * time.Second,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+var YourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
 if err != nil {
   // ...
 }

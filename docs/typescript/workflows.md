@@ -297,8 +297,8 @@ function useState<T = any>(name: string, initialValue: T) {
 }
 
 // usage in Workflow file
-const store = useState('my-store', 10);
-function MyWorkflow() {
+const store = useState('your-store', 10);
+function YourWorkflow() {
   wf.setHandler(store.signal, (newValue: T) => {
     // console.log('updating', newValue) // optional but useful for debugging
     store.value = newValue;
@@ -341,8 +341,8 @@ function useState<T = any>(name: string, initialValue: T) {
 }
 
 // usage in Workflow file
-function MyWorkflow() {
-  const store = useState('my-store', 10); // needs to be inside because function uses setHandler
+function YourWorkflow() {
+  const store = useState('your-store', 10); // needs to be inside because function uses setHandler
   while (true) {
     console.log('sleeping for ', store.value);
     wf.sleep(store.value++ * 100); // you can mutate the value as well
@@ -350,8 +350,8 @@ function MyWorkflow() {
 }
 
 // usage in Client file
-await handle.signal('my-store', 30);
-const storeState = handle.query<number>('my-store'); // 30
+await handle.signal('your-store', 30);
+const storeState = handle.query<number>('your-store'); // 30
 ```
 
 </TabItem>
@@ -361,7 +361,7 @@ You can even conditionally set handlers, or set handlers inside handlers:
 
 ```ts
 import * as wf from '@temporalio/workflow';
-function MyWorkflow(signallable: boolean, signalNames: string[]) {
+function YourWorkflow(signallable: boolean, signalNames: string[]) {
   // conditional setting of handlers
   if (signallable) {
     wf.setHandler(MySignal, handler);
@@ -463,10 +463,10 @@ export async function unblocked() {
 }
 
 // usage: signals can be sent to each Workflow separately
-export async function myWorkflow1() {
+export async function YourWorkflow1() {
   await unblocked();
 }
-export async function myWorkflow2() {
+export async function YourWorkflow2() {
   await unblocked();
 }
 ```
@@ -481,7 +481,7 @@ Arguments for both are sent as needed.
 ```ts
 // Signal With Start in Client file
 const client = new WorkflowClient();
-await client.signalWithStart(MyWorkflow, {
+await client.signalWithStart(YourWorkflow, {
   workflowId,
   args: [arg1, arg2],
   signal: MySignal,
@@ -681,7 +681,7 @@ import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
 const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
-export async function myWorkflow(userId: string) {
+export async function YourWorkflow(userId: string) {
   setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
@@ -804,7 +804,7 @@ import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
 const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
-export async function myWorkflow(userId: string) {
+export async function YourWorkflow(userId: string) {
   setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,

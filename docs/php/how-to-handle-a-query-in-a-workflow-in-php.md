@@ -10,7 +10,7 @@ up a Query handler using method attribute `QueryMethod` or `Workflow::registerQu
 
 ```php
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     #[Workflow\QueryMethod]
     public function getValue()
@@ -33,7 +33,7 @@ serializable. The following sample code sets up a Query handler that handles the
 
 ```php
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     private string $currentState;
 
@@ -56,14 +56,14 @@ class MyWorkflow
             throw $e;
         }
 
-        $myActivity = Workflow::newActivityStub(
-            MyActivityInterface::class,
+        $YourActivity = Workflow::newActivityStub(
+            YourActivityInterface::class,
             ActivityOptions::new()->withScheduleToStartTimeout(60)
         );
 
         $this->currentState = 'waiting activity';
         try{
-            yield $myActivity->doSomething('some input');
+            yield $YourActivity->doSomething('some input');
         } catch (\Throwable $e) {
             $this->currentState = 'activity failed';
             throw $e;
@@ -82,7 +82,7 @@ Use `WorkflowStub` to Query Workflow instances from your Client code (can be app
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(
-    MyWorkflow::class,
+    YourWorkflow::class,
     WorkflowOptions::new()
 );
 

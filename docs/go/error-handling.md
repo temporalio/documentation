@@ -17,7 +17,7 @@ Following is an example of what your error code might look like:
 Here's an example of handling Activity errors within Workflow code that differentiates between different error types.
 
 ```go
-err := workflow.ExecuteActivity(ctx, MyActivity, ...).Get(ctx, nil)
+err := workflow.ExecuteActivity(ctx, YourActivity, ...).Get(ctx, nil)
 if err != nil {
 	var applicationErr *ApplicationError
 	if errors.As(err, &applicationErr) {

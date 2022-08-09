@@ -585,7 +585,7 @@ The values in the map must correspond to the [Search Attribute's value type](/co
 If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
 
 ```go
-func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
+func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
     // ...
     searchAttributes := map[string]interface{}{
         "CustomerId": payload["customer"],
@@ -595,7 +595,7 @@ func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload 
         SearchAttributes:   searchAttributes
         // ...
     }
-    we, err := c.Client.ExecuteWorkflow(ctx, options, app.MyWorkflow, payload)
+    we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
     // ...
 }
 ```
@@ -655,7 +655,7 @@ In advanced cases, you may want to dynamically update these attributes as the Wo
 Consider this example Workflow code:
 
 ```go
-func MyWorkflow(ctx workflow.Context, input string) error {
+func YourWorkflow(ctx workflow.Context, input string) error {
 
     attr1 := map[string]interface{}{
         "CustomIntField": 1,
@@ -746,7 +746,7 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 ```typescript
 import {upsertSearchAttributes} from "@temporalio/workflow";
 
-async function myWorkflow() {
+async function YourWorkflow() {
   upsertSearchAttributes({CustomIntField: [1, 2, 3]});
 
   // ... later, to remove:
@@ -807,7 +807,7 @@ func GetWorkflowHistory(ctx context.Context, client client.Client, id, runID str
 ```
 
 This history can then be used to _replay_.
-For example, the following code creates a `WorkflowReplayer` and register the `MyWorkflow` Workflow function.
+For example, the following code creates a `WorkflowReplayer` and register the `YourWorkflow` Workflow function.
 Then it calls the `ReplayWorkflowHistory` to _replay_ the Event History and return an error code.
 
 ```go
@@ -824,7 +824,7 @@ func ReplayWorkflow(ctx context.Context, client client.Client, id, runID string)
 		return err
 	}
 	replayer := worker.NewWorkflowReplayer()
-	replayer.RegisterWorkflow(MyWorkflow)
+	replayer.RegisterWorkflow(YourWorkflow)
 	return replayer.ReplayWorkflowHistory(nil, hist)
 }
 ```
