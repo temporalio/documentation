@@ -19,5 +19,5 @@ interface JoinInput {
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>('join');
+export const joinSignal = defineSignal<[JoinInput]>('join');
 ```

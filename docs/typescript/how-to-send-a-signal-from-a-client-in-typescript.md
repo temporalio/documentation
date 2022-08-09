@@ -17,7 +17,7 @@ import { joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
-const handle = await client.getHandle('workflow-id-123');
+const handle = client.getHandle('workflow-id-123');
 
 await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
