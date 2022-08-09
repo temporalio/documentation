@@ -129,7 +129,7 @@ This timeout has two primary use cases:
 
 **The default Schedule-To-Start Timeout is ∞ (infinity).**
 
-If this timeout is used, Temporal recommends setting this timeout to the maximum time a Workflow Execution is willing to wait for an Activity Execution in the presence of all possible Worker outages, and have a concrete plan in place to reroute Activity Tasks to a different Task Queue.
+If this timeout is used, we recommend setting this timeout to the maximum time a Workflow Execution is willing to wait for an Activity Execution in the presence of all possible Worker outages, and have a concrete plan in place to reroute Activity Tasks to a different Task Queue.
 This timeout **does not** trigger any retries regardless of the Retry Policy, as a retry would place the Activity Task back into the same Task Queue.
 We do not recommend using this timeout unless you know what you are doing.
 
