@@ -3,7 +3,7 @@ slug: charles-zedlewski-why-i-joined-temporal
 title: Why I joined Temporal
 author: Charles Zedlewski
 author_title: CPO
-author_image_url: https://media-exp1.licdn.com/dms/image/C5603AQGgvr2dqvuBsQ/profile-displayphoto-shrink_800_800/0/1610115430759?e=1649894400&v=beta&t=NSeRh4iGGhoNJqRun59E4ZxV5U6BT56zRsBgeVg90Mg
+author_image_url: https://pbs.twimg.com/profile_images/1526613570032750594/jL1M_pvC_400x400.jpg
 tags:
   - reflections
 date: 2022-2-9T00:00:00Z
