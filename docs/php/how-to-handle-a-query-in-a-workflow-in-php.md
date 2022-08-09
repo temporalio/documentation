@@ -56,14 +56,14 @@ class YourWorkflow
             throw $e;
         }
 
-        $YourActivity = Workflow::newActivityStub(
+        $yourActivity = Workflow::newActivityStub(
             YourActivityInterface::class,
             ActivityOptions::new()->withScheduleToStartTimeout(60)
         );
 
         $this->currentState = 'waiting activity';
         try{
-            yield $YourActivity->doSomething('some input');
+            yield $yourActivity->doSomething('some input');
         } catch (\Throwable $e) {
             $this->currentState = 'activity failed';
             throw $e;

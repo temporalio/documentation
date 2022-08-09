@@ -67,7 +67,7 @@ class YourWorkflow
             throw $e;
         }
 
-        $YourActivity = Workflow::newActivityStub(
+        $yourActivity = Workflow::newActivityStub(
             YourActivityInterface::class,
             ActivityOptions::new()->withScheduleToStartTimeout(60)
         );

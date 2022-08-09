@@ -13,11 +13,11 @@ tags:
 
 ```typescript
 import { WorkflowClient } from '@temporalio/client';
-import { YourWorkflow, joinSignal } from './workflows';
+import { yourWorkflow, joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
-await client.signalWithStart(YourWorkflow, {
+await client.signalWithStart(yourWorkflow, {
   workflowId: 'workflow-id-123',
   args: [{ foo: 1 }],
   signal: joinSignal,

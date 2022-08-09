@@ -34,8 +34,8 @@ activityoptions := workflow.ActivityOptions{
   ActivityID: "your-activity-id",
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -53,8 +53,8 @@ activityoptions := workflow.ActivityOptions{
   TaskQueueName: "your-task-queue-name",
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -98,8 +98,8 @@ activityoptions := workflow.ActivityOptions{
   WaitForCancellation: false,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -112,8 +112,8 @@ activityoptions := workflow.ActivityOptions{
   OriginalTaskQueueName: "your-original-task-queue-name",
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }

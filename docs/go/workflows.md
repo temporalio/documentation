@@ -11,7 +11,7 @@ You can execute Workflows (including those from other language SDKs) by their ty
 
 ```go
 
-workflowID := "YourWorkflow_" + uuid.New()
+workflowID := "yourWorkflow_" + uuid.New()
 workflowOptions := client.StartWorkflowOptions{
   ID:        workflowID,
   TaskQueue: "mytaskqueue",

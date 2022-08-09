@@ -6,7 +6,7 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 ```typescript
 import { WorkflowClient } from '@temporalio/client';
 const client = new WorkflowClient();
-const result = await client.execute(YourWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: 'testhttp', // required
   workflowId: 'business-meaningful-id', // also required but not the point
 });

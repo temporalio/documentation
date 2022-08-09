@@ -746,7 +746,7 @@ To remove a Search Attribute that was previously set, set it to an empty array `
 ```typescript
 import {upsertSearchAttributes} from "@temporalio/workflow";
 
-async function YourWorkflow() {
+async function yourWorkflow() {
   upsertSearchAttributes({CustomIntField: [1, 2, 3]});
 
   // ... later, to remove:

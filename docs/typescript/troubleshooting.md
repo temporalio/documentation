@@ -113,7 +113,7 @@ Importing and calling Activities directly from Workflow code
 ```ts
 import { makeHTTPRequest } from './activities';
 
-export async function YourWorkflow(): Promise<string> {
+export async function yourWorkflow(): Promise<string> {
   return await makeHTTPRequest('https://temporal.io');
 }
 ```
@@ -148,7 +148,7 @@ import { proxyActivities } from '@temporalio/workflow';
 import type * as activities from './activities';
 const { makeHTTPRequest } = proxyActivities<typeof activities>();
 
-export async function YourWorkflow(): Promise<string> {
+export async function yourWorkflow(): Promise<string> {
   return await makeHTTPRequest('https://temporal.io');
 }
 ```

@@ -37,7 +37,7 @@ func YourWorkflow(ctx workflow.Context, input string) error {
     return err
   }
   currentState = "waiting activity"
-  ctx = WithActivityOptions(ctx, YourActivityOptions)
+  ctx = WithActivityOptions(ctx, yourActivityOptions)
   err = ExecuteActivity(ctx, YourActivity, "your_input").Get(ctx, nil)
   if err != nil {
     currentState = "activity failed"

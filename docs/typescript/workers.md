@@ -169,7 +169,7 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = await Connection.connect();
 const client = new WorkflowClient({ connection });
-const result = await client.execute(YourWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: 'testhttp', // required
   workflowId: 'business-meaningful-id', // also required but not the point
 });

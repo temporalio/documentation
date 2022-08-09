@@ -677,11 +677,11 @@ $run = $workflowClient->startWithSignal(
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {YourWorkflow, joinSignal} from "./workflows";
+import {yourWorkflow, joinSignal} from "./workflows";
 
 const client = new WorkflowClient();
 
-await client.signalWithStart(YourWorkflow, {
+await client.signalWithStart(yourWorkflow, {
   workflowId: "workflow-id-123",
   args: [{foo: 1}],
   signal: joinSignal,
@@ -899,7 +899,7 @@ func YourWorkflow(ctx workflow.Context, input string) error {
     return err
   }
   currentState = "waiting activity"
-  ctx = WithActivityOptions(ctx, YourActivityOptions)
+  ctx = WithActivityOptions(ctx, yourActivityOptions)
   err = ExecuteActivity(ctx, YourActivity, "your_input").Get(ctx, nil)
   if err != nil {
     currentState = "activity failed"
@@ -1058,14 +1058,14 @@ class YourWorkflow
             throw $e;
         }
 
-        $YourActivity = Workflow::newActivityStub(
+        $yourActivity = Workflow::newActivityStub(
             YourActivityInterface::class,
             ActivityOptions::new()->withScheduleToStartTimeout(60)
         );
 
         $this->currentState = 'waiting activity';
         try{
-            yield $YourActivity->doSomething('some input');
+            yield $yourActivity->doSomething('some input');
         } catch (\Throwable $e) {
             $this->currentState = 'activity failed';
             throw $e;
@@ -1566,8 +1566,8 @@ activityoptions := workflow.ActivityOptions{
   ScheduleToCloseTimeout: 10 * time.Second,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -1694,8 +1694,8 @@ activityoptions := workflow.ActivityOptions{
   StartToCloseTimeout: 10 * time.Second,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -1823,8 +1823,8 @@ activityoptions := workflow.ActivityOptions{
   ScheduleToStartTimeout: 10 * time.Second,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -1972,8 +1972,8 @@ activityoptions := workflow.ActivityOptions{
   RetryPolicy: retrypolicy,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -2317,8 +2317,8 @@ activityoptions := workflow.ActivityOptions{
   HeartbeatTimeout: 10 * time.Second,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var YourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &YourActivityResult)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
@@ -3237,7 +3237,7 @@ const {sendNotificationEmail} = proxyActivities({
   startToCloseTimeout: "1m",
 });
 
-async function YourWorkflow() {
+async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
     throw new Error("missing env var apiKey");

@@ -44,13 +44,13 @@ This added `sleep()` can result in a different execution path:
 
 ```ts
 // from v1
-export async function YourWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   await runActivity();
   return 7;
 }
 
 // to v2
-export async function YourWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   await sleep('1 day');
 
   await runActivity();
@@ -64,7 +64,7 @@ Adding a Signal Handler for a Signal type that has never been sent before does n
 
 ```ts
 // from v1
-export async function YourWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   await sleep('1 days');
   return value;
 }
@@ -72,7 +72,7 @@ export async function YourWorkflow(value: number): Promise<number> {
 // to v2
 const updateValueSignal = defineSignal<[number]>('updateValue');
 
-export async function YourWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   setHandler(updateValueSignal, (newValue) => (value = newValue));
 
   await sleep('1 days');

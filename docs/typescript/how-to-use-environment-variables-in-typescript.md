@@ -80,7 +80,7 @@ const { sendNotificationEmail } = proxyActivities({
   startToCloseTimeout: '1m',
 });
 
-async function YourWorkflow() {
+async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
     throw new Error('missing env var apiKey');

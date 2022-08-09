@@ -2296,8 +2296,8 @@ The type of the result parameter must match the type of the return value declare
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
- var YourActivityResult YourActivityResult
- if err := future.Get(ctx, &YourActivityResult); err != nil {
+ var yourActivityResult YourActivityResult
+ if err := future.Get(ctx, &yourActivityResult); err != nil {
    // ...
  }
  // ...
@@ -2312,8 +2312,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
  // ...
  if(future.IsReady()) {
-   var YourActivityResult YourActivityResult
-   if err := future.Get(ctx, &YourActivityResult); err != nil {
+   var yourActivityResult YourActivityResult
+   if err := future.Get(ctx, &yourActivityResult); err != nil {
      // ...
    }
  }
@@ -3350,7 +3350,7 @@ import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
 const client = new WorkflowClient({connection});
-const result = await client.execute(YourWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: "your-task-queue", // required
   workflowId: "your-workflow-id", // required
 });

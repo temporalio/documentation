@@ -22,8 +22,8 @@ The type of the result parameter must match the type of the return value declare
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
  // ...
  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
- var YourActivityResult YourActivityResult
- if err := future.Get(ctx, &YourActivityResult); err != nil {
+ var yourActivityResult YourActivityResult
+ if err := future.Get(ctx, &yourActivityResult); err != nil {
    // ...
  }
  // ...
@@ -38,8 +38,8 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
  future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
  // ...
  if(future.IsReady()) {
-   var YourActivityResult YourActivityResult
-   if err := future.Get(ctx, &YourActivityResult); err != nil {
+   var yourActivityResult YourActivityResult
+   if err := future.Get(ctx, &yourActivityResult); err != nil {
      // ...
    }
  }

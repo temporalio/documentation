@@ -463,10 +463,10 @@ export async function unblocked() {
 }
 
 // usage: signals can be sent to each Workflow separately
-export async function YourWorkflow1() {
+export async function yourWorkflow1() {
   await unblocked();
 }
-export async function YourWorkflow2() {
+export async function yourWorkflow2() {
   await unblocked();
 }
 ```
@@ -681,7 +681,7 @@ import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
 const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
-export async function YourWorkflow(userId: string) {
+export async function yourWorkflow(userId: string) {
   setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
@@ -804,7 +804,7 @@ import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
 const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
 
-export async function YourWorkflow(userId: string) {
+export async function yourWorkflow(userId: string) {
   setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
   const userInteracted = await Promise.race([
     userInteraction,
