@@ -9,8 +9,31 @@ tags:
 ---
 
 The `tctl workflow run` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and can show Workflow progress.
+The command is entered in the following format:
 
-`tctl workflow run [<modifiers>]`
+`tctl workflow run [modifiers]`
+
+**Note:** Start the Worker so the Workflow can make progress.
+(Run `make && ./bin/helloworld -m worker` in samples-go to start the worker)
+
+To run a Workflow, the user must specify the following:
+
+1. Task queue name (`--tq`)
+2. Workflow type (`--wt`)
+3. Execution start to close timeout in seconds (`--et`)
+4. Input in JSON format (`--i`) (optional)
+
+```bash
+tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
+
+# view help messages for workflow run
+gtctl workflow run -h
+```
+
+Single quotes (`''`) are used to wrap input as JSON.
+This command doesn't finish until the Workflow completes.
+
+## Modifiers
 
 The following modifiers control the behavior of the command.
 
