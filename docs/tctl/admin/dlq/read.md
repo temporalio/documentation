@@ -11,6 +11,8 @@ tags:
 
 The `tctl admin dlq read` command reads out messages from the dead-letter queue (DLQ).
 
+Alias: `r`
+
 ---
 
 ## Modifiers

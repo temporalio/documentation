@@ -609,12 +609,12 @@ When connecting to the Temporal Cloud with mTLS, you must provide the following 
 - Client certificate for mTLS
 - Client private key for mTLS
 
-For information on generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
+For information about generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
 ​
 This Docker image is to be used in conjunction with the Temporal SDK.
 Keys and their configuration files are valid for 365 days from creation.
 
-For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For information about configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 For more information about mTLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
 
@@ -725,9 +725,6 @@ export function getEnv(): Env {
   };
 }
 ```
-
-If you somehow misconfigure your connection, you get an opaque `[TransportError: transport error]` error.
-Read through your settings carefully, and contact Temporal if you are sure you have checked everything.
 
 If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
 

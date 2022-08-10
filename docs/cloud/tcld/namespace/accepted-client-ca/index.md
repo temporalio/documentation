@@ -15,7 +15,7 @@ Do not use a CA certificate that is signed with an insecure signature algorithm,
 Such signatures will be rejected.
 Existing CA certificates that use SHA-1 can stop working without warning.
 
-For more information on the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
 
 :::
 
