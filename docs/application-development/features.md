@@ -146,7 +146,7 @@ interface JoinInput {
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+export const joinSignal = defineSignal<[JoinInput]>("join");
 ```
 
 </TabItem>
@@ -439,7 +439,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+
+```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {joinSignal} from "./workflows";
+
+const client = new WorkflowClient();
+
+const handle = client.getHandle("workflow-id-123");
+
+await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+```
 
 </TabItem>
 <TabItem value="python">
@@ -1881,13 +1892,13 @@ Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 Type: time.Duration
 Default: ∞ (infinity – no limit)
 
-In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
+In this example, you can set the `scheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
 const {greet} = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+  scheduleToStartTimeout: "60s",
   retry: {
     // default retry policy if not specified
     initialInterval: "1s",
