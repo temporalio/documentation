@@ -457,43 +457,6 @@ For more information, see the following:
 The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
-
-[app/src/SimpleActivity/ExecuteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/SimpleActivity/ExecuteCommand.php)
-
-```php
-class ExecuteCommand extends Command
-{
-    protected const NAME = 'simple-activity';
-    protected const DESCRIPTION = 'Execute SimpleActivity\GreetingWorkflow';
-
-    public function execute(InputInterface $input, OutputInterface $output)
-    {
-        $workflow = $this->workflowClient->newWorkflowStub(
-            GreetingWorkflowInterface::class,
-            WorkflowOptions::new()->withWorkflowExecutionTimeout(CarbonInterval::minute())
-        );
-
-        $output->writeln("Starting <comment>GreetingWorkflow</comment>... ");
-
-        // Start a workflow execution. Usually this is done from another program.
-        // Uses task queue from the GreetingWorkflow @WorkflowMethod annotation.
-        $run = $this->workflowClient->start($workflow, 'Antony');
-
-        $output->writeln(
-            sprintf(
-                'Started: WorkflowID=<fg=magenta>%s</fg=magenta>',
-                $run->getExecution()->getID(),
-            )
-        );
-
-        // getResult waits for workflow to complete
-        $output->writeln(sprintf("Result:\n<info>%s</info>", $run->getResult()));
-
-        return self::SUCCESS;
-    }
-}
-```
-
 <!--SNIPEND-->
 
 The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
@@ -755,21 +718,6 @@ Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/te
 The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 
 <!--SNIPSTART python-mtls-configuration -->
-
-[hello/hello_mtls.py](https://github.com/temporalio/samples-python/blob/0951f91a6a66839ed5c17f52630d7837828bc4de/hello/hello_mtls.py)
-
-```py
-    client = await Client.connect(
-        args.target_url,
-        namespace=args.namespace,
-        tls_config=TLSConfig(
-            server_root_ca_cert=server_root_ca_cert,
-            client_cert=client_cert,
-            client_private_key=client_key,
-        ),
-    )
-```
-
 <!--SNIPEND-->
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_mtls.py) demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
@@ -2652,35 +2600,6 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
-
-```ts
-import {Worker} from "@temporalio/worker";
-import * as activities from "./activities";
-
-async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
-  const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
-    activities,
-    taskQueue: "hello-world",
-  });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
-
-  // Step 2: Start accepting tasks on the `hello-world` queue
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.

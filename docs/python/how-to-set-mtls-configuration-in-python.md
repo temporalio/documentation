@@ -14,21 +14,6 @@ Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/te
 The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 
 <!--SNIPSTART python-mtls-configuration -->
-
-[hello/hello_mtls.py](https://github.com/temporalio/samples-python/blob/0951f91a6a66839ed5c17f52630d7837828bc4de/hello/hello_mtls.py)
-
-```py
-    client = await Client.connect(
-        args.target_url,
-        namespace=args.namespace,
-        tls_config=TLSConfig(
-            server_root_ca_cert=server_root_ca_cert,
-            client_cert=client_cert,
-            client_private_key=client_key,
-        ),
-    )
-```
-
 <!--SNIPEND-->
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_mtls.py) demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
