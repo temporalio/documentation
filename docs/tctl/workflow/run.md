@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow run` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and can show Workflow progress.
+The `tctl workflow run` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and can show the progress of a Workflow Execution.
 The command is entered in the following format:
 
 `tctl workflow run [modifiers]`
