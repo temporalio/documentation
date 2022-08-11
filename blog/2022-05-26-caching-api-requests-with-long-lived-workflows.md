@@ -233,7 +233,7 @@ In the `exchangeRatesWorkflow`, eight events are fired during each iteration of 
 8. `EVENT_TYPE_TIMER_STARTED`: the Workflow used `setTimeout()` to pause until tomorrow
 
 With one API request per day, `exchangeRatesWorkflow()` can run for almost 6,250 days (approximately 17 years) before running into the 50,000 event limit.
-However, you should still handle this limit.
+However, you should still avoid running into this limit.
 And that's what Continue-As-New is for.
 
 You can think of Continue-As-New as restarting your Workflow from an initial state.
