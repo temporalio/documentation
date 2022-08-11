@@ -173,10 +173,6 @@ module.exports = {
               href: "https://pages.temporal.io/cloud-early-access",
             },
             {
-              label: "Subscribe to the Newsletter",
-              href: "https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=3475f910fc",
-            },
-            {
               label: "We're Hiring",
               href: "https://temporal.io/careers",
             },
