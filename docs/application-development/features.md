@@ -2,7 +2,7 @@
 id: features
 title: Application development - Features
 sidebar_label: Features
-description: The features section of the Temporal Application development guide provides basic implemenation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+description: The Features section of the Temporal Application development guide provides basic implemenation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 

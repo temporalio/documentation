@@ -1,6 +1,6 @@
 ---
 id: worker-performance
-title: Application development Worker performance
+title: Application development - Worker performance
 description: Guide into Workers Tuning
 sidebar_label: Worker performance
 tags:
