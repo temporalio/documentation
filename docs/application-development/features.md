@@ -344,7 +344,7 @@ Content is not available
 ```ts
 import {setHandler} from "@temporalio/workflow";
 
-export async function myWorkflow() {
+export async function yourWorkflow() {
   const groups = new Map<string, Set<string>>();
 
   setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
@@ -521,7 +521,7 @@ The following example shows how to use an untyped `ExternalWorkflowStub` in the 
 To send signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->start($workflow);
 
@@ -536,7 +536,7 @@ Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRun
 Signals to a running Workflow.
 
 ```php
-$workflow = $workflowClient->newRunningWorkflowStub(MyWorkflow::class, 'workflowID');
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
 $workflow->setValue(true);
 ```
 
@@ -549,7 +549,7 @@ $workflow->setValue(true);
 import {getExternalWorkflowHandle} from "@temporalio/workflow";
 import {joinSignal} from "./other-workflow";
 
-export async function myWorkflowThatSignals() {
+export async function yourWorkflowThatSignals() {
   const handle = getExternalWorkflowHandle("workflow-id-123");
   await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
 }
@@ -660,7 +660,7 @@ If a running Workflow exists, the `startwithSignal` API sends the Signal.
 If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->startWithSignal(
     $workflow,
@@ -677,11 +677,11 @@ $run = $workflowClient->startWithSignal(
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {myWorkflow, joinSignal} from "./workflows";
+import {yourWorkflow, joinSignal} from "./workflows";
 
 const client = new WorkflowClient();
 
-await client.signalWithStart(myWorkflow, {
+await client.signalWithStart(yourWorkflow, {
   workflowId: "workflow-id-123",
   args: [{foo: 1}],
   signal: joinSignal,
@@ -881,7 +881,7 @@ The handler function can receive any number of input parameters, but all input p
 The following sample code sets up a Query Handler that handles the `current_state` Query type:
 
 ```go
-func MyWorkflow(ctx workflow.Context, input string) error {
+func YourWorkflow(ctx workflow.Context, input string) error {
   currentState := "started" // This could be any serializable struct.
   queryType := "current_state"
   err := workflow.SetQueryHandler(ctx, queryType, func() (string, error) {
@@ -899,8 +899,8 @@ func MyWorkflow(ctx workflow.Context, input string) error {
     return err
   }
   currentState = "waiting activity"
-  ctx = WithActivityOptions(ctx, myActivityOptions)
-  err = ExecuteActivity(ctx, MyActivity, "my_input").Get(ctx, nil)
+  ctx = WithActivityOptions(ctx, yourActivityOptions)
+  err = ExecuteActivity(ctx, YourActivity, "your_input").Get(ctx, nil)
   if err != nil {
     currentState = "activity failed"
     return err
@@ -1012,7 +1012,7 @@ up a Query handler using method attribute `QueryMethod` or `Workflow::registerQu
 
 ```php
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     #[Workflow\QueryMethod]
     public function getValue()
@@ -1035,7 +1035,7 @@ serializable. The following sample code sets up a Query handler that handles the
 
 ```php
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     private string $currentState;
 
@@ -1058,14 +1058,14 @@ class MyWorkflow
             throw $e;
         }
 
-        $myActivity = Workflow::newActivityStub(
-            MyActivityInterface::class,
+        $yourActivity = Workflow::newActivityStub(
+            YourActivityInterface::class,
             ActivityOptions::new()->withScheduleToStartTimeout(60)
         );
 
         $this->currentState = 'waiting activity';
         try{
-            yield $myActivity->doSomething('some input');
+            yield $yourActivity->doSomething('some input');
         } catch (\Throwable $e) {
             $this->currentState = 'activity failed';
             throw $e;
@@ -1084,7 +1084,7 @@ Use `WorkflowStub` to Query Workflow instances from your Client code (can be app
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(
-    MyWorkflow::class,
+    YourWorkflow::class,
     WorkflowOptions::new()
 );
 
@@ -2952,7 +2952,7 @@ Workflow.continueAsNew(input1, ...);
 ```
 
 To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
-For example, in a Workflow class called `MyWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
+For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
 
 ```java
 MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
@@ -3184,7 +3184,7 @@ const createActivities = (envVars: {apiKey: string}) => ({
   async sendNotificationEmail(): Promise<void> {
     // ...
     await axios({
-      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: "post",
       params: {to, from, subject, html},
       auth: {
@@ -3216,7 +3216,7 @@ const createActivities = (envVars: EnvVars) => ({
   async sendNotificationEmail(apiKey: string): Promise<void> {
     // ...
     await axios({
-      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: "post",
       params: {to, from, subject, html},
       auth: {
@@ -3237,7 +3237,7 @@ const {sendNotificationEmail} = proxyActivities({
   startToCloseTimeout: "1m",
 });
 
-async function myWorkflow() {
+async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
     throw new Error("missing env var apiKey");

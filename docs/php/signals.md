@@ -19,7 +19,7 @@ import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
 use Temporal\Workflow;
 
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     private bool $value;
 
@@ -44,7 +44,7 @@ In the example above the workflow updates the protected value. Main workflow cor
 To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->start($workflow);
 
@@ -59,7 +59,7 @@ Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRun
 signals to already running workflows.
 
 ```php
-$workflow = $workflowClient->newRunningWorkflowStub(MyWorkflow::class, 'workflowID');
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
 $workflow->setValue(true);
 ```
 
@@ -71,7 +71,7 @@ allows you to send a signal to the current Workflow instance if one exists or to
 run and then send the signal.
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->startWithSignal(
     $workflow,

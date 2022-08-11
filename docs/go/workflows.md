@@ -11,7 +11,7 @@ You can execute Workflows (including those from other language SDKs) by their ty
 
 ```go
 
-workflowID := "myworkflow_" + uuid.New()
+workflowID := "yourWorkflow_" + uuid.New()
 workflowOptions := client.StartWorkflowOptions{
   ID:        workflowID,
   TaskQueue: "mytaskqueue",
@@ -39,7 +39,7 @@ with the Worker, for example:
 
 ```go
 rwo := workflow.RegisterOptions {
-   Name: "MyWorkflow", // Set "MyWorkflow" as the Workflow type
+   Name: "YourWorkflow", // Set "YourWorkflow" as the Workflow type
 }
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
