@@ -221,7 +221,7 @@ If the machine running `exchangeRatesWorkflow()` crashes, Temporal can resume th
 
 The `exchangeRatesWorkflow` can run for an unlimited period of time: days, months, even years.
 However, Temporal caps a Workflow at 50,000 events. (See the [Time constraints](https://docs.temporal.io/workflows#time-constraints) section in [Temporal Workflows](https://docs.temporal.io/workflows).)
-In the `exchangeRatesWorkflow`, eight events are fired at every iteration of the `while` loop, assuming no API errors.
+In the `exchangeRatesWorkflow`, eight events are fired during each iteration of the `while` loop, assuming no API errors.
 
 1. `EVENT_TYPE_TIMER_FIRED`: the `setTimeout()` resolved and it's time to refresh the exchange rates
 2. `EVENT_TYPE_ACTIVITY_TASK_SCHEDULED`: the Temporal server scheduled the `getExchangeRates()` activity
