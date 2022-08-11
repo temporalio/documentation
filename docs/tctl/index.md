@@ -20,14 +20,14 @@ Workflow, show Workflow History, and Signal Workflow).
 
 ## tctl commands
 
-- [`tctl activity`](/tctl/activity)
-<!-- - [`tctl admin`](/tctl/admin) -->
-- [`tctl batch`](/tctl/batch)
-- [`tctl cluster`](/tctl/cluster)
-- [`tctl dataconverter`](/tctl/dataconverter)
-- [`tctl namespace`](/tctl/namespace)
-- [`tctl taskqueue`](/tctl/taskqueue)
-- [`tctl workflow`](/tctl/workflow)
+- [`tctl activity`](/tctl/activity/)
+- [`tctl admin`](/tctl/admin/)
+- [`tctl batch`](/tctl/batch/)
+- [`tctl cluster`](/tctl/cluster/)
+- [`tctl dataconverter`](/tctl/dataconverter/)
+- [`tctl namespace`](/tctl/namespace/)
+- [`tctl taskqueue`](/tctl/taskqueue/)
+- [`tctl workflow`](/tctl/workflow/)
 
 ## Global modifiers
 
@@ -105,3 +105,7 @@ Specifying this modifier also enables host verification.
 Display the version of tctl in the CLI.
 
 Alias: `-v`
+
+### `--codec_endpoint`
+
+The URL and port number for a Codec Server.

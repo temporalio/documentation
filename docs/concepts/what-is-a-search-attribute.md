@@ -21,23 +21,23 @@ When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal C
 A Temporal Cluster that is integrated with Elasticsearch has a set of default Search Attributes already available.
 These Search Attributes are created when the initial index is created.
 
-| NAME                  | TYPE     |
-| --------------------- | -------- |
-| BatcherNamespace      | Keyword  |
-| BatcherUser           | Keyword  |
-| BinaryChecksums       | Keyword  |
-| CloseTime             | Datetime |
-| ExecutionDuration     | Int      |
-| ExecutionStatus       | Keyword  |
-| ExecutionTime         | Datetime |
-| HistoryLength         | Int      |
-| RunId                 | Keyword  |
-| StartTime             | Datetime |
-| StateTransitionCount  | Int      |
-| TaskQueue             | Keyword  |
-| TemporalChangeVersion | Keyword  |
-| WorkflowId            | Keyword  |
-| WorkflowType          | Keyword  |
+| NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |
+| --------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WorkflowType          | Keyword  | The type of Workflow.                                                                                                                                                        |
+| WorkflowId            | Keyword  | Identifies the Workflow Execution.                                                                                                                                           |
+| ExecutionStatus       | Keyword  | The current state of the Workflow Execution.                                                                                                                                 |
+| StartTime             | Datetime | The time at which the Workflow Execution started.                                                                                                                            |
+| CloseTime             | Datetime | The time at which the Workflow Execution completed.                                                                                                                          |
+| ExecutionTime         | Datetime | Same as StartTime for the most cases but different for cron Workflows and retried Workflows. For them it is the time at which the Workflow Execution actually begin running. |
+| RunId                 | Keyword  | Identifies the current Workflow Execution Run.                                                                                                                               |
+| ExecutionDuration     | Int      | The time needed to run the Workflow Execution. Available only for closed Workflows.                                                                                          |
+| HistoryLength         | Int      | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                              |
+| StateTransitionCount  | Int      | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                    |
+| TaskQueue             | Keyword  | Task Queue used by Workflow Execution.                                                                                                                                       |
+| TemporalChangeVersion | Keyword  | If workflow versioning is enabled, list of change/version pairs will be stored here.                                                                                         |
+| BinaryChecksums       | Keyword  | List of binary Ids of Workers that run the Workflow Execution.                                                                                                               |
+| BatcherNamespace      | Keyword  | Used by internal batcher to indicate the Namespace where batch operation was applied to.                                                                                     |
+| BatcherUser           | Keyword  | Used by internal batcher to indicate the user who started the batch operation.                                                                                               |
 
 - All default Search Attributes are reserved and read-only.
   (You cannot create a custom one with the same name or alter the existing one.)
@@ -74,23 +74,23 @@ It is not possible to rename Search Attributes or remove them from the index sch
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
-- CustomTextField
-- CustomKeywordField
-- CustomIntField
-- CustomDoubleField
 - CustomBoolField
 - CustomDatetimeField
+- CustomDoubleField
+- CustomIntField
+- CustomKeywordField
+- CustomTextField
 
 #### Types
 
 Search Attributes must be one of the following types:
 
-- Text
-- Keyword
-- Int
-- Double
 - Bool
 - Datetime
+- Double
+- Int
+- Keyword
+- Text
 
 Note:
 
@@ -105,7 +105,7 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl/cluster/list-search-attributes)
+- [How to view Search Attributes using tctl](/tctl/cluster/get-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 

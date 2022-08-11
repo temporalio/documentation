@@ -1,6 +1,7 @@
 ---
 id: read
 title: tctl admin dlq read
+sidebar_label: read
 description: Reading DLQ messages.
 tags:
   - reference
@@ -9,6 +10,8 @@ tags:
 ---
 
 The `tctl admin dlq read` command reads out messages from the dead-letter queue (DLQ).
+
+Alias: `r`
 
 ---
 

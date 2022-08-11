@@ -1,6 +1,7 @@
 ---
 id: merge
 title: tctl admin dlq merge
+sidebar_label: merge
 description: Merging DLQ messages.
 tags:
   - reference
@@ -11,6 +12,8 @@ tags:
 The `tctl admib dlq merge` command allows dead-letter queue (DLQ) messages to be merged.
 
 The messages must have TaskIds with an equal or lesser value than the given TaskId.
+
+Alias: `m`
 
 ## Modifiers
 

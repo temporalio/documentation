@@ -1,0 +1,52 @@
+{
+  "file_name": "index.md",
+  "id": "index",
+  "file_dir": "cloud",
+  "title": "Temporal Cloud documentation",
+  "sidebar_label": "Temporal Cloud",
+  "description": "Temporal Cloud documentation, including explanations and usage.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "h2_sections": [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-temporal-cloud"
+        }
+      ]
+    },
+    {
+      "header": "Cloud Namespace",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-cloud-namespace-name"
+        }
+      ]
+    },
+    {
+      "header": "Cloud Namespace Id",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-cloud-namespace-id"
+        }
+      ]
+    },
+    {
+      "header": "Cloud Account Id",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-cloud-account-id"
+        }
+      ]
+    }
+  ]
+}

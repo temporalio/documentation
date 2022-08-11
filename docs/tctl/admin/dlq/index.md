@@ -16,9 +16,9 @@ The `tctl admin dlq` commands run admin operations on a given dead-letter queue 
 
 ## Commands
 
-- `tctl admin dlq read`
-- `tctl admin dlq purge`
-- `tctl admin dlq merge`
+- [`tctl admin dlq read`](/tctl/admin/dlq/read)
+- [`tctl admin dlq purge`](/tctl/admin/dlq/purge)
+- [`tctl admin dlq merge`](/tctl/admin/dlq/merge)
 
 ## Modifiers
 

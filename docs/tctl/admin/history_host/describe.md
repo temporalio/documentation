@@ -1,6 +1,7 @@
 ---
 id: describe
 title: tctl admin history_host describe
+sidebar_label: describe
 description: Describing the information in a history host
 tags:
   - reference

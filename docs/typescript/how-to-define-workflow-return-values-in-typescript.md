@@ -9,24 +9,16 @@ tags:
   - typescript
 ---
 
-Query Handlers can return values inside a Workflow in TypeScript.
+To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls and comes with guarantees.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
 
 ```typescript
-import * as wf from '@temporalio/workflow';
-
-function useState<T = any>(name: string, initialValue: T) {
-  const query = wf.defineQuery<T>(name);
-  let state: T = initialValue;
-  return {
-    query,
-    get value() {
-      return state;
-    },
-    set value(newVal: T) {
-      state = newVal;
-    },
-  };
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({ name, born }: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
 }
 ```

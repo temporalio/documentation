@@ -15,7 +15,7 @@ In the following example, the Activity Type defaults to `ComposeGreeting`.
 ```java
 @ActivityInterface
 public interface GreetingActivities {
-    @ActivityMethod()
+    @ActivityMethod
     String composeGreeting(String greeting, String language);
 }
 ```
@@ -44,5 +44,5 @@ Public interface GreetingActivities {
 }
 ```
 
-In this example, the Activity type for the first method is set to "A_SendGreeting".
-The Activity type for the method annotated with `@ActivityMethod` is set to "A_abc".
+In this example, the Activity type for the first method is set to `A_SendGreeting`.
+The Activity type for the method annotated with `@ActivityMethod` is set to `A_abc`.

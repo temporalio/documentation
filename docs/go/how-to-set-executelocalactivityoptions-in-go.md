@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-- Used to set local activity specific parameters that will be stored inside of a context
+- Used to set local activity specific parameters that will be stored inside a context
 
 | Option                 | Description                                                         | Type          |
 | ---------------------- | ------------------------------------------------------------------- | ------------- |

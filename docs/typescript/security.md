@@ -5,16 +5,6 @@ sidebar_label: Connection & Security
 description: A summary of the security features you should know as a TypeScript SDK user.
 ---
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-Custom DataConverters are a standard SDK security feature that is not yet available in the TypeScript Beta.
-
-The Connection API is not final and may change slightly before the full launch.
-
-</CustomWarning>
-
 Temporal Workers and Clients connect with your Temporal Cluster via gRPC, and must be configured securely for production.
 There are three main features to know:
 
@@ -38,10 +28,11 @@ All SDK connections (whether Workers or Clients) are to a specific namespace.
 If not specified in [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions), this defaults to the `default` namespace.
 
 ```ts
-const connection = new Connection();
+const connection = await Connection.connect();
 
-const client = new WorkflowClient(connection.service, {
-  namespace: 'my-namespace-name', // defaults to 'default'
+const client = new WorkflowClient({
+  connection,
+  namespace: 'your-custom-namespace', // defaults to 'default'
 });
 ```
 
@@ -60,7 +51,7 @@ A full example for Clients looks like this:
 ```js
 import { Connection, WorkflowClient } from '@temporalio/client';
 
-const connection = new Connection({
+const connection = await Connection.connect({
   address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
   tls: {
     // set to true if TLS without mTLS
@@ -71,8 +62,8 @@ const connection = new Connection({
     },
   },
 });
-await connection.untilReady();
-const client = new WorkflowClient(connection.service, {
+const client = new WorkflowClient({
+  connection,
   namespace: 'foo.bar', // as explained in Namespaces section
 });
 ```
@@ -84,7 +75,7 @@ import { Worker, NativeConnection } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {
-  const connection = await NativeConnection.create({
+  const connection = await NativeConnection.connect({
     address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
     tls: {
       // set to true if TLS without mTLS
@@ -151,7 +142,7 @@ _Thanks to our Design Partner [Mina Abadir](https://twitter.com/abadir_) for sha
 
 ### Connecting to Temporal Cloud (with mTLS)
 
-[The Hello World mTLS sample](https://github.com/temporalio/samples-node/tree/main/hello-world-mtls/) shows how to connect to a Temporal Cloud account.
+[The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) shows how to connect to a Temporal Cloud account.
 After signing up for Temporal Cloud, you should have a namespace, a server address, and a client certificate and key. Use the following environment variables to set up the sample:
 
 - **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
@@ -186,8 +177,8 @@ If you have misconfigured your connection somehow, you will get an opaque `[Tran
 
 Note the difference between the gRPC and Temporal Web endpoints:
 
-- The gRPC endpoint has a DNS address of `<Namespace ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
-- The Temporal Web endpoint is `web.<Namespace ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
+- The gRPC endpoint has a DNS address of `<Namespace_ID>.tmprl.cloud`, for example: `accounting-production.f45a2.tmprl.cloud`.
+- The Temporal Web endpoint is `web.<Namespace_ID>.tmprl.cloud`, for example: `https://web.accounting-production.f45a2.tmprl.cloud`.
 
 ### Local mTLS sample tutorial
 

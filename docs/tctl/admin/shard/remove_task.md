@@ -1,6 +1,7 @@
 ---
 id: remove_task
 title: tctl admin shard remove_task
+sidebar_label: remove_task
 description: removing a Task with given information
 tags:
   - reference
@@ -14,6 +15,8 @@ The `tctl admin shard remove_task` command removes a Task from the shard.
 `tctl admin shard remove_task [command options] [arguments...]`
 
 The Task removed must have values that matches what is given in the command line.
+
+Alias: `rmtk`
 
 ## Modifiers
 

@@ -129,7 +129,7 @@ With that said, here are some guidelines to some common bottlenecks:
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](/references/configuration/).
 - See the **Server Limits** section below for other limits you will want to keep in mind when doing system design, including event history length.
 
-Please see the dedicated docs on [Tuning and Scaling Workers](/operation/how-to-tune-workers).
+Please see the dedicated docs on [Tuning and Scaling Workers](/application-development/worker-performance).
 
 ## FAQs
 
@@ -180,17 +180,17 @@ You may sometimes want to have multiple parallel deployments on the same cluster
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
 Here is a comprehensive list of all the hard (error) / soft (warn) server limits relevant to operating Temporal:
 
-- **gRPC**: gRPC has 4MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
-- **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4MB](https://github.com/temporalio/temporal/pull/1363).
+- **gRPC**: gRPC has 4 MB size limit ([per each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466))
+- **Event Batch Size**: The `DefaultTransactionSizeLimit` limit is [4 MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for event histories to be persisted.
   - This is configurable with `TransactionSizeLimit`, if you know what you are doing.
 - **Blob size limit**: For incoming payloads (including Workflow context) - _[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)_
-  - we warn at 512KB: [`Blob size exceeds limit.`](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
-  - we error at 2MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
+  - we warn at 512 KB: [`Blob size exceeds limit.`](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
+  - we error at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
 - **History total size limit**: (leading to a terminated Workflow Execution)
-  - We warn at 10MB: `history size exceeds warn limit.`
-  - We error at 50mb: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
+  - We warn at 10 MB: `history size exceeds warn limit.`
+  - We error at 50 MB: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
 - **History total count limit**: (leading to a terminated Workflow Execution)
   - We warn at 10,000 events: `history size exceeds warn limit.`
@@ -198,8 +198,8 @@ Here is a comprehensive list of all the hard (error) / soft (warn) server limits
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Search Attributes**:
   - **Number of Search Attributes**: max 100
-  - **Single Search Attribute Size**: 2KB
-  - **Total Search Attribute Size**: 40KB
+  - **Single Search Attribute Size**: 2 KB
+  - **Total Search Attribute Size**: 40 KB
   - This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 
 ## Securing Temporal
@@ -219,7 +219,7 @@ Recommended configuration debugging techniques for production Temporal Server se
 
 ### Debugging Workflows
 
-We recommend [using Temporal Web to debug your Workflow Executions](/devtools/web-ui) in development and production.
+We recommend [using Temporal Web to debug your Workflow Executions](/web-ui) in development and production.
 
 ### Tracing Workflows
 

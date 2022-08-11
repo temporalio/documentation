@@ -55,57 +55,40 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
+    announcementBar: {
+      id: "replay_announcement",
+      content:
+        'Join us for <a target="_blank" rel="noopener noreferrer" href="https://temporal.io/replay">Replay</a>, Temporal’s first-ever developer conference',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {
         alt: "Temporal logo",
         src: "img/temporal-logo-dark.svg",
         srcDark: "img/temporal-logo.svg",
+        href: "https://temporal.io",
       },
       items: [
         {
+          label: "Home",
           to: "/",
+          position: "left",
           activeBasePath: "none",
-          label: "Docs",
         },
         {
-          activeBasePath: "none",
-          label: "Case Studies",
-          items: [
-            {
-              to: "/blog/how-datadog-ensures-database-reliability-with-temporal",
-              label: "Datadog",
-            },
-            {
-              to: "/blog/how-temporal-simplified-checkr-workflows",
-              label: "Checkr",
-            },
-            {
-              to: "/blog/temporal-a-central-brain-for-box",
-              label: "Box",
-            },
-            {
-              to: "/blog/reliable-crypto-transactions-at-coinbase",
-              label: "Coinbase",
-            },
-            {
-              to: "/blog/descript-case-study",
-              label: "Descript",
-            },
-            {
-              to: "/blog/zebra-medical-case-study",
-              label: "Zebra",
-            },
-            {
-              to: "/blog/airbyte-case-study",
-              label: "Airbyte",
-            },
-          ],
+          label: "Docs change log",
+          to: "/change-log",
+          activeBasePath: "change-log",
+          position: "left",
         },
         {
-          to: "/blog",
-          activeBasePath: "/blog",
           label: "Blog",
+          to: "/blog",
+          activeBasePath: "blog",
+          position: "left",
         },
       ],
     },
@@ -116,7 +99,8 @@ module.exports = {
         href: "https://temporal.io",
         width: 24,
       },
-      copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div>`,
+      copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSXFPF2"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`,
       links: [
         {
           items: [
@@ -186,7 +170,7 @@ module.exports = {
           items: [
             {
               label: "Join the Cloud Waitlist",
-              href: "https://us17.list-manage.com/survey?u=2334a0f23e55fd1840613755d&id=f1895b6f4a",
+              href: "https://pages.temporal.io/cloud-early-access",
             },
             {
               label: "Subscribe to the Newsletter",
@@ -306,6 +290,7 @@ module.exports = {
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
         blog: {
+          id: "blog",
           routeBasePath: "blog",
           path: "blog",
           postsPerPage: 10,
@@ -321,11 +306,11 @@ module.exports = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
-        gtag: {
-          trackingID: "UA-163137879-1",
-          // Optional fields.
-          anonymizeIP: true, // Should IPs be anonymized?
-        },
+        // gtag: {
+        //   trackingID: "GTM-TSXFPF2",
+        //   // Optional fields.
+        //   anonymizeIP: false, // Should IPs be anonymized?
+        // },
         // Will be passed to @docusaurus/plugin-content-sitemap
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
@@ -338,15 +323,78 @@ module.exports = {
   ],
   scripts: [
     {
-      src: "/scripts/feedback.js",
+      src: "/scripts/googletag.js",
       async: true,
       defer: true,
     },
     {
-      src: "/scripts/fullstory.js",
+      src: "/scripts/set-tab-language.js",
       async: true,
       defer: true,
     },
+    // {
+    //   src: "/scripts/feedback.js",
+    //   async: true,
+    //   defer: true,
+    // },
+    // {
+    //   src: "/scripts/fullstory.js",
+    //   async: true,
+    //   defer: true,
+    // },
+  ],
+  plugins: [
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "cloud-release-notes",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "cloud/release-notes",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "cloud/release-notes",
+        blogTitle: "Temporal Cloud release notes",
+        blogSidebarTitle: "Recent release notes",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "change-log",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "change-log",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "change-log",
+        blogTitle: "Temporal Platform documentation change log",
+        blogDescription: "A log of changes to this site's content.",
+        blogSidebarTitle: "Docs change log",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
   ],
 };
 

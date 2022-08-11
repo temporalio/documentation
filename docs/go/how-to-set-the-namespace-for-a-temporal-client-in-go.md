@@ -13,8 +13,8 @@ Set the `Namespace` field on an instance of the Client Options.
 ```go
 // ...
 clientOptions := client.Options{
-  Namespace: "your-namespace",
+  Namespace: "your-custom-namespace",
 }
-temporalClient, err := client.NewClient(clientOptions)
+temporalClient, err := client.Dial(clientOptions)
 // ...
 ```

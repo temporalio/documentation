@@ -1,6 +1,7 @@
 ---
 id: describe
 title: tctl admin cluster describe
+sidebar_label: describe
 description: Displaying Cluster information.
 tags:
   - reference
@@ -9,6 +10,8 @@ tags:
 ---
 
 The `tctl admin cluster describe` command provides information for the current Cluster.
+
+Alias: `d`
 
 The following modifier changes the behavior of the command:
 

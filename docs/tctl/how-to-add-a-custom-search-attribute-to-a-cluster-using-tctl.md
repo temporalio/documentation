@@ -25,18 +25,12 @@ tctl admin cluster add-search-attributes --name <SearchAttributeName> --type <Se
 
 Search Attribute names are case sensitive.
 
-The possible values for `--type` are:
-
-- String
-- Keyword
-- Int
-- Double
-- Bool
-- Datetime
+The possible values for `--type` are [listed here](/concepts/what-is-a-search-attribute/#types).
 
 :::note
 
-Due to Elasticsearch limitations you can only add new custom Search Attributes but not rename or remove existing ones.
+Due to Elasticsearch limitations, you can only add new custom Search Attributes.
+You can't rename or remove existing Search Attributes.
 
 :::
 
