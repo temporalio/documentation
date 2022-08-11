@@ -14,7 +14,7 @@ The command is entered in the following format:
 `tctl workflow run [modifiers]`
 
 **Note:** Start the Worker so the Workflow can make progress.
-(Run `make && ./bin/helloworld -m worker` in samples-go to start the worker)
+(Run `make && ./bin/helloworld -m worker` in [samples-go](https://github.com/temporalio/samples-go) to start the worker)
 
 The following are required parameters of the `tctl workflow run` command:
 
