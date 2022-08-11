@@ -11,7 +11,7 @@ tags:
 
 Alias: `asa`
 
-The `tctl admin cluster add-search-attributes` command allows Search Attributes to be added to a given Cluster.
+The `tctl admin cluster add-search-attributes` command allows Search Attributes to be added to a Cluster.
 Custom Search Attributes can be used to make a Cluster more identifiable.
 
 :::note

@@ -11,7 +11,7 @@ tags:
 
 > The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
 
-The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a given Cluster.
+The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a Cluster.
 This operation has no effect on Elasticsearch index schema.
 
 Use the following command to remove a [Search Attribute](/concepts/what-is-a-search-attribute) from a Cluster's metadata:
