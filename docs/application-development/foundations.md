@@ -32,7 +32,7 @@ You can interact with a Cluster through [Temporal Client](/temporal#temporal-cli
 
 There are four ways to quickly install and run a Temporal Cluster:
 
-- [Docker](#docker): Using Docker Compose makes it easy to develop your Temporal Application locally.
+- [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 - [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
@@ -448,7 +448,6 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 
 For more information, see the following:
 
-- [How to spawn a Workflow Execution in Java](#none)
 - [How to spawn a Workflow Execution in Java](#none)
 
 </TabItem>
