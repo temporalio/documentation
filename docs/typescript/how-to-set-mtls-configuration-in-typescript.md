@@ -11,18 +11,8 @@ tags:
 
 To set the mTLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with mTLS.
 
-```typescript
-const connection = await Connection.connect({
-  address: 'foo.bar.tmprl.cloud',
-  tls: {
-    clientCertPair: {
-      crt: clientCertPath,
-      key: clientKeyPath,
-    },
-  },
-});
-const client = new WorkflowClient({ connection, namespace: 'foo.bar' });
-```
+<!--SNIPSTART typescript-mtls-configuration-->
+<!--SNIPEND-->
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
 When signing up to Temporal Cloud, you should receive a Namespace, a Server address, and a Client certificate and key. Use the following environment variables to set up the sample:

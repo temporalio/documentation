@@ -11,16 +11,5 @@ tags:
 
 Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with mTLS.
 
-```go
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		return err
-	}
-	client, err := client.Dial(client.Options{
-		HostPort:  "foo.bar.tmprl.cloud:7233",
-		Namespace: "foo.bar",
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-```
+<!--SNIPSTART go-mtls-configuration-->
+<!--SNIPEND-->
