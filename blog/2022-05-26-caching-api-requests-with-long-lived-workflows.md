@@ -133,7 +133,7 @@ Following is the output of `start-workflow.ts`.
 Started workflow exchange-rates-workflow
 ```
 
-Once you have started the Workflow, you can execute a Query to get the latest exchange rates using the following `query-workflow.ts` script.
+After you start the Workflow, you can execute a Query to get the latest exchange rates using the following `query-workflow.ts` script.
 
 ```ts
 import { WorkflowClient } from '@temporalio/client';
