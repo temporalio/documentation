@@ -233,7 +233,9 @@ Workflow implementation
 </summary>
 
 <!--SNIPSTART typescript-timer-reminder-workflow-->
+
 [timer-examples/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/timer-examples/src/workflows.ts)
+
 ```ts
 export async function processOrderWorkflow({
   orderProcessingMS,
@@ -241,9 +243,11 @@ export async function processOrderWorkflow({
 }: ProcessOrderOptions): Promise<string> {
   let processing = true;
   // Dynamically define the timeout based on given input
-  const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>({
-    startToCloseTimeout: orderProcessingMS,
-  });
+  const { processOrder } = proxyActivities<ReturnType<typeof createActivities>>(
+    {
+      startToCloseTimeout: orderProcessingMS,
+    }
+  );
 
   const processOrderPromise = processOrder().then(() => {
     processing = false;
@@ -260,6 +264,7 @@ export async function processOrderWorkflow({
   return 'Order completed!';
 }
 ```
+
 <!--SNIPEND-->
 
 </details>

@@ -40,7 +40,9 @@ However, they differ from Activities in important ways:
 Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
+
 [packages/test/src/workflows/definitions.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/definitions.ts)
+
 ```ts
 import { Sinks } from '@temporalio/workflow';
 
@@ -50,6 +52,7 @@ export interface LoggerSinks extends Sinks {
   };
 }
 ```
+
 <!--SNIPEND-->
 
 **Implementing Sinks**
@@ -59,7 +62,9 @@ Implementing Sinks is a two-step process.
 Implement and inject the Sink function into a Worker
 
 <!--SNIPSTART typescript-logger-sink-worker-->
+
 [packages/test/src/worker/external-logger-example.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/worker/external-logger-example.ts)
+
 ```ts
 import { Worker, InjectedSinks } from '@temporalio/worker';
 import { LoggerSinks } from '../workflows';
@@ -92,6 +97,7 @@ main().then(
   }
 );
 ```
+
 <!--SNIPEND-->
 
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#sinks)
@@ -100,7 +106,9 @@ main().then(
 **Proxy and call a Sink function from a Workflow**
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
+
 [packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/log-sample.ts)
+
 ```ts
 import * as wf from '@temporalio/workflow';
 import { LoggerSinks } from './definitions';
@@ -111,6 +119,7 @@ export async function logSampleWorkflow(): Promise<void> {
   logger.info('Workflow execution started');
 }
 ```
+
 <!--SNIPEND-->
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:

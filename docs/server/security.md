@@ -92,7 +92,9 @@ The `Authorizer` has a single `Authorize` method which is invoked for each incom
 The `Authorize` method receives information about the API call and the role/permission claims of the caller.
 
 <!--SNIPSTART temporal-common-authorization-authorizer-interface-->
+
 [common/authorization/authorizer.go](https://github.com/temporalio/temporal/blob/master/common/authorization/authorizer.go)
+
 ```go
 // Authorizer is an interface for implementing authorization logic
 type Authorizer interface {
@@ -100,6 +102,7 @@ type Authorizer interface {
 }
 
 ```
+
 <!--SNIPEND-->
 
 `Authorizer` allows for a wide range of authorization logic, as information such as the call target, a set of role/permission claims, and any other data available to the system can be used in the authorization logic.
@@ -110,7 +113,9 @@ The following arguments must be passed to the `Authorize` method for example:
 - `authorization.CallTarget`: Target of the API call.
 
 <!--SNIPSTART temporal-common-authorization-authorizer-calltarget-->
+
 [common/authorization/authorizer.go](https://github.com/temporalio/temporal/blob/master/common/authorization/authorizer.go)
+
 ```go
 // CallTarget is contains information for Authorizer to make a decision.
 // It can be extended to include resources like WorkflowType and TaskQueue
@@ -125,6 +130,7 @@ type CallTarget struct {
 }
 
 ```
+
 <!--SNIPEND-->
 
 The `Authorize` method then returns one of two possible decisions within the `Result.Decision` field:
@@ -148,7 +154,9 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 This component is customizable and can be set via the `temporal.WithClaimMapper` [server option](/server/options/#withclaimmapper), enabling a wide range of options for interpreting a caller's identity.
 
 <!--SNIPSTART temporal-common-authorization-claimmapper-interface-->
+
 [common/authorization/claim_mapper.go](https://github.com/temporalio/temporal/blob/master/common/authorization/claim_mapper.go)
+
 ```go
 // ClaimMapper converts authorization info of a subject into Temporal claims (permissions) for authorization
 type ClaimMapper interface {
@@ -156,6 +164,7 @@ type ClaimMapper interface {
 }
 
 ```
+
 <!--SNIPEND-->
 
 A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JWT access token, such as membership in groups, and map them to Temporal roles for the user.
@@ -168,7 +177,9 @@ The `AuthInfo` struct that is passed to claim mapper's `GetClaims` method contai
 It also includes a pointer to the `pkix.Name` struct that contains a X.509 distinguishable name from the caller's mTLS certificate.
 
 <!--SNIPSTART temporal-common-authorization-authinfo-->
+
 [common/authorization/claim_mapper.go](https://github.com/temporalio/temporal/blob/master/common/authorization/claim_mapper.go)
+
 ```go
 // Authentication information from subject's JWT token or/and mTLS certificate
 type AuthInfo struct {
@@ -180,6 +191,7 @@ type AuthInfo struct {
 }
 
 ```
+
 <!--SNIPEND-->
 
 #### `Claims`
@@ -188,7 +200,9 @@ The `Claims` struct contains information about permission claims granted to the 
 The `Authorizer` assumes that the caller has been properly authenticated and trusts the `Claims` that are passed to it for making an authorization decision.
 
 <!--SNIPSTART temporal-common-authorization-claims-->
+
 [common/authorization/roles.go](https://github.com/temporalio/temporal/blob/master/common/authorization/roles.go)
+
 ```go
 // Claims contains the identity of the subject and subject's roles at the system level and for individual namespaces
 type Claims struct {
@@ -203,12 +217,15 @@ type Claims struct {
 }
 
 ```
+
 <!--SNIPEND-->
 
 `Role` is a bit mask that is a combination of one or more the role constants:
 
 <!--SNIPSTART temporal-common-authorization-role-enum-->
+
 [common/authorization/roles.go](https://github.com/temporalio/temporal/blob/master/common/authorization/roles.go)
+
 ```go
 // User authz within the context of an entity, such as system, namespace or workflow.
 // User may have any combination of these authz within each context, except for RoleUndefined, as a bitmask.
@@ -221,6 +238,7 @@ const (
 )
 
 ```
+
 <!--SNIPEND-->
 
 For example, a role can be set as
@@ -247,7 +265,9 @@ claimMapper := authorization.NewDefaultJWTClaimMapper(tokenKeyProvider, authCfg,
 To obtain public keys from issuers of JWT tokens and to refresh them over time, the default JWT ClaimMapper uses another pluggable component, the `TokenKeyProvider`.
 
 <!--SNIPSTART temporal-common-authorization-tokenkeyprovider-interface-->
+
 [common/authorization/token_key_provider.go](https://github.com/temporalio/temporal/blob/master/common/authorization/token_key_provider.go)
+
 ```go
 // Provides keys for validating JWT tokens
 type TokenKeyProvider interface {
@@ -266,6 +286,7 @@ type RawTokenKeyProvider interface {
 }
 
 ```
+
 <!--SNIPEND-->
 
 Temporal provides an implementation of the `TokenKeyProvider`, `rsaTokenKeyProvider`, that dynamically obtains public keys from specified issuers' URIs that adhere to the [JWK format](https://tools.ietf.org/html/rfc7517).
@@ -277,7 +298,9 @@ provider := authorization.NewRSAKeyProvider(cfg)
 Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only implements `RSAKey` and `Close` methods, and returns an error from `EcdsaKey` and `HmacKey` methods. It is configured via `config.Config.Global.Authorization.JWTKeyProvider`:
 
 <!--SNIPSTART temporal-common-service-config-jwtkeyprovider-->
+
 [common/config/config.go](https://github.com/temporalio/temporal/blob/master/common/config/config.go)
+
 ```go
 	// Contains the config for signing key provider for validating JWT tokens
 	JWTKeyProvider struct {
@@ -285,6 +308,7 @@ Note that the `rsaTokenKeyProvider` returned by `NewRSAKeyProvider` only impleme
 		RefreshInterval time.Duration `yaml:"refreshInterval"`
 	}
 ```
+
 <!--SNIPEND-->
 
 `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWK format](https://tools.ietf.org/html/rfc7517).

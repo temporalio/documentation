@@ -214,9 +214,13 @@ The main strategy is:
 Workflow Code:
 
 <!--SNIPSTART typescript-sticky-queues-workflow-->
+
 [activities-sticky-queues/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/workflows.ts)
+
 ```ts
-const { getUniqueTaskQueue } = proxyActivities<ReturnType<typeof createNonStickyActivities>>({
+const { getUniqueTaskQueue } = proxyActivities<
+  ReturnType<typeof createNonStickyActivities>
+>({
   startToCloseTimeout: '1 minute',
 });
 
@@ -224,7 +228,9 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
   for (let attempt = 1; attempt <= maxAttempts; ++attempt) {
     try {
       const uniqueWorkerTaskQueue = await getUniqueTaskQueue();
-      const activities = proxyActivities<ReturnType<typeof createStickyActivities>>({
+      const activities = proxyActivities<
+        ReturnType<typeof createStickyActivities>
+      >({
         taskQueue: uniqueWorkerTaskQueue,
         // Note the use of scheduleToCloseTimeout.
         // The reason this timeout type is used is because this task queue is unique
@@ -234,7 +240,10 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
       });
 
       const downloadPath = `/tmp/${uuid4()}`;
-      await activities.downloadFileToWorkerFileSystem('https://temporal.io', downloadPath);
+      await activities.downloadFileToWorkerFileSystem(
+        'https://temporal.io',
+        downloadPath
+      );
       try {
         await activities.workOnFileInWorkerFileSystem(downloadPath);
       } finally {
@@ -252,12 +261,15 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 Worker Code:
 
 <!--SNIPSTART typescript-sticky-queues-worker-->
+
 [activities-sticky-queues/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/worker.ts)
+
 ```ts
 async function run() {
   const uniqueWorkerTaskQueue = uuid();
@@ -277,6 +289,7 @@ async function run() {
   await Promise.all(workers.map((w) => w.run()));
 }
 ```
+
 <!--SNIPEND-->
 
 This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).

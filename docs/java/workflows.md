@@ -368,7 +368,9 @@ An asynchronous start initiates a Workflow execution and immediately returns to 
 This is the most common way to start Workflows in a live environment.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
+
 [src/main/java/moneytransferapp/InitiateMoneyTransfer.java](https://github.com/temporalio/money-transfer-project-template-java/blob/master/src/main/java/moneytransferapp/InitiateMoneyTransfer.java)
+
 ```java
 public class InitiateMoneyTransfer {
 
@@ -397,6 +399,7 @@ public class InitiateMoneyTransfer {
     }
 }
 ```
+
 <!--SNIPEND-->
 
 If you need to wait for the completion of a Workflow after an asynchronous start, the most straightforward way is to call the blocking Workflow instance again.
@@ -428,7 +431,9 @@ String result = workflowStub.getResult(String.class);
 A Synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the invocation process and will continue executing even if the waiting process crashes or was stopped.
 
 <!--SNIPSTART hello-world-project-template-java-workflow-initiator-->
+
 [src/main/java/helloworldapp/InitiateHelloWorld.java](https://github.com/temporalio/hello-world-project-template-java/blob/master/src/main/java/helloworldapp/InitiateHelloWorld.java)
+
 ```java
 package helloworldapp;
 
@@ -455,6 +460,7 @@ public class InitiateHelloWorld {
     }
 }
 ```
+
 <!--SNIPEND-->
 
 ### Recurring start

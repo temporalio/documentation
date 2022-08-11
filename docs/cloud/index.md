@@ -65,4 +65,3 @@ For example, for the Account Id `f45a2` and Namespace Name `accounting-productio
 
 A Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
 Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
-
