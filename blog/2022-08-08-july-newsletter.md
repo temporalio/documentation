@@ -9,7 +9,7 @@ author_title: CPO
 author_image_url: /img/people/charles.jpg
 ---
 
-> This newsletter was sent on July 29. [Subscribe](https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=3475f910fc) to receive future newsletters in your inbox.
+> This newsletter was sent on July 29.
 
 This month's newsletter features some exciting news and updates, including:
 
