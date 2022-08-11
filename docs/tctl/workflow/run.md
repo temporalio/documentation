@@ -16,7 +16,7 @@ The command is entered in the following format:
 **Note:** Start the Worker so the Workflow can make progress.
 (Run `make && ./bin/helloworld -m worker` in samples-go to start the worker)
 
-To run a Workflow, the user must specify the following:
+The following are required parameters of the `tctl workflow run` command:
 
 1. Task queue name (`--tq`)
 2. Workflow type (`--wt`)
