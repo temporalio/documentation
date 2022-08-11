@@ -14,7 +14,7 @@ tags:
 The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a given Cluster.
 This operation has no effect on Elasticsearch index schema.
 
-Use the following command to remove a <preview page={WhatIsASearchAttribute}>Search Attribute</preview> from a Cluster's metadata:
+Use the following command to remove a [Search Attribute](/concepts/what-is-a-search-attribute) from a Cluster's metadata:
 
 ```bash
 tctl admin cluster remove-search-attributes --name <SearchAttributeKey>
