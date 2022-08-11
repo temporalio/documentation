@@ -1,6 +1,6 @@
 ---
 id: observability
-title: Application development observability
+title: Application development - Observability
 sidebar_label: Observability
 description: The Observability section of the Temporal Application development guide covers the many ways to view the current state of your Temporal Application – that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 toc_max_heading_level: 4
