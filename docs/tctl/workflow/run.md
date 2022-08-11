@@ -27,7 +27,7 @@ To run a Workflow, the user must specify the following:
 tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 
 # view help messages for workflow run
-gtctl workflow run -h
+tctl workflow run -h
 ```
 
 Single quotes (`''`) are used to wrap input as JSON.
