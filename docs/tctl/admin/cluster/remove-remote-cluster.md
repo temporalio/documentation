@@ -1,7 +1,7 @@
 ---
 id: remove-remote-cluster
-title: tctl admin cluster remove-remote-cluster
-sidebar_label: remove-remote-cluster
+title: tctl admin cluster remove_remote_cluster
+sidebar_label: remove_remote_cluster
 description: Removing remote Clusters.
 tags:
   - reference
@@ -9,7 +9,9 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster remove-remote-cluster` command removes remote Cluster information on the given Cluster.
+The `tctl admin cluster remove_remote_cluster` command removes remote Cluster information on the given Cluster.
+
+Alias: `rrc`
 
 The modifier below changes the behavior of the operation:
 
