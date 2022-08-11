@@ -353,7 +353,7 @@ module.exports = {
               },
               items: [
                 "tctl/cluster/health",
-                "tctl/cluster/list-search-attributes",
+                "tctl/cluster/get-search-attributes",
               ],
             },
             {
