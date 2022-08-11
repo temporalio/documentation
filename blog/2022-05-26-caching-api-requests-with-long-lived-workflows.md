@@ -77,7 +77,7 @@ type ExchangeRatesType = { [key: string]: number };
 export const getExchangeRatesQuery = defineQuery<ExchangeRatesType | undefined, [string]>('getExchangeRates');
 
 export async function exchangeRatesWorkflow(): Promise<void> {
-  let rates: ExchangeRatesType | undefined = null;
+  let rates: ExchangeRatesType | undefined = undefined;
 
   // Register a query handler that allows querying for the current rates
   setHandler(getExchangeRatesQuery, () => rates);
