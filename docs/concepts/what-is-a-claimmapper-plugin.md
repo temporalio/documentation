@@ -94,7 +94,7 @@ This can be one of Temporal's four values:
 - worker
 - admin
 
-Multiple permissions for the same namespace will be overriden by the `ClaimMapper`.
+Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 
 ##### Example of a JWT payload for The Default JWT ClaimMapper
 
