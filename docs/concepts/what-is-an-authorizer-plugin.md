@@ -17,7 +17,7 @@ The following arguments must be passed to the Authorizer:
 - `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is described in the [`Claims`](#claims) section earlier on this page.
 - `authorization.CallTarget`: Target of the API call.
 
-Authorizer then returns one of two decisions:
+`Authorizer` then returns one of two decisions:
 
 - `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
 - `DecisionAllow`: the requested API call is invoked.
