@@ -25,7 +25,7 @@ The subject information from the caller's mTLS certificate can also be a paramet
 `AuthInfo` is a struct that is passed to `GetClaims`. `AuthInfo` contains an authorization token extracted from the `authorization` header of the gRPC request.
 
 `AuthInfo` includes a pointer to the `pkix.Name` struct.
-This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) distinguishable name from the caller's mTLS certificate.
+This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) Distinguished Name from the caller's mTLS certificate.
 
 #### `Claims`
 
