@@ -17,8 +17,8 @@ role := authorization.RoleReader | authorization.RoleWriter
 `GetClaims` is customizable and can be modified with the `temporal.WithClaimMapper` server option.
 Temporal also offers a default JWT `ClaimMapper` for your use.
 
-A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JSON Web Token (JWT), such as membership in groups, and map them to Temporal roles for the user.
-The subject information from the caller's TLS certificate can also be a parameter in determining roles.
+A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JWT, such as membership in groups, and map them to Temporal roles for the user.
+The subject information from the caller's mTLS certificate can also be a parameter in determining roles.
 
 #### `AuthInfo`
 
