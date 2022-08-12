@@ -3,7 +3,8 @@ id: how-to-manage-namespaces-in-temporal-cloud
 title: How to manage Namespaces in Temporal Cloud
 sidebar_label: Manage Namespaces
 description: Use Namespace endpoints for access; use tcld to obtain Namespace information.
-tags: how-to
+tags:
+  - how-to
 ---
 
 To create a [Namespace](/namespaces) in Temporal Cloud, see the following topics:

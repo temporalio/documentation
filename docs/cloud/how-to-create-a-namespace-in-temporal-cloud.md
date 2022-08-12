@@ -3,7 +3,8 @@ id: how-to-create-a-namespace-in-temporal-cloud
 title: How to create a Namespace in Temporal Cloud
 sidebar_label: Create a Namespace
 description: To create a Namespace in Temporal Cloud, use either Temporal Web UI or tcld.
-tags: how-to
+tags:
+  - how-to
 ---
 
 :::info

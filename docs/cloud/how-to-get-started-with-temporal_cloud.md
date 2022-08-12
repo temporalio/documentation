@@ -3,7 +3,8 @@ id: how-to-get-started-with-temporal-cloud
 title: How to get started with Temporal Cloud
 sidebar_label: Get started
 description: Create an account, get certificates, create a Namespace, and invite users.
-tags: how-to
+tags:
+  - how-to
 ---
 
 <!--- Onboarding guide for Temporal Cloud --->

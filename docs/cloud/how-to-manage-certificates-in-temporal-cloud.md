@@ -3,7 +3,8 @@ id: how-to-manage-certificates-in-temporal-cloud
 title: How to manage certificates in Temporal Cloud
 sidebar_label: Certificates
 description: Access to Temporal Cloud requires a certificate from you.
-tags: how-to
+tags:
+  - how-to
 ---
 
 Access to Temporal Cloud is secured with the mutual Transport Layer Security (mTLS) protocol.
