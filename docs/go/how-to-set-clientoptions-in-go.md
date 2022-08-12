@@ -136,3 +136,5 @@ Set to induce artificial failures in test scenarios
 - Type: `TrafficController`
 
 ### Interceptors
+
+Grpc interceptors which will be applied to every RPC call performed by this connection. By default, an interceptor will be included which automatically retries retryable errors. If you do not wish to perform automatic retries, set this to an empty list (or a list with your own interceptors).
