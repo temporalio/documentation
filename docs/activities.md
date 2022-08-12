@@ -2,7 +2,7 @@
 id: activities
 title: Activities
 sidebar_label: Activities
-description: This guide is meant to be a comprehensive overview of Temporal Activities.
+description: This guide provides a comprehensive overview of Temporal Activities.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to be a comprehensive overview of Temporal Activities.
+This guide provides a comprehensive overview of Temporal Activities.
 
 In day-to-day conversations, the term _Activity_ frequently denotes either an [Activity Definition](#activity-definition), an [Activity Type](#activity-type), or an [Activity Execution](#activity-execution).
 Temporal documentation aims to be explicit and differentiate between them.

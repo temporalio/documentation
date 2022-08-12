@@ -23,7 +23,7 @@ The following sample demonstrates how to use `SideEffect`:
 use Temporal\Workflow;
 
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     #[Workflow\WorkflowMethod]
     public function run()
