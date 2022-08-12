@@ -14,7 +14,7 @@ In the following example, the role is assigned constants that allow the caller t
 role := authorization.RoleReader | authorization.RoleWriter
 ```
 
-`GetClaims` is customizable, and can be modified with the `temporal.WithClaimMapper` server option.
+`GetClaims` is customizable and can be modified with the `temporal.WithClaimMapper` server option.
 Temporal also offers a default JWT `ClaimMapper` for your use.
 
 A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JSON Web Token (JWT), such as membership in groups, and map them to Temporal roles for the user.
