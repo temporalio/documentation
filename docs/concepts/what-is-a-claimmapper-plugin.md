@@ -96,7 +96,7 @@ This can be one of Temporal's four values:
 
 Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 
-##### Example of a JWT payload for The Default JWT ClaimMapper
+##### Example of a payload for the default JWT ClaimMapper
 
 ```
 {
