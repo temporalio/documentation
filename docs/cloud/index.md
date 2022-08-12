@@ -25,15 +25,33 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
+## How to
+
+- [Get started with Temporal Cloud](/cloud/how-to-get-started-with-temporal-cloud)
 - [Manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud)
-- [Temporal Cloud release notes](/cloud/release-notes)
-- [Upgrade policy](/cloud/upgrade-policy-for-temporal-cloud)
+- [Manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificate-filters-in-temporal-cloud)
+- [Create a Namespace in Temporal Cloud](/cloud/how-to-create-a-namespace-in-temporal-cloud)
+- [Manage Namespaces in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud)
 
 ## Tools
 
-- [What is tcld?](/cloud/tcld)
-- [How to install tcld](/cloud/tcld/how-to-install-tcld)
-- [tcld commands](/cloud/tcld/#tcld-commands)
+- [Temporal Cloud CLI (tcld)](/cloud/tcld)
+- [Temporal Web UI](/web-ui)
+
+## Information
+
+- [Account-level Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud)
+- [Namespace-level permissions](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud)
+- [Temporal Cloud release notes](/cloud/release-notes)
+
+## Upgrade policy
+
+All customers will automatically be upgraded to the latest minor version.
+
+Maintenance support, for major versions, will be provided for at least 18 months after a GA release, and there will be at least 6 months' notice before EOL/deprecating support.
+
+This versioning policy is intended to serve as a minimum set of guidelines for customers who rely on us for their critical business operations.
+If you have any further questions, please do not hesitate to reach out via community or customer channels.
 
 ## Cloud Namespace
 
@@ -63,3 +81,4 @@ For example, for the Account Id `f45a2` and Namespace Name `accounting-productio
 
 A Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
 Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
+
