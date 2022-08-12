@@ -67,7 +67,7 @@
           "path": "concept-context/cluster-plugins"
         },
         {
-          "header": "Claim Mapper",
+          "header": "ClaimMapper",
           "type": "explanation",
           "path": "concepts/what-is-a-claimmapper-plugin"
         },
