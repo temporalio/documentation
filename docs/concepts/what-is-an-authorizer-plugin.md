@@ -24,7 +24,7 @@ The following arguments must be passed to the Authorizer:
 
 :::warning
 
-Authorizer allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
+`Authorizer` allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
 
 :::
 
