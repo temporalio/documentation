@@ -279,7 +279,7 @@ A `sql` data store definition can contain the following values:
 
 #### tls
 
-The `tls` and `mtls` sections may contain:
+The `tls` and `mtls` sections can contain the following values:
 
 - `enabled` - _boolean_.
 - `serverName` - name of the server hosting the data store.
