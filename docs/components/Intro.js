@@ -545,9 +545,7 @@ function Explained() {
           </a>
           <div className="badge-blue">early access</div>
         </div>
-        <p className="landing-card-p">
-          Temporal Cloud tools and how-to guides
-        </p>
+        <p className="landing-card-p">Temporal Cloud tools and how-to guides</p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listTwo)}</ul>
       </div>

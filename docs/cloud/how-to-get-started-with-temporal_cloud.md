@@ -33,16 +33,18 @@ If you prefer to use SAML, contact Temporal Sales.
 :::
 
 1. Gather the following information:
-  - Email address
-  - Company name (the legal entity name for your company)
-  - Address of your company headquarters
-  - Name and email address of billing contact
-  - Credit card information, including billing address if not the same as the company address
-  - Optional
-    - Preferred Temporal Cloud domain
-    - Industry category
+
+- Email address
+- Company name (the legal entity name for your company)
+- Address of your company headquarters
+- Name and email address of billing contact
+- Credit card information, including billing address if not the same as the company address
+- Optional
+  - Preferred Temporal Cloud domain
+  - Industry category
+
 1. Create a Zendesk ticket to request a new account.
-  (We are working to make self-serve account creation available.)
+   (We are working to make self-serve account creation available.)
 
 ## 2. Get CA certificates
 
@@ -86,10 +88,10 @@ Each user can be assigned permissions for individual Namespaces.
 1. On the **Settings** page, click **Create Users** in the upper-right portion of the window.
 1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
 1. In **Account-Level Role**, select a [Role](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud).
-  The Role applies to all users whose email addresses appear in **Email Addresses**.
+   The Role applies to all users whose email addresses appear in **Email Addresses**.
 1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
-  To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud).
-  Repeat as needed.
+   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud).
+   Repeat as needed.
 1. When all permissions are assigned, click **Send Invite**.
 
 Temporal sends an email message to each user.
