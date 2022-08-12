@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-executions) that executes an [Activity](/activities#activity-execution).
+The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-executions) that executes an [Activity](/activities#activity-execution).
 
 :::info WORK IN PROGRESS
 
