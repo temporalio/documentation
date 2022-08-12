@@ -102,7 +102,7 @@ For more information on mTLS configuration, refer to our [TLS configuration guid
 
 ### Auth
 
-**Authentication** is the process of verifying users that wish to access your application are actually the users you want accessing it.
+**Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
 **Authorization** is the verification of applications and data that a user on your Cluster or application has access to.
 
 Temporal has several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
