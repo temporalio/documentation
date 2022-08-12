@@ -46,7 +46,7 @@ To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMap
 
 The code for the default `ClaimMapper` can also be used to build a custom `ClaimMapper`.
 
-#### Token Key Provider
+#### Token key provider
 
 A `TokenKeyProvider` obtains public keys from specified issuers' URIs that adhere to a specific format.
 The default JWT `ClaimMapper` uses this component to obtain and refresh public keys over time.
