@@ -8,7 +8,7 @@ sidebar_label: What is a ClaimMapper Plugin?
 This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
 
 A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
-In the example below, the role is assigned constants that allow the caller to read and write information.
+In the following example, the role is assigned constants that allow the caller to read and write information.
 
 ```go
 role := authorization.RoleReader | authorization.RoleWriter
