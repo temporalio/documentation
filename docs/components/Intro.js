@@ -349,9 +349,36 @@ const clusterGuide = {
 const cloudInfo = {
   listOne: [
     {
+      book: true,
+      path: "/cloud/how-to-get-started-with-temporal-cloud",
+      name: "Get started",
+    },
+    {
+      book: true,
+      path: "/cloud/how-to-manage-certificates-in-temporal-cloud",
+      name: "Manage certificates",
+    },
+    {
+      book: true,
+      path: "/cloud/how-to-manage-certificate-filters-in-temporal-cloud",
+      name: "Manage certificate filters",
+    },
+  ],
+  listTwo: [
+    {
+      book: true,
+      path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
+      name: "Manage certificates",
+    },
+    {
       cli: true,
       path: "/cloud/tcld",
       name: "tcld",
+    },
+    {
+      exit: true,
+      path: "/cloud/release-notes",
+      name: "Release notes",
     },
   ],
 };
@@ -519,9 +546,10 @@ function Explained() {
           <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">
-          Tools and Temporal Cloud service information.
+          Temporal Cloud tools and how-to guides
         </p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(cloudInfo.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <h2 className="h2-landing">Devtools</h2>
