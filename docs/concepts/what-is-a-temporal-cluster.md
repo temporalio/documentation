@@ -96,7 +96,7 @@ Specify the `serverName` in the `client` section of your mTLS configuration to p
 Entering a value for `serverName` enables established connections to authenticate the endpoint.
 This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
 
-This measure can be taken for `internode` and `frontend` endpoints.
+This measure can be used for `internode` and `frontend` endpoints.
 
 For more information on mTLS configuration, refer to our [TLS configuration guide](/references/configuration#tls).
 
