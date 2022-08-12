@@ -77,7 +77,7 @@ import ParentClosePolicy from './how-to-set-a-parent-close-policy-in-java.md'
 ```java
  private void parentWorkflow() {
         ChildWorkflowOptions options = ChildWorkflowOptions.newBuilder()
-        .setWorkflowId("MyWorkflowId")
+        .setWorkflowId("YourWorkflowId")
         .setWorkflowRunTimeout(Duration.ofSeconds(5))
         .setWorkflowIdReusePolicy(
                 WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_REJECT_DUPLICATE

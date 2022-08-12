@@ -30,7 +30,7 @@ import {
 // to get a type safe child WorkflowHandle
 export type JavaWorkflow = () => Promise<void>;
 
-async function myWorkflow(): Promise<void> {
+async function yourWorkflow(): Promise<void> {
   try {
     await executeChild<JavaWorkflow>('RunAnActivityWorkflow');
   } catch (err) {
@@ -122,7 +122,10 @@ import {
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 
-export function myWorkflow(urls: string[], timeoutMs: number): Promise<any[]> {
+export function yourWorkflow(
+  urls: string[],
+  timeoutMs: number
+): Promise<any[]> {
   const { httpGetJSON } = proxyActivities<typeof activities>({
     scheduleToCloseTimeout: timeoutMs,
   });

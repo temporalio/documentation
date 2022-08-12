@@ -2,7 +2,7 @@
 id: visibility
 title: Visibility
 sidebar_label: Visibility
-description: This guide is meant to be a comprehensive overview of Temporal Visibility.
+description: This guide provides a comprehensive overview of Temporal Visibility.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to be a comprehensive overview of Temporal Visibility.
+This guide provides a comprehensive overview of Temporal Visibility.
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 

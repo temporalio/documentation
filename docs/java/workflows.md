@@ -58,7 +58,7 @@ public interface FileProcessingWorkflow {
 }
 ```
 
-The `@WorkflowMethod` annotation has a `name` parameter, for example: `@WorkflowMethod(name = "MyWorkflowType")`.
+The `@WorkflowMethod` annotation has a `name` parameter, for example: `@WorkflowMethod(name = "YourWorkflowType")`.
 It can be used to denote the Workflow type. If not set, the Workflow type defaults to the short name of the Workflow interface,
 in the example above being `FileProcessingWorkflow`.
 Methods annotated with `@WorkflowMethod` can have any number of parameters.
@@ -422,7 +422,7 @@ Workflow.continueAsNew(input1, ...);
 ```
 
 It is also possible to continue execution as a completely different Workflow type.
-In a Workflow class called `MyWorkflow` for example, we can create a Workflow Stub with a different type and
+In a Workflow class called `YourWorkflow` for example, we can create a Workflow Stub with a different type and
 call its Workflow method to continue execution as that type:
 
 ```java

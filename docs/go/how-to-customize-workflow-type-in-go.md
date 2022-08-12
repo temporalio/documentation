@@ -17,7 +17,7 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := workflow.RegisterOptions{
-  Name: "CoolWorkflowTypeName",
+  Name: "YourWorkflowName",
   // ...
 }
 w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)

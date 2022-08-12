@@ -281,7 +281,9 @@ async function frontmatter(guide_config) {
     guide_string = `${guide_string}import Tabs from '@theme/Tabs';\n`;
     guide_string = `${guide_string}import TabItem from '@theme/TabItem';\n\n`;
   }
-  guide_string = `${guide_string}${guide_config.description}\n\n`;
+  if (guide_config.use_description) {
+    guide_string = `${guide_string}${guide_config.description}\n\n`;
+  }
   return guide_string;
 }
 
