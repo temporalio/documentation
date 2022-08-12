@@ -28,7 +28,7 @@ Authorizer allows all API calls pass by default. Disable the `nopAuthority` auth
 
 :::
 
-Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/server/options#withauthorizer).
+Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/server/options#withauthorizer) server option.
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 
