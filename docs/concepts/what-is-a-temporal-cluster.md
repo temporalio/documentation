@@ -74,7 +74,8 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 
 Temporal supports Mutual Transport Layer Security (mTLS) as a method of encrypting network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
 
-Mutual TLS can be enabled in Temporal’s [TLS configuration](/references/configuration#tls). This configuration can be passed along through WithConfig or WithConfigLoader.
+Mutual TLS can be enabled in Temporal’s [TLS configuration](/references/configuration#tls).
+This configuration can be passed through `WithConfig` or `WithConfigLoader`.
 
 This configuration includes two sections that serve to separate intra-cluster and external traffic. That way, different certificates and settings can be used to encrypt each section of traffic:
 
