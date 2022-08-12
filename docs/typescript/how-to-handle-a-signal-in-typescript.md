@@ -14,7 +14,7 @@ tags:
 ```ts
 import { setHandler } from '@temporalio/workflow';
 
-export async function myWorkflow() {
+export async function yourWorkflow() {
   const groups = new Map<string, Set<string>>();
 
   setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {

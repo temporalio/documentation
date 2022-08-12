@@ -65,7 +65,7 @@ The following example shows how to set Activity options for Activity Types with 
                                                 .build()))
                         .build();
 // ...
-worker.registerWorkflowImplementationTypes(options, MyWorkflowImpl.class);
+worker.registerWorkflowImplementationTypes(options, YourWorkflowImpl.class);
 ```
 
 For more details, see [Activity Options Reference](/java/reference-activityoptions).
