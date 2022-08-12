@@ -112,7 +112,7 @@ Server attacks can be prevented by specifying `serverName` in the `client` secti
 This can be done for both `frontend` and `internode` endpoints.
 
 Client connections can be restricted to certain endpoints by requiring certificates from a specific CA.
-Modify the `clientCaFiles`,  `clientCaData`, and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
+Modify the `clientCaFiles`, `clientCaData`, and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
 
 User access can be restricted through extensibility points and plugins.
 When implemented, the `frontend` invokes the plugin before executing the requested operation.
