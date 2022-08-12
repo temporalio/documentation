@@ -27,7 +27,7 @@ const createActivities = (envVars: { apiKey: string }) => ({
   async sendNotificationEmail(): Promise<void> {
     // ...
     await axios({
-      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: 'post',
       params: { to, from, subject, html },
       auth: {
@@ -59,7 +59,7 @@ const createActivities = (envVars: EnvVars) => ({
   async sendNotificationEmail(apiKey: string): Promise<void> {
     // ...
     await axios({
-      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: 'post',
       params: { to, from, subject, html },
       auth: {
@@ -80,7 +80,7 @@ const { sendNotificationEmail } = proxyActivities({
   startToCloseTimeout: '1m',
 });
 
-async function myWorkflow() {
+async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
     throw new Error('missing env var apiKey');

@@ -148,7 +148,7 @@ As you customize your Workflow errors to be more descriptive, advanced users wil
 
 ## How to register an Activity on a Worker
 
-All activities must be registered by a Worker, or you will get an error that looks like `"Activity function myActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
+All activities must be registered by a Worker, or you will get an error that looks like `"Activity function yourActivity is not registered on this Worker"` when you try to invoke it from a Workflow.
 
 ```ts
 import { Worker } from '@temporalio/worker';
@@ -389,7 +389,7 @@ const { getEnvVar } = workflow.proxyLocalActivities({
   startToCloseTimeout: '2 seconds',
 });
 
-export async function myWorkflow(): Promise<void> {
+export async function yourWorkflow(): Promise<void> {
   const someSetting = await getEnvVar('SOME_SETTING');
   // ...
 }

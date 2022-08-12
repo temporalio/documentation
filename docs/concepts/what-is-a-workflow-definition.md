@@ -80,11 +80,11 @@ For example, a Workflow Definition can not have inline logic that branches (emit
 In the representative pseudocode below, the `local_clock()` function returns the local time, rather than Temporal-defined time:
 
 ```text
-fn my_workflow() {
+fn your_workflow() {
   if local_clock().is_before("12pm") {
     await workflow.sleep(duration_until("12pm"))
   } else {
-    await my_afternoon_activity()
+    await your_afternoon_activity()
   }
 }
 ```
