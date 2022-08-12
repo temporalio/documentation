@@ -21,10 +21,10 @@ The https://github.com/temporalio/samples-server repo offers two examples, which
 
 ## Encryption in transit with mTLS
 
-Temporal supports Mutual TLS (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a cluster.
+Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a Cluster.
 Self-signed or properly minted certificates can be used for mTLS.
-Mutual TLS is set in Temporal's [TLS configuration](/references/configuration/#tls).
-The configuration includes two sections such that intra-cluster and external traffic can be encrypted with different sets of certificates and settings:
+mTLS is set in Temporal's [TLS configuration](/references/configuration/#tls).
+The configuration includes two sections such that intra-Cluster and external traffic can be encrypted with different sets of certificates and settings:
 
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
@@ -58,7 +58,7 @@ There are a few authentication protocols available to prevent unwanted access su
 ### Servers
 
 To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) you can specify the `serverName` in the `client` section of your respective mTLS configuration.
-This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting client has the given server name in its CN property.
+This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the appropriate server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
 More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/main/tls) and you can reach out to us for further guidance.

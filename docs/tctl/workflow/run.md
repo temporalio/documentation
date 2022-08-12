@@ -8,9 +8,22 @@ tags:
   - tctl
 ---
 
-The `tctl workflow run` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and can show Workflow progress.
+The `tctl workflow run` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and can show the progress of a Workflow Execution.
+The command is entered in the following format:
 
-`tctl workflow run [<modifiers>]`
+`tctl workflow run [modifiers]`
+
+To run a Workflow, the user must specify the following:
+
+- Task queue name (`--tq`)
+- Workflow type (`--wt`)
+
+```bash
+tctl workflow run --tq your-task-queue-name --wt YourWorkflowDefinitionName
+```
+
+Single quotes (`''`) are used to wrap input as JSON.
+This command doesn't finish until the Workflow completes.
 
 The following modifiers control the behavior of the command.
 

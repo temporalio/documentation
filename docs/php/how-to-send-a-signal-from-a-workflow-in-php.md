@@ -7,7 +7,7 @@ sidebar_label: Signal a Workflow
 To send signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->start($workflow);
 
@@ -22,6 +22,6 @@ Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRun
 Signals to a running Workflow.
 
 ```php
-$workflow = $workflowClient->newRunningWorkflowStub(MyWorkflow::class, 'workflowID');
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
 $workflow->setValue(true);
 ```
