@@ -93,7 +93,8 @@ These properties can be specified in both the `internode` and `frontend` section
 
 Specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
-Entering a value for `serverName` enables established connections to authenticate the endpoint. This ensures that the server certificate presented to any connected client has the given server name in its CN property.
+Entering a value for `serverName` enables established connections to authenticate the endpoint.
+This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
 
 This measure can be taken for `internode` and `frontend` endpoints.
 
