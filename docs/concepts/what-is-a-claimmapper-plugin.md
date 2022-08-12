@@ -53,7 +53,7 @@ The default JWT `ClaimMapper` uses this component to obtain and refresh public k
 
 Temporal provides an `rsaTokenKeyProvider`.
 This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517).
-`rsaTokenKeyProvider` will only use the `RSAKey` and `Close` methods.
+`rsaTokenKeyProvider` uses only the `RSAKey` and `Close` methods.
 
 ```go
 provider := authorization.NewRSAKeyProvider(cfg)
