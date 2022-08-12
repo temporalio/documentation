@@ -14,7 +14,7 @@ Authorizer allows for a wide range of authorization logic, including call target
 The following arguments must be passed to the Authorizer:
 
 - `context.Context`: General context of the call.
-- `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is [described below](#claims).
+- `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is described in the [`Claims`](#claims) section earlier on this page.
 - `authorization.CallTarget`: Target of the API call.
 
 Authorizer then returns one of two decisions:
