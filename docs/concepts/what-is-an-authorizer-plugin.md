@@ -7,11 +7,11 @@ sidebar_label: What is an Authorizer Plugin?
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
 `Authorize` receives information about the API call, along with the role and permission claims of the caller.
 
-Authorizer allows for a wide range of authorization logic, including call target, role/permissions claims, and other data available to the system.
+`Authorizer` allows for a wide range of authorization logic, including call target, role/permissions claims, and other data available to the system.
 
 #### Configuration
 
-The following arguments must be passed to the Authorizer:
+The following arguments must be passed to `Authorizer`:
 
 - `context.Context`: General context of the call.
 - `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is described in the [`Claims`](#claims) section earlier on this page.
