@@ -1,8 +1,8 @@
 ---
 id: foundations
-title: Application development foundations
+title: Application development - Foundations
 sidebar_label: Foundations
-description: This section covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This section covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-executions) that executes an [Activity](/activities#activity-execution).
 
 :::info WORK IN PROGRESS
 
@@ -23,7 +23,16 @@ If you can't find what you are looking for in the Application development guide,
 
 :::
 
-Before you can begin implementing your Temporal application, you should run a Cluster to interact with your application. Choose one of the following methods to run a Temporal Cluster.
+In this section you can find the following:
+
+- [How to run a dev Cluster](#run-a-dev-cluster)
+- [How to add your SDK](#add-your-sdk)
+- [How to create a Temporal Client](#create-temporal-clients)
+- [How to develop a Workflow](#develop-workflows)
+- [How to develop an Activity](#develop-activities)
+- [How to start an Activity Execution](#start-activity-execution)
+- [How to run a Worker Process](#run-worker-processes)
+- [How to start a Workflow Execution](#start-workflow-execution)
 
 ## Run a dev Cluster
 
@@ -32,7 +41,7 @@ You can interact with a Cluster through [Temporal Client](/temporal#temporal-cli
 
 There are four ways to quickly install and run a Temporal Cluster:
 
-- [Docker](#docker): Using Docker Compose makes it easy to develop your Temporal Application locally.
+- [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 - [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
@@ -194,7 +203,7 @@ Both TypeScript and JavaScript can be used with the TypeScript SDK.
 **Create a new project**
 
 ```bash
-npx @temporalio/create@latest ./my-app
+npx @temporalio/create@latest ./your-app
 ```
 
 **Add to an existing project**
@@ -401,7 +410,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
 
-For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal Frontend service.
+For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal Frontend Service.
 
 If your server is running on a different host or port from the default, you can set it as shown in the following example.
 
@@ -413,7 +422,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
 
 ```
 
-After the connection to the Temporal frontend service is established, create a Client for the service stub.
+After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
 The Workflow Client helps with client-side APIs and is required by Workers.
 
 Create an instance of a `WorkflowClient` for the Workflow service stub, and use `WorkflowClientOptions` to set options for the Workflow Client.
@@ -448,7 +457,6 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 
 For more information, see the following:
 
-- [How to spawn a Workflow Execution in Java](#none)
 - [How to spawn a Workflow Execution in Java](#none)
 
 </TabItem>
@@ -1005,7 +1013,7 @@ import { example } from './workflows';
 ...
 await client.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
-  taskQueue: 'my-queue',
+  taskQueue: 'your-queue',
   workflowId: 'business-meaningful-id',
 });
 ```
@@ -1183,7 +1191,7 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := workflow.RegisterOptions{
-  Name: "CoolWorkflowTypeName",
+  Name: "YourWorkflowName",
   // ...
 }
 w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
@@ -1840,7 +1848,7 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
-  Name: "CoolActivityTypeName",
+  Name: "YourActivityName",
   // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
@@ -2611,7 +2619,7 @@ $factory->run();
 You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
 
 ```php
-$worker = $factory->newWorker('my-task-queue');
+$worker = $factory->newWorker('your-task-queue');
 ```
 
 As mentioned above you can create as many Task Queue connections inside a single Worker Process as you need.
@@ -2622,7 +2630,7 @@ To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 use Temporal\Worker\WorkerOptions;
 
 $worker = $factory->newWorker(
-    'my-task-queue',
+    'your-task-queue',
     WorkerOptions::new()
         ->withMaxConcurrentWorkflowTaskPollers(10)
 );
@@ -3350,7 +3358,7 @@ import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
 const client = new WorkflowClient({connection});
-const result = await client.execute(myWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: "your-task-queue", // required
   workflowId: "your-workflow-id", // required
 });

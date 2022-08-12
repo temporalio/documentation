@@ -83,13 +83,13 @@ The Temporal Server consists of four independently scalable services:
 - Frontend gateway: for rate limiting, routing, authorizing.
 - History subsystem: maintains data (mutable state, queues, and timers).
 - Matching subsystem: hosts Task Queues for dispatching.
-- Worker service: for internal background Workflows.
+- Worker Service: for internal background Workflows.
 
-For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker services per cluster.
+For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per cluster.
 
 The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments, we recommend that each service runs independently, because each one has different scaling requirements and troubleshooting becomes easier.
-The History, Matching, and Worker services can scale horizontally within a Cluster.
+The History, Matching, and Worker Services can scale horizontally within a Cluster.
 The Frontend Service scales differently than the others because it has no sharding or partitioning; it is just stateless.
 
 Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
@@ -134,12 +134,12 @@ The Frontend Service has access to the hash rings that maintain service membersh
 
 Inbound call rate limiting is applied per host and per namespace.
 
-The Frontend service talks to the Matching service, History service, Worker service, the database, and Elasticsearch (if in use).
+The Frontend Service talks to the Matching Service, History Service, Worker Service, the database, and Elasticsearch (if in use).
 
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership-related communication.
 
-#### History service
+#### History Service
 
 The History Service tracks the state of Workflow Executions.
 
@@ -157,12 +157,12 @@ A History shard maintains four types of queues:
 - Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
 - Visibility queue: pushes data to the visibility index (Elasticsearch).
 
-The History service talks to the Matching Service and the Database.
+The History Service talks to the Matching Service and the database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.
 
-#### Matching service
+#### Matching Service
 
 The Matching Service is responsible for hosting Task Queues for Task dispatching.
 
@@ -171,18 +171,18 @@ The Matching Service is responsible for hosting Task Queues for Task dispatching
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
 
-It talks to the Frontend service, History service, and the database.
+It talks to the Frontend Service, History Service, and the database.
 
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
 
-#### Worker service
+#### Worker Service
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
 ![Worker Service](/diagrams/temporal-worker-service.svg)
 
-It talks to the Frontend service.
+It talks to the Frontend Service.
 
 - It uses port 6939 for membership-related communication.
 

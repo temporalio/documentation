@@ -112,7 +112,7 @@ Workflow interceptor registration is different from the other interceptors becau
 At the time of construction, the Workflow Context is already initialized for the current Workflow.
 Use [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) to add Workflow specific information in the interceptor.
 
-`src/workflows/my-interceptors.ts`
+`src/workflows/your-interceptors.ts`
 
 ```ts
 import { workflowInfo } from '@temporalio/workflow';
@@ -129,7 +129,7 @@ export const interceptors = () => ({
 const worker = await Worker.create({
   workflowsPath: require.resolve('./workflows'),
   interceptors: {
-    workflowModules: [require.resolve('./workflows/my-interceptors')],
+    workflowModules: [require.resolve('./workflows/your-interceptors')],
   },
 });
 ```

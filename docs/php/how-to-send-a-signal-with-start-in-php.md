@@ -9,7 +9,7 @@ If a running Workflow exists, the `startwithSignal` API sends the Signal.
 If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->startWithSignal(
     $workflow,
