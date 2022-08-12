@@ -109,7 +109,7 @@ The `m3` sections supports the following settings:
 ### tls
 
 The `tls` section controls the SSL/TLS settings for network communication and contains two subsections, `internode` and `frontend`.
-The `internode` section governs internal service communication among roles where the `frontend` governs SDK client communication to the frontend service role.
+The `internode` section governs internal service communication among roles where the `frontend` governs SDK client communication to the Frontend Service role.
 
 Each of these subsections contain a `server` section and a `client` section.
 The `server` contains the following parameters:
@@ -142,7 +142,7 @@ Note, the `client` section generally needs to be provided to specify an expected
 You can avoid specifying this if your server certificates contain the appropriate IP Subject Alternative Names.
 
 Additionally, the `rootCaFiles` field needs to be provided when the client's host does not trust the Root CA used by the server.
-The example below extends the above example to manually specify the Root CA used by the frontend services:
+The example below extends the above example to manually specify the Root CA used by the Frontend Services:
 
 ```yaml
 global:
