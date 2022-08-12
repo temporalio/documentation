@@ -1,8 +1,8 @@
 ---
 id: foundations
-title: Application development foundations
+title: Application development - Foundations
 sidebar_label: Foundations
-description: This section covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This section covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application) – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-executions) that executes an [Activity](/activities#activity-execution).
 
 :::info WORK IN PROGRESS
 
@@ -23,7 +23,16 @@ If you can't find what you are looking for in the Application development guide,
 
 :::
 
-Before you can begin implementing your Temporal application, you should run a Cluster to interact with your application. Choose one of the following methods to run a Temporal Cluster.
+In this section you can find the following:
+
+- [How to run a dev Cluster](#run-a-dev-cluster)
+- [How to add your SDK](#add-your-sdk)
+- [How to create a Temporal Client](#create-temporal-clients)
+- [How to develop a Workflow](#develop-workflows)
+- [How to develop an Activity](#develop-activities)
+- [How to start an Activity Execution](#start-activity-execution)
+- [How to run a Worker Process](#run-worker-processes)
+- [How to start a Workflow Execution](#start-workflow-execution)
 
 ## Run a dev Cluster
 
