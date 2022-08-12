@@ -63,7 +63,7 @@ provider := authorization.NewRSAKeyProvider(cfg)
 
 `KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
 `RefreshInterval` defines how frequently keys should be refreshed.
-For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
+For example, [Auth0](https://auth0.com/) exposes endpoints such as `https://YOUR_DOMAIN/.well-known/jwks.json`.
 
 :::
 
