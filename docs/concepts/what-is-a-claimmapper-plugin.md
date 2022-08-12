@@ -71,7 +71,7 @@ By default, "permissions" is used to name the `permissionsClaimName` value.
 
 Configure the plugin with `config.Config.Global.Authorization.JWTKeyProvider`.
 
-#### JWT Web Token Format
+#### JSON Web Token format
 
 The default JWT `ClaimMapper` expects authorization tokens to be formatted as follows:
 
