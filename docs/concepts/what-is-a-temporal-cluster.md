@@ -17,7 +17,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](/con
 ### Persistence
 
 A Temporal Cluster's only required dependency for basic operation is a database.
-Multiple types of databases that are supported.
+Multiple types of databases are supported.
 
 ![Persistence](/diagrams/temporal-database.svg)
 
