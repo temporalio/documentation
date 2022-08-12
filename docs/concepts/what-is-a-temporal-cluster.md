@@ -114,7 +114,8 @@ This can be done for both `frontend` and `internode` endpoints.
 Client connections can be restricted to certain endpoints by requiring certificates from a specific CA.
 Modify the `clientCaFiles`,  `clientCaData`, and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
 
-User access can be restricted through extensibility points and plugins. When implemented, the `frontend` invokes the plugin before executing the requested operation.
+User access can be restricted through extensibility points and plugins.
+When implemented, the `frontend` invokes the plugin before executing the requested operation.
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
