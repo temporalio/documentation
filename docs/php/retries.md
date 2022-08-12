@@ -66,8 +66,8 @@ use Temporal\Activity;
 use Temporal\DataConverter\Type;
 // ...
 
-#[Activity\ActivityInterface('MyActivity_')]
-class MyActivity
+#[Activity\ActivityInterface('YourActivity_')]
+class YourActivity
 {
   public function sampleActivity(int $startIndex, int $lastIndex)
   {

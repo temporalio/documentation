@@ -21,7 +21,7 @@ import { example } from './workflows';
 ...
 await client.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
-  taskQueue: 'my-queue',
+  taskQueue: 'your-queue',
   workflowId: 'business-meaningful-id',
 });
 ```

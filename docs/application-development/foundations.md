@@ -41,7 +41,7 @@ You can interact with a Cluster through [Temporal Client](/temporal#temporal-cli
 
 There are four ways to quickly install and run a Temporal Cluster:
 
-- [Docker](#docker): Using Docker Compose makes it easy to develop your Temporal Application locally.
+- [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 - [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
@@ -203,7 +203,7 @@ Both TypeScript and JavaScript can be used with the TypeScript SDK.
 **Create a new project**
 
 ```bash
-npx @temporalio/create@latest ./my-app
+npx @temporalio/create@latest ./your-app
 ```
 
 **Add to an existing project**
@@ -458,7 +458,6 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 For more information, see the following:
 
 - [How to spawn a Workflow Execution in Java](#none)
-- [How to spawn a Workflow Execution in Java](#none)
 
 </TabItem>
 <TabItem value="php">
@@ -618,12 +617,12 @@ When connecting to the Temporal Cloud with mTLS, you must provide the following 
 - Client certificate for mTLS
 - Client private key for mTLS
 
-For information on generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
+For information about generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
 ​
 This Docker image is to be used in conjunction with the Temporal SDK.
 Keys and their configuration files are valid for 365 days from creation.
 
-For information on configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For information about configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 For more information about mTLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
 
@@ -734,9 +733,6 @@ export function getEnv(): Env {
   };
 }
 ```
-
-If you somehow misconfigure your connection, you get an opaque `[TransportError: transport error]` error.
-Read through your settings carefully, and contact Temporal if you are sure you have checked everything.
 
 If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
 
@@ -1017,7 +1013,7 @@ import { example } from './workflows';
 ...
 await client.start(example, {
   args: [{ name: 'Temporal', born: 2019 }],
-  taskQueue: 'my-queue',
+  taskQueue: 'your-queue',
   workflowId: 'business-meaningful-id',
 });
 ```
@@ -1195,7 +1191,7 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := workflow.RegisterOptions{
-  Name: "CoolWorkflowTypeName",
+  Name: "YourWorkflowName",
   // ...
 }
 w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
@@ -1852,7 +1848,7 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
-  Name: "CoolActivityTypeName",
+  Name: "YourActivityName",
   // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
@@ -2623,7 +2619,7 @@ $factory->run();
 You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
 
 ```php
-$worker = $factory->newWorker('my-task-queue');
+$worker = $factory->newWorker('your-task-queue');
 ```
 
 As mentioned above you can create as many Task Queue connections inside a single Worker Process as you need.
@@ -2634,7 +2630,7 @@ To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 use Temporal\Worker\WorkerOptions;
 
 $worker = $factory->newWorker(
-    'my-task-queue',
+    'your-task-queue',
     WorkerOptions::new()
         ->withMaxConcurrentWorkflowTaskPollers(10)
 );
@@ -3362,7 +3358,7 @@ import {Connection, WorkflowClient} from "@temporalio/client";
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
 const client = new WorkflowClient({connection});
-const result = await client.execute(myWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: "your-task-queue", // required
   workflowId: "your-workflow-id", // required
 });

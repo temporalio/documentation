@@ -8,6 +8,8 @@ tags:
   - tctl
 ---
 
+Alias: `l`
+
 The `tctl batch list` command lists all batch jobs.
 
 `tctl batch list [<modifiers>]`

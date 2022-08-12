@@ -10,5 +10,5 @@ tags:
 Display the current Schedule configuration as well as extra information about past, current, and future Runs.
 
 ```shell
-tctl schedule describe --sid 'my-schedule-id'
+tctl schedule describe --sid 'your-schedule-id'
 ```

@@ -82,7 +82,7 @@ tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 tctl workflow start -h
 
 # for a workflow with multiple inputs, provide a separate -i flag for each of them
-tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
+tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"your-string", "Age":12345}'
 ```
 
 The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress:
@@ -137,7 +137,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/concepts/what-is-a-memo).
+More information about memos can be found [here](/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \

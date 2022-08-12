@@ -162,13 +162,13 @@ Alias: `--lt`
 To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
 
 ```bash
-tctl workflow list --latest-time '2022-04-13T23:02:17-07:00'
+tctl workflow list --latest_time '2022-04-13T23:02:17-07:00'
 ```
 
-To specify 10 seconds before the current time:
+To specify 10s before the current time:
 
 ```bash
-tctl workflow list --latest-time '10second'
+tctl workflow list --latest_time '10second'
 ```
 
 ### `--workflow_id`
