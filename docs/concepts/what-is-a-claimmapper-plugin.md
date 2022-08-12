@@ -38,7 +38,7 @@ This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=cer
 Temporal offers a default JWT `ClaimMapper` that extracts the information needed to form Temporal `Claims`.
 This plugin requires a public key to validate digital signatures.
 
-To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMapper` and provide it with:
+To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMapper` and provide it with the following:
 
 - a `TokenKeyProvider` instance
 - a `config.Authorization` pointer
