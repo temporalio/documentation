@@ -70,7 +70,7 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 - Elasticsearch v6.8 is supported in all Temporal versions
 - Both versions are explicitly supported with AWS Elasticsearch
 
-### mTLS Encryption
+### mTLS encryption
 
 Temporal supports Mutual Transport Layer Security (mTLS) as a method of encrypting network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
 
