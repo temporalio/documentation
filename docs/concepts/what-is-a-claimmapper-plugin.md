@@ -48,8 +48,8 @@ The code for the default `ClaimMapper` can also be used to build a custom `Claim
 
 #### Token Key Provider
 
-A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format.
-The default JWT Claim Mapper uses this component to obtain and refresh public keys over time.
+A `TokenKeyProvider` obtains public keys from specified issuers' URIs that adhere to a specific format.
+The default JWT `ClaimMapper` uses this component to obtain and refresh public keys over time.
 
 Temporal provides an `rsaTokenKeyProvider`.
 This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517).
