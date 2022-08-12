@@ -105,11 +105,14 @@ For more information on mTLS configuration, refer to our [TLS configuration guid
 **Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
 **Authorization** is the verification of applications and data that a user on your Cluster or application has access to.
 
-Temporal has several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
+Temporal has several authentication protocols that can be set to restrict access to your data.
+These protocols address three areas: servers, client connections, and users.
 
-Server attacks can be prevented by specifying the `serverName` in the `client` section of your mTLS configuration. This can be done for both `frontend` and `internode` endpoints.
+Server attacks can be prevented by specifying `serverName` in the `client` section of your mTLS configuration.
+This can be done for both `frontend` and `internode` endpoints.
 
-Client connections can be restricted to certain endpoints by requiring certificates from a specific Certificate Authority (CA). Modify the `clientCaFiles`/ `clientCaData` and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
+Client connections can be restricted to certain endpoints by requiring certificates from a specific CA.
+Modify the `clientCaFiles`,  `clientCaData`, and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
 
 User access can be restricted through extensibility points and plugins. When implemented, the `frontend` invokes the plugin before executing the requested operation.
 
