@@ -41,8 +41,8 @@ If you prefer to use SAML, contact Temporal Sales.
    - Name and email address of billing contact
    - Credit card information, including billing address if not the same as the company address
    - Optional
-      - Preferred Temporal Cloud domain
-      - Industry category
+     - Preferred Temporal Cloud domain
+     - Industry category
 
 1. Create a Zendesk ticket to request a new account.
    (We are working to make self-serve account creation available.)
