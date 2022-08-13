@@ -1,7 +1,7 @@
 ---
 id: how-to-manage-certificates-in-temporal-cloud
 title: How to manage certificates in Temporal Cloud
-sidebar_label: Certificates
+sidebar_label: Manage certificates
 description: Access to Temporal Cloud requires a certificate from you.
 tags:
   - how-to

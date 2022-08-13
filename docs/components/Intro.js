@@ -368,7 +368,7 @@ const cloudInfo = {
     {
       book: true,
       path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
-      name: "Manage certificates",
+      name: "Manage Namespaces",
     },
     {
       cli: true,
