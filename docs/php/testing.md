@@ -73,7 +73,7 @@ And within the worker you register your Workflows and mock Activities:
 $factory = WorkerFactory::create();
 
 $worker = $factory->newWorker();
-$worker->registerWorkflowTypes(MyWorkflow::class);
+$worker->registerWorkflowTypes(YourWorkflow::class);
 $worker->registerActivity(MyActvivityMock::class);
 $factory->run();
 ```

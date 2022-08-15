@@ -8,6 +8,8 @@ tags:
   - tctl
 ---
 
+Alias: `desc`
+
 The `tctl batch describe` command describes the progress of a batch job.
 
 `tctl batch describe --job_id <id>`

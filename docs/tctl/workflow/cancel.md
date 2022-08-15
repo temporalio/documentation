@@ -41,5 +41,5 @@ Aliases: `--rid`, `-r`
 **Example**
 
 ```bash
-tctl workflow show --run_id <id>
+tctl workflow cancel --run_id <id>
 ```

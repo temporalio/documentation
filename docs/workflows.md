@@ -2,7 +2,7 @@
 id: workflows
 title: Workflows
 sidebar_label: Workflows
-description: This guide is meant to be a comprehensive overview of Temporal Workflows.
+description: This guide provides a comprehensive overview of Temporal Workflows.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to be a comprehensive overview of Temporal Workflows.
+This guide provides a comprehensive overview of Temporal Workflows.
 
 In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](#workflow-types), a [Workflow Definition](#workflow-definitions), or a [Workflow Execution](#workflow-executions).
 Temporal documentation aims to be explicit and differentiate between them.
@@ -91,11 +91,11 @@ For example, a Workflow Definition can not have inline logic that branches (emit
 In the representative pseudocode below, the `local_clock()` function returns the local time, rather than Temporal-defined time:
 
 ```text
-fn my_workflow() {
+fn your_workflow() {
   if local_clock().is_before("12pm") {
     await workflow.sleep(duration_until("12pm"))
   } else {
-    await my_afternoon_activity()
+    await your_afternoon_activity()
   }
 }
 ```

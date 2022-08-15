@@ -1,19 +1,19 @@
 ---
-id: list-search-attributes
-title: tctl cluster list-search-attributes
-sidebar_label: list-search-attributes
+id: get-search-attributes
+title: tctl cluster get-search-attributes
+sidebar_label: get-search-attributes
 description: How to list all Search Attributes using tctl.
 tags:
   - reference
   - tctl
 ---
 
-The `tctl cluster list-search-attributes` command lists all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in the `--query` modifier of the [`tctl workflow list`](/tctl/workflow/list) command.
+The `tctl cluster get-search-attributes` command lists all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in the `--query` modifier of the [`tctl workflow list`](/tctl/workflow/list) command.
 
 **Example:**
 
 ```bash
-tctl cluster list-search-attributes
+tctl cluster get-search-attributes
 ```
 
 The command has no modifiers.

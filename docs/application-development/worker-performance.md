@@ -1,6 +1,6 @@
 ---
 id: worker-performance
-title: Application development Worker performance
+title: Application development - Worker performance
 description: Guide into Workers Tuning
 sidebar_label: Worker performance
 tags:
@@ -9,8 +9,6 @@ tags:
 ---
 
 import RelatedReadList from '../components/RelatedReadList.js'
-
-# Temporal Workers Tuning
 
 _Note: All metrics in this article are prepended with the “temporal\_” prefix. The prefix is omitted in this article to make the names more descriptive._
 
