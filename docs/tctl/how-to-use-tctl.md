@@ -73,47 +73,6 @@ Single quotes (`''`) are used to wrap input as JSON.
 tctl taskqueue desc --tq hello-world
 ```
 
-#### Start Workflow
-
-```bash
-tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
-
-# view help messages for workflow start
-tctl workflow start -h
-
-# for a workflow with multiple inputs, provide a separate -i flag for each of them
-tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
-```
-
-The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress:
-
-```bash
-tctl workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
-```
-
-CLI output:
-
-```bash
-Running execution:
-  Workflow Id : d58237c9-2ae7-4e17-9cbd-311beeedfbe2
-  Run Id      : 7a948e0b-0b0a-4aea-9457-994821c7f7be
-  Type        : HelloWorld
-  Namespace   : default
-  Task Queue  : HelloWorldTaskQueue
-  Args        : [World]
-Progress:
-  1, 2020-10-13T20:40:12Z, WorkflowExecutionStarted
-  2, 2020-10-13T20:40:12Z, WorkflowTaskScheduled
-  3, 2020-10-13T20:40:12Z, WorkflowTaskStarted
-  4, 2020-10-13T20:40:12Z, WorkflowTaskCompleted
-  5, 2020-10-13T20:40:12Z, WorkflowExecutionCompleted
-
-Result:
-  Run Time: 1 seconds
-  Status: COMPLETED
-  Output: []
-```
-
 ##### Reuse the same Workflow Id when starting/running a Workflow
 
 Use option `--workflowidreusepolicy` or `--wrp` to configure the Workflow id reuse policy.
