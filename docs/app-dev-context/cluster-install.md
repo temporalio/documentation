@@ -1,19 +1,18 @@
 ---
-id: quick-install
+id: cluster-install
 title: How to quickly install a Temporal Cluster for testing and local development
 sidebar_label: Quick install
-description: There are four ways to quickly install and run a Temporal Cluster.
+description: There are multiple ways to quickly install and run a Temporal Cluster.
 ---
 
 Whenever you are developing Temporal Applications, you'll want to have a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) up and running.
 You can interact with a Cluster through [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands.
 
-There are four ways to quickly install and run a Temporal Cluster:
+The following sections show you how to quickly install and run a Temporal Cluster:
 
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
-- [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
-- [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
+- [Temporalite](#temporalite): Distribution of Temporal that runs as a single process with zero runtime dependencies.
 
 **We do not recommend using any of these methods in a [full (production) environment](/server/production-deployment).**
 
@@ -46,19 +45,6 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
-
-#### Helm charts
-
-Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
-
-Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
-
-#### Render
-
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
-We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
-
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
 
 #### Temporalite
 

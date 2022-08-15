@@ -39,12 +39,11 @@ In this section you can find the following:
 Whenever you are developing Temporal Applications, you'll want to have a [Temporal Cluster](/clusters#) up and running.
 You can interact with a Cluster through [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands.
 
-There are four ways to quickly install and run a Temporal Cluster:
+The following sections show you how to quickly install and run a Temporal Cluster:
 
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
-- [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
-- [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
+- [Temporalite](#temporalite): Distribution of Temporal that runs as a single process with zero runtime dependencies.
 
 **We do not recommend using any of these methods in a [full (production) environment](/server/production-deployment).**
 
@@ -78,18 +77,31 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
 
-#### Helm charts
+#### Temporalite
 
-Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
+You can run a Temporal Cluster and develop Temporal Applications in your browser using [Temporalite](https://github.com/temporalio/temporalite).
 
-Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
+Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies, that supports persistent to disk and in-memory mode through SQLite.
 
-#### Render
+Requires Go 1.18 or greater.
 
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
-We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
+**Download, build, and start Temporalite**
 
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
+1. Download and build from source.
+   1. Build from source using `go install`.
+   ```bash
+   go install github.com/temporalio/temporalite/cmd/temporalite@latest
+   ```
+2. Start Temporalite locally.
+   1. Run the Temporalite start command.
+   ```bash
+   temporalite start --namespace default
+   ```
+   Replace `default` with your [Namespace Name](../concepts/what-is-a-cloud-namespace-name/).
+
+**Results**: You should have Temporal server running `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
+
+<!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
 ## Add your SDK
 
