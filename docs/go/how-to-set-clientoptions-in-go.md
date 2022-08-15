@@ -21,8 +21,8 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#O
 | [`ContextPropagators`](#contextpropagators) | No       | [`[]ContextPropagator`](https://pkg.go.dev/go.temporal.io/sdk/internal#ContextPropagator)  |
 | [`ConnectionOptions`](#connectionoptions)   | No       | [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/internal#ConnectionOptions)    |
 | [`HeadersProvider`](#headersprovider)       | No       | [`HeadersProvider`](https://pkg.go.dev/go.temporal.io/sdk/internal#HeadersProvider)        |
-| [TrafficController](#trafficcontroller)     | No       | [`TrafficController`](https://pkg.go.dev/go.temporal.io/sdk/internal#TrafficController)    |
-| [Interceptors](#interceptors)               | No       | [`[]ClientInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientInterceptor)  |
+| [`TrafficController`](#trafficcontroller)     | No       | [`TrafficController`](https://pkg.go.dev/go.temporal.io/sdk/internal#TrafficController)    |
+| [`Interceptors`](#interceptors)               | No       | [`[]ClientInterceptor`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientInterceptor)  |
 
 ### `HostPort`
 
@@ -135,8 +135,10 @@ Set to induce artificial failures in test scenarios
 
 - Type: `TrafficController`
 
-### Interceptors
+### `Interceptors`
 
 gRPC interceptors that are applied to every RPC call performed by this connection.
 By default, an interceptor is included; it automatically retries retryable errors.
 If you do not want to perform automatic retries, set this to an empty list (or a list with your own interceptors).
+
+- Type: `[]ClientInterceptor`
