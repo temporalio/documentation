@@ -40,6 +40,7 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 
 ### Third-party SDKs
 
-The following third party SDKs exist, but are not supported in the application development guide:
+The following third-party SDKs exist but are not supported in the [Application development guide](/application-development):
 
-- [coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby)
+- [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
+- [Ruby](https://github.com/coinbase/temporal-ruby) from [@coinbase](https://github.com/coinbase)
