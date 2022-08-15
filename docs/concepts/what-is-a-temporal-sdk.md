@@ -39,5 +39,4 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 The following third-party SDKs exist but are not supported in the [Application development guide](/application-development):
 
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
-- [Python](https://github.com/firdaus/temporal-python-sdk) from [@firdaus](https://github.com/firdaus)
 - [Ruby](https://github.com/coinbase/temporal-ruby) from [@coinbase](https://github.com/coinbase)
