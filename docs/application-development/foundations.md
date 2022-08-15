@@ -410,7 +410,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
 
-For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal Frontend service.
+For example, the default front-end service gRPC address is set to `127.0.0.1:7233`, where `7233` is the default port for the Temporal Frontend Service.
 
 If your server is running on a different host or port from the default, you can set it as shown in the following example.
 
@@ -422,7 +422,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
 
 ```
 
-After the connection to the Temporal frontend service is established, create a Client for the service stub.
+After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
 The Workflow Client helps with client-side APIs and is required by Workers.
 
 Create an instance of a `WorkflowClient` for the Workflow service stub, and use `WorkflowClientOptions` to set options for the Workflow Client.
@@ -797,7 +797,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client)
+In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definitions) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
