@@ -1,7 +1,7 @@
 ---
 id: add-sdk
 title: How to add a Temporal SDK to your project
-description: A Temporal SDK provides a framework for Temporal application development.
+description: A Temporal SDK provides a framework for Temporal Application development.
 sidebar_label: Add SDK
 tags:
   - guide-context
