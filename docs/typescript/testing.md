@@ -79,21 +79,22 @@ When creating an environment, [`TestWorkflowEnvironment.create`](https://typescr
 
 ### Example setup
 
+> NOTE: `beforeAll` and `afterAll` are injected by `jest`.
+
 ```ts
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { Worker } from '@temporalio/worker';
-import { before, after } from 'mocha';
 import { v4 as uuid4 } from 'uuid';
 import { httpWorkflow } from './workflows';
 import type * as Activities from './activities'; // Uses types to ensure our mock signatures match
 
 let testEnv: TestWorkflowEnvironment;
 
-before(async () => {
+beforeAll(async () => {
   testEnv = await TestWorkflowEnvironment.create();
 });
 
-after(async () => {
+afterAll(async () => {
   await testEnv?.teardown();
 });
 ```
@@ -103,7 +104,7 @@ after(async () => {
 Since the `TestWorkflowEnvironment` is meant for testing Workflows, you'd typically want to mock your Activities in tests to avoid generating side effects.
 
 ```ts
-it('httpWorkflow with mock activity', async () => {
+test('httpWorkflow with mock activity', async () => {
   const { workflowClient, nativeConnection } = testEnv;
 
   // Implement only the relevant activities for this workflow
@@ -146,7 +147,7 @@ export async function sleeperWorkflow() {
 `test.ts`
 
 ```ts
-it('sleep completes almost immediately', async () => {
+test('sleep completes almost immediately', async () => {
   const worker = await Worker.create({
     connection: testEnv.nativeConnection,
     taskQueue: 'test',
@@ -191,7 +192,7 @@ export async function sleeperWorkflow() {
 `test.ts`
 
 ```ts
-it('advancing time using `testEnv.sleep()`', async () => {
+test('advancing time using `testEnv.sleep()`', async () => {
   const client = testEnv.workflowClient;
 
   // Important: `start()` starts the test server in "normal" mode,
@@ -236,7 +237,7 @@ Workflow implementation
 </details>
 
 ```ts
-it('countdownWorkflow sends reminder email if processing does not complete in time', async () => {
+test('countdownWorkflow sends reminder email if processing does not complete in time', async () => {
   // NOTE: this tests doesn't actually take days to complete, the test environment starts a test
   // server that automatically skips time when there are no running activities.
   let emailSent = false;
@@ -356,5 +357,5 @@ Although these testing docs use [Mocha](https://mochajs.org/), you can also use 
 There are a couple of caveats for testing with Jest:
 
 1. The Temporal TypeScript SDK only supports Jest `>= 27.0.0`.
-2. The Temporal TypeScript SDK recommends using ESM. In order to test ESM modules, you need to run Jest with the `NODE_OPTIONS` environment variable set to `--experimental-vm-modules`, for example: `NODE_OPTIONS=--experimental-vm-modules jest`.
+2. You need to run Jest with the `NODE_OPTIONS` environment variable set to `--experimental-vm-modules`, for example: `NODE_OPTIONS=--experimental-vm-modules jest`.
 3. Make sure you run Jest with [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.
