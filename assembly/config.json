@@ -5,5 +5,11 @@
   "sourceObjectsFileName": "source_objects.json",
   "guideConfigsPath": "guide-gen/guide-configs",
   "outlineDiagramJSONFIleName": "outline_diagram.json",
-  "outlineDiagramFilePath": "docs/components"
+  "outlineDiagramFilePath": "docs/components",
+  "additionalFilesToParse": [
+    "references/commands.md",
+    "references/events",
+    "references/metrics",
+    "references/configurations"
+  ]
 }

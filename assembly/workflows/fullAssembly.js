@@ -7,6 +7,7 @@ const oneSecondSchedToClose = {
 // const failedToCompleteMessage = 'Docs assembly failed to complete...';
 
 export async function fullAssembly(params) {
+  
   const {getConfig} = proxyActivities(oneSecondSchedToClose);
   const config = await getConfig(params);
 
