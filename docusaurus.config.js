@@ -78,12 +78,12 @@ module.exports = {
           position: "left",
           activeBasePath: "none",
         },
-        {
-          label: "KB articles",
-          to: "/kb",
-          activeBasePath: "kb",
-          position: "left",
-        },
+        // {
+        //   label: "KB articles",
+        //   to: "/kb",
+        //   activeBasePath: "kb",
+        //   position: "left",
+        // },
         {
           label: "Docs change log",
           to: "/change-log",
