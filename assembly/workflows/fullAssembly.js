@@ -7,21 +7,21 @@ const oneSecondSchedToClose = {
 // const failedToCompleteMessage = 'Docs assembly failed to complete...';
 
 export async function fullAssembly(params) {
-  
+
   const {getConfig} = proxyActivities(oneSecondSchedToClose);
   const config = await getConfig(params);
 
-  const {genGuideOutlines} = proxyActivities(oneSecondSchedToClose);
-  await genGuideOutlines(config);
+  // const {genGuideOutlines} = proxyActivities(oneSecondSchedToClose);
+  // await genGuideOutlines(config);
 
-  // const {createTempDir} = proxyActivities(oneSecondSchedToClose);
-  // await createTempDir(config);
+  const {createTempDir} = proxyActivities(oneSecondSchedToClose);
+  await createTempDir(config);
 
-  // const {genSourceObjects} = proxyActivities(oneSecondSchedToClose);
-  // await genSourceObjects(config);
+  const {genSourceObjects} = proxyActivities(oneSecondSchedToClose);
+  await genSourceObjects(config);
 
-  // const {cleanUpTempDir} = proxyActivities(oneSecondSchedToClose);
-  // await cleanUpTempDir(config);
+  const {cleanUpTempDir} = proxyActivities(oneSecondSchedToClose);
+  await cleanUpTempDir(config);
 
   return "Assembly completed successfully!";
 }

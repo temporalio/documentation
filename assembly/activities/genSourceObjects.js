@@ -6,11 +6,12 @@ import path from "path";
 export async function genSourceObjects(config) {
   console.log("getting documentation page paths...");
   const filePaths = [];
-  const readDir = path.join(config.rootDir, config.contentSourceDir);
-  for await (const entry of readdirp(readDir)) {
-    // can add more ignores here
-    if (!entry.fullPath.includes("learning-paths")) {
-      const s = JSON.stringify(entry);
+  for (const dirName of config.contentSourceDirs) {
+    const readDir = path.join(config.rootDir, dirName);
+    for await (const entry of readdirp(readDir)) {
+      // can add more ignores here
+      // example:
+      // if (!entry.fullPath.includes("learning-paths"))
       filePaths.push(entry);
     }
   }

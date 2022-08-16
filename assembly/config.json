@@ -1,15 +1,27 @@
 {
-  "tempWriteDir": "assembly/temp",
-  "contentSourceDir": "docs",
+  "contentSourceDirs": [
+    "docs/app-dev-context",
+    "docs/cloud",
+    "docs/cluster-ops-context",
+    "docs/clusters",
+    "docs/concept-context",
+    "docs/concepts",
+    "docs/go",
+    "docs/java",
+    "docs/python",
+    "docs/php",
+    "docs/typescript"
+  ],
   "contentWriteDir": "docs",
+  "tempWriteDir": "assembly/temp",
   "sourceObjectsFileName": "source_objects.json",
   "guideConfigsPath": "guide-gen/guide-configs",
   "outlineDiagramJSONFIleName": "outline_diagram.json",
   "outlineDiagramFilePath": "docs/components",
   "additionalFilesToParse": [
     "references/commands.md",
-    "references/events",
-    "references/metrics",
-    "references/configurations"
+    "references/events.md",
+    "references/metrics.md",
+    "references/configurations.md"
   ]
 }
