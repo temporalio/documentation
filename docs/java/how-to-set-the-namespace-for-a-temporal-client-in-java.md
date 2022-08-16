@@ -13,6 +13,6 @@ Use the `setNamespace()` method on Workflow Client Options Builder.
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
 WorkflowClientOptions clientOptions = WorkflowClientOptions.newBuilder()
-        .setNamespace("myNamespace").build();
+        .setNamespace("your-custom-namespace").build();
 WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
 ```

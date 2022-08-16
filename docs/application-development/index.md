@@ -1,6 +1,7 @@
 ---
 id: index
 title: Temporal Application development guide
+description: The Temporal Application development guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 sidebar_label: Application development
 ---
 
@@ -9,6 +10,8 @@ sidebar_label: Application development
 This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
+
+If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -81,10 +84,10 @@ The application development guide is broken down into four sections:
 
    - [Run a development Cluster](/application-development/foundations#run-a-dev-cluster)
    - [Add an SDK to your project](/application-development/foundations#add-your-sdk)
+   - [How to create a Temporal Client](/application-development/foundations#create-temporal-clients)
    - [Develop a basic Workflow Definition](/application-development/foundations#develop-workflow)
    - [Develop a basic Activity Definition](/application-development/foundations#develop-activities)
    - [Call to execute an Activity](/application-development/foundations#start-activity-execution)
-   - [Create Temporal Clients](/application-development/foundations#create-temporal-clients)
    - [Run a Worker Process](/application-development/foundations#run-worker-processes)
    - [Start a Workflow Execution](/application-development/foundations#start-workflow-execution)
 

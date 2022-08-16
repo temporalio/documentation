@@ -7,7 +7,7 @@ This also means that sleeping or retrying code does not tie up the process - you
 
 ```js
 import * as wf from '@temporalio/workflow';
-const { myActivity } = wf.proxyActivities({
+const { yourActivity } = wf.proxyActivities({
   startToCloseTimeout: '1 week', // persisted
   retry: {
     initialInterval: '1 day', // persisted
@@ -18,7 +18,7 @@ export async function ExampleWorkflow() {
   let state = []; // mutable local state
   while (true) {
     await wf.sleep('30 days'); // persisted
-    state.push(myActivity()); // activity results can be replayed
+    state.push(yourActivity()); // activity results can be replayed
   }
 }
 ```

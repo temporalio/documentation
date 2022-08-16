@@ -13,9 +13,18 @@ Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) m
 
 Specify the `target_host` parameter as a string.
 
+**Connect to Docker**
+
 ```python
-async def main():
-    client = await Client.connect("localhost:7233", namespace="your-namespace")
+await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
+```
+
+**Connect to your Cluster**
+
+```python
+await Client.connect(
+    "web.<Namespace_ID>.tmprl.cloud", namespace="your-custom-namespace"
+)
 ```
 
 A `Client` does not have an explicit close.

@@ -41,32 +41,6 @@ tctl --namespace samples-namespace namespace describe
 
 The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable is set.
 
-#### Run Workflow
-
-Start a Workflow and see its progress.
-This command doesn't finish until the Workflow completes.
-
-```bash
-tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
-
-# view help messages for workflow run
-tctl workflow run -h
-```
-
-Brief explanation:
-To run a Workflow, the user must specify the following:
-
-1. Task queue name (`--tq`)
-2. Workflow type (`--wt`)
-3. Execution start to close timeout in seconds (`--et`)
-4. Input in JSON format (`--i`) (optional)
-
-The example above uses [this sample Workflow](https://github.com/temporalio/samples-go/blob/main/helloworld/helloworld.go) and takes a string as input with the `-i '"temporal"'` parameter.
-Single quotes (`''`) are used to wrap input as JSON.
-
-**Note:** You need to start the worker so that the Workflow can make progress.
-(Run `make && ./bin/helloworld -m worker` in samples-go to start the worker)
-
 #### Show running Workers of a Task Queue
 
 ```bash
@@ -82,7 +56,7 @@ tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
 tctl workflow start -h
 
 # for a workflow with multiple inputs, provide a separate -i flag for each of them
-tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
+tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"your-string", "Age":12345}'
 ```
 
 The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress:
@@ -137,7 +111,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/concepts/what-is-a-memo).
+More information about memos can be found [here](/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \

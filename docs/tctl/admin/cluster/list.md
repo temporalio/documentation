@@ -11,6 +11,8 @@ tags:
 
 The `tctl admin cluster list` command lists Cluster information on the given Cluster.
 
+Alias: `ls`
+
 Default: 100
 
 The modifier below changes the behavior of the command:

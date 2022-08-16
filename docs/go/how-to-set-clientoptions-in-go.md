@@ -29,7 +29,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/client#O
 **How to set the Temporal Client's host:port connection in Go**
 
 - Type: `string`
-- Default: [`client.DefaultHostPort`](https://pkg.go.dev/go.temporal.io/sdk/client#pkg-constants) (localhost:7233)
+- Default: [`client.DefaultHostPort`](https://pkg.go.dev/go.temporal.io/sdk/client#pkg-constants) (127.0.0.1:7233)
 
 ```go
 clientOptions := client.Options{

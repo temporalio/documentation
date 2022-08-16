@@ -1,8 +1,8 @@
 ---
 id: features
-title: Application development features
+title: Application development - Features
 sidebar_label: Features
-description: This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+description: The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
 
@@ -19,9 +19,21 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
+If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+
 :::
 
-This section covers the many features that are available to use in your [Temporal Application](/temporal#temporal-application).
+In this section you can find the following:
+
+- [How to develop Signals](#signals)
+- [How to develop Queries](#queries)
+- [How to start a Child Workflow Execution](#child-workflows)
+- [How to start a Temporal Cron Job](#cron-jobs)
+- [How to use Continue-As-New](#continue-as-new)
+- [How to set Workflow timeouts & retries](#workflow-timeouts--retries)
+- [How to set Activity timeouts & retries](#activity-timeouts--retries)
+- [How to Heartbeat an Activity](#activity-heartbeats)
+- [How to Asynchronously complete an Activity](#async-activity-completion)
 
 ## Signals
 
@@ -144,7 +156,7 @@ interface JoinInput {
   groupId: string;
 }
 
-const joinSignal = defineSignal<JoinInput>("join");
+export const joinSignal = defineSignal<[JoinInput]>("join");
 ```
 
 </TabItem>
@@ -342,7 +354,7 @@ Content is not available
 ```ts
 import {setHandler} from "@temporalio/workflow";
 
-export async function myWorkflow() {
+export async function yourWorkflow() {
   const groups = new Map<string, Set<string>>();
 
   setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
@@ -437,7 +449,18 @@ Content is not available
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
+[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+
+```typescript
+import {WorkflowClient} from "@temporalio/client";
+import {joinSignal} from "./workflows";
+
+const client = new WorkflowClient();
+
+const handle = client.getHandle("workflow-id-123");
+
+await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+```
 
 </TabItem>
 <TabItem value="python">
@@ -508,7 +531,7 @@ The following example shows how to use an untyped `ExternalWorkflowStub` in the 
 To send signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->start($workflow);
 
@@ -523,7 +546,7 @@ Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRun
 Signals to a running Workflow.
 
 ```php
-$workflow = $workflowClient->newRunningWorkflowStub(MyWorkflow::class, 'workflowID');
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
 $workflow->setValue(true);
 ```
 
@@ -536,7 +559,7 @@ $workflow->setValue(true);
 import {getExternalWorkflowHandle} from "@temporalio/workflow";
 import {joinSignal} from "./other-workflow";
 
-export async function myWorkflowThatSignals() {
+export async function yourWorkflowThatSignals() {
   const handle = getExternalWorkflowHandle("workflow-id-123");
   await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
 }
@@ -647,7 +670,7 @@ If a running Workflow exists, the `startwithSignal` API sends the Signal.
 If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
 
 ```php
-$workflow = $workflowClient->newWorkflowStub(MyWorkflow::class);
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
 
 $run = $workflowClient->startWithSignal(
     $workflow,
@@ -664,11 +687,11 @@ $run = $workflowClient->startWithSignal(
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {myWorkflow, joinSignal} from "./workflows";
+import {yourWorkflow, joinSignal} from "./workflows";
 
 const client = new WorkflowClient();
 
-await client.signalWithStart(myWorkflow, {
+await client.signalWithStart(yourWorkflow, {
   workflowId: "workflow-id-123",
   args: [{foo: 1}],
   signal: joinSignal,
@@ -679,7 +702,20 @@ await client.signalWithStart(myWorkflow, {
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
+
+```python
+async def main():
+    client = await Client.connect("localhost:7233", namespace="your-namespace")
+
+    handle = await client.start_workflow(
+        "your-workflow-name",
+        "some arg",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        start_signal="your-signal-name",
+    )
+```
 
 </TabItem>
 </Tabs>
@@ -855,7 +891,7 @@ The handler function can receive any number of input parameters, but all input p
 The following sample code sets up a Query Handler that handles the `current_state` Query type:
 
 ```go
-func MyWorkflow(ctx workflow.Context, input string) error {
+func YourWorkflow(ctx workflow.Context, input string) error {
   currentState := "started" // This could be any serializable struct.
   queryType := "current_state"
   err := workflow.SetQueryHandler(ctx, queryType, func() (string, error) {
@@ -873,8 +909,8 @@ func MyWorkflow(ctx workflow.Context, input string) error {
     return err
   }
   currentState = "waiting activity"
-  ctx = WithActivityOptions(ctx, myActivityOptions)
-  err = ExecuteActivity(ctx, MyActivity, "my_input").Get(ctx, nil)
+  ctx = WithActivityOptions(ctx, yourActivityOptions)
+  err = ExecuteActivity(ctx, YourActivity, "your_input").Get(ctx, nil)
   if err != nil {
     currentState = "activity failed"
     return err
@@ -986,7 +1022,7 @@ up a Query handler using method attribute `QueryMethod` or `Workflow::registerQu
 
 ```php
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     #[Workflow\QueryMethod]
     public function getValue()
@@ -1009,7 +1045,7 @@ serializable. The following sample code sets up a Query handler that handles the
 
 ```php
 #[Workflow\WorkflowInterface]
-class MyWorkflow
+class YourWorkflow
 {
     private string $currentState;
 
@@ -1032,14 +1068,14 @@ class MyWorkflow
             throw $e;
         }
 
-        $myActivity = Workflow::newActivityStub(
-            MyActivityInterface::class,
+        $yourActivity = Workflow::newActivityStub(
+            YourActivityInterface::class,
             ActivityOptions::new()->withScheduleToStartTimeout(60)
         );
 
         $this->currentState = 'waiting activity';
         try{
-            yield $myActivity->doSomething('some input');
+            yield $yourActivity->doSomething('some input');
         } catch (\Throwable $e) {
             $this->currentState = 'activity failed';
             throw $e;
@@ -1058,7 +1094,7 @@ Use `WorkflowStub` to Query Workflow instances from your Client code (can be app
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(
-    MyWorkflow::class,
+    YourWorkflow::class,
     WorkflowOptions::new()
 );
 
@@ -1866,13 +1902,13 @@ Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
 Type: time.Duration
 Default: ∞ (infinity – no limit)
 
-In this example, you can set the `ScheduleToStartTimeout` to 60 seconds.
+In this example, you can set the `scheduleToStartTimeout` to 60 seconds.
 
 ```typescript
 // Sample of typical options you can set
 const {greet} = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: "5m",
-  ScheduleToStartTimeout: "60s",
+  scheduleToStartTimeout: "60s",
   retry: {
     // default retry policy if not specified
     initialInterval: "1s",
@@ -2067,30 +2103,17 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 ## Activity Heartbeats
 
-An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
-Each Heartbeat informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
+An [Activity Heartbeat](/activities#activity-heartbeats) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters#).
+Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
-The throttle interval is the smaller of:
+Heartbeats may not always be sent to the Cluster—they may be [throttled](/concepts/what-is-an-activity-heartbeat#throttling) by the Worker.
 
-- `if heartbeatTimeout is provided, heartbeatTimeout * 0.8; else defaultHeartbeatThrottleInterval`
-- `maxHeartbeatThrottleInterval`
+Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
-`defaultHeartbeatThrottleInterval` is 30 seconds by default, and `maxHeartbeatThrottleInterval` is 60 seconds by default.
-Each can be set in Worker options.
-
-Throttling is implemented as follows:
-
-- After sending a Heartbeat, the Worker sets a timer for the throttle interval.
-- The Worker stops sending Heartbeats, but continues receiving Heartbeats from the Activity and remembers the most recent one.
-- When the timer fires, the Worker:
-  - Sends the most recent Heartbeat.
-  - Sets the timer again.
-
-Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation. Heartbeat throttling may lead to Cancellation getting delivered later than expected.
-
-Heartbeats may contain a `details` field describing the Activity's current progress. If an Activity gets retried, the Activity can access the `details` from the last heartbeat that was sent to the Cluster.
+Heartbeats can contain a `details` field describing the Activity's current progress.
+If an Activity gets retried, the Activity can access the `details` from the last Heartbeat that was sent to the Cluster.
 
 <Tabs
 defaultValue="go"
@@ -2099,22 +2122,23 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To [Heartbeat](/activities#activity-heartbeats) in an Activity, use the `RecordHeartbeat` API.
+To [Heartbeat](/activities#activity-heartbeats) in an Activity in Go, use the `RecordHeartbeat` API.
 
 ```go
-progress := 0
-for progress < 100 {
-    // Send heartbeat message to the server.
-    activity.RecordHeartbeat(ctx, progress)
-    // Do some work.
-    ...
-    progress++
+import (
+    // ...
+    "go.temporal.io/sdk/workflow"
+    // ...
+)
+
+func YourActivityDefinition(ctx, YourActivityDefinitionParam) (YourActivityDefinitionResult, error) {
+    // ...
+    activity.RecordHeartbeat(ctx, details)
+    // ...
 }
 ```
 
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
-above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
-with `TimeoutType` set to `Heartbeat`.
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the `details` variable above is returned to the calling Workflow in the `details` field of `TimeoutError` with `TimeoutType` set to `Heartbeat`.
 
 You can also Heartbeat an Activity from an external source:
 
@@ -2156,37 +2180,28 @@ func SampleActivity(ctx context.Context, inputArg InputParams) error {
 </TabItem>
 <TabItem value="java">
 
-To inform the Temporal service that the Activity is still alive, use `Activity.getExecutionContext().heartbeat()` in the Activity implementation code.
+To Heartbeat an Activity Execution in Java, use the `Activity.getExecutionContext().heartbeat()` Class method.
 
-The `Activity.getExecutionContext().heartbeat()` can take an argument that represents Heartbeat `details`.
-If an Activity times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
+```java
+public class YourActivityDefinitionImpl implements YourActivityDefinition {
+
+  @Override
+  public String yourActivityMethod(YourActivityMethodParam param) {
+    // ...
+    Activity.getExecutionContext().heartbeat(details);
+    // ...
+  }
+  // ...
+}
+```
+
+The method takes an optional argument, the `details` variable above that represents latest progress of the Activity Execution.
+This method can take a variety of types such as an exception object, custom object, or string.
+
+If the Activity Execution times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
 The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
 
 In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
-
-The following example uses Activity Heartbeat to report the progress of the `download` Activity method.
-
-```java
-public class FileProcessingActivitiesImpl implements FileProcessingActivities {
-
-  @Override
-  public String download(String bucketName, String remoteName, String localName) {
-    InputStream inputStream = openInputStream(file);
-    try {
-      byte[] bytes = new byte[MAX_BUFFER_SIZE];
-      while ((read = inputStream.read(bytes)) != -1) {
-        totalRead += read;
-        f.write(bytes, 0, read);
-        // Let the Temporal Server know about the download progress.
-        Activity.getExecutionContext().heartbeat(totalRead);
-      }
-    } finally {
-      inputStream.close();
-    }
-  }
-  ...
-}
-```
 
 </TabItem>
 <TabItem value="php">
@@ -2280,15 +2295,16 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 </TabItem>
 <TabItem value="python">
 
-In order for an Activity to be notified of cancellation requests, you must invoke [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat).
+To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
 
 ```python
-    @activity.defn
-    async def some_activity() -> str:
-        activity.heartbeat("heartbeat details!")
+@activity.defn
+async def your_activity_definition() -> str:
+    activity.heartbeat("heartbeat details!")
 ```
 
-In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity Retry. If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` will return an iterable containing `123` and `456` on the next run.
+In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
+If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
 
 </TabItem>
 </Tabs>
@@ -2946,7 +2962,7 @@ Workflow.continueAsNew(input1, ...);
 ```
 
 To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
-For example, in a Workflow class called `MyWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
+For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
 
 ```java
 MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
@@ -3003,7 +3019,11 @@ Content is not available
 </TabItem>
 <TabItem value="python">
 
-Content is not available
+To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+
+```python
+workflow.continue_as_new("your-workflow-name")
+```
 
 </TabItem>
 </Tabs>
@@ -3174,7 +3194,7 @@ const createActivities = (envVars: {apiKey: string}) => ({
   async sendNotificationEmail(): Promise<void> {
     // ...
     await axios({
-      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: "post",
       params: {to, from, subject, html},
       auth: {
@@ -3206,7 +3226,7 @@ const createActivities = (envVars: EnvVars) => ({
   async sendNotificationEmail(apiKey: string): Promise<void> {
     // ...
     await axios({
-      url: `https://api.mailgun.net/v3/my-domain/messages`,
+      url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: "post",
       params: {to, from, subject, html},
       auth: {
@@ -3227,7 +3247,7 @@ const {sendNotificationEmail} = proxyActivities({
   startToCloseTimeout: "1m",
 });
 
-async function myWorkflow() {
+async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
     throw new Error("missing env var apiKey");
