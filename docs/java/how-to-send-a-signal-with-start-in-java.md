@@ -15,8 +15,8 @@ Note that when the `SignalwithStart` spawns a new Workflow Execution, the Signal
 This means that the Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
 You must ensure that your code logic can deal with this.
 
-In the following example, the Client code uses `SignalwithStart` to send the Signal "setCustomer" to the `UntypedWorkflowStub` named "GreetingWorkflow".
-If the "GreetingWorkflow" Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
+In the following example, the Client code uses `SignalwithStart` to send the Signal `setCustomer` to the `UntypedWorkflowStub` named `GreetingWorkflow`.
+If the `GreetingWorkflow` Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
 
 ```java
 ...
@@ -44,7 +44,7 @@ public static void signalWithStart() {
 ...
 ```
 
-The following example shows the Workflow interface for the "GreetingWorkflow" called in the previous example.
+The following example shows the Workflow interface for the `GreetingWorkflow` called in the previous example.
 
 ```java
 ...
@@ -62,4 +62,4 @@ public interface GreetingWorkflow {
 }
 ```
 
-Note that the Signal handler "setCustomer" is executed before the `@WorkflowMethod` "greet" is called.
+Note that the Signal handler `setCustomer` is executed before the `@WorkflowMethod` `greet` is called.

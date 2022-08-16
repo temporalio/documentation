@@ -281,7 +281,9 @@ async function frontmatter(guide_config) {
     guide_string = `${guide_string}import Tabs from '@theme/Tabs';\n`;
     guide_string = `${guide_string}import TabItem from '@theme/TabItem';\n\n`;
   }
-  guide_string = `${guide_string}${guide_config.description}\n\n`;
+  if (guide_config.use_description) {
+    guide_string = `${guide_string}${guide_config.description}\n\n`;
+  }
   return guide_string;
 }
 
@@ -517,9 +519,9 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     let new_path = "";
     if (link.guide != current_guide_id) {
       if (link.guide_dir != "/") {
-        new_path = `${NEXT}/${link.guide_dir}/${link.guide}#${link.local_ref}`;
+        new_path = `/${link.guide_dir}/${link.guide}#${link.local_ref}`;
       } else {
-        new_path = `${NEXT}/${link.guide}#${link.local_ref}`;
+        new_path = `/${link.guide}#${link.local_ref}`;
       }
     } else {
       new_path = `#${link.local_ref}`;

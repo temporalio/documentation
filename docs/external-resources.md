@@ -80,7 +80,7 @@ _Don't forget our own explainers on [What is Temporal](/temporal)!_
 
 ## External content
 
-_Note: Each of [our SDK docs](/next/application-development) have a Hello World and Run Your First App tutorial!_
+_Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
 
 - Architecture
   - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
@@ -91,6 +91,7 @@ _Note: Each of [our SDK docs](/next/application-development) have a Hello World 
   - [Just plug it in - Aiven & Temporal](https://aiven.io/blog/just-plug-it-in-aiven-and-temporal) by Andrew Staller (7 min read)
   - [Easily Manage Workflows at Scale with Temporal.io and Astra DB](https://www.datastax.com/blog/easily-manage-workflows-at-scale-with-temporal-io-and-astra-db) by Melissa Herrera, Ranjan Melanta (10 min read)
 - Tutorials
+  - (TypeScript) [Write Your First Temporal Workflow in TypeScript](https://www.bitovi.com/blog/write-your-first-temporal-workflow-in-typescript) by Michael Haynie (10 min tutorial)
   - (Go) [Intro to Temporal](https://zerokspot.com/weblog/2021/12/18/intro-to-temporalio/) by Horst Gutmann (6 min read)
   - (Go) [Writing a Workflow, Simulating Failures, Comparing Retries with Apache Airflow, and Testing](https://www.jcheng.org/post/workflow-orchestration-1.2/) by Jon Cheng (8 min read)
   - (Go) [Intro to Temporal Workshop](https://www.youtube.com/watch?v=UwdGmdTO3Ts) by Márk Sági-Kazár (3 hour full workshop)
@@ -149,13 +150,7 @@ _Note: Each of [our SDK docs](/next/application-development) have a Hello World 
 - [Airbyte](https://github.com/airbytehq/airbyte) - [ELT data pipeline platform (see talk)](https://www.youtube.com/watch?v=K25Bt5asd8I)
 - [Roadrunner](https://github.com/roadrunner-server/roadrunner) - PHP application server
 - [Coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby) - Ruby SDK with Rails example
-- [DataDog/temporalite](https://github.com/DataDog/temporalite) - Single binary distro for CI (see talk)
 - [Nunchi Blacksmith](https://www.nunchi.studio/blacksmith/start/onboarding/how) - ETL data platform
-
-## Community SDKs
-
-- [Ruby](https://github.com/coinbase/temporal-ruby)
-- [Python](https://github.com/firdaus/temporal-python-sdk)
 
 ## Misc
 

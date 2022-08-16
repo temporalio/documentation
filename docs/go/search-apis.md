@@ -22,11 +22,11 @@ Go samples for Search Attributes can be found at [`temporalio/samples-go`](https
 
 Here are the [Search Attribute value types](/concepts/what-is-a-search-attribute/#types) and their corresponding types in Go:
 
-- Keyword = string
-- Int = int64
-- Double = float64
 - Bool = bool
 - Datetime = time.Time
+- Double = float64
+- Int = int64
+- Keyword = string
 - Text = string
 
 ## Tagging Search Attributes at Workflow creation
@@ -38,7 +38,7 @@ The value provided in the map must be the same type that was added to a Cluster.
 This can be useful for tagging executions with useful attributes you may want to search up later. For example:
 
 ```go
-func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
+func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
     // ...
     searchAttributes := map[string]interface{}{
         "CustomerId": payload["customer"],
@@ -49,7 +49,7 @@ func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload 
         TaskQueue:          app.MyTaskQueue,
         SearchAttributes:   searchAttributes
     }
-    we, err := c.Client.ExecuteWorkflow(ctx, options, app.MyWorkflow, payload)
+    we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
     // ...
 }
 ```
@@ -63,7 +63,7 @@ In advanced cases, you may want to dynamically update these attributes as the Wo
 Consider this example Workflow code:
 
 ```go
-func MyWorkflow(ctx workflow.Context, input string) error {
+func YourWorkflow(ctx workflow.Context, input string) error {
 
     attr1 := map[string]interface{}{
         "CustomIntField": 1,

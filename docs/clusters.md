@@ -15,7 +15,7 @@ Temporal Clusters explained.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/next/application-development/foundations#run-a-dev-cluster)
+- [How to quickly install a Temporal Cluster for testing and development](/application-development/foundations#run-a-dev-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/next/visibility#advanced-visibility).
+An Elasticsearch database can be added to enable [Advanced Visibility](/visibility#advanced-visibility).
 
 **Versions**
 
@@ -69,8 +69,8 @@ Any software that can pull metrics that supports the same format could be used, 
 
 #### Visibility
 
-Temporal has built-in [Visibility](/next/visibility#) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/next/cluster-deployment-guide#advanced-visibility).
+Temporal has built-in [Visibility](/visibility#) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#advanced-visibility).
 
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
@@ -80,16 +80,16 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 
 The Temporal Server consists of four independently scalable services:
 
-- Frontend gateway: for rate limiting, routing, authorizing
-- History subsystem: maintains data (mutable state, queues, and timers)
-- Matching subsystem: hosts Task Queues for dispatching
-- Worker service: for internal background workflows
+- Frontend gateway: for rate limiting, routing, authorizing.
+- History subsystem: maintains data (mutable state, queues, and timers).
+- Matching subsystem: hosts Task Queues for dispatching.
+- Worker Service: for internal background Workflows.
 
-For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker services per cluster.
+For example, a real-life production deployment can have 5 Frontend, 15 History, 17 Matching, and 3 Worker Services per cluster.
 
 The Temporal Server services can run independently or be grouped together into shared processes on one or more physical or virtual machines.
 For live (production) environments, we recommend that each service runs independently, because each one has different scaling requirements and troubleshooting becomes easier.
-The History, Matching, and Worker services can scale horizontally within a Cluster.
+The History, Matching, and Worker Services can scale horizontally within a Cluster.
 The Frontend Service scales differently than the others because it has no sharding or partitioning; it is just stateless.
 
 Each service is aware of the others, including scaled instances, through a membership protocol via [Ringpop](https://github.com/temporalio/ringpop-go).
@@ -134,12 +134,12 @@ The Frontend Service has access to the hash rings that maintain service membersh
 
 Inbound call rate limiting is applied per host and per namespace.
 
-The Frontend service talks to the Matching service, History service, Worker service, the database, and Elasticsearch (if in use).
+The Frontend Service talks to the Matching Service, History Service, Worker Service, the database, and Elasticsearch (if in use).
 
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership-related communication.
 
-#### History service
+#### History Service
 
 The History Service tracks the state of Workflow Executions.
 
@@ -157,12 +157,12 @@ A History shard maintains four types of queues:
 - Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
 - Visibility queue: pushes data to the visibility index (Elasticsearch).
 
-The History service talks to the Matching Service and the Database.
+The History Service talks to the Matching Service and the database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.
 
-#### Matching service
+#### Matching Service
 
 The Matching Service is responsible for hosting Task Queues for Task dispatching.
 
@@ -171,18 +171,18 @@ The Matching Service is responsible for hosting Task Queues for Task dispatching
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
 
-It talks to the Frontend service, History service, and the database.
+It talks to the Frontend Service, History Service, and the database.
 
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
 
-#### Worker service
+#### Worker Service
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
 ![Worker Service](/diagrams/temporal-worker-service.svg)
 
-It talks to the Frontend service.
+It talks to the Frontend Service.
 
 - It uses port 6939 for membership-related communication.
 
@@ -192,7 +192,7 @@ A Retention Period is the amount of time a Workflow Execution Event History rema
 
 - [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
 
-A Retention Period applies to a single [Namespace](/next/namespaces#) and is set when the Namespace is registered.
+A Retention Period applies to a single [Namespace](/namespaces#) and is set when the Namespace is registered.
 
 If the Retention Period isn't set, it defaults to 2 days.
 The minimum Retention Period is 1 day.
@@ -201,10 +201,10 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 
 ## Archival
 
-Archival is a feature that automatically backs up [Event Histories](/next/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to set up Archival](/next/cluster-deployment-guide#set-up)
-- [How to create a custom Archiver](/next/cluster-deployment-guide#custom-archiver)
+- [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
+- [How to set up Archival](/cluster-deployment-guide#set-up)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -215,7 +215,7 @@ This feature is helpful for compliance and debugging.
 
 Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
-Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying via [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
+Archival is not supported when running Temporal via docker-compose and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
 
 ## Multi-Cluster Replication
 
@@ -225,7 +225,7 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/next/namespaces#global-namespace).
+This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 

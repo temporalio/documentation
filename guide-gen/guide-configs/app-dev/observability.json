@@ -2,9 +2,10 @@
   "file_name": "observability.md",
   "id": "observability",
   "file_dir": "application-development",
-  "title": "Application development observability",
+  "title": "Application development - Observability",
   "sidebar_label": "Observability",
-  "description": "This section provides documentation on how to observe your Temporal application.",
+  "description": "The Observability section of the Temporal Application development guide covers the many ways to view the current state of your Temporal Application – that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "h2_sections": [
@@ -156,6 +157,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-log-from-a-workflow-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-log-from-a-workflow-in-typescript"
@@ -228,6 +234,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-typescript"
@@ -257,6 +268,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-python"
             },
             {
               "lang": "typescript",
@@ -290,6 +306,11 @@
               "path": "php/how-to-remove-search-attributes-from-a-workflow-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-remove-search-attributes-from-a-workflow-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-remove-search-attributes-from-a-workflow-in-typescript"
@@ -306,7 +327,6 @@
           "type": "how-to",
           "path": "app-dev-context/replays"
         },
-
         {
           "header": "none",
           "type": "lang-tabs",

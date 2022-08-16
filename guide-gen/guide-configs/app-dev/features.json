@@ -2,9 +2,10 @@
   "file_name": "features.md",
   "file_dir": "application-development",
   "id": "features",
-  "title": "Application development features",
+  "title": "Application development - Features",
   "sidebar_label": "Features",
-  "description": "This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in Temporal Application development.",
+  "description": "The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
+  "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "h2_sections": [
@@ -51,6 +52,11 @@
               "path": "php/how-to-define-a-signal-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-define-a-signal-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-define-a-signal-in-typescript"
@@ -82,6 +88,11 @@
               "path": "none"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-handle-a-signal-in-a-workflow-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-handle-a-signal-in-typescript"
@@ -110,6 +121,11 @@
             {
               "lang": "php",
               "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
               "path": "none"
             },
             {
@@ -175,6 +191,11 @@
               "path": "php/how-to-send-a-signal-with-start-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-send-a-signal-with-start-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-send-a-signal-with-start-in-typescript"
@@ -192,9 +213,9 @@
           "path": "app-dev-context/queries"
         },
         {
-          "header": "Query name",
+          "header": "Define Query",
           "type": "context",
-          "path": "app-dev-context/query-name"
+          "path": "app-dev-context/define-query"
         },
         {
           "header": "none",
@@ -216,35 +237,9 @@
               "path": "php/how-to-define-a-query-in-php"
             },
             {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "none"
-            }
-          ]
-        },
-        {
-          "header": "Send Query",
-          "type": "context",
-          "path": "app-dev-context/send-query"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-send-a-query-to-a-workflow-execution-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "java/how-to-send-a-query-to-a-workflow-in-java"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-define-a-query-in-python"
             },
             {
               "lang": "typescript",
@@ -278,9 +273,45 @@
               "path": "php/how-to-handle-a-query-in-a-workflow-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-handle-a-query-in-a-workflow-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-handle-a-query-in-a-workflow-in-typescript"
+            }
+          ]
+        },
+        {
+          "header": "Send Query",
+          "type": "context",
+          "path": "app-dev-context/send-query"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-send-a-query-to-a-workflow-execution-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-send-a-query-to-a-workflow-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
             }
           ]
         }
@@ -453,6 +484,11 @@
               "path": "php/how-to-set-a-schedule-to-close-timeout-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-schedule-to-close-timeout-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-a-schedule-to-close-timeout-in-typescript"
@@ -484,6 +520,11 @@
               "path": "php/how-to-set-a-start-to-close-timeout-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-start-to-close-timeout-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-a-start-to-close-timeout-in-typescript"
@@ -513,6 +554,11 @@
               "lang": "php",
               "title": "PHP",
               "path": "php/how-to-set-a-schedule-to-start-timeout-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-schedule-to-start-timeout-in-python"
             },
             {
               "lang": "typescript",
@@ -587,6 +633,11 @@
               "path": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-heartbeat-an-activity-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-heartbeat-an-activity-in-typescript"
@@ -616,6 +667,11 @@
                   "lang": "php",
                   "title": "PHP",
                   "path": "php/how-to-set-a-heartbeat-timeout-in-php"
+                },
+                {
+                  "lang": "python",
+                  "title": "Python",
+                  "path": "python/how-to-set-a-heartbeat-timeout-in-python"
                 },
                 {
                   "lang": "typescript",
@@ -761,6 +817,11 @@
               "path": "php/how-to-continue-as-new-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-continue-as-new-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "none"
@@ -797,9 +858,50 @@
               "path": "php/how-to-set-a-cron-schedule-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-a-cron-schedule-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-a-cron-job-in-typescript"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "header": "Environment variables",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "app-dev-context/environment-variables"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "none"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-use-environment-variables-in-typescript"
             }
           ]
         }

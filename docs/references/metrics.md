@@ -78,7 +78,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [workflow_task_replay_latency](#workflow_task_replay_latency)                           | Worker         | Histogram   | TypeScript, Go, PHP, Java |
 | [workflow_task_schedule_to_start_latency](#workflow_task_schedule_to_start_latency)     | Worker         | Histogram   | TypeScript, Go, PHP, Java |
 
-### `activity_execution_cancelled`
+### activity_execution_cancelled
 
 An Activity Execution was canceled.
 
@@ -86,7 +86,7 @@ An Activity Execution was canceled.
 - Available in: Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `activity_execution_failed`
+### activity_execution_failed
 
 An Activity Execution failed.
 
@@ -94,7 +94,7 @@ An Activity Execution failed.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `activity_execution_latency`
+### activity_execution_latency
 
 Time to complete an Activity Execution, from the time the Activity Task is generated to the time the language SDK responded with a completion (failure or success).
 
@@ -102,7 +102,7 @@ Time to complete an Activity Execution, from the time the Activity Task is gener
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `activity_poll_no_task`
+### activity_poll_no_task
 
 An Activity Worker poll for an Activity Task timed out, and no Activity Task is available to pick from the Task Queue.
 
@@ -110,7 +110,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `activity_schedule_to_start_latency`
+### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
 A [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
@@ -119,7 +119,7 @@ A [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout) can
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `activity_task_error`
+### activity_task_error
 
 An internal error or kernel panic occurred during Activity Task handling or execution.
 
@@ -127,7 +127,7 @@ An internal error or kernel panic occurred during Activity Task handling or exec
 - Available in: Go, PHP
 - Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
-### `corrupted_signals`
+### corrupted_signals
 
 Number of Signals whose payload could not be deserialized.
 
@@ -135,7 +135,7 @@ Number of Signals whose payload could not be deserialized.
 - Available in: Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `local_activity_execution_cancelled`
+### local_activity_execution_cancelled
 
 A Local Activity Execution was canceled.
 
@@ -143,7 +143,7 @@ A Local Activity Execution was canceled.
 - Available in: Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `local_activity_execution_failed`
+### local_activity_execution_failed
 
 A Local Activity Execution failed.
 
@@ -151,7 +151,7 @@ A Local Activity Execution failed.
 - Available in: Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `local_activity_execution_latency`
+### local_activity_execution_latency
 
 Time to complete a Local Activity Execution, from the time the first Activity Task is generated to the time the SDK responds that the execution is complete.
 
@@ -159,7 +159,7 @@ Time to complete a Local Activity Execution, from the time the first Activity Ta
 - Available in: Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `local_activity_succeeded_endtoend_latency`
+### local_activity_succeeded_endtoend_latency
 
 Total latency of successfully finished Local Activity Executions (from schedule to completion).
 
@@ -167,7 +167,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 - Available in: Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `local_activity_total`
+### local_activity_total
 
 Total number of [Local Activity Executions](/concepts/what-is-a-local-activity).
 
@@ -175,7 +175,7 @@ Total number of [Local Activity Executions](/concepts/what-is-a-local-activity).
 - Available in: Go, PHP, Java
 - Tags: `activity_type`, `namespace`, `task_queue`
 
-### `long_request`
+### long_request
 
 Temporal Client made an RPC long poll request.
 
@@ -183,7 +183,7 @@ Temporal Client made an RPC long poll request.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `operation`
 
-### `long_request_failure`
+### long_request_failure
 
 Temporal Client made an RPC long poll request that failed.
 This number is included into the total `long_request` counter for long poll RPC requests.
@@ -192,7 +192,7 @@ This number is included into the total `long_request` counter for long poll RPC 
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `operation`
 
-### `long_request_latency`
+### long_request_latency
 
 Latency of a Temporal Client gRPC long poll request.
 
@@ -200,7 +200,7 @@ Latency of a Temporal Client gRPC long poll request.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `operation`
 
-### `num_pollers`
+### num_pollers
 
 Current number of Worker Entities that are polling.
 
@@ -208,7 +208,7 @@ Current number of Worker Entities that are polling.
 - Available in: TypeScript
 - Tags: `namespace`, `poller_type`, `task_queue`
 
-### `poller_start`
+### poller_start
 
 A Worker Entity poller was started.
 
@@ -216,7 +216,7 @@ A Worker Entity poller was started.
 - Available in: Go, PHP, Java
 - Tags: `namespace`, `task_queue`
 
-### `request`
+### request
 
 Temporal Client made an RPC request.
 
@@ -224,7 +224,7 @@ Temporal Client made an RPC request.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `operation`
 
-### `request_failure`
+### request_failure
 
 Temporal Client made an RPC request that failed.
 This number is included into the total `request` counter for RPC requests.
@@ -233,7 +233,7 @@ This number is included into the total `request` counter for RPC requests.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `operation`
 
-### `request_latency`
+### request_latency
 
 Latency of a Temporal Client gRPC request.
 
@@ -241,7 +241,7 @@ Latency of a Temporal Client gRPC request.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `operation`
 
-### `sticky_cache_hit`
+### sticky_cache_hit
 
 A Workflow Task found a cached Workflow Execution Event History to run against.
 
@@ -249,7 +249,7 @@ A Workflow Task found a cached Workflow Execution Event History to run against.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`
 
-### `sticky_cache_miss`
+### sticky_cache_miss
 
 A Workflow Task did not find a cached Workflow Worker.
 
@@ -257,7 +257,7 @@ A Workflow Task did not find a cached Workflow Worker.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`
 
-### `sticky_cache_size`
+### sticky_cache_size
 
 Current cache size, expressed in number of Workflow Executions.
 
@@ -265,7 +265,7 @@ Current cache size, expressed in number of Workflow Executions.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace` (TypeScript, Java), `task_queue` (TypeScript)
 
-### `sticky_cache_total_forced_eviction`
+### sticky_cache_total_forced_eviction
 
 A Workflow Execution has been forced from the cache intentionally.
 
@@ -273,7 +273,7 @@ A Workflow Execution has been forced from the cache intentionally.
 - Available in: Go, PHP, Java
 - Tags: `namespace`, `task_queue`
 
-### `unregistered_activity_invocation`
+### unregistered_activity_invocation
 
 A request to spawn an Activity Execution is not registered with the Worker.
 
@@ -281,7 +281,7 @@ A request to spawn an Activity Execution is not registered with the Worker.
 - Available in: Go, PHP
 - Tags: `activity_type`, `namespace`, `task_queue`, `workflow_type`
 
-### `worker_start`
+### worker_start
 
 A Worker Entity has been registered, created, or started.
 
@@ -289,7 +289,7 @@ A Worker Entity has been registered, created, or started.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `worker_type`
 
-### `worker_task_slots_available`
+### worker_task_slots_available
 
 The total number of Workflow Task and Activity Task execution slots that are currently available.
 Use the `worker_type` key to differentiate execution slots.
@@ -299,14 +299,14 @@ Use the `worker_type` key to differentiate execution slots.
 - Available in: Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `worker_type`
 
-### `workflow_active_thread_count`
+### workflow_active_thread_count
 
 Total amount of Workflow threads in the Worker Process.
 
 - Type: Gauge
 - Available in: Java
 
-### `workflow_cancelled`
+### workflow_cancelled
 
 Workflow Execution ended because of a cancellation request.
 
@@ -314,7 +314,7 @@ Workflow Execution ended because of a cancellation request.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_completed`
+### workflow_completed
 
 A Workflow Execution completed successfully.
 
@@ -322,7 +322,7 @@ A Workflow Execution completed successfully.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_continue_as_new`
+### workflow_continue_as_new
 
 A Workflow ended with Continue-As-New.
 
@@ -330,7 +330,7 @@ A Workflow ended with Continue-As-New.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_endtoend_latency`
+### workflow_endtoend_latency
 
 Total Workflow Execution time from schedule to completion for a single Workflow Run. (A retried Workflow Execution is a separate Run.)
 
@@ -338,7 +338,7 @@ Total Workflow Execution time from schedule to completion for a single Workflow 
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_failed`
+### workflow_failed
 
 A Workflow Execution failed.
 
@@ -346,7 +346,7 @@ A Workflow Execution failed.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_task_execution_failed`
+### workflow_task_execution_failed
 
 A Workflow Task Execution failed.
 
@@ -354,7 +354,7 @@ A Workflow Task Execution failed.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_task_execution_latency`
+### workflow_task_execution_latency
 
 Workflow Task Execution time.
 
@@ -362,7 +362,7 @@ Workflow Task Execution time.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_task_queue_poll_empty`
+### workflow_task_queue_poll_empty
 
 A Workflow Worker polled a Task Queue and timed out without picking up a Workflow Task.
 
@@ -370,7 +370,7 @@ A Workflow Worker polled a Task Queue and timed out without picking up a Workflo
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_task_queue_poll_succeed`
+### workflow_task_queue_poll_succeed
 
 A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task.
 
@@ -378,7 +378,7 @@ A Workflow Worker polled a Task Queue and successfully picked up a Workflow Task
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_task_replay_latency`
+### workflow_task_replay_latency
 
 Time to catch up on replaying a Workflow Task.
 
@@ -386,7 +386,7 @@ Time to catch up on replaying a Workflow Task.
 - Available in: TypeScript, Go, PHP, Java
 - Tags: `namespace`, `task_queue`, `workflow_type`
 
-### `workflow_task_schedule_to_start_latency`
+### workflow_task_schedule_to_start_latency
 
 The Schedule-To-Start time of a Workflow Task.
 

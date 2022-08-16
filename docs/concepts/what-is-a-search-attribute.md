@@ -74,23 +74,23 @@ It is not possible to rename Search Attributes or remove them from the index sch
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
-- CustomTextField
-- CustomKeywordField
-- CustomIntField
-- CustomDoubleField
 - CustomBoolField
 - CustomDatetimeField
+- CustomDoubleField
+- CustomIntField
+- CustomKeywordField
+- CustomTextField
 
 #### Types
 
 Search Attributes must be one of the following types:
 
-- Text
-- Keyword
-- Int
-- Double
 - Bool
 - Datetime
+- Double
+- Int
+- Keyword
+- Text
 
 Note:
 
@@ -105,7 +105,7 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl/cluster/list-search-attributes)
+- [How to view Search Attributes using tctl](/tctl/cluster/get-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 

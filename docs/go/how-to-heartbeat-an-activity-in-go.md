@@ -8,28 +8,29 @@ tags:
   - developer-guide
 ---
 
-To [Heartbeat](/concepts/what-is-an-activity-heartbeat) in an Activity, use the `RecordHeartbeat` API.
+To [Heartbeat](/concepts/what-is-an-activity-heartbeat) in an Activity in Go, use the `RecordHeartbeat` API.
 
 ```go
-progress := 0
-for progress < 100 {
-    // Send heartbeat message to the server.
-    activity.RecordHeartbeat(ctx, progress)
-    // Do some work.
-    ...
-    progress++
+import (
+    // ...
+    "go.temporal.io/sdk/workflow"
+    // ...
+)
+
+func YourActivityDefinition(ctx, YourActivityDefinitionParam) (YourActivityDefinitionResult, error) {
+    // ...
+    activity.RecordHeartbeat(ctx, details)
+    // ...
 }
 ```
 
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the details (`progress` in the
-above sample) is returned from the `workflow.ExecuteActivity` function as the details field of `TimeoutError`
-with `TimeoutType` set to `Heartbeat`.
+When an Activity Task Execution times out due to a missed Heartbeat, the last value of the `details` variable above is returned to the calling Workflow in the `details` field of `TimeoutError` with `TimeoutType` set to `Heartbeat`.
 
 You can also Heartbeat an Activity from an external source:
 
 ```go
 // The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.NewClient(client.Options{})
+temporalClient, err := client.Dial(client.Options{})
 // Record heartbeat.
 err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
 ```

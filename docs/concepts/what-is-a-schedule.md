@@ -12,7 +12,7 @@ A Schedule contains instructions for starting a [Workflow Execution](/concepts/w
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
 - [How to enable Schedules](#how-to-enable-schedules)
-- [How to operate Schedules using tctl](/next/tctl/schedule/)
+- [How to operate Schedules using tctl](/tctl/schedule/)
 
 A Schedule has identity, and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
@@ -85,15 +85,21 @@ The time zone definition is loaded on the Temporal Server Worker Service from ei
 For more operational control, embed the contents of the time zone database file in the Schedule Spec itself.
 (Note: this isn't currently exposed in tctl or the web UI.)
 
-### Pausing
+### Pause
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/next/tctl/schedule/trigger) command.
+However, you can still force manual actions by using the [tctl schedule trigger](/tctl/schedule/trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 
-### Limiting number of Actions
+### Backfill
+
+A Schedule can be Backfilled.
+When a Schedule is Backfilled, all the Actions that would have been taken over a specified time period are taken now (in parallel if the `AllowAll` [Overlap Policy](#overlap-policy) is used; sequentially if `BufferAll` is used).
+You might use this to fill in runs from a time period when the Schedule was paused due to an external condition that's now resolved, or a period before the Schedule was created.
+
+### Limit number of Actions
 
 A Schedule can be limited to a certain number of scheduled Actions (that is, not trigger immediately).
 After that it will act as if it were paused.
@@ -125,7 +131,7 @@ The Temporal Cluster might be down or unavailable at the time when a Schedule sh
 When it comes back up, the Catchup Window controls which missed Actions should be taken at that point.
 The default is one minute, which means that the Schedule attempts to take any Actions that wouldn't be more than one minute late.
 An outage that lasts longer than the Catchup Window could lead to missed Actions.
-(But you can always Backfill.)
+(But you can always [Backfill](#backfill).)
 
 #### Pause-on-failure
 

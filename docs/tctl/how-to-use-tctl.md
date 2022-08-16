@@ -41,77 +41,10 @@ tctl --namespace samples-namespace namespace describe
 
 The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable is set.
 
-#### Run Workflow
-
-Start a Workflow and see its progress.
-This command doesn't finish until the Workflow completes.
-
-```bash
-tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
-
-# view help messages for workflow run
-tctl workflow run -h
-```
-
-Brief explanation:
-To run a Workflow, the user must specify the following:
-
-1. Task queue name (`--tq`)
-2. Workflow type (`--wt`)
-3. Execution start to close timeout in seconds (`--et`)
-4. Input in JSON format (`--i`) (optional)
-
-The example above uses [this sample Workflow](https://github.com/temporalio/samples-go/blob/main/helloworld/helloworld.go) and takes a string as input with the `-i '"temporal"'` parameter.
-Single quotes (`''`) are used to wrap input as JSON.
-
-**Note:** You need to start the worker so that the Workflow can make progress.
-(Run `make && ./bin/helloworld -m worker` in samples-go to start the worker)
-
 #### Show running Workers of a Task Queue
 
 ```bash
 tctl taskqueue desc --tq hello-world
-```
-
-#### Start Workflow
-
-```bash
-tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
-
-# view help messages for workflow start
-tctl workflow start -h
-
-# for a workflow with multiple inputs, provide a separate -i flag for each of them
-tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
-```
-
-The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress:
-
-```bash
-tctl workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
-```
-
-CLI output:
-
-```bash
-Running execution:
-  Workflow Id : d58237c9-2ae7-4e17-9cbd-311beeedfbe2
-  Run Id      : 7a948e0b-0b0a-4aea-9457-994821c7f7be
-  Type        : HelloWorld
-  Namespace   : default
-  Task Queue  : HelloWorldTaskQueue
-  Args        : [World]
-Progress:
-  1, 2020-10-13T20:40:12Z, WorkflowExecutionStarted
-  2, 2020-10-13T20:40:12Z, WorkflowTaskScheduled
-  3, 2020-10-13T20:40:12Z, WorkflowTaskStarted
-  4, 2020-10-13T20:40:12Z, WorkflowTaskCompleted
-  5, 2020-10-13T20:40:12Z, WorkflowExecutionCompleted
-
-Result:
-  Run Time: 1 seconds
-  Status: COMPLETED
-  Output: []
 ```
 
 ##### Reuse the same Workflow Id when starting/running a Workflow
@@ -137,7 +70,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/concepts/what-is-a-memo).
+More information about memos can be found [here](/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \
@@ -473,8 +406,8 @@ OPTIONS:
    --memo_key value                            Optional key of memo. If there are multiple keys, concatenate them and separate by space
    --memo value                                Optional info that can be showed when list Workflow, in JSON format. If there are multiple JSON, concatenate them and separate by space. The order must be same as memo_key
    --memo_file value                           Optional info that can be listed in list Workflow, from JSON format file. If there are multiple JSON, concatenate them and separate by space or newline. The order must be same as memo_key
-   --search_attr_key value                     Optional search attributes keys that can be be used in list query. If there are multiple keys, concatenate them and separate by |. Use 'cluster get-search-attr' cmd to list legal keys.
-   --search_attr_value value                   Optional search attributes value that can be be used in list query. If there are multiple keys, concatenate them and separate by |. If value is array, use json array like ["a","b"], [1,2], ["true","false"], ["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]. Use 'cluster get-search-attr' cmd to list legal keys and value types
+   --search_attr_key value                     Optional search attributes keys that can be used in list query. If there are multiple keys, concatenate them and separate by |. Use 'cluster get-search-attr' cmd to list legal keys.
+   --search_attr_value value                   Optional search attributes value that can be used in list query. If there are multiple keys, concatenate them and separate by |. If value is array, use json array like ["a","b"], [1,2], ["true","false"], ["2019-06-07T17:16:34-08:00","2019-06-07T18:16:34-08:00"]. Use 'cluster get-search-attr' cmd to list legal keys and value types
 ```
 
 ## Debugging with tctl
@@ -661,157 +594,6 @@ The Identity field contains the Id of the worker (you can set it to any value on
 
 _ActivityTaskCompleted_ event is recorded when Activity completes.
 It contains the result of the Activity execution.
-
-## Signals
-
-```bash
-tctl workflow start  --workflow_id "HelloSignal" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
-```
-
-Worker output:
-
-```text
-13:57:44.258 [workflow-method] INFO  c.t.s.javaquickstart.GettingStarted - 1: Hello World!
-```
-
-Let's send a signal using CLI:
-
-```bash
-tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Hi\"
-```
-
-Worker output:
-
-```text
-13:57:44.258 [workflow-method] INFO  c.t.s.javaquickstart.GettingStarted - 1: Hello World!
-13:58:22.352 [workflow-method] INFO  c.t.s.javaquickstart.GettingStarted - 2: Hi World!
-```
-
-Try sending the same signal with the same input again.
-Note that the output doesn't change. This happens because the await condition doesn't unblock when it sees the same value. But a new greeting unblocks it:
-
-```bash
-tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
-```
-
-Worker output:
-
-```text
-13:57:44.258 [workflow-method] INFO  c.t.s.javaquickstart.GettingStarted - 1: Hello World!
-13:58:22.352 [workflow-method] INFO  c.t.s.javaquickstart.GettingStarted - 2: Hi World!
-13:59:29.097 [workflow-method] INFO  c.t.s.javaquickstart.GettingStarted - 3: Welcome World!
-```
-
-Now shut down the worker and send the same signal again:
-
-```bash
-tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Welcome\"
-```
-
-CLI output:
-
-```text
-Signal workflow succeeded.
-```
-
-Note that sending signals as well as starting Workflows does not need a worker running.
-The requests are queued inside the Temporal server.
-
-Now bring the worker back. Note that it doesn't log anything besides the standard startup messages.
-This occurs because it ignores the queued signal that contains the same input as the current value of greeting.
-Note that the restart of the worker didn't affect the Workflow execution.
-It is still blocked on the same line of code as before the failure.
-This is the most important feature of Temporal.
-The Workflow code doesn't need to deal with worker failures at all.
-Its state is fully recovered to its current state that includes all the local variables and threads.
-
-Let's look at the line where the Workflow is blocked:
-
-```bash
-tctl workflow stack --workflow_id HelloSignal
-```
-
-CLI output:
-
-```text
-Query result:
-[workflow-method: (BLOCKED on await)
-app//io.temporal.internal.sync.WorkflowThreadContext.yield(WorkflowThreadContext.java:79)
-app//io.temporal.internal.sync.WorkflowThreadImpl.yield(WorkflowThreadImpl.java:402)
-app//io.temporal.internal.sync.WorkflowThread.await(WorkflowThread.java:45)
-app//io.temporal.internal.sync.SyncWorkflowContext.await(SyncWorkflowContext.java:775)
-app//io.temporal.internal.sync.WorkflowInternal.await(WorkflowInternal.java:274)
-app//io.temporal.workflow.Workflow.await(Workflow.java:748)
-app//com.temporal.samples.javaquickstart.GettingStarted$HelloWorldImpl.sayHello(GettingStarted.java:34)
-java.base@14.0.1/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-java.base@14.0.1/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-java.base@14.0.1/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-java.base@14.0.1/java.lang.reflect.Method.invoke(Method.java:564)
-app//io.temporal.internal.sync.POJOWorkflowImplementationFactory$POJOWorkflowImplementation$RootWorkflowInboundCallsInterceptor.execute(POJOWorkflowImplementationFactory.java:289)
-]
-```
-
-Yes, indeed the Workflow is blocked on await.
-Stack feature works for any open Workflow, greatly simplifying troubleshooting in production.
-Let's complete the Workflow by sending a signal with a "Bye" greeting:
-
-```bash
-tctl workflow signal --workflow_id "HelloSignal" --name "updateGreeting" --input \"Bye\"
-```
-
-You can make sure that Workflow execution has been completed by looking at the Workflow execution history:
-
-```bash
-tctl workflow showid HelloSignal
-```
-
-Note that the value of the count variable was not lost during the restart.
-This is one of key features of temporal, which allows us to restore Workflow state on any worker based on previous Workflow events.
-
-Also note that while a single worker instance was used for this walkthrough, any real production deployment has multiple worker instances running.
-So any worker failure or restart does not delay any Workflow execution because it is just migrated to any other available worker.
-
-```bash
-$ tctl workflow start  --workflow_id "HelloQuery" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
-Started Workflow Id: HelloQuery, run Id: 1925f668-45b5-4405-8cba-74f7c68c3135
-$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Hi\"
-Signal workflow succeeded.
-$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Welcome\"
-Signal workflow succeeded.
-```
-
-The worker output:
-
-```text
-17:35:50.485 [workflow-root] INFO  c.u.c.samples.hello.GettingStarted - 1: Hello World!
-17:36:10.483 [workflow-root] INFO  c.u.c.samples.hello.GettingStarted - 2: Hi World!
-17:36:16.204 [workflow-root] INFO  c.u.c.samples.hello.GettingStarted - 3: Welcome World!
-```
-
-## Queries
-
-Now let's query the Workflow using the CLI:
-
-```bash
-$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
-Query result as JSON:
-3
-```
-
-One limitation of the query is that it requires a worker process running because it is executing callback code.
-An interesting feature of the query is that it works for completed Workflows as well.
-Let's complete the Workflow by sending "Bye" and query it.
-
-```bash
-$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
-Signal workflow succeeded.
-$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
-Query result as JSON:
-4
-```
-
-The Query method can accept parameters.
-This might be useful if only part of the Workflow state should be returned.
 
 ## Securing `tctl`
 

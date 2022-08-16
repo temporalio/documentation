@@ -60,7 +60,7 @@ import { Connection, WorkflowClient } from '@temporalio/client';
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
 const client = new WorkflowClient({ connection });
-const result = await client.execute(myWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: 'your-task-queue', // required
   workflowId: 'your-workflow-id', // required
 });

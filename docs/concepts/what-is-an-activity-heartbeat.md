@@ -10,7 +10,7 @@ tags:
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
 
-- [How to Heartbeat an Activity](/application-development-guide#activity-heartbeats)
+- [How to Heartbeat an Activity](/application-development/features#activity-heartbeats)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout).
 
@@ -29,11 +29,33 @@ That way if a Worker fails it can be handled in a timely manner.
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
 If an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
 
-**What Activities should Heartbeat?**
+Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
+Heartbeat throttling may lead to Cancellation getting delivered later than expected.
 
-Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress"?
+#### Throttling
+
+Heartbeats may not always be sent to the Cluster—they may be throttled by the Worker.
+The throttle interval is the smaller of the following:
+
+- If `heartbeatTimeout` is provided, `heartbeatTimeout * 0.8`; otherwise, `defaultHeartbeatThrottleInterval`
+- `maxHeartbeatThrottleInterval`
+
+`defaultHeartbeatThrottleInterval` is 30 seconds by default, and `maxHeartbeatThrottleInterval` is 60 seconds by default.
+Each can be set in Worker options.
+
+Throttling is implemented as follows:
+
+- After sending a Heartbeat, the Worker sets a timer for the throttle interval.
+- The Worker stops sending Heartbeats, but continues receiving Heartbeats from the Activity and remembers the most recent one.
+- When the timer fires, the Worker:
+  - Sends the most recent Heartbeat.
+  - Sets the timer again.
+
+#### Which Activities should Heartbeat?
+
+Heartbeating is best thought about not in terms of time, but in terms of "How do you know you are making progress?"
 For short-term operations, progress updates are not a requirement.
-However, checking the progress and status of Activities that run over long periods is almost always useful.
+However, checking the progress and status of Activity Executions that run over long periods is almost always useful.
 
 Consider the following when setting Activity Hearbeats:
 
@@ -41,14 +63,14 @@ Consider the following when setting Activity Hearbeats:
   Note that your Workflow cannot read this progress information while the Activity is still executing (or it would have to store it in Event History).
   You can report progress to external sources if you need it exposed to the user.
 
-- Your Activity Execution is long-running and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
+- Your Activity Execution is long-running, and you need to verify whether the Worker that is processing your Activity is still alive and has not run out of memory or silently crashed.
 
 For example, the following scenarios are suitable for Heartbeating:
 
-- Reading a large file from Amazon S3
-- Running a ML training job on some local GPUs
+- Reading a large file from Amazon S3.
+- Running a ML training job on some local GPUs.
 
 And the following scenarios are not suitable for Heartbeating:
 
-- Reading a small file from disk
-- Making a quick API call
+- Making a quick API call.
+- Reading a small file from disk.

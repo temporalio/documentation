@@ -189,7 +189,7 @@ We redesigned our documentation landing page, [docs.temporal.io](/):
 
 ![Temporal documentation landing page April 2021](/img/documentation-landing-page-april-2021.png)
 
-We implemented a new SDK landing page, [docs.temporal.io/next/application-development](/next/application-development):
+We implemented a new SDK landing page, [docs.temporal.io/application-development](/application-development):
 
 ![Temporal documentation app dev landing page April 2021](/img/documenation-app-dev-landing-page-april-2021.png)
 

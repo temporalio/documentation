@@ -26,7 +26,7 @@ Temporal directly supports several providers:
 - **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
 - **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
 - **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
-- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
+- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](/clusters/how-to-create-a-custom-archiver) to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 

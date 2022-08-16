@@ -13,16 +13,16 @@ a non-deterministic issue if not handled correctly.
 Consider the following Workflow definition:
 
 ```php
-public function myWorkflow(string $data)
+public function yourWorkflow(string $data)
 {
-    $myActivity = Workflow::newActivityStub(
-        MyActivityInterface::class,
+    $yourActivity = Workflow::newActivityStub(
+        YourActivityInterface::class,
         ActivityOptions::new()
             ->withScheduleToStartTimeout(60)
     );
 
-    $result1 = yield $myActivity->activityA($data);
-    $result2 = yield $myActivity->activityB($result1);
+    $result1 = yield $yourActivity->activityA($data);
+    $result2 = yield $yourActivity->activityB($result1);
 
     return $result2;
 }
@@ -38,8 +38,8 @@ result for `ActivityA`. This causes the Workflow to fail on the non-deterministi
 Thus we use `Workflow::getVersion()`.
 
 ```php
-$myActivity = Workflow::newActivityStub(
-    MyActivityInterface::class,
+$yourActivity = Workflow::newActivityStub(
+    YourActivityInterface::class,
     ActivityOptions::new()
         ->withScheduleToStartTimeout(60)
 );
@@ -47,12 +47,12 @@ $myActivity = Workflow::newActivityStub(
 $v = yield Workflow::getVersion('Step1', Workflow::DEFAULT_VERSION, 1);
 
 if ($v === Workflow::DEFAULT_VERSION) {
-    $result1 = yield $myActivity->activityA($data);
+    $result1 = yield $yourActivity->activityA($data);
 } else {
-    $result1 = yield $myActivity->activityC($data);
+    $result1 = yield $yourActivity->activityC($data);
 }
 
-$result2 = yield $myActivity->activityB($result1);
+$result2 = yield $yourActivity->activityB($result1);
 
 return $result2;
 ```
@@ -68,11 +68,11 @@ add some additional code:
 $v = yield Workflow::getVersion('Step1', Workflow::DEFAULT_VERSION, 2);
 
 if ($v === Workflow::DEFAULT_VERSION) {
-    $result1 = yield $myActivity->activityA($data);
+    $result1 = yield $yourActivity->activityA($data);
 } elseif ($v === 1) {
-    $result1 = yield $myActivity->activityC($data);
+    $result1 = yield $yourActivity->activityC($data);
 } else {
-    $result1 = yield $myActivity->activityD($data);
+    $result1 = yield $yourActivity->activityD($data);
 }
 ```
 
@@ -87,9 +87,9 @@ remove the code for that version. It should now look like the following:
 $v = yield Workflow::getVersion('Step1', 1, 2);
 
 if ($v === 1) {
-    $result1 = yield $myActivity->activityC($data);
+    $result1 = yield $yourActivity->activityC($data);
 } else {
-    $result1 = yield $myActivity->activityD($data);
+    $result1 = yield $yourActivity->activityD($data);
 }
 ```
 
@@ -101,7 +101,7 @@ can remove 1 so that your code would look like the following:
 ```php
 yield Workflow::getVersion('Step1', 2, 2);
 
-$result1 = yield $myActivity->activityD($data);
+$result1 = yield $yourActivity->activityD($data);
 ```
 
 Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
@@ -125,9 +125,9 @@ You only need to preserve the first call to `GetVersion()` for each `changeID`. 
 $v = yield Workflow::getVersion('Step1-fix2', Workflow::DEFAULT_VERSION, 1);
 
 if ($v === Workflow::DEFAULT_VERSION) {
-    $result1 = yield $myActivity->activityD($data);
+    $result1 = yield $yourActivity->activityD($data);
 } else {
-    $result1 = yield $myActivity->activityE($data);
+    $result1 = yield $yourActivity->activityE($data);
 }
 ```
 

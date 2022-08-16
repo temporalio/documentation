@@ -11,7 +11,7 @@ You can execute Workflows (including those from other language SDKs) by their ty
 
 ```go
 
-workflowID := "myworkflow_" + uuid.New()
+workflowID := "yourWorkflow_" + uuid.New()
 workflowOptions := client.StartWorkflowOptions{
   ID:        workflowID,
   TaskQueue: "mytaskqueue",
@@ -24,7 +24,7 @@ if err != nil {
 log.Println("Started workflow", "WorkflowID", we.GetID(), "RunID", we.GetRunID())
 ```
 
-In the above example, `client` is imported from the "go.temporal.io/sdk/client" package. And `temporalClient` is an instance of the Temporal Client instantiated outside of the snippet.
+In the above example, `client` is imported from the "go.temporal.io/sdk/client" package. And `temporalClient` is an instance of the Temporal Client instantiated outside the snippet.
 Here we spawn a Workflow Execution by its Workflow Type name `MySimpleWorkflow`. By default, the
 Workflow type is the name of the Workflow function, for example:
 
@@ -39,7 +39,7 @@ with the Worker, for example:
 
 ```go
 rwo := workflow.RegisterOptions {
-   Name: "MyWorkflow", // Set "MyWorkflow" as the Workflow type
+   Name: "YourWorkflow", // Set "YourWorkflow" as the Workflow type
 }
 w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ```
@@ -47,8 +47,8 @@ w.RegisterWorkflowWithOptions(dynamic.SampleGreetingsWorkflow, rwo)
 ### Querying Workflow State
 
 When you start a Workflow with `ExecuteWorkflow`, a `WorkflowExecution` is returned (which is the `we` variable above).
-The `WorkflowExecution` can be used to get the result or capture the WorkflowId.
-You can retrieve the result of the Workflow **from a completely different process**, as long as you have the WorkflowId, by using `client.GetWorkflow`.
+The `WorkflowExecution` can be used to get the result or capture the `WorkflowId`.
+You can retrieve the result of the Workflow **from a completely different process**, as long as you have the `WorkflowId`, by using `client.GetWorkflow`.
 
 ```go
 we = client.GetWorkflow(workflowID)
