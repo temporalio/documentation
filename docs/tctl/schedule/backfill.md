@@ -11,7 +11,7 @@ Backfilling a Schedule means having it do now what it would have done over a spe
 You might use this to fill in runs from a time period when the Schedule was paused due to an external condition that's now resolved, or a period before the Schedule was created.
 
 ```shell
-tctl schedule backfill --sid 'my-schedule-id' \
+tctl schedule backfill --sid 'your-schedule-id' \
   --overlap-policy 'BufferAll'                \
   --start-time '2022-05-01T00:00:00Z'         \
   --end-time   '2022-05-31T23:59:59Z'

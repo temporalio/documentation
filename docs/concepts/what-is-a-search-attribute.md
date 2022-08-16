@@ -123,7 +123,7 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl/cluster/list-search-attributes)
+- [How to view Search Attributes using tctl](/tctl/cluster/get-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 

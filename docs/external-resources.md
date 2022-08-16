@@ -150,13 +150,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Airbyte](https://github.com/airbytehq/airbyte) - [ELT data pipeline platform (see talk)](https://www.youtube.com/watch?v=K25Bt5asd8I)
 - [Roadrunner](https://github.com/roadrunner-server/roadrunner) - PHP application server
 - [Coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby) - Ruby SDK with Rails example
-- [DataDog/temporalite](https://github.com/DataDog/temporalite) - Single binary distro for CI (see talk)
 - [Nunchi Blacksmith](https://www.nunchi.studio/blacksmith/start/onboarding/how) - ETL data platform
-
-## Community SDKs
-
-- [Ruby](https://github.com/coinbase/temporal-ruby)
-- [Python](https://github.com/firdaus/temporal-python-sdk)
 
 ## Misc
 

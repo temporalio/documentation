@@ -56,9 +56,9 @@ module.exports = {
       },
     },
     announcementBar: {
-      id: "how_are_we_doing",
+      id: "replay_announcement",
       content:
-        'Take the <a target="_blank" rel="noopener noreferrer" href="https://forms.gle/1kASKmmm2XrBDhzr5">User Survey</a> and let us know how we are doing!',
+        'Join us for <a target="_blank" rel="noopener noreferrer" href="https://temporal.io/replay">Replay</a>, Temporal’s first-ever developer conference',
       backgroundColor: "#141414",
       textColor: "#ffffff",
       isCloseable: true,
@@ -177,10 +177,6 @@ module.exports = {
             {
               label: "Join the Cloud Waitlist",
               href: "https://pages.temporal.io/cloud-early-access",
-            },
-            {
-              label: "Subscribe to the Newsletter",
-              href: "https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=3475f910fc",
             },
             {
               label: "We're Hiring",

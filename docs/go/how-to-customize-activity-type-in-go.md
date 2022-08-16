@@ -17,7 +17,7 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 // ...
 w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
 registerOptions := activity.RegisterOptions{
-  Name: "CoolActivityTypeName",
+  Name: "YourActivityName",
   // ...
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)

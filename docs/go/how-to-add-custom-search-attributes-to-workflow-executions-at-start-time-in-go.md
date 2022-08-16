@@ -24,7 +24,7 @@ The values in the map must correspond to the [Search Attribute's value type](/co
 If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
 
 ```go
-func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
+func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
     // ...
     searchAttributes := map[string]interface{}{
         "CustomerId": payload["customer"],
@@ -34,7 +34,7 @@ func (c *Client) CallMyWorkflow(ctx context.Context, workflowID string, payload 
         SearchAttributes:   searchAttributes
         // ...
     }
-    we, err := c.Client.ExecuteWorkflow(ctx, options, app.MyWorkflow, payload)
+    we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
     // ...
 }
 ```

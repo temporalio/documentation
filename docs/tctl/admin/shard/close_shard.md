@@ -12,6 +12,8 @@ tags:
 
 The `tctl admin shard close_shard` command closes a shard with an Id that corresponds to the value given in the command.
 
+Alias: `clsh`
+
 ## Usage
 
 `tctl admin shard close_shard [command options] [arguments...]`

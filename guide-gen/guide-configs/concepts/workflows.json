@@ -4,7 +4,8 @@
   "file_dir": "/",
   "title": "Workflows",
   "sidebar_label": "Workflows",
-  "description": "This guide is meant to be a comprehensive overview of Temporal Workflows.",
+  "description": "This guide provides a comprehensive overview of Temporal Workflows.",
+  "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "h2_sections": [

@@ -10,7 +10,7 @@ The following example represents a console command that starts a Workflow, print
 <!--SNIPEND-->
 
 The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
-Use an instance of `WorkflowClientInterface` to create, retrieve, or start a Workflow .
-Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execution Timeout of 1 minute.
+Use an instance of `WorkflowClientInterface` to create, retrieve, or start a Workflow.
+Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execution Timeout of one minute.
 
 Then we print some information and start the Workflow.
