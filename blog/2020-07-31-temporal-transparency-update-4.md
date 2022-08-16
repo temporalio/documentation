@@ -32,7 +32,7 @@ It's been a productive week for Temporal and I hope the same is true for all of 
 - After V1 is stable, no more breaking schema changes
 - THIS IS NOT A PRODUCTION RELEASE!
 
-We are now code complete for Temporal server and GoSDK. If you're interested in what has changed since Temporal was forked from Cadence, our awesome new technical writer/information architect Cully prepared a [change log](https://docs.temporal.io/blog/temporal-v0.28.0-changelog).
+We are now code complete for Temporal server and GoSDK. If you're interested in what has changed since Temporal was forked from Cadence, our awesome new technical writer/information architect Cully prepared a [changelog](https://docs.temporal.io/blog/temporal-v0.28.0-changelog).
 
 We were not able to get the final JavaSDK changes in before code completion, so we've made the decision to delay this specific work until next week. While this isn't optimal, we assumed that users would appreciate having access to the major components today as opposed to blocking everything until the JavaSDK is ready.  Now that we are code complete for Temporal server and GoSDK, it means that there will be no more backwards incompatible API or code changes for those components moving forward. Any drastic changes made in the future will be made in a compatible way and put behind a deprecation schedule. Here is the state of our pipeline:
 

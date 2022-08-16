@@ -79,15 +79,20 @@ module.exports = {
           activeBasePath: "none",
         },
         {
-          label: "Docs change log",
-          to: "/change-log",
-          activeBasePath: "change-log",
+          label: "Changelog",
+          to: "/changelog",
+          activeBasePath: "changelog",
           position: "left",
         },
         {
           label: "Blog",
           to: "/blog",
           activeBasePath: "blog",
+          position: "left",
+        },
+        {
+          label: "Learn",
+          href: "https://learn.temporal.io/",
           position: "left",
         },
       ],
@@ -371,19 +376,19 @@ module.exports = {
         /**
          * Required for any multi-instance plugin
          */
-        id: "change-log",
+        id: "changelog",
         /**
          * URL route for the blog section of your site.
          * *DO NOT* include a trailing slash.
          */
-        routeBasePath: "change-log",
+        routeBasePath: "changelog",
         /**
          * Path to data on filesystem relative to site dir.
          */
-        path: "change-log",
-        blogTitle: "Temporal Platform documentation change log",
+        path: "changelog",
+        blogTitle: "Temporal Platform documentation changelog",
         blogDescription: "A log of changes to this site's content.",
-        blogSidebarTitle: "Docs change log",
+        blogSidebarTitle: "Docs changelog",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
