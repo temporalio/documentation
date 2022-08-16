@@ -9,8 +9,9 @@ tags:
 ---
 
 The `tctl workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Unlike `run`, this command returns the Workflow Id and Run Id immediately after starting the Workflow.
 
-`tctl workflow start [<modifiers>]`
+`tctl workflow start <modifiers>`
 
 The following modifiers control the behavior of the command.
 
