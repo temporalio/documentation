@@ -14,7 +14,7 @@ In advanced cases, you may want to dynamically update these attributes as the Wo
 Consider this example Workflow code:
 
 ```go
-func MyWorkflow(ctx workflow.Context, input string) error {
+func YourWorkflow(ctx workflow.Context, input string) error {
 
     attr1 := map[string]interface{}{
         "CustomIntField": 1,

@@ -44,13 +44,13 @@ This added `sleep()` can result in a different execution path:
 
 ```ts
 // from v1
-export async function myWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   await runActivity();
   return 7;
 }
 
 // to v2
-export async function myWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   await sleep('1 day');
 
   await runActivity();
@@ -64,7 +64,7 @@ Adding a Signal Handler for a Signal type that has never been sent before does n
 
 ```ts
 // from v1
-export async function myWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   await sleep('1 days');
   return value;
 }
@@ -72,7 +72,7 @@ export async function myWorkflow(value: number): Promise<number> {
 // to v2
 const updateValueSignal = defineSignal<[number]>('updateValue');
 
-export async function myWorkflow(value: number): Promise<number> {
+export async function yourWorkflow(value: number): Promise<number> {
   setHandler(updateValueSignal, (newValue) => (value = newValue));
 
   await sleep('1 days');
@@ -138,7 +138,7 @@ Patching is a three step process:
 
 ![image](https://user-images.githubusercontent.com/6764957/139673361-35d61b38-ab94-401e-ae7b-feaa52eae8c6.png)
 
-During replay, when a Worker picks up a history with that marker it will fail the Workflow task when running Workflow code that does not emit the same patch marker (in this case `my-change-id`); therefore it is safe to deploy code from `v2` in a "feature flag" alongside the original version (`v1`).
+During replay, when a Worker picks up a history with that marker it will fail the Workflow task when running Workflow code that does not emit the same patch marker (in this case `your-change-id`); therefore it is safe to deploy code from `v2` in a "feature flag" alongside the original version (`v1`).
 
 <!--SNIPSTART typescript-patching-2-->
 <!--SNIPEND-->

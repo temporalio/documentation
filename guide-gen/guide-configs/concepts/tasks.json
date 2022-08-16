@@ -5,6 +5,7 @@
   "title": "Tasks",
   "sidebar_label": "Tasks",
   "description": "Temporal Task Queues and Worker Processes are tightly coupled components.",
+  "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "h2_sections": [

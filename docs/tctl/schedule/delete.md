@@ -14,5 +14,5 @@ Workflow Executions started by Schedules can be cancelled or terminated using th
 However, Workflow Executions started by a Schedule can be identified by the Search Attributes added to them and can be targeted by a [batch](/tctl/batch/) command for termination.
 
 ```shell
-$ tctl schedule delete --sid 'my-schedule-id'
+$ tctl schedule delete --sid 'your-schedule-id'
 ```

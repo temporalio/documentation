@@ -50,7 +50,7 @@ $factory->run();
 You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
 
 ```php
-$worker = $factory->newWorker('my-task-queue');
+$worker = $factory->newWorker('your-task-queue');
 ```
 
 As mentioned above you can create as many Task Queue connections inside a single Worker Process as you need.
@@ -61,7 +61,7 @@ To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 use Temporal\Worker\WorkerOptions;
 
 $worker = $factory->newWorker(
-    'my-task-queue',
+    'your-task-queue',
     WorkerOptions::new()
         ->withMaxConcurrentWorkflowTaskPollers(10)
 );

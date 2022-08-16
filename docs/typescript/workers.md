@@ -132,7 +132,7 @@ const connection = await NativeConnection.connect({
 });
 const worker = await Worker.create({
   connection,
-  namespace: 'my-custom-namespace',
+  namespace: 'your-custom-namespace',
   /* standard Worker options from here */
 });
 ```
@@ -169,7 +169,7 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = await Connection.connect();
 const client = new WorkflowClient({ connection });
-const result = await client.execute(myWorkflow, {
+const result = await client.execute(yourWorkflow, {
   taskQueue: 'testhttp', // required
   workflowId: 'business-meaningful-id', // also required but not the point
 });
@@ -186,7 +186,7 @@ When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker
 ```ts
 const worker = await Worker.create({
   activities, // imported elsewhere
-  taskQueue: 'my-task-queue',
+  taskQueue: 'your-task-queue',
 });
 ```
 

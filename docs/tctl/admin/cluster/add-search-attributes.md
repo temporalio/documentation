@@ -1,7 +1,7 @@
 ---
 id: add-search-attributes
-title: tctl admin cluster add-search-attributes
-sidebar_label: add-search-attributes
+title: tctl admin cluster add_search_attributes
+sidebar_label: add_search_attributes
 description: Adding custom Search Attributes to a Cluster.
 tags:
   - reference
@@ -9,11 +9,13 @@ tags:
   - admin
 ---
 
-The `tctl admin cluster add-search-attributes` command allows custom search attributes to be added to a given Cluster.
+The `tctl admin cluster add_search_attributes` command allows custom search attributes to be added to a given Cluster.
+
+Alias: `asa`
 
 ## Modifiers
 
-#### `--skip-schema-update`
+#### `--skip_schema_update`
 
 Allows the user to skip the Elasticsearch index schema update.
 

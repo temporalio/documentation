@@ -33,7 +33,7 @@ Both TypeScript and JavaScript can be used with the TypeScript SDK.
 **Create a new project**
 
 ```bash
-npx @temporalio/create@latest ./my-app
+npx @temporalio/create@latest ./your-app
 ```
 
 **Add to an existing project**
