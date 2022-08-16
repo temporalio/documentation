@@ -17,13 +17,13 @@ There are several ways to quickly run a local Temporal development server, the f
 
 #### Temporalite
 
-You can run a local Temporal development server to develop Temporal Applications in your browser using [Temporalite](https://github.com/temporalio/temporalite).
+You can run a local Temporal development server to develop Temporal Applications using [Temporalite](https://github.com/temporalio/temporalite).
 
 Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies, that supports persistent to disk and in-memory mode through SQLite.
 
 Requires Go 1.18 or greater.
 
-**Build, and start Temporalite**
+**Build and start Temporalite**
 
 1. Build from source.
    1. Build from source using `go install`.
