@@ -1,11 +1,15 @@
-import { Client, LogLevel } from '@notionhq/client'
-import fs from 'fs-extra';
-import path from 'path';
+import {Client, LogLevel} from "@notionhq/client";
+import fs from "fs-extra";
+import path from "path";
 
 export async function updateNotion(config) {
-  console.log("comparing data...")
-  const notionPages = await fs.readJSON(path.join(config.root, config.notion_store_file_name));
-  const docsQuestions = await fs.readJSON(path.join(config.root, config.docs_store_file_name));
+  console.log("comparing data...");
+  const notionPages = await fs.readJSON(
+    path.join(config.root, config.notion_store_file_name)
+  );
+  const docsQuestions = await fs.readJSON(
+    path.join(config.root, config.docs_store_file_name)
+  );
   const notion = new Client({
     auth: config.notion_key,
     // logLevel: LogLevel.DEBUG,
@@ -20,16 +24,16 @@ export async function updateNotion(config) {
         notionPage = page;
         break;
       }
-      pageCount ++;
+      pageCount++;
     }
-    if(foundIt) {
+    if (foundIt) {
       console.log(`found one, updating ${question.text}...`);
       notion.pages.update({
         page_id: notionPage.id,
         properties: {
           Exists: {
             select: {
-              name: 'Exists',
+              name: "Exists",
             },
           },
           Location: {
@@ -40,14 +44,12 @@ export async function updateNotion(config) {
     } else {
       console.log(`missing ${question.text}, adding now...`);
       notion.pages.create({
-        parent: { database_id: config.notion_db },
+        parent: {database_id: config.notion_db},
         properties: {
-          Exists: { name: 'Exists' },
-          Type: [
-            { name: 'Question'},
-          ],
+          Exists: {name: "Exists"},
+          Type: [{name: "Question"}],
           Location: convertToURL(question.slug),
-          title: [{ text: { content: question.text } }],
+          title: [{text: {content: question.text}}],
         },
       });
     }

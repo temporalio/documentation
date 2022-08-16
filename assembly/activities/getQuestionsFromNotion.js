@@ -1,5 +1,5 @@
-import { Client, LogLevel } from '@notionhq/client'
-import fs from 'fs-extra';
+import {Client, LogLevel} from "@notionhq/client";
+import fs from "fs-extra";
 
 export async function getQuestionsFromNotion(config) {
   console.log("getting questions from Notion...");
@@ -10,7 +10,7 @@ export async function getQuestionsFromNotion(config) {
   const notionPages = [];
   let hasMore = true;
   let cursor = undefined;
-  while(hasMore) {
+  while (hasMore) {
     const pages = await notion.databases.query({
       database_id: config.notion_db,
       page_size: 100,
@@ -18,9 +18,9 @@ export async function getQuestionsFromNotion(config) {
       filter: {
         or: [
           {
-            property: 'Type',
+            property: "Type",
             multi_select: {
-              contains: 'Question',
+              contains: "Question",
             },
           },
         ],
