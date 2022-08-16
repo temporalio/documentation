@@ -129,15 +129,15 @@ When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job
 
 Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.
 
-- [How to configure maximum number of Search Attribute keys per Cluster](#)
+<!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
 
 Default single Search Attribute **value** size limit is 2 KB.
 
-- [How to configure Search Attribute value size limit](#)
+<!-- TODO - [How to configure Search Attribute value size limit](#) -->
 
 Total Search Attribute size: 40 KB
 
-- [How to configure total Search Attribute size limite](#)
+<!-- TODO - [How to configure total Search Attribute size limite](#) -->
 
 <!-- temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
