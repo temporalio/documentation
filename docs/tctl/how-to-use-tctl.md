@@ -150,19 +150,6 @@ Shortcut:
 tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717
 ```
 
-#### Show Workflow Execution information
-
-```bash
-tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717 -r 866ae14c-88cf-4f1e-980f-571e031d71b0
-# a shortcut of this is (without -w -r flag)
-tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717 866ae14c-88cf-4f1e-980f-571e031d71b0
-
-# if run_id is not provided, it will show the latest workflow execution of that workflow_id
-tctl workflow describe -w 3ea6b242-b23c-4279-bb13-f215661b4717
-# a shortcut of this is
-tctl workflow describeid 3ea6b242-b23c-4279-bb13-f215661b4717
-```
-
 #### Query Workflow Execution
 
 ```bash
