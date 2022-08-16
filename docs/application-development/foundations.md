@@ -36,20 +36,45 @@ In this section you can find the following:
 
 ## Run a dev Cluster
 
-Whenever you are developing Temporal Applications, you'll want to have a [Temporal Cluster](/clusters#) up and running.
-You can interact with a Cluster through [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands.
+When developing Temporal Applications, you can use a local development server and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands.
 
-The following sections show you how to quickly install and run a Temporal Cluster:
+There are several ways to quickly run a local Temporal development server, the following are a few of our favorites:
 
-- [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
-- [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 - [Temporalite](#temporalite): Distribution of Temporal that runs as a single process with zero runtime dependencies.
+- [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application.
+- [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
-**We do not recommend using any of these methods in a [full (production) environment](/server/production-deployment).**
+**For [full (production) environment](/server/production-deployment) usage, see the [Temporal Cloud](../cloud/) documentation.**
+
+#### Temporalite
+
+You can run a local Temporal development server to develop Temporal Applications in your browser using [Temporalite](https://github.com/temporalio/temporalite).
+
+Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies, that supports persistent to disk and in-memory mode through SQLite.
+
+Requires Go 1.18 or greater.
+
+**Build, and start Temporalite**
+
+1. Build from source.
+   1. Build from source using `go install`.
+   ```bash
+   go install github.com/temporalio/temporalite/cmd/temporalite@latest
+   ```
+2. Start Temporalite locally.
+   1. Run the Temporalite start command.
+   ```bash
+   temporalite start --namespace default
+   ```
+   Replace `default` with your [Namespace Name](../concepts/what-is-a-cloud-namespace-name/).
+
+**Results**: You should have Temporal server running `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
+
+<!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
 #### Docker Compose
 
-Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Workflows.
+Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
 
 You must have [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install) installed.
 
@@ -76,32 +101,6 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
-
-#### Temporalite
-
-You can run a Temporal Cluster and develop Temporal Applications in your browser using [Temporalite](https://github.com/temporalio/temporalite).
-
-Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies, that supports persistent to disk and in-memory mode through SQLite.
-
-Requires Go 1.18 or greater.
-
-**Download, build, and start Temporalite**
-
-1. Download and build from source.
-   1. Build from source using `go install`.
-   ```bash
-   go install github.com/temporalio/temporalite/cmd/temporalite@latest
-   ```
-2. Start Temporalite locally.
-   1. Run the Temporalite start command.
-   ```bash
-   temporalite start --namespace default
-   ```
-   Replace `default` with your [Namespace Name](../concepts/what-is-a-cloud-namespace-name/).
-
-**Results**: You should have Temporal server running `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
-
-<!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
 ## Add your SDK
 
