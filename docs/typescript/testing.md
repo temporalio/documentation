@@ -79,7 +79,11 @@ When creating an environment, [`TestWorkflowEnvironment.create`](https://typescr
 
 ### Example setup
 
-> NOTE: `beforeAll` and `afterAll` are injected by `jest`.
+`beforeAll` and `afterAll` are injected by `jest`. To use mocha instead, change them to `before` and `after`, and import:
+
+```ts
+import { before, after } from 'mocha';
+```
 
 ```ts
 import { TestWorkflowEnvironment } from '@temporalio/testing';
