@@ -9,13 +9,17 @@ tags:
 
 <!--- Onboarding guide for Temporal Cloud --->
 
+You received email from Temporal that welcomes you to your new Temporal account.
+Your email address is now the first [Global Admin](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for your account.
+
 To get started with Temporal Cloud, following these onboarding steps:
 
-1. [Create an account.](#create-an-account-in-temporal-cloud)
-1. [Issue CA certificates.](#issue-ca-certificates)
-1. [Create a Namespace.](#create-a-namespace)
-1. [Invite users.](#invite-users)
+<!--- 1. [Create an account.](#create-an-account-in-temporal-cloud) --->
+1. [Issue CA certificates.](#1_issue-ca-certificates)
+1. [Create a Namespace.](#2_create-a-namespace)
+1. [Invite users.](#3_invite-users)
 
+<!---
 ## 1. Create an account in Temporal Cloud
 
 :::info
@@ -51,8 +55,9 @@ If the email address is not associated with a Google Account, follow the instruc
 
 1. In the email invitation you received from Temporal, click **Temporal Cloud Order Form and Pricing**.
    (We are working to make self-serve account creation available.)
+--->
 
-## 2. Issue CA certificates
+## 1. Issue CA certificates
 
 You must provide your own certificates to access Temporal Cloud.
 For certificate requirements, see the following:
@@ -60,13 +65,13 @@ For certificate requirements, see the following:
 - [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-ca-certificates)
 - [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#issue-root-ca-and-end-entity-certificates)
 
-## 3. Create a Namespace
+## 2. Create a Namespace
 
 [How to create a Namespace in Temporal Cloud](/cloud/how-to-create-a-namespace-in-temporal-cloud)
 
 <!--- How to invite users in Temporal Cloud --->
 
-## 4. Invite users
+## 3. Invite users
 
 :::caution
 
