@@ -460,7 +460,7 @@ module.exports = {
         },
         {
           type: "link",
-          label: "Pythin SDK API",
+          label: "Python SDK API",
           href: "https://python.temporal.io/",
         },
         {
