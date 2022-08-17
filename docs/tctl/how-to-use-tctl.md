@@ -447,46 +447,6 @@ You can restart the Workflow worker if you want to make sure that restarting it 
 It works for Activities of any duration.
 It is okay for the Workflow code to block on an Activity invocation for a month for example.
 
-### `tctl workflow show`
-
-Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
-
-```text
-$ tctl workflow show  --workflow_id "HelloActivityWorker"
-  1  WorkflowExecutionStarted  {WorkflowType:{Name:HelloWorld_sayHello},
-                                TaskQueue:{Name:HelloWorldTaskQueue},
-                                Input:["World"],
-                                ExecutionStartToCloseTimeoutSeconds:3600,
-                                TaskStartToCloseTimeoutSeconds:10,
-                                ContinuedFailureDetails:[],
-                                LastCompletionResult:[],
-                                Identity:temporal-cli@linuxkit-025000000001,
-                                Attempt:0,
-                                FirstWorkflowTaskBackoffSeconds:0}
-  2  WorkflowTaskScheduled     {TaskQueue:{Name:HelloWorldTaskQueue},
-                                StartToCloseTimeoutSeconds:10,
-                                Attempt:0}
-  3  WorkflowTaskStarted       {ScheduledEventId:2,
-                                Identity:36234@maxim-1234567890AB,
-                                RequestId:ef645576-7cee-4d2e-9892-597a08b7b01f}
-  4  WorkflowTaskCompleted     {ExecutionContext:[],
-                                ScheduledEventId:2,
-                                StartedEventId:3,
-                                Identity:36234@maxim-1234567890AB}
-  5  ActivityTaskScheduled     {ActivityId:0,
-                                ActivityType:{Name:HelloWorldActivities_say},
-                                TaskQueue:{Name:HelloWorldTaskQueue},
-                                Input:["1: Hello World!"],
-                                ScheduleToCloseTimeoutSeconds:100,
-                                ScheduleToStartTimeoutSeconds:100,
-                                StartToCloseTimeoutSeconds:100,
-                                HeartbeatTimeoutSeconds:100,
-                                WorkflowTaskCompletedEventId:4}
-```
-
-The last event in the Workflow history is `ActivityTaskScheduled`.
-It is recorded when Workflow invoked the Activity, but it wasn't picked up by an Activity worker yet.
-
 ### `tctl workflow describe`
 
 Another useful API is `DescribeWorkflowExecution` which, among other information, contains the list of outstanding Activities:
