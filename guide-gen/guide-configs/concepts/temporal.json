@@ -5,6 +5,7 @@
   "title": "Temporal",
   "sidebar_label": "Temporal",
   "description": "The Temporal Platform explained.",
+  "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "h2_sections": [

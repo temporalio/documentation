@@ -41,77 +41,10 @@ tctl --namespace samples-namespace namespace describe
 
 The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable is set.
 
-#### Run Workflow
-
-Start a Workflow and see its progress.
-This command doesn't finish until the Workflow completes.
-
-```bash
-tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"'
-
-# view help messages for workflow run
-tctl workflow run -h
-```
-
-Brief explanation:
-To run a Workflow, the user must specify the following:
-
-1. Task queue name (`--tq`)
-2. Workflow type (`--wt`)
-3. Execution start to close timeout in seconds (`--et`)
-4. Input in JSON format (`--i`) (optional)
-
-The example above uses [this sample Workflow](https://github.com/temporalio/samples-go/blob/main/helloworld/helloworld.go) and takes a string as input with the `-i '"temporal"'` parameter.
-Single quotes (`''`) are used to wrap input as JSON.
-
-**Note:** You need to start the worker so that the Workflow can make progress.
-(Run `make && ./bin/helloworld -m worker` in samples-go to start the worker)
-
 #### Show running Workers of a Task Queue
 
 ```bash
 tctl taskqueue desc --tq hello-world
-```
-
-#### Start Workflow
-
-```bash
-tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"'
-
-# view help messages for workflow start
-tctl workflow start -h
-
-# for a workflow with multiple inputs, provide a separate -i flag for each of them
-tctl workflow start --tq hello-world --wt WorkflowWith3Args --et 60 -i '"your_input_string"' -i 'null' -i '{"Name":"my-string", "Age":12345}'
-```
-
-The Workflow `start` command is similar to the `run` command, but immediately returns the workflow_id and run_id after starting the Workflow. Use the `show` command to view the Workflow's history/progress:
-
-```bash
-tctl workflow run --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"World\"
-```
-
-CLI output:
-
-```bash
-Running execution:
-  Workflow Id : d58237c9-2ae7-4e17-9cbd-311beeedfbe2
-  Run Id      : 7a948e0b-0b0a-4aea-9457-994821c7f7be
-  Type        : HelloWorld
-  Namespace   : default
-  Task Queue  : HelloWorldTaskQueue
-  Args        : [World]
-Progress:
-  1, 2020-10-13T20:40:12Z, WorkflowExecutionStarted
-  2, 2020-10-13T20:40:12Z, WorkflowTaskScheduled
-  3, 2020-10-13T20:40:12Z, WorkflowTaskStarted
-  4, 2020-10-13T20:40:12Z, WorkflowTaskCompleted
-  5, 2020-10-13T20:40:12Z, WorkflowExecutionCompleted
-
-Result:
-  Run Time: 1 seconds
-  Status: COMPLETED
-  Output: []
 ```
 
 ##### Reuse the same Workflow Id when starting/running a Workflow
@@ -137,7 +70,7 @@ You can also set this inside your Workflow code with `WorkflowOptions.WorkflowId
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 These are visible when listing workflows.
-More information on memos can be found [here](/concepts/what-is-a-memo).
+More information about memos can be found [here](/concepts/what-is-a-memo).
 
 ```bash
 tctl workflow start \
@@ -513,46 +446,6 @@ It shows that the Workflow code is blocked on the "say" method of a Proxy object
 You can restart the Workflow worker if you want to make sure that restarting it does not change that.
 It works for Activities of any duration.
 It is okay for the Workflow code to block on an Activity invocation for a month for example.
-
-### `tctl workflow show`
-
-Another way to see what exactly happened in the Workflow execution is to look at the Workflow execution history:
-
-```text
-$ tctl workflow show  --workflow_id "HelloActivityWorker"
-  1  WorkflowExecutionStarted  {WorkflowType:{Name:HelloWorld_sayHello},
-                                TaskQueue:{Name:HelloWorldTaskQueue},
-                                Input:["World"],
-                                ExecutionStartToCloseTimeoutSeconds:3600,
-                                TaskStartToCloseTimeoutSeconds:10,
-                                ContinuedFailureDetails:[],
-                                LastCompletionResult:[],
-                                Identity:temporal-cli@linuxkit-025000000001,
-                                Attempt:0,
-                                FirstWorkflowTaskBackoffSeconds:0}
-  2  WorkflowTaskScheduled     {TaskQueue:{Name:HelloWorldTaskQueue},
-                                StartToCloseTimeoutSeconds:10,
-                                Attempt:0}
-  3  WorkflowTaskStarted       {ScheduledEventId:2,
-                                Identity:36234@maxim-1234567890AB,
-                                RequestId:ef645576-7cee-4d2e-9892-597a08b7b01f}
-  4  WorkflowTaskCompleted     {ExecutionContext:[],
-                                ScheduledEventId:2,
-                                StartedEventId:3,
-                                Identity:36234@maxim-1234567890AB}
-  5  ActivityTaskScheduled     {ActivityId:0,
-                                ActivityType:{Name:HelloWorldActivities_say},
-                                TaskQueue:{Name:HelloWorldTaskQueue},
-                                Input:["1: Hello World!"],
-                                ScheduleToCloseTimeoutSeconds:100,
-                                ScheduleToStartTimeoutSeconds:100,
-                                StartToCloseTimeoutSeconds:100,
-                                HeartbeatTimeoutSeconds:100,
-                                WorkflowTaskCompletedEventId:4}
-```
-
-The last event in the Workflow history is `ActivityTaskScheduled`.
-It is recorded when Workflow invoked the Activity, but it wasn't picked up by an Activity worker yet.
 
 ### `tctl workflow describe`
 

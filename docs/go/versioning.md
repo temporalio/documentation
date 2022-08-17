@@ -17,7 +17,7 @@ Because we design for potentially long running Workflows at scale, versioning wi
 Consider the following Workflow definition:
 
 ```go
-func MyWorkflow(ctx workflow.Context, data string) (string, error) {
+func YourWorkflow(ctx workflow.Context, data string) (string, error) {
         ao := workflow.ActivityOptions{
                 ScheduleToStartTimeout: time.Minute,
                 StartToCloseTimeout:    time.Minute,

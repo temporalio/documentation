@@ -78,6 +78,12 @@ module.exports = {
           position: "left",
           activeBasePath: "none",
         },
+        // {
+        //   label: "KB articles",
+        //   to: "/kb",
+        //   activeBasePath: "kb",
+        //   position: "left",
+        // },
         {
           label: "Docs change log",
           to: "/change-log",
@@ -171,10 +177,6 @@ module.exports = {
             {
               label: "Join the Cloud Waitlist",
               href: "https://pages.temporal.io/cloud-early-access",
-            },
-            {
-              label: "Subscribe to the Newsletter",
-              href: "https://temporal.us17.list-manage.com/subscribe/post?u=2334a0f23e55fd1840613755d&id=3475f910fc",
             },
             {
               label: "We're Hiring",
@@ -385,9 +387,37 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "change-log",
-        blogTitle: "Temporal Platform documentation change log",
-        blogDescription: "A log of changes to this site's content.",
+        blogTitle: "Temporal documentation change log",
         blogSidebarTitle: "Docs change log",
+        routeBasePath: "change-log",
+        blogDescription: "A log of changes to this site's content.",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "kb",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "kb",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "kb",
+        blogTitle: "Temporal Platform knowledge base",
+        blogSidebarTitle: "Recent KB articles",
+        blogDescription:
+          "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
