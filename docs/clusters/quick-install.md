@@ -62,26 +62,25 @@ We do not recommend using this technique for production because all four Tempora
 
 #### Temporalite
 
-You can run a Temporal Cluster and develop Temporal Applications in your browser using [Temporalite](https://github.com/temporalio/temporalite).
+You can run a local Temporal development server to develop Temporal Applications using [Temporalite](https://github.com/temporalio/temporalite).
 
-Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies, that supports persistent to disk and in-memory mode through SQLite.
+Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies.
+It supports persistence to disk and in-memory mode through SQLite.
 
-Requires Go 1.18 or greater.
+Temporalite requires Go 1.18 or later.
 
-**Download, build, and start Temporalite**
+**Build and start Temporalite**
 
-1. Download and build from source.
-   1. Build from source using `go install`.
+1. Build from source using `go install`.
    ```bash
    go install github.com/temporalio/temporalite/cmd/temporalite@latest
    ```
-2. Start Temporalite locally.
-   1. Run the Temporalite start command.
+2. To start Temporalite locally, run the Temporalite `start` command.
    ```bash
    temporalite start --namespace default
    ```
    Replace `default` with your [Namespace Name](../concepts/what-is-a-cloud-namespace-name/).
 
-**Results**: You should have Temporal server running `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
+**Results**: You should have Temporal Server running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
 
 <!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
