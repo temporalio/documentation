@@ -20,7 +20,7 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/#cloud-namespace), region, and environment
-- [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history)
+- [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-executions)
 - [End-entity certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for connecting to the Namespace
 - [Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for each user
 
@@ -34,8 +34,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
 1. In **Region**, select the region in which to host this Namespace.
-1. In **Environment**, select the kind of work planned for this Namespace.
-1. In **Retention Period**, select the appropriate timespan.
+1. In **Retention Period**, select the appropriate timespan. (You can modify this value later.)
 1. In **Certificate**, paste the end-entity certificate for this Namespace.
 1. Click **Create Namespace**.
 

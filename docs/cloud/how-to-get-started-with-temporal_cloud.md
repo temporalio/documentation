@@ -12,24 +12,29 @@ tags:
 To get started with Temporal Cloud, following these onboarding steps:
 
 1. [Create an account.](#create-an-account-in-temporal-cloud)
-1. [Get CA certificates.](#get-ca-certificates)
+1. [Issue CA certificates.](#issue-ca-certificates)
 1. [Create a Namespace.](#create-a-namespace)
 1. [Invite users.](#invite-users)
 
 ## 1. Create an account in Temporal Cloud
 
-:::caution
+:::info
 
-The email address you use to create an account becomes the first global admin and can assign access to all Namespaces.
-Choose wisely.
+The email address you use to create an account is assigned the Global Admin [Role](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) and can assign access to all Namespaces.
+
+Role assignments to users can be changed later as needed.
 
 :::
 
-:::info
+:::caution
 
 Access to [Temporal Web UI](/web-ui) is authorized via single sign-on (SSO), currently limited to Google OAuth.
-The email addresses of all members who need access to Temporal Web UI must be registered with Google.
-If you prefer to use SAML, contact Temporal Sales.
+The email address that you use to create a Temporal account must be registered with Google.
+(If you prefer to use SAML, contact Temporal Sales.)
+
+If the email address is not associated with a Google Account, follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
+
+**Important** Do _not_ create a Gmail account when creating a Google Account.
 
 :::
 
@@ -47,10 +52,10 @@ If you prefer to use SAML, contact Temporal Sales.
 1. Create a Zendesk ticket to request a new account.
    (We are working to make self-serve account creation available.)
 
-## 2. Get CA certificates
+## 2. Issue CA certificates
 
-Access to Temporal Cloud requires a certificate from you.
-For requirements, see the following:
+You must provide your own certificates to access Temporal Cloud.
+For certificate requirements, see the following:
 
 - [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-ca-certificates)
 - [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#issue-root-ca-and-end-entity-certificates)
@@ -63,15 +68,20 @@ For requirements, see the following:
 
 ## 4. Invite users
 
-:::info
+:::caution
 
 Access to Temporal Cloud is authorized via single sign-on (SSO), currently limited to Google OAuth.
 The email addresses of all users who need access to Temporal Cloud must be registered with Google.
 
+If an email address is not associated with a Google Account, the user must follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
+
+**Important** Do _not_ create a Gmail account when creating a Google Account.
+
 :::
 
 When you create a user in Temporal Cloud, the prospective user receives an email invitation.
-The user must click Accept Invite in the message before attempting to log in.
+The user must be logged in to Google and must click **Accept Invite** in the message.
+Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
 
 ### Roles and permissions
 

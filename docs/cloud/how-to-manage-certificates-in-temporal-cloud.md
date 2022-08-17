@@ -21,9 +21,9 @@ The benefits of using a CA certificate include the following:
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
-### Root CA certificates
+### CA certificates
 
-Root CA certificates _must_ meet the following criteria:
+CA certificates _must_ meet the following criteria:
 
 - The certificates must be X.509v3.
 - Each certificate in the bundle must be either a root certificate or issued by another certificate in the bundle.
@@ -42,7 +42,7 @@ An end-entity (leaf) certificate _must_ meet the following criteria:
 - The signing algorithm must include SHA-256 or stronger.
   SHA-1 and MD5 signing algorithms are rejected.
 
-When a client presents an end-entity certificate, and the whole certificate chain is constructed, each certificate in the chain (from end-entity to the root) must have a unique Distinguished Name (DN).
+When a client presents an end-entity certificate, and the whole certificate chain is constructed, each certificate in the chain (from end-entity to the root) must have a unique Distinguished Name.
 
 :::caution
 
@@ -75,16 +75,16 @@ You can use this tool in two ways:
 
 :::info
 
-The maximum number of CA certificates in a certificate bundle is 25. The payload size of a certificate bundle (before base64-encoding) is 32 KB.
+The maximum number of CA certificates in a certificate bundle is 16. The payload size of a certificate bundle (before base64-encoding) is 32 KB.
 
 :::
 
 ## Control authorization for Cloud Namespaces
 
-Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be limited to a specific Namespace.
+Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be scoped to a specific Namespace.
 Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
 
-### Option 1: Issue a separate certificate for each Namespace
+### Option 1: Issue a separate root certificate for each Namespace
 
 Each certificate must belong to a chain up to the root CA certificate.
 Temporal uses the root CA certificate as the trusted authority for access to your Namespaces.
@@ -92,7 +92,7 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 1. Ensure that your certificates meet the [Requirements for client certificates](#requirements-for-client-certificates).
 1. [Add client CA certificates to a Cloud Namespace](/cloud/tcld/namespace/accepted-client-ca/add).
 
-### Option 2: Create certificate filters for each Namespace
+### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
 [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificate-filters-in-temporal-cloud)
 
