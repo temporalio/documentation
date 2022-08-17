@@ -1,6 +1,6 @@
 ---
 id: code-samples
-title: Where are SDK specific code examples?
+title: Where are SDK-specific code examples?
 description: You can find a complete list of executable code samples in Temporal's GitHub repository.
 sidebar_label: Code samples
 tags:
