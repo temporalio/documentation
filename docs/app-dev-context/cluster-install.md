@@ -10,7 +10,7 @@ When developing Temporal Applications, you can use a local development server an
 You can quickly run a local Temporal development server in various ways.
 The following are a few of our favorites:
 
-- [Temporalite](#temporalite): Distribution of Temporal that runs as a single process with zero runtime dependencies.
+- [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
