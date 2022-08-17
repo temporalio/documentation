@@ -1,4 +1,13 @@
-When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
+---
+id: connect-to-a-cluster
+title: How to connect a Temporal Client to a Temporal Cluster
+description: When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
+sidebar_label: Client & Cluster connection
+tags:
+  - guide-context
+---
+
+When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
 
 - To connect to our Docker image, use `127.0.0.1:7233`.
 - To connect to a Temporal Cloud Namespace use `<Namespace_ID>.tmprl.cloud`.

@@ -131,7 +131,7 @@ tctl --auto_confirm admin cluster add-search-attributes \
           --name CustomBoolField --type Bool
 ```
 
-These are intentionally generically named, for demo purposes (e.g. [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/server/production-deployment/#server-limits).
+These are intentionally generically named, for demo purposes (e.g. [for code samples](https://github.com/temporalio/samples-go/blob/77728cf7c38570898b2c90bf6eb0720c7f5fb30d/searchattributes/searchattributes_workflow.go#L56-L63)) and for ease of use (since they are already set up, you don't have to add them when you find you need them later). As you advance in your usage, you may wish to drop this step in favor of better named and specified attributes - just keep in mind that you are [limited to a maximum of 100](https://docs.temporal.io/kb/temporal-platform-limits-sheet).
 
 ## Closing Thoughts
 
