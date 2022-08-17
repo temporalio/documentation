@@ -1,8 +1,8 @@
 ---
 id: cluster-install
 title: How to quickly install a Temporal local development server
-sidebar_label: Install local Temporal development server
-description: There are multiple ways to quickly install and run a Temporal local development server.
+sidebar_label: Install local dev server
+description: Quickly install and run a Temporal local development server in various ways.
 ---
 
 When developing Temporal Applications, you can use a local development server and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands.
