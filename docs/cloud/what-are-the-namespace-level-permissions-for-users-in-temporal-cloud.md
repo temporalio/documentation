@@ -10,6 +10,6 @@ A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can create, rename, update, and delete [Workflows](/workflows) within the Namespace
+- **Namespace Admin:** Can create and edit Namespaces; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
-- **Read-Only:** Can read information but not change any
+- **Read-Only:** Can only read information from the Namespace

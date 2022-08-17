@@ -30,16 +30,6 @@
       ]
     },
     {
-      "header": "Upgrade policy",
-      "h3_sections": [
-        {
-          "header": "none",
-          "type": "explanation",
-          "path": "cloud/upgrade-policy-for-temporal-cloud"
-        }
-      ]
-    },
-    {
       "header": "Cloud Namespace",
       "h3_sections": [
         {

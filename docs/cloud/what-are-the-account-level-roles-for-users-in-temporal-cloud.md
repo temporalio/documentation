@@ -8,10 +8,9 @@ description: Account-level Roles are Global Admin, Developer, and Read-Only.
 When a Global Admin invites a user to join an account, the Global Admin selects one of the following Roles for that user:
 
 - **Global Admin**
-  - Has full administrative permissions across the account, including users, usage, and billing.
+  - Has full administrative permissions across the account, including users and usage.
   - Has Namespace Admin [permissions](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud) on all [Namespaces](/namespaces) in the account
-  - Cannot remote
 - **Developer**
-  - Can create, rename, update, and delete Namespaces and [Workflows](/workflows)
+  - Can create and update Namespaces; has full control over [Workflows](/workflows)
   - Has Namespace Admin permissions for each Namespace created by that user
-- **Read-Only:** Can read information but not change any
+- **Read-Only:** Can only read information

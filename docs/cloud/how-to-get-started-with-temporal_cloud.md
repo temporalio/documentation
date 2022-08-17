@@ -46,7 +46,7 @@ If the email address is not associated with a Google Account, follow the instruc
    - Name and email address of billing contact
    - Credit card information, including billing address if not the same as the company address
    - Optional
-     - Preferred Temporal Cloud domain
+     - Preferred Temporal Cloud domain (subject to availability)
      - Industry category
 
 1. Create a Zendesk ticket to request a new account.
