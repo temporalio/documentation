@@ -7,7 +7,8 @@ description: Quickly install and run a Temporal local development server in vari
 
 When developing Temporal Applications, you can use a local development server and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands.
 
-There are several ways to quickly run a local Temporal development server, the following are a few of our favorites:
+You can quickly run a local Temporal development server in various ways.
+The following are a few of our favorites:
 
 - [Temporalite](#temporalite): Distribution of Temporal that runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application.
