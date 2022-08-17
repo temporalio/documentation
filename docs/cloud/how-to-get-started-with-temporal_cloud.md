@@ -49,7 +49,7 @@ If the email address is not associated with a Google Account, follow the instruc
      - Preferred Temporal Cloud domain (subject to availability)
      - Industry category
 
-1. Create a Zendesk ticket to request a new account.
+1. In the email invitation you received from Temporal, click **Temporal Cloud Order Form and Pricing**.
    (We are working to make self-serve account creation available.)
 
 ## 2. Issue CA certificates
@@ -75,12 +75,13 @@ The email addresses of all users who need access to Temporal Cloud must be regis
 
 If an email address is not associated with a Google Account, the user must follow the instructions in the [Use an existing email address](https://support.google.com/accounts/answer/27441?hl=en#existingemail) section of [Create a Google Account](https://support.google.com/accounts/answer/27441).
 
-**Important** Do _not_ create a Gmail account when creating a Google Account.
+**Important:** Do _not_ create a Gmail account when creating a Google Account.
 
 :::
 
 When you create a user in Temporal Cloud, the prospective user receives an email invitation.
-The user must be logged in to Google and must click **Accept Invite** in the message.
+Before accepting the invitation, the user must be logged in to Google using the email address that received the invitation.
+The user must then click **Accept Invite** in the message.
 Attempting to log in to Temporal Cloud without first accepting the invite doesn't work.
 
 ### Roles and permissions
