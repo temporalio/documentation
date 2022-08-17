@@ -24,7 +24,6 @@ It supports persistence to disk and in-memory mode through SQLite.
 **Prerequisites**
 Temporalite requires Go 1.18 or later.
 
-
 **Build and start Temporalite**
 
 The following steps start and run a Temporal Cluster.
@@ -68,7 +67,6 @@ The following steps start and run a Temporal Cluster using the default configura
    ```
 
 **Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/namespaces/default/workflows).
-
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
