@@ -42,7 +42,7 @@ Workflow engines that rely on a centralized scheduler [have a confusing floor to
 
 The problem with hand-rolled orchestration systems built out of queues and databases is that the longer a job runs, **the more moving parts, the more likely you will find which of the [fallacies of distributed computing](https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing) you have forgotten**, whether it is failing to persist some state, instrumenting for observability and debuggability, or even rolling out changes with production infrastructure mid-flight.
 
-Temporal solves this by persisting [event histories](/workflows/#event-history) as a source of truth, solving for both observability and reliability in one fell swoop. While there is a [soft limit](/server/production-deployment/#server-limits) of 10,000 events in a single Workflow Execution, you can pick a natural cutoff point to snapshot state and start a new Workflow Execution with our [ContinueAsNew](/typescript/workflows/#why-continueasnew-is-needed) API.
+Temporal solves this by persisting [event histories](/workflows/#event-history) as a source of truth, solving for both observability and reliability in one fell swoop. While there is a [soft limit](/kb/temporal-platform-limits-sheet) of 10,000 events in a single Workflow Execution, you can pick a natural cutoff point to snapshot state and start a new Workflow Execution with our [ContinueAsNew](/typescript/workflows/#why-continueasnew-is-needed) API.
 
 In practice, this means you can write **infinitely long running Workflows.** Since Temporal makes state easy to store and fully auditable, this has the potential to change your programming model completely, by allowing you to model every user as a long lived Entity in your system.
 
