@@ -157,7 +157,7 @@ A History shard maintains four types of queues:
 - Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
 - Visibility queue: pushes data to the visibility index (Elasticsearch).
 
-The History Service talks to the Matching Service and the database.
+The History Service talks to the Matching Service and the Database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.
@@ -618,3 +618,4 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+
