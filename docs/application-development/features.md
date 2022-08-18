@@ -2311,7 +2311,7 @@ If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heart
 
 #### Heartbeat Timeout
 
-A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/concepts/what-is-an-Activity-Heartbeat).
+A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeats).
 
 <Tabs
 defaultValue="go"
