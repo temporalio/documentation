@@ -10,7 +10,7 @@ tags:
 <!--- Onboarding guide for Temporal Cloud --->
 
 You received email from Temporal that welcomes you to your new Temporal account.
-Your email address is now the first [Global Admin](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for your account.
+Your email address is now the first [Global Admin](/cloud/#account-level-roles) for your account.
 
 To get started with Temporal Cloud, following these onboarding steps:
 

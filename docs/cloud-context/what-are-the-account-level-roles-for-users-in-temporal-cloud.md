@@ -9,7 +9,7 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud) on all [Namespaces](/namespaces) in the account
+  - Has Namespace Admin [permissions](/cloud/#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
 - **Developer**
   - Can create and update Namespaces; has full control over [Workflows](/workflows)
   - Has Namespace Admin permissions for each Namespace created by that user

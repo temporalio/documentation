@@ -20,4 +20,4 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
-[How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificate-filters-in-temporal-cloud)
+[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters-in-temporal-cloud)

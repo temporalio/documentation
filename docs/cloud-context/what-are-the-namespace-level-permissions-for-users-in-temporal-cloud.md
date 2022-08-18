@@ -5,7 +5,7 @@ sidebar_label: Namespace-level permissions
 description: Namespace-level permissions are Namespace Admin, Write, and Read-Only.
 ---
 
-A [Global Admin](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) can assign permissions for any [Namespace](/namespaces) in an account.
+A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
 A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:

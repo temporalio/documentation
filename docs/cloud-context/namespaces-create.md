@@ -9,7 +9,7 @@ tags:
 
 :::info
 
-The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud) permission for that Namespace.
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
 
 :::
 
@@ -22,7 +22,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](/cloud/#cloud-namespace), region, and environment
 - [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-executions)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for the Namespace
-- [Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for each user
+- [Roles](/cloud/#account-level-roles) for each user
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 

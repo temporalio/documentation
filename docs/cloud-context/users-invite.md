@@ -28,8 +28,8 @@ Attempting to log in to Temporal Cloud without first accepting the invite doesn'
 Each user in Temporal Cloud is assigned a Role.
 Each user can be assigned permissions for individual Namespaces.
 
-- [Account-level Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud)
-- [Namespace-level permissions](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud)
+- [Account-level Roles](/cloud/#account-level-roles)
+- [Namespace-level permissions](/cloud/#namespace-level-permissions)
 
 <!--- How to invite users in Temporal Cloud using Web UI --->
 
@@ -38,10 +38,10 @@ Each user can be assigned permissions for individual Namespaces.
 1. In Temporal Web UI, click **Settings** in the lower-left portion of the window.
 1. On the **Settings** page, click **Create Users** in the upper-right portion of the window.
 1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
-1. In **Account-Level Role**, select a [Role](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud).
+1. In **Account-Level Role**, select a [Role](/cloud/#account-level-roles).
    The Role applies to all users whose email addresses appear in **Email Addresses**.
 1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
-   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud).
+   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/#namespace-level-permissions).
    Repeat as needed.
 1. When all permissions are assigned, click **Send Invite**.
 
