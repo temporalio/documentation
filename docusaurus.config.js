@@ -78,6 +78,12 @@ module.exports = {
           position: "left",
           activeBasePath: "none",
         },
+        // {
+        //   label: "KB articles",
+        //   to: "/kb",
+        //   activeBasePath: "kb",
+        //   position: "left",
+        // },
         {
           label: "Temporal Cloud",
           to: "/cloud",
@@ -387,9 +393,37 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "change-log",
-        blogTitle: "Temporal Platform documentation change log",
-        blogDescription: "A log of changes to this site's content.",
+        blogTitle: "Temporal documentation change log",
         blogSidebarTitle: "Docs change log",
+        routeBasePath: "change-log",
+        blogDescription: "A log of changes to this site's content.",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "kb",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "kb",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "kb",
+        blogTitle: "Temporal Platform knowledge base",
+        blogSidebarTitle: "Recent KB articles",
+        blogDescription:
+          "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",
