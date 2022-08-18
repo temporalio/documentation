@@ -97,7 +97,11 @@
         {
           "header": "none",
           "type": "context",
-          "path": "app-dev-context/logging",
+          "path": "app-dev-context/logging"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
           "langs": [
             {
               "lang": "go",
@@ -129,7 +133,11 @@
         {
           "header": "Custom logger",
           "type": "context",
-          "path": "app-dev-context/custom-logging",
+          "path": "app-dev-context/custom-logging"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
           "langs": [
             {
               "lang": "go",
