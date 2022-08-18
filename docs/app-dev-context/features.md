@@ -1,3 +1,12 @@
+---
+id: features
+title: How to use Workflow and Activity features
+description: The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+sidebar_label: Features
+tags:
+  - guide-context
+---
+
 The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
