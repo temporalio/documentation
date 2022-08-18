@@ -1,3 +1,12 @@
+---
+id: run-worker-processes
+title: How to run Worker Processes
+description: The Worker Process is where Workflow Functions and Activity Functions are executed.
+sidebar_label: Run Worker Processes
+tags:
+  - guide-context
+---
+
 The [Worker Process](/concepts/what-is-a-worker-process) is where Workflow Functions and Activity Functions are executed.
 
 - Each [Worker Entity](/concepts/what-is-a-worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.

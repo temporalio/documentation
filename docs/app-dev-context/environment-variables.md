@@ -1,3 +1,12 @@
+---
+id: environment-variables
+title: How to read and pass environment variables
+description: Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
+sidebar_label: Environment variables
+tags:
+  - guide-context
+---
+
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
 They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
 
