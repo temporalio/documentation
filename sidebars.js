@@ -454,6 +454,26 @@ module.exports = {
         "references/events",
         "references/configuration",
         "references/ui-configuration",
+        {
+          type: "link",
+          label: "Go SDK API",
+          href: "https://pkg.go.dev/go.temporal.io/sdk",
+        },
+        {
+          type: "link",
+          label: "Java SDK API",
+          href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
+        },
+        {
+          type: "link",
+          label: "Python SDK API",
+          href: "https://python.temporal.io/",
+        },
+        {
+          type: "link",
+          label: "TypeScript SDK API",
+          href: "https://typescript.temporal.io",
+        },
       ],
     },
     "external-resources",
