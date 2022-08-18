@@ -168,4 +168,3 @@ Each user can be assigned permissions for individual Namespaces.
 
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must click **Accept Invite** in the message.
-
