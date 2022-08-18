@@ -96,50 +96,8 @@
       "h3_sections": [
         {
           "header": "none",
-          "type": "how-to",
-          "path": "app-dev-context/logging",
-          "h4_sections": [
-            {
-              "header": "Custom logging",
-              "type": "explanation",
-              "path": "app-dev-context/custom-logging"
-            }
-          ]
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
-          "langs": [
-            {
-              "lang": "go",
-              "title": "Go",
-              "path": "go/how-to-set-a-custom-logger-in-go"
-            },
-            {
-              "lang": "java",
-              "title": "Java",
-              "path": "none"
-            },
-            {
-              "lang": "php",
-              "title": "PHP",
-              "path": "none"
-            },
-            {
-              "lang": "typescript",
-              "title": "TypeScript",
-              "path": "typescript/how-to-set-a-custom-logger-in-typescript"
-            }
-          ]
-        },
-        {
-          "header": "Log from a Workflow",
           "type": "context",
-          "path": "app-dev-context/log-from-a-workflow"
-        },
-        {
-          "header": "none",
-          "type": "lang-tabs",
+          "path": "app-dev-context/logging",
           "langs": [
             {
               "lang": "go",
@@ -165,6 +123,33 @@
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-log-from-a-workflow-in-typescript"
+            }
+          ]
+        },
+        {
+          "header": "Custom logger",
+          "type": "context",
+          "path": "app-dev-context/custom-logging",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-set-a-custom-logger-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "none"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-set-a-custom-logger-in-typescript"
             }
           ]
         }
