@@ -35,7 +35,7 @@
         {
           "header": "none",
           "type": "explanation",
-          "path": "cloud-context/how-to-create-a-namespace-in-temporal-cloud"
+          "path": "cloud/how-to-create-a-namespace-in-temporal-cloud"
         }
       ]
     },
