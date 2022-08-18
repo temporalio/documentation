@@ -34,7 +34,6 @@ module.exports = {
         "application-development/worker-performance",
       ],
     },
-    "cluster-deployment-guide",
     {
       type: "category",
       label: "Temporal Cloud",
@@ -139,6 +138,7 @@ module.exports = {
         },
       ],
     },
+    "cluster-deployment-guide",
     "server/security",
     {
       type: "category",

@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-:::note Waitlist
+:::note Join the Temporal Cloud waitlist
 
 Access to Temporal Cloud is currently by invitation only.
 You can [join the waitlist](https://pages.temporal.io/cloud-early-access).

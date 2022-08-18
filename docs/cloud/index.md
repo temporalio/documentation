@@ -12,7 +12,7 @@ Temporal Cloud is a managed, hosted Temporal environment that provides a platfor
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
-:::note Waitlist
+:::note Join the Temporal Cloud waitlist
 
 Access to Temporal Cloud is currently by invitation only.
 You can [join the waitlist](https://pages.temporal.io/cloud-early-access).

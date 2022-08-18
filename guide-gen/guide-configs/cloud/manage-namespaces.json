@@ -10,6 +10,16 @@
   "add_tabs_support": false,
   "h2_sections": [
     {
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "cloud-context/namespaces-intro"
+        }
+      ]
+    },
+    {
       "header": "Create a Namespace in Temporal Cloud",
       "h3_sections": [
         {
