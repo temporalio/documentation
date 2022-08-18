@@ -1,3 +1,12 @@
+---
+id: set-cluster-address
+title: How to set a Cluster address on a Temporal Client
+description: Specify a host and optional port.
+sidebar_label: Set Cluster address
+tags:
+  - guide-context
+---
+
 Specify a host and optional port.
 
 - Host default: `127.0.0.1`

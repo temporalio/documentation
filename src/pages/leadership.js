@@ -40,7 +40,7 @@ export default function Security() {
             <img
               className="leadership-image"
               alt="Charles Zedlewski"
-              src="https://media-exp1.licdn.com/dms/image/C5603AQGgvr2dqvuBsQ/profile-displayphoto-shrink_200_200/0/1610115430759?e=1656547200&v=beta&t=ZXBpqJ6tFg16m2qREtOXbtB0Eylp0fsCkuxHG7tYBbo"
+              src="https://pbs.twimg.com/profile_images/1526613570032750594/jL1M_pvC_400x400.jpg"
             />
             <br />
             <a href="https://twitter.com/zedlewski">

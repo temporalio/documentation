@@ -13,6 +13,13 @@ tcld is in beta, and access to Temporal Cloud via tcld is restricted.
 
 :::
 
+:::note Join the Temporal Cloud waitlist
+
+Access to Temporal Cloud is currently by invitation only.
+You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
+
+:::
+
 The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.
 
 - [How to install tcld](/cloud/tcld/how-to-install-tcld)
