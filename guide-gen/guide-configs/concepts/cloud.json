@@ -45,7 +45,7 @@
         {
           "header": "none",
           "type": "explanation",
-          "path": "cloud-context/what-are-the-account-level-roles"
+          "path": "cloud-context/what-are-the-account-level-roles-for-users-in-temporal-cloud"
         }
       ]
     },
@@ -75,7 +75,7 @@
         {
           "header": "none",
           "type": "explanation",
-          "path": "cloud-context/what-are-the-namespace-level-permissions"
+          "path": "cloud-context/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
         }
       ]
     }
