@@ -15,6 +15,7 @@ Your email address is now the first [Global Admin](/cloud/what-are-the-account-l
 To get started with Temporal Cloud, following these onboarding steps:
 
 <!--- 1. [Create an account.](#create-an-account-in-temporal-cloud) --->
+
 1. [Issue CA certificates.](#issue-ca-certificates)
 1. [Create a Namespace.](#create-a-namespace)
 1. [Invite users.](#invite-users)
