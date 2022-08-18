@@ -15,18 +15,18 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 
 <!--- What information do I need to create a Namespace in Temporal Cloud? --->
 
-## Information needed to create a Namespace
+### Information needed to create a Namespace
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/#cloud-namespace), region, and environment
 - [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-executions)
-- [End-entity certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for connecting to the Namespace
+- [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for the Namespace
 - [Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for each user
 
-<!--- How to create a Namespace in Temporal Cloud using Temporal Web UI --->
+<!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 
-## Create a Namespace using Temporal Web UI
+### Create a Namespace using Temporal Cloud UI
 
 1. Gather the information listed earlier in [Information needed to create a Namespace](#information-needed-to-create-a-namespace).
 1. In a browser, go to [https://cloud.temporal.io](https://cloud.temporal.io) and log in.
@@ -35,11 +35,11 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
 1. In **Region**, select the region in which to host this Namespace.
 1. In **Retention Period**, select the appropriate timespan. (You can modify this value later.)
-1. In **Certificate**, paste the end-entity certificate for this Namespace.
+1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
 
-## Create a Namespace using tcld
+### Create a Namespace using tcld
 
 This functionality is in development.

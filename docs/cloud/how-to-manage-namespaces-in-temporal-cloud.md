@@ -9,7 +9,7 @@ tags:
 
 To create a [Namespace](/namespaces) in Temporal Cloud, see the following topics:
 
-- [Create a Namespace using Temporal Web UI](/cloud/how-to-create-a-namespace-in-temporal-cloud#create-a-namespace-using-temporal-web-ui)
+- [Create a Namespace using Temporal Cloud UI](/cloud/how-to-create-a-namespace-in-temporal-cloud#create-a-namespace-using-temporal-cloud-ui)
 - [Create a Namespace using tcld](/cloud/how-to-create-a-namespace-in-temporal-cloud#create-a-namespace-using-tcld)
 
 <!--- How to access a Namespace in Temporal Cloud --->
@@ -21,9 +21,9 @@ Each Namespace in Temporal Cloud has two unique endpoints, both of which include
 - For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
 - For accessing Temporal Web UI, an HTTPS endpoint in the form `web.<namespaceId>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
 
-<!--- How to manage Namespaces in Temporal Cloud using Temporal Web UI --->
+<!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->
 
-## Manage Namespaces in Temporal Cloud using Web UI
+## Manage Namespaces in Temporal Cloud using Temporal Cloud UI
 
 This functionality is in development.
 

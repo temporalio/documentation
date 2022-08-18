@@ -59,9 +59,9 @@ The following values are not valid:
 - `code.*.com`
 - `*`
 
-<!--- How to manage certificate filters in Temporal Cloud using Temporal Web UI --->
+<!--- How to manage certificate filters in Temporal Cloud using Temporal Cloud UI --->
 
-## Manage certificate filters using Web UI
+## Manage certificate filters using Temporal Cloud UI
 
 This functionality is in development.
 
