@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 <!--- Onboarding guide for Temporal Cloud --->
 
 You received email from Temporal that welcomes you to your new Temporal account.
-Your email address is now the first [Global Admin](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for your account.
+Your email address is now the first [Global Admin](/cloud/#account-level-roles) for your account.
 
 To get started with Temporal Cloud, following these onboarding steps:
 
@@ -91,7 +91,7 @@ The maximum number of CA certificates in a certificate bundle is 16. The payload
 
 :::info
 
-The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud) permission for that Namespace.
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
 
 :::
 
@@ -104,7 +104,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](/cloud/#cloud-namespace), region, and environment
 - [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-executions)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for the Namespace
-- [Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) for each user
+- [Roles](/cloud/#account-level-roles) for each user
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 
@@ -149,8 +149,8 @@ Attempting to log in to Temporal Cloud without first accepting the invite doesn'
 Each user in Temporal Cloud is assigned a Role.
 Each user can be assigned permissions for individual Namespaces.
 
-- [Account-level Roles](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud)
-- [Namespace-level permissions](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud)
+- [Account-level Roles](/cloud/#account-level-roles)
+- [Namespace-level permissions](/cloud/#namespace-level-permissions)
 
 <!--- How to invite users in Temporal Cloud using Web UI --->
 
@@ -159,12 +159,13 @@ Each user can be assigned permissions for individual Namespaces.
 1. In Temporal Web UI, click **Settings** in the lower-left portion of the window.
 1. On the **Settings** page, click **Create Users** in the upper-right portion of the window.
 1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
-1. In **Account-Level Role**, select a [Role](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud).
+1. In **Account-Level Role**, select a [Role](/cloud/#account-level-roles).
    The Role applies to all users whose email addresses appear in **Email Addresses**.
 1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
-   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud).
+   To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/#namespace-level-permissions).
    Repeat as needed.
 1. When all permissions are assigned, click **Send Invite**.
 
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must click **Accept Invite** in the message.
+

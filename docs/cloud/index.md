@@ -36,7 +36,7 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
 
 - **Global Admin**
   - Has full administrative permissions across the account, including users and usage
-  - Has Namespace Admin [permissions](/cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud) on all [Namespaces](/namespaces) in the account
+  - Has Namespace Admin [permissions](/cloud/#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
 - **Developer**
   - Can create and update Namespaces; has full control over [Workflows](/workflows)
   - Has Namespace Admin permissions for each Namespace created by that user
@@ -68,7 +68,7 @@ For example, for the Account Id `f45a2` and Namespace Name `accounting-productio
 
 ## Namespace-level permissions
 
-A [Global Admin](/cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud) can assign permissions for any [Namespace](/namespaces) in an account.
+A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
 A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
@@ -76,3 +76,4 @@ For a Namespace, a user can have one of the following permissions:
 - **Namespace Admin:** Can create and edit Namespaces; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
+
