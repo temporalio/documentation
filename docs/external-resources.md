@@ -19,26 +19,36 @@ There have been many high-level descriptions of Temporal from our Series A and B
 
 ## How Temporal works
 
-_Don't forget our own explainers on [What is Temporal](/temporal)!_
+> See also: [Concepts ➡️ What is Temporal](/temporal)
 
-- **Talks**
-  - ⭐ [Designing a Workflow Engine from First Principles](/blog/workflow-engine-principles/) by Maxim Fateev (23 min talk given at Systems @ Scale 2021)
-  - 🆕 [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) by Maxim Fateev and Tihomir Surdilovic (35 min talk at TheDevConf 2021)
-  - [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) by Sergey Bykov (35 min talk on Stateless vs Stateful, Orleans vs Temporal)
-  - [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY) by Dominik Tornow (16 min talk + Q&A)
-  - [Temporal in 7 Minutes - The TL;DR Intro](https://www.youtube.com/watch?v=2HjnQlnA5eY) by swyx (7 min presentation)
-- **Podcasts**
-  - [Maxim and Samar on Gremlin's podcast](/blog/gremlin-podcast) - Origin story, Choreography vs Orchestration, and Tips (21 min listen/read)
-  - [Workflow Engine with Maxim Fateev](https://www.listennotes.com/podcasts/software/cadence-ubers-workflow-nNoaPiSfk7v/) on Software Engineering Daily (56 min listen)
-  - [Maxim Fateev on Temporal Origin Story](/blog/oss-startups-podcast) on the OSS Startups Podcast (41 min listen)
-  - [Temporal Product with Ryland Goldstein](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) on Software Engineering Daily (53 min listen)
-  - [Temporal Developer Experience with swyx](https://devtools.fm/episode/13) on Devtools.fm (56 min listen)
-  - [Temporal Overview](https://mongodb.libsyn.com/ep-93-swyx-learn-in-public-and-temporal) on the MongoDB Podcast (33min listen, starts at 15min mark)
-  - [Temporal vs the Serverless Ecosystem](https://www.serverlesschats.com/124/) on the Serverless Chats Podcast (65min listen)
-- Temporal's previous iteration was Cadence, which shares a lot of the same design principles:
-  - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at the 2017 Uber Cadence meetup
-  - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
-  - Note: we have documented [the difference between Cadence and Temporal](/cadence-to-temporal) separately.
+### Talks
+
+| Title                                                                                                                                                                         | Duration   | By           | On           |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|--------------|--------------|
+| [Designing a Workflow Engine from First Principles](/blog/workflow-engine-principles/)                                                                                        | 0:23       | Maxim        | Mar 31, 2021 |
+| [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/)) | 0:35       | Maxim & Tiho | Feb 23, 2022 |
+| [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) (Stateless vs Stateful, Orleans vs Temporal)                                              | 0:35       | Sergey       | Nov 10, 2021 |
+| [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY)                                                                                          | 0:16 + Q&A | Dominik      | Feb 21, 2022 |
+| [Temporal in 7 Minutes - The TL;DR Intro](https://www.youtube.com/watch?v=2HjnQlnA5eY)                                                                                        | 0:07       | swyx         | Feb 14, 2022 |
+
+### Podcasts
+
+| Title                                                                                                                                      | Duration | Podcast                           | Who           | On           |
+|--------------------------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------------|---------------|--------------|
+| [Origin story, Choreography vs Orchestration, and Tips](/blog/gremlin-podcast)                                                             | 0:21     | Break Things on Purpose (Gremlin) | Maxim & Samar | Oct 5, 2021  |
+| Workflow Engine with Maxim Fateev                                                                                                          | 0:56     | Software Engineering Daily        | Maxim         |              |
+| [Temporal Origin Story](/blog/oss-startups-podcast)                                                                                        | 0:41     | OSS Startups Podcast              | Maxim         | Aug 5, 2021  |
+| [Temporal Product: Managing State](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/) | 0:53     | Software Engineering Daily        | Ryland        | May 8, 2021  |
+| [Temporal Developer Experience](https://devtools.fm/episode/13) ([video](https://www.youtube.com/watch?v=yNOkWFGejUs))                     | 0:56     | Devtools.fm                       | swyx          | Sep 10, 2021 |
+| [Temporal Overview](https://podcasts.mongodb.com/public/115/The-MongoDB-Podcast-b02cf624/9a0e08ea) (starts at 0:15)                        | 0:33     | MongoDB Podcast                   | swyx          | Dec 6, 2021  |
+| [Temporal vs the Serverless Ecosystem](https://www.serverlesschats.com/124/)                                                               | 1:05     | Serverless Chats Podcast          | swyx          | Feb 14, 2022 |
+
+### Cadence  
+
+Temporal's previous iteration was Cadence, which shares a lot of the same design principles (see: [the difference between Cadence and Temporal](/cadence-to-temporal)).
+
+- [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at the 2017 Uber Cadence meetup
+- [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
 
 ## Why Workflow Orchestration
 
