@@ -12,7 +12,7 @@ The `tctl workflow describe` command shows information about a [Workflow Executi
 
 See also [`tctl workflow describeid`](/tctl/workflow/describeid).
 
-`tctl workflow describe [<modifiers>]`
+`tctl workflow describe <modifiers>`
 
 Alias: `d`
 
@@ -33,6 +33,7 @@ tctl workflow describe --workflow_id <id>
 ### `--run_id`
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
+If a Run Id is not provided, the command shows the latest Workflow Execution of that Workflow Id.
 
 Aliases: `--rid`, `-r`
 
