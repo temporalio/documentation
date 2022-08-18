@@ -35,7 +35,6 @@ module.exports = {
       ],
     },
     "cluster-deployment-guide",
-    "server/security",
     {
       type: "category",
       label: "Temporal Cloud",
@@ -46,10 +45,12 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
+        "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
+        "cloud/how-to-manage-namespaces-in-temporal-cloud",
         {
           type: "category",
-          label: "tcld commands",
+          label: "tcld",
           collapsible: true,
           collapsed: true,
           link: {
@@ -138,6 +139,7 @@ module.exports = {
         },
       ],
     },
+    "server/security",
     {
       type: "category",
       label: "tctl",

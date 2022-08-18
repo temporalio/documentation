@@ -20,7 +20,37 @@
       ]
     },
     {
-      "header": "Cloud Namespace",
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "cloud-context/cloud-intro"
+        }
+      ]
+    },
+    {
+      "header": "Temporal Cloud Account Id",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "concepts/what-is-a-cloud-account-id"
+        }
+      ]
+    },
+    {
+      "header": "Account-level Roles",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "cloud-context/what-are-the-account-level-roles-for-users-in-temporal-cloud"
+        }
+      ]
+    },
+    {
+      "header": "Temporal Cloud Namespace Name",
       "h3_sections": [
         {
           "header": "none",
@@ -30,7 +60,7 @@
       ]
     },
     {
-      "header": "Cloud Namespace Id",
+      "header": "Temporal Cloud Namespace Id",
       "h3_sections": [
         {
           "header": "none",
@@ -40,12 +70,12 @@
       ]
     },
     {
-      "header": "Cloud Account Id",
+      "header": "Namespace-level permissions",
       "h3_sections": [
         {
           "header": "none",
           "type": "explanation",
-          "path": "concepts/what-is-a-cloud-account-id"
+          "path": "cloud-context/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
         }
       ]
     }
