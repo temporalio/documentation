@@ -47,11 +47,7 @@ module.exports = {
       items: [
         "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
-        "cloud/how-to-manage-certificate-filters-in-temporal-cloud",
-        "cloud/how-to-create-a-namespace-in-temporal-cloud",
         "cloud/how-to-manage-namespaces-in-temporal-cloud",
-        "cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud",
-        "cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud",
         {
           type: "category",
           label: "tcld",

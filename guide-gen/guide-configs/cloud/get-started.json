@@ -26,6 +26,16 @@
           "header": "none",
           "type": "explanation",
           "path": "cloud-context/get-started-certificates"
+        },
+        {
+          "header": "Requirements for CA certificates",
+          "type": "explanation",
+          "path": "cloud-context/certificates-requirements"
+        },
+        {
+          "header": "Issue root CA and end-entity certificates",
+          "type": "explanation",
+          "path": "cloud-context/certificates-issue"
         }
       ]
     },
@@ -35,7 +45,7 @@
         {
           "header": "none",
           "type": "explanation",
-          "path": "cloud/how-to-create-a-namespace-in-temporal-cloud"
+          "path": "cloud-context/namespaces-create"
         }
       ]
     },
@@ -45,7 +55,7 @@
         {
           "header": "none",
           "type": "explanation",
-          "path": "cloud-context/get-started-invite-users"
+          "path": "cloud-context/users-invite"
         }
       ]
     }

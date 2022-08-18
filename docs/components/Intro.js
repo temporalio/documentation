@@ -360,16 +360,11 @@ const cloudInfo = {
     },
     {
       book: true,
-      path: "/cloud/how-to-manage-certificate-filters-in-temporal-cloud",
-      name: "Manage certificate filters",
-    },
-  ],
-  listTwo: [
-    {
-      book: true,
       path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
       name: "Manage Namespaces",
     },
+  ],
+  listTwo: [
     {
       cli: true,
       path: "/cloud/tcld",

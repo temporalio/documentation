@@ -1,5 +1,5 @@
 ---
-id: how-to-manage-certificate-filters-in-temporal-cloud
+id: certificates-filters
 title: How to manage certificate filters in Temporal Cloud
 sidebar_label: Manage certificate filters
 description: To limit access to specific CA certificates, you can create certificate filters.
@@ -61,13 +61,13 @@ The following values are not valid:
 
 <!--- How to manage certificate filters in Temporal Cloud using Temporal Cloud UI --->
 
-## Manage certificate filters using Temporal Cloud UI
+### Manage certificate filters using Temporal Cloud UI
 
 This functionality is in development.
 
 <!--- How to manage certificate filters in Temporal Cloud using tcld --->
 
-## Manage certificate filters using tcld
+### Manage certificate filters using tcld
 
 To set or clear certificate filters, use the following [tcld](/cloud/tcld) commands:
 

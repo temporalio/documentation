@@ -1,6 +1,6 @@
 ---
-id: get-started-invite-users
-title: Get started - Invite users
+id: users-invite
+title: Invite users
 sidebar_label: Invite users
 description: Assign Roles and Namespace permissions, and send invites
 tags:
