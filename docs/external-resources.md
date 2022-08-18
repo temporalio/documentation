@@ -28,9 +28,9 @@ There have been many high-level descriptions of Temporal from our Series A and B
 | [Designing a Workflow Engine from First Principles](/blog/workflow-engine-principles/)                                                                                                | 0:23       | Maxim        | Mar 31, 2021 |
 | [Building Reliable Distributed Systems](https://www.youtube.com/watch?v=fZHL1k5iEmA) ([slides](https://docs.google.com/presentation/d/1x0ETmVVJcbluTSnJGo8F2sNL1GKJPwOh-2s53x_UKLg/)) | 1:37       | Loren        | Aug 16, 2022 |
 | [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/))         | 0:35       | Maxim & Tiho | Feb 23, 2022 |
-| [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) (Stateless vs Stateful, Orleans vs Temporal)                                                      | 0:35       | Sergey       | Nov 10, 2021 |
 | [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY)                                                                                                  | 0:16 + Q&A | Dominik      | Feb 21, 2022 |
 | [Temporal in 7 Minutes - The TL;DR Intro](https://www.youtube.com/watch?v=2HjnQlnA5eY)                                                                                                | 0:07       | swyx         | Feb 14, 2022 |
+| [State of Affairs or Affairs of State](https://www.youtube.com/watch?v=2P_aXee2qh4) (Stateless vs Stateful, Orleans vs Temporal)                                                      | 0:35       | Sergey       | Nov 10, 2021 |
 
 ### Podcasts
 
