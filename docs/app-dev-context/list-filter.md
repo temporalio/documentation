@@ -1,3 +1,12 @@
+---
+id: list-filter
+title: How to use List Filters in Advanced Visibility APIs
+description: A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.
+sidebar_label: List Filter
+tags:
+  - guide-context
+---
+
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
 
 A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and Operators.

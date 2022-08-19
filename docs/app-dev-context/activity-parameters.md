@@ -1,6 +1,6 @@
 ---
 id: activity-parameters
-title: Activity Parameters - Application development context
+title: How to develop Activity Parameters
 sidebar_label: Activity Parameters
 description: When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
 tags:

@@ -1,3 +1,12 @@
+---
+id: spawning-workflows
+title: How to start a Workflow Execution
+description: Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+sidebar_label: Start Workflow Execution
+tags:
+  - guide-context
+---
+
 [Workflow Execution](/concepts/what-is-a-workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.

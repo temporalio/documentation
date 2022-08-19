@@ -20,7 +20,7 @@ There are three main things the Worker needs:
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
 - Workflow bundle, specify one of the following options:
-  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
