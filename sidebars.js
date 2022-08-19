@@ -154,8 +154,6 @@ module.exports = {
         "tctl/how-to-install-tctl",
         "tctl/environment-variables",
         "tctl/how-to-use-tctl",
-        "tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
-        "tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
         {
           type: "category",
           label: "tctl commands",
