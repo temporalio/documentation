@@ -12,5 +12,11 @@ To create an Activity Retry Policy in Python, set the [RetryPolicy](https://pyth
 
 The following example sets the maximum interval to 2 seconds.
 
-<!--SNIPSTART python-activity-retry-->
-<!--SNIPEND-->
+```python
+workflow.execute_activity(
+    your_activity,
+    name,
+    start_to_close_timeout=timedelta(seconds=10),
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
+```
