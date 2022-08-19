@@ -24,114 +24,23 @@ To get started with Temporal Cloud, following these onboarding steps:
 
 <!--- 1. [Create an account.](#create-an-account-in-temporal-cloud) --->
 
-1. [Issue CA certificates.](#issue-ca-certificates)
-1. [Create a Namespace.](#create-a-namespace)
-1. [Invite users.](#invite-users)
+1. [Issue CA certificates](#issue-ca-certificates).
+1. [Create a Namespace](#create-a-namespace).
+1. [Invite users](#invite-users).
 
 ## Issue CA certificates
 
 You must provide your own certificates to access Temporal Cloud.
+For certificate requirements, see the following:
 
-### Requirements for CA certificates
-
-Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
-
-### CA certificates
-
-CA certificates _must_ meet the following criteria:
-
-- The certificates must be X.509v3.
-- Each certificate in the bundle must be either a root certificate or issued by another certificate in the bundle.
-- Each certificate in the bundle must include `CA: true`.
-- A certificate cannot be a well-known CA (such as DigiCert or Let's Encrypt) _unless_ the user also specifies certificate filters.
-- The signing algorithm must include SHA-256 or stronger.
-  SHA-1 and MD5 signing algorithms are rejected.
-
-### End-entity certificates
-
-An end-entity (leaf) certificate _must_ meet the following criteria:
-
-- The certificate must be X.509v3.
-- Basic constraints must include `CA: false`.
-- The key usage must include Digital Signature.
-- The signing algorithm must include SHA-256 or stronger.
-  SHA-1 and MD5 signing algorithms are rejected.
-
-When a client presents an end-entity certificate, and the whole certificate chain is constructed, each certificate in the chain (from end-entity to the root) must have a unique Distinguished Name.
-
-:::caution
-
-Distinguished Names are _not_ case sensitive; that is, uppercase letters (such as ABC) and lowercase letters (such as abc) are equivalent.
-
-:::
-
-### Issue root CA and end-entity certificates
-
-Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
-
-### Option 1: You already have certificate management infrastructure
-
-If your existing certificate management infrastructure supports issuing CA and end-entity certificates, it satisfies the requirements.
-When you configure the client SDK, you must present a complete certificate chain up to the CA certificate given to Temporal.
-
-### Option 2: You have no certificate management infrastructure
-
-If you don't have existing certificate management infrastructure, you can issue the CA and client certificates by using tools such as OpenSSL.
-
-We also provide a tool that issues one root CA and the required end-entity certificate to use on the client SDK.
-The tool can issue multiple end-entity certificates.
-We've kept this tool minimal because it is a demonstration tool; **it is _not_ meant to be used in production.**
-
-You can use this tool in two ways:
-
-- Follow the instructions for the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) image in Docker Hub.
-  This procedure is the easiest because it's independent of your operating system.
-- Follow the README instructions in the [client-only](https://github.com/temporalio/samples-server/tree/main/tls/client-only) directory in our `temporalio/samples-server` repository in GitHub.
-
-:::info
-
-The maximum number of CA certificates in a certificate bundle is 16. The payload size of a certificate bundle (before base64-encoding) is 32 KB.
-
-:::
+- [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-ca-certificates)
+- [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#issue-root-ca-and-end-entity-certificates)
 
 ## Create a Namespace
 
-:::info
+If you don't already have a Namespace (or want to create another), see the following:
 
-The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
-
-:::
-
-<!--- What information do I need to create a Namespace in Temporal Cloud? --->
-
-### Information needed to create a Namespace
-
-To create a Namespace in Temporal Cloud, gather the following information:
-
-- [Namespace Name](/cloud/#cloud-namespace), region, and environment
-- [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-executions)
-- [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for the Namespace
-- [Roles](/cloud/#account-level-roles) for each user
-
-<!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
-
-### Create a Namespace using Temporal Cloud UI
-
-1. Gather the information listed earlier in [Information needed to create a Namespace](#information-needed-to-create-a-namespace).
-1. Go to to Temporal Cloud UI and log in.
-1. On the left side of the window, click **Namespaces**.
-1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
-1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
-1. In **Region**, select the region in which to host this Namespace.
-1. In **Retention Period**, select the appropriate timespan. (You can modify this value later.)
-1. In **Certificate**, paste the CA certificate for this Namespace.
-1. Click **Create Namespace**.
-
-<!--- How to create a Namespace in Temporal Cloud using tcld --->
-
-### Create a Namespace using tcld
-
-This functionality is in development.
+[Create a Namespace in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud/#create-a-namespace-in-temporal-cloud)
 
 ## Invite users
 
