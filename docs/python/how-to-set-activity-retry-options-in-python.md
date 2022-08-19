@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.retrypolicy) class within [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
+To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.retrypolicy) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
 The following example sets the maximum interval to 2 seconds.
 
