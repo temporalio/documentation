@@ -39,12 +39,12 @@ If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaul
 export function getEnv(): Env {
   return {
     // NOT web.foo.bar.tmprl.cloud
-    address: 'web.<Namespace_ID>.tmprl.cloud', 
+    address: 'web.<Namespace_ID>.tmprl.cloud',
     // as assigned
-    namespace: 'your.namespace', 
+    namespace: 'your.namespace',
     // in project root
-    clientCertPath: 'foobar.pem', 
-    clientKeyPath: 'foobar.key', 
+    clientCertPath: 'foobar.pem',
+    clientKeyPath: 'foobar.key',
     // just to ensure task queue is same on client and worker, totally optional
     taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls',
     // not usually needed:

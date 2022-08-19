@@ -32,13 +32,13 @@ Temporal Clients and Workers connect with Temporal Clusters through gRPC.
   export function getEnv(): Env {
     return {
       // NOT web.foo.bar.tmprl.cloud
-      address: 'foo.bar.tmprl.cloud', 
-      namespace: 'foo.bar', 
+      address: 'foo.bar.tmprl.cloud',
+      namespace: 'foo.bar',
       // in project root
-      clientCertPath: 'foobar.pem', 
-      clientKeyPath: 'foobar.key', 
+      clientCertPath: 'foobar.pem',
+      clientKeyPath: 'foobar.key',
       // just to ensure task queue is same on client and worker, totally optional
-      taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', 
+      taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls',
       // not usually needed:
       // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
       // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,

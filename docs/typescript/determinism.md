@@ -9,10 +9,10 @@ This also means that sleeping or retrying code does not tie up the process - you
 import * as wf from '@temporalio/workflow';
 const { yourActivity } = wf.proxyActivities({
   // persisted
-  startToCloseTimeout: '1 week', 
+  startToCloseTimeout: '1 week',
   retry: {
     // persisted
-    initialInterval: '1 day', 
+    initialInterval: '1 day',
   },
 });
 

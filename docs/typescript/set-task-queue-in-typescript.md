@@ -8,8 +8,8 @@ import { WorkflowClient } from '@temporalio/client';
 const client = new WorkflowClient();
 const result = await client.execute(yourWorkflow, {
   // required
-  taskQueue: 'testhttp', 
-  workflowId: 'business-meaningful-id', 
+  taskQueue: 'testhttp',
+  workflowId: 'business-meaningful-id',
 });
 ```
 
@@ -18,7 +18,7 @@ When creating a Worker, you must pass the `taskQueue` option to the [`Worker.cre
 ```typescript
 const worker = await Worker.create({
   // imported elsewhere
-  activities, 
+  activities,
   taskQueue: 'your-task-queue',
 });
 ```

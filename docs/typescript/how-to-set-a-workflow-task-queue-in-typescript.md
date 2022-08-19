@@ -62,9 +62,9 @@ const connection = await Connection.create();
 const client = new WorkflowClient({ connection });
 const result = await client.execute(yourWorkflow, {
   // required
-  taskQueue: 'your-task-queue', 
+  taskQueue: 'your-task-queue',
   // required
-  workflowId: 'your-workflow-id', 
+  workflowId: 'your-workflow-id',
 });
 ```
 
@@ -73,7 +73,7 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 ```ts
 const worker = await Worker.create({
   // imported elsewhere
-  activities, 
+  activities,
   taskQueue: 'your-task-queue',
 });
 ```

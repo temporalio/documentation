@@ -27,7 +27,7 @@ import * as activities from './activities';
 async function run() {
   const connection = await NativeConnection.connect({
     // defaults port to 7233 if not specified
-    address: 'foo.bar.tmprl.cloud', 
+    address: 'foo.bar.tmprl.cloud',
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -74,7 +74,7 @@ There are three main things the Worker needs:
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
 | Options         | Description                                                                                                                           |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
 | `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
 | `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |
