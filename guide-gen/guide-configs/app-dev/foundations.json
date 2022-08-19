@@ -25,7 +25,7 @@
         {
           "header": "none",
           "type": "how-to",
-          "path": "app-dev-context/cluster-install"
+          "path": "clusters/quick-install"
         }
       ]
     },
