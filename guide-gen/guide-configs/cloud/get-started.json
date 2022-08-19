@@ -1,0 +1,53 @@
+{
+  "file_name": "how-to-get-started-with-temporal-cloud.md",
+  "id": "how-to-get-started-with-temporal-cloud",
+  "file_dir": "cloud",
+  "title": "How to get started with Temporal Cloud",
+  "sidebar_label": "Get started",
+  "description": "Create an account, get certificates, create a Namespace, and invite users.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "h2_sections": [
+    {
+      "header": "none",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "cloud-context/get-started-intro"
+        }
+      ]
+    },
+    {
+      "header": "Issue CA certificates",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "cloud-context/get-started-certificates"
+        }
+      ]
+    },
+    {
+      "header": "Create a Namespace",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "cloud-context/get-started-namespace"
+        }
+      ]
+    },
+    {
+      "header": "Invite users",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "explanation",
+          "path": "cloud-context/users-invite"
+        }
+      ]
+    }
+  ]
+}

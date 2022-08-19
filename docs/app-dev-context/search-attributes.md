@@ -1,3 +1,12 @@
+---
+id: search-attributes
+title: How to use Search Attributes
+description: Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.
+sidebar_label: Search Attributes
+tags:
+  - guide-context
+---
+
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
