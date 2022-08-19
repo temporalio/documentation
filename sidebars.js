@@ -31,6 +31,7 @@ module.exports = {
         "application-development/foundations",
         "application-development/features",
         "application-development/observability",
+        "application-development/testing",
         "application-development/worker-performance",
       ],
     },
