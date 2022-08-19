@@ -8,4 +8,3 @@ tags:
 ---
 
 After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
-
