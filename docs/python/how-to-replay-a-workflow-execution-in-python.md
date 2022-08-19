@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To Replay a Workflow Execution use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.replayer#replay_workflow) function and pass a Workflow History as an argument.
+To Replay a Workflow Execution use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.replayer#replay_workflow) method and pass a Workflow History as an argument.
 
 In the following example, `history_json_str` references the Workflow History as a JSON string.
 
@@ -23,6 +23,6 @@ async def run_replayer(history_json_str: str):
 
 :::note
 
-If the Workflow History is exported by the Temporal Web UI or through the tctl, you can pass the JSON file history object as a JSON string or as a python dictionary, through the `json.load()` function, which takes a file object and returns the JSON object.
+If the Workflow History is exported by the [Temporal Web UI](/web-ui) or through the [tctl](/tctl), you can pass the JSON file history object as a JSON string or as a python dictionary, through the `json.load()` function, which takes a file object and returns the JSON object.
 
 :::
