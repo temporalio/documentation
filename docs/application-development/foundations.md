@@ -343,7 +343,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 ## Create Temporal Clients
 
-A [Temporal Client](/temporal#temporal-client) is needed to [create Worker Entities](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
+A [Temporal Client](/temporal#temporal-client) is needed to [run Worker Processes](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
 Communication with the Temporal Cluster includes, but is not limited to, starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, and getting the result of a Workflow Execution.
 
 A Temporal Client cannot be initialized and used inside Workflow code.
@@ -2731,19 +2731,18 @@ There are three main things the Worker needs:
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
 - Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can fine-tune with `nodeModulesPaths`.
+- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
 - Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
 
 **Additional Worker Options**
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options            | Description                                                                                                                                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
-| `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                     |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                              |
+| Options         | Description                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
+| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |
 
 **Operation guides:**
 
@@ -3337,7 +3336,7 @@ There are three main things the Worker needs:
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
 - Workflow bundle, specify one of the following options:
-  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
