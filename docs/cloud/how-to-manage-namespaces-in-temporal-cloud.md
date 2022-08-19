@@ -43,7 +43,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 ### Create a Namespace using Temporal Cloud UI
 
 1. Gather the information listed earlier in [Information needed to create a Namespace](#information-needed-to-create-a-namespace).
-1. Go to to Temporal Cloud UI and log in.
+1. Go to the Temporal Cloud UI and log in.
 1. On the left side of the window, click **Namespaces**.
 1. On the **Namespaces** page, click **Create Namespace** in the upper-right portion of the window.
 1. On the **Create Namespace** page in **Name**, enter the Namespace Name.
@@ -89,3 +89,4 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 
 To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters/) commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/#manage-certificate-filters-in-temporal-cloud).
+
