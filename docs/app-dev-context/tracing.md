@@ -1,3 +1,12 @@
+---
+id: tracing
+title: How to setup Tracing
+description: Tracing allows you to view the call graph of a Workflow along with its Activities and any child Workflows.
+sidebar_label: Tracing
+tags:
+  - guide-context
+---
+
 Tracing allows you to view the call graph of a Workflow along with its Activities and any child Workflows.
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.

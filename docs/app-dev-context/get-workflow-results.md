@@ -1,3 +1,12 @@
+---
+id: get-workflow-results
+title: How to get the results of a Workflow Execution
+description: If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+sidebar_label: Get Workflow results
+tags:
+  - guide-context
+---
+
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
 The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.

@@ -221,115 +221,6 @@ Send logs and errors to a logging service, so that when things go wrong, you can
 
 The SDK core uses `WARN` for its default logging level.
 
-#### Custom logging
-
-Use a custom logger for logging.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
-
-Although the Go SDK does not support most third-party logging solutions natively, [our friends at Banzai Cloud](https://github.com/sagikazarmark) built the adapter package [logur](https://github.com/logur/logur) which makes it possible to use third party loggers with minimal overhead.
-Most of the popular logging solutions have existing adapters in Logur, but you can find a full list [in the Logur Github project](https://github.com/logur?q=adapter-).
-
-Here is an example of using Logur to support [Logrus](https://github.com/sirupsen/logrus):
-
-```go
-package main
-import (
-  "go.temporal.io/sdk/client"
-
-	"github.com/sirupsen/logrus"
-	logrusadapter "logur.dev/adapter/logrus"
-	"logur.dev/logur"
-)
-
-func main() {
-  // ...
-  logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
-  clientOptions := client.Options{
-    Logger: logger,
-  }
-  temporalClient, err := client.Dial(clientOptions)
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-Content is not available
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-**Logging in Workers and Clients**
-
-The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
-The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
-
-**Customizing the default logger**
-
-Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
-
-```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
-
-const logger = new DefaultLogger("WARN", ({level, message}) => {
-  console.log(`Custom logger: ${level} — ${message}`);
-});
-Runtime.install({logger});
-```
-
-The previous code example sets the default logger to only log messages with level `WARN` and higher.
-
-**Accumulate logs for testing and reporting**
-
-```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
-
-const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
-log.info("ho");
-log.warn("lets", {a: 1});
-log.error("go");
-```
-
-A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
-
-```ts
-import {Runtime} from "@temporalio/worker";
-import winston from "winston";
-
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
-});
-Runtime.install({logger});
-```
-
-</TabItem>
-<TabItem value="python">
-
-Content is not available
-
-</TabItem>
-</Tabs>
-
-### Log from a Workflow
-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -487,6 +378,113 @@ Logs are skipped during replay by default.
 </TabItem>
 </Tabs>
 
+### Custom logger
+
+Use a custom logger for logging.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
+
+Although the Go SDK does not support most third-party logging solutions natively, [our friends at Banzai Cloud](https://github.com/sagikazarmark) built the adapter package [logur](https://github.com/logur/logur) which makes it possible to use third party loggers with minimal overhead.
+Most of the popular logging solutions have existing adapters in Logur, but you can find a full list [in the Logur Github project](https://github.com/logur?q=adapter-).
+
+Here is an example of using Logur to support [Logrus](https://github.com/sirupsen/logrus):
+
+```go
+package main
+import (
+  "go.temporal.io/sdk/client"
+
+	"github.com/sirupsen/logrus"
+	logrusadapter "logur.dev/adapter/logrus"
+	"logur.dev/logur"
+)
+
+func main() {
+  // ...
+  logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
+  clientOptions := client.Options{
+    Logger: logger,
+  }
+  temporalClient, err := client.Dial(clientOptions)
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+**Logging in Workers and Clients**
+
+The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
+
+**Customizing the default logger**
+
+Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
+
+```ts
+import {Runtime, DefaultLogger} from "@temporalio/worker";
+
+const logger = new DefaultLogger("WARN", ({level, message}) => {
+  console.log(`Custom logger: ${level} — ${message}`);
+});
+Runtime.install({logger});
+```
+
+The previous code example sets the default logger to only log messages with level `WARN` and higher.
+
+**Accumulate logs for testing and reporting**
+
+```ts
+import {DefaultLogger, LogEntry} from "@temporalio/worker";
+
+const logs: LogEntry[] = [];
+const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
+log.debug("hey", {a: 1});
+log.info("ho");
+log.warn("lets", {a: 1});
+log.error("go");
+```
+
+A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
+
+```ts
+import {Runtime} from "@temporalio/worker";
+import winston from "winston";
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  transports: [new transports.File({filename: "/path/to/worker.log"})],
+});
+Runtime.install({logger});
+```
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ## Visibility
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
@@ -503,7 +501,7 @@ You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI.
+- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -561,7 +559,7 @@ Content is not available
 
 ### Set custom search attributes
 
-After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 <Tabs
 defaultValue="go"

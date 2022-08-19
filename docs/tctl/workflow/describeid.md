@@ -10,9 +10,9 @@ tags:
 
 The `tctl workflow describeid` command shows information about a [Workflow Execution](/concepts/what-is-a-workflow-execution) for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).
 
-`tctl workflow describeid <workflow_id> [<run_id>] [<modifiers>]`
+`tctl workflow describeid <workflow_id> <run_id> <modifiers>`
 
-This command is a shortcut for `tctl workflow describe --workflow_id <workflowid> [--run_id <runid>]`.
+This command is a shortcut for `tctl workflow describe --workflow_id <workflowid> --run_id <runid>`.
 
 The following modifiers control the behavior of the command.
 

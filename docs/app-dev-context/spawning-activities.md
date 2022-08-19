@@ -1,3 +1,12 @@
+---
+id: spawning-activities
+title: How to start an Activity Execution
+description: Calls to spawn Activity Executions are written within a Workflow Definition.
+sidebar_label: Activity Execution
+tags:
+  - guide-context
+---
+
 Calls to spawn [Activity Executions](/concepts/what-is-an-activity-execution) are written within a [Workflow Definition](/concepts/what-is-a-workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/concepts/what-is-an-activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.

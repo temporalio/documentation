@@ -85,6 +85,12 @@ module.exports = {
         //   position: "left",
         // },
         {
+          label: "Temporal Cloud",
+          to: "/cloud",
+          activeBasePath: "cloud",
+          position: "left",
+        },
+        {
           label: "Docs change log",
           to: "/change-log",
           activeBasePath: "change-log",
