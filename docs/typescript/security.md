@@ -52,7 +52,8 @@ A full example for Clients looks like this:
 import { Connection, WorkflowClient } from '@temporalio/client';
 
 const connection = await Connection.connect({
-  address: 'foo.bar.tmprl.cloud', // defaults port to 7233 if not specified
+  // defaults port to 7233 if not specified
+  address: 'foo.bar.tmprl.cloud', 
   tls: {
     // set to true if TLS without mTLS
     // See docs for other TLS options
@@ -159,11 +160,14 @@ There is another var, `TEMPORAL_TASK_QUEUE`, which the example defaults to `'hel
 ```ts
 export function getEnv(): Env {
   return {
-    address: 'foo.bar.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
-    namespace: 'foo.bar', // as assigned
-    clientCertPath: 'foobar.pem', // in project root
-    clientKeyPath: 'foobar.key', // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
+    // NOT web.foo.bar.tmprl.cloud
+    address: 'foo.bar.tmprl.cloud', 
+    namespace: 'foo.bar', 
+    // in project root
+    clientCertPath: 'foobar.pem', 
+    clientKeyPath: 'foobar.key', 
+    // just to ensure task queue is same on client and worker, totally optional
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', 
     // // not usually needed
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,

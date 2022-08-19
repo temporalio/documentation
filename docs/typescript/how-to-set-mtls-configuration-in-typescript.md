@@ -38,12 +38,16 @@ If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaul
 ```typescript
 export function getEnv(): Env {
   return {
-    address: 'web.<Namespace_ID>.tmprl.cloud', // NOT web.foo.bar.tmprl.cloud
-    namespace: 'your.namespace', // as assigned
-    clientCertPath: 'foobar.pem', // in project root
-    clientKeyPath: 'foobar.key', // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls', // just to ensure task queue is same on client and worker, totally optional
-    // // not usually needed
+    // NOT web.foo.bar.tmprl.cloud
+    address: 'web.<Namespace_ID>.tmprl.cloud', 
+    // as assigned
+    namespace: 'your.namespace', 
+    // in project root
+    clientCertPath: 'foobar.pem', 
+    clientKeyPath: 'foobar.key', 
+    // just to ensure task queue is same on client and worker, totally optional
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls',
+    // not usually needed:
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
   };

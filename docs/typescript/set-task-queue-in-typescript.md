@@ -7,8 +7,9 @@ When scheduling a Workflow, a `taskQueue` must be specified.
 import { WorkflowClient } from '@temporalio/client';
 const client = new WorkflowClient();
 const result = await client.execute(yourWorkflow, {
-  taskQueue: 'testhttp', // required
-  workflowId: 'business-meaningful-id', // also required but not the point
+  // required
+  taskQueue: 'testhttp', 
+  workflowId: 'business-meaningful-id', 
 });
 ```
 
@@ -16,7 +17,8 @@ When creating a Worker, you must pass the `taskQueue` option to the [`Worker.cre
 
 ```typescript
 const worker = await Worker.create({
-  activities, // imported elsewhere
+  // imported elsewhere
+  activities, 
   taskQueue: 'your-task-queue',
 });
 ```

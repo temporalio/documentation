@@ -80,7 +80,7 @@ Please see the [Temporal Client docs](/typescript/clients) or the [API Reference
 The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://typescript.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
 | APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                  |
 | `proxyLocalActivities`       | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                  |
 | `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                 |
@@ -1038,7 +1038,8 @@ const handle = await client.start(MyScheduleWorkflow, {
   args: [
     {
       cronParser: {
-        expression: '0 8 * * *', // every day 8am
+        // every day 8am
+        expression: '0 8 * * *', 
         options: {
           currentDate: '2016-03-27 00:00:01',
           endDate: new Date('Wed, 26 Dec 2012 14:40:00 UTC'),

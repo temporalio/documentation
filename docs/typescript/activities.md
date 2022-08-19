@@ -60,8 +60,10 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 ```ts
 // Sample of typical options you can set while creating a proxy for the `greet` Activity
 const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
-  scheduleToCloseTimeout: '5m', // useful
+  // recommended
+  startToCloseTimeout: '30s', 
+  // useful
+  scheduleToCloseTimeout: '5m', 
   // The below is a Retry Policy. It is used to retry the Activity if it fails.
   retry: {
     // These are the values of the Default Retry Policy
@@ -97,9 +99,12 @@ const { greet } = proxyActivities<typeof activities>({
 
 // Example 2
 const { longRunningActivity } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m', // translates to 300000 ms
-  startToCloseTimeout: '30s', // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+  // translates to 300000 ms
+  scheduleToCloseTimeout: '5m', 
+  // translates to 30000 ms
+  startToCloseTimeout: '30s', 
+  // equivalent to '10 seconds'
+  heartbeatTimeout: 10000, 
 });
 ```
 
@@ -253,7 +258,7 @@ ApplicationFailure: Activity function actC is not registered on this Worker, ava
 Temporal SDK also exports a [`Context`](https://typescript.temporal.io/api/classes/activity.context/) class with useful features for activities: `import { Context } from '@temporalio/activity'`
 
 | Activity Context properties            | Description                                                                                                                                                                                    |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|----------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Context.current().cancellationSignal` | An `AbortSignal` which can be used to cancel requests on Activity cancellation. Typically used by the `fetch` and `child_process` libraries but is supported by a few other libraries as well. |
 | `Context.current().cancelled`          | Await this promise in an Activity to get notified of cancellation. This promise will never be resolved; it will only be rejected with a `CancelledFailure`.                                    |
 | `Context.current().heartbeat()`        | Send a Heartbeat from an Activity.                                                                                                                                                             |
