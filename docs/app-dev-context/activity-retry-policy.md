@@ -1,7 +1,7 @@
 ---
 id: activity-retry-policy
-title: Activity Parameters - Application development context
-sidebar_label: Activity Parameters
+title: How to set an Activity Retry Policy
+sidebar_label: Activity Retry Policy
 description: Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.
 tags:
   - guide-context

@@ -1,3 +1,12 @@
+---
+id: define Signal
+title: How to define a Signal
+description: A Signal has a name and can have arguments.
+sidebar_label: Define Signal
+tags:
+  - guide-context
+---
+
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.

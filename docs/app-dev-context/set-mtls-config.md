@@ -1,3 +1,12 @@
+---
+id: set-mtls-config
+title: How to set mTLS for a Temporal Client
+description: When connecting to the Temporal Cloud with mTLS, you must provide the a certificate and a private key.
+sidebar_label: Set mTLS
+tags:
+  - guide-context
+---
+
 When connecting to the Temporal Cloud with mTLS, you must provide the following configuration details:
 
 - Client certificate for mTLS
