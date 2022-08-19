@@ -279,7 +279,8 @@ TLS command-line arguments can be provided via their respective environment vari
 
 ### Add custom Search Attributes to a Cluster
 
-import \* as AddSearchAttributes from '../tctl/admin/cluster/add-search-attributes.md'
+<!-- prettier-ignore -->
+import * as AddSearchAttributes from '../tctl/admin/cluster/add-search-attributes.md'
 
 ## Start Workflow with Search Attributes
 
