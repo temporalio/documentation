@@ -33,7 +33,7 @@ tctl workflow describe --workflow_id <id>
 ### `--run_id`
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
-If a Run Id is not provided, the command shows the latest Workflow Execution of that Workflow Id.
+If a Run Id is not provided, the command will show the latest Workflow Execution of that Workflow Id.
 
 Aliases: `--rid`, `-r`
 
