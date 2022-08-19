@@ -93,15 +93,13 @@ We do not recommend using this technique for production because all four Tempora
 
 ## Add your SDK
 
-Add a [Temporal SDK](/temporal#temporal-sdk) to your project.
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
 
-The Temporal SDK provides a framework for Temporal application development.
+An SDK provides you with the following:
 
-The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster.
-- APIs to use within your Workflows.
-- APIs to create and manage Worker Entities and Worker Processes.
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to use within your [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#).
 
 <Tabs
 defaultValue="go"
@@ -324,7 +322,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 ## Create Temporal Clients
 
-A [Temporal Client](/temporal#temporal-client) is needed to [create Worker Entities](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
+A [Temporal Client](/temporal#temporal-client) is needed to [run Worker Processes](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
 Communication with the Temporal Cluster includes, but is not limited to, starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, and getting the result of a Workflow Execution.
 
 A Temporal Client cannot be initialized and used inside Workflow code.
@@ -332,7 +330,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 ### Connect to a Client
 
-When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
+When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
 
 - To connect to our Docker image, use `127.0.0.1:7233`.
 - To connect to a Temporal Cloud Namespace use `<Namespace_ID>.tmprl.cloud`.
@@ -1749,7 +1747,7 @@ async def your_activity(params: YourParams) -> None:
 
 ### Activity return values
 
-All Activity results must be serializable.
+All data returned from an Activity must be serializable.
 
 There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
 
@@ -2712,19 +2710,18 @@ There are three main things the Worker needs:
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
 - Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can fine-tune with `nodeModulesPaths`.
+- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
 - Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
 
 **Additional Worker Options**
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options            | Description                                                                                                                                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
-| `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                     |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                              |
+| Options         | Description                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
+| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |
 
 **Operation guides:**
 
@@ -3318,7 +3315,7 @@ There are three main things the Worker needs:
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
 - Workflow bundle, specify one of the following options:
-  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
