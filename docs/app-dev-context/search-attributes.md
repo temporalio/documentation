@@ -10,7 +10,7 @@ You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI.
+- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.

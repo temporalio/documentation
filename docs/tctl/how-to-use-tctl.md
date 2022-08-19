@@ -292,9 +292,7 @@ TLS command-line arguments can be provided via their respective environment vari
 
 ### Add custom Search Attributes to a Cluster
 
-import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
-
-<HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
+import \* as AddSearchAttributes from '../tctl/admin/cluster/add-search-attributes.md'
 
 ## Start Workflow with Search Attributes
 
