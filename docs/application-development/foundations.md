@@ -88,7 +88,7 @@ The following steps start and run a Temporal Cluster using the default configura
    ```bash
    git clone https://github.com/temporalio/docker-compose.git
    ```
-2. Change to the directory for the project:
+2. Change to the directory for the project.
    ```bash
    cd docker-compose
    ```
@@ -114,15 +114,13 @@ When it is running, you can customize the application samples.
 
 ## Add your SDK
 
-Add a [Temporal SDK](/temporal#temporal-sdk) to your project.
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
 
-The Temporal SDK provides a framework for Temporal application development.
+An SDK provides you with the following:
 
-The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster.
-- APIs to use within your Workflows.
-- APIs to create and manage Worker Entities and Worker Processes.
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to use within your [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#).
 
 <Tabs
 defaultValue="go"
@@ -353,7 +351,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 ### Connect to a Client
 
-When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
+When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
 
 - To connect to our Docker image, use `127.0.0.1:7233`.
 - To connect to a Temporal Cloud Namespace use `<Namespace_ID>.tmprl.cloud`.
@@ -1770,7 +1768,7 @@ async def your_activity(params: YourParams) -> None:
 
 ### Activity return values
 
-All Activity results must be serializable.
+All data returned from an Activity must be serializable.
 
 There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
 
