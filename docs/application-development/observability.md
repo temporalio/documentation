@@ -559,7 +559,7 @@ Content is not available
 
 ### Set custom search attributes
 
-After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 <Tabs
 defaultValue="go"
