@@ -2079,12 +2079,18 @@ const {yourActivity} = proxyActivities<typeof activities>({
 </TabItem>
 <TabItem value="python">
 
-To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.retrypolicy) class within [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
+To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.retrypolicy) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
 The following example sets the maximum interval to 2 seconds.
 
-<!--SNIPSTART python-activity-retry-->
-<!--SNIPEND-->
+```python
+workflow.execute_activity(
+    your_activity,
+    name,
+    start_to_close_timeout=timedelta(seconds=10),
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
+```
 
 </TabItem>
 </Tabs>
@@ -2433,9 +2439,12 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 ```typescript
 // Creating a proxy for the activity.
 const {longRunningActivity} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m", // translates to 300000 ms
-  startToCloseTimeout: "30s", // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+  // translates to 300000 ms
+  scheduleToCloseTimeout: "5m",
+  // translates to 30000 ms
+  startToCloseTimeout: "30s",
+  // equivalent to '10 seconds'
+  heartbeatTimeout: 10000,
 });
 ```
 
