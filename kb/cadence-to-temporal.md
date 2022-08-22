@@ -1,10 +1,14 @@
 ---
-id: cadence-to-temporal
+slug: cadence-to-temporal
 title: Cadence to Temporal migration highlights
-sidebar_label: Migrate from Cadence
+tags:
+  - kb-article
+date: 2022-05-26T00:00:00Z
 ---
 
 This page highlights the key differences between Cadence and Temporal that you will need to account for when migrating.
+
+<!-- truncate -->
 
 There is no direct upgrade path from Cadence to Temporal.
 The Temporal Server requires a fresh install, and we recommend choosing one of the [latest releases](https://github.com/temporalio/temporal/releases).
