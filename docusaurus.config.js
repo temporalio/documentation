@@ -96,12 +96,6 @@ module.exports = {
           activeBasePath: "change-log",
           position: "left",
         },
-        {
-          label: "Blog",
-          to: "/blog",
-          activeBasePath: "blog",
-          position: "left",
-        },
       ],
     },
     footer: {
@@ -154,11 +148,11 @@ module.exports = {
             },
             {
               label: "Case Studies",
-              href: "https://docs.temporal.io/blog/tags/case-study/",
+              href: "https://temporal.io/blog/tags/case-study/",
             },
             {
               label: "Blog",
-              to: "/blog",
+              to: "https://temporal.io/blog",
             },
           ],
         },
@@ -297,19 +291,7 @@ module.exports = {
         },
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
-        blog: {
-          id: "blog",
-          routeBasePath: "blog",
-          path: "blog",
-          postsPerPage: 10,
-          editUrl: "https://github.com/temporalio/documentation/blob/master",
-          blogTitle: "Temporal Blog",
-          showReadingTime: true, // Show estimated reading time for the blog post.
-          feedOptions: {
-            type: "all",
-            copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
-          },
-        },
+        // blog: {},
         // Will be passed to @docusaurus/theme-classic.
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
