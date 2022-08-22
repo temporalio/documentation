@@ -592,6 +592,11 @@
               "path": "php/how-to-set-activity-retry-options-in-php"
             },
             {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-activity-retry-options-in-python"
+            },
+            {
               "lang": "typescript",
               "title": "TypeScript",
               "path": "typescript/how-to-set-an-activity-retry-policy-in-typescript"
