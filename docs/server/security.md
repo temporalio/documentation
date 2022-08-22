@@ -4,6 +4,10 @@ title: Temporal Server security
 sidebar_label: Security
 ---
 
+:::note
+This page is a work in progress.
+:::
+
 ## Overview
 
 A secured Temporal server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it.
@@ -75,7 +79,7 @@ To restrict access to specific users, authentication and authorization is perfor
 ## Authorization
 
 :::note
-Information regarding `Authorizer` and `ClaimMapper` have been moved to their own concept pages.
+Information regarding `Authorizer` and `ClaimMapper` has been moved to [another location](/docs/clusters#plugins).
 :::
 
 Temporal offers two plugin interfaces for implementing API call authorization:

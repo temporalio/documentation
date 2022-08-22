@@ -126,6 +126,8 @@ Temporal offers two plugin interfaces for API call authentication and authorizat
 
 The logic of both plugins can be customized to fit a variety of use cases. When provided, the front-end will invoke the implementation of the plugins before running the requested operation.
 
+![](/img/docs/frontend-authorization-order-of-operations.png)
+
 ## Temporal Server
 
 The Temporal Server consists of four independently scalable services:
