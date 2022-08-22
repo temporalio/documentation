@@ -1038,7 +1038,8 @@ const handle = await client.start(MyScheduleWorkflow, {
   args: [
     {
       cronParser: {
-        expression: '0 8 * * *', // every day 8am
+        // every day 8am
+        expression: '0 8 * * *',
         options: {
           currentDate: '2016-03-27 00:00:01',
           endDate: new Date('Wed, 26 Dec 2012 14:40:00 UTC'),

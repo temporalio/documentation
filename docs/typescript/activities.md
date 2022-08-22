@@ -60,8 +60,10 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 ```ts
 // Sample of typical options you can set while creating a proxy for the `greet` Activity
 const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
-  scheduleToCloseTimeout: '5m', // useful
+  // recommended
+  startToCloseTimeout: '30s',
+  // useful
+  scheduleToCloseTimeout: '5m',
   // The below is a Retry Policy. It is used to retry the Activity if it fails.
   retry: {
     // These are the values of the Default Retry Policy
@@ -97,9 +99,12 @@ const { greet } = proxyActivities<typeof activities>({
 
 // Example 2
 const { longRunningActivity } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m', // translates to 300000 ms
-  startToCloseTimeout: '30s', // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+  // translates to 300000 ms
+  scheduleToCloseTimeout: '5m',
+  // translates to 30000 ms
+  startToCloseTimeout: '30s',
+  // equivalent to '10 seconds'
+  heartbeatTimeout: 10000,
 });
 ```
 
