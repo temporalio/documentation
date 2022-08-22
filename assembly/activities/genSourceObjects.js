@@ -25,7 +25,7 @@ export async function genSourceObjects(config) {
   const writePath = path.join(
     config.rootDir,
     config.tempWriteDir,
-    config.sourceObjectsFileName
+    config.sourceInfoNodesFileName
   );
   await fs.writeJSON(writePath, docsObjects);
   return;

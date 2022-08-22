@@ -14,9 +14,9 @@
   ],
   "contentWriteDir": "docs",
   "tempWriteDir": "assembly/temp",
-  "sourceObjectsFileName": "source_objects.json",
+  "sourceInfoNodesFileName": "source-info-nodes.json",
   "guideConfigsPath": "guide-gen/guide-configs",
-  "outlineDiagramJSONFIleName": "outline_diagram.json",
+  "outlineDiagramJSONFIleName": "outline-diagram.json",
   "outlineDiagramFilePath": "docs/components",
   "additionalFilesToParse": [
     "references/commands.md",

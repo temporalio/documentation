@@ -8,6 +8,45 @@
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
+  "sections": [
+    {
+      "section-type": "p",
+      "id": "app-dev-context/features"
+    },
+    {
+      "section-type": "h2",
+      "id": "app-dev-context/signals"
+    },
+    {
+      "section-type": "h3",
+      "id": "app-dev-context/define-signal"
+    },
+    {
+      "section-type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-a-signal-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-define-a-signal-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-define-a-signal-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-define-a-signal-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-define-a-signal-in-typescript"
+        }
+      ]
+    }
+  ],
   "h2_sections": [
     {
       "header": "none",
