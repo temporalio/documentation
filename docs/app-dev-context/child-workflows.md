@@ -1,3 +1,12 @@
+---
+id: child-workflows
+title: How to start a Child Workflow Execution
+description: A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+sidebar_label: Child Workflows
+tags:
+  - guide-context
+---
+
 A [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.

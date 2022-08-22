@@ -1,3 +1,12 @@
+---
+id: async-activity-completion
+title: How to asynchronously complete an Activity
+description: Asynchronous Activity Completion enables the Activity Function to return without the Activity Execution completing.
+sidebar_label: Asynchronous Activity Completion
+tags:
+  - guide-context
+---
+
 [Asynchronous Activity Completion](/concepts/what-is-asynchronous-activity-completion) enables the Activity Function to return without the Activity Execution completing.
 
 There are three steps to follow:

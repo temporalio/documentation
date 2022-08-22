@@ -14,7 +14,7 @@ description: A Worker is a process that connects to the Temporal Server, polls T
 A Worker is a process that connects to the Temporal Server, polls **Task Queues** for Tasks sent from Clients, and executes [Workflows](/typescript/workflows) and [Activities](/typescript/activities) in response.
 
 - **Workers host Workflows and Activities.**
-  - TypeScript SDK Workers bundle Workflows based on `workflowsPath` and their dependencies from `nodeModulesPaths` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
+  - TypeScript SDK Workers bundle Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
   - TypeScript SDK Workers directly run `activities` inside the normal Node.js environment.
 - **Workers are extremely scalable.**
   - Workers connect to the Temporal Server, poll their configured **Task Queue** for Tasks, execute chunks of code in response to those Tasks, and then communicate the results back.
@@ -170,8 +170,9 @@ import { Connection, WorkflowClient } from '@temporalio/client';
 const connection = await Connection.connect();
 const client = new WorkflowClient({ connection });
 const result = await client.execute(yourWorkflow, {
-  taskQueue: 'testhttp', // required
-  workflowId: 'business-meaningful-id', // also required but not the point
+  // required
+  taskQueue: 'testhttp',
+  workflowId: 'business-meaningful-id',
 });
 ```
 
@@ -185,7 +186,8 @@ When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker
 
 ```ts
 const worker = await Worker.create({
-  activities, // imported elsewhere
+  // imported elsewhere
+  activities,
   taskQueue: 'your-task-queue',
 });
 ```

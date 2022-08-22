@@ -9,12 +9,30 @@ tags:
   - visibility
 ---
 
-A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of Workflow Executions that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that have the Search Attribute in their metadata.
 
-If a Temporal Cluster does not have Elasticsearch integrated, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
-However, you won't be able to use Advanced Visibility List APIs and List Filters to find and list the Workflow Execution.
+If a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) does not have [Elasticsearch integrated](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
+However, you won't be able to use [Advanced Visibility](/concepts/what-is-advanced-visibility) List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Run by default.
+When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
+
+#### Search Attributes maximums
+
+Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.
+
+<!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
+
+Default single Search Attribute **value** size limit is 2 KB.
+
+<!-- TODO - [How to configure Search Attribute value size limit](#) -->
+
+Total Search Attribute size: 40 KB
+
+<!-- TODO - [How to configure total Search Attribute size limite](#) -->
+
+<!-- temp keeping for reference
+This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
+-->
 
 #### Default Search Attributes
 
@@ -54,7 +72,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl).
+Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/admin/cluster/add-search-attributes).
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
