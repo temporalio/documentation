@@ -50,7 +50,7 @@ There have been many high-level descriptions of Temporal from our Series A and B
 
 ### Cadence
 
-Temporal's previous iteration was Cadence, which shares a lot of the same design principles (see [the difference between Cadence and Temporal](/cadence-to-temporal)).
+Temporal's previous iteration was Cadence, which shares a lot of the same design principles (see [the difference between Cadence and Temporal](/kb/cadence-to-temporal)).
 
 - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at the 2017 Uber Cadence meetup
 - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017
