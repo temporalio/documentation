@@ -318,6 +318,47 @@
       ]
     },
     {
+      "header": "Timers",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "app-dev-context/timer"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-set-timers-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-set-timers-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "php/how-to-set-timers-in-php"
+            },
+            {
+              "lang": "python",
+              "title": "Python",
+              "path": "python/how-to-set-timers-in-python"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "typescript/how-to-set-timers-in-typescript"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "header": "Workflow timeouts & retries",
       "h3_sections": [
         {

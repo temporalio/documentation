@@ -1238,6 +1238,75 @@ Content is not available
 </TabItem>
 </Tabs>
 
+## Timers
+
+You can schedule a durable timer for a fixed time period on the Temporal service.
+
+A Workflow can sleep for months, and even if your Worker crashes or Temporal Cluster is down, timers and timeouts are persisted and will fire as scheduled. As soon as your Worker and Cluster are back up, your code will appear to resume where it left off. This also means that sleeping or retrying code does not tie up the process - you can run thousands of timers off a single Worker.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass how you long you want to wait before continuing.
+
+```go
+workflow.NewTimer(timerCtx, duration)
+```
+
+For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
+
+</TabItem>
+<TabItem value="java">
+
+To set a timer in Java, use [`sleep()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep) and pass how many seconds you want to wait before continuing.
+
+```java
+sleep(5);
+```
+
+</TabItem>
+<TabItem value="php">
+
+To set a timer in PHP, use `Workflow::timer()` and pass how many seconds you want to wait before continuing.
+
+The following example yields a sleep method for 5 minutes.
+
+```php
+yield Workflow::timer(300); // sleep for 5 minutes
+```
+
+You cannot set a timer invocation inside the `await` or `awaitWithTimeout` methods.
+
+</TabItem>
+<TabItem value="typescript">
+
+To set a timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how many milliseconds you want to wait before continuing.
+
+```typescript
+import {sleep} from "@temporalio/workflow";
+
+export async function sleeper(ms = 100): Promise<void> {
+  await sleep(ms);
+  console.log("slept");
+}
+```
+
+</TabItem>
+<TabItem value="python">
+
+To set a timer in Python, set the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleepingp) function and pass how many seconds you want to wait before continuing.
+
+```python
+await asyncio.sleep(5)
+```
+
+</TabItem>
+</Tabs>
+
 ## Workflow timeouts & retries
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
