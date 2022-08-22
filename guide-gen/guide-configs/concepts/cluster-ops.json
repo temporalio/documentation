@@ -4,7 +4,7 @@
   "file_dir": "/",
   "title": "Temporal Cluster deployment guide",
   "sidebar_label": "Cluster deployment",
-  "description": "This section provides an overview of how to deploy and operate a Temporal Cluster in a live environment.",
+  "description": "This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.",
   "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
