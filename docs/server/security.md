@@ -74,6 +74,10 @@ To restrict access to specific users, authentication and authorization is perfor
 
 ## Authorization
 
+:::note
+Information regarding `Authorizer` and `ClaimMapper` have been moved to their own concept pages.
+:::
+
 Temporal offers two plugin interfaces for implementing API call authorization:
 
 - [`ClaimMapper`](/concepts/what-is-a-claimmapper-plugin)
