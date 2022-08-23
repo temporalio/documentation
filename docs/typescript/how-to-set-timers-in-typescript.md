@@ -7,13 +7,13 @@ tags:
   - sleep
 ---
 
-To set a timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how many milliseconds you want to wait before continuing.
+To set a Timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how long you want to wait before continuing (using an [ms-formatted string](https://www.npmjs.com/package/ms) or number of milliseconds).
 
 ```typescript
 import { sleep } from '@temporalio/workflow';
 
-export async function sleeper(ms = 100): Promise<void> {
-  await sleep(ms);
-  console.log('slept');
+export async function sleepWorkflow(): Promise<void> {
+  await sleep('2 months');
+  console.log('done sleeping');
 }
 ```
