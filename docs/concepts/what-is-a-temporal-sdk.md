@@ -26,6 +26,10 @@ Temporal currently offers the following SDKs:
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
 
+### Auth
+
+Temporal offers methods of authenticating and authorizing client API calls within our SDKs.
+
 ### SDKs in development
 
 The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the application development guide:
