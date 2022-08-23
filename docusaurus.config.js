@@ -79,15 +79,15 @@ module.exports = {
           activeBasePath: "none",
         },
         {
-          label: "KB articles",
-          to: "/kb",
-          activeBasePath: "kb",
-          position: "left",
-        },
-        {
           label: "Temporal Cloud",
           to: "/cloud",
           activeBasePath: "cloud",
+          position: "left",
+        },
+        {
+          label: "KB articles",
+          to: "/kb",
+          activeBasePath: "kb",
           position: "left",
         },
         {
