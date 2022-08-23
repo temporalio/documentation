@@ -36,16 +36,13 @@ In this section you can find the following:
 
 ## Run a dev Cluster
 
-When developing Temporal Applications, you can use a [Temporal Cluster](/clusters#) and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands.
-
-You can quickly run a [Temporal Cluster](/clusters#) in various ways.
-The following are a few of our favorites:
+The following section list different methods of deploying your [Temporal Clusters](/clusters#) locally, so that you can use and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
-**For [full (production) environment](/server/production-deployment) usage, see the [Temporal Cloud](../cloud/) documentation.**
+**For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](../cloud/) documentation.**
 
 #### Temporalite
 
@@ -111,23 +108,6 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
-
-# <<<<<<< HEAD
-
-#### Helm charts
-
-Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
-
-Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
-
-#### Render
-
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://temporal.io/blog/auto-setup).
-We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
-
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
-
-> > > > > > > master
 
 ## Add your SDK
 
@@ -322,7 +302,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
   It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
 - [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 - [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/tags/go-ecommerce-tutorial).
+  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
 
 </TabItem>
 <TabItem value="java">
@@ -758,12 +738,16 @@ If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaul
 ```typescript
 export function getEnv(): Env {
   return {
-    address: "web.<Namespace_ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
-    namespace: "your.namespace", // as assigned
-    clientCertPath: "foobar.pem", // in project root
-    clientKeyPath: "foobar.key", // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
-    // // not usually needed
+    // NOT web.foo.bar.tmprl.cloud
+    address: "web.<Namespace_ID>.tmprl.cloud",
+    // as assigned
+    namespace: "your.namespace",
+    // in project root
+    clientCertPath: "foobar.pem",
+    clientKeyPath: "foobar.key",
+    // just to ensure task queue is same on client and worker, totally optional
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls",
+    // not usually needed:
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
   };
@@ -2709,7 +2693,8 @@ import * as activities from "./activities";
 
 async function run() {
   const connection = await NativeConnection.connect({
-    address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
+    // defaults port to 7233 if not specified
+    address: "foo.bar.tmprl.cloud",
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -3394,8 +3379,10 @@ import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = await Connection.create();
 const client = new WorkflowClient({connection});
 const result = await client.execute(yourWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+  // required
+  taskQueue: "your-task-queue",
+  // required
+  workflowId: "your-workflow-id",
 });
 ```
 
@@ -3403,7 +3390,8 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 
 ```ts
 const worker = await Worker.create({
-  activities, // imported elsewhere
+  // imported elsewhere
+  activities,
   taskQueue: "your-task-queue",
 });
 ```

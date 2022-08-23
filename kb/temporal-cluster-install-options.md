@@ -1,15 +1,12 @@
 ---
-slug: temporal-cluster-install-options
-title: Temporal Cluster options
+slug: install-temporal-clusters-for-development
+title: Install Temporal Clusters for development
 tags:
   - kb-article
 date: 2022-06-07T00:00:00Z
 ---
 
-When developing Temporal Applications, you can use a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands.
-
-You can quickly run a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) in various ways.
-The following are a few of our favorites:
+The following section list different methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
 
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
@@ -17,11 +14,11 @@ The following are a few of our favorites:
 - [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 
-**For [full (production) environment](/server/production-deployment) usage, see the [Temporal Cloud](../cloud/) documentation.**
+**For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](../cloud/) documentation.**
 
 #### Docker Compose
 
-Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
+Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally.
 
 **Prerequisites**
 Install [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install).

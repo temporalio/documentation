@@ -1,20 +1,17 @@
 ---
-id: cluster-install
+id: quick-install
 title: How to quickly install a Temporal Cluster
 sidebar_label: Install Temporal Cluster
 description: Quickly install and run a Temporal Cluster in various ways.
 ---
 
-When developing Temporal Applications, you can use a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands.
-
-You can quickly run a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) in various ways.
-The following are a few of our favorites:
+The following section list different methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
 
-**For [full (production) environment](/server/production-deployment) usage, see the [Temporal Cloud](../cloud/) documentation.**
+**For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](../cloud/) documentation.**
 
 #### Temporalite
 
@@ -80,16 +77,3 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
-
-#### Helm charts
-
-Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
-
-Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
-
-#### Render
-
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://temporal.io/blog/auto-setup).
-We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
-
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
