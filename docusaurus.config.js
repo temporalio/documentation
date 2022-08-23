@@ -78,16 +78,16 @@ module.exports = {
           position: "left",
           activeBasePath: "none",
         },
-        // {
-        //   label: "KB articles",
-        //   to: "/kb",
-        //   activeBasePath: "kb",
-        //   position: "left",
-        // },
         {
           label: "Temporal Cloud",
           to: "/cloud",
           activeBasePath: "cloud",
+          position: "left",
+        },
+        {
+          label: "KB articles",
+          to: "/kb",
+          activeBasePath: "kb",
           position: "left",
         },
         {
@@ -206,7 +206,11 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render context content
+          exclude: [
+            "**/app-dev-context/**",
+            "**/concept-context/**",
+            "**/cloud-context/**",
+          ], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.

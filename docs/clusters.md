@@ -20,7 +20,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](#tem
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
-#### Persistence
+### Persistence
 
 A Temporal Cluster's only required dependency for basic operation is a database.
 Multiple types of databases that are supported.
@@ -39,7 +39,7 @@ The database stores the following types of data:
 
 An Elasticsearch database can be added to enable [Advanced Visibility](/visibility#advanced-visibility).
 
-**Versions**
+#### Dependency versions
 
 Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
 As of time of writing, these specific versions are used in our test pipelines and actively tested before we release any version of Temporal:
@@ -58,7 +58,7 @@ The release notes of each Temporal Server declare when we plan to drop support f
 - Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is meant only for development and testing, not production usage.
   Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
 
-#### Monitoring & observation
+### Monitoring & observation
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Monitoring and observing those metrics is optional.
@@ -67,7 +67,7 @@ Any software that can pull metrics that supports the same format could be used, 
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-#### Visibility
+### Visibility
 
 Temporal has built-in [Visibility](/visibility#) features.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#advanced-visibility).
@@ -75,6 +75,58 @@ To enhance this feature, Temporal supports an [integration with Elasticsearch](/
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
 - Both versions are explicitly supported with AWS Elasticsearch
+
+### mTLS Encryption
+
+Temporal supports Mutual Transport Layer Security (mTLS) as a method of encrypting network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
+
+Mutual TLS can be enabled in Temporal’s [TLS configuration](/references/configuration#tls). This configuration can be passed along through WithConfig or WithConfigLoader.
+
+This configuration includes two sections that serve to separate intra-cluster and external traffic. That way, different certificates and settings can be used to encrypt each section of traffic:
+
+- `internode`: configuration for encrypting communication between nodes within the Cluster.
+- `frontend`: configuration for encrypting the Frontend's public endpoints
+
+### Temporal Client connections
+
+A client's network access can be limited by using certificates issued by a specific Certificate Authority.
+
+To restrict access to Temporal Cluster endpoints, use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties.
+
+These can be found in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
+
+#### Server name specification
+
+Specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+
+Entering a value for `serverName` enables established connections to authenticate the endpoint. This ensures that the server certificate presented to any connected client has the given server name in its CN property.
+
+This measure can be taken for `internode` and `frontend` endpoints.
+
+For more information on mTLS configuration, refer to our [TLS configuration guide](/references/configuration#tls).
+
+### Auth
+
+**Authentication** is the process of verifying users that wish to access your application are actually the users you want accessing it.
+**Authorization** is the verification of applications and data that a user on your Cluster or application has access to.
+
+Temporal has several authentication protocols that can be set to restrict access to your data. These protocols address three different areas: servers, client connections, and users.
+
+Server attacks can be prevented by specifying the `serverName` in the `client` section of your mTLS configuration. This can be done for both `frontend` and `internode` endpoints.
+
+Client connections can be restricted to certain endpoints by requiring certificates from a specific Certificate Authority (CA). Modify the `clientCaFiles`/ `clientCaData` and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
+
+User access can be restricted through extensibility points and plugins. When implemented, the `frontend` invokes the plugin before executing the requested operation.
+
+Temporal offers two plugin interfaces for API call authentication and authorization.
+
+- [`ClaimMapper`](#claim-mapper)
+
+- [`Authorizer`](#authorizer)
+
+The logic of both plugins can be customized to fit a variety of use cases. When provided, the front-end will invoke the implementation of the plugins before running the requested operation.
+
+![](/img/docs/frontend-authorization-order-of-operations.png)
 
 ## Temporal Server
 
@@ -618,3 +670,151 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
+
+## Plugins
+
+Temporal Clusters support some pluggable components.
+
+### Claim Mapper
+
+`ClaimMapper` is a plugin that extracts claims from JSON Web Tokens (JWT).
+This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
+
+A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
+In the example below, the role is assigned constants that allow the caller to read and write information.
+
+```go
+role := authorization.RoleReader | authorization.RoleWriter
+```
+
+`GetClaims` is customizable, and can be modified with the `temporal.WithClaimMapper` server option.
+Temporal also offers a default JWT `ClaimMapper` for your use.
+
+A typical approach is for `ClaimMapper` to interpret custom `Claims` from a caller's JSON Web Token (JWT), such as membership in groups, and map them to Temporal roles for the user.
+The subject information from the caller's TLS certificate can also be a parameter in determining roles.
+
+#### `AuthInfo`
+
+`AuthInfo` is a struct that is passed to `GetClaims`. `AuthInfo` contains an authorization token extracted from the `authorization` header of the gRPC request.
+
+`AuthInfo` includes a pointer to the `pkix.Name` struct.
+This struct contains an [x.509](https://www.ibm.com/docs/en/ibm-mq/7.5?topic=certificates-distinguished-names) distinguishable name from the caller's mTLS certificate.
+
+#### `Claims`
+
+`Claims` is a struct that contains information about permission claims granted to the caller.
+
+`Authorizer` assumes that the caller has been properly authenticated, and trusts the `Claims` when making an authorization decision.
+
+#### Default JWT ClaimMapper
+
+Temporal offers a default JSON Web Token (JWT) `ClaimMapper` that extracts the information needed to form Temporal `Claims`.
+This plugin requires a public key to validate digital signatures.
+
+To get an instance of the default JWT `ClaimMapper`, call `NewDefaultJWTClaimMapper` and provide it with:
+
+- a `TokenKeyProvider` instance
+- a `config.Authorization` pointer
+- a logger
+
+The code for the default `ClaimMapper` can also be used to build a custom `ClaimMapper`.
+
+#### Token Key Provider
+
+A `TokenKeyProvider` obtains public keys from given issuers' URIs that adhere to a specific format.
+The default JWT Claim Mapper uses this component to obtain and refresh public keys over time.
+
+Temporal provides an `rsaTokenKeyProvider`.
+This component dynamically obtains public keys that follow the [JWKS format](https://tools.ietf.org/html/rfc7517).
+`rsaTokenKeyProvider` will only use the `RSAKey` and `Close` methods.
+
+```go
+provider := authorization.NewRSAKeyProvider(cfg)
+```
+
+:::note
+
+`KeySourceURIs` are the HTTP endpoints that return public keys of token issuers in the [JWKS format](https://tools.ietf.org/html/rfc7517).
+`RefreshInterval` defines how frequently keys should be refreshed.
+For example, [Auth0](https://auth0.com/) exposes such endpoints as `https://YOUR_DOMAIN/.well-known/jwks.json`.
+
+:::
+
+By default, "permissions" is used to name the `permissionsClaimName` value.
+
+Configure the plugin with `config.Config.Global.Authorization.JWTKeyProvider`.
+
+#### JWT Web Token Format
+
+The default JWT `ClaimMapper` expects authorization tokens to be formatted as follows:
+
+```
+Bearer <token>
+```
+
+The Permissions Claim in the JWT Token is expected to be a collection of Individual Permission Claims.
+Each Individual Permission Claim must be formatted as follows:
+
+```
+<namespace> : <permission>
+```
+
+These permissions are then converted into Temporal roles for the caller.
+This can be one of Temporal's four values:
+
+- read
+- write
+- worker
+- admin
+
+Multiple permissions for the same namespace will be overriden by the `ClaimMapper`.
+
+##### Example of a JWT payload for The Default JWT ClaimMapper
+
+```
+{
+   "permissions":[
+      "system:read",
+      "namespace1:write"
+   ],
+   "aud":[
+      "audience"
+   ],
+   "exp":1630295722,
+   "iss":"Issuer"
+}
+```
+
+### Authorizer
+
+The `Authorizer` contains a single `Authorize` method, which is invoked for each incoming API call.
+`Authorize` receives information about the API call, along with the role and permission claims of the caller.
+
+Authorizer allows for a wide range of authorization logic, including call target, role/permissions claims, and other data available to the system.
+
+#### Configuration
+
+The following arguments must be passed to the Authorizer:
+
+- `context.Context`: General context of the call.
+- `authorization.Claims`: Claims about the roles assigned to the caller. Its intended use is [described below](#claims).
+- `authorization.CallTarget`: Target of the API call.
+
+Authorizer then returns one of two decisions:
+
+- `DecisionDeny`: the requested API call is not invoked and an error is returned to the caller.
+- `DecisionAllow`: the requested API call is invoked.
+
+:::warning
+
+Authorizer allows all API calls pass by default. Disable the `nopAuthority` authorizer and configure your own to prevent this behavior.
+
+:::
+
+Configure your `Authorizer` when you start the server via the `temporal.WithAuthorizer` [server option](/server/options#withauthorizer).
+
+If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
+
+```go
+a := authorization.NewDefaultAuthorizer()
+```
