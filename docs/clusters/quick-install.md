@@ -80,3 +80,16 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
+
+#### Helm charts
+
+Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
+
+Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
+
+#### Render
+
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](https://temporal.io/blog/auto-setup).
+We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
+
+[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
