@@ -23,19 +23,11 @@ This page is temporary. We plan to move the information to other pages.
 
 ### Namespace operation examples
 
-- Register a new namespace named "samples-namespace":
+:::note
 
-```bash
-tctl --namespace samples-namespace namespace register
-# OR using short alias
-tctl --ns samples-namespace n re
-```
+This information has been moved to namespace register
 
-- View "samples-namespace" details:
-
-```bash
-tctl --namespace samples-namespace namespace describe
-```
+:::
 
 ### Workflow operation examples
 
@@ -43,28 +35,18 @@ The following examples assume the `TEMPORAL_CLI_NAMESPACE` environment variable 
 
 #### Show running Workers of a Task Queue
 
-```bash
-tctl taskqueue desc --tq hello-world
-```
+:::note
+
+This information has been moved to taskqueue describe
+
+:::
 
 ##### Reuse the same Workflow Id when starting/running a Workflow
 
-Use option `--workflowidreusepolicy` or `--wrp` to configure the Workflow id reuse policy.
-There are three:
-
-- **AllowDuplicateFailedOnly:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running and the last execution close state is one of _[terminated, cancelled, timedout, failed]_.
-- **AllowDuplicate:** Allow starting a Workflow execution using the same Workflow Id when a Workflow with the same Workflow Id is not already running.
-- **RejectDuplicate:** Do not allow starting a Workflow execution using the same Workflow Id as a previous Workflow.
-
-```bash
-# use AllowDuplicateFailedOnly option to start a Workflow
-tctl workflow start --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicateFailedOnly
-
-# use AllowDuplicate option to run a workflow
-tctl workflow run --tq hello-world --wt Workflow --et 60 -i '"temporal"' --wid "<duplicated workflow id>" --wrp AllowDuplicate
-```
-
-You can also set this inside your Workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
+::: note
+tctl information has been moved to start and run
+:::
+Set the Workflow Reuse Policy within your Workflow code with `WorkflowOptions.WorkflowIdReusePolicy`.
 
 ##### Start a Workflow with a memo
 

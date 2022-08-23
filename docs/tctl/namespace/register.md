@@ -14,6 +14,15 @@ The `tctl namespace register` command registers a [Namespace](/concepts/what-is-
 
 `tctl namespace register`
 
+By default, Temporal uses a "default" Namespace.
+Create and register a new Namespace with the following command:
+
+```bash
+tctl --namespace your-namespace namespace register
+# OR using short alias
+tctl --ns your-namespace n re
+```
+
 The following modifiers control the behavior of the command.
 
 ### `--active_cluster`
