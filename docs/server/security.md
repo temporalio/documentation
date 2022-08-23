@@ -79,7 +79,7 @@ To restrict access to specific users, authentication and authorization is perfor
 ## Authorization
 
 :::note
-Information regarding `Authorizer` and `ClaimMapper` has been moved to [another location](/docs/clusters#plugins).
+Information regarding [`Authorizer`](/clusters#authorizer) and [`ClaimMapper`](/clusters#claim-mapper) has been moved to another location.
 :::
 
 Temporal offers two plugin interfaces for implementing API call authorization:
