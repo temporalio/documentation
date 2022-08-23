@@ -1251,10 +1251,16 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass how you long you want to wait before continuing.
+To set a timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.
 
 ```go
-workflow.NewTimer(timerCtx, duration)
+timer := workflow.NewTimer(timerCtx, duration)
+```
+
+To set a sleep in Go, use the [`sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing. A zero or negative sleep duration causes the function to return immediately.
+
+```go
+sleep = workflow.Sleep(ctx, 10*time.Second)
 ```
 
 For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
@@ -1298,7 +1304,7 @@ export async function sleepWorkflow(): Promise<void> {
 </TabItem>
 <TabItem value="python">
 
-To set a timer in Python, set the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleepingp) function and pass how many seconds you want to wait before continuing.
+To set a timer in Python, set the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration you want to wait in seconds before continuing.
 
 ```python
 await asyncio.sleep(5)
