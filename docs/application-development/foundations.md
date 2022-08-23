@@ -112,8 +112,8 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 It can take up to a full minute for the one-click deployments to get fully up and running.
 When it is running, you can customize the application samples.
 
-<<<<<<< HEAD
-=======
+# <<<<<<< HEAD
+
 #### Helm charts
 
 Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
@@ -127,7 +127,8 @@ We do not recommend using this technique for production because all four Tempora
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
 
->>>>>>> master
+> > > > > > > master
+
 ## Add your SDK
 
 A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
