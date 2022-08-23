@@ -4,8 +4,10 @@ title: Temporal Server security
 sidebar_label: Security
 ---
 
-:::note
-This page is a work in progress.
+:::info Work in progres
+
+This guide is a work in progress. Some sections may be incomplete. Information may change at any time.
+
 :::
 
 ## Overview
