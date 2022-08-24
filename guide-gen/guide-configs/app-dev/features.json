@@ -877,6 +877,42 @@
       ]
     },
     {
+      "header": "Workflow Side Effects",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "app-dev-context/side-effects"
+        },
+        {
+          "header": "none",
+          "type": "lang-tabs",
+          "langs": [
+            {
+              "lang": "go",
+              "title": "Go",
+              "path": "go/how-to-use-a-side-effect-in-go"
+            },
+            {
+              "lang": "java",
+              "title": "Java",
+              "path": "java/how-to-use-a-side-effect-in-java"
+            },
+            {
+              "lang": "php",
+              "title": "PHP",
+              "path": "none"
+            },
+            {
+              "lang": "typescript",
+              "title": "TypeScript",
+              "path": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "header": "Environment variables",
       "h3_sections": [
         {

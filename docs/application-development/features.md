@@ -3156,6 +3156,136 @@ await client.start_workflow(
 </TabItem>
 </Tabs>
 
+## Workflow Side Effects
+
+A Side Effect is a method of execution to produce nondeterministic code; such as, generating a UUID or a random number.
+By implementing Side Effect into your Workflow Execution, you can execute the provided function once and records its result into the Workflow Execution [Event History](../workflows#event-history).
+
+A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+Side Effects should not fail, because failure results in the Side Effect function executing more than once. If there’s a chance of failure, use an Activity.
+
+:::note
+
+You shouldn’t modify the Workflow state inside a Side Effect. Instead, use the return value.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To use a Side Effect in Go, set the [`SideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function in your Workflow Execution and return the nondeterministic code.
+
+```go
+encodedRandom := SideEffect(func(ctx workflow.Context) interface{} {
+      return rand.Intn(100)
+})
+var random int
+encodedRandom.Get(&random)
+if random < 50 {
+       ....
+} else {
+       ....
+}
+```
+
+The only way to fail Side Effect is to panic, which causes Workflow Task failure. The Workflow Task after Timeout is rescheduled and re-executed giving Side Effect another chance to succeed. Be careful to not return any data from the Side Effect function any other way than through its recorded return value.
+
+Do not use `SideEffect()` to modify closures. Always retrieve result from Side Effect's encoded return value.
+
+```go
+// Will not run.
+// Do not use.
+var random int
+workflow.SideEffect(func(ctx workflow.Context) interface{} {
+       random = rand.Intn(100)
+       return nil
+})
+// random will always be 0 in replay, thus this code is non-deterministic
+if random < 50 {
+       ....
+} else {
+       ....
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+
+```java
+  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+  if random < 50 {
+         ....
+  } else {
+         ....
+  }
+```
+
+Another example using `sideEffect()`.
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.sideEffect( int.class, () -> {
+        Random random = new SecureRandom();
+        return random.nextInt();
+    });
+
+    String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
+
+    if(randomInt % 2 == 0) {
+        // ...
+    } else {
+        // ...
+    }
+}
+```
+
+Java also provides a deterministic method to generate random numbers or random UUIDs.
+
+To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.newRandom().nextInt();
+    // ...
+}
+```
+
+To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    String randomUUID = Workflow.randomUUID().toString();
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
