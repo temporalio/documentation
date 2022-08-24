@@ -50,162 +50,39 @@ Set the Workflow Reuse Policy within your Workflow code with `WorkflowOptions.Wo
 
 ##### Start a Workflow with a memo
 
-Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
-These are visible when listing workflows.
-More information about memos can be found [here](/concepts/what-is-a-memo).
-
-```bash
-tctl workflow start \
-  -tq hello-world \
-  -wt Workflow \
-  -et 60 \
-  -i '"temporal"' \
-  -memo_key '"Service" "Env" "Instance"' \
-  -memo '"serverName1" "test" 5'
-```
+:::note
+moved this
+:::
 
 #### Show Workflow history
 
-```bash
-tctl workflow show \
-  -w 3ea6b242-b23c-4279-bb13-f215661b4717 \
-  -r 866ae14c-88cf-4f1e-980f-571e031d71b0
-```
-
-Shortcut without `-w` and `-r` flag:
-
-```bash
-tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717 866ae14c-88cf-4f1e-980f-571e031d71b0
-```
-
-If the `run_id` is not provided, the latest run history for the workflow_id:
-
-```bash
-tctl workflow show \
-  -w 3ea6b242-b23c-4279-bb13-f215661b4717
-```
-
-Shortcut:
-
-```bash
-tctl workflow showid 3ea6b242-b23c-4279-bb13-f215661b4717
-```
+:::note
+moved
+:::
 
 #### Query Workflow Execution
 
-```bash
-# use custom query type
-tctl workflow query -w <wid> -r <rid> --qt <query-type>
-
-# use build-in query type "__stack_trace" which is supported by Temporal SDK
-tctl workflow query -w <wid> -r <rid> --qt __stack_trace
-# a shortcut to query using __stack_trace is (without --qt flag)
-tctl workflow stack -w <wid> -r <rid>
-```
+:::note
+moved
+:::
 
 #### Signal, cancel, terminate Workflow
 
-```bash
-# signal
-tctl workflow signal -w <wid> -r <rid> -n <signal-name> -i '"signal-value"'
-
-# cancel
-tctl workflow cancel -w <wid> -r <rid>
-
-# terminate
-tctl workflow terminate -w <wid> -r <rid> --reason
-```
-
-Terminating a running Workflow Execution records a WorkflowExecutionTerminated event as the closing event in the history.
-No more command tasks will be scheduled for a terminated workflow execution.
-Canceling a running workflow execution will record a WorkflowExecutionCancelRequested event in the history, and a new command task will be scheduled.
-The workflow has a chance to do some clean up work after cancellation.
+:::note
+moved
+:::
 
 #### Signal, cancel, terminate workflows as a batch job
 
-import CustomWarning from "../components/CustomWarning.js"
-
-<CustomWarning>
-
-Temporal's Batch Jobs feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
-
-</CustomWarning>
-
-Batch job is based on List Workflow Query(**--query**).
-It supports signal, cancel and terminate as batch job type.
-For terminating workflows as batch job, it will terminate the children recursively.
-
-Start a batch job(using signal as batch type):
-
-```bash
-tctl --ns samples-namespace batch start --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'" --reason "test" --bt signal --sig testname
-This batch job will be operating on 5 workflows.
-Please confirm[Yes/No]:yes
-{
-  "jobId": "<batch-job-id>",
-  "msg": "batch job is started"
-}
-
-```
-
-You need to remember the JobId or use List command to get all your batch jobs:
-
-```bash
-tctl --ns samples-namespace batch list
-```
-
-Describe the progress of a batch job:
-
-```bash
-tctl --ns samples-namespace batch desc -jid <batch-job-id>
-```
-
-Terminate a batch job:
-
-```bash
-tctl --ns samples-namespace batch terminate -jid <batch-job-id>
-```
-
-Note that the operation performed by a batch will not be rolled back by terminating the batch.
-However, you can use reset to rollback your workflows.
+:::note
+moved
+:::
 
 #### Restart, reset Workflow
 
-The Reset command allows resetting a workflow to a particular point and continue running from there.
-There are a lot of use cases:
-
-- Rerun a failed workflow from the beginning with the same start parameters.
-- Rerun a failed workflow from the failing point without losing the achieved progress(history).
-- After deploying new code, reset an open workflow to let the workflow run to different flows.
-
-You can reset to some predefined event types:
-
-```bash
-tctl workflow reset -w <wid> -r <rid> --reset_type <reset_type> --reason "some_reason"
-```
-
-- FirstWorkflowTask: reset to the beginning of the history.
-- LastWorkflowTask: reset to the end of the history.
-- LastContinuedAsNew: reset to the end of the history for the previous run.
-- BadBinary: reset to the point where a bad binary was used.
-
-If you are familiar with the Temporal history event, you can also reset to any command finish event by using:
-
-```bash
-tctl workflow reset -w <wid> -r <rid> --event_id <workflow_task_finish_event_id> --reason "some_reason"
-```
-
-Some things to note:
-
-- When reset, a new run will be kicked off with the same workflowId. But if there is a running execution for the workflow(workflowId), the current run will be terminated.
-- workflow_task_finish_event_id is the Id of events of the type: WorkflowTaskComplete/WorkflowTaskFailed/WorkflowTaskTimeout.
-- To restart a workflow from the beginning, reset to the first command task finish event.
-
-To reset multiple workflows, you can use batch reset command:
-
-```bash
-tctl workflow reset-batch --input_file <file_of_workflows_to_reset> --reset_type <reset_type> --reason "some_reason"
-```
+:::note
+moved
+:::
 
 #### Recovery from bad deployment -- auto-reset workflow
 
@@ -261,9 +138,9 @@ TLS command-line arguments can be provided via their respective environment vari
 
 ### Add custom Search Attributes to a Cluster
 
-import HowToAddACustomSearchAttributeToAClusterUsingTCTL from '../tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl.md'
-
-<HowToAddACustomSearchAttributeToAClusterUsingTCTL/>
+:::note
+see file
+:::
 
 ## Start Workflow with Search Attributes
 

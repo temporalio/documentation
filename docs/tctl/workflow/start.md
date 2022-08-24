@@ -148,15 +148,24 @@ tctl workflow start --memo_key <key>
 
 ### `--memo`
 
-Pass a memo.
-A memo is information in JSON format that can be shown when the Workflow is listed.
+Pass information for a [memo](/concepts/what-is-a-memo) from a JSON file.
+
+Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
+Memos are visible when listing workflows.
+
 For multiple memos, concatenate them and use spaces as separators.
 The order must match the order of keys in `--memo_key`.
 
 **Example**
 
 ```bash
-tctl workflow start --memo <json>
+tctl workflow start \
+  -tq your-task-queue \
+  -wt your-workflow \
+  -et 60 \
+  -i '"temporal"' \
+  -memo_key '<key values>' \
+  -memo '<value>'
 ```
 
 ### `--memo_file`
