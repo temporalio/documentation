@@ -119,7 +119,7 @@ async def run_replayer(history_json_str: str):
     await replayer.replay_workflow(history_json_str)
 ```
 
-`run_replayer()` will return an error if the Workflow History is non-deterministic.
+If the Workflow History is non-deterministic, `run_replayer()` returns an error.
 
 :::note
 
