@@ -88,13 +88,13 @@ module.exports = {
                       collapsed: true,
                       link: {
                         type: "doc",
-                        id: "cloud/tcld/metrics/accepted-client-ca/index",
+                        id: "cloud/tcld/account/metrics/accepted-client-ca/index",
                       },
                       items: [
-                        "cloud/tcld/metrics/accepted-client-ca/add",
-                        "cloud/tcld/metrics/accepted-client-ca/list",
-                        "cloud/tcld/metrics/accepted-client-ca/set",
-                        "cloud/tcld/metrics/accepted-client-ca/remove",
+                        "cloud/tcld/account/metrics/accepted-client-ca/add",
+                        "cloud/tcld/account/metrics/accepted-client-ca/list",
+                        "cloud/tcld/account/metrics/accepted-client-ca/set",
+                        "cloud/tcld/account/metrics/accepted-client-ca/remove",
                       ],
                     },
                   ],
