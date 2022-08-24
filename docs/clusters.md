@@ -2,7 +2,7 @@
 id: clusters
 title: Clusters
 sidebar_label: Clusters
-description: Temporal Clusters explained.
+description: This guide provides a comprehensive overview of Temporal Clusters.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Temporal Clusters explained.
+This guide provides a comprehensive overview of Temporal Clusters.
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
