@@ -19,8 +19,8 @@ export async function fullAssembly(params) {
   const {genSourceObjects} = proxyActivities(oneSecondSchedToClose);
   await genSourceObjects(config);
 
-  const {cleanUpTempDir} = proxyActivities(oneSecondSchedToClose);
-  await cleanUpTempDir(config);
+  // const {cleanUpTempDir} = proxyActivities(oneSecondSchedToClose);
+  // await cleanUpTempDir(config);
 
   return "Assembly completed successfully!";
 }

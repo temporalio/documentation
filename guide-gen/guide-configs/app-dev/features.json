@@ -10,19 +10,19 @@
   "add_tabs_support": true,
   "sections": [
     {
-      "section-type": "p",
+      "type": "p",
       "id": "app-dev-context/features"
     },
     {
-      "section-type": "h2",
+      "type": "h2",
       "id": "app-dev-context/signals"
     },
     {
-      "section-type": "h3",
+      "type": "h3",
       "id": "app-dev-context/define-signal"
     },
     {
-      "section-type": "langtabs",
+      "type": "langtabs",
       "langtabs": [
         {
           "lang": "go",

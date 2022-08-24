@@ -14,7 +14,7 @@ export async function genGuideOutlines(config) {
     cfgs: [],
   };
 
-  let writePath = path.join(config.rootDir, config.guideConfigsPath);
+  let writePath = path.join(config.root_dir, config.guide_configs_path);
 
   for await (const entry of readdirp(writePath)) {
     console.log(entry);
@@ -110,9 +110,9 @@ export async function genGuideOutlines(config) {
   }
 
   writePath = path.join(
-    config.rootDir,
-    config.outlineDiagramFilePath,
-    config.outlineDiagramJSONFIleName
+    config.root_dir,
+    config.outline_diagram_file_path,
+    config.outline_diagram_JSON_fIle_name
   );
 
   await fs.writeJSON(writePath, {nodes: diagram_nodes, links: node_links});
