@@ -1,18 +1,18 @@
 ---
 id: replay
 title: How to Replay a Workflow Execution
-description: Replay recreates the exact state of the Workflow code.
+description: Replay recreates the exact state of a Workflow Execution.
 sidebar_label: Replay
 tags:
   - guide-context
 ---
 
-Replay recreates the exact state of the Workflow code. You can replay Workflows from the beginning of their history when resumed.
+Replay recreates the exact state of a Workflow Execution.
+You can replay a Workflow from the beginning of its history when resumed.
 
-Replays allow code to resume only if it is compatible from a deterministic point of view.
+Replays allows code to resume only if it is compatible from a deterministic point of view.
 
-**To retrieve the Workflow History**
-You can retrieve the Workflow History from any of the following options and then pass the object to your SDK of choice.
+To retrieve the Workflow History, use any of the following options and then pass the object to your SDK of choice.
 
 - Proto History object
 - [Temporal Web UI](/web-ui)
