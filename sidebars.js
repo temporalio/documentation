@@ -60,6 +60,49 @@ module.exports = {
             "cloud/tcld/login",
             {
               type: "category",
+              label: "account",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "cloud/tcld/account/index",
+              },
+              items: [
+                "cloud/tcld/account/get",
+                {
+                  type: "category",
+                  label: "metrics",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "cloud/tcld/account/metrics/index",
+                  },
+                  items: [
+                    "cloud/tcld/account/metrics/enable",
+                    "cloud/tcld/account/metrics/disable",
+                    {
+                      type: "category",
+                      label: "accepted-client-ca",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "cloud/tcld/metrics/accepted-client-ca/index",
+                      },
+                      items: [
+                        "cloud/tcld/metrics/accepted-client-ca/add",
+                        "cloud/tcld/metrics/accepted-client-ca/list",
+                        "cloud/tcld/metrics/accepted-client-ca/set",
+                        "cloud/tcld/metrics/accepted-client-ca/remove",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "category",
               label: "namespace",
               collapsible: true,
               collapsed: true,
