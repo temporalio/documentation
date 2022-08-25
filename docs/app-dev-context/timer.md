@@ -2,7 +2,7 @@
 id: timer
 title: How to create a Timer
 description: Timers allow you you to schedule sleep functions.
-sidebar_label: Tracing
+sidebar_label: Timers
 tags:
   - guide-context
   - timers
