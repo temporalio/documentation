@@ -23,9 +23,12 @@ if random < 50 {
 }
 ```
 
-The only way to fail Side Effect is to panic, which causes Workflow Task failure. The Workflow Task after Timeout is rescheduled and re-executed giving Side Effect another chance to succeed. Be careful to not return any data from the Side Effect function any other way than through its recorded return value.
+The only way to fail a Side Effect is to panic, which causes Workflow Task failure.
+The Workflow Task after Timeout is rescheduled and re-executed giving the Side Effect another chance to succeed.
+Be careful not to return any data from the Side Effect function any way other than through its recorded return value.
 
-Do not use `SideEffect()` to modify closures. Always retrieve result from Side Effect's encoded return value.
+Do not use `SideEffect()` to modify closures.
+Always retrieve results from a Side Effect's encoded return value.
 
 ```go
 // Will not run.

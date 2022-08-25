@@ -19,7 +19,7 @@ To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/d
   }
 ```
 
-Another example using `sideEffect()`.
+Here's another example that uses `sideEffect()`.
 
 ```java
 // implementation of the @WorkflowMethod
