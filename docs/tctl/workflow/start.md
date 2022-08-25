@@ -42,7 +42,7 @@ Aliases: `--wid`, `-w`
 tctl workflow start --workflow_id <id>
 ```
 
-If a Workflow is started without providing an Id, the client generates one in the form of a UUID.
+If a Workflow is started without providing an Id, the Client generates one in the form of a UUID.
 Temporal recommends using a business id rather than the client-generated UUID.
 
 **Example**
@@ -119,7 +119,9 @@ tctl workflow start --workflowidreusepolicy RejectDuplicate
 ```
 
 :::note
+
 Multiple Workflows with the same Id cannot be run at the same time
+
 :::
 
 ### `--input`
