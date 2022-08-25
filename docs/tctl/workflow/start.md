@@ -14,6 +14,7 @@ Unlike `run`, this command returns the Workflow Id and Run Id immediately after 
 `tctl workflow start <modifiers>`
 
 The following modifiers control the behavior of the command.
+Always include required modifiers when executing this command.
 
 ### `--taskqueue`
 
@@ -29,6 +30,8 @@ tctl workflow start --taskqueue <name>
 
 ### `--workflow_id`
 
+**This is a required modifier.**
+
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
@@ -37,6 +40,15 @@ Aliases: `--wid`, `-w`
 
 ```bash
 tctl workflow start --workflow_id <id>
+```
+
+If a Workflow is started without providing an Id, the client generates one in the form of a UUID.
+Temporal recommends using a business id rather than the client-generated UUID.
+
+**Example**
+
+```bash
+tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 ```
 
 ### `--workflow_type`
@@ -105,6 +117,10 @@ tctl workflow start --workflowidreusepolicy AllowDuplicate
 tctl workflow start --workflowidreusepolicy AllowDuplicateFailedOnly
 tctl workflow start --workflowidreusepolicy RejectDuplicate
 ```
+
+:::note
+Multiple Workflows with the same Id cannot be run at the same time
+:::
 
 ### `--input`
 
