@@ -18,7 +18,7 @@ To retrieve the Workflow History, use any of the following options and then pass
 - [Temporal Web UI](/web-ui)
   1. Select a Workflow ID.
   2. Click **Download**.
-- [tctl](/tctl) commands, for example:
+- [tctl](/tctl) commands; for example:
   - [`tctl workflow list --print_json`](../tctl/workflow/list#--print_full)
   - [`tctl workflow list --open`](../tctl/workflow/list#--open)
 - Client
