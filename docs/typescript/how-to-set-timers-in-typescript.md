@@ -2,6 +2,7 @@
 id: how-to-set-timers-in-typescript
 title: How to set Timers in TypeScript
 sidebar_label: Timers
+description: To set a Timer in TypeScript, use the `sleep()` function.
 tags:
   - timers
   - sleep
