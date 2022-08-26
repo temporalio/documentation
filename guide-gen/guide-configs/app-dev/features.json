@@ -8,6 +8,74 @@
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "app-dev-context/features"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/signals"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/define-signal"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-a-signal-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-define-a-signal-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-define-a-signal-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-define-a-signal-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-define-a-signal-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/handle-signal"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-handle-a-signal-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-handle-a-signal-in-a-workflow-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-handle-a-signal-in-a-workflow-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-handle-a-signal-in-typescript"
+        }
+      ]
+    }
+  ],
   "h2_sections": [
     {
       "header": "none",
