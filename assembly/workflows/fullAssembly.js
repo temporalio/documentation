@@ -1,37 +1,27 @@
 import {proxyActivities} from "@temporalio/workflow";
 
-const oneSecondSchedToClose = {
+const simpleActivityOptions = {
   startToCloseTimeout: "10 minutes",
 };
 
-// const failedToCompleteMessage = 'Docs assembly failed to complete...';
-
 export async function fullAssembly(params) {
-  const {getConfig} = proxyActivities(oneSecondSchedToClose);
-  const config = await getConfig(params);
+  const activities = proxyActivities(simpleActivityOptions);
 
-  // const {genGuideOutlines} = proxyActivities(oneSecondSchedToClose);
-  // await genGuideOutlines(config);
+  const config = await activities.getConfig(params);
 
-  const {createTempDir} = proxyActivities(oneSecondSchedToClose);
-  await createTempDir(config);
+  await activities.createTempDir(config);
 
-  const {genSourceObjects} = proxyActivities(oneSecondSchedToClose);
-  await genSourceObjects(config);
+  await activities.genSourceObjects(config);
 
-  // const {cleanUpTempDir} = proxyActivities(oneSecondSchedToClose);
-  // await cleanUpTempDir(config);
+  await activities.attachSourceToGuides(config);
+
+  await activities.genLinkIndexes(config);
+
+  await activities.linkMagic(config);
+
+  await activities.genMarkdownGuides(config);
+
+  await activities.cleanUpTempDir(config);
 
   return "Assembly completed successfully!";
 }
-
-// async function cleanUp(config) {
-//     try {
-//         const { cleanUpTempDir } = proxyActivities(oneSecondSchedToClose);
-//         await cleanUpTempDir(config);
-//     } catch (err) {
-//         console.log('clean up failed...');
-//         console.log(JSON.stringify(err));
-//     }
-//     return;
-// }

@@ -10,6 +10,6 @@
     "gray-matter": "^4.0.3",
     "path": "^0.12.7",
     "readdirp": "^3.6.0",
-    "temporalio": "^0.23.2"
+    "temporalio": "^1.1.0"
   }
 }

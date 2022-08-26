@@ -12,7 +12,9 @@ export async function genSourceObjects(config) {
       // can add more ignores here
       // example:
       // if (!entry.fullPath.includes("learning-paths"))
-      filePaths.push(entry);
+      if (path.extname(entry.fullPath) == ".md") {
+        filePaths.push(entry);
+      }
     }
   }
   console.log("generating docs JSON objects...");
@@ -34,10 +36,9 @@ export async function genSourceObjects(config) {
 
 async function convertGraymatter(filePath, meta) {
   const nodeId = makeId(filePath.fullPath, meta.data.id);
-  // console.log(nodeId);
   const infoNode = {
-    file_name: filePath.path, 
-    file_path: filePath.fullPath, 
+    file_name: filePath.path,
+    file_path: filePath.fullPath,
     id: nodeId,
     title: meta.data.title,
     description: meta.data.description,
@@ -45,17 +46,24 @@ async function convertGraymatter(filePath, meta) {
     tags: meta.data.tags,
     markdown_content: meta.content,
     is_empty: meta.isEmpty,
-  }
+  };
   return infoNode;
 }
 
 function makeId(filePath, fileId) {
-  if(fileId === undefined) {
-    throw `The file located at ${filePath} is missing an id...`;
-  }
+  let nodeId = "";
   const dir = path.dirname(filePath);
   const dirParts = dir.split("/");
   const baseDir = dirParts.pop();
-  const nodeId = path.join(baseDir, fileId);
+  if (fileId === undefined) {
+    console.log(
+      `The file located at ${filePath} is missing an id... using filename...`
+    );
+    const baseName = path.basename(filePath, ".md");
+    console.log(baseName);
+    nodeId = path.join(baseDir, baseName);
+  } else {
+    nodeId = path.join(baseDir, fileId);
+  }
   return nodeId;
 }
