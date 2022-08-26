@@ -50,7 +50,6 @@ Install [Docker](https://docs.docker.com/engine/install) and [Docker Compose](ht
 
 **Clone the repo and run Docker Compose**
 
-
 The following steps start and run a Temporal Cluster using the default configuration.
 
 1. Clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repository.
