@@ -3158,8 +3158,8 @@ await client.start_workflow(
 
 ## Workflow Side Effects
 
-A Side Effect is a method of execution to produce nondeterministic code; such as, generating a UUID or a random number.
-By implementing Side Effect into your Workflow Execution, you can execute the provided function once and records its result into the Workflow Execution [Event History](../workflows#event-history).
+A Side Effect is a method of execution to produce nondeterministic code, such as generating a UUID or a random number.
+By implementing a Side Effect in your Workflow Execution, you can execute the provided function once and record its result into the Workflow Execution [Event History](/workflows/#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 Side Effects should not fail, because failure results in the Side Effect function executing more than once. If there’s a chance of failure, use an Activity.
@@ -3192,9 +3192,12 @@ if random < 50 {
 }
 ```
 
-The only way to fail Side Effect is to panic, which causes Workflow Task failure. The Workflow Task after Timeout is rescheduled and re-executed giving Side Effect another chance to succeed. Be careful to not return any data from the Side Effect function any other way than through its recorded return value.
+The only way to fail a Side Effect is to panic, which causes Workflow Task failure.
+The Workflow Task after Timeout is rescheduled and re-executed giving the Side Effect another chance to succeed.
+Be careful not to return any data from the Side Effect function any way other than through its recorded return value.
 
-Do not use `SideEffect()` to modify closures. Always retrieve result from Side Effect's encoded return value.
+Do not use `SideEffect()` to modify closures.
+Always retrieve results from a Side Effect's encoded return value.
 
 ```go
 // Will not run.
@@ -3226,7 +3229,7 @@ To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/d
   }
 ```
 
-Another example using `sideEffect()`.
+Here's another example that uses `sideEffect()`.
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3267,6 +3270,55 @@ public void execute() {
     // ...
 }
 ```
+
+</TabItem>
+<TabItem value="php">
+
+Content is not available
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is not available
+
+</TabItem>
+<TabItem value="python">
+
+Content is not available
+
+</TabItem>
+</Tabs>
+
+### Mutable Side Effects
+
+Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
+
+- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
+  - If the values are equal, then it returns the original value without recording a new History
+  - If the values aren't equal, then it records the new value with the same ID on the History.
+
+:::note
+
+During a Workflow Execution, every new Side Effect call results in a new mark recorded on the Workflow History; whereas Mutable Side Effects only record an entry on the Workflow History if the value changes.
+
+During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is not available
+
+</TabItem>
+<TabItem value="java">
+
+Content is not available
 
 </TabItem>
 <TabItem value="php">
