@@ -71,7 +71,7 @@ async function generateLinkIndex(guideConfig) {
             noAnchor = false;
           } else {
             const previousSection = guideConfig.sections[i - lookBack];
-            if ((previousSection.type == "h1" || "h2" || "h3" || "h4")) {
+            if (previousSection.type == "h1" || "h2" || "h3" || "h4") {
               for (const langtab of section.langtabs) {
                 if (langtab.id != "none") {
                   linkIndex.push({
