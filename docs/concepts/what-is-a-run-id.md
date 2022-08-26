@@ -15,3 +15,9 @@ For example, a Temporal Cron Job is a chain of Workflow Executions that all have
 Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
+
+:::caution
+
+Run Id is unsafe to be used in a Workflow Execution for any logical choices, as a reset operation may lead to non-determinism.
+
+:::
