@@ -1,5 +1,5 @@
 ---
-id: how-to-define-a-signal-to-a-workflow-execution-in-java
+id: how-to-define-a-signal-in-java
 title: How to define Signals in Java
 sidebar_label: Define Signal
 description: Define a Signal method with `@SignalMethod` annotation in the Workflow interface.

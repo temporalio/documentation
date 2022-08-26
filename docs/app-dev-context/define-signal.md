@@ -1,5 +1,5 @@
 ---
-id: define Signal
+id: define-signal
 title: How to define a Signal
 description: A Signal has a name and can have arguments.
 sidebar_label: Define Signal
