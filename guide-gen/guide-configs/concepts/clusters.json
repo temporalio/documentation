@@ -4,7 +4,7 @@
   "file_dir": "/",
   "title": "Clusters",
   "sidebar_label": "Clusters",
-  "description": "Temporal Clusters explained.",
+  "description": "This guide provides a comprehensive overview of Temporal Clusters.",
   "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
@@ -57,6 +57,26 @@
           "header": "none",
           "type": "explanation",
           "path": "concepts/what-is-multi-cluster-replication"
+        }
+      ]
+    },
+    {
+      "header": "Plugins",
+      "h3_sections": [
+        {
+          "header": "none",
+          "type": "context",
+          "path": "concept-context/cluster-plugins"
+        },
+        {
+          "header": "ClaimMapper",
+          "type": "explanation",
+          "path": "concepts/what-is-a-claimmapper-plugin"
+        },
+        {
+          "header": "Authorizer",
+          "type": "explanation",
+          "path": "concepts/what-is-an-authorizer-plugin"
         }
       ]
     }

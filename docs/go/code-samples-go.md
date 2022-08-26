@@ -12,4 +12,4 @@ sidebar_label: Code samples
   It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
 - [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 - [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](/blog/tags/go-ecommerce-tutorial).
+  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).

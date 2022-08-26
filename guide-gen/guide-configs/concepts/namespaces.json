@@ -4,7 +4,7 @@
   "file_dir": "/",
   "title": "Namespaces",
   "sidebar_label": "Namespaces",
-  "description": "Namespaces are a logical unit of isolation within the Temporal Platform.",
+  "description": "This guide provides a comprehensive overview of Namespaces.",
   "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,

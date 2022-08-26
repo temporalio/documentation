@@ -81,7 +81,7 @@ We explain the Timeouts and Retries below. You can also specify `namespace`, `ta
 ### Activity Timeouts
 
 Timeouts and Retries are the most immediate benefit of moving code onto Temporal.
-There are [four Activity Timeouts](/blog/activity-timeouts) you can set.
+There are [four Activity Timeouts](https://temporal.io/blog/activity-timeouts) you can set.
 When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](/concepts/what-is-a-retry-policy/).
 
 - `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](/concepts/what-is-a-start-to-close-timeout/)
