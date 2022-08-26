@@ -46,6 +46,7 @@ async function generateLinkIndex(guideConfig) {
           } else {
             const previousSection = guideConfig.sections[i - lookBack];
             if (previousSection.type == ("h1" || "h2" || "h3" || "h4")) {
+              console.log(previousSection.node.label);
               linkIndex.push({
                 file_dir: guideConfig.file_dir,
                 guide_id: guideConfig.id,
@@ -74,6 +75,7 @@ async function generateLinkIndex(guideConfig) {
             if (previousSection.type == "h1" || "h2" || "h3" || "h4") {
               for (const langtab of section.langtabs) {
                 if (langtab.id != "none") {
+                  console.log(previousSection.node.label);
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,
                     guide_id: guideConfig.id,
@@ -87,6 +89,7 @@ async function generateLinkIndex(guideConfig) {
           }
           break;
         default:
+          console.log(section.node.label);
           linkIndex.push({
             file_dir: guideConfig.file_dir,
             guide_id: guideConfig.id,

@@ -1,5 +1,5 @@
 ---
-id: api-reference-go
+id: api-reference-java
 title: API reference
 sidebar_label: API reference
 ---

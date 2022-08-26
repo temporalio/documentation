@@ -20,9 +20,9 @@ Legacy production deployment information is available [here](/server/production-
 
 :::
 
-## Advanced Visibility
+## Elasticsearch
 
-[Advanced Visibility](/visibility#advanced-visibility) features depend on an integration with Elasticsearch.
+[Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
@@ -127,11 +127,11 @@ tctl --auto_confirm admin cluster add-search-attributes \
 
 ## Archival
 
-[Archival](/clusters#archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
+[Archival](/concepts/what-is-archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
-### Set up
+### Set up Archival
 
-[Archival](/clusters#archival) consists of the following elements:
+[Archival](/concepts/what-is-archival) consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -150,7 +150,7 @@ Temporal directly supports several providers:
 - **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
 - **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
 - **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
-- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
+- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](/clusters/how-to-create-a-custom-archiver) to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
@@ -262,7 +262,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### Custom Archiver
 
-To archive data with a given provider, using the [Archival](/clusters#archival) feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the [Archival](/concepts/what-is-archival) feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 
@@ -365,9 +365,9 @@ As for now, try to make your syntax similar to the one used by our advanced list
 - [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
 - [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
 
-## Upgrade Server version
+## Upgrade Server
 
-If a newer version of the [Temporal Server](/clusters#temporal-server) is available, a notification appears in the Temporal Web UI.
+If a newer version of the [Temporal Server](/concepts/what-is-the-temporal-server) is available, a notification appears in the Temporal Web UI.
 
 :::info
 
@@ -491,9 +491,9 @@ We recommend preparing a staging Cluster and then do the following to verify the
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
 
-## Multi-Cluster Replication
+## Set up Multi-Cluster Replication
 
-The [Multi-Cluster Replication](/clusters#multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
