@@ -922,7 +922,7 @@
             {
               "lang": "go",
               "title": "Go",
-              "path": "none"
+              "path": "go/how-to-set-mutable-side-effects-in-go"
             },
             {
               "lang": "java",

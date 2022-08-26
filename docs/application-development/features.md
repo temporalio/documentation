@@ -3313,7 +3313,13 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is not available
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide the Workflow Id.
+
+```go
+if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
+		panic("can't decode number:" + err.Error())
+	}
+```
 
 </TabItem>
 <TabItem value="java">
