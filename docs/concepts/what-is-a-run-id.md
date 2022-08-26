@@ -18,6 +18,6 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 :::caution
 
-Run Id is unsafe to be used in a Workflow Execution for any logical choices, as a reset operation might lead to non-determinism issues.
+Run Id is unsafe to be used in a Workflow Execution for any logical choices because a reset operation can lead to non-determinism.
 
 :::
