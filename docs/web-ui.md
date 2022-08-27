@@ -41,27 +41,27 @@ In Temporal Cloud, users can access only Namespaces that they have been granted 
 The Recent Workflows page lists the most recent 1,000 Workflow Executions in the past 24 hours, by default.
 Users can list Workflow Executions by any of the following:
 
-- [Workflow ID](/concepts/what-is-a-workflow-id)
-- [Workflow Type](/concepts/what-is-a-workflow-type)
+- [Workflow ID](/workflows#workflow-id)
+- [Workflow Type](/workflows#workflow-type)
 - Status
 - Date & Time—users can set their preferred date & time format as one of the following:
   - UTC
   - Local
   - Relative
-- A [List Filter](/concepts/what-is-a-list-filter)
+- A [List Filter](/visibility#list-filter)
 
 Select a Workflow Execution to see a breakdown of the Workflow Execution's History, Workers, and pending Activities.
 
 #### History
 
-This is a view of the [Events](/concepts/what-is-an-event) and Event fields that make up the Workflow Execution.
+This is a view of the [Events](/workflows#event) and Event fields that make up the Workflow Execution.
 Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event History.
 The top of the page lists the following execution metadata:
 
-- [Workflow Type](/concepts/what-is-a-workflow-type)
-- [Run ID](/concepts/what-is-a-run-id)
+- [Workflow Type](/workflows#workflow-type)
+- [Run ID](/workflows#run-id)
 - Start Time and Close Time
-- [Task Queue](/concepts/what-is-a-task-queue)
+- [Task Queue](/tasks#task-queue)
 - Parent and Parent ID
 - State Transitions
 
@@ -121,7 +121,7 @@ Displays the following information:
 
 ### Archival
 
-[Archival](/concepts/what-is-archival) feature information.
+[Archival](/clusters#archival) feature information.
 
 ### Import Event History
 

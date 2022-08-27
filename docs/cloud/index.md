@@ -60,9 +60,9 @@ Each Namespace Name must conform to the following rules:
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
-1. A [Namespace Name](/concepts/what-is-a-cloud-namespace-name)
+1. A [Namespace Name](#cloud-namespace-name)
 1. A period (.)
-1. The [Account Id](/concepts/what-is-a-cloud-account-id) to which the Namespace belongs
+1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 

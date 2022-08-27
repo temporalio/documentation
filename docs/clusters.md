@@ -13,9 +13,9 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Clusters.
 
-A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/clusters/quick-install)
+- [How to quickly install a Temporal Cluster for testing and development](/application-development/foundations#run-a-dev-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility).
+An Elasticsearch database can be added to enable [Advanced Visibility](/visibility#advanced-visibility).
 
 #### Dependency versions
 
@@ -69,8 +69,8 @@ Any software that can pull metrics that supports the same format could be used, 
 
 ### Visibility
 
-Temporal has built-in [Visibility](/concepts/what-is-visibility) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+Temporal has built-in [Visibility](/visibility#) features.
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#elasticsearch).
 
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
@@ -125,8 +125,8 @@ When implemented, the `frontend` invokes the plugin before executing the request
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-- [`ClaimMapper`](/concepts/what-is-a-claimmapper-plugin)
-- [`Authorizer`](/concepts/what-is-an-authorizer-plugin)
+- [`ClaimMapper`](#what-is-a-claimmapper-plugin?)
+- [`Authorizer`](#what-is-an-authorizer-plugin?)
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the frontend invokes the implementation of the plugins before running the requested operation.
@@ -182,7 +182,7 @@ Types of inbound calls include the following:
 - Worker polls
 - Visibility requests
 - Admin operations via [tctl](/tctl) (the Temporal CLI)
-- Calls from a remote Cluster related to [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication)
+- Calls from a remote Cluster related to [Multi-Cluster Replication](#multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -247,7 +247,7 @@ A Retention Period is the amount of time a Workflow Execution Event History rema
 
 - [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
 
-A Retention Period applies to a single [Namespace](/concepts/what-is-a-namespace) and is set when the Namespace is registered.
+A Retention Period applies to a single [Namespace](/namespaces#) and is set when the Namespace is registered.
 
 If the Retention Period isn't set, it defaults to 2 days.
 The minimum Retention Period is 1 day.
@@ -256,10 +256,10 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 
 ## Archival
 
-Archival is a feature that automatically backs up [Event Histories](/concepts/what-is-an-event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to create a custom Archiver](/clusters/how-to-create-a-custom-archiver)
-- [How to set up Archival](/clusters/how-to-set-up-archival)
+- [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
+- [How to set up Archival](/cluster-deployment-guide#set-up-archival)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -280,7 +280,7 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/concepts/what-is-a-global-namespace).
+This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 

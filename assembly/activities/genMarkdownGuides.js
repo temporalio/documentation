@@ -25,7 +25,6 @@ async function generateGuide(config, guideCfg) {
   for (const section of guideCfg.sections) {
     switch (section.type) {
       case "h2":
-        console.log(section.node.label);
         guideStr = `${guideStr}## ${section.node.label}\n\n`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
