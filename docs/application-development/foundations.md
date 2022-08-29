@@ -246,7 +246,7 @@ The Temporal Java SDK API reference is published on [javadoc.io](https://www.jav
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -570,7 +570,7 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -686,7 +686,7 @@ For more information, see [Sample](https://github.com/temporalio/samples-java/bl
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -998,7 +998,7 @@ public interface YourWorkflow {
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -1232,7 +1232,7 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -1252,7 +1252,7 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1374,7 +1374,7 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1744,7 +1744,7 @@ async def your_activity(params: YourParams) -> None:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1795,7 +1795,7 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -1902,7 +1902,7 @@ The Activity type for the method annotated with `@ActivityMethod` is set to `A_a
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="undefined">
@@ -1918,7 +1918,7 @@ async def your_activity(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2887,7 +2887,7 @@ You can register only one Activity instance that implements `DynamicActivity` wi
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -2906,7 +2906,7 @@ worker = Worker(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -3103,7 +3103,7 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
