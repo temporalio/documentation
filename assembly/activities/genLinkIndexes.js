@@ -46,11 +46,12 @@ async function generateLinkIndex(guideConfig) {
           } else {
             const previousSection = guideConfig.sections[i - lookBack];
             if (previousSection.type == ("h1" || "h2" || "h3" || "h4")) {
+              // console.log(localRef(previousSection.node.label));
               linkIndex.push({
                 file_dir: guideConfig.file_dir,
                 guide_id: guideConfig.id,
                 local_ref: localRef(previousSection.node.label),
-                nodeId: section.node.id,
+                node_id: section.node.id,
               });
             }
             noAnchor = false;
@@ -64,7 +65,7 @@ async function generateLinkIndex(guideConfig) {
                   file_dir: guideConfig.file_dir,
                   guide_id: guideConfig.id,
                   local_ref: "",
-                  nodeId: langtab.node.id,
+                  node_id: langtab.node.id,
                 });
               }
             }
@@ -74,11 +75,12 @@ async function generateLinkIndex(guideConfig) {
             if (previousSection.type == "h1" || "h2" || "h3" || "h4") {
               for (const langtab of section.langtabs) {
                 if (langtab.id != "none") {
+                  // console.log(localRef(previousSection.node.label));
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,
                     guide_id: guideConfig.id,
                     local_ref: localRef(previousSection.node.label),
-                    nodeId: langtab.node.id,
+                    node_id: langtab.node.id,
                   });
                 }
               }
@@ -87,11 +89,12 @@ async function generateLinkIndex(guideConfig) {
           }
           break;
         default:
+          // console.log(localRef(section.node.label));
           linkIndex.push({
             file_dir: guideConfig.file_dir,
             guide_id: guideConfig.id,
             local_ref: localRef(section.node.label),
-            nodeId: section.node.id,
+            node_id: section.node.id,
           });
           noAnchor = false;
       }

@@ -60,7 +60,6 @@ function makeId(filePath, fileId) {
       `The file located at ${filePath} is missing an id... using filename...`
     );
     const baseName = path.basename(filePath, ".md");
-    console.log(baseName);
     nodeId = path.join(baseDir, baseName);
   } else {
     nodeId = path.join(baseDir, fileId);

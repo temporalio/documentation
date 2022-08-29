@@ -1,7 +1,7 @@
 ---
 id: quick-install
 title: How to quickly install a Temporal Cluster for testing and local development
-sidebar_label: Quick install
+sidebar_label: Run a dev Cluster
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
