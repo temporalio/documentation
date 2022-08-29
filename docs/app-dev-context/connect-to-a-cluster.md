@@ -2,7 +2,7 @@
 id: connect-to-a-cluster
 title: How to connect a Temporal Client to a Temporal Cluster
 description: When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
-sidebar_label: Client & Cluster connection
+sidebar_label: Connect to a Cluster
 tags:
   - guide-context
 ---

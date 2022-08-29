@@ -1,0 +1,65 @@
+{
+  "file_name": "activities.md",
+  "id": "activities",
+  "file_dir": "/",
+  "title": "Activities",
+  "sidebar_label": "Activities",
+  "description": "This guide provides a comprehensive overview of Temporal Activities.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-an-activity"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-activity-definition"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-activity-type"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-activity-execution"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-activity-id"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-schedule-to-start-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-start-to-close-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-schedule-to-close-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-activity-heartbeat"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-heartbeat-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-asynchronous-activity-completion"
+    },
+    {
+      "type": "h4",
+      "id": "concepts/what-is-a-task-token"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-local-activity"
+    }
+  ]
+}

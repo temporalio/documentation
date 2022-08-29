@@ -19,7 +19,7 @@ The Temporal documentation site uses [Docusaurus 2](https://v2.docusaurus.io/), 
 You can make changes locally without previewing them in the browser.
 However, if you want to build the site and preview changes in the browser, do the following:
 
-- Install version 14 or later of [Node.js](https://nodejs.org/en/download/).
+- Install version 16 or later of [Node.js](https://nodejs.org/en/download/).
   (On a Mac, use the command `brew install node@16`.)
 - Download the repository and install dependencies with [`yarn`](https://classic.yarnpkg.com/en/docs/install#mac-stable):
 
@@ -74,21 +74,31 @@ yarn prettier --write .prettierrc.json
 
 ## Guide generation
 
-The guide generation script is an Alpha state.
+Guide generation is now a [Temporal Workflow](/assembly/workflows/fullAssembly.js)!
 
-Each JSON configuration file in [guide-gen/guide-configs](guide-gen/guide-configs) relates to a specific concept and identifies related Markdown files. The [index.js](guide-gen/index.js) script uses these configuration files to generate guides such as [Concepts](https://docs.temporal.io/temporal/#) and [Application development](https://docs.temporal.io/application-development-guide).
+Guide generation is in an Alpha state.
 
-To update a guide, make your changes in the source files that are named in the matching configuration file. For example, if you found a typo in the Concept section _What is a Task?_, you would open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there. Then rebuild the Concept guide by running the following commands:
+Each JSON configuration file in [assembly/guide-configs](assembly/guide-configs) represents a user facing narrative that pieces together documentation information nodes.
+The Docs full assembly Workflow uses these configuration files to generate the guides, such as [Concepts](https://docs.temporal.io/temporal/#) and [Application development](https://docs.temporal.io/application-development-guide).
+
+To update a guide, do the following:
+
+1. Make your changes in the **source files** that are named in the configuration file.
+   For example, if you found a typo in the Concept section _What is a Task?_, you would open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there.
+2. Make sure you have a [local dev Cluster running](https://docs.temporal.io/application-development/foundations#run-a-dev-cluster).
+3. In a terminal, change directory into `/assembly` and run the Worker:
+
+```
+./worker.js
+```
+
+4. In another terminal window, from the root directory, run the `assembly.js` script:
 
 ```bash
 yarn gen
 ```
 
-To build and view the site locally, run:
-
-```bash
-yarn start
-```
+The follow the steps above to preview the site locally.
 
 ## Pull requests
 
