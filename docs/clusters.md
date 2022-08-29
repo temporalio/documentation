@@ -125,7 +125,6 @@ When implemented, the `frontend` invokes the plugin before executing the request
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-
 - [`ClaimMapper`](#what-is-a-claimmapper-plugin?)
 - [`Authorizer`](#what-is-an-authorizer-plugin?)
 
