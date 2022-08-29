@@ -1,5 +1,5 @@
 ---
-id: how-to-emit-metrics-in-typescript
+id: how-to-emit-metrics-typescript
 title: How to emit metrics in TypeScript
 sidebar_label: Emit metrics
 description: Emit metrics

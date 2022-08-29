@@ -2,7 +2,7 @@
 id: workflow-task-timeout
 title: How to set a Workflow Task Timeout
 description: Use the Workflow Task Timeout to restrict the maximum amount of time that a Worker can execute a Workflow Task.
-sidebar_label:
+sidebar_label: Workflow Task Timeout
 tags:
   - guide-context
 ---

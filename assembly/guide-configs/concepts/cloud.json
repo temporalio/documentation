@@ -1,0 +1,41 @@
+{
+  "file_name": "index.md",
+  "id": "index",
+  "file_dir": "cloud",
+  "title": "Temporal Cloud documentation",
+  "sidebar_label": "Temporal Cloud",
+  "description": "Temporal Cloud documentation, including explanations and usage.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-temporal-cloud"
+    },
+    {
+      "type": "p",
+      "id": "cloud-context/cloud-intro"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-cloud-account-id"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/what-are-the-account-level-roles-for-users-in-temporal-cloud"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-cloud-namespace-name"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-cloud-namespace-id"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
+    }
+  ]
+}

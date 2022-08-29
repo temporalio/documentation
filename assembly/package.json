@@ -1,0 +1,15 @@
+{
+  "name": "assembly",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "assembly.js",
+  "author": "cully@temporal.io",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "gray-matter": "^4.0.3",
+    "path": "^0.12.7",
+    "readdirp": "^3.6.0",
+    "temporalio": "^1.1.0"
+  }
+}
