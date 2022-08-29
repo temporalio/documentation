@@ -35,7 +35,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 To use a custom Retry Policy, provide it as an options parameter when starting a Workflow Execution or Activity Execution.
 Only certain scenarios merit starting a Workflow Execution with a custom Retry Policy, such as the following:
 
-- A [Temporal Cron Job](/workflows#temporal-cron-job) or some other stateless, always-running Workflow Execution that can benefit from retries.
+- A [Temporal Cron Job](/workflows#cron-jobs) or some other stateless, always-running Workflow Execution that can benefit from retries.
 - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
 ## Properties
