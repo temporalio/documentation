@@ -55,7 +55,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    // announcementBar: {},
+    // announcementBar: {
+    //   id: "replay_announcement",
+    //   content:
+    //     'Content HERE',
+    //      backgroundColor: "#141414",
+    //      textColor: "#ffffff",
+    //      isCloseable: true,
+    //   },
     navbar: {
       hideOnScroll: false,
       logo: {
