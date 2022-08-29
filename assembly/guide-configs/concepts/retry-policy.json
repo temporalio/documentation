@@ -8,17 +8,10 @@
   "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
-  "sections": [],
-  "h2_sections": [
+  "sections": [
     {
-      "header": "none",
-      "h3_sections": [
-        {
-          "header": "none",
-          "type": "explanation",
-          "path": "concepts/what-is-a-retry-policy"
-        }
-      ]
+      "type": "p",
+      "id": "concepts/what-is-a-retry-policy"
     }
   ]
 }

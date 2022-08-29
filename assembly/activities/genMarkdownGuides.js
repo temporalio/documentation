@@ -26,18 +26,18 @@ async function generateGuide(config, guideCfg) {
     switch (section.type) {
       case "h2":
         guideStr = `${guideStr}## ${section.node.label}\n\n`;
-        guideStr = `${guideStr}${section.node.markdown_content}`;
+        guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h3":
         guideStr = `${guideStr}### ${section.node.label}\n\n`;
-        guideStr = `${guideStr}${section.node.markdown_content}`;
+        guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h4":
         guideStr = `${guideStr}#### ${section.node.label}\n\n`;
-        guideStr = `${guideStr}${section.node.markdown_content}`;
+        guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "p":
-        guideStr = `${guideStr}${section.node.markdown_content}`;
+        guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "langtabs":
         const tabStr = await generateLangTabs(section.langtabs);
@@ -76,7 +76,7 @@ async function frontmatter(guideCfg) {
   let guideStr = `---\n`;
   guideStr = `${guideStr}id: ${guideCfg.id}\n`;
   guideStr = `${guideStr}title: ${guideCfg.title}\n`;
-  guideStr = `${guideStr}sidebar_label: ${guideCfg.label}\n`;
+  guideStr = `${guideStr}sidebar_label: ${guideCfg.sidebar_label}\n`;
   guideStr = `${guideStr}description: ${guideCfg.description}\n`;
   guideStr = `${guideStr}toc_max_heading_level: ${guideCfg.toc_max_heading_level}\n`;
   guideStr = `${guideStr}---\n\n`;

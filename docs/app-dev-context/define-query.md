@@ -1,5 +1,5 @@
 ---
-id: Define Query
+id: define-query
 title: How to define a Query
 description: A Query has a name and can have arguments.
 sidebar_label: Define Query

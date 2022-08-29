@@ -1,7 +1,7 @@
 {
   "content_source_dirs": [
     "docs/app-dev-context",
-    "docs/cloud",
+    "docs/cloud-context",
     "docs/cluster-ops-context",
     "docs/clusters",
     "docs/concept-context",
@@ -15,7 +15,7 @@
   "content_write_dir": "docs",
   "temp_write_dir": "assembly/temp",
   "source_info_nodes_file_name": "source-info-nodes.json",
-  "guide_configs_path": "guide-gen/guide-configs",
+  "guide_configs_path": "assembly/guide-configs",
   "guide_configs_with_attached_nodes_file_name": "matched-guides.json",
   "outline_diagram_JSON_fIle_name": "outline-diagram.json",
   "outline_diagram_file_path": "docs/components",
