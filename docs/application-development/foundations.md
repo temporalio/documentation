@@ -463,6 +463,43 @@ For more information, see the following:
 The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
+
+[app/src/SimpleActivity/ExecuteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/SimpleActivity/ExecuteCommand.php)
+
+```php
+class ExecuteCommand extends Command
+{
+    protected const NAME = 'simple-activity';
+    protected const DESCRIPTION = 'Execute SimpleActivity\GreetingWorkflow';
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $workflow = $this->workflowClient->newWorkflowStub(
+            GreetingWorkflowInterface::class,
+            WorkflowOptions::new()->withWorkflowExecutionTimeout(CarbonInterval::minute())
+        );
+
+        $output->writeln("Starting <comment>GreetingWorkflow</comment>... ");
+
+        // Start a workflow execution. Usually this is done from another program.
+        // Uses task queue from the GreetingWorkflow @WorkflowMethod annotation.
+        $run = $this->workflowClient->start($workflow, 'Antony');
+
+        $output->writeln(
+            sprintf(
+                'Started: WorkflowID=<fg=magenta>%s</fg=magenta>',
+                $run->getExecution()->getID(),
+            )
+        );
+
+        // getResult waits for workflow to complete
+        $output->writeln(sprintf("Result:\n<info>%s</info>", $run->getResult()));
+
+        return self::SUCCESS;
+    }
+}
+```
+
 <!--SNIPEND-->
 
 The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
@@ -2707,6 +2744,35 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+
+```ts
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
+
+async function run() {
+  // Step 1: Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve("./workflows"),
+    activities,
+    taskQueue: "hello-world",
+  });
+  // Worker connects to localhost by default and uses console.error for logging.
+  // Customize the Worker by passing more options to create():
+  // https://typescript.temporal.io/api/classes/worker.Worker
+  // If you need to configure server connection parameters, see docs:
+  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+
+  // Step 2: Start accepting tasks on the `hello-world` queue
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
