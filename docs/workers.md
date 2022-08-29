@@ -24,7 +24,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 - [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
 
-### Worker Entity
+## Worker Entity
 
 A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
 
@@ -48,7 +48,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 ![Component diagram of a Worker Process and the Temporal Server](/diagrams/worker-and-server-component.svg)
 
-A Worker Process is responsible for polling a [Task Queue](/tasks#task-queues), dequeueing a [Task](/tasks#), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters#) with the results.
+A Worker Process is responsible for polling a [Task Queue](/tasks#task-queue), dequeueing a [Task](/tasks#), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters#) with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -61,7 +61,7 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
 Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
 Said another way, the [Temporal Cluster](/clusters#) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
 
-While data transferred in Event Histories is [secured by mTLS](/server/security/#encryption-in-transit-with-mtls), by default, it is still readable at rest in the Temporal Cluster.
+While data transferred in Event Histories is [secured by mTLS](/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
 To solve this, Temporal SDKs offer a [Data Converter API](/concepts/what-is-a-data-converter) that you can use to customize the serialization of data going out of and coming back in to a Worker Entity, with the net effect of guaranteeing that the Temporal Cluster cannot read sensitive business data.
 

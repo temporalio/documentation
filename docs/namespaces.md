@@ -27,7 +27,7 @@ Or you could use them to ensure Workflow Executions between different teams neve
     We recommend using the default Namespace if you aren’t using multiple Namespaces.
 - **Case Insensitive**: Because of DNS, Namespaces are case insensitive on the network and routing side.
   We recommend using lowercase for namespace names to avoid potential issues.
-- **Membership**: [Task Queue](/tasks#task-queues) names and [Workflow Ids](/workflows#workflow-id) must all correspond to a specific Namespace.
+- **Membership**: [Task Queue](/tasks#task-queue) names and [Workflow Ids](/workflows#workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.

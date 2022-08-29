@@ -1,5 +1,5 @@
 ---
-id: how-to-register-types-with-a-worker-in-Java
+id: how-to-register-types-with-a-worker-in-java
 title: How to register types with a Worker in Java
 sidebar_label: Register Types
 description: Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.

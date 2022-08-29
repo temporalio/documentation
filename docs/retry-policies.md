@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-executions) or an [Activity Task Execution](/tasks#activity-task-execution).
+A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/tasks#workflow-task-execution), which always retry indefinitely.)
 
 - [Activity retry simulator](/application-development/features#activity-retry-simulator)
@@ -28,7 +28,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution**: When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/tasks#task-queues), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/tasks#task-queue), which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 
