@@ -1,7 +1,5 @@
 # Temporal documentation
 
-**Announcement:** Join us for [Replay](https://temporal.io/replay), Temporal’s first-ever developer conference!
-
 Temporal is constantly working to improve and expand its documentation.
 Some components may change without notice.
 Page slugs (URLs), menu labels, and the location of information are a few of the items you can expect to see altered as we endeavor to give you the best experience possible.
