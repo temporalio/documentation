@@ -42,26 +42,26 @@ The Recent Workflows page lists the most recent 1,000 Workflow Executions in the
 Users can list Workflow Executions by any of the following:
 
 - [Workflow ID](/workflows#workflow-id)
-- [Workflow Type](/workflows#workflow-types)
+- [Workflow Type](/workflows#workflow-type)
 - Status
 - Date & Time—users can set their preferred date & time format as one of the following:
   - UTC
   - Local
   - Relative
-- A [List Filter](/visibility#list-filters)
+- A [List Filter](/visibility#list-filter)
 
 Select a Workflow Execution to see a breakdown of the Workflow Execution's History, Workers, and pending Activities.
 
 #### History
 
-This is a view of the [Events](/workflows#events) and Event fields that make up the Workflow Execution.
+This is a view of the [Events](/workflows#event) and Event fields that make up the Workflow Execution.
 Approximately [40 different Events](/references/events) can appear in a Workflow Execution's Event History.
 The top of the page lists the following execution metadata:
 
-- [Workflow Type](/workflows#workflow-types)
+- [Workflow Type](/workflows#workflow-type)
 - [Run ID](/workflows#run-id)
 - Start Time and Close Time
-- [Task Queue](/tasks#task-queues)
+- [Task Queue](/tasks#task-queue)
 - Parent and Parent ID
 - State Transitions
 

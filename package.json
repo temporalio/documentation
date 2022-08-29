@@ -14,7 +14,7 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "gen": "./guide-gen/index.js",
+    "gen": "./assemble.js",
     "dprint": "dprint output-format-times"
   },
   "lint-staged": {

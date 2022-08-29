@@ -13,33 +13,33 @@ import TabItem from '@theme/TabItem';
 
 Temporal Task Queues and Worker Processes are tightly coupled components.
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-executions) or [Activity Execution](/activities#activity-execution).
+A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-execution) or [Activity Execution](/activities#activity-execution).
 
 There are two types of Tasks:
 
 - [Activity Task](#activity-task)
 - [Workflow Task](#workflow-task)
 
-### Workflow Task
+## Workflow Task
 
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#commands).
+- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#command).
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
-### Workflow Task Execution
+## Workflow Task Execution
 
 A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.
 
-### Activity Task
+## Activity Task
 
 An Activity Task contains the context needed to proceed with an [Activity Task Execution](#activity-task-execution).
 Activity Tasks largely represent the Activity Task Scheduled Event, which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
-### Activity Task Execution
+## Activity Task Execution
 
 An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
 
@@ -59,7 +59,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 - ActivityTaskTerminated
 - ActivityTaskTimedOut
 
-## Task Queues
+## Task Queue
 
 A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](#).
 

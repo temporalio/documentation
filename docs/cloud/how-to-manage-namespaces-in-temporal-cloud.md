@@ -19,7 +19,7 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 - [Access a Namespace](#access-a-namespace-in-temporal-cloud)
 - [Manage Namesapce](#manage-existing-namespaces-in-temporal-cloud)
 
-## Create a Namespace in Temporal Cloud
+## Create a Namespace
 
 :::info
 
@@ -58,7 +58,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 This functionality is in development.
 
-## Access a Namespace in Temporal Cloud
+## Access Namespaces
 
 <!--- How to access a Namespace in Temporal Cloud --->
 
@@ -67,7 +67,7 @@ Each Namespace in Temporal Cloud has two unique endpoints, both of which include
 - For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
 - For accessing Temporal Web UI, an HTTPS endpoint in the form `web.<namespaceId>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
 
-## Manage existing Namespaces in Temporal Cloud
+## Manage Namespaces
 
 <!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->
 

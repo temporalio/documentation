@@ -27,6 +27,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
       for (let langtab of section.langtabs) {
         if (langtab.id != "none") {
           langtab.node.markdown_content = await parseAndReplace(
+            langtab.node.id,
             langtab.node.markdown_content,
             fullIndex,
             guideConfig.id
@@ -37,6 +38,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
       section.langtabs = updatedLangTabs;
     } else {
       section.node.markdown_content = await parseAndReplace(
+        section.node.id,
         section.node.markdown_content,
         fullIndex,
         guideConfig.id
@@ -48,7 +50,12 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
   return guideConfig;
 }
 
-async function parseAndReplace(raw_content, link_index, current_guide_id) {
+async function parseAndReplace(
+  sectionId,
+  raw_content,
+  link_index,
+  current_guide_id
+) {
   // const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
   const docsLinkRegex = /\/[a-zA-Z0-9-_]+[a-zA-Z0-9-_#/]*/gm;
   const lines = raw_content.toString().split("\n");
@@ -58,12 +65,10 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     const line_links = line.match(docsLinkRegex);
     if (line_links !== null) {
       for (const match of line_links) {
-        // const replaceable = match.substring(6);
-        const link = link_index.find((obj) => {
-          //console.log(`Index path: ${obj.path} Match: ${match}`);
-          return `/${obj.id}` === match;
+        const link = link_index.find((item) => {
+          return `/${item.node_id}` === match;
         });
-        if (link != undefined) {
+        if (link !== undefined) {
           line = await replaceLinks(line, match, link, current_guide_id);
         }
       }
@@ -80,9 +85,9 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
 
   async function replaceLinks(line, replaceable, link, current_guide_id) {
     let new_path = "";
-    if (link.guide != current_guide_id) {
-      if (link.guide_dir != "/") {
-        new_path = `/${link.guide_dir}/${link.guide_id}#${link.local_ref}`;
+    if (link.guide_id != current_guide_id) {
+      if (link.file_dir != "/") {
+        new_path = `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
       } else {
         new_path = `/${link.guide_id}#${link.local_ref}`;
       }
