@@ -152,7 +152,7 @@ module.exports = {
             },
             {
               label: "Blog",
-              to: "https://temporal.io/blog",
+              href: "https://temporal.io/blog",
             },
           ],
         },
@@ -185,6 +185,14 @@ module.exports = {
             {
               label: "About the Docs",
               href: "https://github.com/temporalio/documentation/blob/master/README.md",
+            },
+          ],
+        },
+        {
+          items: [
+            {
+              label: "Subscribe to the Newsletter",
+              href: "https://pages.temporal.io/newsletter-subscribe",
             },
           ],
         },
