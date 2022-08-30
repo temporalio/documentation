@@ -2,13 +2,13 @@
 id: remove
 title: tcld account metrics accepted-client-ca remove
 sidebar_label: remove
-description: How to remove client CA certificates from the metrics endpoint of a Temporal Cloud account using tcld.
+description: How to remove end-entity certificates from the metrics endpoint of a Temporal Cloud account using tcld.
 tags:
   - reference
   - tcld
 ---
 
-The `tcld account metrics accepted-client-ca remove` command removes client CA certificates from the metrics endpoint of a Temporal Cloud account.
+The `tcld account metrics accepted-client-ca remove` command removes end-entity certificates from the metrics endpoint of a Temporal Cloud account.
 
 `tcld account metrics accepted-client-ca remove --ca-certificate <value>`
 
@@ -25,7 +25,7 @@ Alias: `-r`
 **Example**
 
 ```bash
-tcld account metrics accepted-client-ca add --request-id <request_id> --ca-certificate <encoded_certificate>
+tcld account metrics accepted-client-ca remove --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
 ### `--resource-version`
@@ -37,7 +37,7 @@ Alias: `-v`
 **Example**
 
 ```bash
-tcld account metrics accepted-client-ca add --resource-version <etag> --ca-certificate <encoded_certificate>
+tcld account metrics accepted-client-ca remove --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
 ### `--ca-certificate`
@@ -55,7 +55,7 @@ Alias: `-c`
 **Example**
 
 ```bash
-tcld account metrics accepted-client-ca add --ca-certificate <encoded_certificate>
+tcld account metrics accepted-client-ca remove --ca-certificate <encoded_certificate>
 ```
 
 ### `--ca-certificate-file`
@@ -73,7 +73,7 @@ Alias: `-f`
 **Example**
 
 ```bash
-tcld account metrics accepted-client-ca add --ca-certificate-file <path>
+tcld account metrics accepted-client-ca remove --ca-certificate-file <path>
 ```
 
 ### `--ca-certificate-fingerprint`

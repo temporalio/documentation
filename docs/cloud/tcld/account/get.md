@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld account get` command gets information about the Temporal Cloud account that is currently logged in.
+The `tcld account get` command gets information about the Temporal Cloud account you are logged into.
 
 Alias: `g`
 

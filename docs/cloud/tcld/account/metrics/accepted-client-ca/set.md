@@ -2,13 +2,13 @@
 id: set
 title: tcld account metrics accepted-client-ca set
 sidebar_label: set
-description: How to set the client CA certificates for the metrics endpoint of a Temporal Cloud account using tcld.
+description: How to set the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.
 tags:
   - reference
   - tcld
 ---
 
-The `tcld account metrics accepted-client-ca set` command sets the client CA certificates for the metrics endpoint of a Temporal Cloud account.
+The `tcld account metrics accepted-client-ca set` command sets the end-entity certificates for the metrics endpoint of a Temporal Cloud account.
 
 `tcld account metrics accepted-client-ca set --ca-certificate <value>`
 
