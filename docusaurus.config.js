@@ -55,14 +55,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    announcementBar: {
-      id: "replay_announcement",
-      content:
-        'Join us for <a target="_blank" rel="noopener noreferrer" href="https://temporal.io/replay">Replay</a>, Temporal’s first-ever developer conference',
-      backgroundColor: "#141414",
-      textColor: "#ffffff",
-      isCloseable: true,
-    },
+    // announcementBar: {
+    //   id: "replay_announcement",
+    //   content:
+    //     'Content HERE',
+    //      backgroundColor: "#141414",
+    //      textColor: "#ffffff",
+    //      isCloseable: true,
+    //   },
     navbar: {
       hideOnScroll: false,
       logo: {
