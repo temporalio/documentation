@@ -344,7 +344,7 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -444,12 +444,12 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -856,7 +856,7 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1218,12 +1218,12 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1300,7 +1300,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1372,7 +1372,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1445,7 +1445,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1508,12 +1508,12 @@ GreetWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2513,17 +2513,17 @@ client.CompleteActivity(context.Background(), taskToken, nil, err)
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2791,7 +2791,7 @@ $childResult = yield Workflow::executeChildWorkflow(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2879,12 +2879,12 @@ If the parent initiates a Child Workflow Execution and then completes immediatel
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2992,7 +2992,7 @@ workflow.continue_as_new("your-workflow-name")
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -3130,17 +3130,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
