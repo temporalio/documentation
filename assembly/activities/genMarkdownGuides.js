@@ -62,7 +62,7 @@ async function generateLangTabs(langtabs) {
   for (const tab of langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
     if (tab.id == "none") {
-      tabStr = `${tabStr}Content is currently unavailable.\n\n`;
+      tabStr = `${tabStr}Content is currently unavailable...\n\n`;
     } else {
       tabStr = `${tabStr}${tab.node.markdown_content}\n\n`;
     }
