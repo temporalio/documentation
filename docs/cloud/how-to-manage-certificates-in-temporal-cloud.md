@@ -97,7 +97,7 @@ Temporal Cloud requires full CA chains, so you can achieve authorization in two 
 Each certificate must belong to a chain up to the root CA certificate.
 Temporal uses the root CA certificate as the trusted authority for access to your Namespaces.
 
-1. Ensure that your certificates meet the [Requirements for client certificates](#requirements-for-ca-certificates).
+1. Ensure that your certificates meet the [Requirements for client certificates](#requirements-for-client-certificates).
 1. [Add client CA certificates to a Cloud Namespace](/cloud/tcld/namespace/accepted-client-ca/add).
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
@@ -178,3 +178,4 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 - [tcld namespace certificate-filters clear](/cloud/tcld/namespace/certificate-filters/clear)
 
 To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/certificate-filters/export) command.
+
