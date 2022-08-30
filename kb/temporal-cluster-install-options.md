@@ -64,7 +64,7 @@ Deploying the Temporal Cluster with Helm is not recommended for a production env
 
 #### Render
 
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the Auto-Setup Docker image.
 We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
 
 #### Temporalite
