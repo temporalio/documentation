@@ -1,0 +1,33 @@
+{
+  "file_name": "temporal.md",
+  "id": "temporal",
+  "file_dir": "/",
+  "title": "Temporal",
+  "sidebar_label": "Temporal",
+  "description": "The Temporal Platform explained.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-temporal"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-the-temporal-platform"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-temporal-application"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-temporal-sdk"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-temporal-client"
+    }
+  ]
+}

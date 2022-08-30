@@ -1,0 +1,33 @@
+{
+  "file_name": "visibility.md",
+  "id": "visibility",
+  "file_dir": "/",
+  "title": "Visibility",
+  "sidebar_label": "Visibility",
+  "description": "This guide provides a comprehensive overview of Temporal Visibility.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-visibility"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-standard-visibility"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-advanced-visibility"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-list-filter"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-search-attribute"
+    }
+  ]
+}

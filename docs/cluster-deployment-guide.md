@@ -20,7 +20,7 @@ Legacy production deployment information is available [here](/server/production-
 
 :::
 
-## Advanced Visibility
+## Elasticsearch
 
 [Advanced Visibility](/visibility#advanced-visibility) features depend on an integration with Elasticsearch.
 
@@ -129,7 +129,7 @@ tctl --auto_confirm admin cluster add-search-attributes \
 
 [Archival](/clusters#archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
-### Set up
+### Set up Archival
 
 [Archival](/clusters#archival) consists of the following elements:
 
@@ -365,7 +365,7 @@ As for now, try to make your syntax similar to the one used by our advanced list
 - [s3store](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store#visibility-query-syntax)
 - [gcloud](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud#visibility-query-syntax)
 
-## Upgrade Server version
+## Upgrade Server
 
 If a newer version of the [Temporal Server](/clusters#temporal-server) is available, a notification appears in the Temporal Web UI.
 
@@ -491,7 +491,7 @@ We recommend preparing a staging Cluster and then do the following to verify the
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
 
-## Multi-Cluster Replication
+## Set up Multi-Cluster Replication
 
 The [Multi-Cluster Replication](/clusters#multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
