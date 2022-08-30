@@ -209,8 +209,7 @@ pip install temporalio
 </TabItem>
 <TabItem value="typescript">
 
-[![CI Status](https://img.shields.io/github/workflow/status/temporalio/sdk-typescript/Continuous%20Integration?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
-[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
+[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
 To download the latest version of the Temporal TypeScript Command, run the following command:
 
