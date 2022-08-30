@@ -15,7 +15,7 @@ Temporal provides a framework to facilitate Workflow and integration testing.
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its history when resumed.
 
-Replays allows code to resume only if it is compatible from a deterministic point of view.
+Replay allows code to resume only if it is compatible from a deterministic point of view.
 
 To retrieve the Workflow History, use any of the following options and then pass the object to your SDK of choice.
 
@@ -23,7 +23,7 @@ To retrieve the Workflow History, use any of the following options and then pass
 - [Temporal Web UI](/web-ui)
   1. Select a Workflow ID.
   2. Click **Download**.
-- [tctl](/tctl) commands, for example:
+- [tctl](/tctl) commands; for example:
   - [`tctl workflow list --print_json`](../tctl/workflow/list#--print_full)
   - [`tctl workflow list --open`](../tctl/workflow/list#--open)
 - Client
@@ -92,19 +92,12 @@ Replaying a Workflow Execution locally is a good way to see exactly what code pa
 </TabItem>
 <TabItem value="java">
 
-Content is not available
+Content is currently unavailable...
 
 </TabItem>
 <TabItem value="php">
 
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world.
-
-See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
+Content is currently unavailable...
 
 </TabItem>
 <TabItem value="python">
@@ -119,13 +112,20 @@ async def run_replayer(history_json_str: str):
     await replayer.replay_workflow(history_json_str)
 ```
 
-If the Workflow History is non-deterministic, `run_replayer()` returns an error.
+If the Workflow History is non-deterministic, `run_replayer()` raises an error.
 
 :::note
 
 If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tctl](/tctl), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
 
 :::
+
+</TabItem>
+<TabItem value="typescript">
+
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world.
+
+See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
 
 </TabItem>
 </Tabs>

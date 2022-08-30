@@ -1,5 +1,5 @@
 ---
-id: replay
+id: replays
 title: How to Replay a Workflow Execution
 description: Replay recreates the exact state of a Workflow Execution.
 sidebar_label: Replay

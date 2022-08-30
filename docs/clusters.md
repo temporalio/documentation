@@ -70,7 +70,7 @@ Any software that can pull metrics that supports the same format could be used, 
 ### Visibility
 
 Temporal has built-in [Visibility](/visibility#) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#advanced-visibility).
+To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#elasticsearch).
 
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported in all Temporal versions
@@ -125,8 +125,8 @@ When implemented, the `frontend` invokes the plugin before executing the request
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-- [`ClaimMapper`](#claimmapper)
-- [`Authorizer`](#authorizer)
+- [`ClaimMapper`](#what-is-a-claimmapper-plugin?)
+- [`Authorizer`](#what-is-an-authorizer-plugin?)
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the frontend invokes the implementation of the plugins before running the requested operation.
@@ -241,7 +241,7 @@ It talks to the Frontend Service.
 
 - It uses port 6939 for membership-related communication.
 
-## Retention Period
+### Retention Period
 
 A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
 
@@ -259,7 +259,7 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
 
 - [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
-- [How to set up Archival](/cluster-deployment-guide#set-up)
+- [How to set up Archival](/cluster-deployment-guide#set-up-archival)
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -678,7 +678,7 @@ Task processing logic will verify both the Event Id and version of the Task agai
 
 Temporal Clusters support some pluggable components.
 
-### ClaimMapper
+### What is a ClaimMapper Plugin?
 
 `ClaimMapper` is a plugin that extracts claims from JSON Web Tokens (JWT).
 This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
@@ -788,7 +788,7 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
-### Authorizer
+### What is an Authorizer Plugin?
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
 `Authorize` receives information about the API call, along with the role and permission claims of the caller.

@@ -1,5 +1,5 @@
 ---
-id: overview
+id: index
 title: How to use the Temporal TypeScript SDK
 sidebar_label: Temporal TypeScript SDK
 description: Add the Temporal TypeScript SDK to your project.

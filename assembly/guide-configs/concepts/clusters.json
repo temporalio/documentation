@@ -1,0 +1,45 @@
+{
+  "file_name": "clusters.md",
+  "id": "clusters",
+  "file_dir": "/",
+  "title": "Clusters",
+  "sidebar_label": "Clusters",
+  "description": "This guide provides a comprehensive overview of Temporal Clusters.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-a-temporal-cluster"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-the-temporal-server"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-retention-period"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-archival"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-multi-cluster-replication"
+    },
+    {
+      "type": "h2",
+      "id": "concept-context/cluster-plugins"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-claimmapper-plugin"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-authorizer-plugin"
+    }
+  ]
+}

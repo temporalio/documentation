@@ -1,0 +1,237 @@
+{
+  "file_name": "observability.md",
+  "id": "observability",
+  "file_dir": "application-development",
+  "title": "Application development - Observability",
+  "sidebar_label": "Observability",
+  "description": "The Observability section of the Temporal Application development guide covers the many ways to view the current state of your Temporal Application – that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "app-dev-context/observability"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/metrics"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-emit-metrics-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-emit-metrics-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-emit-metrics-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/tracing"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-configure-tracing-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-configure-tracing-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/logging"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-log-from-a-workflow-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-log-from-a-workflow-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-log-from-a-workflow-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/custom-logging"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-a-custom-logger-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-a-custom-logger-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/visibility"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/search-attributes"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-list-workflow-executions-using-the-client-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-list-workflow-executions-using-the-client-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/set-custom-search-attributes"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/upsert-custom-search-attributes"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/remove-search-attributes"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-remove-search-attributes-from-a-workflow-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-remove-search-attributes-from-a-workflow-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-remove-search-attributes-from-a-workflow-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-remove-search-attributes-from-a-workflow-in-typescript"
+        }
+      ]
+    }
+  ]
+}
