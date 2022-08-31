@@ -120,6 +120,7 @@ An SDK provides you with the following:
 - A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
 - APIs to use within your [Workflows](/workflows#).
 - APIs to create and manage [Worker Processes](/workers#).
+- APIs to author [Activities](/activities#activity-definition).
 
 <Tabs
 defaultValue="go"
@@ -211,24 +212,6 @@ pip install temporalio
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
-To download the latest version of the Temporal TypeScript Command, run the following command:
-
-```bash
-npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
-```
-
-Or clone the TypeScript SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-typescript.git
-```
-
-This project requires Node.js 14 or later.
-
-:::note
-Both TypeScript and JavaScript can be used with the TypeScript SDK.
-:::
-
 **Create a new project**
 
 ```bash
@@ -240,6 +223,12 @@ npx @temporalio/create@latest ./your-app
 ```bash
 npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
 ```
+
+:::note
+
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -282,9 +271,7 @@ The Temporal TypeScript SDK API reference is published on [typescript.temporal.i
 
 #### Code samples
 
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio).
-
-The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages. For more information, see the [Polyglot Microservice Orchestration](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTLo5URV5IK6lCmiM3ir3f5) video on YouTube.
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
 Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 

@@ -11,24 +11,6 @@ tags:
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
-To download the latest version of the Temporal TypeScript Command, run the following command:
-
-```bash
-npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
-```
-
-Or clone the TypeScript SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-typescript.git
-```
-
-This project requires Node.js 14 or later.
-
-:::note
-Both TypeScript and JavaScript can be used with the TypeScript SDK.
-:::
-
 **Create a new project**
 
 ```bash
@@ -40,3 +22,9 @@ npx @temporalio/create@latest ./your-app
 ```bash
 npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
 ```
+
+:::note
+
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
+
+:::
