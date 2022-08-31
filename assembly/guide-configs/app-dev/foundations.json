@@ -1,0 +1,696 @@
+{
+  "file_name": "foundations.md",
+  "id": "foundations",
+  "file_dir": "application-development",
+  "title": "Application development - Foundations",
+  "sidebar_label": "Foundations",
+  "description": "The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "app-dev-context/foundations"
+    },
+    {
+      "type": "h2",
+      "id": "clusters/quick-install"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/add-sdk"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/index"
+        },
+        {
+          "lang": "java",
+          "id": "java/index"
+        },
+        {
+          "lang": "php",
+          "id": "php/index"
+        },
+        {
+          "lang": "python",
+          "id": "python/index"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/index"
+        }
+      ]
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/api-reference"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/api-reference-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/api-reference-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/api-reference-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/api-reference-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/code-samples"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/code-samples-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/code-samples-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/code-samples-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/code-samples-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/code-samples-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/creating-temporal-clients"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/connect-to-a-cluster"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-create-a-temporal-client-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-create-a-temporal-client-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-create-a-temporal-client-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-create-a-temporal-client-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-create-a-temporal-client-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/set-namespace"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-the-namespace-for-a-temporal-client-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-the-namespace-for-a-temporal-client-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-the-namespace-for-a-temporal-client-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/set-mtls-config"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-mtls-configuration-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-mtls-configuration-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-mtls-configuration-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-mtls-configuration-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/developing-workflows"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-develop-a-workflow-definition-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-develop-a-workflow-definition-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-develop-a-workflow-definition-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-develop-a-workflow-definition-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-develop-a-workflow-definition-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/workflow-parameters"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-workflow-parameters-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-define-workflow-parameters-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-define-workflow-parameters-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-define-workflow-parameters-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/workflow-return-values"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-workflow-return-values-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-define-workflow-return-values-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-define-workflow-return-values-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-define-workflow-return-values-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-define-workflow-return-values-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/customize-workflow-type"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-customize-workflow-type-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-customize-workflow-type-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-customize-workflow-type-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/workflow-logic-requirements"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-handle-workflow-logic-requirements-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-handle-workflow-logic-requirements-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-handle-workflow-logic-requirements-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-handle-workflow-logic-requirements-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/developing-activities"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-develop-an-activity-definition-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-develop-an-activity-definition-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-develop-an-activity-definition-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-develop-an-activity-definition-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-develop-an-activity-definition-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/activity-parameters"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-activity-parameters-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-define-activity-parameters-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-define-activity-parameters-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-define-activity-parameters-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/activity-return-values"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-activity-return-values-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-define-activity-return-values-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-define-activity-return-values-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-define-activity-return-values-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/customize-activity-type"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-customize-activity-type-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-customize-activity-type-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "python": "Python",
+          "id": "python/how-to-customize-activity-type-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/spawning-activities"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-spawn-an-activity-execution-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-spawn-an-activity-execution-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-spawn-an-activity-execution-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-spawn-an-activity-execution-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-spawn-an-activity-execution-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/required-activity-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/get-activity-results"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-get-the-result-of-an-activity-execution-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-get-the-result-of-an-activity-execution-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-get-the-result-of-an-activity-execution-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-get-the-result-of-an-activity-execution-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/run-worker-processes"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-develop-a-worker-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-develop-a-worker-program-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-develop-a-worker-program-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-develop-a-worker-program-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-develop-a-worker-program-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/registering-types"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-register-types-with-a-worker-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-register-types-with-a-worker-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-register-types-with-a-worker-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/spawning-workflows"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-spawn-a-workflow-execution-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-spawn-a-workflow-execution-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-spawn-a-workflow-execution-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-spawn-a-workflow-execution-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/set-task-queue"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-a-workflow-task-queue-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-a-workflow-task-queue-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-set-a-workflow-task-queue-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-a-workflow-task-queue-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/set-workflow-id"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-a-workflow-id-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-a-workflow-id-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-set-a-workflow-id-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-a-workflow-id-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-a-workflow-id-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/get-workflow-results"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-get-the-result-of-a-workflow-execution-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-get-the-result-of-a-workflow-execution-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-get-the-result-of-a-workflow-execution-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-get-the-result-of-a-workflow-execution-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
+        }
+      ]
+    }
+  ]
+}

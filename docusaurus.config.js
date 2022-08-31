@@ -55,14 +55,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    announcementBar: {
-      id: "replay_announcement",
-      content:
-        'Join us for <a target="_blank" rel="noopener noreferrer" href="https://temporal.io/replay">Replay</a>, Temporal’s first-ever developer conference',
-      backgroundColor: "#141414",
-      textColor: "#ffffff",
-      isCloseable: true,
-    },
+    // announcementBar: {
+    //   id: "replay_announcement",
+    //   content:
+    //     'Content HERE',
+    //      backgroundColor: "#141414",
+    //      textColor: "#ffffff",
+    //      isCloseable: true,
+    //   },
     navbar: {
       hideOnScroll: false,
       logo: {
@@ -79,15 +79,21 @@ module.exports = {
           activeBasePath: "none",
         },
         {
-          label: "Docs change log",
-          to: "/change-log",
-          activeBasePath: "change-log",
+          label: "Temporal Cloud",
+          to: "/cloud",
+          activeBasePath: "cloud",
           position: "left",
         },
         {
-          label: "Blog",
-          to: "/blog",
-          activeBasePath: "blog",
+          label: "KB articles",
+          to: "/kb",
+          activeBasePath: "kb",
+          position: "left",
+        },
+        {
+          label: "Docs change log",
+          to: "/change-log",
+          activeBasePath: "change-log",
           position: "left",
         },
       ],
@@ -142,11 +148,11 @@ module.exports = {
             },
             {
               label: "Case Studies",
-              href: "https://docs.temporal.io/blog/tags/case-study/",
+              href: "https://temporal.io/blog/tags/case-study/",
             },
             {
               label: "Blog",
-              to: "/blog",
+              to: "https://temporal.io/blog",
             },
           ],
         },
@@ -200,7 +206,11 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render context content
+          exclude: [
+            "**/app-dev-context/**",
+            "**/concept-context/**",
+            "**/cloud-context/**",
+          ], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
@@ -285,19 +295,7 @@ module.exports = {
         },
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
-        blog: {
-          id: "blog",
-          routeBasePath: "blog",
-          path: "blog",
-          postsPerPage: 10,
-          editUrl: "https://github.com/temporalio/documentation/blob/master",
-          blogTitle: "Temporal Blog",
-          showReadingTime: true, // Show estimated reading time for the blog post.
-          feedOptions: {
-            type: "all",
-            copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
-          },
-        },
+        // blog: {},
         // Will be passed to @docusaurus/theme-classic.
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -381,9 +379,37 @@ module.exports = {
          * Path to data on filesystem relative to site dir.
          */
         path: "change-log",
-        blogTitle: "Temporal Platform documentation change log",
-        blogDescription: "A log of changes to this site's content.",
+        blogTitle: "Temporal documentation change log",
         blogSidebarTitle: "Docs change log",
+        routeBasePath: "change-log",
+        blogDescription: "A log of changes to this site's content.",
+        showReadingTime: false, // Show estimated reading time for the blog post.
+        feedOptions: {
+          type: "all",
+          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+        },
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: "kb",
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: "kb",
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: "kb",
+        blogTitle: "Temporal Platform knowledge base",
+        blogSidebarTitle: "Recent KB articles",
+        blogDescription:
+          "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
           type: "all",

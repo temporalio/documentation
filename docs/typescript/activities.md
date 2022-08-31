@@ -60,8 +60,10 @@ When you call `proxyActivities` in a Workflow function, there are [a range of Ac
 ```ts
 // Sample of typical options you can set while creating a proxy for the `greet` Activity
 const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30s', // recommended
-  scheduleToCloseTimeout: '5m', // useful
+  // recommended
+  startToCloseTimeout: '30s',
+  // useful
+  scheduleToCloseTimeout: '5m',
   // The below is a Retry Policy. It is used to retry the Activity if it fails.
   retry: {
     // These are the values of the Default Retry Policy
@@ -79,7 +81,7 @@ We explain the Timeouts and Retries below. You can also specify `namespace`, `ta
 ### Activity Timeouts
 
 Timeouts and Retries are the most immediate benefit of moving code onto Temporal.
-There are [four Activity Timeouts](/blog/activity-timeouts) you can set.
+There are [four Activity Timeouts](https://temporal.io/blog/activity-timeouts) you can set.
 When a Timeout happens, your activity will be retried according to your [`RetryPolicy`](/concepts/what-is-a-retry-policy/).
 
 - `startToCloseTimeout`: Maximum time of a single Activity execution attempt. **We recommend always setting this**. [More info](/concepts/what-is-a-start-to-close-timeout/)
@@ -97,9 +99,12 @@ const { greet } = proxyActivities<typeof activities>({
 
 // Example 2
 const { longRunningActivity } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m', // translates to 300000 ms
-  startToCloseTimeout: '30s', // translates to 30000 ms
-  heartbeatTimeout: 10000, // equivalent to '10 seconds'
+  // translates to 300000 ms
+  scheduleToCloseTimeout: '5m',
+  // translates to 30000 ms
+  startToCloseTimeout: '30s',
+  // equivalent to '10 seconds'
+  heartbeatTimeout: 10000,
 });
 ```
 

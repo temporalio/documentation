@@ -12,30 +12,37 @@ Temporal Cloud is a managed, hosted Temporal environment that provides a platfor
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
-:::tip Updated UI
-
-Temporal Cloud is now using [Temporal Web UI v2](/web-ui) as the default UI.
-
-:::
-
-:::note Waitlist
+:::note Join the Temporal Cloud waitlist
 
 Access to Temporal Cloud is currently by invitation only.
 You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
+- [Get started with Temporal Cloud](/cloud/how-to-get-started-with-temporal-cloud)
 - [Manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud)
+- [Manage Namespaces in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud)
+- [tcld (Temporal Cloud command-line interface)](/cloud/tcld)
 - [Temporal Cloud release notes](/cloud/release-notes)
-- [Upgrade policy](/cloud/upgrade-policy-for-temporal-cloud)
 
-## Tools
+## Temporal Cloud Account Id
 
-- [What is tcld?](/cloud/tcld)
-- [How to install tcld](/cloud/tcld/how-to-install-tcld)
-- [tcld commands](/cloud/tcld/#tcld-commands)
+A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
+Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
 
-## Cloud Namespace
+## Account-level Roles
+
+When a Global Admin invites a user to join an account, the Global Admin selects one of the following Roles for that user:
+
+- **Global Admin**
+  - Has full administrative permissions across the account, including users and usage
+  - Has Namespace Admin [permissions](/cloud/#namespace-level-permissions) on all [Namespaces](/namespaces) in the account
+- **Developer**
+  - Can create and update Namespaces; has full control over [Workflows](/workflows)
+  - Has Namespace Admin permissions for each Namespace created by that user
+- **Read-Only:** Can only read information
+
+## Cloud Namespace Name
 
 A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud.
 Each Namespace Name, such as `accounting-production`, is unique within the scope of a customer's account.
@@ -53,13 +60,19 @@ Each Namespace Name must conform to the following rules:
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
-1. A [Namespace Name](#cloud-namespace)
+1. A [Namespace Name](#cloud-namespace-name)
 1. A period (.)
-1. The [Account Id](#cloud-account-id) to which the Namespace belongs
+1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
-## Cloud Account Id
+## Namespace-level permissions
 
-A Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
-Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
+A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.
+A Developer can assign permissions for a Namespace they create.
+
+For a Namespace, a user can have one of the following permissions:
+
+- **Namespace Admin:** Can create and edit Namespaces; can create, rename, update, and delete [Workflows](/workflows)
+- **Write:** Can create, rename, update, and delete Workflows within the Namespace
+- **Read-Only:** Can only read information from the Namespace

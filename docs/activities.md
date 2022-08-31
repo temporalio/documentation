@@ -289,7 +289,7 @@ Activity Execution completion calls take either a single Task Token, or the [Nam
 
 ## Local Activities
 
-A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/workflows#workflow-executions) that spawns it.
+A Local Activity is an [Activity Execution](#activity-execution) that executes in the same process as the [Workflow Execution](/workflows#workflow-execution) that spawns it.
 
 Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.

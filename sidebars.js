@@ -31,11 +31,10 @@ module.exports = {
         "application-development/foundations",
         "application-development/features",
         "application-development/observability",
+        "application-development/testing",
         "application-development/worker-performance",
       ],
     },
-    "cluster-deployment-guide",
-    "server/security",
     {
       type: "category",
       label: "Temporal Cloud",
@@ -46,10 +45,12 @@ module.exports = {
         id: "cloud/index",
       },
       items: [
+        "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
+        "cloud/how-to-manage-namespaces-in-temporal-cloud",
         {
           type: "category",
-          label: "tcld commands",
+          label: "tcld",
           collapsible: true,
           collapsed: true,
           link: {
@@ -58,6 +59,49 @@ module.exports = {
           },
           items: [
             "cloud/tcld/login",
+            {
+              type: "category",
+              label: "account",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "cloud/tcld/account/index",
+              },
+              items: [
+                "cloud/tcld/account/get",
+                {
+                  type: "category",
+                  label: "metrics",
+                  collapsible: true,
+                  collapsed: true,
+                  link: {
+                    type: "doc",
+                    id: "cloud/tcld/account/metrics/index",
+                  },
+                  items: [
+                    "cloud/tcld/account/metrics/enable",
+                    "cloud/tcld/account/metrics/disable",
+                    {
+                      type: "category",
+                      label: "accepted-client-ca",
+                      collapsible: true,
+                      collapsed: true,
+                      link: {
+                        type: "doc",
+                        id: "cloud/tcld/account/metrics/accepted-client-ca/index",
+                      },
+                      items: [
+                        "cloud/tcld/account/metrics/accepted-client-ca/add",
+                        "cloud/tcld/account/metrics/accepted-client-ca/list",
+                        "cloud/tcld/account/metrics/accepted-client-ca/set",
+                        "cloud/tcld/account/metrics/accepted-client-ca/remove",
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
             {
               type: "category",
               label: "namespace",
@@ -138,6 +182,8 @@ module.exports = {
         },
       ],
     },
+    "cluster-deployment-guide",
+    "server/security",
     {
       type: "category",
       label: "tctl",
@@ -151,8 +197,6 @@ module.exports = {
         "tctl/how-to-install-tctl",
         "tctl/environment-variables",
         "tctl/how-to-use-tctl",
-        "tctl/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
-        "tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
         {
           type: "category",
           label: "tctl commands",
@@ -448,6 +492,26 @@ module.exports = {
         "references/events",
         "references/configuration",
         "references/ui-configuration",
+        {
+          type: "link",
+          label: "Go SDK API",
+          href: "https://pkg.go.dev/go.temporal.io/sdk",
+        },
+        {
+          type: "link",
+          label: "Java SDK API",
+          href: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
+        },
+        {
+          type: "link",
+          label: "Python SDK API",
+          href: "https://python.temporal.io/",
+        },
+        {
+          type: "link",
+          label: "TypeScript SDK API",
+          href: "https://typescript.temporal.io",
+        },
       ],
     },
     "external-resources",

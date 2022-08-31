@@ -13,10 +13,10 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Workflows.
 
-In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](#workflow-types), a [Workflow Definition](#workflow-definitions), or a [Workflow Execution](#workflow-executions).
+In day-to-day conversations, the term _Workflow_ frequently denotes either a [Workflow Type](#workflow-type), a [Workflow Definition](#workflow-definition), or a [Workflow Execution](#workflow-execution).
 Temporal documentation aims to be explicit and differentiate between them.
 
-## Workflow Definitions
+## Workflow Definition
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
@@ -34,7 +34,7 @@ We strongly recommend that you write a Workflow Definition in a language that ha
 A critical aspect of developing Workflow Definitions is ensuring they exhibit certain deterministic traits – that is, making sure that the same Commands are emitted in the same sequence, whenever a corresponding Workflow Function Execution (instance of the Function Definition) is re-executed.
 
 The execution semantics of a Workflow Execution include the re-execution of a Workflow Function.
-The use of Workflow APIs in the function is what generates [Commands](#commands).
+The use of Workflow APIs in the function is what generates [Commands](#command).
 Commands tell the Cluster which Events to create and add to the Workflow Execution's Event History.
 When a Workflow Function executes, the Commands that are emitted are compared with the existing Event History.
 If a corresponding Event already exists within the Event History that maps to the generation of that Command in the same sequence, and some specific metadata of that Command matches with some specific metadata of the Event, then the Function Execution progresses.
@@ -123,7 +123,7 @@ Workflow Function Executions are completely oblivious to the Worker Process in t
 The Temporal Platform ensures that the state of a Workflow Execution is recovered and progress resumes if there is an outage of either Worker Processes or the Temporal Cluster itself.
 The only reason a Workflow Execution might fail is due to the code throwing an error or exception, not because of underlying infrastructure outages.
 
-### Workflow Types
+### Workflow Type
 
 A Workflow Type is a name that maps to a Workflow Definition.
 
@@ -133,7 +133,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 ![Workflow Type cardinality with Workflow Definitions and Workflow Executions](/diagrams/workflow-type-cardinality.svg)
 
-## Workflow Executions
+## Workflow Execution
 
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
@@ -169,12 +169,12 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Workflow Execution does two things:
 
-1. Issue [Commands](#commands).
+1. Issue [Commands](#command).
 2. Wait on an Awaitables (often called Futures).
 
 ![Command generation and waiting](/diagrams/workflow-execution-progession-simple.svg)
 
-Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definitions).
+Commands are issued and Awaitables are provided by the use of Workflow APIs in the [Workflow Definition](#workflow-definition).
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
@@ -230,7 +230,7 @@ The [Workflow Run Timeout](#workflow-run-timeout) applies to a single Workflow E
 
 ### Event loop
 
-A Workflow Execution is made up of a sequence of [Events](#events) called an [Event History](#events-history).
+A Workflow Execution is made up of a sequence of [Events](#event) called an [Event History](#event-history).
 Events are created by the Temporal Cluster in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
 ![Workflow Execution](/diagrams/workflow-execution-swim-lane-01.svg)
@@ -254,11 +254,11 @@ You can use the [Continue-As-New](#continue-as-new) feature to close the current
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
 
-### Commands
+### Command
 
 A Command is a requested action issued by a [Worker](/workers#) to the [Temporal Cluster](/clusters#) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
-The action that the Cluster takes is recorded in the [Workflow Execution's](#workflow-executions) [Event History](#event-history) as an [Event](#events).
+The action that the Cluster takes is recorded in the [Workflow Execution's](#workflow-execution) [Event History](#event-history) as an [Event](#event).
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
 
 Commands are generated by the use of Workflow APIs in your code. During a Workflow Task Execution there may be several Commands that are generated.
@@ -269,7 +269,7 @@ There will always be [WorkflowTaskStarted](/references/events/#workflowtaskstart
 
 Commands are described in the [Command reference](/references/commands) and are defined in the [Temporal gRPC API](https://github.com/temporalio/api/blob/master/temporal/api/command/v1/message.proto).
 
-### Events
+### Event
 
 Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution. Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
 
@@ -279,7 +279,7 @@ A list of all possible Events that could appear in a Workflow Execution Event Hi
 
 ### Event History
 
-An append-log of [Events](#events) for your application.
+An append-log of [Events](#event) for your application.
 
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
@@ -315,7 +315,7 @@ In the case of [Temporal Cron Jobs](#cron-jobs), Continue-As-New is actually use
 
 ### Run Id
 
-A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](#workflow-executions).
+A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](#workflow-execution).
 
 Temporal guarantees that only one Workflow Execution with a given [Workflow Id](#workflow-id) can be in an Open state at any given time.
 But when a Workflow Execution reaches a Closed state, it is possible to have another Workflow Execution in an Open state with the same Workflow Id.
@@ -326,9 +326,9 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 ### Workflow Id
 
-A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-executions) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
+A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id](/application-development/foundations#set-workflow-id)
+- [How to set a Workflow Id](/application-development/foundations#workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
@@ -390,7 +390,7 @@ If the Workflow Run Timeout is reached, the Workflow Execution is Terminated.
 
 ### Workflow Task Timeout
 
-A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#) to execute a [Workflow Task](/tasks#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/tasks#task-queues).
+A Workflow Task Timeout is the maximum amount of time allowed for a [Worker](/workers#) to execute a [Workflow Task](/tasks#workflow-task) after the Worker has pulled that Workflow Task from the [Task Queue](/tasks#task-queue).
 
 ![Workflow Task Timeout period](/diagrams/workflow-task-timeout.svg)
 
@@ -404,7 +404,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 ## Signals
 
-A Signal is an asynchronous request to a [Workflow Execution](#workflow-executions).
+A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
 - [How to develop, send, and handle Signals in code](/application-development/features#signals)
 - [How to send a Signal using tctl](/tctl/workflow/signal)
@@ -426,9 +426,9 @@ If multiple deliveries of a Signal would be a problem for your Workflow, add ide
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
 
-## Queries
+## Query
 
-A Query is a synchronous operation that is used to get the state of a [Workflow Execution](#workflow-executions).
+A Query is a synchronous operation that is used to get the state of a [Workflow Execution](#workflow-execution).
 The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
@@ -462,7 +462,7 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 
 ## Child Workflows
 
-A Child Workflow Execution is a [Workflow Execution](#workflow-executions) that is spawned from within another Workflow.
+A Child Workflow Execution is a [Workflow Execution](#workflow-execution) that is spawned from within another Workflow.
 
 - [How to start a Child Workflow Execution](/application-development/features#child-workflows)
 
@@ -490,7 +490,7 @@ On one hand, because Child Workflow Executions have their own Event Histories, t
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 [Activity Executions](/activities#activity-execution).
 But a Parent Workflow Execution can spawn 1,000 Child Workflow Executions that each spawn 1,000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
-On the other hand, because a Parent Workflow Execution Event History contains [Events](#events) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
+On the other hand, because a Parent Workflow Execution Event History contains [Events](#event) that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
@@ -637,9 +637,9 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - [How to set a Cron Schedule in PHP](/php/distributed-cron)
 - [How to set a Cron Schedule in Typescript](/typescript/clients)
 
-## Schedules
+## Schedule
 
-A Schedule contains instructions for starting a [Workflow Execution](#workflow-executions) at specific times.
+A Schedule contains instructions for starting a [Workflow Execution](#workflow-execution) at specific times.
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](#cron-jobs).
 
 - [How to enable Schedules](#how-to-enable-schedules)
@@ -655,7 +655,7 @@ The Action of a Schedule is where the Workflow Execution properties are establis
 Workflow Executions started by a Schedule have the following additional properties:
 
 - The Action's timestamp is appended to the Workflow Id.
-- The `TemporalScheduledStartTime` [Search Attribute](/visibility#search-attributes) is added to the Workflow Execution.
+- The `TemporalScheduledStartTime` [Search Attribute](/visibility#search-attribute) is added to the Workflow Execution.
   The Action's timestamp is the value.
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
   The Schedule Id is the value.
@@ -823,17 +823,6 @@ frontend.enableSchedules:
   - value: true
 worker.enableScheduler:
   - value: true
-matching.numTaskqueueReadPartitions:
-  - value: 1
-    constraints:
-      taskQueueName: temporal-sys-scheduler-tq
-matching.numTaskqueueWritePartitions:
-  - value: 1
-    constraints:
-      taskQueueName: temporal-sys-scheduler-tq
 ```
-
-Only the first two values are required; the second two are suggested because, by default, only one Worker runs per Task Queue, so more than one partition is not useful.
-Setting the Task Queue to use one partition reduces latency.
 
 If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.
