@@ -1,12 +1,15 @@
 ---
-slug: install-temporal-clusters-for-development
-title: Install Temporal Clusters for development
+slug: install-temporal-cluster-for-development
+title: All the ways to run a Temporal Cluster for development
 tags:
   - kb-article
 date: 2022-06-07T00:00:00Z
 ---
 
-The following sections list various methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
+There are many ways to run a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) for development and testing purposes.
+This article aims to maintain a comprehensive of list them.
+
+<!-- truncate -->
 
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
