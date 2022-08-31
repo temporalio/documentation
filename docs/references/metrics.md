@@ -5,6 +5,8 @@ description: The Temporal SDKs emit metrics from Temporal Client usage and Worke
 sidebar_label: SDK metrics
 ---
 
+> For Cluster metrics, see [Cluster ▶️ Production deployment ▶️ Scaling and Metrics](/server/production-deployment/#scaling-and-metrics).
+
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
@@ -37,7 +39,7 @@ Each metric may have some combination of the following keys attached to them:
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                             | Emitted by     | Metric type | Availability              |
-| --------------------------------------------------------------------------------------- | -------------- | ----------- | ------------------------- |
+|-----------------------------------------------------------------------------------------|----------------|-------------|---------------------------|
 | [activity_execution_cancelled](#activity_execution_cancelled)                           | Worker         | Counter     | Java                      |
 | [activity_execution_failed](#activity_execution_failed)                                 | Worker         | Counter     | TypeScript, Go, PHP, Java |
 | [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | TypeScript, Go, PHP, Java |
