@@ -30,22 +30,18 @@
         },
         {
           "lang": "java",
-
           "id": "java/index"
         },
         {
           "lang": "php",
-
           "id": "php/index"
         },
         {
           "lang": "python",
-
           "id": "python/index"
         },
         {
           "lang": "typescript",
-
           "id": "typescript/index"
         }
       ]
@@ -502,27 +498,22 @@
       "langtabs": [
         {
           "lang": "go",
-
           "id": "go/how-to-get-the-result-of-an-activity-execution-in-go"
         },
         {
           "lang": "java",
-
           "id": "java/how-to-get-the-result-of-an-activity-execution-in-java"
         },
         {
           "lang": "php",
-
           "id": "php/how-to-get-the-result-of-an-activity-execution-in-php"
         },
         {
           "lang": "python",
-
           "id": "python/how-to-get-the-result-of-an-activity-execution-in-python"
         },
         {
           "lang": "typescript",
-
           "id": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
         }
       ]
@@ -536,27 +527,22 @@
       "langtabs": [
         {
           "lang": "go",
-
           "id": "go/how-to-develop-a-worker-in-go"
         },
         {
           "lang": "java",
-
           "id": "java/how-to-develop-a-worker-program-in-java"
         },
         {
           "lang": "php",
-
           "id": "php/how-to-develop-a-worker-program-in-php"
         },
         {
           "lang": "python",
-
           "id": "python/how-to-develop-a-worker-program-in-python"
         },
         {
           "lang": "typescript",
-
           "id": "typescript/how-to-develop-a-worker-program-in-typescript"
         }
       ]
