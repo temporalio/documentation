@@ -97,7 +97,7 @@ For details on configuring a Prometheus scrape endpoint with Micrometer, see <ht
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -153,12 +153,12 @@ Tracing functionality utilizes generic context propagation provided by the Clien
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -256,12 +256,12 @@ workflow.WithActivityOptions(ctx, ao)
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -410,12 +410,12 @@ func main() {
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -513,12 +513,12 @@ Use [`Client.ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -583,12 +583,12 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -664,12 +664,12 @@ map[string]interface{}{
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -713,7 +713,7 @@ Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
