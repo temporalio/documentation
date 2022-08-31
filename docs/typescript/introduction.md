@@ -59,7 +59,7 @@ Run "Hello Temporal" locally (~10 minutes)
 Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install/)):
 
 ```bash
-git clone https://github.com/temporalio/docker-compose.git
+git clone https://github.com/temporalio/docker-compose.git temporal
 cd temporal
 docker-compose up
 ```

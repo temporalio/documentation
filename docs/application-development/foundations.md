@@ -271,7 +271,7 @@ The Temporal TypeScript SDK API reference is published on [typescript.temporal.i
 
 #### Code samples
 
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
+In addition to the samples listed in the language tabs below, several of the [Tutorials](https://learn.temporal.io/) are backed by working applications.
 
 Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 
