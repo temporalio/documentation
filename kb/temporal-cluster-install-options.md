@@ -6,8 +6,8 @@ tags:
 date: 2022-06-07T00:00:00Z
 ---
 
-There are many ways to run a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) for development and testing purposes.
-This article aims to maintain a comprehensive of list them.
+You can run a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) for development and testing purposes in various ways.
+This article aims to maintain a comprehensive list of them.
 
 <!-- truncate -->
 
