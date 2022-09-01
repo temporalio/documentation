@@ -4,6 +4,7 @@ title: What is the Temporal Server?
 sidebar_label: Temporal Server
 description: The Temporal Server is a grouping of four horizontally scalable services.
 tags:
+  - term
   - explanation
 ---
 

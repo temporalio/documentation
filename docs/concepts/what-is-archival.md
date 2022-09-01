@@ -4,6 +4,7 @@ title: What is Archival?
 sidebar_label: Archival
 description: Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 tags:
+  - term
   - explanation
 ---
 

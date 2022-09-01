@@ -187,7 +187,7 @@ Awaitables are provided when using APIs for the following:
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
 - Sending a [Signal](#signals): Progress can block on confirmation that the Signal sent.
-- Spawning a [Child Workflow Execution](#child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Spawning a [Child Workflow Execution](#child-workflow): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
@@ -460,7 +460,7 @@ This is a great way to troubleshoot a Workflow Execution in production.
 For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
 The `__stack_trace` Query name does not require special handling in your Workflow code.
 
-## Child Workflows
+## Child Workflow
 
 A Child Workflow Execution is a [Workflow Execution](#workflow-execution) that is spawned from within another Workflow.
 
@@ -509,7 +509,7 @@ For example, a Workflow that manages host upgrades could spawn a Child Workflow 
 
 ### Parent Close Policy
 
-A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflows) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflow) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
 - [How to set a Parent Close Policy](/application-development/features#parent-close-policy)
 

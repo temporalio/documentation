@@ -4,6 +4,7 @@ title: What is a Namespace?
 sidebar_label: Namespace
 description: A Namespace is a unit of isolation within the Temporal Platform
 tags:
+  - term
   - explanation
 ---
 

@@ -4,6 +4,7 @@ title: What is a Schedule
 sidebar_label: Schedule
 description: A Schedule enables the scheduling of Workflow Executions.
 tags:
+  - term
   - explanation
   - term
 ---

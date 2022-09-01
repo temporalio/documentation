@@ -4,6 +4,7 @@ title: What is a Task?
 sidebar_label: Task
 description: A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
 tags:
+  - term
   - explanation
 ---
 

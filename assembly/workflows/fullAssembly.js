@@ -21,7 +21,9 @@ export async function fullAssembly(params) {
 
   await activities.genMarkdownGuides(config);
 
-  await activities.cleanUpTempDir(config);
+  await activities.genGlossary(config);
+
+  // await activities.cleanUpTempDir(config);
 
   return "Assembly completed successfully!";
 }
