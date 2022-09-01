@@ -10,7 +10,7 @@ tags:
 
 The `tctl workflow reset` command resets a [Workflow Execution](/concepts/what-is-a-workflow-execution) by either [`eventId`](#eventid)or [`resetType`](#resettype).
 
-Resetting a Workflow allows the process to be resumed from a certain point without losing your parameters or Work History.
+Resetting a Workflow allows the process to be resumed from a certain point without losing your parameters or Event History.
 
 To run multiple Reset operations at once, see [`tctl workflow reset-batch`](/tctl/workflow/reset-batch).
 
