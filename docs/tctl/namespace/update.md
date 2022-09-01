@@ -14,7 +14,7 @@ The `tctl namespace update` command updates a [Namespace](/concepts/what-is-a-na
 
 The following modifiers control the behavior of the command.
 
-### `--active_cluster`
+### `--active-cluster`
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
 
@@ -23,19 +23,19 @@ Alias: `--ac`
 **Example**
 
 ```bash
-tctl namespace update --active_cluster <name>
+tctl namespace update --active-cluster <value>
 ```
 
-### `--add_bad_binary`
+### `--add-bad-binary`
 
 Add a binary checksum to use when resetting a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-See also [`--remove_bad_binary`](#--remove_bad_binary).
+See also [`--remove-bad-binary`](#--remove-bad-binary).
 
 **Example**
 
 ```bash
-tctl namespace update --add_bad_binary <value>
+tctl namespace update --add-bad-binary <value>
 ```
 
 ### `--clusters`
@@ -44,14 +44,14 @@ Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) whe
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 
-This modifier is valid only when the `--global_namespace` modifier is set to true.
+This modifier is valid only when the `--global-namespace` modifier is set to true.
 
 Alias `--cl`
 
 **Example**
 
 ```bash
-tctl namespace update --clusters <names>
+tctl namespace update --clusters <value>
 ```
 
 ### `--description`
@@ -66,7 +66,7 @@ Alias `--desc`
 tctl namespace update --description <value>
 ```
 
-### `--history_archival_state`
+### `--history-archival-state`
 
 Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
@@ -76,10 +76,10 @@ Alias `--has`
 **Example**
 
 ```bash
-tctl namespace update --history_archival_state <value>
+tctl namespace update --history-archival-state <value>
 ```
 
-### `--history_uri`
+### `--history-uri`
 
 Specify the URI for URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
@@ -89,22 +89,22 @@ Alias `--huri`
 **Example**
 
 ```bash
-tctl namespace update --history_uri <uri>
+tctl namespace update --history-uri <value>
 ```
 
-### `--namespace_data`
+### `--namespace-data`
 
 Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
-Alias `--dmd`
+Alias `--nd`
 
 **Example**
 
 ```bash
-tctl namespace update --namespace_data <data>
+tctl namespace update --namespace-data <value>
 ```
 
-### `--owner_email`
+### `--owner-email`
 
 Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
 
@@ -113,7 +113,17 @@ Alias `--oe`
 **Example**
 
 ```bash
-tctl namespace update --owner_email <value>
+tctl namespace update --owner-email <value>
+```
+
+### `--promote-namespace`
+
+Converts a local Namespace into a global Namespace.
+
+**Example**
+
+```bash
+tctl namespace update --promote-namespace <value>
 ```
 
 ### `--reason`
@@ -126,16 +136,16 @@ Specify a reason for updating a [Namespace](/concepts/what-is-a-namespace).
 tctl namespace update --reason <value>
 ```
 
-### `--remove_bad_binary`
+### `--remove-bad-binary`
 
 Remove a binary checksum.
 
-See also [`--add_bad_binary`](#--add_bad_binary).
+See also [`--add-bad-binary`](#--add-bad-binary).
 
 **Example**
 
 ```bash
-tctl namespace update --remove_bad_binary <value>
+tctl namespace update --remove-bad-binary <value>
 ```
 
 ### `--retention`
@@ -150,7 +160,7 @@ Alias `--rd`
 tctl namespace update --retention <value>
 ```
 
-### `--visibility_archival_state`
+### `--visibility-archival-state`
 
 Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
@@ -160,10 +170,10 @@ Alias `--vas`
 **Example**
 
 ```bash
-tctl namespace update --visibility_archival_state <value>
+tctl namespace update --visibility-archival-state <value>
 ```
 
-### `--visibility_uri`
+### `--visibility-uri`
 
 Specify the visibility URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
@@ -173,5 +183,5 @@ Alias `--vuri`
 **Example**
 
 ```bash
-tctl namespace update --visibility_uri <uri>
+tctl namespace update --visibility-uri <value>
 ```

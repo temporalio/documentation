@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-This documentation reflects tctl version 1.16.
+This documentation reflects tctl version 1.17.
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
 It can perform [Namespace](/concepts/what-is-a-namespace) operations (such as register, update, and describe) and [Workflow](/concepts/what-is-a-workflow) operations (such as start
@@ -21,12 +21,11 @@ Workflow, show Workflow History, and Signal Workflow).
 ## tctl commands
 
 - [`tctl activity`](/tctl/activity/)
-- [`tctl admin`](/tctl/admin/)
 - [`tctl batch`](/tctl/batch/)
 - [`tctl cluster`](/tctl/cluster/)
-- [`tctl dataconverter`](/tctl/dataconverter/)
+- [`tctl data-converter`](/tctl/data-converter/)
 - [`tctl namespace`](/tctl/namespace/)
-- [`tctl taskqueue`](/tctl/taskqueue/)
+- [`tctl task-queue`](/tctl/taskqueue/)
 - [`tctl workflow`](/tctl/workflow/)
 
 ## Global modifiers
