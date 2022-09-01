@@ -20,22 +20,41 @@ export async function genGlossary(config) {
     config.source_info_nodes_file_name
   );
   let sourceNodes = await fs.readJSON(sourceNodesFilePath);
-  let glossStr = `${glossFrontmatter}\n\n`;
+
+  const terms = await getTerms(sourceNodes);
+  const glossStr = await genGlossString(terms);
+
+  const glossaryWritePath = path.join(
+    config.root_dir,
+    config.content_write_dir,
+    config.glossary_file_name
+  );
+  await fs.writeFile(glossaryWritePath, glossStr);
+  return;
+}
+
+async function getTerms(sourceNodes) {
+  const terms = [];
   for (const node of sourceNodes) {
     if (node.tags !== undefined) {
       for (const tag of node.tags) {
         if (tag == "term") {
-          glossStr = `${glossStr}[${node.label}](${node.id})\n`;
-          break;
+          const term = {
+            label: node.label,
+            markdown_link: `[${node.label}](/${node.id})\n`,
+          };
+          terms.push(term);
         }
       }
     }
   }
-  const glossaryWritePath = path.join(
-    config.root_dir,
-    config.content_write_directory,
-    glossary_file_name
-  );
-  await fs.writeFile(glossaryWritePath, glossStr);
-  return;
+  return terms;
+}
+
+async function genGlossString(terms) {
+  let glossStr = `${glossFrontmatter}\n\n`;
+  for (const term of terms) {
+    glossStr = `${glossStr}- [${term.label}](/${term.markdown_link})\n`;
+  }
+  return glossStr;
 }
