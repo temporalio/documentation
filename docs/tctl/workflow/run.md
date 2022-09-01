@@ -106,9 +106,9 @@ Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed 
 
 There are three allowed values:
 
-- [**AllowDuplicateFailedOnly:**](/docs/concepts/what-is-a-workflow-id-reuse-policy)
-- [**AllowDuplicate:**](/docs/concepts/what-is-a-workflow-id-reuse-policy)
-- [**RejectDuplicate:**] (/docs/concepts/what-is-a-workflow-id-reuse-policy)
+- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [**RejectDuplicate:**] (/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 
