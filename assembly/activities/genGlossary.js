@@ -21,7 +21,8 @@ export async function genGlossary(config) {
   );
   let sourceNodes = await fs.readJSON(sourceNodesFilePath);
 
-  const terms = await getTerms(sourceNodes);
+  let terms = await getTerms(sourceNodes);
+  terms = await sortTerms(terms);
   const glossStr = await genGlossString(terms);
 
   const glossaryWritePath = path.join(
@@ -41,7 +42,7 @@ async function getTerms(sourceNodes) {
         if (tag == "term") {
           const term = {
             label: node.label,
-            markdown_link: `[${node.label}](/${node.id})\n`,
+            markdown_link: `[${node.label}](/${node.id})`,
           };
           terms.push(term);
         }
@@ -54,7 +55,21 @@ async function getTerms(sourceNodes) {
 async function genGlossString(terms) {
   let glossStr = `${glossFrontmatter}\n\n`;
   for (const term of terms) {
-    glossStr = `${glossStr}- [${term.label}](/${term.markdown_link})\n`;
+    glossStr = `${glossStr}- ${term.markdown_link}\n`;
   }
   return glossStr;
+}
+
+async function sortTerms(terms) {
+  function compare(a, b) {
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  }
+  terms.sort(compare);
+  return terms;
 }
