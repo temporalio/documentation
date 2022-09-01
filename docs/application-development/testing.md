@@ -92,12 +92,12 @@ Replaying a Workflow Execution locally is a good way to see exactly what code pa
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -129,3 +129,4 @@ See how to replay in [this video](https://www.youtube.com/watch?v=fN5bIL7wc5M).
 
 </TabItem>
 </Tabs>
+

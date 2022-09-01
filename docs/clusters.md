@@ -821,3 +821,4 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 ```go
 a := authorization.NewDefaultAuthorizer()
 ```
+
