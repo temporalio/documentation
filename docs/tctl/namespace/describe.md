@@ -16,7 +16,7 @@ Alias: `d`
 
 The following modifier controls the behavior of the command.
 
-### `--namespace_id`
+### `--namespace-id`
 
 Specify the ID of a Namespace to describe.
 
@@ -25,7 +25,7 @@ This modifier is required unless the global `--namespace` modifier is specified 
 **Example**
 
 ```bash
-tctl namespace describe --namespace_id <id>
+tctl namespace describe --namespace-id <id>
 ```
 
 Example results for a [Global Namespace](/namespaces/#global-namespaces)

@@ -9,49 +9,25 @@ tags:
 ---
 
 The `tctl workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).
-Unlike `run`, this command returns the Workflow Id and Run Id immediately after starting the Workflow.
+This command returns the Workflow Id and Run Id immediately after starting the Workflow.
 
 `tctl workflow start <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--taskqueue`
+### `--cron`
 
-Specify a [Task Queue](/concepts/what-is-a-task-queue).
+Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules) in seconds.
 
-Alias: `--tq`
-
-**Example**
-
-```bash
-tctl workflow start --taskqueue <name>
-```
-
-### `--workflow_id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Aliases: `--wid`, `-w`
+This is an optional feature, with a default value of 10s.
 
 **Example**
 
 ```bash
-tctl workflow start --workflow_id <id>
+tctl workflow start --cron <value>
 ```
 
-### `--workflow_type`
-
-Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
-
-**Example**
-
-```bash
-tctl workflow start --workflow_type <name>
-```
-
-### `--execution_timeout`
+### `--execution-timeout`
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
@@ -61,45 +37,7 @@ Alias: `--et`
 **Example**
 
 ```bash
-tctl workflow start --execution_timeout <seconds>
-```
-
-### `--workflow_task_timeout`
-
-Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
-The default value is 10.
-
-Alias: `--wtt`
-
-**Example**
-
-```bash
-tctl workflow start --workflow_task_timeout <seconds>
-```
-
-### `--cron`
-
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
-
-**Example**
-
-```bash
-tctl workflow start --cron <string>
-```
-
-### `--workflowidreusepolicy`
-
-Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
-
-Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
-
-**Examples**
-
-```bash
-tctl workflow start --workflowidreusepolicy AllowDuplicate
-tctl workflow start --workflowidreusepolicy AllowDuplicateFailedOnly
-tctl workflow start --workflowidreusepolicy RejectDuplicate
+tctl workflow start --execution-timeout <value>
 ```
 
 ### `--input`
@@ -117,7 +55,7 @@ Alias: `-i`
 tctl workflow start --input <json>
 ```
 
-### `--input_file`
+### `--input-file`
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -128,10 +66,10 @@ Alias: `--if`
 **Example**
 
 ```bash
-tctl workflow start --input_file <filename>
+tctl workflow start --input-file <filename>
 ```
 
-### `--memo_key`
+### `--memo-key`
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.
@@ -139,7 +77,7 @@ For multiple keys, concatenate them and use spaces as separators.
 **Example**
 
 ```bash
-tctl workflow start --memo_key <key>
+tctl workflow start --memo-key <key>
 ```
 
 ### `--memo`
@@ -147,7 +85,7 @@ tctl workflow start --memo_key <key>
 Pass a memo.
 A memo is information in JSON format that can be shown when the Workflow is listed.
 For multiple memos, concatenate them and use spaces as separators.
-The order must match the order of keys in `--memo_key`.
+The order must match the order of keys in `--memo-key`.
 
 **Example**
 
@@ -155,19 +93,19 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow start --memo <json>
 ```
 
-### `--memo_file`
+### `--memo-file`
 
 Pass information for a memo from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
-The order must match the order of keys in `--memo_key`.
+The order must match the order of keys in `--memo-key`.
 
 **Example**
 
 ```bash
-tctl workflow start --memo_file <filename>
+tctl workflow start --memo-file <filename>
 ```
 
-### `--search_attr_key`
+### `--search-attr-key`
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) name.
 For multiple names, concatenate them and use pipes (`|`) as separators.
@@ -177,10 +115,10 @@ To list valid Search Attributes, use the `tctl cluster get-search-attr` command.
 **Example**
 
 ```bash
-tctl workflow start --search_attr_key <key>
+tctl workflow start --search-attr-key <key>
 ```
 
-### `--search_attr_value`
+### `--search-attr-value`
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
@@ -191,5 +129,69 @@ To list valid Search Attributes and value types, use the `tctl cluster get-searc
 **Example**
 
 ```bash
-tctl workflow start --search_attr_value <value>
+tctl workflow start --search-attr-value <value>
+```
+
+### `--task-queue`
+
+Specify a [Task Queue](/concepts/what-is-a-task-queue).
+
+Alias: `--tq`
+
+**Example**
+
+```bash
+tctl workflow start --taskqueue <value>
+```
+
+### `--type`
+
+Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
+
+Alias: `--t`
+
+**Example**
+
+```bash
+tctl workflow start --type <value>
+```
+
+### `--workflow-id`
+
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
+
+Aliases: `--wid`
+
+**Example**
+
+```bash
+tctl workflow start --workflow-id <value>
+```
+
+### `--workflow-task-timeout`
+
+Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
+The default value is 10.
+
+Alias: `--wtt`
+
+**Example**
+
+```bash
+tctl workflow start --workflow-task-timeout <seconds>
+```
+
+### `--workflowidreusepolicy`
+
+Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
+Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
+
+Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
+
+**Examples**
+
+```bash
+tctl workflow start --workflowidreusepolicy AllowDuplicate
+tctl workflow start --workflowidreusepolicy AllowDuplicateFailedOnly
+tctl workflow start --workflowidreusepolicy RejectDuplicate
 ```
