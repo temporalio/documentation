@@ -23,7 +23,7 @@ For example if you have a workflow which never takes longer than a day to execut
 It's perfectly fine to do this with longer-lived workflows as well. You'll just need to be aware that you may need to keep multiple different versions of workers running while open workflows complete.
 
 You can also use the feature to prevent a buggy codepath from being taken on currently open workflows. You can do this by adding a new
-version to the graph, and specifying it as *compatible* with an existing version you would like to ensure no future Workflow Tasks execute on. Because the new version will process existing histories, it is subject to the normal [determinism constraints](/concepts/what-is-a-workflow-definition#non-deterministic-change), and you might need to use one of the [versioning apis](/concepts/what-is-a-workflow-definition#workflow-versioning).
+version to the graph, and specifying it as _compatible_ with an existing version you would like to ensure no future Workflow Tasks execute on. Because the new version will process existing histories, it is subject to the normal [determinism constraints](/concepts/what-is-a-workflow-definition#non-deterministic-change), and you might need to use one of the [versioning apis](/concepts/what-is-a-workflow-definition#workflow-versioning).
 
 ### How to use Worker Versioning
 
@@ -54,7 +54,7 @@ Let's say we add a version `1.0` to the Task Queue as the new default. Our versi
 ![1.0 Graph](/img/worker-versioning/graph-prog-1.svg)
 
 All new Workflows started on the queue will have their first tasks assigned to version `1.0`. Workers with their Build ID set to `1.0` will receive these tasks.
-If there are still Workflows running on the queue which do not have an assigned version, Workers without a version will take those tasks. So you'll want to make sure such workers are still operational if there were any open Workflows when you added the first version. If you happened to have deployed any Workers with a *different* version, those Workers will not receive any tasks.
+If there are still Workflows running on the queue which do not have an assigned version, Workers without a version will take those tasks. So you'll want to make sure such workers are still operational if there were any open Workflows when you added the first version. If you happened to have deployed any Workers with a _different_ version, those Workers will not receive any tasks.
 
 Now we need to change the Workflow for some reason, so we add `2.0` to the graph as the new default:
 
@@ -92,8 +92,7 @@ A request to change the graph can do one of the following:
 You can't delete versions. This is to help avoid a situation where workflows accidentally become stuck with
 no means of making progress because the version they are associated with no longer exists.
 
-Sometimes you might want to do this intentionally. If you *want* to make sure that all workflows currently
+Sometimes you might want to do this intentionally. If you _want_ to make sure that all workflows currently
 being processed by, say, `2.0` stop, even if you do not yet have a new version ready, you can add a new
 version `2.1` to the graph marked as compatible with `2.0`. New tasks will target `2.1`, but since you
 have not yet deployed any `2.1` workers, they will not make any progress.
-
