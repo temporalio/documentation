@@ -7,7 +7,7 @@ tags:
   - how-to
 ---
 
-Beyond the [metrics](/application-development/observability#metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud. 
+Beyond the [metrics](/application-development/observability#metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
 You can use your own observability tool to query an endpoint and review Namespace metrics.
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.
@@ -28,7 +28,7 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 
 1. In Temporal Cloud UI, click **Settings**.
 1. On the **Settings** page in the **Observability** card, click **Configure Observability**.
-  (If observability is already configured, the **Edit** link appears instead.)
+   (If observability is already configured, the **Edit** link appears instead.)
 1. In **Certificates**, paste a base64-encoded CA certificate PEM block.
 1. Click **Generate endpoint**.
 
@@ -71,9 +71,9 @@ Metrics lag real-time performance by approximately one minute.
 The number of days we store metrics depends on the resolution of each metric:
 
 | Resolution | Days of storage |
-| --- | --- |
-| raw | 5 |
-| 15 seconds | 5 |
-| 30 seconds | 5 |
-| 60 seconds | 5 |
-| 5 minutes | 395 |
+| ---------- | --------------- |
+| raw        | 5               |
+| 15 seconds | 5               |
+| 30 seconds | 5               |
+| 60 seconds | 5               |
+| 5 minutes  | 395             |
