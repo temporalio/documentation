@@ -16,28 +16,11 @@ See also [`tctl workflow showid`](/tctl/workflow/showid).
 
 The following modifiers control the behavior of the command.
 
-### `--fields`
+<!-- include:../tctl/modifiers#fields-->
 
-Customize the fields to print.
-Set to 'long' to automatically print more of the main fields.
+:(modifiers.md#fields)
 
-**Example**
-
-```bash
-tctl workflow start --fields <value>
-```
-
-### `--follow`
-
-Follows the progress of a Workflow Execution.
-
-Alias: `-f`
-
-**Example**
-
-```bash
-tctl workflow show --follow
-```
+<!-- include:../tctl/modifiers#follow-->
 
 ### `--limit`
 
