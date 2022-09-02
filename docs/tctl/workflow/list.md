@@ -12,205 +12,85 @@ The `tctl workflow list` command lists open or closed [Workflow Executions](/con
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 
-- To set the size of a page, use the `--pagesize` option.
-- To list multiple pages, use the `--more` option.
-- To list open Workflow Executions, use the `--open` option.
+- To set the number of items printed, use the `--limit` option.
+- To specify fields to print, use the `--fields` option.
+- To enable or disable a pager, use `--pager <value>` or `--no-pager`.
 
-`tctl workflow list [<modifiers>]`
+`tctl workflow list <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--print-raw-time`
+### `--archived`
 
-Print the raw timestamp.
+**This is an experimental feature.**
 
-Alias: `--prt`
+List archived Workflow Executions.
 
-**Example**
-
-```bash
-tctl workflow list --print-raw-time
-```
-
-### `--print-datetime`
-
-Print the timestamp.
-
-Alias: `--pdt`
+Alias: `-a`
 
 **Example**
 
 ```bash
-tctl workflow list --print-datetime
+tctl workflow list --archived
 ```
 
-### `--print-memo`
+### `--fields`
 
-Print a memo.
-
-Alias: `--pme`
+Customize the fields to print.
+Set to 'long' to automatically print more of the main fields.
 
 **Example**
 
 ```bash
-tctl workflow list --print-memo
+tctl workflow start --fields <value>
 ```
 
-### `--print-search-attr`
+### `--limit`
 
-Print the [Search Attributes](/concepts/what-is-a-search-attribute).
-
-Alias: `--psa`
+Sets the number of items to print.
 
 **Example**
 
 ```bash
-tctl workflow list --print-search-attr
+tctl workflow show --limit <value>
 ```
 
-### `--print-full`
+### `--no-pager`
 
-Print the full message without table formatting.
+Disables the interactive pager.
 
-Alias: `--pf`
+Alias: `-P`
 
 **Example**
 
 ```bash
-tctl workflow list --print-full
+tctl workflow start --no-pager <value>
 ```
 
-### `--print-json`
+### `--output`
 
-Print the raw JSON objects.
+Specifies the format for printed output.
 
-Alias: `--pjson`
+Alias: `-o`
+
+Values: table, json, card
+
+**Example**
+
+```tctl
+tctl workflow start --output <value>
+```
+
+### `--pager`
+
+Specifies the pager to use.
+
+Values: less, more, favoritePager..[$PAGER]
 
 **Example**
 
 ```bash
-tctl workflow list --print-json
-```
-
-### `--open`
-
-List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
-(By default, the `tctl workflow list` command lists closed Workflow Executions.)
-
-Alias: `--op`
-
-**Example**
-
-```bash
-tctl workflow list --open
-```
-
-### `--earliest-time`
-
-Specify the earliest start time to list.
-Supported format are as follows:
-
-- `<year>-<month>-<day>T<hour>:<minute>:<second><+|-><offsethours>:<offsetminutes>`
-- Raw Unix Epoch time (the number of milliseconds since 0000 UTC on January 1, 1970).
-- `<n><duration`, where `<n>` is a value between 0 and 1000000, and `<duration>` is one of the following:
-  - `second` or `s`
-  - `minute` or `m`
-  - `hour` or `h`
-  - `day` or `d`
-  - `week` or `w`
-  - `month` or `M`
-  - `year` or `y`
-
-Alias: `--et`
-
-**Examples**
-
-To specify 3:04:05 PM India Standard Time on January 2, 2022:
-
-```bash
-tctl workflow list --earliest-time '2022-01-02T15:04:05+05:30'
-```
-
-To specify 15 minutes before the current time:
-
-```bash
-tctl workflow list --earliest-time '15minute'
-```
-
-### `--latest-time`
-
-Specify the latest start time to list.
-Supported formats are as follows:
-
-- `<year>-<month>-<day>T<hour>:<minute>:<second><+|-><offsethours>:<offsetminutes>`
-- Raw Unix Epoch time (the number of milliseconds since 0000 UTC on January 1, 1970).
-- `<n><duration`, where `<n>` is a value between 0 and 1000000, and `<duration>` is one of the following:
-  - `second` or `s`
-  - `minute` or `m`
-  - `hour` or `h`
-  - `day` or `d`
-  - `week` or `w`
-  - `month` or `M`
-  - `year` or `y`
-
-Alias: `--lt`
-
-**Examples**
-
-To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
-
-```bash
-tctl workflow list --latest-time '2022-04-13T23:02:17-07:00'
-```
-
-To specify 10s before the current time:
-
-```bash
-tctl workflow list --latest-time '10second'
-```
-
-### `--workflow-id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Aliases: `--wid`, `-w`
-
-**Example**
-
-```bash
-tctl workflow list --workflow-id <id>
-```
-
-### `--workflow-type`
-
-Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
-
-**Example**
-
-```bash
-tctl workflow list --workflow-type <name>
-```
-
-### `--status`
-
-Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
-Supported values are as follows:
-
-- `completed`
-- `failed`
-- `canceled`
-- `terminated`
-- `continuedasnew`
-- `timedout`
-
-Alias: `-s`
-
-**Example**
-
-```bash
-tctl workflow list --status <value>
+tctl workflow start --pager <value>
 ```
 
 ### `--query`
@@ -258,28 +138,14 @@ tctl workflow list \
   --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
 ```
 
-### `--more`
+### `--time-format`
 
-List more than one page.
-(By default, the `tctl workflow list` command lists one page of results.)
+Specifies the format for time values.
 
-Alias: `-m`
-
-**Example**
-
-```bash
-tctl workflow list --more
-```
-
-### `--pagesize`
-
-Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
-(By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
-
-Alias: `--ps`
+Values: relative, iso, raw
 
 **Example**
 
 ```bash
-tctl workflow list --pagesize <value>
+tctl workflow start --time-format <value>
 ```
