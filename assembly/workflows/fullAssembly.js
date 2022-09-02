@@ -23,7 +23,7 @@ export async function fullAssembly(params) {
 
   await activities.genGlossary(config);
 
-  // await activities.cleanUpTempDir(config);
+  await activities.cleanUpTempDir(config);
 
   return "Assembly completed successfully!";
 }

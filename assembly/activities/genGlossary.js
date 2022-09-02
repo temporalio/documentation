@@ -38,13 +38,14 @@ async function getTerms(sourceNodes) {
   const terms = [];
   for (const node of sourceNodes) {
     if (node.tags !== undefined) {
-      for (const tag of node.tags) {
+      tagloop: for (const tag of node.tags) {
         if (tag == "term") {
           const term = {
             label: node.label,
             markdown_link: `[${node.label}](/${node.id})`,
           };
           terms.push(term);
+          break tagloop;
         }
       }
     }
