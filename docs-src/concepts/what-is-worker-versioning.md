@@ -18,7 +18,7 @@ This is accomplished by assigning a Build ID (a free-form string) to the code th
 
 The primary use case for this feature is the deployment of incompatible changes to short-lived workflows. On Task Queues using this feature, the workflow starter does not need to know that there are new versions being introduced. New [Workflow Executions](/concepts/what-is-a-workflow-execution) will run using the new code in the newly deployed workers, and old (but still open) workflows will only be processed by workers with an appropriate version. Old workers may be decommissioned once there are no longer any open workflows using their version.
 
-For example if you have a workflow which never takes longer than a day to execute, a great strategy is to simply always assign a new Build ID to every new build of your worker and add it to the graph as the new default version. Because you know your workflow never takes more than a day to complete, you know that you'll never have to leave older workers running for more than a day once you've deployed the new version (assuming availability).
+For example if you have a workflow which never takes longer than a day to execute, a great strategy is to simply always assign a new Build ID to every new build of your worker and add it to the graph as the new default version. Because you know your workflow never takes more than a day to complete, you know that you'll never have to leave older workers running for more than a day once you've deployed the new version (assuming availability). You don't need to worry about removing old versions from the graph. Leaving them there is harmless (in fact, removing versions is not permitted).
 
 It's perfectly fine to do this with longer-lived workflows as well. Just be aware that you may need to keep multiple different versions of workers running while open workflows complete.
 
@@ -96,3 +96,9 @@ Sometimes you might want to do this intentionally. If you _want_ to make sure th
 being processed by, say, `2.0` stop, even if you do not yet have a new version ready, you can add a new
 version `2.1` to the graph marked as compatible with `2.0`. New tasks will target `2.1`, but since you
 have not yet deployed any `2.1` workers, they will not make any progress.
+
+#### Graph constraints
+
+The graph has a maximum size limit, which defaults to 1000 versions. This limit is configurable on the server via the `limit.versionGraphNodeSize` dynamic config property. Once this limit is exceeded, the oldest nodes in the graph will be dropped to make room for new ones. In practice this should never be an issue, as versions are no longer needed once there are no longer any open workflows using that version.
+
+There is also a limit on the size of each Build ID / version string, which defaults to 1000 characters. This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic config property.
