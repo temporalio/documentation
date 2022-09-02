@@ -8,19 +8,19 @@ tags:
   - versioning
 ---
 
-Worker Versioning is a feature which simplifies the process of deploying changes to [Workflow Definitions](/concepts/what-is-a-workflow-definition). It's recommended that you read that article before proceeding, as this feature is largely concerned with helping manage nondeterministic changes to those definitions.
+Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/concepts/what-is-a-workflow-definition). It's recommended that you read that article before proceeding, as this feature is largely concerned with helping manage nondeterministic changes to those definitions.
 
-This feature can help you manage such changes by providing a convenient way to ensure that [Workers](/concepts/what-is-a-worker) with different Workflow Definitions operating on the same [Task Queue](/concepts/what-is-a-task-queue) do not attempt to execute [Workflow Tasks](/concepts/what-is-a-workflow-task) that they will not be able to successfully process, according to a graph of versions associated with that Task Queue that you will define.
+This feature can help you manage nondeterministic changes by providing a convenient way to ensure that [Workers](/concepts/what-is-a-worker) with different Workflow Definitions operating on the same [Task Queue](/concepts/what-is-a-task-queue) do not attempt to process [Workflow Tasks](/concepts/what-is-a-workflow-task) that they will not be able to successfully process, according to a graph of versions associated with that Task Queue that you define.
 
-This is accomplished by assigning a Build ID of your choice to the set of code that constitutes a Worker, and specifying whether these versions are compatible or not with one another via changes to the aforementioned graph.
+This is accomplished by assigning a Build ID (a free-form string) to the code that constitutes a Worker, and specifying which of these Build IDs are compatible with each other by updating the version graph.
 
 ### When and what should you use Worker Versioning for?
 
-The primary use case that this feature makes much simpler is the deployment of incompatible changes to short-lived workflows. On Task Queues making use of this feature, the workflow starter does not need to know that there are new versions being introduced. New [Workflow Executions](/concepts/what-is-a-workflow-execution) will run using the new code in the newly deployed workers, and old (but still open) workflows will only be processed by workers with an appropriate version. Old workers may be decommissioned once there are no longer any open workflows using their version.
+The primary use case for this feature is the deployment of incompatible changes to short-lived workflows. On Task Queues using this feature, the workflow starter does not need to know that there are new versions being introduced. New [Workflow Executions](/concepts/what-is-a-workflow-execution) will run using the new code in the newly deployed workers, and old (but still open) workflows will only be processed by workers with an appropriate version. Old workers may be decommissioned once there are no longer any open workflows using their version.
 
 For example if you have a workflow which never takes longer than a day to execute, a great strategy is to simply always assign a new Build ID to every new build of your worker and add it to the graph as the new default version. Because you know your workflow never takes more than a day to complete, you know that you'll never have to leave older workers running for more than a day once you've deployed the new version (assuming availability).
 
-It's perfectly fine to do this with longer-lived workflows as well. You'll just need to be aware that you may need to keep multiple different versions of workers running while open workflows complete.
+It's perfectly fine to do this with longer-lived workflows as well. Just be aware that you may need to keep multiple different versions of workers running while open workflows complete.
 
 You can also use the feature to prevent a buggy codepath from being taken on currently open workflows. You can do this by adding a new
 version to the graph, and specifying it as _compatible_ with an existing version you would like to ensure no future Workflow Tasks execute on. Because the new version will process existing histories, it is subject to the normal [determinism constraints](/concepts/what-is-a-workflow-definition#non-deterministic-change), and you might need to use one of the [versioning apis](/concepts/what-is-a-workflow-definition#workflow-versioning).
