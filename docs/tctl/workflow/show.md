@@ -18,7 +18,7 @@ The following modifiers control the behavior of the command.
 
 <!-- include:../tctl/modifiers#fields-->
 
-:(modifiers.md#fields)
+import Fields from './tctl/\_modifiers.md'
 
 <!-- include:../tctl/modifiers#follow-->
 
