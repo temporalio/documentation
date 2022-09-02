@@ -12,7 +12,7 @@ The `tctl workflow execute` command starts a new [Workflow Execution](/concepts/
 
 The command is entered in the following format:
 
-`tctl workflow run [modifiers]`
+`tctl workflow execute [modifiers]`
 
 Single quotes (`''`) are used to wrap input as JSON.
 
@@ -27,7 +27,7 @@ Alias: `--tq`
 **Example**
 
 ```bash
-tctl workflow run --task-queue <value>
+tctl workflow execute --task-queue <value>
 ```
 
 ### `--workflow-id`
@@ -39,7 +39,7 @@ Alias: `--wid`
 **Example**
 
 ```bash
-tctl workflow run --workflow-id <value>
+tctl workflow execute --workflow-id <value>
 ```
 
 ### `--workflow-type`
@@ -51,7 +51,7 @@ Alias: `--wt`
 **Example**
 
 ```bash
-tctl workflow run --workflow-type <value>
+tctl workflow execute --workflow-type <value>
 ```
 
 ### `--execution-timeout`
@@ -64,7 +64,7 @@ Alias: `--et`
 **Example**
 
 ```bash
-tctl workflow run --execution-timeout <value>
+tctl workflow execute --execution-timeout <value>
 ```
 
 ### `--workflow-task-timeout`
@@ -77,7 +77,7 @@ Alias: `--wtt`
 **Example**
 
 ```bash
-tctl workflow run --workflow-task-timeout <value>
+tctl workflow execute --workflow-task-timeout <value>
 ```
 
 ### `--cron`
@@ -87,7 +87,7 @@ Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules)
 **Example**
 
 ```bash
-tctl workflow run --cron <value>
+tctl workflow execute --cron <value>
 ```
 
 ### `--workflowidreusepolicy`
@@ -100,9 +100,9 @@ Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 **Examples**
 
 ```bash
-tctl workflow run --workflowidreusepolicy AllowDuplicate
-tctl workflow run --workflowidreusepolicy AllowDuplicateFailedOnly
-tctl workflow run --workflowidreusepolicy RejectDuplicate
+tctl workflow execute --workflowidreusepolicy AllowDuplicate
+tctl workflow execute --workflowidreusepolicy AllowDuplicateFailedOnly
+tctl workflow execute --workflowidreusepolicy RejectDuplicate
 ```
 
 ### `--input`
@@ -116,7 +116,7 @@ Alias: `-i`
 **Example**
 
 ```bash
-tctl workflow run --input <value>
+tctl workflow execute --input <value>
 ```
 
 ### `--input-file`
@@ -130,7 +130,7 @@ Alias: `--if`
 **Example**
 
 ```bash
-tctl workflow run --input-file <value>
+tctl workflow execute --input-file <value>
 ```
 
 ### `--memo-key`
@@ -141,7 +141,7 @@ For multiple keys, concatenate them and use spaces as separators.
 **Example**
 
 ```bash
-tctl workflow run --memo-key <value>
+tctl workflow execute --memo-key <value>
 ```
 
 ### `--memo`
@@ -154,7 +154,7 @@ The order must match the order of keys in `--memo-key`.
 **Example**
 
 ```bash
-tctl workflow run --memo <value>
+tctl workflow execute --memo <value>
 ```
 
 ### `--memo-file`
@@ -166,7 +166,7 @@ The order must match the order of keys in `--memo-key`.
 **Example**
 
 ```bash
-tctl workflow run --memo-file <value>
+tctl workflow execute --memo-file <value>
 ```
 
 ### `--search-attr-key`
@@ -179,7 +179,7 @@ To list valid keys, use the `tctl cluster get-search-attr` command.
 **Example**
 
 ```bash
-tctl workflow run --search-attr-key <key>
+tctl workflow execute --search-attr-key <key>
 ```
 
 ### `--search-attr-value`
@@ -193,7 +193,7 @@ To list valid keys and value types, use the `tctl cluster get-search-attr` comma
 **Example**
 
 ```bash
-tctl workflow run --search-attr-value <value>
+tctl workflow execute --search-attr-value <value>
 ```
 
 ### `--show-detail`
@@ -205,7 +205,7 @@ Alias: `--sd`
 **Example**
 
 ```bash
-tctl workflow run --show-detail
+tctl workflow execute --show-detail
 ```
 
 ### `--max-field-length`
@@ -218,5 +218,5 @@ Alias: `--maxl`
 **Example**
 
 ```bash
-tctl workflow run --max-field-length <length>
+tctl workflow execute --max-field-length <length>
 ```
