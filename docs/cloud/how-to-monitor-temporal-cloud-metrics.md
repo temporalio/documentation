@@ -12,7 +12,7 @@ You can use your own observability tool to query an endpoint and review Namespac
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.
 Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
-For more information about CA certificates in Temporal Cloud, see [Certificate requirements)[https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements].
+For more information about CA certificates in Temporal Cloud, see [Certificate requirements](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
 
 <!--- How to configure a metrics endpoint in Temporal Cloud using Temporal Cloud UI --->
 
@@ -41,9 +41,9 @@ Use the endpoint to configure your observability tool.
 
 To add a certificate to a metrics endpoint, use [`tcld account metrics accepted-client-ca add`](/cloud/tcld/account/metrics/accepted-client-ca/add).
 
-To enable a metrics endpoint, use [`/cloud/tcld/account/metrics/enable`].
+To enable a metrics endpoint, use [`tcld account metrics enable`](/cloud/tcld/account/metrics/enable).
 
-To disable a metrics endpoint, use [`/cloud/tcld/account/metrics/disable`].
+To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/account/metrics/disable).
 
 ## Available performance metrics
 
