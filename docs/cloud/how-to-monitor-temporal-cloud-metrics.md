@@ -68,12 +68,4 @@ The `temporal_namespace` label identifies the Namespace that is associated with 
 
 Metrics lag real-time performance by approximately one minute.
 
-The number of days we store metrics depends on the resolution of each metric:
-
-| Resolution | Days of storage |
-| ---------- | --------------- |
-| raw        | 5               |
-| 15 seconds | 5               |
-| 30 seconds | 5               |
-| 60 seconds | 5               |
-| 5 minutes  | 395             |
+We retain raw metrics for seven days.
