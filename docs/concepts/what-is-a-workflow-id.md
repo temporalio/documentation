@@ -4,6 +4,7 @@ title: What is a Workflow Id?
 sidebar_label: Workflow Id
 description: A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.
 tags:
+  - term
   - explanation
 ---
 

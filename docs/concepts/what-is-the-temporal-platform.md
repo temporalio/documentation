@@ -4,6 +4,7 @@ title: What is the Temporal Platform?
 sidebar_label: Temporal Platform
 description: The Temporal Platform consists of a Temporal Cluster and Worker Processes.
 tags:
+  - term
   - explanation
 ---
 

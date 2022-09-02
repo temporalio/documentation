@@ -4,6 +4,7 @@ title: What is an Event History?
 sidebar_label: Event History
 description: An append log of Events that represents the full state a Workflow Execution.
 tags:
+  - term
   - explanation
 ---
 
