@@ -4,6 +4,7 @@ title: What is a Worker Process?
 sidebar_label: Worker Process
 description: A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.
 tags:
+  - term
   - explanation
 ---
 

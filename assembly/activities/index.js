@@ -6,3 +6,4 @@ export {attachSourceToGuides} from "./attachSourceToGuides.js";
 export {genLinkIndexes} from "./genLinkIndexes.js";
 export {linkMagic} from "./linkMagic.js";
 export {genMarkdownGuides} from "./genMarkdownGuides.js";
+export {genGlossary} from "./genGlossary.js";

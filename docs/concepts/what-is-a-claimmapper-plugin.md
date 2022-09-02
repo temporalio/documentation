@@ -1,10 +1,14 @@
 ---
 id: what-is-a-claimmapper-plugin
 title: What is a ClaimMapper Plugin?
-sidebar_label: What is a ClaimMapper Plugin?
+description: The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
+sidebar_label: Claim Mapper
+tags:
+  - term
 ---
 
-`ClaimMapper` is a plugin that extracts claims from JSON Web Tokens (JWT).
+The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
+
 This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
 
 A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
