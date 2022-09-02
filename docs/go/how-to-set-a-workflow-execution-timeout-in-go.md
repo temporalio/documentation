@@ -8,20 +8,15 @@ tags:
   - how-to
 ---
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the timeout and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
 
-Available timeouts are:
-
-- `WorkflowExecutionTimeout`
-- `WorkflowRunTimeout`
-- `WorkflowTaskTimeout`
+- Type: `time.Duration`
+- Default: Unlimited
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
   // ...
   WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowTaskTimeout: time.Second * 10,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)

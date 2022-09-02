@@ -11,8 +11,8 @@ Each Workflow timeout controls the maximum duration of a different aspect of a W
 
 The following timeouts are available in the Workflow Options.
 
-- _Workflow Execution Timeout_ - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- _Workflow Run Timeout_ - restricts the maximum amount of time that a single Workflow Run can last.
-- _Workflow Task Timeout_ - restricts the maximum amount of time that a Worker can execute a Workflow Task.
+- **[Workflow Execution Timeout](/concepts/what-is-a-workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/concepts/what-is-a-workflow-run-timeout)**: restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/concepts/what-is-a-workflow-task-timeout)**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
 For information on how and where these Workflow options are set, see the [Start Workflow Execution](application-development/foundations#start-workflow-execution) in the Foundations section.

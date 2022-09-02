@@ -240,4 +240,3 @@ To actually have results from the use of a [List Filter](#list-filter), Search A
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
-

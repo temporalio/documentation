@@ -366,7 +366,7 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout](/application-development/features#workflow-timeouts)
+- [How to set a Workflow Execution Timeout](/go/how-to-set-a-workflow-execution-timeout-in-go)
 
 ![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
 
@@ -826,4 +826,3 @@ worker.enableScheduler:
 ```
 
 If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.
-
