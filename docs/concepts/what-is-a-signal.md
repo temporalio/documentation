@@ -1,7 +1,7 @@
 ---
 id: what-is-a-signal
 title: What is a Signal?
-sidebar_label: Signals
+sidebar_label: Signal
 description: A Signal is an asynchronous request to a Workflow Execution.
 tags:
   - term

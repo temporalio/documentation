@@ -6,7 +6,6 @@ description: A Schedule enables the scheduling of Workflow Executions.
 tags:
   - term
   - explanation
-  - term
 ---
 
 A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.

@@ -1,7 +1,7 @@
 ---
 id: what-is-a-local-activity
 title: What is a Local Activity?
-sidebar_label: Local Activities
+sidebar_label: Local Activity
 description: A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.
 tags:
   - term
