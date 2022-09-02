@@ -13,7 +13,7 @@ The `tctl workflow query` command sends a [Query](/concepts/what-is-a-query) to 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
 ```bash
-$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
+$ tctl workflow query --workflow-id "HelloQuery" --query-type "getCount"
 Query result as JSON:
 3
 ```
@@ -22,9 +22,9 @@ Queries can also be used on completed Workflows.
 Let's complete a Workflow by updating its greeting, and then query the now-finished Workflow.
 
 ```bash
-$ tctl workflow signal --workflow_id "HelloQuery" --name "updateGreeting" --input \"Bye\"
+$ tctl workflow signal --workflow-id "HelloQuery" --name "updateGreeting" --input \"Bye\"
 Signal workflow succeeded.
-$ tctl workflow query --workflow_id "HelloQuery" --query_type "getCount"
+$ tctl workflow query --workflow-id "HelloQuery" --query-type "getCount"
 Query result as JSON:
 4
 ```
@@ -33,47 +33,9 @@ Query result as JSON:
 
 Queries are written as follows:
 
-```bash
-tctl workflow query --workflow_id [modifiers]
-```
+`tctl workflow query --workflow-id [modifiers]`
 
 The following modifiers control the behavior of the command. Always include required modifiers when executing this command.
-
-### `--workflow_id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
-
-Aliases: `--wid`, `-w`
-
-**Example**
-
-```bash
-tctl workflow query --workflow_id <id>
-```
-
-### `--run_id`
-
-Specify a [Run Id](/concepts/what-is-a-run-id).
-
-Aliases: `--rid`, `-r`
-
-**Example**
-
-```bash
-tctl workflow query --run_id <id>
-```
-
-### `--query_type`
-
-Specify the type of Query to run.
-
-Alias: `--qt`
-
-**Example**
-
-```bash
-tctl workflow query --query_type <value>
-```
 
 ### `--input`
 
@@ -86,10 +48,10 @@ Alias: `-i`
 **Example**
 
 ```bash
-tctl workflow query --input <json>
+tctl workflow query --input <value>
 ```
 
-### `--input_file`
+### `--input-file`
 
 Pass input for the Query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -100,18 +62,54 @@ Alias: `--if`
 **Example**
 
 ```bash
-tctl workflow query --input_file <filename>
+tctl workflow query --input-file <value>
 ```
 
-### `--query_reject_condition`
+### `--query-reject-condition`
 
 Reject Queries based on Workflow state.
-Valid values are `not_open` and `not_completed_cleanly`.
+Valid values are `not-open` and `not-completed-cleanly`.
 
 Alias: `--qrc`
 
 **Example**
 
 ```bash
-tctl workflow query --query_reject_condition <value>
+tctl workflow query --query-reject-condition <value>
+```
+
+### `--query-type`
+
+Specify the type of Query to run.
+
+Alias: `--qt`
+
+**Example**
+
+```bash
+tctl workflow query --query-type <value>
+```
+
+### `--run-id`
+
+Specify a [Run Id](/concepts/what-is-a-run-id).
+
+Alias: `--rid`
+
+**Example**
+
+```bash
+tctl workflow query --run-id <value>
+```
+
+### `--workflow-id`
+
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
+
+Alias: `--wid`
+
+**Example**
+
+```bash
+tctl workflow query --workflow-id <value>
 ```

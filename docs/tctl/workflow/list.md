@@ -16,13 +16,11 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 - To list multiple pages, use the `--more` option.
 - To list open Workflow Executions, use the `--open` option.
 
-See also [`tctl workflow listall`](/tctl/workflow/listall), [`tctl workflow listarchived`](/tctl/workflow/listarchived), and [`tctl workflow scan`](/tctl/workflow/scan).
-
 `tctl workflow list [<modifiers>]`
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw_time`
+### `--print-raw-time`
 
 Print the raw timestamp.
 
@@ -31,10 +29,10 @@ Alias: `--prt`
 **Example**
 
 ```bash
-tctl workflow list --print_raw_time
+tctl workflow list --print-raw-time
 ```
 
-### `--print_datetime`
+### `--print-datetime`
 
 Print the timestamp.
 
@@ -43,10 +41,10 @@ Alias: `--pdt`
 **Example**
 
 ```bash
-tctl workflow list --print_datetime
+tctl workflow list --print-datetime
 ```
 
-### `--print_memo`
+### `--print-memo`
 
 Print a memo.
 
@@ -55,10 +53,10 @@ Alias: `--pme`
 **Example**
 
 ```bash
-tctl workflow list --print_memo
+tctl workflow list --print-memo
 ```
 
-### `--print_search_attr`
+### `--print-search-attr`
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
@@ -67,10 +65,10 @@ Alias: `--psa`
 **Example**
 
 ```bash
-tctl workflow list --print_search_attr
+tctl workflow list --print-search-attr
 ```
 
-### `--print_full`
+### `--print-full`
 
 Print the full message without table formatting.
 
@@ -79,10 +77,10 @@ Alias: `--pf`
 **Example**
 
 ```bash
-tctl workflow list --print_full
+tctl workflow list --print-full
 ```
 
-### `--print_json`
+### `--print-json`
 
 Print the raw JSON objects.
 
@@ -91,7 +89,7 @@ Alias: `--pjson`
 **Example**
 
 ```bash
-tctl workflow list --print_json
+tctl workflow list --print-json
 ```
 
 ### `--open`
@@ -107,7 +105,7 @@ Alias: `--op`
 tctl workflow list --open
 ```
 
-### `--earliest_time`
+### `--earliest-time`
 
 Specify the earliest start time to list.
 Supported format are as follows:
@@ -139,7 +137,7 @@ To specify 15 minutes before the current time:
 tctl workflow list --earliest-time '15minute'
 ```
 
-### `--latest_time`
+### `--latest-time`
 
 Specify the latest start time to list.
 Supported formats are as follows:
@@ -162,16 +160,16 @@ Alias: `--lt`
 To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
 
 ```bash
-tctl workflow list --latest_time '2022-04-13T23:02:17-07:00'
+tctl workflow list --latest-time '2022-04-13T23:02:17-07:00'
 ```
 
 To specify 10s before the current time:
 
 ```bash
-tctl workflow list --latest_time '10second'
+tctl workflow list --latest-time '10second'
 ```
 
-### `--workflow_id`
+### `--workflow-id`
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
@@ -180,10 +178,10 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```bash
-tctl workflow list --workflow_id <id>
+tctl workflow list --workflow-id <id>
 ```
 
-### `--workflow_type`
+### `--workflow-type`
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
@@ -192,7 +190,7 @@ Alias: `--wt`
 **Example**
 
 ```bash
-tctl workflow list --workflow_type <name>
+tctl workflow list --workflow-type <name>
 ```
 
 ### `--status`
@@ -221,7 +219,7 @@ tctl workflow list --status <value>
 
 The `--query` flag is supported only when [Advanced Visibility](/concepts/what-is-advanced-visibility) is configured with the Cluster.
 
-Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest_time`, `latest_time`, `workflow_id`, and `workflow_type`.
+Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest-time`, `latest-time`, `workflow-id`, and `workflow-type`.
 
 Alias: `-q`
 
@@ -241,13 +239,13 @@ tctl workflow list \
 ```bashbash
 tctl workflow list \
   --query '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' \
-  --print_search_attr
+  --print-search-attr
 ```
 
 ```bashbash
 tctl workflow list \
   --query 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' \
-  --print_search_attr
+  --print-search-attr
 ```
 
 ```bashbash

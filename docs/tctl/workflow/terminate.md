@@ -15,42 +15,42 @@ No more command tasks will be scheduled.
 
 See also [`tctl workflow cancel`](/tctl/workflow/cancel).
 
-`tctl workflow terminate [<modifiers>]`
+`tctl workflow terminate <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### `--workflow-id`
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `--wid`
 
 **Example**
 
 ```bash
-tctl workflow terminate --workflow_id <id>
+tctl workflow terminate --workflow-id <value>
 ```
 
-### `--run_id`
+### `--run-id`
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Aliases: `--rid`
 
 **Example**
 
 ```bash
-tctl workflow terminate --run_id <id>
+tctl workflow terminate --run-id <value>
 ```
 
 ### `--reason`
 
 Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Alias: `--re`
+Alias: `-r`
 
 **Example**
 
 ```bash
-tctl workflow terminate --reason <string>
+tctl workflow terminate --reason <value>
 ```

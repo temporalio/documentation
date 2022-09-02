@@ -9,100 +9,73 @@ tags:
 ---
 
 The `tctl workflow scan` command lists [Workflow Executions](/concepts/what-is-a-workflow-execution).
-It is faster than the `tctl workflow listall` command, but the results are not sorted.
 
 By default, this command lists a maximum of 2000 Workflow Executions.
 To set the size of a page, use the `--pagesize` option.
 
-See also [`tctl workflow list`](/tctl/workflow/list), [`tctl workflow listall`](/tctl/workflow/listall), and [`tctl workflow listarchived`](/tctl/workflow/listarchived).
+See also [`tctl workflow list`](/tctl/workflow/list).
 
-`tctl workflow scan [<modifiers>]`
+`tctl workflow scan <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw_time`
+### `--fields`
 
-Print the raw timestamp.
-
-Alias: `--prt`
+Customize the fields to print.
+Set to 'long' to automatically print more of the main fields.
 
 **Example**
 
 ```bash
-tctl workflow scan --print_raw_time
+tctl workflow start --fields <value>
 ```
 
-### `--print_datetime`
+### `--limit`
 
-Print the timestamp.
-
-Alias: `--pdt`
+Sets the number of items to print.
 
 **Example**
 
 ```bash
-tctl workflow scan --print_datetime
+tctl workflow show --limit <value>
 ```
 
-### `--print_memo`
+### `--no-pager`
 
-Print a memo.
+Disables the interactive pager.
 
-Alias: `--pme`
+Alias: `-P`
 
 **Example**
 
 ```bash
-tctl workflow scan --print_memo
+tctl workflow start --no-pager <value>
 ```
 
-### `--print_search_attr`
+### `--output`
 
-Print the [Search Attributes](/concepts/what-is-a-search-attribute).
+Specifies the format for printed output.
 
-Alias: `--psa`
+Alias: `-o`
+
+Values: table, json, card
 
 **Example**
 
-```bash
-tctl workflow scan --print_search_attr
+```tctl
+tctl workflow start --output <value>
 ```
 
-### `--print_full`
+### `--pager`
 
-Print the full message without table formatting.
+Specifies the pager to use.
 
-Alias: `--pf`
-
-**Example**
-
-```bash
-tctl workflow scan --print_full
-```
-
-### `--print_json`
-
-Print the raw JSON objects.
-
-Alias: `--pjson`
+Values: less, more, favoritePager..[$PAGER]
 
 **Example**
 
 ```bash
-tctl workflow scan --print_json
-```
-
-### `--pagesize`
-
-Specify the maximum number of [Workflow Execution](/concepts/what-is-a-workflow-execution) to list on a page.
-(By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
-
-Alias: `--ps`
-
-**Example**
-
-```bash
-tctl workflow scan --pagesize <value>
+tctl workflow start --pager <value>
 ```
 
 ### `--query`
@@ -115,4 +88,16 @@ Alias: `-q`
 
 ```bash
 tctl workflow scan --query <value>
+```
+
+### `--time-format`
+
+Specifies the format for time values.
+
+Values: relative, iso, raw
+
+**Example**
+
+```bash
+tctl workflow start --time-format <value>
 ```

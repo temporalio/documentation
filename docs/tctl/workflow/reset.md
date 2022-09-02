@@ -12,35 +12,11 @@ The `tctl workflow reset` command resets a [Workflow Execution](/concepts/what-i
 
 See also [`tctl workflow reset-batch`](/tctl/workflow/reset-batch).
 
-`tctl workflow reset [<modifiers>]`
+`tctl workflow reset <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Aliases: `--wid`, `-w`
-
-**Example**
-
-```bash
-tctl workflow reset --workflow_id <id>
-```
-
-### `--run_id`
-
-Specify a [Run Id](/concepts/what-is-a-run-id).
-
-Aliases: `--rid`, `-r`
-
-**Example**
-
-```bash
-tctl workflow reset --run_id <id>
-```
-
-### `--event_id`
+### `--event-id`
 
 Specify the `eventId` of any event after `WorkflowTaskStarted` to which you want to reset.
 Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTaskTimeout`.
@@ -48,22 +24,20 @@ Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTas
 **Example**
 
 ```bash
-tctl workflow reset --event_id <id>
+tctl workflow reset --event-id <value>
 ```
 
 ### `--reason`
 
 Specify a reason for resetting the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-<!-- Alias: `--re` -->
-
 **Example**
 
 ```bash
-tctl workflow reset --reason <string>
+tctl workflow reset --reason <value>
 ```
 
-### `--reset_type`
+### `--reset-type`
 
 Specify the event type to which you want to reset.
 
@@ -77,10 +51,10 @@ Specify the event type to which you want to reset.
 **Example**
 
 ```bash
-tctl workflow reset --reset_type <value>
+tctl workflow reset --reset-type <value>
 ```
 
-### `--reset_reapply_type`
+### `--reset-reapply-type`
 
 Specify the types of events to reapply after the reset point.
 Valid values are `All`, `Signal`, and `None`. The default is `All`.
@@ -88,15 +62,39 @@ Valid values are `All`, `Signal`, and `None`. The default is `All`.
 **Example**
 
 ```bash
-tctl workflow reset --reset_reapply_type <value>
+tctl workflow reset --reset-reapply-type <value>
 ```
 
-### `--reset_bad_binary_checksum`
+### `--reset-bad-binary-checksum`
 
-Specify the binary checksum when using `--reset_type BadBinary`.
+Specify the binary checksum when using `--reset-type BadBinary`.
 
 **Example**
 
 ```bash
-tctl workflow reset --reset_bad_binary_checksum <value>
+tctl workflow reset --reset-bad-binary-checksum <value>
+```
+
+### `--run-id`
+
+Specify a [Run Id](/concepts/what-is-a-run-id).
+
+Aliases: `--rid`
+
+**Example**
+
+```bash
+tctl workflow reset --run-id <value>
+```
+
+### `--workflow-id`
+
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
+
+Alias: `--wid`
+
+**Example**
+
+```bash
+tctl workflow reset --workflow-id <value>
 ```

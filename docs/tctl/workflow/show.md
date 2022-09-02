@@ -1,7 +1,7 @@
 ---
 id: show
 title: tctl workflow show
-sidebar_label: show
+sidebar-label: show
 description: How to show Workflow History using tctl.
 tags:
   - reference
@@ -16,104 +16,40 @@ See also [`tctl workflow showid`](/tctl/workflow/showid).
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### `--fields`
 
-Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Aliases: `--wid`, `-w`
-
-**Example**
-
-```bash
-tctl workflow show --workflow_id <id>
-```
-
-### `--run_id`
-
-Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/concepts/what-is-a-run-id).
-
-Aliases: `--rid`, `-r`
+Customize the fields to print.
+Set to 'long' to automatically print more of the main fields.
 
 **Example**
 
 ```bash
-tctl workflow show --run_id <id>
+tctl workflow start --fields <value>
 ```
 
-### `--print_datetime`
+### `--follow`
 
-Print the timestamp.
+Follows the progress of a Workflow Execution.
 
-Alias: `--pdt`
+Alias: `-f`
 
 **Example**
 
 ```bash
-tctl workflow show --print_datetime
+tctl workflow show --follow
 ```
 
-### `--print_raw_time`
+### `--limit`
 
-Print the raw timestamp.
-
-Alias: `--prt`
+Sets the number of items to print.
 
 **Example**
 
 ```bash
-tctl workflow show --print_raw_time
+tctl workflow show --limit <value>
 ```
 
-### `--output_filename`
-
-Serialize an event to a file.
-
-Alias: `--of`
-
-**Example**
-
-```bash
-tctl workflow show --output_filename <filename>
-```
-
-### `--print_full`
-
-Print full event details.
-
-Alias: `--pf`
-
-**Example**
-
-```bash
-tctl workflow show --print_full
-```
-
-### `--print_event_version`
-
-Print the event version.
-
-Alias: `--pev`
-
-**Example**
-
-```bash
-tctl workflow show --print_event_version
-```
-
-### `--event_id`
-
-Print the details of a specified event.
-The default value is 0.
-
-Alias: `--eid`
-
-**Example**
-
-```bash
-tctl workflow show --event_id <id>
-```
-
-### `--max_field_length`
+### `--max-field-length`
 
 Specify the maximum length for each attribute field.
 The default value is 500.
@@ -123,15 +59,101 @@ Alias: `--maxl`
 **Example**
 
 ```bash
-tctl workflow show --max_field_length <length>
+tctl workflow show --max-field-length <value>
 ```
 
-### `--reset_points_only`
+### `--no-pager`
+
+Disables the interactive pager.
+
+Alias: `-P`
+
+**Example**
+
+```bash
+tctl workflow start --no-pager <value>
+```
+
+### `--output`
+
+Specifies the format for printed output.
+
+Alias: `-o`
+
+Values: table, json, card
+
+**Example**
+
+```tctl
+tctl workflow start --output <value>
+```
+
+### `--output-filename`
+
+Serialize an Event to a file.
+
+Alias: `--of`
+
+**Example**
+
+```bash
+tctl workflow show --output-filename <value>
+```
+
+### `--pager`
+
+Specifies the pager to use.
+
+Values: less, more, favoritePager..[$PAGER]
+
+**Example**
+
+```bash
+tctl workflow start --pager <value>
+```
+
+### `--reset-points-only`
 
 Show only events that are eligible for reset.
 
 **Example**
 
 ```bash
-tctl workflow show --reset_points_only
+tctl workflow show --reset-points-only
+```
+
+### `--run-id`
+
+Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/concepts/what-is-a-run-id).
+
+Alias: `--rid`
+
+**Example**
+
+```bash
+tctl workflow show --run-id <value>
+```
+
+### `--time-format`
+
+Specifies the format for time values.
+
+Values: relative, iso, raw
+
+**Example**
+
+```bash
+tctl workflow start --time-format <value>
+```
+
+### `--workflow-id`
+
+Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/concepts/what-is-a-workflow-id).
+
+Alias: `--wid`
+
+**Example**
+
+```bash
+tctl workflow show --workflow-id <value>
 ```

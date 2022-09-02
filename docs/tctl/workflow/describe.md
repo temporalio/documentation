@@ -18,49 +18,47 @@ Alias: `d`
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Aliases: `--wid`, `-w`
-
-**Example**
-
-```bash
-tctl workflow describe --workflow_id <id>
-```
-
-### `--run_id`
-
-Specify a [Run Id](/concepts/what-is-a-run-id).
-If a Run Id is not provided, the command shows the latest Workflow Execution of that Workflow Id.
-
-Aliases: `--rid`, `-r`
-
-**Example**
-
-```bash
-tctl workflow describe --run_id <id>
-```
-
-### `--print_raw`
+### `--raw`
 
 Print properties exactly as they are stored.
 
-Alias: `--praw`
-
 **Example**
 
 ```bash
-tctl workflow describe --run_id <id>
+tctl workflow describe --run-id <id>
 ```
 
-### `--reset_points_only`
+### `--reset-points-only`
 
 Show only events that are eligible for reset.
 
 **Example**
 
 ```bash
-tctl workflow describe --reset_points_only
+tctl workflow describe --reset-points-only
+```
+
+### `--run-id`
+
+Specify a [Run Id](/concepts/what-is-a-run-id).
+If a Run Id is not provided, the command shows the latest Workflow Execution of that Workflow Id.
+
+Alias: `--rid`
+
+**Example**
+
+```bash
+tctl workflow describe --run-id <value>
+```
+
+### `--workflow-id`
+
+Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
+
+Alias: `--wid`
+
+**Example**
+
+```bash
+tctl workflow describe --workflow-id <value>
 ```

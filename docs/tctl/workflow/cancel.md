@@ -16,30 +16,30 @@ After cancellation, the Workflow Execution can perform cleanup work.
 
 See also [`tctl workflow terminate`](/tctl/workflow/terminate).
 
-`tctl workflow cancel [<modifiers>]`
+`tctl workflow cancel <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### `--workflow-id`
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `--wid`
 
 **Example**
 
 ```bash
-tctl workflow cancel --workflow_id <id>
+tctl workflow cancel --workflow-id <value>
 ```
 
-### `--run_id`
+### `--run-id`
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Aliases: `--rid`
 
 **Example**
 
 ```bash
-tctl workflow cancel --run_id <id>
+tctl workflow cancel --run-id <value>
 ```
