@@ -4,6 +4,7 @@ title: What is a Task Queue?
 sidebar_label: Task Queue
 description: A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.
 tags:
+  - term
   - explanation
 ---
 

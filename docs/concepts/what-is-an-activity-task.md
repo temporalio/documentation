@@ -4,6 +4,7 @@ title: What is an Activity Task?
 sidebar_label: Activity Task
 description: An Activity Task contains the context needed to make an Activity Task Execution.
 tags:
+  - term
   - explanation
 ---
 

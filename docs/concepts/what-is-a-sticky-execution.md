@@ -4,6 +4,7 @@ title: What is a Sticky Execution?
 sidebar_label: Sticky Execution
 description: A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 tags:
+  - term
   - explanation
 ---
 

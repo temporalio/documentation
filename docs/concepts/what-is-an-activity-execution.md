@@ -4,6 +4,7 @@ title: What is an Activity Execution?
 sidebar_label: Activity Execution
 description: An Activity Execution is the full chain of Activity Task Executions.
 tags:
+  - term
   - explanation
 ---
 
