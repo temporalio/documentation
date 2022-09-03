@@ -1,14 +1,12 @@
 ---
 id: ui-configuration
 title: Temporal Web UI configuration reference
-description: The Temporal Web UI Server uses a configuration file for many of the UI's settings.
 sidebar_label: UI configuration
+description: The Temporal Web UI Server uses a configuration file for many of the UI's settings.
 tags:
   - reference
   - web-ui
 ---
-
-<!-- This file is generated. Do not edit it directly. -->
 
 The Temporal Web UI Server uses a configuration file for many of the UI's settings.
 
