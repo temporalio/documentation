@@ -96,7 +96,7 @@ The following steps start and run a Temporal Cluster using the default configura
    docker-compose up
    ```
 
-**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/namespaces/default/workflows).
+**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8088`](http://127.0.0.1:8080/namespaces/default/workflows).
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
