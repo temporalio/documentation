@@ -1,5 +1,5 @@
 ---
-id: get-started-namespaces
+id: get-started-namespace
 title: Get started - Namespaces
 sidebar_label: Create a Namespace
 description: Gather required information and use Temporal Cloud UI or tcld.

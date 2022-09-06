@@ -14,6 +14,7 @@ This command returns the Workflow Id and Run Id immediately after starting the W
 `tctl workflow start <modifiers>`
 
 The following modifiers control the behavior of the command.
+Always include required modifiers when executing this command.
 
 ### `--cron`
 

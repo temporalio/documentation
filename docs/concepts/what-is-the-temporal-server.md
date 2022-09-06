@@ -4,6 +4,7 @@ title: What is the Temporal Server?
 sidebar_label: Temporal Server
 description: The Temporal Server is a grouping of four horizontally scalable services.
 tags:
+  - term
   - explanation
 ---
 
@@ -86,7 +87,7 @@ A History shard maintains four types of queues:
 - Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
 - Visibility queue: pushes data to the visibility index (Elasticsearch).
 
-The History Service talks to the Matching Service and the Database.
+The History Service talks to the Matching Service and the database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.

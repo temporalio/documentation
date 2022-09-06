@@ -4,6 +4,7 @@ title: What is a Workflow Type?
 sidebar_label: Workflow Type
 description: A Workflow Type is a name that maps to a Workflow Definition.
 tags:
+  - term
   - explanation
 ---
 

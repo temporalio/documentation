@@ -9,14 +9,16 @@ tags:
 ---
 
 The `tctl workflow describe` command shows information about a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+This information can be used to locate a failed Workflow Execution, for example.
 
-See also [`tctl workflow describeid`](/tctl/workflow/describeid).
+To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](/tctl/workflow/describeid).
 
 `tctl workflow describe <modifiers>`
 
 Alias: `d`
 
 The following modifiers control the behavior of the command.
+Always include required modifiers when executing this command.
 
 ### `--raw`
 

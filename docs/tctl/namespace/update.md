@@ -29,6 +29,7 @@ tctl namespace update --active-cluster <value>
 ### `--add-bad-binary`
 
 Add a binary checksum to use when resetting a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Temporal will not dispatch any [Commands](/concepts/what-is-a-command) to the given binary.
 
 See also [`--remove-bad-binary`](#--remove-bad-binary).
 

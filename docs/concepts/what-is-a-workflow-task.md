@@ -4,6 +4,7 @@ title: What is a Workflow Task?
 sidebar_label: Workflow Task
 description: A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 tags:
+  - term
   - explanation
 ---
 

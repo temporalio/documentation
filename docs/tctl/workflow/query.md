@@ -35,7 +35,8 @@ Queries are written as follows:
 
 `tctl workflow query --workflow-id [modifiers]`
 
-The following modifiers control the behavior of the command. Always include required modifiers when executing this command.
+The following modifiers control the behavior of the command.
+Always include required modifiers when executing this command.
 
 ### `--input`
 
