@@ -16,5 +16,5 @@ Alias: `-P`
 **Example**
 
 ```bash
-tctl workflow start --no-pager <value>
+tctl workflow <command> --no-pager <value>
 ```

@@ -15,5 +15,5 @@ Set to 'long' to automatically print more of the main fields.
 **Example**
 
 ```bash
-tctl workflow start --fields <value>
+tctl workflow <command> --fields <value>
 ```

@@ -78,8 +78,6 @@ import RunId from '../../references/modifiers/run-id.md'
 
 <!--TimeFormat-->
 
-<TimeFormat />
-
 import TimeFormat from '../../references/modifiers/time-format.md'
 
 <TimeFormat />

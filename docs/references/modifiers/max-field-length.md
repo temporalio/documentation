@@ -17,5 +17,5 @@ Alias: `--maxl`
 **Example**
 
 ```bash
-tctl workflow show --max-field-length <value>
+tctl workflow <command> --max-field-length <value>
 ```

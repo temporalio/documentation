@@ -18,276 +18,128 @@ Single quotes (`''`) are used to wrap input as JSON.
 
 The following modifiers control the behavior of the command.
 
-### `--cron`
+<!--Cron-->
 
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
+import Cron from '../../references/modifiers/cron.md'
 
-**Example**
+<Cron />
 
-```bash
-tctl workflow execute --cron <value>
-```
+<!--ExecutionTimeout-->
 
-### `--execution-timeout`
+import ExecutionTimeout from '../../references/modifiers/execution-timeout.md'
 
-Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
-The default value is 0.
+<ExecutionTimeout />
 
-Alias: `--et`
+<!--Fields-->
 
-**Example**
+import Fields from '../../references/modifiers/fields.md'
 
-```bash
-tctl workflow execute --execution-timeout <value>
-```
+<Fields />
 
-### `--fields`
+<!--Input-->
 
-Customize the fields to print.
-Set to 'long' to automatically print more of the main fields.
+import Input from '../../references/modifiers/input.md'
 
-**Example**
+<Input />
 
-```bash
-tctl workflow start --fields <value>
-```
+<!--InputFile-->
 
-### `--input`
+import InputFile from '../../references/modifiers/input-file.md'
 
-Pass input for the Workflow.
-Input must be in JSON format.
-For multiple JSON objects, pass each in a separate `--input` option. Use `null` for null values.
+<InputFile />
 
-Alias: `-i`
+<!--Limit-->
 
-**Example**
+import Limit from '../../references/modifiers/limit.md'
 
-```bash
-tctl workflow execute --input <value>
-```
+<Limit />
 
-### `--input-file`
+<!--MaxFieldLength-->
 
-Pass input for the Workflow from a JSON file.
-For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
-Input from the command line overwrites input from the file.
+import MaxFieldLength from '../../references/modifiers/max-field-length.md'
 
-Alias: `--if`
+<MaxFieldLength />
 
-**Example**
+<!--MemoKey-->
 
-```bash
-tctl workflow execute --input-file <value>
-```
+import MemoKey from '../../references/modifiers/memo-key.md'
 
-### `--limit`
+<MemoKey />
 
-Sets the number of items to print.
+<!--Memo-->
 
-**Example**
+import Memo from '../../references/modifiers/memo.md'
 
-```bash
-tctl workflow show --limit <value>
-```
+<Memo />
 
-### `--max-field-length`
+<!--MemoFile-->
 
-Specify the maximum length for each attribute field.
-The default value is 0.
+import MemoFile from '../../references/modifiers/memo-file.md'
 
-Alias: `--maxl`
+<MemoFile />
 
-**Example**
+<!--NoPager-->
 
-```bash
-tctl workflow execute --max-field-length <value>
-```
+import NoPager from '../../references/modifiers/no-pager.md'
 
-### `--memo-key`
+<NoPager />
 
-Pass a key for a memo.
-For multiple keys, concatenate them and use spaces as separators.
+<!--Output-->
 
-**Example**
+import Output from '../../references/modifiers/output.md'
 
-```bash
-tctl workflow execute --memo-key <value>
-```
+<Output />
 
-### `--memo`
+<!--Pager-->
 
-Pass a memo.
-A memo is information in JSON format that can be shown when the Workflow is listed.
-For multiple memos, concatenate them and use spaces as separators.
-The order must match the order of keys in `--memo-key`.
+import Pager from '../../references/modifiers/pager.md'
 
-**Example**
+<Pager />
 
-```bash
-tctl workflow execute --memo <value>
-```
+<!--SearchAttributeKey-->
 
-### `--memo-file`
+import SearchAttributeKey from '../../references/modifiers/search-attribute-key.md'
 
-Pass information for a memo from a JSON file.
-For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
-The order must match the order of keys in `--memo-key`.
+<SearchAttributeKey />
 
-**Example**
+<!--SearchAttributeValue-->
 
-```bash
-tctl workflow execute --memo-file <value>
-```
+import SearchAttributeValue from '../../references/modifiers/search-attribute-value.md'
 
-### `--no-pager`
+<SearchAttributeValue />
 
-Disables the interactive pager.
+<!--TaskQueue-->
 
-Alias: `-P`
+import TaskQueue from '../../references/modifiers/task-queue.md'
 
-**Example**
+<TaskQueue />
 
-```bash
-tctl workflow start --no-pager <value>
-```
+<!--TaskTimeout-->
 
-### `--output`
+import TaskTimeout from '../../references/modifiers/task-timeout.md'
 
-Specifies the format for printed output.
+<TaskTimeout />
 
-Alias: `-o`
+<!--TimeFormat-->
 
-Values: table, json, card
+import TimeFormat from '../../references/modifiers/time-format.md'
 
-**Example**
+<TimeFormat />
 
-```tctl
-tctl workflow start --output <value>
-```
+<!--Type-->
 
-### `--pager`
+import Type from '../../references/modifiers/type.md'
 
-Specifies the pager to use.
+<Type />
 
-Values: less, more, favoritePager..[$PAGER]
+<!--WorkflowId-->
 
-**Example**
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
-```bash
-tctl workflow start --pager <value>
-```
+<WorkflowId />
 
-### `--search-attribute-key`
+<!--WorkflowIdReusePolicy-->
 
-Specify a [Search Attribute](/concepts/what-is-a-search-attribute) key.
-For multiple keys, concatenate them and use pipes (`|`) as separators.
+import WorkflowIdReusePolicy from '../../references/modifiers/workflow-id-reuse-policy.md'
 
-To list valid keys, use the `tctl cluster get-search-attribute` command.
-
-**Example**
-
-```bash
-tctl workflow execute --search-attribute-key <value>
-```
-
-### `--search-attribute-value`
-
-Specify a [Search Attribute](/concepts/what-is-a-search-attribute) value.
-For multiple values, concatenate them and use pipes (`|`) as separators.
-If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
-
-To list valid keys and value types, use the `tctl cluster get-search-attribute` command.
-
-**Example**
-
-```bash
-tctl workflow execute --search-attribute-value <value>
-```
-
-### `--task-queue`
-
-Specify a [Task Queue](/concepts/what-is-a-task-queue).
-
-Alias: `--tq`
-
-**Example**
-
-```bash
-tctl workflow execute --task-queue <value>
-```
-
-### `--task-timeout`
-
-Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
-The default value is 10.
-
-Alias: `--tt`
-
-**Example**
-
-```bash
-tctl workflow execute --task-timeout <value>
-```
-
-### `--time-format`
-
-Specifies the format for time values.
-
-Values: relative, iso, raw
-
-**Example**
-
-```bash
-tctl workflow start --time-format <value>
-```
-
-### `--type`
-
-Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `-t`
-
-**Example**
-
-```bash
-tctl workflow execute --type <value>
-```
-
-### `--workflow-id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Alias: `--wid`
-
-**Example**
-
-```bash
-tctl workflow execute --workflow-id <value>
-```
-
-### `--workflow-id-reuse-policy`
-
-Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
-
-Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
-
-**Examples**
-
-```bash
-tctl workflow execute --workflow-id-reuse-policy AllowDuplicate
-tctl workflow execute --workflow-id-reuse-policy AllowDuplicateFailedOnly
-tctl workflow execute --workflow-id-reuse-policy RejectDuplicate
-```
-
-### `--show-detail`
-
-Get event details.
-
-Alias: `--sd`
-
-**Example**
-
-```bash
-tctl workflow execute --show-detail
-```
+<WorkflowIdReusePolicy />

@@ -16,5 +16,5 @@ Alias: `-f`
 **Example**
 
 ```bash
-tctl workflow show --follow
+tctl workflow <command> --follow
 ```

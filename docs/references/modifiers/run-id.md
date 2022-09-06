@@ -16,5 +16,5 @@ Alias: `--rid`
 **Example**
 
 ```bash
-tctl workflow show --run-id <value>
+tctl workflow <command> --run-id <value>
 ```

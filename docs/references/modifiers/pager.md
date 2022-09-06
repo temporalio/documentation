@@ -16,5 +16,5 @@ Values: less, more, favoritePager..[$PAGER]
 **Example**
 
 ```bash
-tctl workflow start --pager <value>
+tctl workflow <command> --pager <value>
 ```

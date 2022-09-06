@@ -16,5 +16,5 @@ Values: relative, iso, raw
 **Example**
 
 ```bash
-tctl workflow start --time-format <value>
+tctl workflow <command> --time-format <value>
 ```

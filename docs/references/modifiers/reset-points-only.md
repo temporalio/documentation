@@ -14,5 +14,5 @@ Show only events that are eligible for reset.
 **Example**
 
 ```bash
-tctl workflow show --reset-points-only
+tctl workflow <command> --reset-points-only
 ```

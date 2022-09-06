@@ -16,5 +16,5 @@ Alias: `--wid`
 **Example**
 
 ```bash
-tctl workflow show --workflow-id <value>
+tctl workflow <command> --workflow-id <value>
 ```

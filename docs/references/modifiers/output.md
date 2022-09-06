@@ -18,5 +18,5 @@ Values: table, json, card
 **Example**
 
 ```tctl
-tctl workflow start --output <value>
+tctl workflow <command> --output <value>
 ```

@@ -16,5 +16,5 @@ Alias: `--of`
 **Example**
 
 ```bash
-tctl workflow show --output-filename <value>
+tctl workflow <command> --output-filename <value>
 ```

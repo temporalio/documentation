@@ -14,5 +14,5 @@ Sets the number of items to print.
 **Example**
 
 ```bash
-tctl workflow show --limit <value>
+tctl workflow <command> --limit <value>
 ```
