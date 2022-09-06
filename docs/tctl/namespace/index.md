@@ -7,9 +7,9 @@ tags:
   - tctl
 ---
 
-Alias: `n`
-
 The `tctl namespace` commands enable [Namespace](/concepts/what-is-a-namespace) operations.
+
+Alias: `n`
 
 - [`tctl namespace describe`](/tctl/namespace/describe)
 - [`tctl namespace list`](/tctl/namespace/list)
