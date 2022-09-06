@@ -4,6 +4,7 @@ title: What is a Worker Entity?
 sidebar_label: Worker Entity
 description: A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
 tags:
+  - term
   - explanation
 ---
 

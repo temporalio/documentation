@@ -70,7 +70,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level [authorization mechanism](/server/security/#authorizer-plugin-interface) that determines whether to allow or deny inbound API calls.
+Sets a low level [authorization mechanism](/concepts/what-is-an-authorizer-plugin) that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(

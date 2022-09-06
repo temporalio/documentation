@@ -1,0 +1,95 @@
+{
+  "file_name": "workflows.md",
+  "id": "workflows",
+  "file_dir": "/",
+  "title": "Workflows",
+  "sidebar_label": "Workflows",
+  "description": "This guide provides a comprehensive overview of Temporal Workflows.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-a-workflow"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-definition"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-type"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-execution"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-command"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-event"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-an-event-history"
+    },
+    {
+      "type": "h4",
+      "id": "concepts/what-is-continue-as-new"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-run-id"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-id"
+    },
+    {
+      "type": "h4",
+      "id": "concepts/what-is-a-workflow-id-reuse-policy"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-execution-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-run-timeout"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-workflow-task-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-signal"
+    },
+
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-query"
+    },
+
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-child-workflow-execution"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-parent-close-policy"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-temporal-cron-job"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-schedule"
+    }
+  ]
+}

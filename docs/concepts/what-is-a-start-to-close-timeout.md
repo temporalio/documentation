@@ -4,6 +4,7 @@ title: What is a Start-To-Close Timeout?
 sidebar_label: Start-To-Close Timeout
 description: A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
 tags:
+  - term
   - explanation
   - timeouts
 ---

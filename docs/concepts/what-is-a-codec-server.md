@@ -3,6 +3,8 @@ id: what-is-a-codec-server
 title: What is a Codec Server?
 sidebar_label: Codec Server
 description: Explanation and implementation of a remote encryption/decryption server.
+tags:
+  - term
 ---
 
 A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl) or the [Web UI](/web-ui).

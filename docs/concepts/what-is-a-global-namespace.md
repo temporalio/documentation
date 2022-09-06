@@ -4,6 +4,7 @@ title: What is a Global Namespace?
 sidebar_label: Global Namespace
 description: A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.
 tags:
+  - term
   - explanation
 ---
 

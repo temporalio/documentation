@@ -17,7 +17,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
   signal := MySignal {
     Message: "Some important data",
   }
-  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signalData).Get(ctx, nil)
+  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signal).Get(ctx, nil)
   if err != nil {
     // ...
   }

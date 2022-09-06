@@ -4,6 +4,7 @@ title: What is an Activity Id?
 sidebar_label: Activity Id
 description: A unique identifier for an Activity Execution.
 tags:
+  - term
   - explanation
 ---
 

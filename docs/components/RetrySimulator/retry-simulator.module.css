@@ -95,6 +95,8 @@
 .numberInputLabel {
   float: left;
   max-width: 69%;
+  background-color: var(--ifm-background-color);
+  color: var(--docsearch-text-color);
 }
 
 .numberInput {
@@ -114,6 +116,7 @@
   padding: 0.25em 0.5em;
   border: 1px solid #ddd;
   background-color: var(--ifm-background-color);
+  color: var(--docsearch-text-color);
   margin-bottom: 1em;
 }
 
