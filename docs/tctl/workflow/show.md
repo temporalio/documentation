@@ -22,6 +22,8 @@ import Fields from './tctl/\_modifiers.md'
 
 <!-- include:../tctl/modifiers#follow-->
 
+<!-- includeL../tctl/modifiers#limit-->
+
 ### `--limit`
 
 Sets the number of items to print.
