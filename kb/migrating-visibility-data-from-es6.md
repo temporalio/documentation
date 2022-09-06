@@ -17,7 +17,9 @@ Visibility data can be migrated through reindexing.
 After updating Elasticsearch, run a reindexing process to move data from ES6 to ES7.
 
 :::note
+
 If you are using AWS Elasticsearch, only upgrade to version 7.7.
+
 :::
 
 ## Fresh install
