@@ -16,131 +16,68 @@ Resetting a Workflow allows the process to be resumed from a certain point witho
 
 The following modifiers control the behavior of the command.
 
-### `--dry-run`
+<!--DryRun-->
 
-Simulate a reset without resetting any [Workflow Executions](/concepts/what-is-a-workflow-execution).
-Output is logged to `stdout`.
+import DryRun from '../../references/modifiers/dry-run.md'
 
-**Example**
+<DryRun />
 
-```bash
-tctl workflow reset-batch --dry-run
-```
+<!--ExcludeFile-->
 
-### `--exclude-file`
+import ExcludeFile from '../../references/modifiers/exclude-file.md'
 
-Provide an input file that specifies [Workflow Executions](/concepts/what-is-a-workflow-execution) to exclude from resetting.
+<ExcludeFile />
 
-Each line contains one [Workflow Id](/concepts/what-is-a-workflow-id).
+<!--InputFile-->
 
-**Example**
+import InputFile from '../../references/modifiers/input-file.md'
 
-```bash
-tctl workflow reset-batch --exclude-file <value>
-```
+<InputFile />
 
-### `--input-file`
+<!--InputParallelism-->
 
-Provide an input file that specifies [Workflow Execution](/concepts/what-is-a-workflow-execution) to reset.
+import IP from '../../references/modifiers/input-parallelism.md'
 
-Each line contains one [Workflow Id](/concepts/what-is-a-workflow-id) as the base Run and, optionally, a [Run Id](/concepts/what-is-a-run-id).
-If a Run Id is not specified, the current Run Id is used.
+<IP />
 
-Alias: `--if`
+<!--NonDeterministic-->
 
-**Example**
+import NonDeterministic from '../../references/modifiers/non-deterministic.md'
 
-```bash
-tctl workflow reset-batch --input-file <value>
-```
+<NonDeterministic />
 
-### `--input-parallism`
+<!--Query-->
 
-Specify the number of goroutines to run in parallel.
-Each goroutine processes one line for every second.
-The default is 1.
+import Query from '../../references/modifiers/query.md'
 
-**Example**
+<Query />
 
-```bash
-tctl workflow reset-batch --input-parallism <value>
-```
+<!--Reason-->
 
-### `--non-deterministic-error`
+import Reason from '../../references/modifiers/reason.md'
 
-Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a nondeterministic error.
+<Reason />
 
-**Example**
+<!--ResetBadBinaryChecksum-->
 
-```bash
-tctl workflow reset-batch --only-non-deterministic
-```
+import ResetBadBinaryChecksum from '../../references/modifiers/reset-bad-binary-checksum.md'
 
-### `--query`
+<ResetBadBinaryChecksum />
 
-Specify an SQL-like visibility query of [Search Attributes](/concepts/what-is-a-search-attribute) describing the [Workflow Executions](/concepts/what-is-a-workflow-execution) to reset.
+<!--ResetType-->
 
-Alias: `-q`
+import ResetType from '../../references/modifiers/reset-type.md'
 
-**Example**
+<ResetType />
 
-```bash
-tctl workflow reset-batch --query <value>
-```
+<!--SkipCurrentOpen-->
 
-### `--reason`
+import SCO from '../../references/modifiers/skip-current-open.md'
 
-Specify a reason for resetting the [Workflow Executions](/concepts/what-is-a-workflow-execution).
+<SCO />
 
-**Example**
+<!--SkipBaseIsNotCurrent-->
 
-```bash
-tctl workflow reset-batch --reason <value>
-```
+import SkipBaseNotCurrent from '../../references/modifiers/skip-base-not-current.md'
 
-### `--reset-bad-binary-checksum`
-
-Specify the binary checksum when using `--reset-type BadBinary`.
-
-**Example**
-
-```bash
-tctl workflow reset-batch --reset-bad-binary-checksum <value>
-```
-
-### `--reset-type`
-
-Specify the event type to which you want to reset.
-
-| Value                | Description                                                 |
-| -------------------- | ----------------------------------------------------------- |
-| `FirstWorkflowTask`  | Reset to the beginning of the Event History.                |
-| `LastWorkflowTask`   | Reset to the end of the Event History.                      |
-| `LastContinuedAsNew` | Reset to the end of the Event History for the previous Run. |
-| `BadBinary`          | Reset to the point where a bad binary was used.             |
-
-**Example**
-
-```bash
-tctl workflow reset-batch --reset-type <value>
-```
-
-### `--skip-current-open`
-
-Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be skipped if the current Run is open for the same [Workflow Id](/concepts/what-is-a-workflow-id) as the base Run.
-
-**Example**
-
-```bash
-tctl workflow reset-batch --skip-current-open
-```
-
-### `--skip-base-is-not-current`
-
-Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be skipped if the base Run is not the current Run.
-
-**Example**
-
-```bash
-tctl workflow reset-batch --skip-base-is-not-current
-```
+<SkipBaseNotCurrent />

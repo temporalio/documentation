@@ -20,132 +20,50 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 
 The following modifiers control the behavior of the command.
 
-### `--archived`
+<!--Archived-->
 
-**This is an experimental feature.**
+import Archived from '../../references/modifiers/archived.md'
 
-List archived Workflow Executions.
+<Archived />
 
-Alias: `-a`
+<!--Fields-->
 
-**Example**
+import Fields from '../../references/modifiers/fields.md'
 
-```bash
-tctl workflow list --archived
-```
+<Fields />
 
-### `--fields`
+<!--Limit-->
 
-Customize the fields to print.
-Set to 'long' to automatically print more of the main fields.
+import Limit from '../../references/modifiers/limit.md'
 
-**Example**
+<Limit />
 
-```bash
-tctl workflow start --fields <value>
-```
+<!--NoPager-->
 
-### `--limit`
+import NoPager from '../../references/modifiers/no-pager.md'
 
-Sets the number of items to print.
+<NoPager />
 
-**Example**
+<!--Output-->
 
-```bash
-tctl workflow show --limit <value>
-```
+import Output from '../../references/modifiers/output.md'
 
-### `--no-pager`
+<Output />
 
-Disables the interactive pager.
+<!--Pager-->
 
-Alias: `-P`
+import Pager from '../../references/modifiers/pager.md'
 
-**Example**
+<Pager />
 
-```bash
-tctl workflow start --no-pager <value>
-```
+<!--Query-->
 
-### `--output`
+import Query from '../../references/modifiers/query.md'
 
-Specifies the format for printed output.
+<Query />
 
-Alias: `-o`
+<!--TimeFormat-->
 
-Values: table, json, card
+import TimeFormat from '../../references/modifiers/time-format.md'
 
-**Example**
-
-```tctl
-tctl workflow start --output <value>
-```
-
-### `--pager`
-
-Specifies the pager to use.
-
-Values: less, more, favoritePager..[$PAGER]
-
-**Example**
-
-```bash
-tctl workflow start --pager <value>
-```
-
-### `--query`
-
-**How to list and filter Workflow Executions with a [List Filter](/concepts/what-is-a-list-filter) using tctl.**
-
-The `--query` flag is supported only when [Advanced Visibility](/concepts/what-is-advanced-visibility) is configured with the Cluster.
-
-Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest-time`, `latest-time`, `workflow-id`, and `workflow-type`.
-
-Alias: `-q`
-
-**Example**
-
-```bashbash
-tctl workflow list --query "WorflowId=<your-workflow-id>"
-```
-
-More examples:
-
-```bashbash
-tctl workflow list \
-  --query "WorkflowType='main.SampleParentWorkflow' AND ExecutionStatus='Running'"
-```
-
-```bashbash
-tctl workflow list \
-  --query '(CustomKeywordField = "keyword1" and CustomIntField >= 5) or CustomKeywordField = "keyword2"' \
-  --print-search-attr
-```
-
-```bashbash
-tctl workflow list \
-  --query 'CustomKeywordField in ("keyword2", "keyword1") and CustomIntField >= 5 and CloseTime between "2018-06-07T16:16:36-08:00" and "2019-06-07T16:46:34-08:00" order by CustomDatetimeField desc' \
-  --print-search-attr
-```
-
-```bashbash
-tctl workflow list \
-  --query 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
-```
-
-```bashbash
-tctl workflow list \
-  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
-```
-
-### `--time-format`
-
-Specifies the format for time values.
-
-Values: relative, iso, raw
-
-**Example**
-
-```bash
-tctl workflow start --time-format <value>
-```
+<TimeFormat />

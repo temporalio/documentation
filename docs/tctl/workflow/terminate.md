@@ -19,38 +19,20 @@ See also [`tctl workflow cancel`](/tctl/workflow/cancel).
 
 The following modifiers control the behavior of the command.
 
-### `--workflow-id`
+<!--WorkflowId-->
 
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
-Alias: `--wid`
+<WorkflowId />
 
-**Example**
+<!--RunId-->
 
-```bash
-tctl workflow terminate --workflow-id <value>
-```
+import RunId from '../../references/modifiers/run-id.md'
 
-### `--run-id`
+<RunId />
 
-Specify a [Run Id](/concepts/what-is-a-run-id).
+<!--Reason-->
 
-Aliases: `--rid`
+import Reason from '../../references/modifiers/reason.md'
 
-**Example**
-
-```bash
-tctl workflow terminate --run-id <value>
-```
-
-### `--reason`
-
-Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-workflow-execution).
-
-Alias: `-r`
-
-**Example**
-
-```bash
-tctl workflow terminate --reason <value>
-```
+<Reason />
