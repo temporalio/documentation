@@ -25,22 +25,19 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 ## Fresh install
 
 1. Install the latest version of Temporal Server.
+1. Install ES7 as shown in the Elasticsearch documentation.
+1. To set the Elasticsearch version in Temporal Server:
+  - Set the version in the server's static config file:
 
-2. Install ES7 as shown in the Elasticsearch documentation.
+    ```
+    persistence:
+      datastores:
+        es-visibility:
+          elasticsearch:
+            version: "v7"
+    ```
 
-3. To set the Elasticsearch version in Temporal server:
-
-- Iet the ES version in the server's static config file:
-
-  ```
-  persistence:
-    datastores:
-      es-visibility:
-        elasticsearch:
-          version: "v7"
-  ```
-
-- Set ES_VERSION to v7 in the pre-build docker image.
+  - Set `ES_VERSION` to `v7` in the pre-built Docker image.
 
 ## Upgrade with temporary shutdown
 
