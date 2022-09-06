@@ -1,8 +1,8 @@
 {
   "content_source_dirs": [
-    "docs/app-dev-context",
     "docs-src/cloud-context",
-    "docs/cluster-ops-context",
+    "docs-src/app-dev-context",
+    "docs-src/cluster-ops-context",
     "docs/clusters",
     "docs/concept-context",
     "docs/concepts",
