@@ -22,7 +22,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 
 :::
 
-## Fresh install
+## Fresh installation
 
 1. Install the latest version of Temporal Server.
 1. Install ES7 as shown in the Elasticsearch documentation.
