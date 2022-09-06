@@ -344,7 +344,55 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Use the `#[SignalMethod]` annotation to handle Signals in the Workflow interface:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class YourWorkflow
+{
+    private bool $value;
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        yield Workflow::await(fn()=> $this->value);
+        return 'OK';
+    }
+
+    #[Workflow\SignalMethod]
+    public function setValue(bool $value)
+    {
+        $this->value = $value;
+    }
+}
+```
+
+In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
+`Workflow::await()` function.
+
+To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+
+```php
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
+
+$run = $workflowClient->start($workflow);
+
+// do something
+
+$workflow->setValue(true);
+
+assert($run->getValue() === true);
+```
+
+Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with workflow id to send
+signals to already running workflows.
+
+```php
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
+$workflow->setValue(true);
+```
 
 </TabItem>
 <TabItem value="python">
