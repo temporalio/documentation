@@ -10,11 +10,15 @@ tags:
 
 The `tctl workflow stack` command queries [Workflow Execution](/concepts/what-is-a-workflow-execution) with `__stack_trace` as the query type.
 
-`tctl workflow stack [<modifiers>]`
+This command can be used to locate errors and blocks in a [Workflow Definition](/concepts/what-is-a-workflow-definition).
+
+`tctl workflow stack <modifiers>`
 
 The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
+
+**This is a required modifier.**
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
