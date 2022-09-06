@@ -4,6 +4,7 @@ title: What is a Temporal Client
 sidebar_label: Temporal Client
 description: TODO
 tags:
+  - term
   - explanation
 ---
 

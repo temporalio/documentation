@@ -10,7 +10,8 @@
     "docs/java",
     "docs/python",
     "docs/php",
-    "docs/typescript"
+    "docs/typescript",
+    "docs-src/references"
   ],
   "content_write_dir": "docs",
   "temp_write_dir": "assembly/temp",
@@ -19,10 +20,5 @@
   "guide_configs_with_attached_nodes_file_name": "matched-guides.json",
   "outline_diagram_JSON_fIle_name": "outline-diagram.json",
   "outline_diagram_file_path": "docs/components",
-  "additional_files_to_parse": [
-    "references/commands.md",
-    "references/events.md",
-    "references/metrics.md",
-    "references/configurations.md"
-  ]
+  "glossary_file_name": "glossary.md"
 }

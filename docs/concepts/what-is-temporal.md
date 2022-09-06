@@ -4,6 +4,7 @@ title: What is Temporal?
 sidebar_label: Temporal
 description: Temporal is a scalable and reliable runtime for Reentrant Processes called Temporal Workflow Executions.
 tags:
+  - term
   - explanation
 ---
 

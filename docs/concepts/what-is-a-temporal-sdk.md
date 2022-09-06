@@ -4,6 +4,7 @@ title: What is a Temporal SDK?
 sidebar_label: Temporal SDK
 description: A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.
 tags:
+  - term
   - explanation
 ---
 

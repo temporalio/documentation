@@ -4,6 +4,7 @@ title: What is a Heartbeat Timeout?
 sidebar_label: Heartbeat Timeout
 description: A Heartbeat Timeout is the maximum time between Activity Heartbeats.
 tags:
+  - term
   - explanation
   - timeouts
 ---

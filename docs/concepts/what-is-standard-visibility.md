@@ -4,6 +4,7 @@ title: What is Standard Visibility?
 sidebar_label: Standard Visibility
 description: Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
 tags:
+  - term
   - explanation
   - filtered-lists
   - visibility

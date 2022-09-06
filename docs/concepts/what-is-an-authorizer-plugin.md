@@ -1,7 +1,9 @@
 ---
 id: what-is-an-authorizer-plugin
 title: What is an Authorizer Plugin?
-sidebar_label: What is an Authorizer Plugin?
+sidebar_label: Authorizer Plugin
+tags:
+  - term
 ---
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.

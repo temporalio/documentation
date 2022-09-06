@@ -48,6 +48,7 @@ module.exports = {
         "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
         "cloud/how-to-manage-namespaces-in-temporal-cloud",
+        "cloud/how-to-monitor-temporal-cloud-metrics",
         {
           type: "category",
           label: "tcld",
@@ -347,26 +348,6 @@ module.exports = {
                     "tctl/admin/workflow/show",
                   ],
                 },
-                {
-                  type: "category",
-                  label: "schedule",
-                  collapsible: true,
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "tctl/schedule/index",
-                  },
-                  items: [
-                    "tctl/schedule/create",
-                    "tctl/schedule/describe",
-                    "tctl/schedule/update",
-                    "tctl/schedule/delete",
-                    "tctl/schedule/list",
-                    "tctl/schedule/toggle",
-                    "tctl/schedule/trigger",
-                    "tctl/schedule/backfill",
-                  ],
-                },
               ],
             },
             {
@@ -424,6 +405,26 @@ module.exports = {
                 "tctl/namespace/list",
                 "tctl/namespace/register",
                 "tctl/namespace/update",
+              ],
+            },
+            {
+              type: "category",
+              label: "schedule",
+              collapsible: true,
+              collapsed: true,
+              link: {
+                type: "doc",
+                id: "tctl/schedule/index",
+              },
+              items: [
+                "tctl/schedule/create",
+                "tctl/schedule/describe",
+                "tctl/schedule/update",
+                "tctl/schedule/delete",
+                "tctl/schedule/list",
+                "tctl/schedule/toggle",
+                "tctl/schedule/trigger",
+                "tctl/schedule/backfill",
               ],
             },
             {
