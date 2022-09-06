@@ -42,8 +42,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 ## Upgrade with temporary shutdown
 
 1. Shut down the Temporal Cluster.
-
-2. Upgrade ES6 to ES7 according to Elasticsearch's documentation.
+1. Upgrade ES6 to ES7 according to Elasticsearch documentation.
 
 ## Rolling Upgrade
 
