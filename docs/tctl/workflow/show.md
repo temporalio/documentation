@@ -18,8 +18,6 @@ The following modifiers control the behavior of the command.
 
 <!-- include:../tctl/modifiers#fields-->
 
-import Fields from './tctl/\_modifiers.md'
-
 <!-- include:../tctl/modifiers#follow-->
 
 <!-- includeL../tctl/modifiers#limit-->
