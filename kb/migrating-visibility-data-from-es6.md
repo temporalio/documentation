@@ -6,8 +6,8 @@ tags:
 date: 2022-29-08T00:00:00Z
 ---
 
-Support for Elasticsearch v7 (ES7) was added to the 1.7.0. Temporal Server update.
-This introduces several breaking changes, including the removal of mapping types.
+We added support for Elasticsearch v7 (ES7) in the v1.7.0 update to Temporal Server.
+ES7 introduces several breaking changes, including the removal of mapping types.
 These changes make ES6 incompatible with ES7.
 
 There are several ways to update your Temporal Server to support ES7.
