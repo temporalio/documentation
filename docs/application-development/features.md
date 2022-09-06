@@ -2518,19 +2518,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-To enable retries for a Workflow, you need to provide a retry policy via `ChildWorkflowOptions` for child Workflows or
-via `WorkflowOptions` for top-level Workflows:
-
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-      CronWorkflowInterface::class,
-      WorkflowOptions::new()->withRetryOptions(
-        RetryOptions::new()->withInitialInterval(120)
-      )
-);
-```
-
-For more detailed information about `RetryOptions` object see [retries](/php/retries) for more details.
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
