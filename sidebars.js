@@ -197,7 +197,6 @@ module.exports = {
       items: [
         "tctl/how-to-install-tctl",
         "tctl/environment-variables",
-        "tctl/how-to-use-tctl",
         {
           type: "category",
           label: "tctl commands",
