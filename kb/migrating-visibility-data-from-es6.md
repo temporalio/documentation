@@ -48,8 +48,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 ## Rolling upgrade
 
 1. Update the Server to the latest release.
-
-2. Add the following to the dynamic config:
+1. Add the following to the dynamic config:
 
    ```
    history.visibilityProcessorEnabled:
