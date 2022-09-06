@@ -25,7 +25,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 ## Fresh installation
 
 1. Install the latest version of Temporal Server.
-2. Install ES7 as shown in the Elasticsearch documentation.
+2. Install ES7 as shown in the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
 3. To set the Elasticsearch version in Temporal Server:
 
 - Set the version in the server's static config file:
@@ -43,7 +43,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 ## Upgrade with temporary shutdown
 
 1. Shut down the Temporal Cluster.
-2. Upgrade ES6 to ES7 according to Elasticsearch documentation.
+2. Upgrade ES6 to ES7 according to [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
 
 ## Rolling upgrade
 
@@ -58,7 +58,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 3. Restart the Server.
    Workflow visibility information won't be updated.
 
-4. Upgrade ES6 to ES7 following steps from the Elasticsearch documentation.
+4. Upgrade ES6 to ES7 following steps from the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
 
 5. Start ES7.
    Visibility read queries will temporarily generate errors.
