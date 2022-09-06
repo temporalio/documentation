@@ -16,127 +16,76 @@ See also [`tctl workflow showid`](/tctl/workflow/showid).
 
 The following modifiers control the behavior of the command.
 
-<!-- include:../tctl/modifiers#fields-->
+<!--Fields-->
 
-<!-- include:../tctl/modifiers#follow-->
+import Fields from '../../references/modifiers/fields.md'
 
-<!-- includeL../tctl/modifiers#limit-->
+<Fields />
 
-### `--limit`
+<!--Follow-->
 
-Sets the number of items to print.
+import Follow from '../../references/modifiers/follow.md'
 
-**Example**
+<Follow />
 
-```bash
-tctl workflow show --limit <value>
-```
+<!--Limit-->
 
-### `--max-field-length`
+import Limit from '../../references/modifiers/limit.md'
 
-Specify the maximum length for each attribute field.
-The default value is 500.
+<Limit />
 
-Alias: `--maxl`
+<!--MaxFieldLength-->
 
-**Example**
+import MaxFieldLength from '../../references/modifiers/max-field-length.md'
 
-```bash
-tctl workflow show --max-field-length <value>
-```
+<MaxFieldLength />
 
-### `--no-pager`
+<!--NoPager-->
 
-Disables the interactive pager.
+import NoPager from '../../references/modifiers/no-pager.md'
 
-Alias: `-P`
+<NoPager />
 
-**Example**
+<!--Output-->
 
-```bash
-tctl workflow start --no-pager <value>
-```
+import Output from '../../references/modifiers/output.md'
 
-### `--output`
+<Output />
 
-Specifies the format for printed output.
+<!--OutputFilename-->
 
-Alias: `-o`
+import OutputFilename from '../../references/modifiers/output-filename.md'
 
-Values: table, json, card
+<OutputFilename />
 
-**Example**
+<!--Pager-->
 
-```tctl
-tctl workflow start --output <value>
-```
+import Pager from '../../references/modifiers/pager.md'
 
-### `--output-filename`
+<Pager />
 
-Serialize an Event to a file.
+<!--ResetPointsOnly-->
 
-Alias: `--of`
+import ResetPointsOnly from '../../references/modifiers/reset-points-only.md'
 
-**Example**
+<ResetPointsOnly />
 
-```bash
-tctl workflow show --output-filename <value>
-```
+<!--RunId-->
 
-### `--pager`
+import RunId from '../../references/modifiers/run-id.md'
 
-Specifies the pager to use.
+<RunId />
 
-Values: less, more, favoritePager..[$PAGER]
+<!--TimeFormat-->
 
-**Example**
+<TimeFormat />
 
-```bash
-tctl workflow start --pager <value>
-```
+import TimeFormat from '../../references/modifiers/time-format.md'
 
-### `--reset-points-only`
+<TimeFormat />
 
-Show only events that are eligible for reset.
+<!--WorkflowId-->
 
-**Example**
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
-```bash
-tctl workflow show --reset-points-only
-```
-
-### `--run-id`
-
-Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/concepts/what-is-a-run-id).
-
-Alias: `--rid`
-
-**Example**
-
-```bash
-tctl workflow show --run-id <value>
-```
-
-### `--time-format`
-
-Specifies the format for time values.
-
-Values: relative, iso, raw
-
-**Example**
-
-```bash
-tctl workflow start --time-format <value>
-```
-
-### `--workflow-id`
-
-Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Alias: `--wid`
-
-**Example**
-
-```bash
-tctl workflow show --workflow-id <value>
-```
+<WorkflowId />

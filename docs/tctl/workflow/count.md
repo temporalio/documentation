@@ -15,18 +15,8 @@ This command requires Elasticsearch to be enabled.
 
 The following modifier controls the behavior of the command.
 
-### `--query`
+<!--Query-->
 
-_Required modifier_
+import Query from '../../references/modifiers/query.md'
 
-Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
-
-Alias: `-q`
-
-**Example**
-
-To count all open [Workflow Executions](/concepts/what-is-a-workflow-execution):
-
-```bash
-tctl workflow count --query 'ExecutionStatus="Running"'
-```
+<Query />
