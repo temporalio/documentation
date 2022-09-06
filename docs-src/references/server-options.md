@@ -1,12 +1,12 @@
 ---
-id: options
+id: server-options
 title: Temporal Server options
 sidebar_label: Start options
 ---
 
-## Overview
+You can run the Temporal server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a new Temporal Server.
 
-You can run the Temporal server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a new server:
+Note, there are many ways to [run a Temporal Cluster](/kb/install-temporal-cluster-for-development) and this is approach is recommended for a limited number of situations.
 
 ```go
 s := temporal.NewServer()
@@ -15,8 +15,6 @@ if err != nil{
 	log.Fatal(err)
 }
 ```
-
-## Options
 
 `NewServer()` accepts functions as parameters.
 Each function returns a `ServerOption` that is applied to the instance.
