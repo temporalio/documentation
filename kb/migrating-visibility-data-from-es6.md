@@ -55,7 +55,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
      - value: false
    ```
 
-3. Restart the Server.
+1. Restart the Server.
    Workflow visibility information won't be updated.
 
 4. Upgrade ES6 to ES7 following steps from the Elasticsearch documentation.
