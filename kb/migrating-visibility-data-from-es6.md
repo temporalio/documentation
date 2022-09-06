@@ -58,13 +58,13 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 1. Restart the Server.
    Workflow visibility information won't be updated.
 
-4. Upgrade ES6 to ES7 following steps from the Elasticsearch documentation.
+1. Upgrade ES6 to ES7 following steps from the Elasticsearch documentation.
 
-5. Start ES7.
+1. Start ES7.
    Visibility read queries will temporarily generate errors.
    Write queries are blocked because the processor is disabled.
 
-6. Switch to ES7 in the Server's static config:
+1. Switch to ES7 in the Server's static config:
 
    ```
    persistence:
@@ -74,13 +74,13 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
            version: "v7"
    ```
 
-7. Set ES_VERSION env to v7 if you are using pre-build docker image.
+1. Set ES_VERSION env to v7 if you are using pre-build docker image.
 
-8. Remove this from the dynamic config:
+1. Remove this from the dynamic config:
 
    ```
    history.visibilityProcessorEnabled:
      - value: false
    ```
 
-9. Restart the Server one more time.
+1. Restart the Server one more time.
