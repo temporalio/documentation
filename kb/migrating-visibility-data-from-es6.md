@@ -44,7 +44,7 @@ If you are using AWS Elasticsearch, only upgrade to version 7.7.
 1. Shut down the Temporal Cluster.
 1. Upgrade ES6 to ES7 according to Elasticsearch documentation.
 
-## Rolling Upgrade
+## Rolling upgrade
 
 1. Update the Server to the latest release.
 
