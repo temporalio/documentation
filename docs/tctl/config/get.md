@@ -1,0 +1,19 @@
+---
+id: get
+title: tctl config get
+description: Print configuration values.
+  - reference
+  - tctl
+---
+
+The `tctl config get` command prints the configuration values of the current environment.
+
+`tctl config get <modifiers>`
+
+The following modifier changes the behavior of this command.
+
+<!--Namespace-->
+
+import Namespace from '../../references/modifiers/namespace.md'
+
+<Namespace />
