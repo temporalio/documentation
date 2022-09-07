@@ -6,7 +6,7 @@ tags:
 date: 2022-29-08T00:00:00Z
 ---
 
-We added support for [Elasticsearch v7+](https://www.elastic.co/downloads/past-releases/#elasticsearch (ES7)) in the v1.7.0 update to the [Temporal Server](/clusters#temporal-server).
+We added support for [Elasticsearch v7+](https://www.elastic.co/downloads/past-releases/#elasticsearch "ES7") in the v1.7.0 update to the [Temporal Server](/clusters#temporal-server).
 ES7 introduces several breaking changes, including the removal of mapping types.
 These changes make ES6 incompatible with ES7.
 
