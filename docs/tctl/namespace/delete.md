@@ -14,27 +14,14 @@ The `tctl namespace delete` command deletes a [Namespace](/concepts/what-is-a-na
 
 The following modifiers control the behavior of the command.
 
-### `--name`
+<!--Namespace-->
 
-Identifies the Namespace to delete.
+import Namespace from '../../references/modifiers/namespace.md'
 
-Alias: `-n`
+<Namespace />
 
-**Example**
+<!--Yes-->
 
-```bash
-tctl namespace delete --name <value>
-```
+import Yes from '../../references/modifiers/yes-mod.md'
 
-### `--yes`
-
-Confirms all prompts when deleting a Namespace.
-This is false by default.
-
-Alias: `-y`
-
-**Example**
-
-```bash
-tctl namespace delete --yes <value>
-```
+<Yes />

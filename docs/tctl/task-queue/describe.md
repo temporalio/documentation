@@ -12,34 +12,42 @@ Alias: `desc`
 
 The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/concepts/what-is-a-task-queue).
 
-`tctl taskqueue describe <modifiers> <value>`
+`tctl taskqueue describe <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--taskqueue`
+<!--Fields-->
 
-_Required modifier_
+import Fields from '../../references/modifiers/fields.md'
 
-Specify a [Task Queue](/concepts/what-is-a-task-queue).
+<Fields />
 
-Alias: `--tq`
+<!--Namespace-->
 
-**Example**
+import Namespace from '../../references/modifiers/namespace.md'
 
-```bash
-tctl taskqueue describe --taskqueue <value>
-```
+<Namespace />
 
-### `--taskqueuetype`
+<!--Output-->
 
-Specify the type of a [Task Queue](/concepts/what-is-a-task-queue).
-The type can be `workflow` or `activity`.
-The default is `workflow`.
+import Output from '../../references/modifiers/namespace.md'
 
-Alias: `--tqt`
+<Output />
 
-**Example**
+<!--TaskQueue-->
 
-```bash
-tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
-```
+import TaskQueue from '../../references/modifiers/task-queue.md'
+
+<TaskQueue />
+
+<!--TaskQueueType-->
+
+import TQT from '../../references/modifiers/task-queue-type.md'
+
+<TQT />
+
+<!--TimeFormat-->
+
+import TimeFormat from '../../references/modifiers/time-format.md'
+
+<TimeFormat />

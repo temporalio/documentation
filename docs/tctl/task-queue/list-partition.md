@@ -14,16 +14,20 @@ The `tctl task-queue list-partition` command lists the partitions of a [Task Que
 
 The following modifier controls the behavior of the command.
 
-### `task-queue`
+<!--Namespace-->
 
-_Required modifier_
+import Namespace from '../../references/modifiers/namespace.md'
 
-Specify a [Task Queue](/concepts/what-is-a-task-queue).
+<Namespace />
 
-Alias: `--tq`
+<!--Output-->
 
-**Example**
+import Output from '../../references/modifiers/output.md'
 
-```bash
-tctl task-queue list-partition --task-queue <value>
-```
+<Output />
+
+<!--TaskQueue-->
+
+import TaskQueue from '../../references/modifiers/task-queue.md'
+
+<TaskQueue />

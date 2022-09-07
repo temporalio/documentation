@@ -16,6 +16,12 @@ Alias: `d`
 
 The following modifier controls the behavior of the command.
 
+<!--Namespace-->
+
+import Namespace from '../../references/modifiers/yes-mod.md'
+
+<Namespace />
+
 ### `--namespace-id`
 
 Specify the ID of a Namespace to describe.

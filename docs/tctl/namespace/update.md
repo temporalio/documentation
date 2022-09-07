@@ -39,83 +39,41 @@ See also [`--remove-bad-binary`](#--remove-bad-binary).
 tctl namespace update --add-bad-binary <value>
 ```
 
-### `--clusters`
+<!--Clusters-->
 
-Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+import Clusters from '../../references/modifiers/clusters.md'
 
-The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
+<Clusters />
 
-This modifier is valid only when the `--global-namespace` modifier is set to true.
+<!--Description-->
 
-Alias `--cl`
+import Description from '../../references/modifiers/description.md'
 
-**Example**
+<Description />
 
-```bash
-tctl namespace update --clusters <value>
-```
+<!--HistoryArchivalState-->
 
-### `--description`
+import HAS from '../../references/modifiers/history-archival-state.md'
 
-Specify a description when updating a [Namespace](/concepts/what-is-a-namespace).
+<HAS />
 
-Alias `--desc`
+<!--HistoryUri-->
 
-**Example**
+import HURI from '../../references/modifiers/history-uri.md'
 
-```bash
-tctl namespace update --description <value>
-```
+<HURI />
 
-### `--history-archival-state`
+<!--NamespaceData-->
 
-Set the state of [Archival](/concepts/what-is-archival).
-Valid values are `disabled` and `enabled`.
+import ND from '../../references/modifiers/namespace-data.md'
 
-Alias `--has`
+<ND />
 
-**Example**
+<!--OwnerEmail-->
 
-```bash
-tctl namespace update --history-archival-state <value>
-```
+import OwnerEmail from '../../references/modifiers/owner-email.md'
 
-### `--history-uri`
-
-Specify the URI for URI for [Archival](/concepts/what-is-archival).
-The URI cannot be changed after Archival is first enabled.
-
-Alias `--huri`
-
-**Example**
-
-```bash
-tctl namespace update --history-uri <value>
-```
-
-### `--namespace-data`
-
-Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
-
-Alias `--nd`
-
-**Example**
-
-```bash
-tctl namespace update --namespace-data <value>
-```
-
-### `--owner-email`
-
-Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
-
-Alias `--oe`
-
-**Example**
-
-```bash
-tctl namespace update --owner-email <value>
-```
+<OwnerEmail />
 
 ### `--promote-namespace`
 
@@ -127,15 +85,11 @@ Converts a local Namespace into a global Namespace.
 tctl namespace update --promote-namespace <value>
 ```
 
-### `--reason`
+<!--Reason-->
 
-Specify a reason for updating a [Namespace](/concepts/what-is-a-namespace).
+import Reason from '../../references/modifiers/reason.md'
 
-**Example**
-
-```bash
-tctl namespace update --reason <value>
-```
+<Reason />
 
 ### `--remove-bad-binary`
 
@@ -149,40 +103,20 @@ See also [`--add-bad-binary`](#--add-bad-binary).
 tctl namespace update --remove-bad-binary <value>
 ```
 
-### `--retention`
+<!--Retention-->
 
-Specify the number of days to retain [Workflow Executions](/concepts/what-is-a-workflow-execution).
+import Retention from '../../references/modifiers/retention.md'
 
-Alias `--rd`
+<Retention />
 
-**Example**
+<!--VisibilityArchivalState-->
 
-```bash
-tctl namespace update --retention <value>
-```
+import VAS from '../../references/modifiers/visibility-archival-state.md'
 
-### `--visibility-archival-state`
+<VAS />
 
-Set the visibility state for [Archival](/concepts/what-is-archival).
-Valid values are `disabled` and `enabled`.
+<!--VisibilityUri-->
 
-Alias `--vas`
+import VURI from '../../references/modifiers/visibility-uri.md'
 
-**Example**
-
-```bash
-tctl namespace update --visibility-archival-state <value>
-```
-
-### `--visibility-uri`
-
-Specify the visibility URI for [Archival](/concepts/what-is-archival).
-The URI cannot be changed after Archival is first enabled.
-
-Alias `--vuri`
-
-**Example**
-
-```bash
-tctl namespace update --visibility-uri <value>
-```
+<VURI />

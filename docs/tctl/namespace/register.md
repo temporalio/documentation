@@ -23,149 +23,68 @@ tctl --ns your-namespace n re
 
 The following modifiers control the behavior of the command.
 
-### `--active-cluster`
+<!--ActiveCluster-->
 
-Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
-This value changes for Global Namespaces when a failover occurs.
+import AC from '../../references/modifiers/active-cluster.md'
 
-Alias: `--ac`
+<AC />
 
-**Example**
+<!--Clusters-->
 
-```bash
-tctl namespace register --active-cluster <value>
-```
+import Clusters from '../../references/modifiers/clusters.md'
 
-### `--clusters`
+<Clusters />
 
-Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
+<!--Description-->
 
-The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
-Make sure to include to the currently active Cluster.
-This is a read-only setting and cannot be changed.
+import Description from '../../references/modifiers/description.md'
 
-This modifier is valid only when the `--global-namespace` modifier is set to true.
+<Description />
 
-Alias `--cl`
+<!--GlobalNamespace-->
 
-**Example**
+import GN from '../../references/modifiers/global-namespace.md'
 
-```bash
-tctl namespace register --clusters <value>
-```
+<GN />
 
-### `--description`
+<!--HistoryArchivalState-->
 
-Specify a description when registering a [Namespace](/concepts/what-is-a-namespace).
+import HAS from '../../references/modifiers/history-archival-state.md'
 
-Alias `--desc`
+<HAS />
 
-**Example**
+<!--HistoryUri-->
 
-```bash
-tctl namespace register --description <value>
-```
+import HURI from '../../references/modifiers/history-uri.md'
 
-### `--global-namespace`
+<HURI />
 
-Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Namespace](/namespaces/#global-namespace).
-When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
-This is a read-only setting and cannot be changed.
+<!--NamespaceData-->
 
-Alias `--gn`
+import ND from '../../references/modifiers/namespace-data.md'
 
-**Example**
+<ND />
 
-```bash
-tctl namespace register --global-namespace <value>
-```
+<!--OwnerEmail-->
 
-### `--history-archival-state`
+import OwnerEmail from '../../references/modifiers/owner-email.md'
 
-Set the state of [Archival](/concepts/what-is-archival).
-Valid values are `disabled` and `enabled`.
+<OwnerEmail />
 
-Alias `--has`
+<!--Retention-->
 
-**Example**
+import Retention from '../../references/modifiers/retention.md'
 
-```bash
-tctl namespace register --history-archival-state <value>
-```
+<Retention />
 
-### `--history-uri`
+<!--VisibilityArchivalState-->
 
-Specify the URI for [Archival](/concepts/what-is-archival).
-The URI cannot be changed after Archival is first enabled.
+import VAS from '../../references/modifiers/visibility-archival-state.md'
 
-Alias `--huri`
+<VAS />
 
-**Example**
+<!--VisibilityUri-->
 
-```bash
-tctl namespace register --history-uri <value>
-```
+import VURI from '../../references/modifiers/visibility-uri.md'
 
-### `--namespace-data`
-
-Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
-
-Alias `--nd`
-
-**Example**
-
-```bash
-tctl namespace register --namespace-data <value>
-```
-
-### `--owner-email`
-
-Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
-
-Alias `--oe`
-
-**Example**
-
-```bash
-tctl namespace register --owner-email <value>
-```
-
-### `--retention`
-
-Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
-
-The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
-
-Alias `--rd`
-
-**Example**
-
-```bash
-tctl namespace register --retention <value>
-```
-
-### `--visibility-archival-state`
-
-Set the visibility state for [Archival](/concepts/what-is-archival).
-Valid values are `disabled` and `enabled`.
-
-Alias `--vas`
-
-**Example**
-
-```bash
-tctl namespace register --visibility-archival-state <value>
-```
-
-### `--visibility-uri`
-
-Specify the visibility URI for [Archival](/concepts/what-is-archival).
-The URI cannot be changed after Archival is first enabled.
-
-Alias `--vuri`
-
-**Example**
-
-```bash
-tctl namespace register --visibility-uri <value>
-```
+<VURI />

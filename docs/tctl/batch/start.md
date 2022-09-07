@@ -58,6 +58,6 @@ import SignalName from '../../references/modifiers/signal-name.md'
 
 <!--Yes-->
 
-import Yes from '../../references/modifiers/yes.md'
+import Yes from '../../references/modifiers/yes-mod.md'
 
 <Yes />
