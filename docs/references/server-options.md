@@ -1,12 +1,16 @@
 ---
-id: options
+id: server-options
 title: Temporal Server options
+description: undefined
 sidebar_label: Start options
 ---
 
-## Overview
+<!-- This file is generated. Do not edit it directly. -->
 
-You can run the Temporal server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a new server:
+You can run the [Temporal Server](/concepts/what-is-the-temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
+
+The Temporal Server services can be [run in various ways](/kb/install-temporal-cluster-for-development).
+We recommend this approach for a limited number of situations.
 
 ```go
 s := temporal.NewServer()
@@ -15,8 +19,6 @@ if err != nil{
 	log.Fatal(err)
 }
 ```
-
-## Options
 
 `NewServer()` accepts functions as parameters.
 Each function returns a `ServerOption` that is applied to the instance.
@@ -57,9 +59,9 @@ s := temporal.NewServer(
 
 This option provides a channel that interrupts the server on the signal from that channel.
 
-- If `temporal.InterruptOn()` is not passed, `server.Start()` is not blocking and `server.Stop()` needs to be called somewhere.
+- If `temporal.InterruptOn()` is not passed, `server.Start()` is never blocked and you need to call `server.Stop()` somewhere.
 - If `temporal.InterruptOn(nil)` is passed, `server.Start()` blocks forever until the process is killed.
-- If `temporal.InterruptOn(temporal.InterruptCh())` is passed, `server.Start()` blocks until Ctrl+C is used and then the server is gracefully shut down.
+- If `temporal.InterruptOn(temporal.InterruptCh())` is passed, `server.Start()` blocks until you use Ctrl+C, which then gracefully shuts the server down.
 - If `temporal.Interrupt(someCustomChan)` is passed, `server.Start()` blocks until a signal is sent to `someCustomChan`.
 
 ```go
