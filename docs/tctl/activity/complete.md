@@ -14,58 +14,32 @@ The `tctl activity complete` command completes an [Activity Execution](/concepts
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+<!--ActivityId-->
 
-Specify the [Workflow Id](/concepts/what-is-a-workflow-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to complete.
+import ActivityId from '../../references/modifiers/activity-id.md'
 
-Aliases: `--wid`, `-w`
+<ActivityId />
 
-**Example**
+<!--Identity-->
 
-```bash
-tctl activity complete --workflow_id <id>
-```
+import Identity from '../../references/modifiers/identity.md'
 
-### `--run_id`
+<Identity />
 
-Specify the [Run Id](/concepts/what-is-a-run-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to complete.
+<!--Reason-->
 
-Aliases: `--rid`, `-r`
+import Reason from '../../references/modifiers/reason.md'
 
-**Example**
+<Reason />
 
-```bash
-tctl activity complete --run_id <id>
-```
+<!--RunId-->
 
-### `--activity_id`
+import Runid from '../../references/modifiers/run-id.md'
 
-Specify the [Activity Id](/concepts/what-is-an-activity-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to complete.
+<RunId />
 
-Alias: `--aid`
+<!--WorkflowId-->
 
-**Example**
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
-```bash
-tctl activity complete --activity_id <id>
-```
-
-### `--result`
-
-Specify the result of an [Activity Execution](/concepts/what-is-an-activity-execution) when using tctl to complete the Activity Execution.
-
-**Example**
-
-```bash
-tctl activity complete --result <value>
-```
-
-### `--identity`
-
-Specify the identity of the operator when using tctl to complete an [Activity Execution](/concepts/what-is-an-activity-execution).
-
-**Example**
-
-```bash
-tctl activity complete --identity <value>
-```
+<WorkflowId />

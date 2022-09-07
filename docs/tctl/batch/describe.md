@@ -12,20 +12,18 @@ Alias: `desc`
 
 The `tctl batch describe` command describes the progress of a batch job.
 
-`tctl batch describe --job_id <id>`
+`tctl batch describe --job-id <value>`
 
 The following modifier controls the behavior of the command.
 
-### `--job_id`
+<!--JobId-->
 
-_Required modifier_
+import JobId from '../../references/modifiers/job-id.md'
 
-Specify the job ID of a batch job.
+<JobId />
 
-Alias: `--jid`
+<!--Namespace-->
 
-**Example**
+import Namespace from '../../references/modifiers/namespace.md'
 
-```bash
-tctl batch describe --job_id <id>
-```
+<Namespace />

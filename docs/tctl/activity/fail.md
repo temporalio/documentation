@@ -46,6 +46,6 @@ import RunId from '../../references/modifiers/run-id.md'
 
 <!--WorkflowId-->
 
-import InputFile from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
 <WorkflowId />

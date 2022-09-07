@@ -10,90 +10,54 @@ tags:
 
 The `tctl batch start` command starts a batch job.
 
-`tctl batch start --query <value> [<modifiers>]`
+`tctl batch start --query <value> <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--query`
+<!--BatchType-->
 
-_Required modifier_
+import BatchType from '../../references/modifiers/batch-type.md'
 
-Specify the [Workflow Executions](/concepts/what-is-a-workflow-execution) that this batch job should operate.
+<BatchType />
 
-The SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute) is the same as used by the `tctl workflow list --query` command.
+<!--Input-->
 
-Alias: `-q`
+import Input from '../../references/modifiers/input.md'
 
-**Example**
+<Input />
 
-```bash
-tctl batch start --query <value>
-```
+<!--Namespace-->
 
-### `--reason`
+import Namespace from '../../references/modifiers/namespace.md'
 
-Specify a reason for running this batch job.
+<Namespace />
 
-Alias: `--re`
+<!--Query-->
 
-**Example**
+import Query from '../../references/modifiers/query.md'
 
-```bash
-tctl batch start --query <value> --reason <string>
-```
+<Query />
 
-### `--batch_type`
+<!--Reason-->
 
-Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
+import Reason from '../../references/modifiers/reason.md'
 
-Alias: `--bt`
+<Reason />
 
-**Example**
+<!--RPS-->
 
-```bash
-tctl batch start --query <value> --batch_type <operation>
-```
+import RPS from '../../references/modifiers/rps.md'
 
-### `--signal_name`
+<RPS />
 
-Specify the name of a [Signal](/concepts/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
+<!--SignalName-->
 
-Alias: `--sig`
+import SignalName from '../../references/modifiers/signal-name.md'
 
-**Example**
+<SignalName />
 
-```bash
-tctl batch start --query <value> --batch_type signal --signal_name <name>
-```
+<!--Yes-->
 
-### `--input`
+import Yes from '../../references/modifiers/yes.md'
 
-Pass input for the [Signal](/concepts/what-is-a-signal). Input must be in JSON format.
-
-Alias: `-i`
-
-**Example**
-
-```bash
-tctl batch start --query <value> --input <json>
-```
-
-### `--rps`
-
-Specify RPS of processing. The default value is 50.
-
-**Example**
-
-```bash
-tctl batch start --query <value> --rps <value>
-```
-
-### `--yes`
-
-Disable the confirmation prompt.
-
-**Example**
-
-```bash
-tctl batch start --query <value> --yes
-```
+<Yes />

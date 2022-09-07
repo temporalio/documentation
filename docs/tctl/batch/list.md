@@ -16,14 +16,14 @@ The `tctl batch list` command lists all batch jobs.
 
 The following modifier controls the behavior of the command.
 
-### `--pagesize`
+<!--Namespace-->
 
-Specify the maximum number of batch jobs to list on a page. The default value is 30.
+import Namespace from '../../references/modifiers/namespace.md'
 
-Alias: `--ps`
+<Namespace />
 
-**Example**
+<!--PageSize-->
 
-```bash
-tctl batch list --pagesize <value>
-```
+import PageSize from '../../references/modifiers/pagesize.md'
+
+<PageSize />
