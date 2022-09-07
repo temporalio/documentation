@@ -12,9 +12,3 @@ tags:
 Specifies the pager to use.
 
 Values: less, more, favoritePager..[$PAGER]
-
-**Example**
-
-```bash
-tctl workflow <command> --pager <value>
-```

@@ -10,9 +10,3 @@ tags:
 ### `--reset-bad-binary-checksum`
 
 Specify the binary checksum when using `--reset-type BadBinary`.
-
-**Example**
-
-```bash
-tctl workflow reset-batch --reset-bad-binary-checksum <value>
-```

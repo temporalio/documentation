@@ -10,9 +10,3 @@ tags:
 ### `--limit`
 
 Sets the number of items to print.
-
-**Example**
-
-```bash
-tctl workflow <command> --limit <value>
-```

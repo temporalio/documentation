@@ -10,9 +10,3 @@ tags:
 ### `--raw`
 
 Print properties exactly as they are stored.
-
-**Example**
-
-```bash
-tctl workflow <command> --run-id <id>
-```

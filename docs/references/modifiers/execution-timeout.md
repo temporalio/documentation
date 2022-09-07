@@ -13,9 +13,3 @@ Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout)
 The default value is 0.
 
 Alias: `--et`
-
-**Example**
-
-```bash
-tctl workflow <command> --execution-timeout <value>
-```

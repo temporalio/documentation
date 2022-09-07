@@ -14,9 +14,3 @@ For multiple JSON objects, concatenate them and use spaces or newline characters
 Input from the command line overwrites input from the file.
 
 Alias: `--if`
-
-**Example**
-
-```bash
-tctl workflow <command> --input-file <value>
-```

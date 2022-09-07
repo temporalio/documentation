@@ -13,9 +13,3 @@ Reject Queries based on Workflow state.
 Valid values are `not-open` and `not-completed-cleanly`.
 
 Alias: `--qrc`
-
-**Example**
-
-```bash
-tctl workflow <command> --query-reject-condition <value>
-```

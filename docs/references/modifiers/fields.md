@@ -11,9 +11,3 @@ tags:
 
 Customize the fields to print.
 Set to 'long' to automatically print more of the main fields.
-
-**Example**
-
-```bash
-tctl workflow <command> --fields <value>
-```

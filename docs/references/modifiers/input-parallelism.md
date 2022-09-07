@@ -12,9 +12,3 @@ tags:
 Specify the number of goroutines to run in parallel.
 Each goroutine processes one line for every second.
 The default is 1.
-
-**Example**
-
-```bash
-tctl workflow <command> --input-parallism <value>
-```

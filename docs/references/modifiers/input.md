@@ -14,9 +14,3 @@ Input must be in JSON format.
 For multiple JSON objects, pass each in a separate `--input` option. Use `null` for null values.
 
 Alias: `-i`
-
-**Example**
-
-```bash
-tctl workflow <command> --input <value>
-```

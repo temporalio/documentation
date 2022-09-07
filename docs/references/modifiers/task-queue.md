@@ -12,9 +12,3 @@ tags:
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
 Alias: `--tq`
-
-**Example**
-
-```bash
-tctl workflow <command> --task-queue <value>
-```

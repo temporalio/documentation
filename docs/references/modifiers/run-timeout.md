@@ -12,9 +12,3 @@ tags:
 Single Workflow Run timeout, in seconds.
 
 Alias: `--rt`
-
-**Example**
-
-```bash
-tctl workflow <command> --run-timeout <value>
-```

@@ -10,9 +10,3 @@ tags:
 ### `--cron`
 
 Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
-
-**Example**
-
-```bash
-tctl workflow <command> --cron <value>
-```

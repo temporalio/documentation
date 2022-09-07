@@ -12,9 +12,3 @@ tags:
 Disables the interactive pager.
 
 Alias: `-P`
-
-**Example**
-
-```bash
-tctl workflow <command> --no-pager <value>
-```

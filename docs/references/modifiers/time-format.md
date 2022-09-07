@@ -12,9 +12,3 @@ tags:
 Specifies the format for time values.
 
 Values: relative, iso, raw
-
-**Example**
-
-```bash
-tctl workflow <command> --time-format <value>
-```

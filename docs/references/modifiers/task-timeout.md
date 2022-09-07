@@ -13,9 +13,3 @@ Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout)
 The default value is 10.
 
 Alias: `--tt`
-
-**Example**
-
-```bash
-tctl workflow <command> --task-timeout <value>
-```

@@ -12,9 +12,3 @@ tags:
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
 Alias: `-t`
-
-**Example**
-
-```bash
-tctl workflow <command> --type <value>
-```

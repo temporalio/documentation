@@ -67,3 +67,19 @@ import Query from '../../references/modifiers/query.md'
 import TimeFormat from '../../references/modifiers/time-format.md'
 
 <TimeFormat />
+
+**Examples**
+
+List all Workflows with the given WorkflowId or RunId:
+
+```bash
+tctl workflow list \
+  --query 'WorkflowType = "main.Workflow" and (WorkflowId = "1645a588-4772-4dab-b276-5f9db108b3a8" or RunId = "be66519b-5f09-40cd-b2e8-20e4106244dc")'
+```
+
+List all open Workflows that started at a given time:
+
+```bash
+tctl workflow list \
+  --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
+```

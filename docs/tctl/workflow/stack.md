@@ -14,67 +14,32 @@ The `tctl workflow stack` command queries [Workflow Execution](/concepts/what-is
 
 The following modifiers control the behavior of the command.
 
-### `--input`
+<!--Input-->
 
-Pass input for the query.
-Input must be in JSON format.
-For multiple JSON objects, concatenate them and use spaces as separators.
+import Input from '../../references/modifiers/input.md'
 
-Alias: `-i`
+<Input />
 
-**Example**
+<!--InputFile-->
 
-```bash
-tctl workflow stack --input <value>
-```
+import InputFile from '../../references/modifiers/input-file.md'
 
-### `--input-file`
+<InputFile />
 
-Pass input for the query from a JSON file.
-For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
-Input from the command line overwrites input from the file.
+<!--QueryRejectCondition-->
 
-Alias: `--if`
+import QRC from '../../references/modifiers/query-reject-condition.md'
 
-**Example**
+<QRC />
 
-```bash
-tctl workflow stack --input-file <value>
-```
+<!--RunId-->
 
-### `--query-reject-condition`
+import RunId from '../../references/modifiers/run-id.md'
 
-Reject queries based on Workflow state.
-Valid values are `not-open` and `not-completed-cleanly`.
+<RunId />
 
-Alias: `--qrc`
+<!--WorkflowId-->
 
-**Example**
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
-```bash
-tctl workflow stack --query-reject-condition <value>
-```
-
-### `--run-id`
-
-Specify a [Run Id](/concepts/what-is-a-run-id).
-
-Alias: `--rid`
-
-**Example**
-
-```bash
-tctl workflow stack --run-id <value>
-```
-
-### `--workflow-id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
-
-Alias: `--wid`
-
-**Example**
-
-```bash
-tctl workflow stack --workflow-id <value>
-```
+<WorkflowId />

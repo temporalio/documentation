@@ -12,9 +12,3 @@ tags:
 Specify the type of Query to run.
 
 Alias: `--qt`
-
-**Example**
-
-```bash
-tctl workflow <command> --query-type <value>
-```

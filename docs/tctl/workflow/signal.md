@@ -89,63 +89,32 @@ tctl workflow signal --workflow-id [modifiers]
 The following modifiers control the behavior of the command.
 Make sure to include required modifiers in all command executions.
 
-### `--input`
+<!--Input-->
 
-Pass input for the [Signal](/concepts/what-is-a-signal).
-Input must be in JSON format.
+import Input from '../../references/modifiers/input.md'
 
-Alias: `-i`
+<Input />
 
-**Example**
+<!--InputFile-->
 
-```bash
-tctl workflow signal --input <value>
-```
+import InputFile from '../../references/modifiers/input-file.md'
 
-### `--input-file`
+<InputFile />
 
-Pass input for the [Signal](/concepts/what-is-a-signal) from a JSON file.
+<!--Name-->
 
-Alias: `--if`
+import Name from '../../references/modifiers/name.md'
 
-**Example**
+<Name />
 
-```bash
-tctl workflow signal --input-file <value>
-```
+<!--RunId-->
 
-### `--name`
+import RunId from '../../references/modifiers/run-id.md'
 
-Specify the name of a [Signal](/concepts/what-is-a-signal).
+<RunId />
 
-Alias: `-n`
+<!--WorkflowId-->
 
-**Example**
+import WorkflowId from '../../references/modifiers/workflow-id.md'
 
-```bash
-tctl workflow signal --name <value>
-```
-
-### `--run-id`
-
-Specify a [Run Id](/concepts/what-is-a-run-id).
-
-Alias: `--rid`
-
-**Example**
-
-```bash
-tctl workflow signal --run-id <value>
-```
-
-### `--workflow-id`
-
-Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
-
-Alias: `--wid`
-
-**Example**
-
-```bash
-tctl workflow signal --workflow-id <value>
-```
+<WorkflowId />

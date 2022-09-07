@@ -10,72 +10,42 @@ tags:
 
 The `tctl activity fail` command fails an [Activity Execution](/concepts/what-is-an-activity-execution).
 
-`tctl activity fail [<modifiers>]`
+`tctl activity fail <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+<!--ActivityId-->
 
-Specify the [Workflow Id](/concepts/what-is-a-workflow-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to fail.
+import ActivityId from '../../references/modifiers/activity-id.md'
 
-Aliases: `--wid`, `-w`
+<ActivityId />
 
-**Example**
+<!--Detail-->
 
-```bash
-tctl activity fail --workflow_id <id>
-```
+import Detail from '../../references/modifiers/detail.md'
 
-### `--run_id`
+<Detail />
 
-Specify the [Run Id](/concepts/what-is-a-run-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to fail.
+<!--Identity-->
 
-Aliases: `--rid`, `-r`
+import Identity from '../../references/modifiers/identity.md'
 
-**Example**
+<Identity />
 
-```bash
-tctl activity fail --run_id <id>
-```
+<!--Reason-->
 
-### `--activity_id`
+import Reason from '../../references/modifiers/reason.md'
 
-Specify the [Activity Id](/concepts/what-is-an-activity-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to fail.
+<Reason />
 
-Alias: `--aid`
+<!--RunId-->
 
-**Example**
+import RunId from '../../references/modifiers/run-id.md'
 
-```bash
-tctl activity fail --activity_id <id>
-```
+<RunId />
 
-### `--reason`
+<!--WorkflowId-->
 
-Specify the reason for failing an [Activity Execution](/concepts/what-is-an-activity-execution).
+import InputFile from '../../references/modifiers/workflow-id.md'
 
-**Example**
-
-```bash
-tctl activity fail --reason <value>
-```
-
-### `--detail`
-
-Specify details of the reason for failing an [Activity Execution](/concepts/what-is-an-activity-execution).
-
-**Example**
-
-```bash
-tctl activity fail --detail <value>
-```
-
-### `--identity`
-
-Specify the identity of the operator when using tctl to fail an [Activity Execution](/concepts/what-is-an-activity-execution).
-
-**Example**
-
-```bash
-tctl activity complete --identity <value>
-```
+<WorkflowId />

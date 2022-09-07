@@ -10,9 +10,3 @@ tags:
 ### `--skip-base-is-not-current`
 
 Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be skipped if the base Run is not the current Run.
-
-**Example**
-
-```bash
-tctl workflow <command> --skip-base-is-not-current
-```

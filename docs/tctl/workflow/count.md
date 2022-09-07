@@ -20,3 +20,9 @@ The following modifier controls the behavior of the command.
 import Query from '../../references/modifiers/query.md'
 
 <Query />
+
+**Example**
+
+```bash
+tctl workflow count --query 'ExecutionStatus="Running"'
+```

@@ -14,9 +14,3 @@ Specifies the format for printed output.
 Alias: `-o`
 
 Values: table, json, card
-
-**Example**
-
-```tctl
-tctl workflow <command> --output <value>
-```

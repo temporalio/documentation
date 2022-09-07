@@ -12,9 +12,3 @@ tags:
 Serialize an Event to a file.
 
 Alias: `--of`
-
-**Example**
-
-```bash
-tctl workflow <command> --output-filename <value>
-```

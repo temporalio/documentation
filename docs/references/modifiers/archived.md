@@ -14,9 +14,3 @@ tags:
 List archived Workflow Executions.
 
 Alias: `-a`
-
-**Example**
-
-```bash
-tctl workflow list --archived
-```

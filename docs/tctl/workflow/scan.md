@@ -19,85 +19,44 @@ See also [`tctl workflow list`](/tctl/workflow/list).
 
 The following modifiers control the behavior of the command.
 
-### `--fields`
+<!--Fields-->
 
-Customize the fields to print.
-Set to 'long' to automatically print more of the main fields.
+import Fields from '../../references/modifiers/fields.md'
 
-**Example**
+<Fields />
 
-```bash
-tctl workflow start --fields <value>
-```
+<!--Limit-->
 
-### `--limit`
+import Limit from '../../references/modifiers/limit.md'
 
-Sets the number of items to print.
+<Limit />
 
-**Example**
+<!--NoPager-->
 
-```bash
-tctl workflow show --limit <value>
-```
+import NoPager from '../../references/modifiers/no-pager.md'
 
-### `--no-pager`
+<NoPager />
 
-Disables the interactive pager.
+<!--Output-->
 
-Alias: `-P`
+import Output from '../../references/modifiers/output.md'
 
-**Example**
+<Output />
 
-```bash
-tctl workflow start --no-pager <value>
-```
+<!--Pager-->
 
-### `--output`
+import Pager from '../../references/modifiers/pager.md'
 
-Specifies the format for printed output.
+<Pager />
 
-Alias: `-o`
+<!--Query-->
 
-Values: table, json, card
+import Query from '../../references/modifiers/query.md'
 
-**Example**
+<Query />
 
-```tctl
-tctl workflow start --output <value>
-```
+<!--TimeFormat-->
 
-### `--pager`
+import TimeFormat from '../../references/modifiers/time-format.md'
 
-Specifies the pager to use.
-
-Values: less, more, favoritePager..[$PAGER]
-
-**Example**
-
-```bash
-tctl workflow start --pager <value>
-```
-
-### `--query`
-
-Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
-
-Alias: `-q`
-
-**Example**
-
-```bash
-tctl workflow scan --query <value>
-```
-
-### `--time-format`
-
-Specifies the format for time values.
-
-Values: relative, iso, raw
-
-**Example**
-
-```bash
-tctl workflow start --time-format <value>
-```
+<TimeFormat />

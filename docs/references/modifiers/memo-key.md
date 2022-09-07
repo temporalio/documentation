@@ -11,9 +11,3 @@ tags:
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.
-
-**Example**
-
-```bash
-tctl workflow <command> --memo-key <value>
-```

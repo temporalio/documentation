@@ -11,9 +11,3 @@ tags:
 
 Simulate a reset without resetting any [Workflow Executions](/concepts/what-is-a-workflow-execution).
 Output is logged to `stdout`.
-
-**Example**
-
-```bash
-tctl workflow <command> --dry-run
-```

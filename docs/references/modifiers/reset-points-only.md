@@ -10,9 +10,3 @@ tags:
 ### `--reset-points-only`
 
 Show only events that are eligible for reset.
-
-**Example**
-
-```bash
-tctl workflow <command> --reset-points-only
-```
