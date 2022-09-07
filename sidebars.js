@@ -359,6 +359,7 @@ module.exports = {
         "references/events",
         "references/configuration",
         "references/ui-configuration",
+        "references/server-options",
         {
           type: "link",
           label: "Go SDK API",
@@ -554,7 +555,6 @@ module.exports = {
       collapsed: false,
       items: [
         "clusters/quick-install",
-        "server/options",
         "server/production-deployment",
         "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
         "clusters/how-to-set-up-archival",
