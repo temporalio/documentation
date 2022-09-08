@@ -35,7 +35,7 @@ The configuration includes two sections such that intra-Cluster and external tra
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
-A customized configuration can be passed using either the [WithConfig](/server/options/#withconfig) or [WithConfigLoader](/server/options/#withconfigloader) server options.
+A customized configuration can be passed using either the [WithConfig](/references/server-options#withconfig) or [WithConfigLoader](/references/server-options#withconfigloader) Server options.
 
 See [TLS configuration reference](/references/configuration/#tls) for more details.
 
