@@ -2,10 +2,16 @@ name: Continuous Integration
 
 # This action works with pull requests and pushes
 on:
-  pull_request:
   push:
     branches:
       - master
+# pull_request -> GITHUB_TOKEN doesn't have write permissions on external forks
+#  pull_request:
+#    types:
+#      - labeled
+#
+# pull_request_target -> GITHUB_TOKEN has write permissions external forks
+  pull_request_target:
 
 jobs:
   prettier:
@@ -19,11 +25,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Checkout on PR
-        if: "github.event_name == 'pull_request'"
+        if: "github.event_name == 'pull_request_target'"
         uses: actions/checkout@v2
         with:
           # Make sure the actual branch is checked out when running on pull requests
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Prettify code
         uses: creyD/prettier_action@v3.3
