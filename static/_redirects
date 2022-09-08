@@ -197,7 +197,8 @@
 /server-namespaces        /namespaces
 /server/namespaces        /namespaces
 /server/multi-cluster        /concepts/what-is-multi-cluster-replication
-/server-options        /server/options
+/server-options        /references/server-options
+/server/options        /references/server-options
 /server-production-deploy        /server/production-deploy
 /server-production-deployment  /server/production-deploy
 /server-quick-install        /clusters/quick-install
