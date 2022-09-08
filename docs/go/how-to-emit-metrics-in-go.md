@@ -18,6 +18,6 @@ client.Options{
 		}
 ```
 
-The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](https://docs.temporal.io/docs/server/options/#withcustommetricsreporter) API.
+The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
