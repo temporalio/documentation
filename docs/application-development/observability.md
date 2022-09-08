@@ -26,7 +26,7 @@ This section covers features related to viewing the state of the application, in
 - [Tracing](#tracing)
 - [Logging](#logging)
 - [Visibility](#visibility)
-- [Replays](#replays)
+- [Replays](/application-development/testing#replay)
 
 ## Metrics
 
