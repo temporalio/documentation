@@ -9,16 +9,20 @@ tags:
 ---
 
 The `tctl workflow describe` command shows information about a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+This information can be used to locate a failed Workflow Execution, for example.
 
-See also [`tctl workflow describeid`](/tctl/workflow/describeid).
+To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](/tctl/workflow/describeid).
 
 `tctl workflow describe <modifiers>`
 
 Alias: `d`
 
 The following modifiers control the behavior of the command.
+Always include required modifiers when executing this command.
 
 ### `--workflow_id`
+
+**This is a required modifier.**
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
@@ -58,6 +62,7 @@ tctl workflow describe --run_id <id>
 ### `--reset_points_only`
 
 Show only events that are eligible for reset.
+If successful, the command returns the Run Id of all deployments, and the times at which the Events were created.
 
 **Example**
 
