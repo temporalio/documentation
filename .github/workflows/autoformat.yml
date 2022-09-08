@@ -2,7 +2,6 @@ name: Continuous Integration
 
 # This action works with pull requests and pushes
 on:
-  pull_request:
   push:
     branches:
       - master
@@ -12,7 +11,8 @@ on:
 #      - labeled
 #
 # pull_request_target -> GITHUB_TOKEN has write permissions external forks
-
+  pull_request_target:
+  
 jobs:
   prettier:
     runs-on: ubuntu-latest
