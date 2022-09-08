@@ -2,17 +2,16 @@ name: Continuous Integration
 
 # This action works with pull requests and pushes
 on:
+  pull_request:
+  push:
+    branches:
+      - master
 # pull_request -> GITHUB_TOKEN doesn't have write permissions on external forks
 #  pull_request:
 #    types:
 #      - labeled
 #
 # pull_request_target -> GITHUB_TOKEN has write permissions external forks
-  pull_request_target:
-    types: [opened, synchronize]
-  push:
-    branches:
-      - master
 
 jobs:
   prettier:
