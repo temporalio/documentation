@@ -9,6 +9,7 @@ on:
 #
 # pull_request_target -> GITHUB_TOKEN has write permissions external forks
   pull_request_target:
+    types: [opened, synchronize]
   push:
     branches:
       - master
