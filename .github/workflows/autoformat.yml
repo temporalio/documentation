@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Checkout on PR
-        if: "github.event_name == 'pull_request_target'"
+        # if: "github.event_name == 'pull_request_target'"
         uses: actions/checkout@v2
         with:
           # Make sure the actual branch is checked out when running on pull requests
