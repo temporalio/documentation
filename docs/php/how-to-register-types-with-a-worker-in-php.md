@@ -24,7 +24,7 @@ an instance of ReflectionClass with an activity class which should be created.
 
 ```php
 $worker->registerActivity(
-    App\DemoActivity::class, 
+    App\DemoActivity::class,
     fn(ReflectionClass $class) => $container->create($class->getName())
 );
 ```
