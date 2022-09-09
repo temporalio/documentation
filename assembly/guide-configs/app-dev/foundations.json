@@ -241,7 +241,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-define-workflow-parameters-in-php"
         },
         {
           "lang": "python",
@@ -415,7 +415,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-define-activity-return-values-in-php"
         },
         {
           "lang": "python",
@@ -564,7 +564,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-register-types-with-a-worker-in-php"
         },
         {
           "lang": "python",
@@ -593,7 +593,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-spawn-a-workflow-execution-in-php"
         },
         {
           "lang": "python",
