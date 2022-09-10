@@ -357,7 +357,6 @@ await worker.runUntil(
 
 ### Testing with Jest
 
-Although these testing docs use [Mocha](https://mochajs.org/), you can also use [Jest](https://jestjs.io/).
 There are a couple of caveats for testing with Jest:
 
 1. The Temporal TypeScript SDK only supports Jest `>= 27.0.0`.
