@@ -4,6 +4,7 @@ title: What is a Retry Policy?
 sidebar_label: Retry Policy
 description: A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.
 tags:
+  - term
   - explanation
 ---
 

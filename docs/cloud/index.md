@@ -42,7 +42,7 @@ When a Global Admin invites a user to join an account, the Global Admin selects 
   - Has Namespace Admin permissions for each Namespace created by that user
 - **Read-Only:** Can only read information
 
-## Cloud Namespace Name
+## Temporal Cloud Namespace Name
 
 A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud.
 Each Namespace Name, such as `accounting-production`, is unique within the scope of a customer's account.
@@ -55,12 +55,12 @@ Each Namespace Name must conform to the following rules:
 - Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are not permitted.
 - All letters in a Namespace Name must be lowercase.
 
-## Cloud Namespace Id
+## Temporal Cloud Namespace Id
 
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
-1. A [Namespace Name](#cloud-namespace-name)
+1. A [Namespace Name](#temporal-cloud-namespace-name)
 1. A period (.)
 1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
 

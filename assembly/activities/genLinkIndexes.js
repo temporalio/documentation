@@ -1,7 +1,5 @@
-import readdirp from "readdirp";
 import fs from "fs-extra";
 import path from "path";
-import {link} from "fs";
 
 export async function genLinkIndexes(config) {
   console.log("generating link indexes...");

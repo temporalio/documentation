@@ -1,7 +1,9 @@
 ---
 id: what-is-an-authorizer-plugin
 title: What is an Authorizer Plugin?
-sidebar_label: What is an Authorizer Plugin?
+sidebar_label: Authorizer Plugin
+tags:
+  - term
 ---
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
@@ -28,7 +30,7 @@ The following arguments must be passed to `Authorizer`:
 
 :::
 
-Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/server/options#withauthorizer) server option.
+Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option.
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 

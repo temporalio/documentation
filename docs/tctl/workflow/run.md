@@ -104,7 +104,11 @@ tctl workflow run --cron <string>
 Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
+There are three allowed values:
+
+- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [**RejectDuplicate:**] (/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 

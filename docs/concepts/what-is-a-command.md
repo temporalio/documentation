@@ -4,6 +4,7 @@ title: What is a Command?
 sidebar_label: Command
 description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
 tags:
+  - term
   - explanation
 ---
 

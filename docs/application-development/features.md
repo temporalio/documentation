@@ -37,7 +37,7 @@ In this section you can find the following:
 
 ## Signals
 
-A [Signal](/workflows#signals) is a message sent to a running Workflow Execution.
+A [Signal](/workflows#signal) is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -344,7 +344,7 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -391,7 +391,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/workflows#signals) to a [Workflow Execution](/workflows#workflow-execution).
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a [Signal](/workflows#signal) to a [Workflow Execution](/workflows#workflow-execution).
 
 Pass in both the [Workflow Id](/workflows#workflow-id) and [Run Id](/workflows#run-id) to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
@@ -444,12 +444,12 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -495,7 +495,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
   signal := MySignal {
     Message: "Some important data",
   }
-  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signalData).Get(ctx, nil)
+  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signal).Get(ctx, nil)
   if err != nil {
     // ...
   }
@@ -856,7 +856,7 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1218,12 +1218,12 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1300,7 +1300,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1372,7 +1372,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1445,7 +1445,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1508,12 +1508,12 @@ GreetWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2084,7 +2084,7 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 ## Activity Heartbeats
 
-An [Activity Heartbeat](/activities#activity-heartbeats) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters#).
+An [Activity Heartbeat](/activities#activity-heartbeat) is a ping from the [Worker Process](/workers#worker-process) that is executing the Activity to the [Temporal Cluster](/clusters#).
 Each Heartbeat informs the Temporal Cluster that the [Activity Execution](/activities#activity-execution) is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a [Heartbeat Timeout](/activities#heartbeat-timeout) time period, the Activity will be considered failed and another [Activity Task Execution](/tasks#activity-task-execution) may be scheduled according to the Retry Policy.
 
@@ -2103,7 +2103,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To [Heartbeat](/activities#activity-heartbeats) in an Activity in Go, use the `RecordHeartbeat` API.
+To [Heartbeat](/activities#activity-heartbeat) in an Activity in Go, use the `RecordHeartbeat` API.
 
 ```go
 import (
@@ -2292,7 +2292,7 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 
 #### Heartbeat Timeout
 
-A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeats).
+A [Heartbeat Timeout](/activities#heartbeat-timeout) works in conjunction with [Activity Heartbeats](/activities#activity-heartbeat).
 
 <Tabs
 defaultValue="go"
@@ -2513,24 +2513,24 @@ client.CompleteActivity(context.Background(), taskToken, nil, err)
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
 
 ## Child Workflows
 
-A [Child Workflow Execution](/workflows#child-workflows) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+A [Child Workflow Execution](/workflows#child-workflow) is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
 
@@ -2544,7 +2544,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a [Child Workflow Execution](/workflows#child-workflows) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+To spawn a [Child Workflow Execution](/workflows#child-workflow) in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
 
 The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
@@ -2791,7 +2791,7 @@ $childResult = yield Workflow::executeChildWorkflow(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2879,12 +2879,12 @@ If the parent initiates a Child Workflow Execution and then completes immediatel
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -2992,14 +2992,14 @@ workflow.continue_as_new("your-workflow-name")
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
 
 ## Temporal Cron Jobs
 
-A [Temporal Cron Job](/workflows#cron-jobs) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
@@ -3130,17 +3130,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">

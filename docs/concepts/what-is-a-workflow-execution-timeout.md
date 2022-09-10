@@ -4,6 +4,7 @@ title: What is a Workflow Execution Timeout?
 sidebar_label: Workflow Execution Timeout
 description: A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 tags:
+  - term
   - explanation
   - timeouts
 ---

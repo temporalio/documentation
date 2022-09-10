@@ -16,6 +16,7 @@ export async function linkMagic(config) {
   }
   matchedGuides.cfgs = updatedGuides;
   await fs.writeJSON(matchedGuidesPath, matchedGuides);
+  await linkMagicReferences(config, matchedGuides.full_index);
   return;
 }
 
@@ -27,7 +28,6 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
       for (let langtab of section.langtabs) {
         if (langtab.id != "none") {
           langtab.node.markdown_content = await parseAndReplace(
-            langtab.node.id,
             langtab.node.markdown_content,
             fullIndex,
             guideConfig.id
@@ -38,7 +38,6 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
       section.langtabs = updatedLangTabs;
     } else {
       section.node.markdown_content = await parseAndReplace(
-        section.node.id,
         section.node.markdown_content,
         fullIndex,
         guideConfig.id
@@ -50,12 +49,63 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
   return guideConfig;
 }
 
-async function parseAndReplace(
-  sectionId,
-  raw_content,
-  link_index,
-  current_guide_id
-) {
+async function linkMagicReferences(config, link_index) {
+  const sourceNodesPath = path.join(
+    config.root_dir,
+    config.temp_write_dir,
+    config.source_info_nodes_file_name
+  );
+  let sourceNodes = await fs.readJSON(sourceNodesPath);
+  let isReference = false;
+  for (const node of sourceNodes) {
+    if (node.tags !== undefined) {
+      tagloop: for (const tag of node.tags) {
+        if (tag == "reference") {
+          node.markdown_content = await parseAndReplace(
+            node.markdown_content,
+            link_index,
+            ""
+          );
+          isReference = true;
+          break tagloop;
+        }
+      }
+    }
+    if (isReference) {
+      const refString = await genRefString(node);
+      const refWritePath = path.join(
+        config.root_dir,
+        config.content_write_dir,
+        `${node.id}.md`
+      );
+      await fs.writeFile(refWritePath, refString);
+    }
+  }
+  return;
+}
+
+async function genRefString(node) {
+  const parts = node.id.split("/");
+  const id = parts[1];
+  let refString = `---
+id: ${id}
+title: ${node.title}
+description: ${node.description}
+sidebar_label: ${node.label}\n`;
+
+  if (node.tags != undefined) {
+    refString = `${refString}tags:\n`;
+    for (const tag of node.tags) {
+      refString = `${refString} - ${tag}\n`;
+    }
+  }
+  refString = `${refString}---\n\n`;
+  refString = `${refString}<!-- This file is generated. Do not edit it directly. -->\n\n`;
+  refString = `${refString}${node.markdown_content}`;
+  return refString;
+}
+
+async function parseAndReplace(raw_content, link_index, current_guide_id) {
   // const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
   const docsLinkRegex = /\/[a-zA-Z0-9-_]+[a-zA-Z0-9-_#/]*/gm;
   const lines = raw_content.toString().split("\n");
@@ -82,19 +132,19 @@ async function parseAndReplace(
   }
   raw_content = new_lines.join("\n");
   return raw_content;
+}
 
-  async function replaceLinks(line, replaceable, link, current_guide_id) {
-    let new_path = "";
-    if (link.guide_id != current_guide_id) {
-      if (link.file_dir != "/") {
-        new_path = `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
-      } else {
-        new_path = `/${link.guide_id}#${link.local_ref}`;
-      }
+async function replaceLinks(line, replaceable, link, current_guide_id) {
+  let new_path = "";
+  if (link.guide_id != current_guide_id) {
+    if (link.file_dir != "/") {
+      new_path = `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
     } else {
-      new_path = `#${link.local_ref}`;
+      new_path = `/${link.guide_id}#${link.local_ref}`;
     }
-    line = line.replaceAll(replaceable, new_path);
-    return line;
+  } else {
+    new_path = `#${link.local_ref}`;
   }
+  line = line.replaceAll(replaceable, new_path);
+  return line;
 }

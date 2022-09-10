@@ -4,6 +4,7 @@ title: What is a Temporal Cloud Account Id?
 sidebar_label: Temporal Cloud Account Id
 description: A Temporal Cloud Account Id is a unique identifier for a customer.
 tags:
+  - term
   - explanation
 ---
 

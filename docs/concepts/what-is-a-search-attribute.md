@@ -4,6 +4,7 @@ title: What is a Search Attribute?
 sidebar_label: Search Attribute
 description: A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.
 tags:
+  - term
   - explanation
   - filtered-lists
   - visibility

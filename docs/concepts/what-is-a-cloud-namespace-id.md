@@ -1,9 +1,10 @@
 ---
 id: what-is-a-cloud-namespace-id
 title: What is a Cloud Namespace Id?
-sidebar_label: Cloud Namespace Id
+sidebar_label: Temporal Cloud Namespace Id
 description: A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.
 tags:
+  - term
   - explanation
 ---
 
