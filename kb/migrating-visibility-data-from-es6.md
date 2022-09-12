@@ -10,11 +10,7 @@ We added support for [Elasticsearch v7+ (ES7)](https://www.elastic.co/downloads/
 ES7 introduces several breaking changes, including the removal of mapping types.
 These changes make ES6 incompatible with ES7.
 
-You can choose from various ways to update Temporal Server to support ES7.
-Upgrade ES6 to ES7, and then use one of the following methods to update your server.
-
-Visibility data can be migrated through reindexing.
-After updating Elasticsearch, run a reindexing process to move data from ES6 to ES7.
+Upgrade ES6 to ES7, and then use one of the following methods to update your Temporal Server.
 
 :::note
 
