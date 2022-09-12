@@ -46,7 +46,7 @@ import Input from '../../references/modifiers/input.md'
 
 <!--InputFile-->
 
-import Input from '../../references/modifiers/input-file.md'
+import InputFile from '../../references/modifiers/input-file.md'
 
 <InputFile />
 
