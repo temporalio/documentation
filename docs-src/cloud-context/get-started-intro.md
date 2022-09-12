@@ -19,7 +19,7 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 You received email from Temporal that welcomes you to your new Temporal account.
 Your email address is now the first [Global Admin](/cloud/#account-level-roles) for your account.
 
-To get started with Temporal Cloud, following these onboarding steps:
+To get started with Temporal Cloud, follow these onboarding steps:
 
 <!--- 1. [Create an account.](#create-an-account-in-temporal-cloud) --->
 
