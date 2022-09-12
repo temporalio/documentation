@@ -1,7 +1,7 @@
 ---
 id: get-started-certificates
 title: Get started - Certificates
-sidebar_label: CA certificates
+sidebar_label: Issue CA certificates
 description: Learn requirements for CA certificates
 tags:
   - how-to
