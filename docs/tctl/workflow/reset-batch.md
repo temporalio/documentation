@@ -78,6 +78,6 @@ import SCO from '../../references/modifiers/skip-current-open.md'
 
 <!--SkipBaseIsNotCurrent-->
 
-import SkipBaseNotCurrent from '../../references/modifiers/skip-base-not-current.md'
+import SkipBaseNotCurrent from '../../references/modifiers/skip-base-is-not-current.md'
 
 <SkipBaseNotCurrent />

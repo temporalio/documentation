@@ -210,6 +210,7 @@ module.exports = {
             "**/app-dev-context/**",
             "**/concept-context/**",
             "**/cloud-context/**",
+            "**/tctl/modifiers/**",
           ], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
