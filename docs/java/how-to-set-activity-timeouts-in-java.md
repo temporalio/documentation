@@ -2,7 +2,7 @@
 id: how-to-set-activity-timeouts-in-java
 title: How to set Activity Timeouts in Java
 sidebar_label: Activity Timeouts
-description:
+description: Activity Timeouts
 tags:
   - Java
   - how-to
