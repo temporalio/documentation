@@ -54,6 +54,9 @@ Temporal tracks the following metrics for your various Namespaces.
 - temporal_cloud_v0_poll_success_count
 - temporal_cloud_v0_poll_success_sync_count
 - temporal_cloud_v0_poll_timeout_count
+- temporal_cloud_v0_service_latency_bucket
+- temporal_cloud_v0_service_latency_count
+- temporal_cloud_v0_service_latency_sum
 - temporal_cloud_v0_state_transition_count
 - temporal_cloud_v0_total_action_count
 - temporal_cloud_v0_workflow_cancel_count
