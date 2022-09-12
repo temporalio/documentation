@@ -33,8 +33,8 @@ To get started with Temporal Cloud, following these onboarding steps:
 You must provide your own certificates to access Temporal Cloud.
 For certificate requirements, see the following:
 
-- [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud/#certificate-requirements/#issue-certificates)
-- [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#issue-root-ca-and-end-entity-certificates)
+- [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud/#certificate-requirements)
+- [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud/#issue-certificates)
 
 ## Create a Namespace
 
