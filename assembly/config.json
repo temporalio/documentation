@@ -1,8 +1,8 @@
 {
   "content_source_dirs": [
-    "docs/app-dev-context",
-    "docs/cloud-context",
-    "docs/cluster-ops-context",
+    "docs-src/cloud-context",
+    "docs-src/app-dev-context",
+    "docs-src/cluster-ops-context",
     "docs/clusters",
     "docs/concept-context",
     "docs/concepts",
@@ -10,7 +10,8 @@
     "docs/java",
     "docs/python",
     "docs/php",
-    "docs/typescript"
+    "docs/typescript",
+    "docs-src/references"
   ],
   "content_write_dir": "docs",
   "temp_write_dir": "assembly/temp",
@@ -19,11 +20,5 @@
   "guide_configs_with_attached_nodes_file_name": "matched-guides.json",
   "outline_diagram_JSON_fIle_name": "outline-diagram.json",
   "outline_diagram_file_path": "docs/components",
-  "glossary_file_name": "glossary.md",
-  "additional_files_to_parse": [
-    "references/commands.md",
-    "references/events.md",
-    "references/metrics.md",
-    "references/configurations.md"
-  ]
+  "glossary_file_name": "glossary.md"
 }

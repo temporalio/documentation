@@ -14,6 +14,7 @@ Unlike `run`, this command returns the Workflow Id and Run Id immediately after 
 `tctl workflow start <modifiers>`
 
 The following modifiers control the behavior of the command.
+Always include required modifiers when executing this command.
 
 ### `--taskqueue`
 
@@ -29,6 +30,8 @@ tctl workflow start --taskqueue <name>
 
 ### `--workflow_id`
 
+**This is a required modifier.**
+
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Aliases: `--wid`, `-w`
@@ -37,6 +40,15 @@ Aliases: `--wid`, `-w`
 
 ```bash
 tctl workflow start --workflow_id <id>
+```
+
+If a Workflow is started without providing an Id, the Client generates one in the form of a UUID.
+Temporal recommends using a business id rather than the client-generated UUID.
+
+**Example**
+
+```bash
+tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 ```
 
 ### `--workflow_type`
@@ -92,7 +104,11 @@ tctl workflow start --cron <string>
 Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
+There are three allowed values:
+
+- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [**RejectDuplicate:**] (/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 
@@ -101,6 +117,12 @@ tctl workflow start --workflowidreusepolicy AllowDuplicate
 tctl workflow start --workflowidreusepolicy AllowDuplicateFailedOnly
 tctl workflow start --workflowidreusepolicy RejectDuplicate
 ```
+
+:::note
+
+Multiple Workflows with the same Id cannot be run at the same time
+
+:::
 
 ### `--input`
 
@@ -144,15 +166,24 @@ tctl workflow start --memo_key <key>
 
 ### `--memo`
 
-Pass a memo.
-A memo is information in JSON format that can be shown when the Workflow is listed.
+Pass information for a [memo](/concepts/what-is-a-memo) from a JSON file.
+
+Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
+Memos are visible when listing workflows.
+
 For multiple memos, concatenate them and use spaces as separators.
 The order must match the order of keys in `--memo_key`.
 
 **Example**
 
 ```bash
-tctl workflow start --memo <json>
+tctl workflow start \
+  -tq your-task-queue \
+  -wt your-workflow \
+  -et 60 \
+  -i '"temporal"' \
+  -memo_key '<key values>' \
+  -memo '<value>'
 ```
 
 ### `--memo_file`

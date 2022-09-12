@@ -127,4 +127,4 @@ As with any multithreading system, specifying too large values without monitorin
 **Related**
 
 - [Workers in production operation guide](https://temporal.io/blog/workers-in-production)
-- [Full set of SDK Metrics reference](/references/metrics.md)
+- [Full set of SDK Metrics reference](/references/sdk-metrics)
