@@ -16,7 +16,7 @@ The possible values can be obtained from the [`ParentClosePolicy`](https://githu
 - `POLICY_ABANDON`
 - `POLICY_REQUEST_CANCEL`
 
-Then `ChildWorkflowOptions` object is used to create a new child workflow object: 
+Then `ChildWorkflowOptions` object is used to create a new child workflow object:
 
 ```php
 $child = Workflow::newUntypedChildWorkflowStub(
