@@ -344,7 +344,33 @@ Note that you can only register one `Workflow.registerListener(Object)` per Work
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Use the `#[SignalMethod]` annotation to handle Signals in the Workflow interface:
+
+```php
+use Temporal\Workflow;
+
+#[Workflow\WorkflowInterface]
+class YourWorkflow
+{
+    private bool $value;
+
+    #[Workflow\WorkflowMethod]
+    public function run()
+    {
+        yield Workflow::await(fn()=> $this->value);
+        return 'OK';
+    }
+
+    #[Workflow\SignalMethod]
+    public function setValue(bool $value)
+    {
+        $this->value = $value;
+    }
+}
+```
+
+In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
+`Workflow::await()` function.
 
 </TabItem>
 <TabItem value="python">
@@ -444,7 +470,31 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `#[SignalMethod]` in the Workflow interface, from the Client code.
+
+To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+
+```php
+$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
+
+$run = $workflowClient->start($workflow);
+
+// do something
+
+$workflow->setValue(true);
+
+assert($run->getValue() === true);
+```
+
+Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with workflow id to send
+signals to already running workflows.
+
+```php
+$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
+$workflow->setValue(true);
+```
+
+See [Handle Signals](#handle-signal) for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="python">
@@ -1508,7 +1558,20 @@ GreetWorkflowInterface workflow1 =
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+A Retry Policy can be configured with an instance of the `RetryOptions` object.
+To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions`
+for child Workflows or via `WorkflowOptions` for top-level Workflows.
+
+```php
+$workflow = $this->workflowClient->newWorkflowStub(
+      CronWorkflowInterface::class,
+      WorkflowOptions::new()->withRetryOptions(
+        RetryOptions::new()->withInitialInterval(120)
+      )
+);
+```
+
+For more detailed information about `RetryOptions` object see [retries](/php/retries) for more details.
 
 </TabItem>
 <TabItem value="typescript">
@@ -2518,7 +2581,73 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Sometimes Workflows need to perform certain operations in parallel.
+
+Invoking activity stub without the use of `yield` will return the Activity result promise which can be resolved at later moment.
+Calling `yield` on promise blocks until a result is available.
+
+> Activity promise also exposes `then` method to construct promise chains.
+> Read more about Promises [here](https://github.com/reactphp/promise).
+
+Alternatively you can explicitly wrap your code (including `yield` constucts) using `Workflow::async` which will execute nested code in parallel with main Workflow code.
+Call `yeild` on Promise returned by `Workflow::async` to merge execution result back to primary Workflow method.
+
+```php
+public function greet(string $name): \Generator
+{
+    // Workflow::async runs it's activities and child workflows in a separate coroutine. Use keyword yield to merge
+    // it back to parent process.
+
+    $first = Workflow::async(
+        function () use ($name) {
+            $hello = yield $this->greetingActivity->composeGreeting('Hello', $name);
+            $bye = yield $this->greetingActivity->composeGreeting('Bye', $name);
+
+            return $hello . '; ' . $bye;
+        }
+    );
+
+    $second = Workflow::async(
+        function () use ($name) {
+            $hello = yield $this->greetingActivity->composeGreeting('Hola', $name);
+            $bye = yield $this->greetingActivity->composeGreeting('Chao', $name);
+
+            return $hello . '; ' . $bye;
+        }
+    );
+
+    // blocks until $first and $second complete
+    return (yield $first) . "\n" . (yield $second);
+}
+```
+
+**Async completion**
+
+There are certain scenarios when moving on from an Activity upon completion of its function is not possible or desirable.
+For example, you might have an application that requires user input to complete the Activity.
+You could implement the Activity with a polling mechanism, but a simpler and less resource-intensive implementation is to asynchronously complete a Temporal Activity.
+
+There are two parts to implementing an asynchronously completed Activity:
+
+1. The Activity provides the information necessary for completion from an external system and notifies the Temporal service that it is waiting for that outside callback.
+2. The external service calls the Temporal service to complete the Activity.
+
+The following example demonstrates the first part:
+
+<!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+<!--SNIPEND-->
+
+The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
+
+<!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+<!--SNIPEND-->
+
+To fail the Activity, you would do the following:
+
+```php
+// Fail the Activity.
+$activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -2879,7 +3008,32 @@ If the parent initiates a Child Workflow Execution and then completes immediatel
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+In PHP, a [Parent Close Policy](/workflows#parent-close-policy) is set via the `ChildWorkflowOptions` object and `withParentClosePolicy()` method.
+The possible values can be obtained from the [`ParentClosePolicy`](https://github.com/temporalio/sdk-php/blob/master/src/Workflow/ParentClosePolicy.php) class.
+
+- `POLICY_TERMINATE`
+- `POLICY_ABANDON`
+- `POLICY_REQUEST_CANCEL`
+
+Then `ChildWorkflowOptions` object is used to create a new child workflow object:
+
+```php
+$child = Workflow::newUntypedChildWorkflowStub(
+    'child-workflow',
+    ChildWorkflowOptions::new()
+        ->withParentClosePolicy(ParentClosePolicy::POLICY_ABANDON)
+);
+
+yield $child->start();
+```
+
+In the snippet above we:
+
+1. Create a new untyped child workflow stub with `Workflow::newUntypedChildWorkflowStub`.
+2. Provide `ChildWorkflowOptions` object with Parent Close Policy set to `ParentClosePolicy::POLICY_ABANDON`.
+3. Start Child Workflow Execution asynchronously using `yield` and method `start()`.
+
+We need `yield` here to ensure that a Child Workflow Execution starts before the parent closes.
 
 </TabItem>
 <TabItem value="typescript">
