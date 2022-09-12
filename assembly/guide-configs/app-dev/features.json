@@ -270,7 +270,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-set-workflow-timeouts-in-typescript"
         }
       ]
     },
@@ -299,7 +299,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-set-workflow-retry-options-in-typescript"
         }
       ]
     },
@@ -312,23 +312,23 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-schedule-to-close-timeout-in-go"
+          "id": "go/how-to-set-activity-timeouts-in-go"
         },
         {
           "lang": "java",
-          "id": "java/how-to-set-a-schedule-to-close-timeout-in-java"
+          "id": "java/how-to-set-activity-timeouts-in-java"
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-schedule-to-close-timeout-in-php"
+          "id": "php/how-to-set-activity-timeouts-in-php"
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-a-schedule-to-close-timeout-in-python"
+          "id": "python/how-to-set-activity-timeouts-in-python"
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-set-a-schedule-to-close-timeout-in-typescript"
+          "id": "typescript/how-to-set-activity-timeouts-in-typescript"
         }
       ]
     },

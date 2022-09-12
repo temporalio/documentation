@@ -199,14 +199,14 @@ You can either set the `name` or the `dynamic` parameter in a Signal's decorator
 [`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
 
 ```ts
-import {defineSignal} from "@temporalio/workflow";
+import { defineSignal } from '@temporalio/workflow';
 
 interface JoinInput {
   userId: string;
   groupId: string;
 }
 
-export const joinSignal = defineSignal<[JoinInput]>("join");
+export const joinSignal = defineSignal<[JoinInput]>('join');
 ```
 
 </TabItem>
@@ -361,12 +361,12 @@ await handle.signal("some signal")
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import {setHandler} from "@temporalio/workflow";
+import { setHandler } from '@temporalio/workflow';
 
 export async function yourWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
@@ -457,14 +457,14 @@ Content is currently unavailable.
 [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
-const handle = client.getHandle("workflow-id-123");
+const handle = client.getHandle('workflow-id-123');
 
-await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
 
 </TabItem>
@@ -556,12 +556,12 @@ $workflow->setValue(true);
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
 
 ```typescript
-import {getExternalWorkflowHandle} from "@temporalio/workflow";
-import {joinSignal} from "./other-workflow";
+import { getExternalWorkflowHandle } from '@temporalio/workflow';
+import { joinSignal } from './other-workflow';
 
 export async function yourWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle("workflow-id-123");
-  await handle.signal(joinSignal, {userId: "user-1", groupId: "group-1"});
+  const handle = getExternalWorkflowHandle('workflow-id-123');
+  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 }
 ```
 
@@ -699,16 +699,16 @@ async def main():
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import {WorkflowClient} from "@temporalio/client";
-import {yourWorkflow, joinSignal} from "./workflows";
+import { WorkflowClient } from '@temporalio/client';
+import { yourWorkflow, joinSignal } from './workflows';
 
 const client = new WorkflowClient();
 
 await client.signalWithStart(yourWorkflow, {
-  workflowId: "workflow-id-123",
-  args: [{foo: 1}],
+  workflowId: 'workflow-id-123',
+  args: [{ foo: 1 }],
   signal: joinSignal,
-  signalArgs: [{userId: "user-1", groupId: "group-1"}],
+  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
 });
 ```
 
@@ -1117,22 +1117,22 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
+  console.log('Blocked');
   try {
     await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
+    console.log('Unblocked');
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
+      console.log('Cancelled');
     }
     throw err;
   }
@@ -1332,17 +1332,17 @@ Available timeouts are:
 - `task_timeout`
 
 ```python
-    handle = await client.start_workflow(
-        "your-workflow-name",
-        "some arg",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        start_signal="your-signal-name",
-        # Set Workflow Timeout duration
-        execution_timeout="timedelta(seconds=2)",
-        # run_timeout="timedelta(seconds=2)",
-        # task_timeout="timedelta(seconds=2)",
-    )
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    # Set Workflow Timeout duration
+    execution_timeout="timedelta(seconds=2)",
+    # run_timeout="timedelta(seconds=2)",
+    # task_timeout="timedelta(seconds=2)",
+)
 ```
 
 ```python
@@ -1362,7 +1362,28 @@ handle = await client.execute_workflow(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Create an instance of `WorkflowOptions` from the Client and set your Workflow Timeout.
+
+Available timeouts are:
+
+- [`scheduletoclosetimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
+- [`scheduletoStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+
+```typescript
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types
+import type * as activities from './activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  // translates to 300000 ms
+  scheduleToCloseTimeout: '5m',
+  // translates to 30000 ms
+  // startToCloseTimeout: '30s'
+  // translates to 30000 ms
+  // startToCloseTimeout: '30s'
+});
+```
 
 </TabItem>
 </Tabs>
@@ -1406,7 +1427,7 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Set Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance using [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: `Null` which means no retries will be attempted.
@@ -1435,14 +1456,14 @@ Content is currently unavailable.
 Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
 
 ```python
-    handle = await client.start_workflow(
-        "your-workflow-name",
-        "some arg",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        start_signal="your-signal-name",
-        retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-    )
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
 ```
 
 ```python
@@ -1459,7 +1480,10 @@ handle = await client.execute_workflow(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+
+<!--SNIPSTART typescript-retry-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1485,24 +1509,24 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set an Activity option, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
 
 Available timeouts are:
 
-- `ScheduleToCloseTimeout`
-- `StartToCloseTimeout`
-- `ScheduleToStartTimeout`
+- `WorkflowExecutionTimeout`
+- `WorkflowRunTimeout`
+- `WorkflowTaskTimeout`
 
 ```go
-activityoptions := workflow.ActivityOptions{
-  ScheduleToCloseTimeout: 10 * time.Second,
-  // ScheduleToStartTimeout: 10 * time.Second,
-  // StartToCloseTimeout: 10 * time.Second,
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  // Set Workflow Timeout duration
+  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
+  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
+  // WorkflowTaskTimeout: time.Second * 10,
+  // ...
 }
-
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
 if err != nil {
   // ...
 }
@@ -1511,60 +1535,82 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
 
-This or `StartToCloseTimeout` must be set.
+Available timeouts are:
 
-- Type: `Duration`
-- Default: Unlimited.
-  Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
+- ScheduleToCloseTimeout()
+- ScheduleToStartTimeout()
+- StartToCloseTimeout()
 
 You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
-- With `ActivityStub`
+The following uses `ActivityStub`.
 
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                  ActivityOptions.newBuilder()
-                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                          .build());
-  ```
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                        // .setStartToCloseTimeout(Duration.ofSeconds(2)
+                        // .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                        .build());
+```
 
-- With `WorkflowImplementationOptions`
+The following uses `WorkflowImplementationOptions`.
 
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                      "GetCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                                          .build()))
-                      .build();
-  ```
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            ImmutableMap.of(
+                                    "GetCustomerGreeting",
+                                    // Set Activity Execution timeout
+                                    ActivityOptions.newBuilder()
+                                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                        // .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                        // .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                        .build()))
+                    .build();
+```
+
+:::note
+
+If you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+:::
 
 </TabItem>
 <TabItem value="php">
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The following code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
+
+Available timeouts are:
+
+- withScheduleToCloseTimeout()
+- withStartToCloseTimeout()
+- withScheduleToStartTimeout()
 
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
     GreetingActivityInterface::class,
+    // Set Activity Timeout duration
     ActivityOptions::new()
         ->withScheduleToCloseTimeout(CarbonInterval::seconds(2))
+        // ->withStartToCloseTimeout(CarbonInterval::seconds(2))
+        // ->withScheduleToStartTimeout(CarbonInterval::seconds(10))
 );
 ```
 
 </TabItem>
 <TabItem value="python">
 
-Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+Activity options are set as keyword arguments after the Activity arguments.
 
-The following code example sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_close_timeout` to 5 seconds.
+Available timeouts are:
+
+- schedule_to_close_timeout
+- schedule_to_start_timeout
+- start_to_close_timeout
 
 ```python
 @workflow.defn
@@ -1572,7 +1618,11 @@ class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity,
+            name,
+            schedule_to_close_timeout=timedelta(seconds=5),
+            # schedule_to_start_timeout=timedelta(seconds=5),
+            # start_to_close_timeout=timedelta(seconds=5),
         )
 ```
 
@@ -1581,20 +1631,22 @@ class YourWorkflow:
 
 When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
 
-Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+Available timeouts are:
 
-Type: time.Duration
-Default: ∞ (infinity – no limit)
-
-In this example, you can set the `scheduleToCloseTimeout` to 5 m.
+- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
+- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
+const { greet } = proxyActivities<typeof activities>({
+  scheduleToCloseTimeout: '5m',
+  // startToCloseTimeout: "30s", // recommended
+  // scheduleToStartTimeout: "60s",
+
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1619,7 +1671,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a [RetryPolicy](/retry-policies#), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [RetryPolicy](/retry-policies#), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
@@ -1657,7 +1709,7 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-To set [Retry Options](/retry-policies#), use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a Retry Policy, known as the [Retry Options](/retry-policies#) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: Server-defined Activity Retry policy.
@@ -1701,7 +1753,7 @@ To set [Retry Options](/retry-policies#), use [`ActivityOptions.newBuilder.setRe
 </TabItem>
 <TabItem value="php">
 
-To enable Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
+To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
 The follow example creates a new Activity with the given options.
 
 ```php
@@ -1744,11 +1796,11 @@ To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](htt
 
 ```typescript
 // Sample of typical options you can set
-const {yourActivity} = proxyActivities<typeof activities>({
+const { yourActivity } = proxyActivities<typeof activities>({
   // ...
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,
@@ -1957,9 +2009,9 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
 //...
 
 // workflow code calling activity
-const {example} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 hour",
-  heartbeatTimeout: "10s",
+const { example } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 hour',
+  heartbeatTimeout: '10s',
 });
 ```
 
@@ -2129,11 +2181,11 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 
 ```typescript
 // Creating a proxy for the activity.
-const {longRunningActivity} = proxyActivities<typeof activities>({
+const { longRunningActivity } = proxyActivities<typeof activities>({
   // translates to 300000 ms
-  scheduleToCloseTimeout: "5m",
+  scheduleToCloseTimeout: '5m',
   // translates to 30000 ms
-  startToCloseTimeout: "30s",
+  startToCloseTimeout: '30s',
   // equivalent to '10 seconds'
   heartbeatTimeout: 10000,
 });
@@ -2799,7 +2851,7 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: "* * * * *", // start every minute
+  cronSchedule: '* * * * *', // start every minute
 });
 ```
 
@@ -2844,25 +2896,25 @@ Content is currently unavailable.
 
 ```ts
 async function runWorker(): Promise<void> {
-  const activities = createActivities({apiKey: process.env.MAILGUN_API_KEY});
+  const activities = createActivities({ apiKey: process.env.MAILGUN_API_KEY });
 
   const worker = await Worker.create({
-    taskQueue: "example",
+    taskQueue: 'example',
     activities,
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
   });
   await worker.run();
 }
 
-const createActivities = (envVars: {apiKey: string}) => ({
+const createActivities = (envVars: { apiKey: string }) => ({
   async sendNotificationEmail(): Promise<void> {
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/your-domain/messages`,
-      method: "post",
-      params: {to, from, subject, html},
+      method: 'post',
+      params: { to, from, subject, html },
       auth: {
-        username: "api",
+        username: 'api',
         password: envVars.apiKey,
       },
     });
@@ -2876,9 +2928,9 @@ If we needed environment variables in our Workflow, here's how we'd use a Local 
 
 ```ts
 const worker = await Worker.create({
-  taskQueue: "example",
+  taskQueue: 'example',
   activities: createActivities(process.env),
-  workflowsPath: require.resolve("./workflows"),
+  workflowsPath: require.resolve('./workflows'),
 });
 
 type EnvVars = Record<string, string>;
@@ -2891,10 +2943,10 @@ const createActivities = (envVars: EnvVars) => ({
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/your-domain/messages`,
-      method: "post",
-      params: {to, from, subject, html},
+      method: 'post',
+      params: { to, from, subject, html },
       auth: {
-        username: "api",
+        username: 'api',
         password: apiKey,
       },
     });
@@ -2903,18 +2955,18 @@ const createActivities = (envVars: EnvVars) => ({
 ```
 
 ```ts
-const {getEnvVars} = proxyLocalActivities({
-  startToCloseTimeout: "1m",
+const { getEnvVars } = proxyLocalActivities({
+  startToCloseTimeout: '1m',
 });
 
-const {sendNotificationEmail} = proxyActivities({
-  startToCloseTimeout: "1m",
+const { sendNotificationEmail } = proxyActivities({
+  startToCloseTimeout: '1m',
 });
 
 async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
-    throw new Error("missing env var apiKey");
+    throw new Error('missing env var apiKey');
   }
   await sendNotificationEmail(envVars.apiKey);
 }
@@ -2922,3 +2974,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+

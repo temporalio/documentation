@@ -2,7 +2,8 @@
 id: how-to-set-workflow-timeouts-in-php
 title: How to set Workflow Timeouts in PHP
 sidebar_label: Workflow Timeouts
-description:
+description: Create an instance of WorkflowOptions.
+tags:
   - php
   - how-to
 ---

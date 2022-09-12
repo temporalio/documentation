@@ -1,7 +1,7 @@
 ---
-id: how-to-set-workflow-timeouts-in-go
-title: How to set Workflow Timeouts in Go
-sidebar_label: Workflow Timeouts
+id: how-to-set-activity-timeouts-in-go
+title: How to set Activity Timeouts in Go
+sidebar_label: Activity Timeouts
 description: Create an instance of StartWorkflowOptions.
 tags:
   - go

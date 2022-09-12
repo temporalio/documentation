@@ -2,8 +2,9 @@
 id: how-to-set-workflow-timeouts-in-python
 title: How to set Workflow Timeouts in Python
 sidebar_label: Workflow Timeouts
-description:
-  - php
+description: Set the timeout from either start_workflow() or execute_workflow().
+tags:
+  - python
   - how-to
 ---
 
@@ -16,17 +17,17 @@ Available timeouts are:
 - `task_timeout`
 
 ```python
-    handle = await client.start_workflow(
-        "your-workflow-name",
-        "some arg",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        start_signal="your-signal-name",
-        # Set Workflow Timeout duration
-        execution_timeout="timedelta(seconds=2)",
-        # run_timeout="timedelta(seconds=2)",
-        # task_timeout="timedelta(seconds=2)",
-    )
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    # Set Workflow Timeout duration
+    execution_timeout="timedelta(seconds=2)",
+    # run_timeout="timedelta(seconds=2)",
+    # task_timeout="timedelta(seconds=2)",
+)
 ```
 
 ```python
