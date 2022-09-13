@@ -12,7 +12,7 @@ tags:
 To add a Signal to a Workflow, call `defineSignal()` with a name, and then attach a listener with `setHandler()`.
 
 - Handlers to take arguments, which can be used inside `setHandler()` logic.
-- Signal handlers can mutate state, Signal handlers cannot return valeus.
+- Signal handlers can mutate state, Signal handlers cannot return values.
 
 **Declare your Signal as constants outside the Workflow Definition**
 
