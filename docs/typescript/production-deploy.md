@@ -131,11 +131,91 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
   - Note that there are separate [Timeouts and Retry Policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_
 
-## Do not use Alpine
+## Running in Docker
+
+Workers based on TypeScript SDK can be deployed and run as Docker containers.
+
+At this moment, we recommend usage of NodeJS 16 (note that there are known issues with NodeJS 18). Both `amd64` and `arm64` platforms are supported. A glibc-based image is required; musl-based images are _not_ supported (see below).
+
+The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:16-bulleyes` image. For example:
+
+```dockerfile
+FROM node:16-bulleyes
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install --only=production \
+    && npm run build
+
+CMD ["build/worker.js"]
+```
+
+For smaller images and/or more secure deployments, it is also possible to use `node:slim` Docker image variants (eg. `node:16-bulleyes-slim`), or `distroless/nodejs` Docker images (ie. `grc.io/distroless/nodejs:16`). See details below.
+
+### Using `node:slim` images
+
+`node:slim` images do not contain some of the common packages found in regular images. This results in significantly smaller images.
+
+Note however that TypeScript SDK requires the presence of root TLS certificates (ie. the `ca-certificates` package), which are not included in `slim` images. This package is required even when connecting to a local Temporal Server, and when using a server connection config that doesn't explicitly use TLS.
+
+For this reason, the `ca-certificates` package must be installed during the construction of the Docker image. For example:
+
+```dockerfile
+FROM node:16-bulleyes-slim
+
+RUN apt-get update \
+    && apt-get install -y ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# ... same as with regular image
+```
+
+Failure to install this dependency results in `[TransportError: transport error]` runtime error, because the certificates cannot be verified.
+
+### Using `distroless/nodejs` images
+
+`distroless/nodejs` images includes only the files that are strictly required to execute node. This results in even smaller images (approximately half the size of `node:slim` images). It also significantly reduce the surface of potential security issues that could be exploited by an eventual hacker in the resulting Docker images.
+
+It is generally possible and safe to execute TypeScript SDK Workers `distroless/nodejs` images (ie. unless your code itself requires dependencies that are not included in `distroless/nodejs`).
+
+However, the build process is very likely to require dependencies that are not included in the `distroless/nodejs` image. Notably, `distroless/nodejs` images do not contain `npm`. This might result in various error messages during the Docker build.
+
+The recommanded solution is to use a multi-step Dockerfile. For example:
+
+```dockerfile
+# -- BUILD STEP --
+
+FROM node:16-bulleyes AS builder
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install --only=production \
+    && npm run build
+
+# -- RESULTING IMAGE --
+
+FROM grc.io/distroless/nodejs:16
+
+COPY --from=builder /app /app
+WORKDIR /app
+
+CMD ["build/worker.js"]
+```
+
+### Properly configure Node's memory in Docker
+
+By default, `node` configures its maximum old-gen memory to 25% of the _physical memory_ of the machine on which it is executing, with a maximum of 4 GB. This is very likely innappropriate when running node in a Docker environment and can result in either under usage of available memory (ie. node only use a fraction of the memory allocated to the container) or overusage (ie. node tries to use more memory than what is allocated to the container, which will eventually lead to the process being killed by the operating system).
+
+It is therefore recommanded that you always explicitly set the `--max-old-space-size` node argument to approximately 80% of the maximum size (in megabytes) that you want to allocate the node process. You might need some experimentation and adjustment to find the most appropriate value based on your specific application.
+
+In practice, it is generally easier to provide this argument through the `NODE_OPTIONS` environment variable.
+
+### Do not use Alpine
 
 Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK.
 If you receive errors like below, it's probably because you are using Alpine.
-You can use the `slim` tag for the Docker image, if you are looking for a lightweight alternative.
 
 ```sh
 Error: Error loading shared library ld-linux-x86-64.so.2: No such file or directory (needed by /opt/app/node_modules/@temporalio/core-bridge/index.node)
@@ -145,17 +225,4 @@ Or like this:
 
 ```sh
 Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
-```
-
-## Install ca-certificates for TLS transport
-
-By default, the `slim` Docker images do not come with `ca-certificates` installed.
-This might lead to a `[TransportError: transport error]` runtime error because the certificates cannot be verified.
-The `ca-certificates` package installs the common certificate authorities and fixes this issue.
-This package is required even when connecting to a local Temporal Server, and when using a server connection config that doesn't explicitly use TLS.
-
-Add the following line to your Dockerfile if you use Debian-based images:
-
-```sh
-RUN apt update && apt install -y ca-certificates
 ```
