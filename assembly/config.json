@@ -4,7 +4,7 @@
     "docs-src/app-dev-context",
     "docs-src/cluster-ops-context",
     "docs/clusters",
-    "docs/concept-context",
+    "docs-src/concept-context",
     "docs/concepts",
     "docs/go",
     "docs/java",
