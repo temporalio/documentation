@@ -13,21 +13,15 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`scheduletoclosetimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
-- [`scheduletoStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
 
-```typescript
-import { proxyActivities } from '@temporalio/workflow';
-// Only import the activity types
-import type * as activities from './activities';
+<!--SNIPSTART typescript-execution-timeout -->
+<!--SNIPEND-->
 
-const { greet } = proxyActivities<typeof activities>({
-  // translates to 300000 ms
-  scheduleToCloseTimeout: '5m',
-  // translates to 30000 ms
-  // startToCloseTimeout: '30s'
-  // translates to 30000 ms
-  // startToCloseTimeout: '30s'
-});
-```
+<!--SNIPSTART typescript-run-timeout -->
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-task-timeout -->
+<!--SNIPEND-->

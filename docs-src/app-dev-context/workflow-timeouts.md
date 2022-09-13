@@ -14,5 +14,3 @@ Workflow timeouts are set when [starting the Workflow Execution](/app-dev-contex
 - **[Workflow Execution Timeout](/concepts/what-is-a-workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
 - **[Workflow Run Timeout](/concepts/what-is-a-workflow-run-timeout)**: restricts the maximum amount of time that a single Workflow Run can last.
 - **[Workflow Task Timeout](/concepts/what-is-a-workflow-task-timeout)**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
-
-For information on how and where these Workflow options are set, see the [Start Workflow Execution](application-development/foundations#start-workflow-execution) in the Foundations section.

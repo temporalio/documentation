@@ -1282,13 +1282,11 @@ Content is currently unavailable.
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
-The following timeouts are available in the Workflow Options.
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
 
 - **[Workflow Execution Timeout](/workflows#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
 - **[Workflow Run Timeout](/workflows#workflow-run-timeout)**: restricts the maximum amount of time that a single Workflow Run can last.
 - **[Workflow Task Timeout](/workflows#workflow-task-timeout)**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
-
-For information on how and where these Workflow options are set, see the [Start Workflow Execution](application-development/foundations#start-workflow-execution) in the Foundations section.
 
 <Tabs
 defaultValue="go"
@@ -1416,24 +1414,18 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`scheduletoclosetimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
-- [`scheduletoStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
 
-```typescript
-import {proxyActivities} from "@temporalio/workflow";
-// Only import the activity types
-import type * as activities from "./activities";
+<!--SNIPSTART typescript-execution-timeout -->
+<!--SNIPEND-->
 
-const {greet} = proxyActivities<typeof activities>({
-  // translates to 300000 ms
-  scheduleToCloseTimeout: "5m",
-  // translates to 30000 ms
-  // startToCloseTimeout: '30s'
-  // translates to 30000 ms
-  // startToCloseTimeout: '30s'
-});
-```
+<!--SNIPSTART typescript-run-timeout -->
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-task-timeout -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1563,8 +1555,6 @@ The following timeouts are available in the Activity Options.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
-For information on how and where these Actions options are set, see the Activity Execution in the Foundations section.
-
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -1574,22 +1564,24 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
 
+To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
 Available timeouts are:
 
-- `WorkflowExecutionTimeout`
-- `WorkflowRunTimeout`
-- `WorkflowTaskTimeout`
+- `StartToCloseTimeout`
+- `ScheduleToClose`
+- `ScheduleToStartTimeout`
 
 ```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  // Set Workflow Timeout duration
-  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowTaskTimeout: time.Second * 10,
-  // ...
+activityoptions := workflow.ActivityOptions{
+  // Set Activity Timeout duration
+  ScheduleToCloseTimeout: 10 * time.Second,
+  // StartToCloseTimeout: 10 * time.Second,
+  // ScheduleToStartTimeout: 10 * time.Second,
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }

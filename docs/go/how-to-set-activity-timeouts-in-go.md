@@ -10,22 +10,24 @@ tags:
 
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
 
+To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
 Available timeouts are:
 
-- `WorkflowExecutionTimeout`
-- `WorkflowRunTimeout`
-- `WorkflowTaskTimeout`
+- `StartToCloseTimeout`
+- `ScheduleToClose`
+- `ScheduleToStartTimeout`
 
 ```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  // Set Workflow Timeout duration
-  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowTaskTimeout: time.Second * 10,
-  // ...
+activityoptions := workflow.ActivityOptions{
+  // Set Activity Timeout duration
+  ScheduleToCloseTimeout: 10 * time.Second,
+  // StartToCloseTimeout: 10 * time.Second,
+  // ScheduleToStartTimeout: 10 * time.Second,
 }
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
 if err != nil {
   // ...
 }
