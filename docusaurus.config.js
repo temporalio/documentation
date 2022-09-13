@@ -165,7 +165,7 @@ module.exports = {
             {
               label: "Newsletter signup",
               href: "https://pages.temporal.io/newsletter-subscribe",
-            }
+            },
           ],
         },
         {
