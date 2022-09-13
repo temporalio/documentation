@@ -34,40 +34,41 @@ Use one of the following methods to update your Temporal Server and Elasticsearc
 
 ## Rolling upgrade
 
-1. Update the Server to the latest release.
-2. Add the following to the dynamic config:
-
-   ```
-   history.visibilityProcessorEnabled:
-     - value: false
-   ```
-
-3. Restart the Server.
-   Workflow visibility information won't be updated.
-
-4. Upgrade Elasticsearch v6 to Elasticsearch v7 following steps from the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
-
-5. Start Elasticsearch v7.
-   Visibility read queries will temporarily generate errors.
-   Write queries are blocked because the processor is disabled.
-
-6. Switch to Elasticsearch v7 in the Server's static config:
-
+1. If you are still using Elasticsearch v6, make sure your config file reflects this:
    ```
    persistence:
      datastores:
        es-visibility:
          elasticsearch:
-           version: "v7"
+           version: "v6"
    ```
-
-7. Set ES_VERSION env to v7 if you are using pre-build docker image.
-
-8. Remove this from the dynamic config:
-
+   If you're using a pre-build docker image, set `ES_VERSION` to `v6`.
+2. Update Temporal to the latest version, but below v1.18.0.
+3. Add the following to the dynamic config file:
    ```
-   history.visibilityProcessorEnabled:
-     - value: false
+   history.visibilityTaskWorkerCount:
+       - value: 0
    ```
-
+   This will disable the internal visibility queue processor.
+4. Restart the Server.
+   Workflow visibility information won't be updated.
+5. Upgrade Elasticsearch v6 to Elasticsearch v7 following steps from the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
+6. Start Elasticsearch v7.
+   Visibility read queries will temporarily generate errors.
+   Write queries are blocked because the the processor is disabled.
+7. Remove `v6` from your config file:
+   ```
+   persistence:
+     datastores:
+       es-visibility:
+         elasticsearch:
+           version: "v6"
+   ```
+   If you're using a pre-build docker image, remove `v7` from `ES_VERSION`.
+8. Remove the following statement from the dynamic config file:
+   ```
+   history.visibilityTaskWorkerCount:
+       - value: 0
+   ```
+   This will enable the internal visibility queue processor.
 9. Restart the Server one more time.
