@@ -20,21 +20,21 @@ Use one of the following methods to update your Temporal Server and Elasticsearc
 1. Shut down the Temporal Cluster.
 2. Upgrade Elasticsearch v6 to Elasticsearch v7 according to [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
 3. Upgrade Temporal to the latest version.
-4. Make sure that the static config file is not set to `v6`:
+4. Make sure that the static config file is set to `v7`:
 
    ```
    persistence:
      datastores:
        es-visibility:
          elasticsearch:
-           version: "v6"
+           version: "v7"
    ```
 
 5. Start the Temporal Cluster.
 
 ## Rolling upgrade
 
-1. If you are still using Elasticsearch v6, make sure your config file reflects this:
+1. If you are still using Elasticsearch v6, make sure your config file is set to `v6`:
    ```
    persistence:
      datastores:
@@ -43,28 +43,28 @@ Use one of the following methods to update your Temporal Server and Elasticsearc
            version: "v6"
    ```
    If you're using a pre-build docker image, set `ES_VERSION` to `v6`.
-2. Update Temporal to the latest version, but below v1.18.0.
+2. Update Temporal to v1.17.5.
 3. Add the following to the dynamic config file:
    ```
    history.visibilityTaskWorkerCount:
        - value: 0
    ```
    This will disable the internal visibility queue processor.
-4. Restart the Server.
+4. Restart the Temporal Server services.
    Workflow visibility information won't be updated.
 5. Upgrade Elasticsearch v6 to Elasticsearch v7 following steps from the [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
 6. Start Elasticsearch v7.
    Visibility read queries will temporarily generate errors.
    Write queries are blocked because the the processor is disabled.
-7. Remove `v6` from your config file:
+7. Rename `v6` to `v7` in your config file:
    ```
    persistence:
      datastores:
        es-visibility:
          elasticsearch:
-           version: "v6"
+           version: "v7"
    ```
-   If you're using a pre-build docker image, remove `v7` from `ES_VERSION`.
+   If you're using a pre-build docker image, set `ES_VERSION` to `v7`.
 8. Remove the following statement from the dynamic config file:
    ```
    history.visibilityTaskWorkerCount:
