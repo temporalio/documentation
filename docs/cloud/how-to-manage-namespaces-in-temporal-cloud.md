@@ -33,10 +33,10 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](/cloud/#cloud-namespace), region, and environment
+- [Namespace Name](/cloud/#cloud-namespace) and region
 - [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-executions)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-client-certificates) for the Namespace
-- [Roles](/cloud/#account-level-roles) for each user
+- [Permissions](/cloud/#namespace-level-permissions) for each user
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 

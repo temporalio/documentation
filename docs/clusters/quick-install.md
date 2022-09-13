@@ -13,7 +13,7 @@ The following sections list various methods of deploying your [Temporal Clusters
 
 **For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](/cloud) documentation.**
 
-#### Temporalite
+### Temporalite
 
 Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies.
 It supports persistence to disk and in-memory mode through SQLite.
@@ -40,7 +40,7 @@ The following steps start and run a Temporal Cluster.
 
 <!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
-#### Docker Compose
+### Docker Compose
 
 Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
 
@@ -69,7 +69,7 @@ The following steps start and run a Temporal Cluster using the default configura
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-#### Gitpod
+### Gitpod
 
 You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
 
