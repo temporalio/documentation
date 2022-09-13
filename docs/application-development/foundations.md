@@ -44,7 +44,7 @@ The following sections list various methods of deploying your [Temporal Clusters
 
 **For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](/cloud) documentation.**
 
-#### Temporalite
+### Temporalite
 
 Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies.
 It supports persistence to disk and in-memory mode through SQLite.
@@ -71,7 +71,7 @@ The following steps start and run a Temporal Cluster.
 
 <!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
-#### Docker Compose
+### Docker Compose
 
 Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
 
@@ -100,7 +100,7 @@ The following steps start and run a Temporal Cluster using the default configura
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-#### Gitpod
+### Gitpod
 
 You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
 
@@ -889,13 +889,13 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 </TabItem>
 <TabItem value="php">
 
-In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[YourWorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
 ```php
 use Temporal\Workflow\YourWorkflowInterface;
 use Temporal\Workflow\WorkflowMethod;
 
-#[YourWorkflowInterface]
+#[WorkflowInterface]
 interface FileProcessingWorkflow
 {
     #[WorkflowMethod]
@@ -1017,7 +1017,21 @@ public interface YourWorkflow {
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+A method annotated with `#[WorkflowMethod]` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+You can create a custom object and pass it to the Workflow method, as shown in the following example:
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -1814,7 +1828,31 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Return values must be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+Thus, you can return both primitive types:
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        return $greeting . ' ' . $name;
+    }
+}
+```
+
+And objects:
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): Greeting
+    {
+        return new Greeting($greeting, $name);
+    }
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -2906,7 +2944,32 @@ You can register only one Activity instance that implements `DynamicActivity` wi
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Worker listens on a task queue and hosts both workflow and activity implementations:
+
+```php
+// Workflows are stateful. So you need a type to create instances:
+$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+// Activities are stateless and thread safe:
+$worker->registerActivity(App\DemoActivity::class);
+```
+
+In case an activity class requires some external dependencies provide a callback - factory
+that creates or builds a new activity instance. The factory should be a callable which accepts
+an instance of ReflectionClass with an activity class which should be created.
+
+```php
+$worker->registerActivity(
+    App\DemoActivity::class,
+    fn(ReflectionClass $class) => $container->create($class->getName())
+);
+```
+
+If you want to clean up some resources after activity is done, you may register a finalizer. This callback is called
+after each activity invocation:
+
+```php
+$worker->registerActivityFinalizer(fn() => $kernel->showtdown());
+```
 
 </TabItem>
 <TabItem value="python">
@@ -3122,7 +3185,80 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
+via `Temporal\Client\WorkflowClient`. To create workflow client:
+
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233'));
+```
+
+**Synchronous start**
+
+A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
+invocation process and will continue executing even if the waiting process crashes or stops.
+
+Make sure to acquire workflow interface or class name you want to start. For example:
+
+```php
+#[WorkflowInterface]
+interface AccountTransferWorkflowInterface
+{
+    #[WorkflowMethod(name: "MoneyTransfer")]
+    #[ReturnType('int')]
+    public function transfer(
+        string $fromAccountId,
+        string $toAccountId,
+        string $referenceId,
+        int $amountCents
+    );
+}
+```
+
+To start such workflow in sync mode:
+
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
+
+$result = $accountTransfer->transfer(
+    'fromID',
+    'toID',
+    'refID',
+    1000
+);
+```
+
+**Asynchronous start**
+
+An asynchronous start initiates a Workflow execution and immediately returns to the caller without waiting for a result.
+This is the most common way to start Workflows in a live environment.
+
+To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
+method.
+
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
+
+$run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+```
+
+Once started you can receive workflow ID via `WorkflowRun` object returned by start method:
+
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+
+var_dump($run->getExecution()->getID());
+```
+
+**Recurring start**
+
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
 
 </TabItem>
 <TabItem value="python">

@@ -8,7 +8,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace update accepted-client-ca add` command adds client CA certificates to a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
+The `tcld namespace accepted-client-ca add` command adds client CA certificates to a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.
 
 `tcld namespace accepted-client-ca add --ca-certificate <value>`
 

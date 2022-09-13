@@ -10,13 +10,13 @@ tags:
 
 The `tcld account metrics accepted-client-ca add` command adds end-entity certificates to the metrics endpoint of a Temporal Cloud account.
 
-`tcld account metrics accepted-client-ca add --ca-certificate <value>`
-
 :::info
 
 The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
 
 :::
+
+`tcld account metrics accepted-client-ca add --ca-certificate <value>`
 
 Alias: `a`
 
