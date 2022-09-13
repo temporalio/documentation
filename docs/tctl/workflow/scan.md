@@ -21,42 +21,42 @@ The following modifiers control the behavior of the command.
 
 <!--Fields-->
 
-import Fields from '../../references/modifiers/fields.md'
+import Fields from '../../tctl/modifiers/fields.md'
 
 <Fields />
 
 <!--Limit-->
 
-import Limit from '../../references/modifiers/limit.md'
+import Limit from '../../tctl/modifiers/limit.md'
 
 <Limit />
 
 <!--NoPager-->
 
-import NoPager from '../../references/modifiers/no-pager.md'
+import NoPager from '../../tctl/modifiers/no-pager.md'
 
 <NoPager />
 
 <!--Output-->
 
-import Output from '../../references/modifiers/output.md'
+import Output from '../../tctl/modifiers/output.md'
 
 <Output />
 
 <!--Pager-->
 
-import Pager from '../../references/modifiers/pager.md'
+import Pager from '../../tctl/modifiers/pager.md'
 
 <Pager />
 
 <!--Query-->
 
-import Query from '../../references/modifiers/query.md'
+import Query from '../../tctl/modifiers/query.md'
 
 <Query />
 
 <!--TimeFormat-->
 
-import TimeFormat from '../../references/modifiers/time-format.md'
+import TimeFormat from '../../tctl/modifiers/time-format.md'
 
 <TimeFormat />

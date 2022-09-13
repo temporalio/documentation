@@ -91,30 +91,30 @@ Make sure to include required modifiers in all command executions.
 
 <!--Input-->
 
-import Input from '../../references/modifiers/input.md'
+import Input from '../../tctl/modifiers/input.md'
 
 <Input />
 
 <!--InputFile-->
 
-import InputFile from '../../references/modifiers/input-file.md'
+import InputFile from '../../tctl/modifiers/input-file.md'
 
 <InputFile />
 
 <!--Name-->
 
-import Name from '../../references/modifiers/name.md'
+import Name from '../../tctl/modifiers/name.md'
 
 <Name />
 
 <!--RunId-->
 
-import RunId from '../../references/modifiers/run-id.md'
+import RunId from '../../tctl/modifiers/run-id.md'
 
 <RunId />
 
 <!--WorkflowId-->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />

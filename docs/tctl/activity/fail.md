@@ -16,36 +16,36 @@ The following modifiers control the behavior of the command.
 
 <!--ActivityId-->
 
-import ActivityId from '../../references/modifiers/activity-id.md'
+import ActivityId from '../../tctl/modifiers/activity-id.md'
 
 <ActivityId />
 
 <!--Detail-->
 
-import Detail from '../../references/modifiers/detail.md'
+import Detail from '../../tctl/modifiers/detail.md'
 
 <Detail />
 
 <!--Identity-->
 
-import Identity from '../../references/modifiers/identity.md'
+import Identity from '../../tctl/modifiers/identity.md'
 
 <Identity />
 
 <!--Reason-->
 
-import Reason from '../../references/modifiers/reason.md'
+import Reason from '../../tctl/modifiers/reason.md'
 
 <Reason />
 
 <!--RunId-->
 
-import RunId from '../../references/modifiers/run-id.md'
+import RunId from '../../tctl/modifiers/run-id.md'
 
 <RunId />
 
 <!--WorkflowId-->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />

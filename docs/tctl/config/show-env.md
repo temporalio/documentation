@@ -14,12 +14,12 @@ The following modifiers change the behavior of this command.
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--Output-->
 
-import output from '../../references/modifiers/output.md'
+import output from '../../tctl/modifiers/output.md'
 
 <Output />

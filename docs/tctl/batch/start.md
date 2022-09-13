@@ -16,48 +16,48 @@ The following modifiers control the behavior of the command.
 
 <!--BatchType-->
 
-import BatchType from '../../references/modifiers/batch-type.md'
+import BatchType from '../../tctl/modifiers/batch-type.md'
 
 <BatchType />
 
 <!--Input-->
 
-import Input from '../../references/modifiers/input.md'
+import Input from '../../tctl/modifiers/input.md'
 
 <Input />
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--Query-->
 
-import Query from '../../references/modifiers/query.md'
+import Query from '../../tctl/modifiers/query.md'
 
 <Query />
 
 <!--Reason-->
 
-import Reason from '../../references/modifiers/reason.md'
+import Reason from '../../tctl/modifiers/reason.md'
 
 <Reason />
 
 <!--RPS-->
 
-import RPS from '../../references/modifiers/rps.md'
+import RPS from '../../tctl/modifiers/rps.md'
 
 <RPS />
 
 <!--SignalName-->
 
-import SignalName from '../../references/modifiers/signal-name.md'
+import SignalName from '../../tctl/modifiers/signal-name.md'
 
 <SignalName />
 
 <!--Yes-->
 
-import Yes from '../../references/modifiers/yes-mod.md'
+import Yes from '../../tctl/modifiers/yes-mod.md'
 
 <Yes />

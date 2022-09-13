@@ -18,66 +18,66 @@ The following modifiers control the behavior of the command.
 
 <!--DryRun-->
 
-import DryRun from '../../references/modifiers/dry-run.md'
+import DryRun from '../../tctl/modifiers/dry-run.md'
 
 <DryRun />
 
 <!--ExcludeFile-->
 
-import ExcludeFile from '../../references/modifiers/exclude-file.md'
+import ExcludeFile from '../../tctl/modifiers/exclude-file.md'
 
 <ExcludeFile />
 
 <!--InputFile-->
 
-import InputFile from '../../references/modifiers/input-file.md'
+import InputFile from '../../tctl/modifiers/input-file.md'
 
 <InputFile />
 
 <!--InputParallelism-->
 
-import IP from '../../references/modifiers/input-parallelism.md'
+import IP from '../../tctl/modifiers/input-parallelism.md'
 
 <IP />
 
 <!--NonDeterministic-->
 
-import NonDeterministic from '../../references/modifiers/non-deterministic.md'
+import NonDeterministic from '../../tctl/modifiers/non-deterministic.md'
 
 <NonDeterministic />
 
 <!--Query-->
 
-import Query from '../../references/modifiers/query.md'
+import Query from '../../tctl/modifiers/query.md'
 
 <Query />
 
 <!--Reason-->
 
-import Reason from '../../references/modifiers/reason.md'
+import Reason from '../../tctl/modifiers/reason.md'
 
 <Reason />
 
 <!--ResetBadBinaryChecksum-->
 
-import ResetBadBinaryChecksum from '../../references/modifiers/reset-bad-binary-checksum.md'
+import ResetBadBinaryChecksum from '../../tctl/modifiers/reset-bad-binary-checksum.md'
 
 <ResetBadBinaryChecksum />
 
 <!--ResetType-->
 
-import ResetType from '../../references/modifiers/reset-type.md'
+import ResetType from '../../tctl/modifiers/reset-type.md'
 
 <ResetType />
 
 <!--SkipCurrentOpen-->
 
-import SCO from '../../references/modifiers/skip-current-open.md'
+import SCO from '../../tctl/modifiers/skip-current-open.md'
 
 <SCO />
 
 <!--SkipBaseIsNotCurrent-->
 
-import SkipBaseNotCurrent from '../../references/modifiers/skip-base-is-not-current.md'
+import SkipBaseNotCurrent from '../../tctl/modifiers/skip-base-is-not-current.md'
 
 <SkipBaseNotCurrent />

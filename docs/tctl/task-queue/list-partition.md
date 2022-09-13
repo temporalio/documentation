@@ -16,18 +16,18 @@ The following modifier controls the behavior of the command.
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--Output-->
 
-import Output from '../../references/modifiers/output.md'
+import Output from '../../tctl/modifiers/output.md'
 
 <Output />
 
 <!--TaskQueue-->
 
-import TaskQueue from '../../references/modifiers/task-queue.md'
+import TaskQueue from '../../tctl/modifiers/task-queue.md'
 
 <TaskQueue />

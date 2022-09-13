@@ -18,42 +18,42 @@ The following modifiers control the behavior of the command.
 
 <!--EventId-->
 
-import EventId from '../../references/modifiers/event-id.md'
+import EventId from '../../tctl/modifiers/event-id.md'
 
 <EventId />
 
 <!--Reason-->
 
-import Reason from '../../references/modifiers/reason.md'
+import Reason from '../../tctl/modifiers/reason.md'
 
 <Reason />
 
 <!--ResetType-->
 
-import ResetType from '../../references/modifiers/reset-type.md'
+import ResetType from '../../tctl/modifiers/reset-type.md'
 
 <ResetType />
 
 <!--ResetReapplyType-->
 
-import RRT from '../../references/modifiers/reset-reapply-type.md'
+import RRT from '../../tctl/modifiers/reset-reapply-type.md'
 
 <RRT />
 
 <!--ResetBadBinaryChecksum-->
 
-import RBBC from '../../references/modifiers/reset-bad-binary-checksum.md'
+import RBBC from '../../tctl/modifiers/reset-bad-binary-checksum.md'
 
 <RRBC />
 
 <!--RunId-->
 
-import RunId from '../../references/modifiers/run-id.md'
+import RunId from '../../tctl/modifiers/run-id.md'
 
 <RunId />
 
 <!--WorkflowId  -->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />

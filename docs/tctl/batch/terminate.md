@@ -16,12 +16,12 @@ The following modifiers control the behavior of the command.
 
 <!--JobId-->
 
-import JobId from '../../references/modifiers/job-id.md'
+import JobId from '../../tctl/modifiers/job-id.md'
 
 <JobId />
 
 <!--Reason-->
 
-import Reason from '../../references/modifiers/reason.md'
+import Reason from '../../tctl/modifiers/reason.md'
 
 <Reason />

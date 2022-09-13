@@ -18,36 +18,36 @@ The following modifiers control the behavior of the command.
 
 <!--Fields-->
 
-import Fields from '../../references/modifiers/fields.md'
+import Fields from '../../tctl/modifiers/fields.md'
 
 <Fields />
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--Output-->
 
-import Output from '../../references/modifiers/namespace.md'
+import Output from '../../tctl/modifiers/namespace.md'
 
 <Output />
 
 <!--TaskQueue-->
 
-import TaskQueue from '../../references/modifiers/task-queue.md'
+import TaskQueue from '../../tctl/modifiers/task-queue.md'
 
 <TaskQueue />
 
 <!--TaskQueueType-->
 
-import TQT from '../../references/modifiers/task-queue-type.md'
+import TQT from '../../tctl/modifiers/task-queue-type.md'
 
 <TQT />
 
 <!--TimeFormat-->
 
-import TimeFormat from '../../references/modifiers/time-format.md'
+import TimeFormat from '../../tctl/modifiers/time-format.md'
 
 <TimeFormat />

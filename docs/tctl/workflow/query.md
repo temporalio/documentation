@@ -40,36 +40,36 @@ Always include required modifiers when executing this command.
 
 <!--Input-->
 
-import Input from '../../references/modifiers/input.md'
+import Input from '../../tctl/modifiers/input.md'
 
 <Input />
 
 <!--InputFile-->
 
-import InputFile from '../../references/modifiers/input-file.md'
+import InputFile from '../../tctl/modifiers/input-file.md'
 
 <InputFile />
 
 <!--QueryRejectCondition-->
 
-import QRC from '../../references/modifiers/query-reject-condition.md'
+import QRC from '../../tctl/modifiers/query-reject-condition.md'
 
 <QRC />
 
 <!--QueryType-->
 
-import QueryType from '../../references/modifiers/query-type.md'
+import QueryType from '../../tctl/modifiers/query-type.md'
 
 <QueryType />
 
 <!--RunId-->
 
-import RunId from '../../references/modifiers/run-id.md'
+import RunId from '../../tctl/modifiers/run-id.md'
 
 <RunId />
 
 <!--WorkflowId-->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />

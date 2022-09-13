@@ -41,37 +41,37 @@ tctl namespace update --add-bad-binary <value>
 
 <!--Clusters-->
 
-import Clusters from '../../references/modifiers/clusters.md'
+import Clusters from '../../tctl/modifiers/clusters.md'
 
 <Clusters />
 
 <!--Description-->
 
-import Description from '../../references/modifiers/description.md'
+import Description from '../../tctl/modifiers/description.md'
 
 <Description />
 
 <!--HistoryArchivalState-->
 
-import HAS from '../../references/modifiers/history-archival-state.md'
+import HAS from '../../tctl/modifiers/history-archival-state.md'
 
 <HAS />
 
 <!--HistoryUri-->
 
-import HURI from '../../references/modifiers/history-uri.md'
+import HURI from '../../tctl/modifiers/history-uri.md'
 
 <HURI />
 
 <!--NamespaceData-->
 
-import ND from '../../references/modifiers/namespace-data.md'
+import ND from '../../tctl/modifiers/namespace-data.md'
 
 <ND />
 
 <!--OwnerEmail-->
 
-import OwnerEmail from '../../references/modifiers/owner-email.md'
+import OwnerEmail from '../../tctl/modifiers/owner-email.md'
 
 <OwnerEmail />
 
@@ -87,7 +87,7 @@ tctl namespace update --promote-namespace <value>
 
 <!--Reason-->
 
-import Reason from '../../references/modifiers/reason.md'
+import Reason from '../../tctl/modifiers/reason.md'
 
 <Reason />
 
@@ -105,18 +105,18 @@ tctl namespace update --remove-bad-binary <value>
 
 <!--Retention-->
 
-import Retention from '../../references/modifiers/retention.md'
+import Retention from '../../tctl/modifiers/retention.md'
 
 <Retention />
 
 <!--VisibilityArchivalState-->
 
-import VAS from '../../references/modifiers/visibility-archival-state.md'
+import VAS from '../../tctl/modifiers/visibility-archival-state.md'
 
 <VAS />
 
 <!--VisibilityUri-->
 
-import VURI from '../../references/modifiers/visibility-uri.md'
+import VURI from '../../tctl/modifiers/visibility-uri.md'
 
 <VURI />

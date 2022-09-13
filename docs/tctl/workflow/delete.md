@@ -16,18 +16,18 @@ The following modifiers control the behavior of the command.
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--RunId-->
 
-import RunId from '../../references/modifiers/run-id.md'
+import RunId from '../../tctl/modifiers/run-id.md'
 
 <RunId />
 
 <!--WorkflowId-->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />

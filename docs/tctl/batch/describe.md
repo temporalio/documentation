@@ -18,12 +18,12 @@ The following modifier controls the behavior of the command.
 
 <!--JobId-->
 
-import JobId from '../../references/modifiers/job-id.md'
+import JobId from '../../tctl/modifiers/job-id.md'
 
 <JobId />
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />

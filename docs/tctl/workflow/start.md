@@ -18,138 +18,138 @@ Always include required modifiers when executing this command.
 
 <!--Cron-->
 
-import Cron from '../../references/modifiers/cron.md'
+import Cron from '../../tctl/modifiers/cron.md'
 
 <Cron />
 
 <!--ExecutionTimeout-->
 
-import ExecutionTimeout from '../../references/modifiers/execution-timeout.md'
+import ExecutionTimeout from '../../tctl/modifiers/execution-timeout.md'
 
 <ExecutionTimeout />
 
 <!--Fields-->
 
-import Fields from '../../references/modifiers/fields.md'
+import Fields from '../../tctl/modifiers/fields.md'
 
 <Fields />
 
 <!--Input-->
 
-import Input from '../../references/modifiers/input.md'
+import Input from '../../tctl/modifiers/input.md'
 
 <Input />
 
 <!--InputFile-->
 
-import InputFile from '../../references/modifiers/input-file.md'
+import InputFile from '../../tctl/modifiers/input-file.md'
 
 <InputFile />
 
 <!--Limit-->
 
-import Limit from '../../references/modifiers/limit.md'
+import Limit from '../../tctl/modifiers/limit.md'
 
 <Limit />
 
 <!--MaxFieldLength-->
 
-import MaxFieldLength from '../../references/modifiers/max-field-length.md'
+import MaxFieldLength from '../../tctl/modifiers/max-field-length.md'
 
 <MaxFieldLength />
 
 <!--MemoKey-->
 
-import MemoKey from '../../references/modifiers/memo-key.md'
+import MemoKey from '../../tctl/modifiers/memo-key.md'
 
 <MemoKey />
 
 <!--Memo-->
 
-import Memo from '../../references/modifiers/memo.md'
+import Memo from '../../tctl/modifiers/memo.md'
 
 <Memo />
 
 <!--MemoFile-->
 
-import MemoFile from '../../references/modifiers/memo-file.md'
+import MemoFile from '../../tctl/modifiers/memo-file.md'
 
 <MemoFile />
 
 <!--NoPager-->
 
-import NoPager from '../../references/modifiers/no-pager.md'
+import NoPager from '../../tctl/modifiers/no-pager.md'
 
 <NoPager />
 
 <!--Output-->
 
-import Output from '../../references/modifiers/output.md'
+import Output from '../../tctl/modifiers/output.md'
 
 <Output />
 
 <!--Pager-->
 
-import Pager from '../../references/modifiers/pager.md'
+import Pager from '../../tctl/modifiers/pager.md'
 
 <Pager />
 
 <!--RunTimeout-->
 
-import RunTimeout from '../../references/modifiers/run-timeout.md'
+import RunTimeout from '../../tctl/modifiers/run-timeout.md'
 
 <RunTimeout />
 
 <!--SearchAttributeKey-->
 
-import SAK from '../../references/modifiers/search-attribute-key.md'
+import SAK from '../../tctl/modifiers/search-attribute-key.md'
 
 <SAK />
 
 <!--SearchAttributeValue-->
 
-import SAV from '../../references/modifiers/search-attribute-value.md'
+import SAV from '../../tctl/modifiers/search-attribute-value.md'
 
 <SAV />
 
 <!--TaskTimeout-->
 
-import TaskTimeout from '../../references/modifiers/task-timeout.md'
+import TaskTimeout from '../../tctl/modifiers/task-timeout.md'
 
 <TaskTimeout />
 
 <!--TaskQueue-->
 
-import TaskQueue from '../../references/modifiers/task-queue.md'
+import TaskQueue from '../../tctl/modifiers/task-queue.md'
 
 <TaskQueue />
 
 <!--TimeFormat-->
 
-import TimeFormat from '../../references/modifiers/time-format.md'
+import TimeFormat from '../../tctl/modifiers/time-format.md'
 
 <TimeFormat />
 
 <!--Type-->
 
-import Type from '../../references/modifiers/type.md'
+import Type from '../../tctl/modifiers/type.md'
 
 <Type />
 
 <!--WorkflowId-->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />
 
 <!--WorkflowTaskTimeout-->
 
-import WTT from '../../references/modifiers/workflow-task-timeout.md'
+import WTT from '../../tctl/modifiers/workflow-task-timeout.md'
 
 <WTT />
 
 <!--WorkflowIdReusePolicy-->
 
-import WorkflowIdReusePolicy from '../../references/modifiers/workflow-id-reuse-policy.md'
+import WorkflowIdReusePolicy from '../../tctl/modifiers/workflow-id-reuse-policy.md'
 
 <WorkflowIdReusePolicy />

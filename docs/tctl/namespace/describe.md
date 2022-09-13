@@ -18,7 +18,7 @@ The following modifier controls the behavior of the command.
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/yes-mod.md'
+import Namespace from '../../tctl/modifiers/yes-mod.md'
 
 <Namespace />
 

@@ -18,12 +18,12 @@ The following modifier controls the behavior of the command.
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--PageSize-->
 
-import PageSize from '../../references/modifiers/pagesize.md'
+import PageSize from '../../tctl/modifiers/pagesize.md'
 
 <PageSize />

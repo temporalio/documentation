@@ -17,7 +17,7 @@ The following modifier controls the behavior of the command.
 
 <!--Query-->
 
-import Query from '../../references/modifiers/query.md'
+import Query from '../../tctl/modifiers/query.md'
 
 <Query />
 

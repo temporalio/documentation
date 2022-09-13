@@ -22,24 +22,24 @@ Always include required modifiers when executing this command.
 
 <!--Raw-->
 
-import Raw from '../../references/modifiers/raw.md'
+import Raw from '../../tctl/modifiers/raw.md'
 
 <Raw />
 
 <!--ResetPointsOnly-->
 
-import ResetPointsOnly from '../../references/modifiers/reset-points-only.md'
+import ResetPointsOnly from '../../tctl/modifiers/reset-points-only.md'
 
 <ResetPointsOnly />
 
 <!--RunId-->
 
-import RunId from '../../references/modifiers/run-id.md'
+import RunId from '../../tctl/modifiers/run-id.md'
 
 <RunId />
 
 <!--WorkflowId-->
 
-import WorkflowId from '../../references/modifiers/workflow-id.md'
+import WorkflowId from '../../tctl/modifiers/workflow-id.md'
 
 <WorkflowId />

@@ -16,12 +16,12 @@ The following modifiers control the behavior of the command.
 
 <!--Namespace-->
 
-import Namespace from '../../references/modifiers/namespace.md'
+import Namespace from '../../tctl/modifiers/namespace.md'
 
 <Namespace />
 
 <!--Yes-->
 
-import Yes from '../../references/modifiers/yes-mod.md'
+import Yes from '../../tctl/modifiers/yes-mod.md'
 
 <Yes />
