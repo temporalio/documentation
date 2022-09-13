@@ -15,7 +15,7 @@ Support for Elasticsearch v8 has been added; v7 remains as the default version t
 
 Use one of the following methods to update your Temporal Server and Elasticsearch.
 
-## Upgrade with temporary shutdown
+## Temporary shutdown
 
 1. Shut down the Temporal Cluster.
 2. Upgrade Elasticsearch v6 to Elasticsearch v7 according to [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
