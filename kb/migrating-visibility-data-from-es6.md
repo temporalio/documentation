@@ -10,7 +10,7 @@ We added support for [Elasticsearch v7+ (ES7)](https://www.elastic.co/downloads/
 ES7 introduces several breaking changes, including the removal of mapping types.
 These changes make ES6 incompatible with ES7.
 
-Upgrade ES6 to ES7, and then use one of the following methods to update your Temporal Server.
+Use one of the following methods to update your Temporal Server and Elasticsearch.
 
 :::note
 
