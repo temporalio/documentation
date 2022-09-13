@@ -226,7 +226,7 @@ npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporal
 
 :::note
 
-The TypeScript SDK is designed with TypeScript-first developer experience in mind, but works equally well with JavaScript.
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
 
 :::
 
