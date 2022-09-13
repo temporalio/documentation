@@ -120,12 +120,20 @@ module.exports = {
             },
             {
               label: "YouTube",
-              href: "https://www.youtube.com/channel/UCGovZyy8OfFPNlNV0i1fI1g",
+              href: "https://www.youtube.com/c/Temporalio",
+            },
+            {
+              label: "About the docs",
+              href: "https://github.com/temporalio/documentation/blob/master/README.md",
             },
           ],
         },
         {
           items: [
+            {
+              label: "Join the Cloud waitlist",
+              href: "https://pages.temporal.io/cloud-early-access",
+            },
             {
               label: "Meetups",
               href: "https://lu.ma/temporal",
@@ -135,7 +143,7 @@ module.exports = {
               href: "https://temporal.io/community#workshops",
             },
             {
-              label: "Support Forum",
+              label: "Support forum",
               href: "https://community.temporal.io/",
             },
           ],
@@ -143,16 +151,20 @@ module.exports = {
         {
           items: [
             {
-              label: "Use Cases",
-              href: "https://temporal.io/use-cases",
-            },
-            {
-              label: "Case Studies",
-              href: "https://temporal.io/blog/tags/case-study/",
+              label: "Temporal education",
+              href: "https://learn.temporal.io",
             },
             {
               label: "Blog",
-              to: "https://temporal.io/blog",
+              href: "https://temporal.io/blog",
+            },
+            {
+              label: "Use cases",
+              href: "https://temporal.io/use-cases",
+            },
+            {
+              label: "Newsletter signup",
+              href: "https://pages.temporal.io/newsletter-subscribe",
             },
           ],
         },
@@ -163,28 +175,16 @@ module.exports = {
               to: "/security",
             },
             {
-              label: "Privacy Policy",
+              label: "Privacy policy",
               to: "/privacy-policy",
             },
             {
-              label: "Terms of Service",
+              label: "Terms of service",
               href: "https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf",
             },
-          ],
-        },
-        {
-          items: [
             {
-              label: "Join the Cloud Waitlist",
-              href: "https://pages.temporal.io/cloud-early-access",
-            },
-            {
-              label: "We're Hiring",
+              label: "We're hiring",
               href: "https://temporal.io/careers",
-            },
-            {
-              label: "About the Docs",
-              href: "https://github.com/temporalio/documentation/blob/master/README.md",
             },
           ],
         },
