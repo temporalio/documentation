@@ -16,7 +16,12 @@ To run multiple Reset operations at once, see [`tctl workflow reset-batch`](/tct
 
 `tctl workflow reset <modifiers>`
 
-The following modifiers control the behavior of the command.
+The modifiers control the behavior of the command. 
+The following modifiers are required:
+
+- [`--workflow_id`](#--workflow_id)
+- [`--reason`](#--reason)
+- [`--event_id`](#--event_id) or [`--reset_type`](#--reset_type)
 
 ### `--workflow_id`
 
@@ -44,8 +49,8 @@ tctl workflow reset --run_id <id>
 
 ### `--event_id`
 
-Specify the `eventId` of any event after `WorkflowTaskStarted` to which you want to reset.
-Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTaskTimeout`.
+Specify the `eventId` number of the event to which you want to reset.
+The event type must be one of: `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTaskTimeout`.
 
 **Example**
 
