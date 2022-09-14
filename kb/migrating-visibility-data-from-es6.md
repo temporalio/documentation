@@ -42,7 +42,7 @@ Use one of the following methods to update your Temporal Server and Elasticsearc
          elasticsearch:
            version: "v6"
    ```
-   If you're using a pre-build docker image, set `ES_VERSION` to `v6`.
+   If you're using a pre-build docker image, set `ES_VERSION` environment variable to `v6`.
 2. Update Temporal to v1.17.5.
 3. Add the following to the dynamic config file:
    ```
