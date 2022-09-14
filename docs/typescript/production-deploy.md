@@ -177,9 +177,9 @@ Failure to install this dependency results in `[TransportError: transport error]
 
 `distroless/nodejs` images includes only the files that are strictly required to execute node. This results in even smaller images (approximately half the size of `node:slim` images). It also significantly reduce the surface of potential security issues that could be exploited by an eventual hacker in the resulting Docker images.
 
-It is generally possible and safe to execute TypeScript SDK Workers `distroless/nodejs` images (ie. unless your code itself requires dependencies that are not included in `distroless/nodejs`).
+It is generally possible and safe to execute TypeScript SDK Workers using `distroless/nodejs` images (ie. unless your code itself requires dependencies that are not included in `distroless/nodejs`).
 
-However, the build process is very likely to require dependencies that are not included in the `distroless/nodejs` image. Notably, `distroless/nodejs` images do not contain `npm`. This might result in various error messages during the Docker build.
+Note however that some tools required for the build process (notably the `npm` command) are _not_ included in the `distroless/nodejs` image. This might result in various error messages during the Docker build.
 
 The recommanded solution is to use a multi-step Dockerfile. For example:
 
@@ -206,7 +206,7 @@ CMD ["build/worker.js"]
 
 ### Properly configure Node's memory in Docker
 
-By default, `node` configures its maximum old-gen memory to 25% of the _physical memory_ of the machine on which it is executing, with a maximum of 4 GB. This is very likely innappropriate when running node in a Docker environment and can result in either under usage of available memory (ie. node only use a fraction of the memory allocated to the container) or overusage (ie. node tries to use more memory than what is allocated to the container, which will eventually lead to the process being killed by the operating system).
+By default, `node` configures its maximum old-gen memory to 25% of the _physical memory_ of the machine on which it is executing, with a maximum of 4 GB. This is very likely innappropriate when running node in a Docker environment and can result in either under usage of available memory (ie. node only uses a fraction of the memory allocated to the container) or overusage (ie. node tries to use more memory than what is allocated to the container, which will eventually lead to the process being killed by the operating system).
 
 It is therefore recommanded that you always explicitly set the `--max-old-space-size` node argument to approximately 80% of the maximum size (in megabytes) that you want to allocate the node process. You might need some experimentation and adjustment to find the most appropriate value based on your specific application.
 
