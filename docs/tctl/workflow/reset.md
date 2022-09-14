@@ -16,7 +16,7 @@ To run multiple Reset operations at once, see [`tctl workflow reset-batch`](/tct
 
 `tctl workflow reset <modifiers>`
 
-The modifiers control the behavior of the command. 
+The modifiers control the behavior of the command.
 The following modifiers are required:
 
 - [`--workflow_id`](#--workflow_id)
