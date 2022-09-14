@@ -826,3 +826,4 @@ worker.enableScheduler:
 ```
 
 If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.
+

@@ -307,7 +307,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-customize-workflow-type-in-typescript"
         }
       ]
     },
@@ -394,7 +394,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-define-activity-parameters-in-typescript"
         }
       ]
     },
@@ -452,7 +452,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-customize-activity-type-in-typescript"
         }
       ]
     },
@@ -572,7 +572,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-register-types-with-a-worker-in-typescript"
         }
       ]
     },
