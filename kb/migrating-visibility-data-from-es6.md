@@ -56,7 +56,7 @@ Use one of the following methods to update your Temporal Server and Elasticsearc
 6. Start Elasticsearch v7.
    Visibility read queries will temporarily generate errors.
    Write queries are blocked because the the processor is disabled.
-7. Rename `v6` to `v7` in your config file:
+7. Change `v6` to `v7` in your config file or remove `version` completely:
    ```
    persistence:
      datastores:
