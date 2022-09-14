@@ -17,6 +17,8 @@ You can replay a Workflow from the beginning of its history when resumed.
 
 Replay allows code to resume only if it is compatible from a deterministic point of view.
 
+To retrieve the Workflow History, use any of the following options and then pass the object to your SDK of choice.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -81,12 +83,12 @@ Replaying a Workflow Execution locally is a good way to see exactly what code pa
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -112,7 +114,7 @@ If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tc
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable...
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>

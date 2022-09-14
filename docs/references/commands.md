@@ -1,28 +1,30 @@
 ---
 id: commands
 title: Commands reference
-sidebar_label: Commands
 description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
+sidebar_label: Commands
 tags:
   - reference
 ---
 
-A [Command](/concepts/what-is-a-command) is a requested action issued by a [Worker](/concepts/what-is-a-worker) to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) after a [Workflow Task Execution](/concepts/what-is-a-workflow-task-execution) completes.
+<!-- This file is generated. Do not edit it directly. -->
+
+A [Command](/workflows#command) is a requested action issued by a [Worker](/workers#) to the [Temporal Cluster](/clusters#) after a [Workflow Task Execution](/tasks#workflow-task-execution) completes.
 
 The following is a complete list of possible Commands.
 
 ### CompleteWorkflowExecution
 
 This Command is triggered when the Workflow Function Execution returns.
-It indicates to the Cluster that the [Workflow Execution](/concepts/what-is-a-workflow-execution) is complete.
-The corresponding [Event](/concepts/what-is-an-event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/concepts/what-is-an-event-history).
+It indicates to the Cluster that the [Workflow Execution](/workflows#workflow-execution) is complete.
+The corresponding [Event](/workflows#event) for this Command is one of the few Events that will be the last in a Workflow Execution [Event History](/workflows#event-history).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [WorkflowExecutionCompleted](/references/events/#workflowexecutioncompleted)
 
 ### ContinueAsNewWorkflowExecution
 
-This Command is triggered when there is a call to [Continue-As-New](/concepts/what-is-continue-as-new) from within the [Workflow](/concepts/what-is-a-workflow).
+This Command is triggered when there is a call to [Continue-As-New](/workflows#continue-as-new) from within the [Workflow](/workflows#).
 The corresponding Event for this Command is one of the few Events that will be the last in a Workflow Execution Event History.
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
@@ -45,14 +47,14 @@ The Corresponding Event for this Command is one of the few Events that will be t
 
 ### StartChildWorkflowExecution
 
-This Command is triggered by a call to spawn a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution).
+This Command is triggered by a call to spawn a [Child Workflow Execution](/workflows#child-workflow).
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/references/events/#childworkflowexecutionstarted)
 
 ### SignalExternalWorkflowExecution
 
-This Command is triggered by a call to [Signal](/concepts/what-is-a-signal) another Workflow Execution.
+This Command is triggered by a call to [Signal](/workflows#signal) another Workflow Execution.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events/#signalexternalworkflowexecutioninitiated)
@@ -66,14 +68,14 @@ This Command is triggered by a call to request cancellation of another Workflow 
 
 ### ScheduleActivityTask
 
-This Command is triggered by a call to execute an [Activity](/concepts/what-is-an-activity).
+This Command is triggered by a call to execute an [Activity](/activities#).
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskScheduled](/references/events/#activitytaskscheduled)
 
 ### RequestCancelActivityTask
 
-This Command is triggered by a call to request the cancellation of an [Activity Task](/concepts/what-is-an-activity-task).
+This Command is triggered by a call to request the cancellation of an [Activity Task](/tasks#activity-task).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskCancelRequested](/references/events/#activitytaskcancelrequested)
@@ -101,7 +103,7 @@ This Command is triggered by the SDK.
 
 ### UpsertWorkflowSearchAttributes
 
-This Command is triggered by a call to "upsert" Workflow [Search Attributes](/concepts/what-is-a-search-attribute).
+This Command is triggered by a call to "upsert" Workflow [Search Attributes](/visibility#search-attribute).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [UpsertWorkflowSearchAttributes](/references/events/#upsertworkflowsearchattributes)

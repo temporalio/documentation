@@ -4,6 +4,7 @@ title: What is a Side Effect?
 sidebar_label: Side Effect
 description: A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
 tags:
+  - term
   - explanation
 ---
 

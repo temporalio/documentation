@@ -125,8 +125,8 @@ When implemented, the `frontend` invokes the plugin before executing the request
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-- [`ClaimMapper`](#what-is-a-claimmapper-plugin?)
-- [`Authorizer`](#what-is-an-authorizer-plugin?)
+- [`ClaimMapper`](#claim-mapper)
+- [`Authorizer`](#authorizer-plugin)
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the frontend invokes the implementation of the plugins before running the requested operation.
@@ -678,9 +678,10 @@ Task processing logic will verify both the Event Id and version of the Task agai
 
 Temporal Clusters support some pluggable components.
 
-### What is a ClaimMapper Plugin?
+### Claim Mapper
 
-`ClaimMapper` is a plugin that extracts claims from JSON Web Tokens (JWT).
+The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).
+
 This process is achieved with the method `GetClaims`, which translates `AuthInfo` structs from the caller into `Claims` about the caller's roles within Temporal.
 
 A `Role` (within Temporal) is a bit mask that combines one or more of the role constants.
@@ -788,7 +789,7 @@ Multiple permissions for the same Namespace are overridden by the `ClaimMapper`.
 }
 ```
 
-### What is an Authorizer Plugin?
+### Authorizer Plugin
 
 The `Authorizer` plugin contains a single `Authorize` method, which is invoked for each incoming API call.
 `Authorize` receives information about the API call, along with the role and permission claims of the caller.
@@ -814,7 +815,7 @@ The following arguments must be passed to `Authorizer`:
 
 :::
 
-Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/server/options#withauthorizer) server option.
+Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option.
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 
