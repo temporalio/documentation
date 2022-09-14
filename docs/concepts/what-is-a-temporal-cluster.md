@@ -4,6 +4,7 @@ title: What is a Temporal Cluster?
 sidebar_label: Temporal Cluster
 description: A Temporal Cluster is the Temporal Server paired with persistence.
 tags:
+  - term
   - explanation
 ---
 

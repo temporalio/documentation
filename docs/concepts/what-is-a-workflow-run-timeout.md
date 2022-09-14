@@ -4,6 +4,7 @@ title: What is a Workflow Run Timeout?
 sidebar_label: Workflow Run Timeout
 description: This is the maximum amount of time that a single Workflow Run is restricted to.
 tags:
+  - term
   - explanation
   - timeouts
 ---

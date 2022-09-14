@@ -4,6 +4,7 @@ title: What is Task Routing?
 sidebar_label: Task Routing
 description: Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
 tags:
+  - term
   - explanation
 ---
 

@@ -63,7 +63,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-handle-a-signal-in-a-workflow-in-php"
         },
         {
           "lang": "python",
@@ -92,7 +92,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-send-a-signal-from-a-client-in-php"
         },
         {
           "lang": "python",
@@ -341,7 +341,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-set-workflow-retry-options-in-php"
         },
         {
           "lang": "typescript",
@@ -548,7 +548,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-set-asynchronous-activity-completion-in-php"
         },
         {
           "lang": "typescript",
@@ -598,7 +598,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-set-a-parent-close-policy-in-php"
         },
         {
           "lang": "typescript",

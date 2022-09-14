@@ -4,6 +4,7 @@ title: What is a Workflow Definition?
 sidebar_label: Workflow Definition
 description: A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 tags:
+  - term
   - explanation
 ---
 

@@ -20,7 +20,7 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 You received email from Temporal that welcomes you to your new Temporal account.
 Your email address is now the first [Global Admin](/cloud/#account-level-roles) for your account.
 
-To get started with Temporal Cloud, following these onboarding steps:
+To get started with Temporal Cloud, follow these onboarding steps:
 
 <!--- 1. [Create an account.](#create-an-account-in-temporal-cloud) --->
 
@@ -28,13 +28,13 @@ To get started with Temporal Cloud, following these onboarding steps:
 1. [Create a Namespace](#create-a-namespace).
 1. [Invite users](#invite-users).
 
-## CA certificates
+## Issue CA certificates
 
 You must provide your own certificates to access Temporal Cloud.
 For certificate requirements, see the following:
 
-- [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#requirements-for-ca-certificates)
-- [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#issue-root-ca-and-end-entity-certificates)
+- [Requirements for CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements)
+- [Issue root CA and end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud#issue-certificates)
 
 ## Create a Namespace
 

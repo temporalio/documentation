@@ -4,6 +4,7 @@ title: What is a Retention Period?
 sidebar_label: Retention Period
 description: A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
 tags:
+  - term
   - explanation
 ---
 

@@ -4,6 +4,7 @@ title: What is a Workflow Task Timeout?
 sidebar_label: Workflow Task Timeout
 description: A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.
 tags:
+  - term
   - explanation
   - timeouts
 ---

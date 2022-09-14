@@ -4,6 +4,7 @@ title: What is an Activity Definition?
 sidebar_label: Activity Definition
 description: An Activity Definition is the code that defines the constraints of an Activity Task Execution.
 tags:
+  - term
   - explanation
 ---
 

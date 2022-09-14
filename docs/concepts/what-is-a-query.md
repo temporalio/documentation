@@ -4,6 +4,7 @@ title: What is a Query?
 sidebar_label: Query
 description: A Query is a synchronous operation that is used to report the state of a Workflow Execution.
 tags:
+  - term
   - queries
   - explanation
 ---

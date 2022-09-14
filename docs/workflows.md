@@ -142,7 +142,7 @@ It is the main unit of execution of a [Temporal Application](/temporal#temporal-
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
-It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signals) and the environment through [Activities](/activities#).
+It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signal) and the environment through [Activities](/activities#).
 While a single Workflow Execution has limits on size and throughput, a Temporal Application can consist of millions to billions of Workflow Executions.
 
 **Durability**
@@ -186,8 +186,8 @@ Awaitables are provided when using APIs for the following:
 
 - Awaiting: Progress can block using explicit "Await" APIs.
 - Requesting cancellation of another Workflow Execution: Progress can block on confirmation that the other Workflow Execution is cancelled.
-- Sending a [Signal](#signals): Progress can block on confirmation that the Signal sent.
-- Spawning a [Child Workflow Execution](#child-workflows): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
+- Sending a [Signal](#signal): Progress can block on confirmation that the Signal sent.
+- Spawning a [Child Workflow Execution](#child-workflow): Progress can block on confirmation that the Child Workflow Execution started, and on the result of the Child Workflow Execution.
 - Spawning an [Activity Execution](/activities#activity-execution): Progress can block on the result of the Activity Execution.
 - Starting a Timer: Progress can block until the Timer fires.
 
@@ -221,7 +221,7 @@ Each Workflow Run in the sequence is connected by one of the following:
 
 - [Continue-As-New](#continue-as-new)
 - [Retries](/retry-policies#)
-- [Temporal Cron Job](#cron-jobs)
+- [Temporal Cron Job](#temporal-cron-job)
 
 A Workflow Execution is uniquely identified by its [Namespace](/namespaces#), [Workflow Id](#workflow-id), and [Run Id](#run-id).
 
@@ -309,7 +309,7 @@ The Continue-As-New feature enables developers to complete the current Workflow 
 
 The new Workflow Execution has the same Workflow Id, but a different Run Id, and has its own Event History.
 
-In the case of [Temporal Cron Jobs](#cron-jobs), Continue-As-New is actually used internally for the same effect.
+In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
 - [How to Continue-As-New](/application-development/features#continue-as-new)
 
@@ -373,7 +373,7 @@ A Workflow Execution Timeout is the maximum time that a Workflow Execution can b
 **The default value is ∞ (infinite).**
 If this timeout is reached, the Workflow Execution changes to a Timed Out status.
 This timeout is different from the [Workflow Run Timeout](#workflow-run-timeout).
-This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](#cron-jobs) after a certain amount of time has passed.
+This timeout is most commonly used for stopping the execution of a [Temporal Cron Job](#temporal-cron-job) after a certain amount of time has passed.
 
 ### Workflow Run Timeout
 
@@ -384,7 +384,7 @@ A Workflow Run Timeout is the maximum amount of time that a single Workflow Run 
 ![Workflow Run Timeout period](/diagrams/workflow-run-timeout.svg)
 
 **The default is set to the same value as the [Workflow Execution Timeout](#workflow-execution-timeout).**
-This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](#cron-jobs).
+This timeout is most commonly used to limit the execution time of a single [Temporal Cron Job Execution](#temporal-cron-job).
 
 If the Workflow Run Timeout is reached, the Workflow Execution is Terminated.
 
@@ -402,7 +402,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 - [How to set a Workflow Task Timeout](/go/startworkflowoptions-reference/#workflowtasktimeout)
 
-## Signals
+## Signal
 
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
@@ -460,7 +460,7 @@ This is a great way to troubleshoot a Workflow Execution in production.
 For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
 The `__stack_trace` Query name does not require special handling in your Workflow code.
 
-## Child Workflows
+## Child Workflow
 
 A Child Workflow Execution is a [Workflow Execution](#workflow-execution) that is spawned from within another Workflow.
 
@@ -500,7 +500,7 @@ Therefore, we recommend starting with a single Workflow implementation that uses
 
 Because a Child Workflow Execution can be processed by a completely separate set of [Workers](/workers#) than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
-As all Workflow Executions, they can communicate only via asynchronous [Signals](#signals).
+As all Workflow Executions, they can communicate only via asynchronous [Signals](#signal).
 
 **Consider that a single Child Workflow Execution can represent a single resource.**
 
@@ -509,7 +509,7 @@ For example, a Workflow that manages host upgrades could spawn a Child Workflow 
 
 ### Parent Close Policy
 
-A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflows) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
+A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflow) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
 - [How to set a Parent Close Policy](/application-development/features#parent-close-policy)
 
@@ -529,7 +529,7 @@ This policy applies only to Child Workflow Executions and has no effect otherwis
 You can set policies per child, which means you can opt out of propagating terminates / cancels on a per-child basis.
 This is useful for starting Child Workflows asynchronously (see [relevant issue here](https://community.temporal.io/t/best-way-to-create-an-async-child-workflow/114) or the corresponding SDK docs).
 
-## Cron Jobs
+## Temporal Cron Job
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
@@ -640,7 +640,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 ## Schedule
 
 A Schedule contains instructions for starting a [Workflow Execution](#workflow-execution) at specific times.
-Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](#cron-jobs).
+Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](#temporal-cron-job).
 
 - [How to enable Schedules](#how-to-enable-schedules)
 - [How to operate Schedules using tctl](/tctl/schedule/)
