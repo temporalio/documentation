@@ -5,8 +5,8 @@ import fs from "fs-extra";
 import path from "path";
 
 async function run() {
-  const cert = await fs.readFile("docs-assembly.pem");
-  const key = await fs.readFile("docs-assembly.key");
+  const cert = await fs.readFile("./secure/docs-assembly.pem");
+  const key = await fs.readFile("./secure/docs-assembly.key");
 
   const connection = await NativeConnection.connect({
     address: "docs-assembly.a2dd6.tmprl.cloud:7233",

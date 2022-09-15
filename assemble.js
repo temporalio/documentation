@@ -5,8 +5,8 @@ const {Connection, WorkflowClient} = require("@temporalio/client");
 const path = require("path");
 
 async function run() {
-  const cert = await fs.readFile("./assembly/docs-assembly.pem");
-  const key = await fs.readFile("./assembly/docs-assembly.key");
+  const cert = await fs.readFile("./assembly/secure/docs-assembly.pem");
+  const key = await fs.readFile("./assembly/secure/docs-assembly.key");
 
   const clientOptions = {
     address: "docs-assembly.a2dd6.tmprl.cloud:7233",
