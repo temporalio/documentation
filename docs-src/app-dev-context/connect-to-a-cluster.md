@@ -24,7 +24,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 :::
 
 When you are running a Cluster locally, [temporalite](/clusters/quick-install#temporalite) for example, the number of connection options you must provide is minimal.
-Many SDKs default to the local host / IP and port that temporalite and [Docker Compose](/clusters/quick-install/docker-compose) serve up (`127.0.0.1:7233`).
+Many SDKs default to the local host / IP and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve up (`127.0.0.1:7233`).
 
 When you are connecting to a production Cluster, [Temporal Cloud](/concepts/what-is-temporal-cloud) for example, you will likely need provide additional connection and client options that might include, but are not limited to:
 
