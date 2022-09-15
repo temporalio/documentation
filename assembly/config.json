@@ -8,7 +8,7 @@
     "docs/concepts",
     "docs/go",
     "docs/java",
-    "docs/python",
+    "docs-src/python",
     "docs/php",
     "docs-src/typescript",
     "docs-src/references"
