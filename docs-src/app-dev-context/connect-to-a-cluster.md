@@ -18,21 +18,21 @@ Communications with a Temporal Cluster include the following, but are not limite
 
 :::caution
 
-A Temporal Client cannot be initialized and used inside of Workflow code.
-However, it is acceptable and common to use a Temporal Client inside an Activity, to communicate with the Temporal Cluster.
+A Temporal Client cannot be initialized and used inside Workflow code.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with the Temporal Cluster.
 
 :::
 
-When you are running a Cluster locally, [temporalite](/clusters/quick-install#temporalite) for example, the number of connection options you must provide is minimal.
-Many SDKs default to the local host / IP and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve up (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as [temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
 
-When you are connecting to a production Cluster, [Temporal Cloud](/concepts/what-is-temporal-cloud) for example, you will likely need provide additional connection and client options that might include, but are not limited to:
+When you are connecting to a production Cluster (such as [Temporal Cloud](/concepts/what-is-temporal-cloud)), you will likely need provide additional connection and client options that might include, but are not limited to, the following:
 
 - address and port
-- [Namespace](/concepts/what-is-a-namespace) (Example Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
+- [Namespace](/concepts/what-is-a-namespace) (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
 - mTLS CA certificate
 - mTLS private key
 
-For more information about managing and generating Client certificates for Temporal Cloud see the [Generating certificates guide](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
 For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
