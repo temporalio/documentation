@@ -7,8 +7,8 @@ tags:
   - guide-context
 ---
 
-A [Temporal Client](/concepts/what-is-a-temporal-client) enables you to communicate with a Temporal [Cluster](/concepts/what-is-a-temporal-cluster).
-Communications with a Temporal Cluster include the following, but are not limited to:
+A [Temporal Client](/concepts/what-is-a-temporal-client) enables you to communicate with a [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
+Communications with a Temporal Cluster include, but aren't limited to, the following:
 
 - starting Workflow Executions
 - sending Signals to Workflow Executions
