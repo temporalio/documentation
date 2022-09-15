@@ -10,7 +10,7 @@
     "docs/java",
     "docs/python",
     "docs/php",
-    "docs/typescript",
+    "docs-src/typescript",
     "docs-src/references"
   ],
   "content_write_dir": "docs",
