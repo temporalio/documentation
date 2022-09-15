@@ -1,11 +1,28 @@
 #!/usr/bin/env node
+const fs = require("fs-extra");
+
 const {Connection, WorkflowClient} = require("@temporalio/client");
 const path = require("path");
 
 async function run() {
-  const connection = new Connection({});
+  const cert = await fs.readFile("./assembly/docs-assembly.pem");
+  const key = await fs.readFile("./assembly/docs-assembly.key");
 
-  const client = new WorkflowClient(connection.service, {});
+  const clientOptions = {
+    address: "docs-assembly.a2dd6.tmprl.cloud:7233",
+    tls: {
+      clientCertPair: {
+        crt: cert,
+        key: key,
+      },
+    },
+  };
+  const connection = await Connection.connect(clientOptions);
+
+  const client = new WorkflowClient({
+    connection,
+    namespace: "docs-assembly.a2dd6",
+  });
 
   const rootDir = path.resolve();
 
