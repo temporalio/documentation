@@ -4,8 +4,8 @@ title: What is a Schedule
 sidebar_label: Schedule
 description: A Schedule enables the scheduling of Workflow Executions.
 tags:
-  - explanation
   - term
+  - explanation
 ---
 
 A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.
@@ -192,17 +192,6 @@ frontend.enableSchedules:
   - value: true
 worker.enableScheduler:
   - value: true
-matching.numTaskqueueReadPartitions:
-  - value: 1
-    constraints:
-      taskQueueName: temporal-sys-scheduler-tq
-matching.numTaskqueueWritePartitions:
-  - value: 1
-    constraints:
-      taskQueueName: temporal-sys-scheduler-tq
 ```
-
-Only the first two values are required; the second two are suggested because, by default, only one Worker runs per Task Queue, so more than one partition is not useful.
-Setting the Task Queue to use one partition reduces latency.
 
 If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.

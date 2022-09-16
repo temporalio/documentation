@@ -25,13 +25,13 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 ## Advanced Visibility
 
-Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filters).
+Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filter).
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide#advanced-visibility).
+To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide#elasticsearch).
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
-### List Filters
+## List Filter
 
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](#advanced-visibility) List API.
 
@@ -45,7 +45,7 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 
 [More example List Filters](#example-list-filters)
 
-A List Filter contains [Search Attribute](#search-attributes) names, Search Attribute values, and Operators.
+A List Filter contains [Search Attribute](#search-attribute) names, Search Attribute values, and Operators.
 
 - The following operators are supported in List Filters:
 
@@ -116,14 +116,14 @@ order by StartTime desc, CloseTime asc
 order by CustomIntField asc
 ```
 
-### Search Attributes
+## Search Attribute
 
-A Search Attribute is an indexed field used in a [List Filter](#list-filters) to filter a list of [Workflow Executions](/workflows#workflow-executions) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](#list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-If a [Temporal Cluster](/clusters#) does not have [Elasticsearch integrated](/cluster-deployment-guide#advanced-visibility), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
+If a [Temporal Cluster](/clusters#) does not have [Elasticsearch integrated](/cluster-deployment-guide#elasticsearch), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use [Advanced Visibility](#advanced-visibility) List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#cron-jobs), Search Attributes are carried over to the new Workflow Run by default.
+When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
 
 #### Search Attributes maximums
 
@@ -236,7 +236,7 @@ Note:
 
 #### Search Attributes as Workflow Execution metadata
 
-To actually have results from the use of a [List Filter](#list-filters), Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)

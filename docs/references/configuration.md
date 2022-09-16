@@ -1,9 +1,11 @@
 ---
 id: configuration
 title: Temporal Cluster configuration reference
+description: undefined
 sidebar_label: Cluster configuration
-toc_max_heading_level: 5
 ---
+
+<!-- This file is generated. Do not edit it directly. -->
 
 Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file and may contain the following top-level sections:
 
@@ -279,7 +281,7 @@ A `sql` data store definition can contain the following values:
 
 #### tls
 
-The `tls` sections may contain:
+The `tls` and `mtls` sections can contain the following values:
 
 - `enabled` - _boolean_.
 - `serverName` - name of the server hosting the data store.

@@ -55,14 +55,14 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    announcementBar: {
-      id: "replay_announcement",
-      content:
-        'Join us for <a target="_blank" rel="noopener noreferrer" href="https://temporal.io/replay">Replay</a>, Temporal’s first-ever developer conference',
-      backgroundColor: "#141414",
-      textColor: "#ffffff",
-      isCloseable: true,
-    },
+    // announcementBar: {
+    //   id: "replay_announcement",
+    //   content:
+    //     'Content HERE',
+    //      backgroundColor: "#141414",
+    //      textColor: "#ffffff",
+    //      isCloseable: true,
+    //   },
     navbar: {
       hideOnScroll: false,
       logo: {
@@ -78,12 +78,6 @@ module.exports = {
           position: "left",
           activeBasePath: "none",
         },
-        // {
-        //   label: "KB articles",
-        //   to: "/kb",
-        //   activeBasePath: "kb",
-        //   position: "left",
-        // },
         {
           label: "Temporal Cloud",
           to: "/cloud",
@@ -91,15 +85,15 @@ module.exports = {
           position: "left",
         },
         {
-          label: "Docs change log",
-          to: "/change-log",
-          activeBasePath: "change-log",
+          label: "KB articles",
+          to: "/kb",
+          activeBasePath: "kb",
           position: "left",
         },
         {
-          label: "Blog",
-          to: "/blog",
-          activeBasePath: "blog",
+          label: "Docs change log",
+          to: "/change-log",
+          activeBasePath: "change-log",
           position: "left",
         },
       ],
@@ -126,12 +120,20 @@ module.exports = {
             },
             {
               label: "YouTube",
-              href: "https://www.youtube.com/channel/UCGovZyy8OfFPNlNV0i1fI1g",
+              href: "https://www.youtube.com/c/Temporalio",
+            },
+            {
+              label: "About the docs",
+              href: "https://github.com/temporalio/documentation/blob/master/README.md",
             },
           ],
         },
         {
           items: [
+            {
+              label: "Join the Cloud waitlist",
+              href: "https://pages.temporal.io/cloud-early-access",
+            },
             {
               label: "Meetups",
               href: "https://lu.ma/temporal",
@@ -141,7 +143,7 @@ module.exports = {
               href: "https://temporal.io/community#workshops",
             },
             {
-              label: "Support Forum",
+              label: "Support forum",
               href: "https://community.temporal.io/",
             },
           ],
@@ -149,16 +151,20 @@ module.exports = {
         {
           items: [
             {
-              label: "Use Cases",
-              href: "https://temporal.io/use-cases",
-            },
-            {
-              label: "Case Studies",
-              href: "https://docs.temporal.io/blog/tags/case-study/",
+              label: "Temporal education",
+              href: "https://learn.temporal.io",
             },
             {
               label: "Blog",
-              to: "/blog",
+              href: "https://temporal.io/blog",
+            },
+            {
+              label: "Use cases",
+              href: "https://temporal.io/use-cases",
+            },
+            {
+              label: "Newsletter signup",
+              href: "https://pages.temporal.io/newsletter-subscribe",
             },
           ],
         },
@@ -169,28 +175,16 @@ module.exports = {
               to: "/security",
             },
             {
-              label: "Privacy Policy",
+              label: "Privacy policy",
               to: "/privacy-policy",
             },
             {
-              label: "Terms of Service",
+              label: "Terms of service",
               href: "https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf",
             },
-          ],
-        },
-        {
-          items: [
             {
-              label: "Join the Cloud Waitlist",
-              href: "https://pages.temporal.io/cloud-early-access",
-            },
-            {
-              label: "We're Hiring",
+              label: "We're hiring",
               href: "https://temporal.io/careers",
-            },
-            {
-              label: "About the Docs",
-              href: "https://github.com/temporalio/documentation/blob/master/README.md",
             },
           ],
         },
@@ -212,7 +206,11 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          exclude: ["**/app-dev-context/**", "**/concept-context/**"], // do not render context content
+          exclude: [
+            "**/app-dev-context/**",
+            "**/concept-context/**",
+            "**/cloud-context/**",
+          ], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
@@ -297,19 +295,7 @@ module.exports = {
         },
         // Will be passed to @docusaurus/plugin-content-blog
         // options: https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog
-        blog: {
-          id: "blog",
-          routeBasePath: "blog",
-          path: "blog",
-          postsPerPage: 10,
-          editUrl: "https://github.com/temporalio/documentation/blob/master",
-          blogTitle: "Temporal Blog",
-          showReadingTime: true, // Show estimated reading time for the blog post.
-          feedOptions: {
-            type: "all",
-            copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
-          },
-        },
+        // blog: {},
         // Will be passed to @docusaurus/theme-classic.
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

@@ -4,6 +4,7 @@ title: What is a Schedule-To-Start Timeout?
 sidebar_label: Schedule-To-Start Timeout
 description: A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.
 tags:
+  - term
   - explanation
   - timeouts
 ---

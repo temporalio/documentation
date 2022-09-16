@@ -1,0 +1,46 @@
+{
+  "file_name": "testing.md",
+  "id": "testing",
+  "file_dir": "application-development",
+  "title": "Application development - Testing",
+  "sidebar_label": "Testing",
+  "description": "The Testing section of the Temporal Application development guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "app-dev-context/testing"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/replays"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-replay-a-workflow-execution-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-replay-a-workflow-execution-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    }
+  ]
+}

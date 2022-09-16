@@ -15,6 +15,22 @@
 /references/glossary        /glossary
 /application-development-guide        /application-development
 /samples-library        /application-development/foundations#code-samples
+# Blog case studies
+/blog/airbyte-case-study/        https://temporal.io/case-studies/airbyte-case-study
+/blog/zebra-medical-case-study/        https://temporal.io/case-studies/zebra-medical-case-study
+/blog/how-datadog-ensures-database-reliability-with-temporal        https://temporal.io/case-studies/how-datadog-ensures-database-reliability-with-temporal
+/blog/how-temporal-simplified-checkr-workflows        https://temporal.io/case-studies/how-temporal-simplified-checkr-workflows
+/blog/descript-case-study/        https://temporal.io/case-studies/descript-case-study
+/blog/reliable-crypto-transactions-at-coinbase        https://temporal.io/case-studies/reliable-crypto-transactions-at-coinbase
+/blog/temporal-a-central-brain-for-box        https://temporal.io/case-studies/temporal-a-central-brain-for-box
+# Blog tutorials
+/blog/tags/go-ecommerce-tutorial        https://learn.temporal.io/tutorials/go/ecommerce/
+/blog/build-an-ecommerce-app-with-temporal-part-1/        https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-1
+/blog/build-an-ecommerce-app-with-temporal-part-2-reminder-emails        https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-2-reminder-emails
+/blog/build-an-ecommerce-app-with-temporal-part-3-testing        https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-3-testing
+/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api        https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-4-rest-api
+# Blog catch all
+/blog/*        https://temporal.io/blog/:splat       
 
 #
 # Concept pages redirects
@@ -181,7 +197,8 @@
 /server-namespaces        /namespaces
 /server/namespaces        /namespaces
 /server/multi-cluster        /concepts/what-is-multi-cluster-replication
-/server-options        /server/options
+/server-options        /references/server-options
+/server/options        /references/server-options
 /server-production-deploy        /server/production-deploy
 /server-production-deployment  /server/production-deploy
 /server-quick-install        /clusters/quick-install
@@ -201,3 +218,5 @@
 
 /content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
 /operation/how-to-tune-workers        /application-development/worker-performance
+
+/cadence-to-temporal        /kb/cadence-to-temporal

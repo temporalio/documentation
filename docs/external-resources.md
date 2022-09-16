@@ -14,8 +14,8 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
 
-- **Series B (2022)** Linked in [our Series B press roundup](/blog/series-b-press)
-- **Series A (2020)**: Linked in [our Series A blogpost](/blog/funding-announcement)
+- **Series B (2022)** Linked in [our Series B press roundup](https://temporal.io/blog/series-b-press)
+- **Series A (2020)**: Linked in [our Series A blogpost](https://temporal.io/blog/funding-announcement)
 
 ## How Temporal works
 
@@ -25,7 +25,7 @@ There have been many high-level descriptions of Temporal from our Series A and B
 
 | Title                                                                                                                                                                                 | Duration   | By           | On           |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------ |
-| [Designing a Workflow Engine from First Principles](/blog/workflow-engine-principles/)                                                                                                | 0:23       | Maxim        | Mar 31, 2021 |
+| [Designing a Workflow Engine from First Principles](https://temporal.io/blog/workflow-engine-principles/)                                                                             | 0:23       | Maxim        | Mar 31, 2021 |
 | [Building Reliable Distributed Systems](https://www.youtube.com/watch?v=fZHL1k5iEmA) ([slides](https://docs.google.com/presentation/d/1x0ETmVVJcbluTSnJGo8F2sNL1GKJPwOh-2s53x_UKLg/)) | 1:37       | Loren        | Aug 16, 2022 |
 | [Fault Tolerant, Distributed Microservices Orchestration with Temporal](https://www.youtube.com/watch?v=6T6zVZHU7_Q) ([slides](https://temporal-intro-and-demo.netlify.app/))         | 0:35       | Maxim & Tiho | Feb 23, 2022 |
 | [Introduction to Temporal Architecture](https://www.youtube.com/watch?v=wMUKhtRhlmY)                                                                                                  | 0:16 + Q&A | Dominik      | Feb 21, 2022 |
@@ -42,15 +42,15 @@ There have been many high-level descriptions of Temporal from our Series A and B
 | [Run your microservices in no-fail mode](https://twitter.com/StackOverflow/status/1536740460789739520)                                                       | 0:22     | Stack Overflow Podcast            | Maxim & Dominik | Jun 14, 2022 |
 | [Temporal vs the Serverless Ecosystem](https://www.serverlesschats.com/124/)                                                                                 | 1:05     | Serverless Chats Podcast          | swyx            | Feb 14, 2022 |
 | [Temporal Overview](https://podcasts.mongodb.com/public/115/The-MongoDB-Podcast-b02cf624/9a0e08ea) (starts at 0:15)                                          | 0:33     | MongoDB Podcast                   | swyx            | Dec 6, 2021  |
-| [Origin story, Choreography vs Orchestration, and Tips](/blog/gremlin-podcast)                                                                               | 0:21     | Break Things on Purpose (Gremlin) | Maxim & Samar   | Oct 5, 2021  |
+| [Origin story, Choreography vs Orchestration, and Tips](https://temporal.io/blog/gremlin-podcast)                                                            | 0:21     | Break Things on Purpose (Gremlin) | Maxim & Samar   | Oct 5, 2021  |
 | Workflow Engine with Maxim Fateev                                                                                                                            | 0:56     | Software Engineering Daily        | Maxim           |              |
 | [Temporal Developer Experience](https://devtools.fm/episode/13) ([video](https://www.youtube.com/watch?v=yNOkWFGejUs))                                       | 0:56     | Devtools.fm                       | swyx            | Sep 10, 2021 |
-| [Temporal Origin Story](/blog/oss-startups-podcast)                                                                                                          | 0:41     | OSS Startup Podcast               | Maxim           | Aug 5, 2021  |
+| [Temporal Origin Story](https://temporal.io/blog/oss-startups-podcast)                                                                                       | 0:41     | OSS Startup Podcast               | Maxim           | Aug 5, 2021  |
 | [Temporal Product: Managing State](https://softwareengineeringdaily.com/2021/05/08/temporal-product-managing-state-with-ryland-goldstein/)                   | 0:53     | Software Engineering Daily        | Ryland          | May 8, 2021  |
 
 ### Cadence
 
-Temporal's previous iteration was Cadence, which shares a lot of the same design principles (see [the difference between Cadence and Temporal](/cadence-to-temporal)).
+Temporal's previous iteration was Cadence, which shares a lot of the same design principles (see [the difference between Cadence and Temporal](/kb/cadence-to-temporal)).
 
 - [Cadence Architecture Talk](https://www.youtube.com/watch?v=5M5eiNBUf4Q) (24 min) by Samar Abbas at the 2017 Uber Cadence meetup
 - [Cadence: Micro service Architecture Beyond Request/Response](https://www.youtube.com/watch?v=BJwFxqdSx4Y) (34 min) by Maxim Fateev at Data@Scale 2017

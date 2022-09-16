@@ -1,5 +1,7 @@
 # Dependencies
 /node_modules
+/assembly/node_modules
+/assembly/secure
 
 # Production
 /build

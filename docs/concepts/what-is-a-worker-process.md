@@ -4,6 +4,7 @@ title: What is a Worker Process?
 sidebar_label: Worker Process
 description: A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.
 tags:
+  - term
   - explanation
 ---
 
@@ -44,5 +45,5 @@ Worker Processes executing Activity Tasks must have access to any resources need
 - Credentials for infrastructure provisioning.
 - Specialized GPUs for machine learning utilities.
 
-The Temporal Cluster itself has [internal workers](/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
+The Temporal Cluster itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.

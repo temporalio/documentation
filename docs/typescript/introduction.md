@@ -1,7 +1,7 @@
 ---
 title: TypeScript SDK introduction
 sidebar_label: Introduction
-description: The TypeScript SDK lets developers write highly scalable, reliable, annd long-running workflows without being a distributed systems expert.
+description: The TypeScript SDK lets developers write highly scalable, reliable, and long-running workflows without being a distributed systems expert.
 ---
 
 The Temporal TypeScript SDK lets you write highly scalable and reliable long-running Workflows without being a distributed systems expert.
@@ -12,7 +12,7 @@ It is designed with TypeScript-first developer experience in mind, but works equ
 You can view:
 
 - [Code samples on GitHub](https://github.com/temporalio/samples-typescript)
-  - Fastest way to try these out is in the browser [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) ([90 second demo](https://youtu.be/FdEQQC9EdfU))
+  - Fastest way to try these out is in the browser [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/temporalio/samples-typescript/) ([90-second demo](https://youtu.be/FdEQQC9EdfU))
 - [Searchable full API reference](https://typescript.temporal.io)
 - [SDK source on GitHub](https://github.com/temporalio/sdk-typescript) [![GitHub stars](https://img.shields.io/github/stars/temporalio/sdk-typescript)](https://github.com/temporalio/sdk-typescript/stargazers) (give us a star!)
 - [See version diffs on our Changelog](https://github.com/temporalio/sdk-typescript/blob/HEAD/CHANGELOG.md)
@@ -64,7 +64,7 @@ cd temporal
 docker-compose up
 ```
 
-If you want to run Temporal without Docker, DataDog has created an experimental project called [temporalite](https://github.com/DataDog/temporalite) you can try.
+If you want to run Temporal without Docker, [Temporalite](https://github.com/temporalio/temporalite) is a distribution of Temporal that runs as a single process with zero runtime dependencies.
 
 </details>
 
@@ -147,7 +147,7 @@ This "Hello, Temporal!" message comes from the combination of:
 <summary>Viewing your Workflow Execution in Temporal Web
 </summary>
 
-You can verify execution in Temporal Web (available at [`localhost:8080](http://localhost:8080/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
+You can verify execution in Temporal Web (available at [localhost:8080](http://localhost:8080/) on the default [`docker-compose`](https://github.com/temporalio/docker-compose)):
 
 ![image](https://user-images.githubusercontent.com/6764957/118865735-d7255f80-b913-11eb-8ace-a7dbdc351f8e.png)
 
@@ -183,7 +183,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 ## TS SDK Intro Workshop
 
-We held a 2-hour introduction workshop explaining every core concept from scratch: [https://www.youtube.com/watch?v=CeHSmv8oF_4][https://www.youtube.com/watch?v=cehsmv8of_4]
+We held a 2-hour introduction workshop explaining every core concept from scratch: [Complete Intro to Temporal Workshop - TypeScript SDK][https://www.youtube.com/watch?v=cehsmv8of_4]
 
 Timestamps:
 

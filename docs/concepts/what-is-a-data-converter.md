@@ -4,6 +4,7 @@ title: What is a Data Converter?
 sidebar_label: Data Converter
 description: A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.
 tags:
+  - term
   - explanation
 ---
 

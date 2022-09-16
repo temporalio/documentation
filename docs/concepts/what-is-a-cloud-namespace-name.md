@@ -1,9 +1,10 @@
 ---
 id: what-is-a-cloud-namespace-name
 title: What is a Cloud Namespace Name?
-sidebar_label: Cloud Namespace Name
+sidebar_label: Temporal Cloud Namespace Name
 description: A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.
 tags:
+  - term
   - explanation
 ---
 
