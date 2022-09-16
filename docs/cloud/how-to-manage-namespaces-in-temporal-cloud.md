@@ -92,3 +92,4 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 
 To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters/) commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/#manage-certificate-filters-in-temporal-cloud).
+
