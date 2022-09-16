@@ -1,7 +1,7 @@
 ---
-id: activity-retry-policy
+id: activity-retries
 title: How to set an Activity Retry Policy
-sidebar_label: Activity Retry Policy
+sidebar_label: Activity retries
 description: Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.
 tags:
   - guide-context
