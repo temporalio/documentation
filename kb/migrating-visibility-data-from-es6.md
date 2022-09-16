@@ -3,7 +3,7 @@ slug: migrate-visibility-data-from-es6
 title: Migrate visibility data from ES6
 tags:
   - kb-article
-date: 2022-29-08T00:00:00Z
+date: 2022-08-29T00:00:00Z
 ---
 
 We added support for [Elasticsearch v7+ (ES7)](https://www.elastic.co/downloads/past-releases/#elasticsearch) in the v1.7.0 update to the [Temporal Server](/cluster/s#temporal-server).
