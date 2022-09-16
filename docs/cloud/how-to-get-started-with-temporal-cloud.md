@@ -2,7 +2,7 @@
 id: how-to-get-started-with-temporal-cloud
 title: How to get started with Temporal Cloud
 sidebar_label: Get started
-description: Create an account, get certificates, create a Namespace, and invite users.
+description: Create an account, issue certificates, create a Namespace, invite users, and connect.
 toc_max_heading_level: 4
 ---
 
@@ -27,6 +27,7 @@ To get started with Temporal Cloud, follow these onboarding steps:
 1. [Issue CA certificates](#issue-ca-certificates).
 1. [Create a Namespace](#create-a-namespace).
 1. [Invite users](#invite-users).
+1. [Connect Temporal Clients and Worker Processes](#connect-temporal-clients-and-worker-processes).
 
 ## Issue CA certificates
 
@@ -84,3 +85,11 @@ Each user can be assigned permissions for individual Namespaces.
 
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must click **Accept Invite** in the message.
+
+## Connect Temporal Clients and Worker Processes
+
+Connecting your [Temporal Clients](/temporal#temporal-client) and [Worker Processes](/workers#worker-process) to Temporal Cloud is similar to connecting them to your own [Temporal Cluster](/clusters).
+The primary difference is the requirement to provide client certificates and private keys.
+
+- [Connect a Temporal Client](/application-development/foundations#connect-to-a-cluster)
+- [Connect a Worker Process](/application-development/foundations#run-worker-processes)
