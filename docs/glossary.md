@@ -33,7 +33,6 @@ The following terms are used in [Temporal Platform](/concepts/what-is-the-tempor
 - [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout)
 - [List Filter](/concepts/what-is-a-list-filter)
 - [Local Activity](/concepts/what-is-a-local-activity)
-- [Logging](/concepts/what-is-logging)
 - [Memo](/concepts/what-is-a-memo)
 - [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication)
 - [Namespace](/concepts/what-is-a-namespace)
