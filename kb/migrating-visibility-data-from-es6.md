@@ -22,7 +22,7 @@ Use one of the following methods to update your Temporal Server and Elasticsearc
 1. Shut down the Temporal Cluster.
 2. Upgrade Elasticsearch v6 to Elasticsearch v7 according to [Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html).
 3. Upgrade Temporal to the latest version.
-4. Make sure that the static config file sets 'version`to`v7`or doesn't specify`version` at all:
+4. Make sure that the static config file is set to version `v7` or doesn't specify version at all:
 
    ```
    persistence:
