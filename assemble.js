@@ -5,6 +5,7 @@ const {v4: uuidv4} = require("uuid");
 
 const {Connection, WorkflowClient} = require("@temporalio/client");
 const path = require("path");
+const {randomInt} = require("crypto");
 
 async function run() {
   // comment cert and key to use local defaults
@@ -35,10 +36,11 @@ async function run() {
     assemblyDir: "assembly",
   };
 
-  const randomId = uuidv4();
+  const data = await fs.readJSON("./assembly/secure/uniqueId.json");
+  console.log(data);
   const result = await client.execute("fullAssembly", {
-    taskQueue: "docs_assembly",
-    workflowId: `docs-full-assembly-${randomId}`,
+    taskQueue: `docs-assembly-${data.unique_id}`,
+    workflowId: `docs-full-assembly-${data.unique_id}`,
     args: [params],
   });
 
