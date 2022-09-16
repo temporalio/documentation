@@ -9,7 +9,7 @@ tags:
   - workers
 ---
 
-We recommend, resolving on a directory to automatically register each function within the directory.
+We recommend resolving on a directory to automatically register each function within the directory.
 
 - Use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath) for non-production build images.
 - Use [`workflowBundle`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowbundle) for production build images.
