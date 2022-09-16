@@ -4,7 +4,7 @@ title: How to control authorization for Temporal Cloud Namespaces
 sidebar_label: Control authorization
 description: Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
 tags:
-  - how-to
+  - guide-context
 ---
 
 Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be scoped to a specific Namespace.
@@ -20,4 +20,4 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
-[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters-in-temporal-cloud)
+[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
