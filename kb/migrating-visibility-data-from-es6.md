@@ -10,6 +10,8 @@ We added support for [Elasticsearch v7+ (ES7)](https://www.elastic.co/downloads/
 Elasticsearch v7 introduces several breaking changes, including the removal of mapping types.
 These changes make Elasticsearch v6 incompatible with Elasticsearch v7.
 
+<!-- truncate -->
+
 As of v1.18.0, v6 support has been completely removed from Temporal.
 Support for Elasticsearch v8 has been added; v7 remains as the default version to run.
 
