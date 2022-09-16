@@ -22,6 +22,7 @@ async function run() {
     },
   });
 
+  const data = await fs.readJSON("./secure/uniqueId.json");
   const worker = await Worker.create({
     // comment connection to use local defaults
     connection,
@@ -29,7 +30,7 @@ async function run() {
     namespace: "docs-assembly.a2dd6",
     workflowsPath: path.resolve("./workflows/fullAssembly.js"),
     activities,
-    taskQueue: "docs_assembly",
+    taskQueue: `docs-assembly-${data.unique_id}`,
   });
   await worker.run();
 }
