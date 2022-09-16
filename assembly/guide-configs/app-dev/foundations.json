@@ -106,10 +106,6 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/creating-temporal-clients"
-    },
-    {
-      "type": "h3",
       "id": "app-dev-context/connect-to-a-cluster"
     },
     {
@@ -117,7 +113,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-create-a-temporal-client-in-go"
+          "id": "go/how-to-connect-to-a-cluster-in-go"
         },
         {
           "lang": "java",
@@ -129,69 +125,11 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-create-a-temporal-client-in-python"
+          "id": "python/how-to-connect-to-a-cluster-in-python"
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-create-a-temporal-client-in-typescript"
-        }
-      ]
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/set-namespace"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-set-the-namespace-for-a-temporal-client-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-set-the-namespace-for-a-temporal-client-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "none"
-        },
-        {
-          "lang": "python",
-          "id": "python/how-to-set-the-namespace-for-a-temporal-client-in-python"
-        },
-        {
-          "lang": "typescript",
-          "id": "typescript/how-to-set-the-namespace-for-a-temporal-client-in-typescript"
-        }
-      ]
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/set-mtls-config"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-set-mtls-configuration-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-set-mtls-configuration-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "none"
-        },
-        {
-          "lang": "python",
-          "id": "python/how-to-set-mtls-configuration-in-python"
-        },
-        {
-          "lang": "typescript",
-          "id": "typescript/how-to-set-mtls-configuration-in-typescript"
+          "id": "typescript/how-to-connect-to-a-cluster-in-typescript"
         }
       ]
     },
