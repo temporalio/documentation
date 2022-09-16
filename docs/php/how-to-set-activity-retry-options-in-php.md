@@ -4,7 +4,7 @@ title: How to set Activity Retry Options in PHP
 sidebar_label: Activity Retry Options
 ---
 
-To enable Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
+To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
 The follow example creates a new Activity with the given options.
 
 ```php
