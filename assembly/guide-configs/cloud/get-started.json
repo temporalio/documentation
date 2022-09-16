@@ -4,7 +4,7 @@
   "file_dir": "cloud",
   "title": "How to get started with Temporal Cloud",
   "sidebar_label": "Get started",
-  "description": "Create an account, get certificates, create a Namespace, and invite users.",
+  "description": "Create an account, issue certificates, create a Namespace, invite users, and connect.",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
@@ -24,6 +24,10 @@
     {
       "type": "h2",
       "id": "cloud-context/users-invite"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/get-started-connect"
     }
   ]
 }
