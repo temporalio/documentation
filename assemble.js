@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // comment fs package to use local defaults
 const fs = require("fs-extra");
+const {v4: uuidv4} = require("uuid");
 
 const {Connection, WorkflowClient} = require("@temporalio/client");
 const path = require("path");
@@ -34,9 +35,10 @@ async function run() {
     assemblyDir: "assembly",
   };
 
+  const randomId = uuidv4();
   const result = await client.execute("fullAssembly", {
     taskQueue: "docs_assembly",
-    workflowId: "docs_full_assembly",
+    workflowId: `docs-full-assembly-${randomId}`,
     args: [params],
   });
 
