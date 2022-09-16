@@ -113,7 +113,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-create-a-temporal-client-in-go"
+          "id": "go/how-to-connect-to-a-cluster-in-go"
         },
         {
           "lang": "java",
@@ -125,11 +125,11 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-create-a-temporal-client-in-python"
+          "id": "python/how-to-connect-to-a-cluster-in-python"
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-create-a-temporal-client-in-typescript"
+          "id": "typescript/how-to-connect-to-a-cluster-in-typescript"
         }
       ]
     },

@@ -330,8 +330,8 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 ## Connect to a Cluster
 
-A [Temporal Client](/temporal#temporal-client) enables you to communicate with a Temporal [Cluster](/clusters#).
-Communications with a Temporal Cluster include the following, but are not limited to:
+A [Temporal Client](/temporal#temporal-client) enables you to communicate with a [Temporal Cluster](/clusters#).
+Communications with a Temporal Cluster include, but aren't limited to, the following:
 
 - starting Workflow Executions
 - sending Signals to Workflow Executions
@@ -341,22 +341,22 @@ Communications with a Temporal Cluster include the following, but are not limite
 
 :::caution
 
-A Temporal Client cannot be initialized and used inside of Workflow code.
-However, it is acceptable and common to use a Temporal Client inside an Activity, to communicate with the Temporal Cluster.
+A Temporal Client cannot be initialized and used inside Workflow code.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with the Temporal Cluster.
 
 :::
 
-When you are running a Cluster locally, [temporalite](/clusters/quick-install#temporalite) for example, the number of connection options you must provide is minimal.
-Many SDKs default to the local host / IP and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve up (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as [temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
 
-When you are connecting to a production Cluster, [Temporal Cloud](/cloud/index#) for example, you will likely need provide additional connection and client options that might include, but are not limited to:
+When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud/index#)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
 - address and port
-- [Namespace](/namespaces#) (Example Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
+- [Namespace](/namespaces#) (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
 - mTLS CA certificate
 - mTLS private key
 
-For more information about managing and generating Client certificates for Temporal Cloud see the [Generating certificates guide](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
 For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -369,7 +369,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+
+Set a custom Namespace name in the Namespace field on an instance of the Client Options.
+
+Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API to connect a Client with mTLS.
 
 ```go
 import (
@@ -377,34 +381,19 @@ import (
 
   "go.temporal.io/sdk/client"
 )
-
 func main() {
-  temporalClient, err := client.Dial(client.Options{})
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
-  // ...
-}
-```
-
-To connect to your Cluster, specify `HostPort` followed by your Cluster address.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/client"
-)
-
-func main() {
-  temporalClient, err := client.Dial(client.Options{
-    HostPort: "web.<Namespace_ID>.tmprl.cloud.",
-  })
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
+    cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+    if err != nil {
+        return err
+    }
+    client, err := client.Dial(client.Options{
+        HostPort:  "your-custom-namespace.tmprl.cloud:7233",
+        Namespace: "your-custom-namespace",
+        ConnectionOptions: client.ConnectionOptions{
+            TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+        },
+    }
+    defer temporalClient.Close()
   // ...
 }
 ```
@@ -490,53 +479,73 @@ Then we print some information and start the Workflow.
 </TabItem>
 <TabItem value="python">
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
+Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
 
-Specify the `target_host` parameter as a string.
-
-**Connect to Docker**
+Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
 
 ```python
-await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
+    client = await Client.connect(
+        #  target_host for the Temporal Cloud
+        "your-custom-namespace.tmprl.cloud:7233",
+        # target_host for Temporalite
+        # "127.0.0.1:7233"
+        namespace="your-custom-namespace",
+        tls=TLSConfig(
+            client_cert=client_cert,
+            client_private_key=client_private_key,
+            # domain=domain
+            # server_root_ca_cert=server_root_ca_cert,
+        ),
+    )
 ```
-
-**Connect to your Cluster**
-
-```python
-await Client.connect(
-    "web.<Namespace_ID>.tmprl.cloud", namespace="your-custom-namespace"
-)
-```
-
-A `Client` does not have an explicit close.
 
 </TabItem>
 <TabItem value="typescript">
-
-Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
-
-```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = await Connection.connect(); // to configure for production
-const client = new WorkflowClient({connection});
-```
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
 However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
-The following example, creates a Client, connects to an account, and declares your Namespace.
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
+
+Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
+
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
 
 ```typescript
+import fs from "fs-extra";
 import {Connection, WorkflowClient} from "@temporalio/client";
+import path = from "path";
 
-const connection = await Connection.connect({
-  address: "<Namespace_ID>.tmprl.cloud",
-});
-const client = new WorkflowClient({
-  connection,
-  namespace: "your.namespace",
+async function run() {
+  const cert = await fs.readFile("./path-to/your.pem");
+  const key = await fs.readFile("./path-to/your.key");
+
+  const connectionOptions = {
+    address: "your-custom-namespace.tmprl.cloud:7233",
+    tls: {
+      clientCertPair: {
+        crt: cert,
+        key: key,
+      },
+    // serverRootCACertificatePath: "ca.cert",
+    },
+  };
+  const connection = await Connection.connect(connectionOptions);
+
+  const client = new WorkflowClient({
+    connection,
+    // connects to 'default' namespace if not specified
+    namespace: "your-custom-namespace",
+  });
+
+    // . . .
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });
 ```
 

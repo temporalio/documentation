@@ -3,7 +3,7 @@
 import {Worker, NativeConnection} from "@temporalio/worker";
 import * as activities from "./activities/index.js";
 // comment fs package to use local defaults
-// import fs from "fs-extra";
+import fs from "fs-extra";
 import path from "path";
 
 async function run() {
