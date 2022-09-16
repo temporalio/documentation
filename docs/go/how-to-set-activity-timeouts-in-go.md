@@ -8,7 +8,6 @@ tags:
   - how-to
 ---
 
-
 To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 Available timeouts are:
