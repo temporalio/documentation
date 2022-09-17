@@ -90,11 +90,6 @@ module.exports = {
           activeBasePath: "blog",
           position: "left",
         },
-        {
-          label: "Learn",
-          href: "https://learn.temporal.io/",
-          position: "left",
-        },
       ],
     },
     footer: {
