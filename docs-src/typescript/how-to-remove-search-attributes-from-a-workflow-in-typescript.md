@@ -10,7 +10,7 @@ tags:
 ---
 
 ```typescript
-import { upsertSearchAttributes } from "@temporalio/workflow";
+import { upsertSearchAttributes } from '@temporalio/workflow';
 
 async function yourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [1, 2, 3] });

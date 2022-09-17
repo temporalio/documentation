@@ -21,11 +21,11 @@ In this example, you can set the `scheduleToStartTimeout` to 60 seconds.
 ```typescript
 // Sample of typical options you can set
 const { greet } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  scheduleToStartTimeout: "60s",
+  scheduleToCloseTimeout: '5m',
+  scheduleToStartTimeout: '60s',
   retry: {
     // default retry policy if not specified
-    initialInterval: "1s",
+    initialInterval: '1s',
     backoffCoefficient: 2,
     maximumAttempts: Infinity,
     maximumInterval: 100 * initialInterval,

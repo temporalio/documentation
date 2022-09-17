@@ -15,9 +15,9 @@ To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typ
 // Creating a proxy for the activity.
 const { longRunningActivity } = proxyActivities<typeof activities>({
   // translates to 300000 ms
-  scheduleToCloseTimeout: "5m",
+  scheduleToCloseTimeout: '5m',
   // translates to 30000 ms
-  startToCloseTimeout: "30s",
+  startToCloseTimeout: '30s',
   // equivalent to '10 seconds'
   heartbeatTimeout: 10000,
 });

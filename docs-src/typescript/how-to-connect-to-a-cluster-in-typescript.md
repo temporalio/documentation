@@ -21,16 +21,16 @@ Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://types
 Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
 
 ```typescript
-import fs from "fs-extra";
-import { Connection, WorkflowClient } from "@temporalio/client";
-import path from "path";
+import fs from 'fs-extra';
+import { Connection, WorkflowClient } from '@temporalio/client';
+import path from 'path';
 
 async function run() {
-  const cert = await fs.readFile("./path-to/your.pem");
-  const key = await fs.readFile("./path-to/your.key");
+  const cert = await fs.readFile('./path-to/your.pem');
+  const key = await fs.readFile('./path-to/your.key');
 
   const connectionOptions = {
-    address: "your-custom-namespace.tmprl.cloud:7233",
+    address: 'your-custom-namespace.tmprl.cloud:7233',
     tls: {
       clientCertPair: {
         crt: cert,
@@ -44,7 +44,7 @@ async function run() {
   const client = new WorkflowClient({
     connection,
     // connects to 'default' namespace if not specified
-    namespace: "your-custom-namespace",
+    namespace: 'your-custom-namespace',
   });
 
   // . . .

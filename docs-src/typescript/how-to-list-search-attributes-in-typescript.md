@@ -16,7 +16,7 @@ For now, we can call [`client.service.listWorkflowExecutions()`](https://typescr
 ```ts
 const { executions, nextPageToken } =
   await client.service.listWorkflowExecutions({
-    namespace: "default",
+    namespace: 'default',
     ...(input || {}),
   });
 const decodedWorkflows = executions.map(

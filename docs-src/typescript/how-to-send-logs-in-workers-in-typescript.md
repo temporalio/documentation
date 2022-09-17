@@ -31,10 +31,10 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 The following example creates a new logger that will log all messages with a level `WARN` and higher.
 
 ```ts
-import { Runtime, DefaultLogger } from "@temporalio/worker";
+import { Runtime, DefaultLogger } from '@temporalio/worker';
 
 // Creating a new logger that will log all messages with level WARN and higher.
-const logger = new DefaultLogger("WARN", ({ level, message }) => {
+const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
 Runtime.install({ logger });
@@ -45,14 +45,14 @@ Runtime.install({ logger });
 The following example creates a logger that will log all the messages to an array.
 
 ```ts
-import { DefaultLogger, LogEntry } from "@temporalio/worker";
+import { DefaultLogger, LogEntry } from '@temporalio/worker';
 
 const logs: LogEntry[] = [];
-const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", { a: 1 });
-log.info("ho");
-log.warn("lets", { a: 1 });
-log.error("go");
+const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
+log.debug('hey', { a: 1 });
+log.info('ho');
+log.warn('lets', { a: 1 });
+log.error('go');
 ```
 
 The log levels are [listed here](https://typescript.temporal.io/api/namespaces/worker#loglevel) in increasing order of severity.

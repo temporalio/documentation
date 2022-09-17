@@ -21,13 +21,13 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import { Worker, NativeConnection } from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker, NativeConnection } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   const connection = await NativeConnection.connect({
     // defaults port to 7233 if not specified
-    address: "foo.bar.tmprl.cloud",
+    address: 'foo.bar.tmprl.cloud',
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -40,7 +40,7 @@ async function run() {
 
   const worker = await Worker.create({
     connection,
-    namespace: "foo.bar", // as explained in Namespaces section
+    namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
   await worker.run();

@@ -16,9 +16,9 @@ async function runWorker(): Promise<void> {
   const activities = createActivities({ apiKey: process.env.MAILGUN_API_KEY });
 
   const worker = await Worker.create({
-    taskQueue: "example",
+    taskQueue: 'example',
     activities,
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
   });
   await worker.run();
 }
@@ -28,10 +28,10 @@ const createActivities = (envVars: { apiKey: string }) => ({
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/your-domain/messages`,
-      method: "post",
+      method: 'post',
       params: { to, from, subject, html },
       auth: {
-        username: "api",
+        username: 'api',
         password: envVars.apiKey,
       },
     });
@@ -45,9 +45,9 @@ If we needed environment variables in our Workflow, here's how we'd use a Local 
 
 ```ts
 const worker = await Worker.create({
-  taskQueue: "example",
+  taskQueue: 'example',
   activities: createActivities(process.env),
-  workflowsPath: require.resolve("./workflows"),
+  workflowsPath: require.resolve('./workflows'),
 });
 
 type EnvVars = Record<string, string>;
@@ -60,10 +60,10 @@ const createActivities = (envVars: EnvVars) => ({
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/your-domain/messages`,
-      method: "post",
-      params: {to, from, subject, html},
+      method: 'post',
+      params: { to, from, subject, html },
       auth: {
-        username: "api",
+        username: 'api',
         password: apiKey,
       },
     });
@@ -73,17 +73,17 @@ const createActivities = (envVars: EnvVars) => ({
 
 ```ts
 const { getEnvVars } = proxyLocalActivities({
-  startToCloseTimeout: "1m",
+  startToCloseTimeout: '1m',
 });
 
 const { sendNotificationEmail } = proxyActivities({
-  startToCloseTimeout: "1m",
+  startToCloseTimeout: '1m',
 });
 
 async function yourWorkflow() {
   const envVars = await getEnvVars();
   if (!envVars.apiKey) {
-    throw new Error("missing env var apiKey");
+    throw new Error('missing env var apiKey');
   }
   await sendNotificationEmail(envVars.apiKey);
 }
