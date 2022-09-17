@@ -4,6 +4,7 @@ title: What is a Run Id?
 sidebar_label: Run Id
 description: A Run Id is a globally unique, platform-level identifier for a Workflow Execution.
 tags:
+  - term
   - explanation
 ---
 

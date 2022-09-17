@@ -4,6 +4,7 @@ title: What is an Activity?
 sidebar_label: Activity
 description: In day-to-day conversations, the term "Activity" frequently denotes either an Activity Type, an Activity Definition, or an Activity Execution.
 tags:
+  - term
   - explanation
 ---
 

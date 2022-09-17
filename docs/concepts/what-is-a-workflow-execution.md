@@ -4,6 +4,7 @@ title: What is a Workflow Execution?
 sidebar_label: Workflow Execution
 description: A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.
 tags:
+  - term
   - explanation
 ---
 

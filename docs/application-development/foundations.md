@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-executions) that executes an [Activity](/activities#activity-execution).
+The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-execution) that executes an [Activity](/activities#activity-execution).
 
 :::info WORK IN PROGRESS
 
@@ -36,72 +36,91 @@ In this section you can find the following:
 
 ## Run a dev Cluster
 
-Whenever you are developing Temporal Applications, you'll want to have a [Temporal Cluster](/clusters#) up and running.
-You can interact with a Cluster through [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands.
+The following sections list various methods of deploying your [Temporal Clusters](/clusters#) locally, so that you can use and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
 
-There are four ways to quickly install and run a Temporal Cluster:
-
-- [Docker](#docker-compose): Using Docker Compose makes it easy to develop your Temporal Application locally.
+- [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
+- [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
 - [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
-- [Helm charts](#helm-charts): Deploying a Cluster to [Kubernetes](https://kubernetes.io/) is an easy way to test the system and develop Temporal Applications.
-- [Render](#render): Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
 
-**We do not recommend using any of these methods in a [full (production) environment](/server/production-deployment).**
+**For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](/cloud) documentation.**
 
-#### Docker Compose
+### Temporalite
 
-Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Workflows.
+Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies.
+It supports persistence to disk and in-memory mode through SQLite.
 
-You must have [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install) installed.
+**Prerequisites**
 
-Then clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repository and run `docker-compose up` from the root of that repo:
+Temporalite requires Go 1.18 or later.
 
-```bash
-git clone https://github.com/temporalio/docker-compose.git
-cd  docker-compose
-docker-compose up
-```
+**Build and start Temporalite**
 
-When the Temporal Cluster is running, the Temporal Web UI becomes available in your browser: [localhost:8080](http://localhost:8080/)
+The following steps start and run a Temporal Cluster.
 
-The preceding steps start and run a Temporal Cluster using a default configuration.
+1. Build from source by using `go install`.
+   ```bash
+   go install github.com/temporalio/temporalite/cmd/temporalite@latest
+   ```
+2. Start Temporalite by using the `start` command.
+   ```bash
+   temporalite start --namespace default
+   ```
+   Replace `default` with your [Namespace Name](/cloud/#temporal-cloud-namespace-name).
+
+**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
+
+<!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
+
+### Docker Compose
+
+Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
+
+**Prerequisites**
+
+Install [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install).
+
+**Clone the repo and run Docker Compose**
+
+The following steps start and run a Temporal Cluster using the default configuration.
+
+1. Clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repository.
+   ```bash
+   git clone https://github.com/temporalio/docker-compose.git
+   ```
+2. Change to the directory for the project.
+   ```bash
+   cd docker-compose
+   ```
+3. From your project directory, start your application.
+   ```bash
+   docker-compose up
+   ```
+
+**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/namespaces/default/workflows).
+
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-#### Gitpod
+### Gitpod
 
-You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://www.gitpod.io/).
+You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
 
 One-click deployments are available for the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo and the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo.
 
 A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker image, starts a Worker Process, and starts one of the application's sample Workflows.
 
-It can take up to a full minute for the one-click deployments to get fully up and running.
+A one-click deployment can take up to a full minute to get fully up and running.
 When it is running, you can customize the application samples.
-
-#### Helm charts
-
-Use [Temporal Helm charts](https://github.com/temporalio/helm-charts) to deploy the Temporal Server to a [Kubernetes](https://kubernetes.io/) cluster.
-
-Deploying the Temporal Cluster with Helm is not recommended for a production environment, but it is a great way to test the system while developing Workflows.
-
-#### Render
-
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the [Auto-Setup Docker image](/blog/auto-setup).
-We do not recommend using this technique for production because all four Temporal internal services (Frontend, Matching, History, and Worker) are run in one process, but the benefit is one-click deployments.
-
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/temporalio/temporal-render-simple)
 
 ## Add your SDK
 
-Add a [Temporal SDK](/temporal#temporal-sdk) to your project.
+A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
 
-The Temporal SDK provides a framework for Temporal application development.
+An SDK provides you with the following:
 
-The SDK contains the following tools:
-
-- A Temporal Client to communicate with a Temporal Cluster.
-- APIs to use within your Workflows.
-- APIs to create and manage Worker Entities and Worker Processes.
+- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
+- APIs to develop [Workflows](/workflows#).
+- APIs to create and manage [Worker Processes](/workers#).
+- APIs to author [Activities](/activities#activity-definition).
 
 <Tabs
 defaultValue="go"
@@ -177,28 +196,23 @@ composer require spiral/roadrunner:v2.0 nyholm/psr7
 ```
 
 </TabItem>
+<TabItem value="python">
+
+[![Python 3.7+](https://img.shields.io/pypi/pyversions/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
+[![PyPI](https://img.shields.io/pypi/v/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
+
+To install the latest version of the Temporal Python package, run the following command.
+
+```bash
+pip install temporalio
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-[![CI Status](https://img.shields.io/github/workflow/status/temporalio/sdk-typescript/Continuous%20Integration?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
-[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/package/temporalio)
-
-To download the latest version of the Temporal TypeScript Command, run the following command:
-
-```bash
-npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
-```
-
-Or clone the TypeScript SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-typescript.git
-```
+[![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
 This project requires Node.js 14 or later.
-
-:::note
-Both TypeScript and JavaScript can be used with the TypeScript SDK.
-:::
 
 **Create a new project**
 
@@ -212,17 +226,11 @@ npx @temporalio/create@latest ./your-app
 npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
 ```
 
-</TabItem>
-<TabItem value="python">
+:::note
 
-[![Python 3.7+](https://img.shields.io/pypi/pyversions/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
-[![PyPI](https://img.shields.io/pypi/v/temporalio.svg?style=for-the-badge)](https://pypi.org/project/temporalio)
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
 
-To install the latest version of the Temporal Python package, run the following command.
-
-```bash
-pip install temporalio
-```
+:::
 
 </TabItem>
 </Tabs>
@@ -248,12 +256,7 @@ The Temporal Java SDK API reference is published on [javadoc.io](https://www.jav
 </TabItem>
 <TabItem value="php">
 
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -261,13 +264,16 @@ The Temporal TypeScript SDK API reference is published on [typescript.temporal.i
 The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
 </TabItem>
+<TabItem value="typescript">
+
+The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
+
+</TabItem>
 </Tabs>
 
 #### Code samples
 
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio).
-
-The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages. For more information, see the [Polyglot Microservice Orchestration](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTLo5URV5IK6lCmiM3ir3f5) video on YouTube.
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
 Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 
@@ -286,7 +292,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
   It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
 - [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 - [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](/blog/tags/go-ecommerce-tutorial).
+  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
 
 </TabItem>
 <TabItem value="java">
@@ -306,6 +312,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 - [Subscription-style Workflow Definition in PHP](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 </TabItem>
+<TabItem value="python">
+
+- [Python samples library](https://github.com/temporalio/samples-python)
+
+</TabItem>
 <TabItem value="typescript">
 
 Use the [TypeScript samples library](https://github.com/temporalio/samples-typescript) stored on GitHub to demonstrate various capabilities of Temporal.
@@ -315,36 +326,39 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 [Temporal Go TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
 </TabItem>
-<TabItem value="python">
-
-- [Python samples library](https://github.com/temporalio/samples-python)
-
-</TabItem>
 </Tabs>
 
-## Create Temporal Clients
+## Connect to a Cluster
 
-A [Temporal Client](/temporal#temporal-client) is needed to [create Worker Entities](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
-Communication with the Temporal Cluster includes, but is not limited to, starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, and getting the result of a Workflow Execution.
+A [Temporal Client](/temporal#temporal-client) enables you to communicate with a [Temporal Cluster](/clusters#).
+Communications with a Temporal Cluster include, but aren't limited to, the following:
+
+- starting Workflow Executions
+- sending Signals to Workflow Executions
+- sending Queries to Workflow Executions
+- getting the results of a Workflow Execution
+- providing an Activity Task Token
+
+:::caution
 
 A Temporal Client cannot be initialized and used inside Workflow code.
-However, it is acceptable and common to use a Temporal Client inside an Activity, to communicate with the Temporal Cluster.
-
-### Connect to a Client
-
-When connecting to a Temporal Client, you must provide the address and port number of the Temporal Cluster.
-
-- To connect to our Docker image, use `127.0.0.1:7233`.
-- To connect to a Temporal Cloud Namespace use `<Namespace_ID>.tmprl.cloud`.
-
-:::note
-
-The difference between the gRPC and Temporal Web endpoints:
-
-- The gRPC endpoint has a DNS address of `<Namespace_ID>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud`.
-- The Temporal Web endpoint is `web.<Namespace_ID>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with the Temporal Cluster.
 
 :::
+
+When you are running a Cluster locally (such as [temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
+
+When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud/index#)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
+
+- address and port
+- [Namespace](/namespaces#) (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
+- mTLS CA certificate
+- mTLS private key
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <Tabs
 defaultValue="go"
@@ -355,7 +369,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+
+Set a custom Namespace name in the Namespace field on an instance of the Client Options.
+
+Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API to connect a Client with mTLS.
 
 ```go
 import (
@@ -363,34 +381,19 @@ import (
 
   "go.temporal.io/sdk/client"
 )
-
 func main() {
-  temporalClient, err := client.Dial(client.Options{})
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
-  // ...
-}
-```
-
-To connect to your Cluster, specify `HostPort` followed by your Cluster address.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/client"
-)
-
-func main() {
-  temporalClient, err := client.Dial(client.Options{
-    HostPort: "web.<Namespace_ID>.tmprl.cloud.",
-  })
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
+    cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+    if err != nil {
+        return err
+    }
+    client, err := client.Dial(client.Options{
+        HostPort:  "your-custom-namespace.tmprl.cloud:7233",
+        Namespace: "your-custom-namespace",
+        ConnectionOptions: client.ConnectionOptions{
+            TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+        },
+    }
+    defer temporalClient.Close()
   // ...
 }
 ```
@@ -457,7 +460,7 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 
 For more information, see the following:
 
-- [How to spawn a Workflow Execution in Java](#none)
+- [How to spawn a Workflow Execution in Java](#start-workflow-execution)
 
 </TabItem>
 <TabItem value="php">
@@ -474,321 +477,84 @@ Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execut
 Then we print some information and start the Workflow.
 
 </TabItem>
-<TabItem value="typescript">
+<TabItem value="python">
 
-Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
+Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
 
-```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = await Connection.connect(); // to configure for production
-const client = new WorkflowClient({connection});
+Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
+
+```python
+    client = await Client.connect(
+        #  target_host for the Temporal Cloud
+        "your-custom-namespace.tmprl.cloud:7233",
+        # target_host for Temporalite
+        # "127.0.0.1:7233"
+        namespace="your-custom-namespace",
+        tls=TLSConfig(
+            client_cert=client_cert,
+            client_private_key=client_private_key,
+            # domain=domain
+            # server_root_ca_cert=server_root_ca_cert,
+        ),
+    )
 ```
+
+</TabItem>
+<TabItem value="typescript">
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
 However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
-The following example, creates a Client, connects to an account, and declares your Namespace.
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
+
+Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
+
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
 
 ```typescript
+import fs from "fs-extra";
 import {Connection, WorkflowClient} from "@temporalio/client";
+import path = from "path";
 
-const connection = await Connection.connect({
-  address: "<Namespace_ID>.tmprl.cloud",
-});
-const client = new WorkflowClient({
-  connection,
-  namespace: "your.namespace",
-});
-```
+async function run() {
+  const cert = await fs.readFile("./path-to/your.pem");
+  const key = await fs.readFile("./path-to/your.key");
 
-</TabItem>
-<TabItem value="python">
-
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
-
-Specify the `target_host` parameter as a string.
-
-**Connect to Docker**
-
-```python
-await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
-```
-
-**Connect to your Cluster**
-
-```python
-await Client.connect(
-    "web.<Namespace_ID>.tmprl.cloud", namespace="your-custom-namespace"
-)
-```
-
-A `Client` does not have an explicit close.
-
-</TabItem>
-</Tabs>
-
-### Set Namespace
-
-[Namespaces](/namespaces#) are a logical unit of isolation within the Temporal Platform.
-
-To set a custom Namespace, register your custom Namespace with the Temporal Cluster first, and then set it in the Temporal Client with the Client Options.
-
-To register a Namespace, use `tctl --namespace your-custom-namespace namespace register`.
-
-For more information, see [tctl namespace reference](/tctl/namespace/register).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Set the `Namespace` field on an instance of the Client Options.
-
-```go
-// ...
-clientOptions := client.Options{
-  Namespace: "your-custom-namespace",
-}
-temporalClient, err := client.Dial(clientOptions)
-// ...
-```
-
-</TabItem>
-<TabItem value="java">
-
-Use the `setNamespace()` method on Workflow Client Options Builder.
-
-```java
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-WorkflowClientOptions clientOptions = WorkflowClientOptions.newBuilder()
-        .setNamespace("your-custom-namespace").build();
-WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
-```
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Set the [`namespace`](https://typescript.temporal.io/api/namespaces/client/) field on the options object.
-
-```ts
-const connection = await Connection.connect();
-// https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
-const client = new WorkflowClient({
-  connection,
-  namespace: "your-custom-namespace",
-});
-```
-
-</TabItem>
-<TabItem value="python">
-
-To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
-
-```python
-await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
-```
-
-`Client` can be directly instantiated with a service of another, such as when you need to create another Client to use an additional Namespace.
-
-Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
-
-```python
-config = client.config()
-config["namespace"] = "your-other-namespace"
-other_ns_client = Client(**config)
-```
-
-</TabItem>
-</Tabs>
-
-### Set mTLS configuration
-
-When connecting to the Temporal Cloud with mTLS, you must provide the following configuration details:
-
-- Client certificate for mTLS
-- Client private key for mTLS
-
-For information about generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
-​
-This Docker image is to be used in conjunction with the Temporal SDK.
-Keys and their configuration files are valid for 365 days from creation.
-
-For information about configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-For more information about mTLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with mTLS.
-
-```go
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		return err
-	}
-	client, err := client.Dial(client.Options{
-		HostPort:  "foo.bar.tmprl.cloud:7233",
-		Namespace: "foo.bar",
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-```
-
-</TabItem>
-<TabItem value="java">
-
-To set the mTLS configuration in Java, provide the certificate and private key in an instance of `WorkflowServiceStub`.
-
-The following example shows how to set up certificates and pass the `SSLContext` for the Client.
-
-```java
-import io.temporal.serviceclient.SimpleSslContextBuilder;
-...
-// Load your client certificate, which should look like:
-    // -----BEGIN CERTIFICATE-----
-    // ...
-    // -----END CERTIFICATE-----
-    InputStream clientCert = new FileInputStream(System.getenv("TEMPORAL_CLIENT_CERT"));
-    // PKCS8 client key, which should look like:
-    // -----BEGIN PRIVATE KEY-----
-    // ...
-    // -----END PRIVATE KEY-----
-    InputStream clientKey = new FileInputStream(System.getenv("TEMPORAL_CLIENT_KEY"));
-    // For Temporal Cloud this would likely be ${namespace}.tmprl.cloud:7233
-    String targetEndpoint = System.getenv("TEMPORAL_ENDPOINT");
-    // Your registered Namespace.
-    String namespace = System.getenv("TEMPORAL_NAMESPACE");
-    // Create SSL enabled client by passing SslContext, created by SimpleSslContextBuilder.
-    WorkflowServiceStubs service =
-        WorkflowServiceStubs.newInstance(
-            WorkflowServiceStubsOptions.newBuilder()
-                .setSslContext(SimpleSslContextBuilder.forPKCS8(clientCert, clientKey).build())
-                .setTarget(targetEndpoint)
-                .build());
-
-```
-
-For more information, see [Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/ssl/SslEnabledWorker.java).
-
-</TabItem>
-<TabItem value="php">
-
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-To set the mTLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with mTLS.
-
-```typescript
-const connection = await Connection.connect({
-  address: "foo.bar.tmprl.cloud",
-  tls: {
-    clientCertPair: {
-      crt: clientCertPath,
-      key: clientKeyPath,
+  const connectionOptions = {
+    address: "your-custom-namespace.tmprl.cloud:7233",
+    tls: {
+      clientCertPair: {
+        crt: cert,
+        key: key,
+      },
+    // serverRootCACertificatePath: "ca.cert",
     },
-  },
-});
-const client = new WorkflowClient({connection, namespace: "foo.bar"});
-```
-
-[The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud, you should receive a Namespace, a Server address, and a Client certificate and key. Use the following environment variables to set up the sample:
-
-- **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
-- **TEMPORAL_NAMESPACE**: looks like `foo.bar`
-- **TEMPORAL_CLIENT_CERT_PATH**: `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
-- **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
-
-You can leave the remaining variables, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH`, blank.
-If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaults to `hello-world-mtls`.
-
-```typescript
-export function getEnv(): Env {
-  return {
-    address: "web.<Namespace_ID>.tmprl.cloud", // NOT web.foo.bar.tmprl.cloud
-    namespace: "your.namespace", // as assigned
-    clientCertPath: "foobar.pem", // in project root
-    clientKeyPath: "foobar.key", // in project root
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls", // just to ensure task queue is same on client and worker, totally optional
-    // // not usually needed
-    // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
-    // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
   };
+  const connection = await Connection.connect(connectionOptions);
+
+  const client = new WorkflowClient({
+    connection,
+    // connects to 'default' namespace if not specified
+    namespace: "your-custom-namespace",
+  });
+
+    // . . .
 }
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
-
-If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
-
-The following code example works for local development and for certifications hosted in an Amazon S3 bucket.
-
-```typescript
-let serverRootCACertificate: Buffer | undefined;
-let clientCertificate: Buffer | undefined;
-let clientKey: Buffer | undefined;
-if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion});
-  serverRootCACertificate = await s3.getObject({
-    bucket: certificateS3Bucket,
-    key: serverRootCACertificatePath,
-  });
-  clientCertificate = await s3.getObject({
-    bucket: certificateS3Bucket,
-    key: clientCertPath,
-  });
-  clientKey = await s3.getObject({
-    bucket: certificateS3Bucket,
-    key: clientKeyPath,
-  });
-} else {
-  serverRootCACertificate = fs.readFileSync(serverRootCACertificatePath);
-  clientCertificate = fs.readFileSync(clientCertPath);
-  clientKey = fs.readFileSync(clientKeyPath);
-}
-```
-
-</TabItem>
-<TabItem value="python">
-
-Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with mTLS.
-
-The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
-
-```python
-await Client.connect(
-    "foo.bar.tmprl.cloud",
-    namespace="foo.bar",
-    tls_config=TLSConfig(
-        client_cert=client_cert,
-        client_private_key=client_private_key,
-    ),
-)
-```
-
-[The Hello World mTLS sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_mtls.py) demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
 
 </TabItem>
 </Tabs>
 
 ## Develop Workflows
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definitions).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
 
 <Tabs
 defaultValue="go"
@@ -797,7 +563,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definitions) is an exportable function.
+In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -868,37 +634,18 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 </TabItem>
 <TabItem value="php">
 
-In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[YourWorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
 ```php
 use Temporal\Workflow\YourWorkflowInterface;
 use Temporal\Workflow\WorkflowMethod;
 
-#[YourWorkflowInterface]
+#[WorkflowInterface]
 interface FileProcessingWorkflow
 {
     #[WorkflowMethod]
     public function processFile(Argument $args);
 
-}
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
-The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
-
-A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
-
-```typescript
-type ExampleArgs = {
-  name: string;
-};
-
-export async function example(args: ExampleArgs): Promise<{greeting: string}> {
-  const greeting = await greet(args.name);
-  return {greeting};
 }
 ```
 
@@ -919,6 +666,25 @@ class YourWorkflow:
         return await workflow.execute_activity(
             your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
+The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
+
+A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
+
+```typescript
+type ExampleArgs = {
+  name: string;
+};
+
+export async function example(args: ExampleArgs): Promise<{greeting: string}> {
+  const greeting = await greet(args.name);
+  return {greeting};
+}
 ```
 
 </TabItem>
@@ -996,7 +762,43 @@ public interface YourWorkflow {
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+A method annotated with `#[WorkflowMethod]` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+You can create a custom object and pass it to the Workflow method, as shown in the following example:
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
+
+</TabItem>
+<TabItem value="python">
+
+Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`.
+These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
+Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
+For example:
+
+```python
+@dataclass
+class YourParams:
+    your_int_param: int
+    your_str_param: str
+
+
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, params: YourParams) -> None:
+        ...
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -1028,28 +830,6 @@ interface ExampleParam {
 export async function example({name, born}: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
-```
-
-</TabItem>
-<TabItem value="python">
-
-Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`.
-These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
-Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
-For example:
-
-```python
-@dataclass
-class YourParams:
-    your_int_param: int
-    your_str_param: str
-
-
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, params: YourParams) -> None:
-        ...
 ```
 
 </TabItem>
@@ -1125,23 +905,6 @@ interface FileProcessingWorkflow {
 ```
 
 </TabItem>
-<TabItem value="typescript">
-
-To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls and comes with guarantees.
-
-The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
-
-```typescript
-interface ExampleParam {
-  name: string;
-  born: number;
-}
-export async function example({name, born}: ExampleParam): Promise<string> {
-  return `Hello ${name}, you were born in ${born}.`;
-}
-```
-
-</TabItem>
 <TabItem value="python">
 
 A Workflow Execution can return the results of a Workflow.
@@ -1166,6 +929,23 @@ handle = await client.execute_workflow(
     id="your-workflow-id",
     task_queue="your-task-queue",
 )
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls and comes with guarantees.
+
+The following example uses a `Promise<string>` to eventually return a `name` and `born` parameter.
+
+```typescript
+interface ExampleParam {
+  name: string;
+  born: number;
+}
+export async function example({name, born}: ExampleParam): Promise<string> {
+  return `Hello ${name}, you were born in ${born}.`;
+}
 ```
 
 </TabItem>
@@ -1230,12 +1010,7 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 </TabItem>
 <TabItem value="php">
 
-Content is not available
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is not available
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="python">
@@ -1251,6 +1026,11 @@ class YourWorkflow:
             your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
         )
 ```
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1356,11 +1136,6 @@ Therefore, be mindful of the amount of data that you transfer via Activity invoc
 Otherwise, no additional limitations exist on Activity implementations.\*\*
 
 </TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
 <TabItem value="python">
 
 Workflow code must be deterministic. This means:
@@ -1373,6 +1148,11 @@ Workflow code must be deterministic. This means:
 - no system date or time
 
 All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be _deterministic_.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
@@ -1547,21 +1327,6 @@ interface FileProcessingActivities
 The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activites that are used in the Workflow.
 
 </TabItem>
-<TabItem value="typescript">
-
-- Activities execute in the standard Node.js environment.
-- Activities cannot be in the same file as Workflows and must be separately registered.
-- Activities may be retried repeatedly, so you may need to use idempotency keys for critical side effects.
-
-Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
-
-```typescript
-export async function greet(name: string): Promise<string> {
-  return `Hello, ${name}!`;
-}
-```
-
-</TabItem>
 <TabItem value="python">
 
 You can develop an Activity Definition by using the [`@activity.defn`](https://python.temporal.io/temporalio.activity.html#defn) decorator.
@@ -1623,9 +1388,24 @@ If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](
 These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.sharedstatemanager). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.sharedstatemanager#create_from_multiprocessing).
 
 </TabItem>
+<TabItem value="typescript">
+
+- Activities execute in the standard Node.js environment.
+- Activities cannot be in the same file as Workflows and must be separately registered.
+- Activities may be retried repeatedly, so you may need to use idempotency keys for critical side effects.
+
+Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
+
+```typescript
+export async function greet(name: string): Promise<string> {
+  return `Hello, ${name}!`;
+}
+```
+
+</TabItem>
 </Tabs>
 
-### Activity parameters
+### Activity Parameters
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
@@ -1720,11 +1500,6 @@ The only requirement is that Activity method arguments and return values are ser
 The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
 
 </TabItem>
-<TabItem value="typescript">
-
-Content is not available
-
-</TabItem>
 <TabItem value="python">
 
 Activity parameters are the function parameters of the function decorated with `@activity.defn`.
@@ -1745,11 +1520,16 @@ async def your_activity(params: YourParams) -> None:
 ```
 
 </TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
 </Tabs>
 
 ### Activity return values
 
-All Activity results must be serializable.
+All data returned from an Activity must be serializable.
 
 There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
 
@@ -1793,7 +1573,44 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Return values must be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+Thus, you can return both primitive types:
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        return $greeting . ' ' . $name;
+    }
+}
+```
+
+And objects:
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): Greeting
+    {
+        return new Greeting($greeting, $name);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="python">
+
+An Activity Execution can return inputs and other Activity values.
+
+The following example defines an Activity that takes a string as input and returns a string.
+
+```python
+@activity.defn
+async def say_hello(name: str) -> str:
+    return f"Hello, {name}!"
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -1813,22 +1630,9 @@ export async function example(name: string): Promise<string> {
 ```
 
 </TabItem>
-<TabItem value="python">
-
-An Activity Execution can return inputs and other Activity values.
-
-The following example defines an Activity that takes a string as input and returns a string.
-
-```python
-@activity.defn
-async def say_hello(name: str) -> str:
-    return f"Hello, {name}!"
-```
-
-</TabItem>
 </Tabs>
 
-### Customize Activity Type
+### Activity Type
 
 You can set a custom name for your Activity Type.
 
@@ -1900,24 +1704,30 @@ The Activity type for the method annotated with `@ActivityMethod` is set to `A_a
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="undefined">
+
+You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the function name.
+
+```python
+@activity.defn(name="your-activity")
+async def your_activity(name: str) -> str:
+    return f"Hello, {name}!"
+```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not available
-
-</TabItem>
-<TabItem value="python">
-
-Content is not available
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
 
-## Start Activity Execution
+## Activity Execution
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definitions).
+Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
 This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
@@ -1988,7 +1798,7 @@ Note that before an Activity Execution is invoked:
 - Activity options (either [`setStartToCloseTimeout`](/activities#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/activities#schedule-to-close-timeout) are required) must be set for the Activity.
   For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
-  See [Worker Program](#none)
+  See [Worker Program](#run-worker-processes)
 - Activity code must be thread-safe.
 
 Activities should only be instantiated using stubs from within a Workflow.
@@ -2226,28 +2036,6 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 ```
 
 </TabItem>
-<TabItem value="typescript">
-
-To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
-
-```typescript
-import {proxyActivities} from "@temporalio/workflow";
-// Only import the activity types
-import type * as activities from "./activities";
-
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
-});
-
-// A workflow that calls an activity
-export async function example(name: string): Promise<string> {
-  return await greet(name);
-}
-```
-
-This imports the individual Activities and declares the type alias for each Activity.
-
-</TabItem>
 <TabItem value="python">
 
 To spawn an Activity Execution, use the [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) operation from within your Workflow Definition.
@@ -2268,6 +2056,28 @@ To get just the handle to wait and cancel separately, use `start_activity()`.
 In most cases, use `execute_activity()` unless advanced task capabilities are needed.
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
+
+</TabItem>
+<TabItem value="typescript">
+
+To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
+
+```typescript
+import {proxyActivities} from "@temporalio/workflow";
+// Only import the activity types
+import type * as activities from "./activities";
+
+const {greet} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "1 minute",
+});
+
+// A workflow that calls an activity
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
+
+This imports the individual Activities and declares the type alias for each Activity.
 
 </TabItem>
 </Tabs>
@@ -2427,6 +2237,25 @@ $greetingActivity = Workflow::newActivityStub(
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
+
+You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
+
+`execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
+
+```python
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+        )
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
@@ -2447,25 +2276,6 @@ export async function DynamicWorkflow(activityName, ...args) {
 The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
 
 </TabItem>
-<TabItem value="python">
-
-Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
-
-You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
-
-`execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
-
-```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
-        )
-```
-
-</TabItem>
 </Tabs>
 
 ## Run Worker Processes
@@ -2473,7 +2283,7 @@ class YourWorkflow:
 The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
 
 - Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/tasks#task-queues).
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/tasks#task-queue).
 - Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
@@ -2654,83 +2464,6 @@ temporal:
 > You can serve HTTP endpoints using the same server setup.
 
 </TabItem>
-<TabItem value="typescript">
-
-Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
-
-Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
-
-<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
-<!--SNIPEND-->
-
-`taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
-
-A full example for Workers looks like this:
-
-```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
-import * as activities from "./activities";
-
-async function run() {
-  const connection = await NativeConnection.connect({
-    address: "foo.bar.tmprl.cloud", // defaults port to 7233 if not specified
-    tls: {
-      // set to true if TLS without mTLS
-      // See docs for other TLS options
-      clientCertPair: {
-        crt: clientCert,
-        key: clientKey,
-      },
-    },
-  });
-
-  const worker = await Worker.create({
-    connection,
-    namespace: "foo.bar", // as explained in Namespaces section
-    // ...
-  });
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-
-See below for more Worker options.
-
-**Workflow and Activity registration**
-
-Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
-Activities are directly required and run by Workers in the Node.js environment.
-
-Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
-
-There are three main things the Worker needs:
-
-- `taskQueue`: the Task Queue to poll. This is the only required argument.
-- `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
-- Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can fine-tune with `nodeModulesPaths`.
-- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
-
-**Additional Worker Options**
-
-This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
-
-| Options            | Description                                                                                                                                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nodeModulesPaths` | Array of paths of Workflow dependencies to pass to Webpack. Defaults to the first encountered `node_modules` directory when scanning the filesystem starting with `workflowsPath`. |
-| `dataConverter`    | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`            | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                                     |
-| `interceptors`     | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors))                                              |
-
-**Operation guides:**
-
-- [How to tune Workers](/application-development/worker-performance)
-
-</TabItem>
 <TabItem value="python">
 
 To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.worker#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
@@ -2769,9 +2502,86 @@ Although this example accepts a stop event and uses `async with`, you can also u
 The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown might never complete.
 
 </TabItem>
+<TabItem value="typescript">
+
+Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+
+Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
+
+<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+<!--SNIPEND-->
+
+`taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+
+A full example for Workers looks like this:
+
+```typescript
+import {Worker, NativeConnection} from "@temporalio/worker";
+import * as activities from "./activities";
+
+async function run() {
+  const connection = await NativeConnection.connect({
+    // defaults port to 7233 if not specified
+    address: "foo.bar.tmprl.cloud",
+    tls: {
+      // set to true if TLS without mTLS
+      // See docs for other TLS options
+      clientCertPair: {
+        crt: clientCert,
+        key: clientKey,
+      },
+    },
+  });
+
+  const worker = await Worker.create({
+    connection,
+    namespace: "foo.bar", // as explained in Namespaces section
+    // ...
+  });
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+See below for more Worker options.
+
+**Workflow and Activity registration**
+
+Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
+Activities are directly required and run by Workers in the Node.js environment.
+
+Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
+
+There are three main things the Worker needs:
+
+- `taskQueue`: the Task Queue to poll. This is the only required argument.
+- `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
+- Workflow bundle:
+- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
+- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
+
+**Additional Worker Options**
+
+This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
+
+| Options         | Description                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
+| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |
+
+**Operation guides:**
+
+- [How to tune Workers](/application-development/worker-performance)
+
+</TabItem>
 </Tabs>
 
-### Register multiple types
+### Register types
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -2789,7 +2599,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](#none) best practices, you might have an Activity struct that has multiple methods and fields.
+Per [Activity Definition](#develop-activities) best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
@@ -2879,12 +2689,32 @@ You can register only one Activity instance that implements `DynamicActivity` wi
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Worker listens on a task queue and hosts both workflow and activity implementations:
 
-</TabItem>
-<TabItem value="typescript">
+```php
+// Workflows are stateful. So you need a type to create instances:
+$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+// Activities are stateless and thread safe:
+$worker->registerActivity(App\DemoActivity::class);
+```
 
-Content is not available
+In case an activity class requires some external dependencies provide a callback - factory
+that creates or builds a new activity instance. The factory should be a callable which accepts
+an instance of ReflectionClass with an activity class which should be created.
+
+```php
+$worker->registerActivity(
+    App\DemoActivity::class,
+    fn(ReflectionClass $class) => $container->create($class->getName())
+);
+```
+
+If you want to clean up some resources after activity is done, you may register a finalizer. This callback is called
+after each activity invocation:
+
+```php
+$worker->registerActivityFinalizer(fn() => $kernel->showtdown());
+```
 
 </TabItem>
 <TabItem value="python">
@@ -2901,11 +2731,16 @@ worker = Worker(
 ```
 
 </TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
 </Tabs>
 
 ## Start Workflow Execution
 
-[Workflow Execution](/workflows#workflow-executions) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
@@ -2922,7 +2757,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a [Workflow Execution](/workflows#workflow-executions), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+To spawn a [Workflow Execution](/workflows#workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -2975,7 +2810,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/application-development/features#send-signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/application-development/features#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -2990,7 +2825,7 @@ You can use a typed or untyped `WorkflowStub` in the client code.
 - An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
   Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
   When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see [Temporal Client](#connect-to-a-client).
+  For details, see [Temporal Client](#connect-to-a-cluster).
 
 A Workflow Execution can be started either synchronously or asynchronously.
 
@@ -3071,7 +2906,7 @@ To check what type is running when your Dynamic Workflow `execute` method runs, 
 String type = Workflow.getInfo().getWorkflowType();
 ```
 
-See [Workflow Execution Result](#none) for details on how to get the results of the Workflow Execution.
+See [Workflow Execution Result](#get-workflow-results) for details on how to get the results of the Workflow Execution.
 
 **Using `ExternalWorkflowStub`**
 
@@ -3095,28 +2930,80 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 </TabItem>
 <TabItem value="php">
 
-Content is not available
+Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
+via `Temporal\Client\WorkflowClient`. To create workflow client:
 
-</TabItem>
-<TabItem value="typescript">
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
 
-When you have a Workflow Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
-
-```typescript
-const handle = await client.start(example, {
-  workflowId: "your-workflow-id",
-  taskQueue: "your-task-queue",
-  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
-});
-const handle = client.getHandle(workflowId);
-const result = await handle.result();
+$workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233'));
 ```
 
-Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
+**Synchronous start**
 
-You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
+invocation process and will continue executing even if the waiting process crashes or stops.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
+Make sure to acquire workflow interface or class name you want to start. For example:
+
+```php
+#[WorkflowInterface]
+interface AccountTransferWorkflowInterface
+{
+    #[WorkflowMethod(name: "MoneyTransfer")]
+    #[ReturnType('int')]
+    public function transfer(
+        string $fromAccountId,
+        string $toAccountId,
+        string $referenceId,
+        int $amountCents
+    );
+}
+```
+
+To start such workflow in sync mode:
+
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
+
+$result = $accountTransfer->transfer(
+    'fromID',
+    'toID',
+    'refID',
+    1000
+);
+```
+
+**Asynchronous start**
+
+An asynchronous start initiates a Workflow execution and immediately returns to the caller without waiting for a result.
+This is the most common way to start Workflows in a live environment.
+
+To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
+method.
+
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
+
+$run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+```
+
+Once started you can receive workflow ID via `WorkflowRun` object returned by start method:
+
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+
+var_dump($run->getExecution()->getID());
+```
+
+**Recurring start**
+
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
 
 </TabItem>
 <TabItem value="python">
@@ -3152,11 +3039,32 @@ async def main():
 ```
 
 </TabItem>
+<TabItem value="typescript">
+
+When you have a Workflow Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
+
+```typescript
+const handle = await client.start(example, {
+  workflowId: "your-workflow-id",
+  taskQueue: "your-task-queue",
+  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
+});
+const handle = client.getHandle(workflowId);
+const result = await handle.result();
+```
+
+Calling `client.start()` and `client.execute()` send a command to Temporal Server to schedule a new Workflow Execution on the specified Task Queue. It does not actually start until a Worker that has a matching Workflow Type, polling that Task Queue, picks it up.
+
+You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
+
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
+
+</TabItem>
 </Tabs>
 
 ### Set Task Queue
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/tasks#task-queues).
+In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/tasks#task-queue).
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
@@ -3305,6 +3213,20 @@ $promise = $childWorkflow->workflowMethod();
 If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Child Workflow Tasks are placed in the same Task Queue as the Parent Workflow Task Queue.
 
 </TabItem>
+<TabItem value="python">
+
+To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+
+```python
+result = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+)
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
@@ -3318,7 +3240,7 @@ There are three main things the Worker needs:
 - `taskQueue`: the Task Queue to poll. This is the only required argument.
 - `activities`: Optional. Imported and supplied directly to the Worker.
 - Workflow bundle, specify one of the following options:
-  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies, which you can finetune with `nodeModulesPaths`.
+  - a `workflowsPath` to your `workflows.ts` file to pass to Webpack. For example, `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
@@ -3359,8 +3281,10 @@ import {Connection, WorkflowClient} from "@temporalio/client";
 const connection = await Connection.create();
 const client = new WorkflowClient({connection});
 const result = await client.execute(yourWorkflow, {
-  taskQueue: "your-task-queue", // required
-  workflowId: "your-workflow-id", // required
+  // required
+  taskQueue: "your-task-queue",
+  // required
+  workflowId: "your-workflow-id",
 });
 ```
 
@@ -3368,7 +3292,8 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 
 ```ts
 const worker = await Worker.create({
-  activities, // imported elsewhere
+  // imported elsewhere
+  activities,
   taskQueue: "your-task-queue",
 });
 ```
@@ -3376,23 +3301,9 @@ const worker = await Worker.create({
 Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
 </TabItem>
-<TabItem value="python">
-
-To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
-
-```python
-result = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
-```
-
-</TabItem>
 </Tabs>
 
-### Set Workflow Id
+### Workflow Id
 
 Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
@@ -3474,21 +3385,6 @@ You can also set the Workflow Id as a constant, for example:
 ```
 
 </TabItem>
-<TabItem value="typescript">
-
-Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
-
-```typescript
-const handle = await client.start(example, {
-  workflowId: "yourWorkflowId",
-  taskQueue: "yourTaskQueue",
-  args: ["your", "arg", "uments"],
-});
-```
-
-This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
-
-</TabItem>
 <TabItem value="python">
 
 To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
@@ -3505,9 +3401,24 @@ result = await client.execute_workflow(
 ```
 
 </TabItem>
+<TabItem value="typescript">
+
+Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
+
+```typescript
+const handle = await client.start(example, {
+  workflowId: "yourWorkflowId",
+  taskQueue: "yourTaskQueue",
+  args: ["your", "arg", "uments"],
+});
+```
+
+This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
+
+</TabItem>
 </Tabs>
 
-## Get Workflow results
+### Get Workflow results
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -3582,7 +3493,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 **Get last completion result**
 
-In the case of a [Temporal Cron Job](/workflows#cron-jobs), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a [Temporal Cron Job](/workflows#temporal-cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
@@ -3717,6 +3628,27 @@ var_dump($run->getResult());
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle) to return a Workflow handle.
+Then use the [`result`](https://python.temporal.io/temporalio.client.workflowhandle#result) method to await on the result of the Workflow.
+
+```python
+handle = await client.start_workflow(
+    YourWorkflow.run, "some arg", id="your-workflow-id", task_queue="your-task-queue"
+)
+
+# Wait for result
+result = await handle.result()
+print(f"Result: {result}")
+```
+
+To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety.
+
+Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
+If the Workflow does not exist, this call fails.
+
+</TabItem>
 <TabItem value="typescript">
 
 To return the results of a Workflow Execution:
@@ -3763,27 +3695,6 @@ try {
   }
 }
 ```
-
-</TabItem>
-<TabItem value="python">
-
-Use [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle) to return a Workflow handle.
-Then use the [`result`](https://python.temporal.io/temporalio.client.workflowhandle#result) method to await on the result of the Workflow.
-
-```python
-handle = await client.start_workflow(
-    YourWorkflow.run, "some arg", id="your-workflow-id", task_queue="your-task-queue"
-)
-
-# Wait for result
-result = await handle.result()
-print(f"Result: {result}")
-```
-
-To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety.
-
-Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
-If the Workflow does not exist, this call fails.
 
 </TabItem>
 </Tabs>

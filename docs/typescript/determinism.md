@@ -8,9 +8,11 @@ This also means that sleeping or retrying code does not tie up the process - you
 ```js
 import * as wf from '@temporalio/workflow';
 const { yourActivity } = wf.proxyActivities({
-  startToCloseTimeout: '1 week', // persisted
+  // persisted
+  startToCloseTimeout: '1 week',
   retry: {
-    initialInterval: '1 day', // persisted
+    // persisted
+    initialInterval: '1 day',
   },
 });
 
@@ -33,7 +35,7 @@ The Temporal TypeScript SDK runs each Workflow in a separate v8 isolate — a "s
 
 - When we need to defer execution (such as for a timer or activity), we simply destroy the `vm` context.
 - When we need to continue execution, Temporal Server sends over the Event History, and we replay through the code from the start until the end to restore state.
-  - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/server/production-deployment/#server-limits). ["Sticky" optimizations exist to make this faster for common situations](/concepts/what-is-a-sticky-execution).
+  - The serialization takes time, which is why we recommend keeping Event History [under 10,000 events](/kb/temporal-platform-limits-sheet). ["Sticky" optimizations exist to make this faster for common situations](/concepts/what-is-a-sticky-execution).
   - If the execution logic has changed enough to affect Event History, you need to [patch new code](/typescript/patching).
 - The Workflow runtime is completely deterministic: functions like `Math.random`, `Date`, and `setTimeout` are replaced by deterministic versions, and the only way for a Workflow to interact with the world is via Activities.
 - When an Activity completes, its result is stored in the Workflow history to be replayed in case a Workflow is restored.

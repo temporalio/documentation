@@ -4,6 +4,7 @@ title: What is a Workflow?
 sidebar_label: Workflow
 description: In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.
 tags:
+  - term
   - explanation
 ---
 

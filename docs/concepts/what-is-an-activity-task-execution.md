@@ -4,6 +4,7 @@ title: What is an Activity Task Execution?
 sidebar_label: Activity Task Execution
 description: An Activity Task Execution is the execution of an Activity Type.
 tags:
+  - term
   - explanation
 ---
 

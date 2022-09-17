@@ -4,6 +4,7 @@ title: What is Asynchronous Activity Completion?
 sidebar_label: Asynchronous Activity Completion
 description: Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.
 tags:
+  - term
   - explanation
 ---
 
