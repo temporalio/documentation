@@ -18,7 +18,7 @@ Runtime.install({
   logger: new DefaultLogger("DEBUG"),
   telemetryOptions: {
     tracingFilter: "temporal_sdk_core=DEBUG",
-    logging: {forward: {level: "DEBUG"}},
+    logging: { forward: { level: "DEBUG" } },
   },
 });
 ```
@@ -26,7 +26,7 @@ Runtime.install({
 The following code sets the `DefaultLogger` to `'Debug'` and creates a Worker that can execute Activities or Workflows.
 
 ```typescript
-import {Worker, Runtime, DefaultLogger} from "@temporalio/worker";
+import { Worker, Runtime, DefaultLogger } from "@temporalio/worker";
 import * as activities from "./activities";
 async function main() {
   const argv = arg({
@@ -38,7 +38,7 @@ async function main() {
       logger: new DefaultLogger("DEBUG"),
       telemetryOptions: {
         tracingFilter: "temporal_sdk_core=DEBUG",
-        logging: {forward: {level: "DEBUG"}},
+        logging: { forward: { level: "DEBUG" } },
       },
     });
   }

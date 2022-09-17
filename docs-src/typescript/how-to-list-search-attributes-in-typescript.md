@@ -14,12 +14,11 @@ tags:
 For now, we can call [`client.service.listWorkflowExecutions()`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#listworkflowexecutions). A friendlier `client.listWorkflows()` function that does Payload decoding is planned.
 
 ```ts
-const {executions, nextPageToken} = await client.service.listWorkflowExecutions(
-  {
+const { executions, nextPageToken } =
+  await client.service.listWorkflowExecutions({
     namespace: "default",
     ...(input || {}),
-  }
-);
+  });
 const decodedWorkflows = executions.map(
   ({
     execution,

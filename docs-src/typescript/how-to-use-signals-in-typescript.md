@@ -17,21 +17,20 @@ To add a Signal to a Workflow, call `defineSignal()` with a name, and then attac
 **Declare your Signal as constants outside the Workflow Definition**
 
 ```typescript
-import * as wf from '@temporalio/workflow';
+import * as wf from "@temporalio/workflow";
 
-export const unblockSignal = wf.defineSignal('unblock');
- let isBlocked = true;
- wf.setHandler(unblockSignal, () => void (isBlocked = false));
- console.log('Blocked');
- try {
-   await wf.condition(() => !isBlocked);
-   console.log('Unblocked');
- } catch (err) {
-   if (err instanceof wf.CancelledFailure) {
-     console.log('Cancelled');
-   }
-   throw err;
- }
+export const unblockSignal = wf.defineSignal("unblock");
+let isBlocked = true;
+wf.setHandler(unblockSignal, () => void (isBlocked = false));
+console.log("Blocked");
+try {
+  await wf.condition(() => !isBlocked);
+  console.log("Unblocked");
+} catch (err) {
+  if (err instanceof wf.CancelledFailure) {
+    console.log("Cancelled");
+  }
+  throw err;
 }
 ```
 
@@ -98,13 +97,13 @@ Sending Signals requires a Workflow handle from a Temporal Client.
 The following code is from inside the Client code.
 
 ```typescript
-import {increment, count} from "./workflow";
+import { increment, count } from "./workflow";
 
 // init client code omitted - see Client docs
 const handle = client.getHandle(workflowId);
 
 // these three are equivalent
 await handle.signal(increment, 1);
-await handle.signal<[number]>("increment", 1);
+(await handle.signal) < [number] > ("increment", 1);
 await client.getHandle(workflowId).signal(increment, 1);
 ```

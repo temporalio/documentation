@@ -13,7 +13,7 @@ tags:
 
 ```ts
 async function runWorker(): Promise<void> {
-  const activities = createActivities({apiKey: process.env.MAILGUN_API_KEY});
+  const activities = createActivities({ apiKey: process.env.MAILGUN_API_KEY });
 
   const worker = await Worker.create({
     taskQueue: "example",
@@ -23,13 +23,13 @@ async function runWorker(): Promise<void> {
   await worker.run();
 }
 
-const createActivities = (envVars: {apiKey: string}) => ({
+const createActivities = (envVars: { apiKey: string }) => ({
   async sendNotificationEmail(): Promise<void> {
     // ...
     await axios({
       url: `https://api.mailgun.net/v3/your-domain/messages`,
       method: "post",
-      params: {to, from, subject, html},
+      params: { to, from, subject, html },
       auth: {
         username: "api",
         password: envVars.apiKey,
@@ -72,11 +72,11 @@ const createActivities = (envVars: EnvVars) => ({
 ```
 
 ```ts
-const {getEnvVars} = proxyLocalActivities({
+const { getEnvVars } = proxyLocalActivities({
   startToCloseTimeout: "1m",
 });
 
-const {sendNotificationEmail} = proxyActivities({
+const { sendNotificationEmail } = proxyActivities({
   startToCloseTimeout: "1m",
 });
 

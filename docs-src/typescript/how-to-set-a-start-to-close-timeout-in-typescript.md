@@ -20,7 +20,7 @@ In this example, you can set the `startToCloseTimeout` to 30 seconds.
 
 ```typescript
 // Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
+const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: "30s", // recommended
   retry: {
     // default retry policy if not specified

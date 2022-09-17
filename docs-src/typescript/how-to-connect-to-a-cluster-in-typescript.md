@@ -22,8 +22,8 @@ Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/clie
 
 ```typescript
 import fs from "fs-extra";
-import {Connection, WorkflowClient} from "@temporalio/client";
-import path = from "path";
+import { Connection, WorkflowClient } from "@temporalio/client";
+import path from "path";
 
 async function run() {
   const cert = await fs.readFile("./path-to/your.pem");
@@ -36,7 +36,7 @@ async function run() {
         crt: cert,
         key: key,
       },
-    // serverRootCACertificatePath: "ca.cert",
+      // serverRootCACertificatePath: "ca.cert",
     },
   };
   const connection = await Connection.connect(connectionOptions);
@@ -47,7 +47,7 @@ async function run() {
     namespace: "your-custom-namespace",
   });
 
-    // . . .
+  // . . .
 }
 
 run().catch((err) => {

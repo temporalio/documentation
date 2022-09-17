@@ -21,7 +21,7 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
+import { Worker, NativeConnection } from "@temporalio/worker";
 import * as activities from "./activities";
 
 async function run() {

@@ -430,12 +430,12 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import { Runtime, DefaultLogger } from "@temporalio/worker";
 
-const logger = new DefaultLogger("WARN", ({level, message}) => {
+const logger = new DefaultLogger("WARN", ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 The previous code example sets the default logger to only log messages with level `WARN` and higher.
@@ -443,28 +443,28 @@ The previous code example sets the default logger to only log messages with leve
 **Accumulate logs for testing and reporting**
 
 ```ts
-import {DefaultLogger, LogEntry} from "@temporalio/worker";
+import { DefaultLogger, LogEntry } from "@temporalio/worker";
 
 const logs: LogEntry[] = [];
 const logger = new DefaultLogger("TRACE", (entry) => logs.push(entry));
-log.debug("hey", {a: 1});
+log.debug("hey", { a: 1 });
 log.info("ho");
-log.warn("lets", {a: 1});
+log.warn("lets", { a: 1 });
 log.error("go");
 ```
 
 A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
 
 ```ts
-import {Runtime} from "@temporalio/worker";
+import { Runtime } from "@temporalio/worker";
 import winston from "winston";
 
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
-  transports: [new transports.File({filename: "/path/to/worker.log"})],
+  transports: [new transports.File({ filename: "/path/to/worker.log" })],
 });
-Runtime.install({logger});
+Runtime.install({ logger });
 ```
 
 </TabItem>
@@ -526,7 +526,7 @@ Content is currently unavailable.
 Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#listworkflowexecutions):
 
 ```typescript
-import {Connection} from "@temporalio/client";
+import { Connection } from "@temporalio/client";
 
 const connection = await Connection.connect();
 const response = await connection.workflowService.listWorkflowExecutions({
@@ -733,13 +733,13 @@ workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": []})
 <TabItem value="typescript">
 
 ```typescript
-import {upsertSearchAttributes} from "@temporalio/workflow";
+import { upsertSearchAttributes } from "@temporalio/workflow";
 
 async function yourWorkflow() {
-  upsertSearchAttributes({CustomIntField: [1, 2, 3]});
+  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
 
   // ... later, to remove:
-  upsertSearchAttributes({CustomIntField: []});
+  upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
 
