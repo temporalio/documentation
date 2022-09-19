@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-This Activity takes a single name parameter of the type string.
+This Activity takes a single `name` parameter of type `string`.
 
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
