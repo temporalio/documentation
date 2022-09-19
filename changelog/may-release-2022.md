@@ -2,7 +2,7 @@
 slug: may-release-2022
 title: May 23 2022
 tags:
-  - docs-change-log
+  - docs-changelog
 date: 2022-05-23T00:00:00Z
 ---
 

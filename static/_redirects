@@ -15,6 +15,7 @@
 /references/glossary        /glossary
 /application-development-guide        /application-development
 /samples-library        /application-development/foundations#code-samples
+/change-log        /changelog
 # Blog case studies
 /blog/airbyte-case-study/        https://temporal.io/case-studies/airbyte-case-study
 /blog/zebra-medical-case-study/        https://temporal.io/case-studies/zebra-medical-case-study
