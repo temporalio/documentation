@@ -8,7 +8,7 @@ tags:
   - typescript
 ---
 
-you can customize the name of the Activity when you register it with the Worker.
+You can customize the name of the Activity when you register it with the Worker.
 In the following example, the Activity Name is `activityFoo`.
 
 <!--SNIPSTART typescript-custom-activity-type -->
