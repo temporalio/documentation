@@ -380,6 +380,7 @@ module.exports = {
          */
         blogTitle: "Temporal documentation changelog",
         blogSidebarTitle: "Docs changelog",
+        path: "changelog",
         routeBasePath: "changelog",
         blogDescription: "A log of changes to this site's content.",
         showReadingTime: false, // Show estimated reading time for the blog post.
