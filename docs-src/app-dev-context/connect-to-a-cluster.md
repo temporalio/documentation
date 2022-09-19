@@ -18,7 +18,7 @@ Communication with a Temporal Cluster includes, but isn't limited to, the follow
 
 :::caution
 
-A Temporal Client cannot be initialized and used inside Workflow Execution.
+A Temporal Client cannot be initialized and used inside a Workflow.
 However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
 
 :::
