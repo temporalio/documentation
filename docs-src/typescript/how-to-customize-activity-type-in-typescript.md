@@ -8,8 +8,8 @@ tags:
   - typescript
 ---
 
-In TypeScript, the Activity Type is the property of the [`WorkerOptions.activities`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#activities) object. 
-Usually, that's the Activity function's name. 
+In TypeScript, the Activity Type is the property of the [`WorkerOptions.activities`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#activities) object.
+Usually, that's the Activity function's name.
 For example, in the following code, the Activity Type is `greet`:
 
 <!--SNIPSTART typescript-activity-fn -->
