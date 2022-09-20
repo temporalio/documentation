@@ -3,6 +3,14 @@ id: retries
 title: Activity and Workflow Retries
 ---
 
+:::info Try the Application development guide
+
+The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+
+However, if you can not find what you are looking for there then we recommend checking this doc set as well.
+
+:::
+
 Activities and Workflows can fail for a number of expected and unexpected reasons.
 In most failure cases, we want to retry the failed Activity or child Workflow or even the parent Workflow.
 By default, Temporal retries Activities, but not Workflows.

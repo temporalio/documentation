@@ -7,6 +7,14 @@ description: The core abstraction of the Temporal solution is a fault-oblivious 
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
+:::info Try the Application development guide
+
+The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+
+However, if you can not find what you are looking for there then we recommend checking this doc set as well.
+
+:::
+
 ## What is a Workflow?
 
 In PHP, a Workflow is a class method.

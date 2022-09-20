@@ -4,6 +4,14 @@ title: Task Queues in PHP
 sidebar_label: Task Queues
 ---
 
+:::info Try the Application development guide
+
+The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+
+However, if you can not find what you are looking for there then we recommend checking this doc set as well.
+
+:::
+
 In PHP, a Task Queue is represented in code by its name as a `string`.
 There are four places where the name of the Task Queue is supplied by the developer.
 

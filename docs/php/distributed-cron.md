@@ -3,6 +3,14 @@ id: distributed-cron
 title: Distributed CRON
 ---
 
+:::info Try the Application development guide
+
+The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+
+However, if you can not find what you are looking for there then we recommend checking this doc set as well.
+
+:::
+
 <!-- prettier-ignore -->
 import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 
