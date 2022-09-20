@@ -8,7 +8,7 @@ tags:
   - sleep
 ---
 
-To set a Timer in Python, set the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration you want to wait in seconds before continuing.
+To set a Timer in Python, set the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
 
 ```python
 await asyncio.sleep(5)
