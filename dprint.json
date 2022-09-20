@@ -32,11 +32,7 @@
     "useTabs": false
   },
   "includes": [
-    "docs/*.{md}",
-    "docs/**/*.{md}",
-    "guide-gen/**/*.{md}",
-    "versioned_docs/*.{md}",
-    "versioned_docs/**/*.{md}"
+    "docs-src/**/*.{md}",
   ],
   "excludes": [
     "**/node_modules",
