@@ -15,10 +15,10 @@ The following is an example of setting the `DefaultLogger` to `'Debug'`.
 
 ```typescript
 Runtime.install({
-  logger: new DefaultLogger('DEBUG'),
+  logger: new DefaultLogger("DEBUG"),
   telemetryOptions: {
-    tracingFilter: 'temporal_sdk_core=DEBUG',
-    logging: { forward: { level: 'DEBUG' } },
+    tracingFilter: "temporal_sdk_core=DEBUG",
+    logging: {forward: {level: "DEBUG"}},
   },
 });
 ```
@@ -26,28 +26,28 @@ Runtime.install({
 The following code sets the `DefaultLogger` to `'Debug'` and creates a Worker that can execute Activities or Workflows.
 
 ```typescript
-import { DefaultLogger, Runtime, Worker } from '@temporalio/worker';
-import * as activities from './activities';
+import {DefaultLogger, Runtime, Worker} from "@temporalio/worker";
+import * as activities from "./activities";
 async function main() {
   const argv = arg({
-    '--debug': Boolean,
+    "--debug": Boolean,
   });
   /* Setting the log level to DEBUG. */
-  if (argv['--debug']) {
+  if (argv["--debug"]) {
     Runtime.install({
-      logger: new DefaultLogger('DEBUG'),
+      logger: new DefaultLogger("DEBUG"),
       telemetryOptions: {
-        tracingFilter: 'temporal_sdk_core=DEBUG',
-        logging: { forward: { level: 'DEBUG' } },
+        tracingFilter: "temporal_sdk_core=DEBUG",
+        logging: {forward: {level: "DEBUG"}},
       },
     });
   }
   const worker = await Worker.create({
     activities,
-    workflowsPath: require.resolve('./workflows'),
-    taskQueue: 'test',
+    workflowsPath: require.resolve("./workflows"),
+    taskQueue: "test",
   });
   await worker.run();
-  console.log('Worker gracefully shutdown');
+  console.log("Worker gracefully shutdown");
 }
 ```

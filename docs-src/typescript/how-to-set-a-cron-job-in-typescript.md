@@ -14,6 +14,6 @@ You can set each Workflow to repeat on a schedule with the `cronSchedule` option
 ```typescript
 const handle = await client.start(scheduledWorkflow, {
   // ...
-  cronSchedule: '* * * * *', // start every minute
+  cronSchedule: "* * * * *", // start every minute
 });
 ```
