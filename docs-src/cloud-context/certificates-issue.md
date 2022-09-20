@@ -4,7 +4,7 @@ title: How to issue root CA and end-entity certificates
 sidebar_label: Issue certificates
 description: You can issue root CA and end-entity certificates in two ways.
 tags:
-  - how-to
+  - guide-context
 ---
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
