@@ -7,31 +7,31 @@ tags:
   - guide-context
 ---
 
-A [Temporal Client](/concepts/what-is-a-temporal-client) enables you to communicate with a [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
-Communications with a Temporal Cluster include, but aren't limited to, the following:
+A [Temporal Client](/concepts/what-is-a-temporal-client) enables you to communicate with the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).
+Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
-- starting Workflow Executions
-- sending Signals to Workflow Executions
-- sending Queries to Workflow Executions
-- getting the results of a Workflow Execution
-- providing an Activity Task Token
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
 
 :::caution
 
-A Temporal Client cannot be initialized and used inside Workflow code.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with the Temporal Cluster.
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
 
 :::
 
-When you are running a Cluster locally (such as [temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
 
 When you are connecting to a production Cluster (such as [Temporal Cloud](/concepts/what-is-temporal-cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
-- address and port
-- [Namespace](/concepts/what-is-a-namespace) (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
-- mTLS CA certificate
-- mTLS private key
+- An address and port number.
+- A [Namespace](/concepts/what-is-a-namespace) Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
+- mTLS CA certificate.
+- mTLS private key.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 

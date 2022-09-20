@@ -91,9 +91,9 @@ module.exports = {
           position: "left",
         },
         {
-          label: "Docs change log",
-          to: "/change-log",
-          activeBasePath: "change-log",
+          label: "Docs changelog",
+          to: "/changelog",
+          activeBasePath: "changelog",
           position: "left",
         },
       ],
@@ -372,19 +372,19 @@ module.exports = {
         /**
          * Required for any multi-instance plugin
          */
-        id: "change-log",
+        id: "changelog",
         /**
          * URL route for the blog section of your site.
          * *DO NOT* include a trailing slash.
          */
-        routeBasePath: "change-log",
+        routeBasePath: "changelog",
         /**
          * Path to data on filesystem relative to site dir.
          */
-        path: "change-log",
-        blogTitle: "Temporal documentation change log",
-        blogSidebarTitle: "Docs change log",
-        routeBasePath: "change-log",
+        blogTitle: "Temporal documentation changelog",
+        blogSidebarTitle: "Docs changelog",
+        path: "changelog",
+        routeBasePath: "changelog",
         blogDescription: "A log of changes to this site's content.",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
