@@ -15,6 +15,7 @@
 /references/glossary        /glossary
 /application-development-guide        /application-development
 /samples-library        /application-development/foundations#code-samples
+/change-log        /changelog
 # Blog case studies
 /blog/airbyte-case-study/        https://temporal.io/case-studies/airbyte-case-study
 /blog/zebra-medical-case-study/        https://temporal.io/case-studies/zebra-medical-case-study
@@ -181,8 +182,8 @@
 /php-signals         /php/signals
 /php-sync-vs-async-start         /php/workflows/#starting-workflows
 /php-task-queues         /php/task-queues
-/content/how-to-develop-a-worker-program-in-php        /php/how-to-develop-a-worker-program-in-php
-
+/content/how-to-develop-a-worker-program-in-php        /application-development/foundations#run-worker-processes
+/php/how-to-develop-a-worker-program-in-php        /application-development/foundations#run-worker-processes
 #
 # Server pages redirects
 #
