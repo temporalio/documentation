@@ -4,7 +4,7 @@ title: Cluster metrics reference
 description: The Temporal Cluster reports a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 sidebar_label: Cluser metrics
 tags:
-  - reference
+ - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
