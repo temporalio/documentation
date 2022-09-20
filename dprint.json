@@ -33,6 +33,9 @@
   },
   "includes": [
     "docs-src/**/*.{md}",
+    "docs/application-development/*.md",
+    "docs/cloud/**/*.md",
+    "docs/concepts/*.md"
   ],
   "excludes": [
     "**/node_modules",
