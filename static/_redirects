@@ -182,8 +182,8 @@
 /php-signals         /php/signals
 /php-sync-vs-async-start         /php/workflows/#starting-workflows
 /php-task-queues         /php/task-queues
-/content/how-to-develop-a-worker-program-in-php        /php/how-to-develop-a-worker-program-in-php
-
+/content/how-to-develop-a-worker-program-in-php        /application-development/foundations#run-worker-processes
+/php/how-to-develop-a-worker-program-in-php        /application-development/foundations#run-worker-processes
 #
 # Server pages redirects
 #
