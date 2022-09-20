@@ -6,7 +6,7 @@ tags:
 date: 2022-09-20T00:00:00Z
 ---
 
-We are excited to announced the public beta of the Temporal Cloud UI.
+We are excited to announced the public beta of the Temporal Cloud UI at [cloud.temporal.io](https://cloud.temporal.io/).
 Users with a Temporal Cloud account can now access our latest Cloud UI and self-service features.
 
 <!-- truncate -->
@@ -39,5 +39,5 @@ You can also open a support ticket with us to do a bulk update of Roles and perm
 
 ## Current default limit
 
-By default, each account can have a maximum of 10 Namespaces.
+By default, each account has a quota of 10 Namespaces.
 If you want to increase this limit, open a support ticket.
