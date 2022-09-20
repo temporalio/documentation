@@ -31,18 +31,17 @@ Workflow Executions started by a Schedule have the following additional properti
 
 ### Spec
 
-The Schedule Spec describes when the Action is taken. There are two types of Schedule Spec:
+The Schedule Spec describes when the Action is taken.
+There are two kinds of Schedule Spec:
 
 - A simple interval, like "every 30 minutes" (aligned to start at the Unix epoch, and optionally including a phase offset).
 - A calendar-based expression, similar to the "cron expressions" supported by lots of software, including the older Temporal Cron feature.
 
-There are multiple representations of these two types, depending on which interface or SDK you're using, but they all support the same features.
+These two kinds have multiple representations, depending on the interface or SDK you're using, but they all support the same features.
 
-In tctl, for example, intervals are given as a string like `45m` to mean every 45 minutes,
-or `6h/5h` to mean every 6 hours, but at the start of the 5th hour within each period.
+In tctl, for example, an interval is specified as a string like `45m` to mean every 45 minutes, or `6h/5h` to mean every 6 hours but at the start of the fifth hour within each period.
 
-In tctl, calendar expressions can be given as either a traditional cron string with five (or six or seven) positional fields,
-or as JSON with named fields:
+In tctl, a calendar expression can be specified as either a traditional cron string with five (or six or seven) positional fields, or as JSON with named fields:
 
 ```json
 {
@@ -64,17 +63,16 @@ The following calendar JSON fields are available:
 - `second`
 - `comment`
 
-Each field may contain a comma-separated list of ranges (or `*`), and each range may include a skip value following a slash.
-`hour`, `minute`, and `second` default to `0` while the others default to `*`, so many useful specs can be described with just a few fields.
+Each field can contain a comma-separated list of ranges (or the `*` wildcard), and each range can include a slash followed by a skip value.
+The `hour`, `minute`, and `second` fields default to `0` while the others default to `*`, so you can describe many useful specs with only a few fields.
 
 For `month`, names of months may be used instead of integers (case-insensitive, abbreviations permitted).
 For `dayOfWeek`, day-of-week names may be used.
 
 The `comment` field is optional and can be used to include a free-form description of the intent of the calendar spec, useful for complicated specs.
 
-No matter which form you supply, calendar and interval specs will be converted to a canonical representation,
-so what you see when you "describe" or "list" a Schedule might not look exactly like what you entered,
-but it will have the same meaning.
+No matter which form you supply, calendar and interval specs are converted to canonical representations.
+What you see when you "describe" or "list" a Schedule might not look exactly like what you entered, but it has the same meaning.
 
 Other Spec features:
 
@@ -186,11 +184,11 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 The Scheduled Workflows feature is available in Temporal Server version 1.18.
 
 Internally, a Schedule is implemented as a Workflow.
-If you're using Advanced Visibility (Elasticsearch), these workflows will be hidden from normal views.
-If you're using Standard Visibility, they will be visible, though there's no need to interact with them directly.
+If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
+If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
 
 :::
 
 Native support for Schedules in language SDKs is coming soon.
 For now, `tctl` and the web UI are the main interfaces to Schedules.
-For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` from the SDK and calling `CreateSchedule`, etc.
+For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.

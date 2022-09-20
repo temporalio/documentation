@@ -23,11 +23,10 @@ $ tctl schedule create \
 
 This Schedule takes action every 5 hours at 15 minutes past the hour and also at 11:03 on Fridays.
 It starts a Workflow `YourWorkflowType` on Task Queue `your-task-queue`, giving it a Workflow Id like `your-workflow-id-2022-06-17T11:03:00Z`.
-Workflows do not be run in parallel.
-If they would other overlap, they are buffered to run sequentially.
+Workflows do not run in parallel.
+If they would otherwise overlap, they are buffered to run sequentially.
 
-You can use traditiona cron strings also, including all of the features that are supposed by `CronSchedule` today,
-such as `@weekly` and other shorthands, `@every`, and `CRON_TZ`.
+You can also use traditional cron strings, including all features that are supported by `CronSchedule` today, such as `@weekly` and other shorthands, `@every`, and `CRON_TZ`.
 
 ```shell
 $ tctl schedule create \

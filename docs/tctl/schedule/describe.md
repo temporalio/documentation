@@ -13,4 +13,4 @@ Display the current Schedule configuration as well as extra information about pa
 tctl schedule describe --sid 'your-schedule-id'
 ```
 
-The Schedule Spec in the output is canonicalized and might not be in the same form as it was input.
+Because the Schedule Spec is converted to canonical representations, the output might not be in the same form as it was input.
