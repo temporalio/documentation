@@ -46,10 +46,10 @@ You can easily run a Temporal Cluster in [Docker](https://docs.docker.com/engine
 If you have Docker and Docker Componse installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker-compose up` command from its root.
 
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try out all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
-It also enables you to try out [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), and even play with the [Archival](/clusters/#archival) feature.
+It also enables you to try out [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), emitting metrics, and even play with the [Archival](/clusters/#archival) feature.
 
 Running your Cluster in Docker is convenient and enables you to play with features.
-However, it does not come close to offering the same performace in terms of processing Workflow Executions per second as Temporalite.
+However, it does not offer the same performace in terms of processing Workflow Executions per second as Temporalite.
 Though you would only notice this if you plan to run hundreds of Workflows concurrently.
 
 The following commands start and run a Temporal Cluster in Docker using the default configuration (docker-compose.yml):
