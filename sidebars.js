@@ -806,7 +806,6 @@ module.exports = {
         "php/activities",
         "php/task-queues",
         "php/workers",
-        "php/how-to-develop-a-worker-program-in-php",
         "php/signals",
         "php/queries",
         "php/retries",
