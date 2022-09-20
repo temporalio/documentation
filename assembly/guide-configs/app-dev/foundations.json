@@ -222,7 +222,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/customize-workflow-type"
+      "id": "app-dev-context/workflow-type"
     },
     {
       "type": "langtabs",
@@ -367,7 +367,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/customize-activity-type"
+      "id": "app-dev-context/activity-type"
     },
     {
       "type": "langtabs",

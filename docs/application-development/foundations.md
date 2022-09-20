@@ -1032,8 +1032,9 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-The Workflow Type is the Workflow function name.
-In the following example, the Type is `helloWorld`.
+In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
+
+In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
 <!--SNIPSTART typescript-workflow-type -->
 <!--SNIPEND-->
@@ -1631,9 +1632,10 @@ In the following example, `Promise<string>` is the return value.
 </TabItem>
 </Tabs>
 
-### Customize Activity Type
+### Activity Type
 
-You can set a custom name for your Activity Type.
+Activities have a Type that are referred to as the Activity name.
+The following examples demonstrate how to set a custom name for your Activity Type.
 
 <Tabs
 defaultValue="go"

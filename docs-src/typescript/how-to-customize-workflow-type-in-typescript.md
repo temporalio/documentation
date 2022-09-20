@@ -8,8 +8,9 @@ tags:
   - typescript
 ---
 
-The Workflow Type is the Workflow function name.
-In the following example, the Type is `helloWorld`.
+In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
+
+In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
 <!--SNIPSTART typescript-workflow-type -->
 <!--SNIPEND-->
