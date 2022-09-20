@@ -10,7 +10,7 @@ tags:
 
 The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
 
-However, if you can not find what you are looking for there then we recommend checking this doc set as well.
+However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 
 :::
 
