@@ -12,7 +12,7 @@ tags:
 Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#listworkflowexecutions):
 
 ```typescript
-import { Connection } from '@temporalio/client';
+import {Connection} from "@temporalio/client";
 
 const connection = await Connection.connect();
 const response = await connection.workflowService.listWorkflowExecutions({

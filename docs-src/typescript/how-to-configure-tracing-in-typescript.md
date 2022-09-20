@@ -27,13 +27,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import { propagation } from '@opentelemetry/api';
+  import {propagation} from "@opentelemetry/api";
   import {
     CompositePropagator,
     W3CBaggagePropagator,
     W3CTraceContextPropagator,
-  } from '@opentelemetry/core';
-  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
+  } from "@opentelemetry/core";
+  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
@@ -42,7 +42,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
         new W3CBaggagePropagator(),
         new JaegerPropagator(),
       ],
-    }),
+    })
   );
   ```
 
