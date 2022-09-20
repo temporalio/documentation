@@ -83,6 +83,7 @@ Specify the path to a server Certificate Authority (CA) certificate file.
 ### `--tls_cert_path`
 
 Specify the path to a public X.509 certificate file for mutual TLS authentication.
+If you use this modifier, you must also use the `--tls_key_path` modifier.
 
 ### `--tls_disable_host_verification`
 
@@ -91,7 +92,7 @@ Disable verification of the server certificate (and thus host verification).
 ### `--tls_key_path`
 
 Specify the path to a private key file for mutual TLS authentication.
-If you use this modifier, you must also use the `--tls-cert-path` modifier.
+If you use this modifier, you must also use the `--tls_cert_path` modifier.
 
 ### `--tls_server_name`
 
