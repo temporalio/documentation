@@ -15,6 +15,70 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/testing-activities"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/run-an-activity"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/listen-to-heartbeats"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/cancel-an-activity"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/testing-workflows"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/mock-activities"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/skip-time"
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/skip-time-set-up"
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/skip-time-skip-automatically"
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/skip-time-skip-manually"
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/skip-time-skip-activities"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/test-functions-in-workflow-context"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/testing-frameworks"
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/debugging"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/debug-environment-development"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/debug-environment-production"
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/replays"
     },
     {
