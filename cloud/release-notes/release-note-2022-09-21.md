@@ -22,27 +22,33 @@ The Cloud UI and self-service features are in beta. During this transition phase
 
 ## Known issues
 
-- For accounts created prior to the public beta, be sure to review the Roles assigned to your users.
-  All users are now Global Admins, and we strongly recommend selecting only a couple of individuals to be Global Admins.
-  Other users should be assigned either Developer or Read-Only Roles.
-  For more information, see [Account-level Roles](/cloud/#account-level-roles).
+### Roles and permissions
 
-  To update account-level Roles and Namespace-level permissions, a dedicated Temporal Global Admin can browse to cloud.temporal.io and perform the following steps.
+For accounts created prior to the public beta, be sure to review the Roles assigned to your users.
+All users are now Global Admins, and we strongly recommend selecting only a couple of individuals to be Global Admins.
+Other users should be assigned either Developer or Read-Only Roles.
+For more information, see [Account-level Roles](/cloud/#account-level-roles).
 
-  1. Click **Settings** > **Users**.
-  1. Click the user you want to edit, click **Edit Users**, and update the account Role.
-  1. Navigate to each Namespace the user should have access to.
-  1. Click **Edit**.
-  1. Under **Email**, add the user email address and select the appropriate [Namespace-level permission](/cloud/#namespace-level-permissions).
+To update account-level Roles and Namespace-level permissions, a dedicated Temporal Global Admin can browse to cloud.temporal.io and perform the following steps.
 
-  You can also open a support ticket with us to do a bulk update of Roles and permissions on your behalf.
+1. Click **Settings** > **Users**.
+1. Click the user you want to edit, click **Edit Users**, and update the account Role.
+1. Navigate to each Namespace the user should have access to.
+1. Click **Edit**.
+1. Under **Email**, add the user email address and select the appropriate [Namespace-level permission](/cloud/#namespace-level-permissions).
 
-- The region and Retention Period for a Namespace can be configured only when the Namespace is created.
-  If you need to change the Retention Period of a Namespace and can't create a separate one, open a support ticket.
+You can also open a support ticket with us to do a bulk update of Roles and permissions on your behalf.
 
-- Namespace deletion isn't supported at this time. The feature is in active development.
+### Namespace regions and Retention Periods
 
-## Current default limit
+The region and Retention Period for a Namespace can be configured only when the Namespace is created.
+If you need to change the Retention Period of a Namespace and can't create a separate one, open a support ticket.
+
+### Namespace deletion
+
+Namespace deletion isn't supported at this time. The feature is in active development.
+
+### Namespace quota
 
 By default, each account has a quota of 10 Namespaces.
 If you want to increase this limit, open a support ticket.
