@@ -114,10 +114,10 @@ In production settings, you can configure the `address` and `namespace` the Work
 
 ```js
 import {
-  Worker,
   DefaultLogger,
-  Runtime,
   NativeConnection,
+  Runtime,
+  Worker,
 } from '@temporalio/worker';
 
 const logger = new DefaultLogger('DEBUG');

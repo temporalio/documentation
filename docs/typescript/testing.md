@@ -25,13 +25,13 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
 
 ```ts
-import { MockActivityEnvironment } from '@temporalio/testing';
 import { Context } from '@temporalio/activity';
+import { MockActivityEnvironment } from '@temporalio/testing';
 
 const env = new MockActivityEnvironment({ attempt: 2 });
 const result = await env.run(
   async (x) => x + Context.current().info.attempt,
-  2
+  2,
 );
 assert.equal(result, 4);
 ```
@@ -46,8 +46,8 @@ assert.equal(result, 4);
 It also exposes a `cancel` method which cancels the Activity Context.
 
 ```ts
-import { MockActivityEnvironment } from '@temporalio/testing';
 import { CancelledFailure, Context } from '@temporalio/activity';
+import { MockActivityEnvironment } from '@temporalio/testing';
 
 const env = new MockActivityEnvironment();
 
@@ -65,7 +65,7 @@ await assert.rejects(
     }),
   (err) => {
     assert.ok(err instanceof CancelledFailure);
-  }
+  },
 );
 ```
 
@@ -82,15 +82,15 @@ When creating an environment, [`TestWorkflowEnvironment.create`](https://typescr
 `beforeAll` and `afterAll` are injected by `jest`. To use mocha instead, change them to `before` and `after`, and import:
 
 ```ts
-import { before, after } from 'mocha';
+import { after, before } from 'mocha';
 ```
 
 ```ts
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { Worker } from '@temporalio/worker';
 import { v4 as uuid4 } from 'uuid';
-import { httpWorkflow } from './workflows';
 import type * as Activities from './activities'; // Uses types to ensure our mock signatures match
+import { httpWorkflow } from './workflows';
 
 let testEnv: TestWorkflowEnvironment;
 
@@ -125,7 +125,7 @@ test('httpWorkflow with mock activity', async () => {
     await workflowClient.execute(httpWorkflow, {
       workflowId: uuid4(),
       taskQueue: 'test',
-    })
+    }),
   );
   assert.strictEqual(result, 'The answer is 99');
 });
@@ -162,7 +162,7 @@ test('sleep completes almost immediately', async () => {
     testEnv.workflowClient.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
-    })
+    }),
   );
 });
 ```
@@ -272,7 +272,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
           sendDelayedEmailTimeoutMS: ms('1 day'),
         },
       ],
-    })
+    }),
   );
   assert.strictEqual(emailSent, true);
 });
@@ -303,12 +303,12 @@ const worker = await Worker.create({
   ...someOtherOptions,
   connection: testEnv.nativeConnection,
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions)
+  testEnv.workflowClient.execute(functionToTest, workflowOptions),
 );
 ```
 
@@ -346,12 +346,12 @@ const worker = await Worker.create({
     workflowModules: workflowInterceptorModules,
   },
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
+  testEnv.workflowClient.execute(functionToTest, workflowOptions), // Throws WorkflowFailedError
 );
 ```
 

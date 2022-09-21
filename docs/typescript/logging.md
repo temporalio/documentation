@@ -51,7 +51,7 @@ Sinks are written as objects with methods. Similar to Activities, they are decla
 
 <details>
   <summary>Comparing Sinks, Activities and Interceptors</summary>
-  
+
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
 
@@ -112,7 +112,7 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 #### Example: Set up the DefaultLogger to only log messages with level WARN and higher
 
 ```ts
-import { Runtime, DefaultLogger } from '@temporalio/worker';
+import { DefaultLogger, Runtime } from '@temporalio/worker';
 
 const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
@@ -178,8 +178,8 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
-    W3CTraceContextPropagator,
     W3CBaggagePropagator,
+    W3CTraceContextPropagator,
   } from '@opentelemetry/core';
   import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
@@ -190,7 +190,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
         new W3CBaggagePropagator(),
         new JaegerPropagator(),
       ],
-    })
+    }),
   );
   ```
 

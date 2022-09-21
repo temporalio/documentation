@@ -13,7 +13,7 @@ To set the mTLS configuration in TypeScript, use the [`tls`](https://typescript.
 
 ```typescript
 const connection = await Connection.connect({
-  address: "foo.bar.tmprl.cloud",
+  address: 'foo.bar.tmprl.cloud',
   tls: {
     clientCertPair: {
       crt: clientCertPath,
@@ -21,7 +21,7 @@ const connection = await Connection.connect({
     },
   },
 });
-const client = new WorkflowClient({connection, namespace: "foo.bar"});
+const client = new WorkflowClient({ connection, namespace: 'foo.bar' });
 ```
 
 [The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
@@ -39,14 +39,14 @@ If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaul
 export function getEnv(): Env {
   return {
     // NOT web.foo.bar.tmprl.cloud
-    address: "web.<Namespace_ID>.tmprl.cloud",
+    address: 'web.<Namespace_ID>.tmprl.cloud',
     // as assigned
-    namespace: "your.namespace",
+    namespace: 'your.namespace',
     // in project root
-    clientCertPath: "foobar.pem",
-    clientKeyPath: "foobar.key",
+    clientCertPath: 'foobar.pem',
+    clientKeyPath: 'foobar.key',
     // just to ensure task queue is same on client and worker, totally optional
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls",
+    taskQueue: process.env.TEMPORAL_TASK_QUEUE || 'hello-world-mtls',
     // not usually needed:
     // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
     // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
@@ -63,7 +63,7 @@ let serverRootCACertificate: Buffer | undefined;
 let clientCertificate: Buffer | undefined;
 let clientKey: Buffer | undefined;
 if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion});
+  const s3 = new S3client({ region: certificateS3BucketRegion });
   serverRootCACertificate = await s3.getObject({
     bucket: certificateS3Bucket,
     key: serverRootCACertificatePath,
