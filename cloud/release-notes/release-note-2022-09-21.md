@@ -6,7 +6,7 @@ tags:
 date: 2022-09-21T00:00:00Z
 ---
 
-We are excited to announced the public beta of the Temporal Cloud UI at [cloud.temporal.io](https://cloud.temporal.io/).
+We are excited to announce the public beta of the Temporal Cloud UI at [cloud.temporal.io](https://cloud.temporal.io/).
 Users with a Temporal Cloud account can now access our latest Cloud UI and self-service features.
 
 <!-- truncate -->
