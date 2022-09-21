@@ -17,7 +17,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts['activity1']();
+  await acts["activity1"]();
 
   let result = await acts[activityName](...args);
   return result;
