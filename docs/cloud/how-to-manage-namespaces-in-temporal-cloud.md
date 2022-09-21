@@ -34,7 +34,7 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/#cloud-namespace) and region
-- [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
+- [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace
 - [Permissions](/cloud/#namespace-level-permissions) for each user
 
@@ -92,3 +92,4 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 
 To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters/) commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
+
