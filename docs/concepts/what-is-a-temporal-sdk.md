@@ -43,5 +43,6 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 
 The following third-party SDKs exist but are not supported in the [Application development guide](/application-development):
 
+- [Clojure](https://github.com/manetu/temporal-clojure-sdk) - from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
 - [Ruby](https://github.com/coinbase/temporal-ruby) from [@coinbase](https://github.com/coinbase)

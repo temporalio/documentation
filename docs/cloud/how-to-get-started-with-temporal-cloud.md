@@ -27,7 +27,7 @@ To get started with Temporal Cloud, follow these onboarding steps:
 1. [Issue CA certificates](#issue-ca-certificates).
 1. [Create a Namespace](#create-a-namespace).
 1. [Invite users](#invite-users).
-1. [Connect Temporal Clients and Worker Processes](#connect-temporal-clients-and-worker-processes).
+1. [Connect to Temporal Cloud](#connect-to-temporal-cloud).
 
 ## Issue CA certificates
 
@@ -86,7 +86,7 @@ Each user can be assigned permissions for individual Namespaces.
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must click **Accept Invite** in the message.
 
-## Connect Temporal Clients and Worker Processes
+## Connect to Temporal Cloud
 
 Connecting your [Temporal Clients](/temporal#temporal-client) and [Worker Processes](/workers#worker-process) to Temporal Cloud is similar to connecting them to your own [Temporal Cluster](/clusters).
 The primary difference is the requirement to provide client certificates and private keys.
