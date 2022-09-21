@@ -166,6 +166,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Roadrunner](https://github.com/roadrunner-server/roadrunner) - PHP application server
 - [Coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby) - Ruby SDK with Rails example
 - [Nunchi Blacksmith](https://www.nunchi.studio/blacksmith/start/onboarding/how) - ETL data platform
+- [Manetu/temporal-clojure-sdk](https://github.com/manetu/temporal-clojure-sdk) - Clojure SDK
 
 ## Misc
 
