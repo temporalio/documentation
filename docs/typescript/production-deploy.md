@@ -50,7 +50,7 @@ For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript
 
 ## Pre-build code
 
-This information has been moved to [Register Types](../../application-development/foundations/#register-types) section in the application developers guide.
+This information has been moved to [Register Types](/application-development/foundations/#register-types) section in the application developer guide.
 
 ## Logging
 
