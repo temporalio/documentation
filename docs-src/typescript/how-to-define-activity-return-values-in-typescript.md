@@ -9,16 +9,19 @@ tags:
   - typescript
 ---
 
-To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
+In TypeScript, the return value is always a Promise.
+
+<<<<<<< HEAD
 
 ```typescript
 import type * as activities from './activities';
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
+=======
+In the following example, `Promise<string>` is the return value.
+>>>>>>> master
 
-// A workflow that simply calls an activity
-export async function example(name: string): Promise<string> {
-  return await greet(name);
-}
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 ```

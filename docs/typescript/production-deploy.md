@@ -46,54 +46,11 @@ Temporal Clients and Workers connect with Temporal Clusters through gRPC.
   }
   ```
 
-  For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript/security#local-mtls-sample-tutorial).
+For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript/security#local-mtls-sample-tutorial).
 
 ## Pre-build code
 
-In most of our samples:
-
-- We use `ts-node`, which compiles TypeScript on the fly.
-- Our Workers bundle Workflow code at runtime.
-
-We can improve our Worker's startup time by building code in advance.
-
-### Worker code
-
-The Worker code can be built and run with:
-
-```sh
-npm run build
-node lib/worker.js
-```
-
-### Workflow code
-
-You can programmatically bundle Workflow code on your own with [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
-
-```ts
-const { code } = await bundleWorkflowCode({
-  workflowsPath: require.resolve('src/workflows'),
-});
-
-await writeFile(path.join(__dirname, 'workflow-bundle.js'), code);
-```
-
-And then the bundle can be passed to the Worker:
-
-```ts
-const worker = await Worker.create({
-  workflowBundle: { path: require.resolve('workflow-bundle.js') },
-  activities,
-  taskQueue,
-});
-```
-
-You can also bundle code on your own and pass it to the `workflowBundle`.
-
-We can see this process working in the [production sample](https://github.com/temporalio/samples-typescript/tree/main/production):
-
-<!--SNIPSTART typescript-production-worker-->
-<!--SNIPEND-->
+This information has been moved to [Register Types](../application-development/foundations#register-types) section in the application developers guide.
 
 ## Logging
 

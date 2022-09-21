@@ -951,9 +951,11 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 </TabItem>
 </Tabs>
 
-### Customize Workflow Type
+### Workflow Type
 
-You can set a custom name for your Workflow Type.
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
 
 <Tabs
 defaultValue="go"
@@ -1030,7 +1032,12 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
+
+In the following example, the Workflow Type is the name of the function, `helloWorld`.
+
+<!--SNIPSTART typescript-workflow-type -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1396,11 +1403,8 @@ These require special primitives for heartbeating and cancellation. The `shared_
 
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
-```typescript
-export async function greet(name: string): Promise<string> {
-  return `Hello, ${name}!`;
-}
-```
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1522,7 +1526,10 @@ async def your_activity(params: YourParams) -> None:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+This Activity takes a single `name` parameter of type `string`.
+
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1615,26 +1622,29 @@ async def say_hello(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
+In TypeScript, the return value is always a Promise.
 
-```typescript
+<<<<<<< HEAD
+
+````typescript
 import type * as activities from './activities';
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '1 minute',
 });
+=======
+In the following example, `Promise<string>` is the return value.
+>>>>>>> master
 
-// A workflow that simply calls an activity
-export async function example(name: string): Promise<string> {
-  return await greet(name);
-}
-```
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
 
 ### Activity Type
 
-You can set a custom name for your Activity Type.
+Activities have a Type that are referred to as the Activity name.
+The following examples demonstrate how to set a custom name for your Activity Type.
 
 <Tabs
 defaultValue="go"
@@ -1657,7 +1667,7 @@ registerOptions := activity.RegisterOptions{
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
-```
+````
 
 </TabItem>
 <TabItem value="java">
@@ -1720,7 +1730,11 @@ async def your_activity(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+You can customize the name of the Activity when you register it with the Worker.
+In the following example, the Activity Name is `activityFoo`.
+
+<!--SNIPSTART typescript-custom-activity-type -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2733,7 +2747,22 @@ worker = Worker(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
+
+<!--SNIPSTART typescript-worker-create -->
+<!--SNIPEND-->
+
+In this snippet, the Worker bundles the Workflow code at runtime.
+
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
+
+<!--SNIPSTART typescript-bundle-workflow -->
+<!--SNIPEND-->
+
+Then the bundle can be passed to the Worker:
+
+<!--SNIPSTART typescript-production-worker-->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

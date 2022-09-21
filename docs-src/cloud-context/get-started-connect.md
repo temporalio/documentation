@@ -1,7 +1,7 @@
 ---
 id: get-started-connect
 title: Get started - Connect
-sidebar_label: Connect Temporal Clients and Worker Processes
+sidebar_label: Connect to Temporal Cloud
 description: Connect Temporal Clients and Worker Processes to Temporal Cloud.
 tags:
   - guide-context
