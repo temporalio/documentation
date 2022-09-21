@@ -10,7 +10,7 @@ tags:
 ---
 
 A Workflow can set a durable timer for a fixed time period.
-In some SDKs, the function is called `timer()`, and in others, it's called `sleep()`.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
 
 A Workflow can sleep for months.
 Even if your Worker crashes or your Temporal Cluster goes down, Timers are persisted and will fire as set.
