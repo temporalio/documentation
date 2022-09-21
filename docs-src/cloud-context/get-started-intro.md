@@ -26,4 +26,4 @@ To get started with Temporal Cloud, follow these onboarding steps:
 1. [Issue CA certificates](#issue-ca-certificates).
 1. [Create a Namespace](#create-a-namespace).
 1. [Invite users](#invite-users).
-1. [Connect Temporal Clients and Worker Processes](#connect-temporal-clients-and-worker-processes).
+1. [Connect to Temporal Cloud](#connect-to-temporal-cloud).
