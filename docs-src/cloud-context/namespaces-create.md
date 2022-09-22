@@ -20,7 +20,6 @@ If you want to increase this limit, open a support ticket.
 
 :::
 
-
 <!--- What information do I need to create a Namespace in Temporal Cloud? --->
 
 ### Information needed to create a Namespace
