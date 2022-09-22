@@ -27,6 +27,13 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 
 :::
 
+:::tip
+
+By default, each account has a quota of 10 Namespaces.
+If you want to increase this limit, open a support ticket.
+
+:::
+
 <!--- What information do I need to create a Namespace in Temporal Cloud? --->
 
 ### Information needed to create a Namespace
@@ -92,3 +99,4 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 
 To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters/) commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
+
