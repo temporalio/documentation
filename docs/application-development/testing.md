@@ -41,8 +41,6 @@ If an Activity is supposed to react to Cancellation, you can test whether it rea
 
 ## Test Workflows
 
-
-
 ### Mock Activities
 
 When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
@@ -540,12 +538,11 @@ TypeScript has sample tests with [Jest](https://jestjs.io/) and [Mocha](https://
 **Jest**
 
 - Minimum Jest version: `27.0.0`
-<<<<<<< HEAD
-- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
-=======
+  <<<<<<< HEAD
+- # [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
 - [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.t
   est.ts)
->>>>>>> cc8379314f58230c1c25a621f5549015901dd17f
+  > > > > > > > cc8379314f58230c1c25a621f5549015901dd17f
 - [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (Must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.)
 
 **Mocha**
@@ -674,4 +671,3 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
-
