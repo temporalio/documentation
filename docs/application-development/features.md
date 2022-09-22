@@ -2891,11 +2891,10 @@ Content is currently unavailable.
 ## Timers
 
 A Workflow can set a durable timer for a fixed time period.
-In some SDKs, the function is called `timer()`, and in others, it's called `sleep()`.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
 
 A Workflow can sleep for months.
-Even if your Worker crashes or your Temporal Cluster goes down, Timers are persisted and will fire as set.
-As soon as your Worker and Cluster are running, your code resumes where it left off.
+Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
 
 Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
 
@@ -2946,7 +2945,7 @@ You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` metho
 </TabItem>
 <TabItem value="python">
 
-To set a Timer in Python, set the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration you want to wait in seconds before continuing.
+To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
 
 ```python
 await asyncio.sleep(5)
