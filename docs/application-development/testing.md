@@ -67,10 +67,14 @@ import {MockActivityEnvironment} from "@temporalio/testing";
 import {Context} from "@temporalio/activity";
 import assert from "assert";
 
+// A function that takes two numbers and returns a promise that resolves to the sum of the two numbers
+// and the current attempt.
 async function activityFoo(a: number, b: number): Promise<number> {
   return a + b + Context.current().info.attempt;
 }
 
+// Creating a new MockActivityEnvironment with the attempt set to 2. Then it is running the activityFoo
+// function with the parameters 5 and 35. Then it is asserting that the result is 42.
 const env = new MockActivityEnvironment({attempt: 2});
 const result = await env.run(activityFoo, 5, 35);
 assert.equal(result, 42);
@@ -142,6 +146,8 @@ If an Activity is supposed to react to Cancellation, you can test whether it rea
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
@@ -178,10 +184,12 @@ Implement only the relevant Activities for the Workflow being tested.
 ```ts
 import type * as activities from "./activities";
 
+// Creating a mock object of the activities.
 const mockActivities: Partial<typeof activities> = {
   makeHTTPRequest: async () => "99",
 };
 
+// Creating a worker with the mocked activities.
 const worker = await Worker.create({
   activities: mockActivities,
   // ...
@@ -193,7 +201,9 @@ const worker = await Worker.create({
 
 ### Skip Time
 
-Running Workflow code in integration and end-to-end tests often requires the ability to skip time: you need your tests to run in seconds or minutes, but a Workflow might sleep for a day, or have Activity failures with long retry intervals. While testing, you don’t need to test whether the sleep function works—you can trust Temporal functionality to correctly execute. Instead, you want to test the logic that happens after sleeping. You can skip forward a day during testing to see what happens in a timely manner.
+Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than months. For example, you might have a Workflow sleep for a day or have Activity failures with a long retry interval. When testing this code, you don't need to test whether the sleep functions, as you can trust Temporal executes that functionality correctly. 
+
+Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
 
 :::note
 
@@ -201,7 +211,7 @@ Skipping time is not relevant to unit testing Workflow code, since in that case 
 
 :::
 
-The Test Server included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the Test Server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, they need to be run in series or with separate Test Server instances. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
+The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the Test Server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the Test Server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
 #### Setting up
 
@@ -817,3 +827,4 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
+

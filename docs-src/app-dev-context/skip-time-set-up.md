@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-Learn to set up the Time Skip server in the SDK of your choice.
+Learn to set up the time skipping test framework in the SDK of your choice.
