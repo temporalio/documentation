@@ -22,8 +22,58 @@
       "id": "app-dev-context/run-an-activity"
     },
     {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-run-an-activity-in-typescript"
+        }
+      ]
+    },
+    {
       "type": "h3",
       "id": "app-dev-context/listen-to-heartbeats"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-listen-to-heartbeats-in-typescript"
+        }
+      ]
     },
     {
       "type": "h3",
@@ -36,6 +86,31 @@
     {
       "type": "h3",
       "id": "app-dev-context/mock-activities"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-mock-activities-in-typescript"
+        }
+      ]
     },
     {
       "type": "h3",

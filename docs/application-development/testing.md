@@ -31,9 +31,110 @@ Activities can be tested with a mock Activity environment, which provides a way 
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+First, create a [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment). The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
+
+Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context):
+
+```ts
+import {MockActivityEnvironment} from "@temporalio/testing";
+import {Context} from "@temporalio/activity";
+import assert from "assert";
+
+async function activityFoo(a: number, b: number): Promise<number> {
+  return a + b + Context.current().info.attempt;
+}
+
+const env = new MockActivityEnvironment({attempt: 2});
+const result = await env.run(activityFoo, 5, 35);
+assert.equal(result, 42);
+```
+
+</TabItem>
+</Tabs>
+
 ### Listen to Heartbeats
 
 When an Activity sends Heartbeats, you want to be able to see them in your test code in order to assert they’re correct.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event that you can use to listen for heartbeats emitted by the Activity.
+
+When an Activity is run by a Worker, heartbeats are throttled to avoid overloading the server.
+`MockActivityEnvironment`, on the other hand, does not throttle heartbeats.
+
+```ts
+import {MockActivityEnvironment} from "@temporalio/testing";
+import {Context} from "@temporalio/activity";
+import assert from "assert";
+
+async function activityFoo(): Promise<void> {
+  Context.current().heartbeat(6);
+}
+
+const env = new MockActivityEnvironment();
+
+env.on("heartbeat", (d: unknown) => {
+  assert(d === 6);
+});
+
+await env.run(activityFoo);
+```
+
+</TabItem>
+</Tabs>
 
 ### Cancel an Activity
 
@@ -44,6 +145,51 @@ If an Activity is supposed to react to Cancellation, you can test whether it rea
 ### Mock Activities
 
 When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Implement only the relevant Activities for the Workflow being tested.
+
+```ts
+import type * as activities from "./activities";
+
+const mockActivities: Partial<typeof activities> = {
+  makeHTTPRequest: async () => "99",
+};
+
+const worker = await Worker.create({
+  activities: mockActivities,
+  // ...
+});
+```
+
+</TabItem>
+</Tabs>
 
 ### Skip Time
 
