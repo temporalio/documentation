@@ -41,6 +41,8 @@ If an Activity is supposed to react to Cancellation, you can test whether it rea
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
@@ -65,13 +67,205 @@ Learn to set up the Time Skip server in the SDK of your choice.
 
 Learn to Time Skip automatically in the SDK of your choice.
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+The Test Server starts in "normal" time. When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the Test Server is switched to "skipped" time mode until the Workflow completes. In "skipped" mode, timers (`sleep()`s and `condition()` timeouts) are fast-forwarded except when Activities are running.
+
+`workflows.ts`
+
+```ts
+import { sleep } from '@temporalio/workflow';
+
+export async function sleeperWorkflow() {
+  await sleep('1 day');
+}
+```
+
+`test.ts`
+
+```ts
+import { sleeperWorkflow } from './workflows'
+
+test('sleep completes almost immediately', async () => {
+  const worker = await Worker.create({
+    connection: testEnv.nativeConnection,
+    taskQueue: 'test',
+    workflowsPath: require.resolve('./workflows'),
+  });
+  // Does not wait an entire day
+  await worker.runUntil(
+    testEnv.workflowClient.execute(sleeperWorkflow, {
+      workflowId: uuid(),
+      taskQueue: 'test',
+    })
+  );
+});
+```
+
+</TabItem>
+</Tabs>
+
 #### Manual method
 
 Learn to Time Skip manually in the SDK of your choice.
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+You can also call `testEnv.sleep()` from your test code to advance the Test Server's time.
+This is useful for testing intermediate state, or for testing indefinitely long-running Workflows.
+However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by starting the Workflow with `.start()` instead of `.execute()` (and not calling `.result()`).
+
+`workflow.ts`
+
+```ts
+import { sleep } from '@temporalio/workflow';
+import { defineQuery, setHandler } from '@temporalio/workflow';
+
+export const daysQuery = defineQuery('days');
+
+export async function sleeperWorkflow() {
+  let numDays = 0;
+
+  setHandler(daysQuery, () => numDays);
+
+  for (let i = 0; i < 100; i++) {
+    await sleep('1 day');
+    numDays++;
+  }
+}
+```
+
+`test.ts`
+
+```ts
+test('sleeperWorkflow counts days correctly', async () => {
+  // `start()` starts the test server in "normal" mode, not skipped time mode.
+  // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()` 
+  // will run for days.
+  handle = await testEnv.workflowClient.start(sleeperWorkflow, {
+    workflowId: uuid4(),
+    taskQueue,
+  });
+
+  let numDays = await handle.query(daysQuery);
+  assert.equal(numDays, 0);
+
+  // Advance the test server's time by 25 hours
+  await testEnv.sleep('25 hours');  
+  numDays = await handle.query(daysQuery);
+  assert.equal(numDays, 1);
+
+  await testEnv.sleep('25 hours');
+  numDays = await handle.query(daysQuery);
+  assert.equal(numDays, 2);
+});
+```
+
+</TabItem>
+</Tabs>
+
 #### Skip Activities
 
 Learn to Time Skip Activities in the SDK of your choice.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Call
+[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep)
+from the mock Activity.
+
+In the below test, `processOrderWorkflow` sends a notification to the user after 1 day. The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days’)`, during which the Workflow will send the email (by calling the `sendNotificationEmail` Activity). Then once the Workflow completes, we assert that `sendNotificationEmail` was called.
+
+<details>
+<summary>
+Workflow implementation
+</summary>
+
+<!--SNIPSTART typescript-timer-reminder-workflow-->
+<!--SNIPEND-->
+
+</details>
+
+<!--SNIPSTART typescript-timer-reminder-test-->
+<!--SNIPEND-->
+
+</TabItem>
+</Tabs>
 
 ### Workflow context
 
@@ -83,29 +277,204 @@ This section is applicable in Python and TypeScript. In Python we only allow tes
 
 :::
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+
+To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in [WorkerOptions.workflowsPath](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#workflowspath). Then execute it as if it were a Workflow:
+
+`workflows/file-with-workflow-function-to-test.ts`
+
+```ts
+import { sleep } from '@temporalio/workflow';
+
+export async function functionToTest(): Promise<number> {
+  await sleep('1 day')
+  return 42
+}
+```
+
+`test.ts`
+
+```ts
+const worker = await Worker.create({
+  connection: testEnv.nativeConnection,
+  workflowsPath: require.resolve(
+    './workflows/file-with-workflow-function-to-test'
+  ),
+});
+
+const result = await worker.runUntil(
+  testEnv.workflowClient.execute(functionToTest, workflowOptions)
+);
+
+assert.equal(result, 42)
+```
+
+If the `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
+
+
+```ts
+import { sleep } from '@temporalio/workflow';
+import { someWorkflowToRunAsChild } from './some-workflow';
+
+export { someWorkflowToRunAsChild };
+
+export async function functionToTest(): Promise<number> {
+  const result = await wf.executeChild(someWorkflowToRunAsChild);
+  return result + 42;
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Assert in Workflow
+
+The `assert` statement is a convenient way to insert debugging assertions into the Workflow context.
+
+The `assert` method is available in Python and TypeScript. 
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+For information about assert statements in Python, see [`assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) in the Python Language Reference. 
+
+</TabItem>
+<TabItem value="typescript">
+
+The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
+
+By default, failed `assert` statements throw `AssertionError`s which cause [Workflow Tasks](/tasks#workflow-task) to fail and be indefinitely retried.
+
+To prevent this, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`. These interceptors catch `AssertionError`s and turn them into `ApplicationFailure`s that fail the entire Workflow Execution (not just the Workflow Task).
+
+`workflows/file-with-workflow-function-to-test.ts`
+
+```ts
+import assert from 'assert';
+
+export async function functionToTest() {
+  assert.ok(false);
+}
+```
+
+`test.ts`
+
+```ts
+import {
+  TestWorkflowEnvironment,
+  workflowInterceptorModules,
+} from '@temporalio/testing';
+
+const worker = await Worker.create({
+  connection: testEnv.nativeConnection,
+  interceptors: {
+    workflowModules: workflowInterceptorModules,
+  },
+  workflowsPath: require.resolve(
+    './workflows/file-with-workflow-function-to-test'
+  ),
+});
+
+await worker.runUntil(
+  testEnv.workflowClient.execute(functionToTest, workflowOptions) // throws WorkflowFailedError
+);
+```
+
+</TabItem>
+</Tabs>
+
 ## Test Frameworks
 
 Some SDKs have support for or examples with popular test frameworks/runners/libraries.
 
-## Debug
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
-### Debug in a development environment
+<TabItem value="go">
 
-In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl/).
+Content is currently unavailable.
 
-### Debug in a development production
+</TabItem>
+<TabItem value="java">
 
-You can debug production Workflows using:
+Content is currently unavailable.
 
-- [Web UI](/web-ui)
-- [`tctl`](/tctl/)
-- [Replay](#replay)
-- [Tracing](/application-development/observability#tracing)
-- [Logging](/application-development/observability#logging)
+</TabItem>
+<TabItem value="php">
 
-You can debug and tune Worker performance with metrics and the [Worker performance guide](/application-development/worker-performance). See [Observability ▶️ Metrics](/application-development/observability#metrics) for setting up SDK metrics.
+Content is currently unavailable.
 
-You can debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/server/production-deployment#scaling-and-metrics).
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+TypeScript has sample tests with [Jest](https://jestjs.io/) and [Mocha](https://mochajs.org/).
+
+**Jest**
+
+- Minimum Jest version: `27.0.0`
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.t
+est.ts)
+- [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (Must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.)
+
+**Mocha**
+
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/mocha/workflows.test.ts)
+- Test coverage library: [`@temporalio/nyc-test-coverage`](https://github.com/temporalio/sdk-typescript/tree/main/packages/nyc-test-coverage)
+
+</TabItem>
+</Tabs>
 
 ## Replay
 
@@ -211,7 +580,18 @@ If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tc
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Retrieve Event History with [`WorkflowService.getWorkflowExecutionHistory`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#getworkflowexecutionhistory):
+
+<!--SNIPSTART typescript-history-get-workflowhistory-->
+<!--SNIPEND-->
+
+Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes/worker.worker/#runreplayhistory):
+
+<!--SNIPSTART typescript-history-replay-->
+<!--SNIPEND-->
+
+`runReplayHistory` will throw a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/) if the Workflow code isn’t compatible with the History.
 
 </TabItem>
 </Tabs>
+

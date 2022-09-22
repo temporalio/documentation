@@ -50,32 +50,174 @@
       "id": "app-dev-context/skip-time-skip-automatically"
     },
     {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-skip-time-skip-automatically-in-typescript"
+        }
+      ]
+    },
+    {
       "type": "h4",
       "id": "app-dev-context/skip-time-skip-manually"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-skip-time-skip-manually-in-typescript"
+        }
+      ]
     },
     {
       "type": "h4",
       "id": "app-dev-context/skip-time-skip-activities"
     },
     {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-skip-time-skip-activities-in-typescript"
+        }
+      ]
+    },
+    {
       "type": "h3",
       "id": "app-dev-context/test-functions-in-workflow-context"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-test-functions-in-workflow-context-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/test-functions-assert-in-workflow"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-use-assert-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-use-assert-typescript"
+        }
+      ]
     },
     {
       "type": "h2",
       "id": "app-dev-context/testing-frameworks"
     },
     {
-      "type": "h2",
-      "id": "app-dev-context/debugging"
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/debug-environment-development"
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/debug-environment-production"
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-use-test-frameworks-in-typescript"
+        }
+      ]
     },
     {
       "type": "h2",
@@ -102,7 +244,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-replay-a-workflow-execution-in-typescript"
         }
       ]
     }
