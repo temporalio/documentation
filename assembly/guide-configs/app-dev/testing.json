@@ -46,6 +46,31 @@
       "id": "app-dev-context/skip-time-set-up"
     },
     {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-skip-time-set-up-in-typescript"
+        }
+      ]
+    },
+    {
       "type": "h4",
       "id": "app-dev-context/skip-time-skip-automatically"
     },

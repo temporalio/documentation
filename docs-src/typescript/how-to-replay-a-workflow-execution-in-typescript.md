@@ -9,12 +9,12 @@ tags:
   - typescript
 ---
 
-Retrieve Event History with [`WorkflowService.getWorkflowExecutionHistory`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#getworkflowexecutionhistory):
+Retrieve Event History with [`WorkflowService.getWorkflowExecutionHistory`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#getworkflowexecutionhistory).
 
 <!--SNIPSTART typescript-history-get-workflowhistory-->
 <!--SNIPEND-->
 
-Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes/worker.worker/#runreplayhistory):
+Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes/worker.worker/#runreplayhistory).
 
 <!--SNIPSTART typescript-history-replay-->
 <!--SNIPEND-->

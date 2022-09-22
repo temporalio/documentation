@@ -16,10 +16,10 @@ However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by 
 `workflow.ts`
 
 ```ts
-import { sleep } from '@temporalio/workflow';
-import { defineQuery, setHandler } from '@temporalio/workflow';
+import {sleep} from "@temporalio/workflow";
+import {defineQuery, setHandler} from "@temporalio/workflow";
 
-export const daysQuery = defineQuery('days');
+export const daysQuery = defineQuery("days");
 
 export async function sleeperWorkflow() {
   let numDays = 0;
@@ -27,7 +27,7 @@ export async function sleeperWorkflow() {
   setHandler(daysQuery, () => numDays);
 
   for (let i = 0; i < 100; i++) {
-    await sleep('1 day');
+    await sleep("1 day");
     numDays++;
   }
 }
@@ -36,9 +36,9 @@ export async function sleeperWorkflow() {
 `test.ts`
 
 ```ts
-test('sleeperWorkflow counts days correctly', async () => {
+test("sleeperWorkflow counts days correctly", async () => {
   // `start()` starts the test server in "normal" mode, not skipped time mode.
-  // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()` 
+  // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()`
   // will run for days.
   handle = await testEnv.workflowClient.start(sleeperWorkflow, {
     workflowId: uuid4(),
@@ -49,11 +49,11 @@ test('sleeperWorkflow counts days correctly', async () => {
   assert.equal(numDays, 0);
 
   // Advance the test server's time by 25 hours
-  await testEnv.sleep('25 hours');  
+  await testEnv.sleep("25 hours");
   numDays = await handle.query(daysQuery);
   assert.equal(numDays, 1);
 
-  await testEnv.sleep('25 hours');
+  await testEnv.sleep("25 hours");
   numDays = await handle.query(daysQuery);
   assert.equal(numDays, 2);
 });

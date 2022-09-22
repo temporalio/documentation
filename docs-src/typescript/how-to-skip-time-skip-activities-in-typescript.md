@@ -1,8 +1,8 @@
 ---
 id: how-to-skip-time-skip-activities-in-typescript
 title: How to Skip Time in Activities in TypeScript
-sidebar_label: Skip Time in Activities 
-description: Skip Time in Activities 
+sidebar_label: Skip Time in Activities
+description: Skip Time in Activities
 tags:
   - developer-guide
   - sdk
