@@ -16,7 +16,7 @@ To prevent this, use [`workflowInterceptorModules`](https://typescript.temporal.
 `workflows/file-with-workflow-function-to-test.ts`
 
 ```ts
-import assert from 'assert';
+import assert from "assert";
 
 export async function functionToTest() {
   assert.ok(false);
@@ -29,7 +29,7 @@ export async function functionToTest() {
 import {
   TestWorkflowEnvironment,
   workflowInterceptorModules,
-} from '@temporalio/testing';
+} from "@temporalio/testing";
 
 const worker = await Worker.create({
   connection: testEnv.nativeConnection,
@@ -37,7 +37,7 @@ const worker = await Worker.create({
     workflowModules: workflowInterceptorModules,
   },
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    "./workflows/file-with-workflow-function-to-test"
   ),
 });
 

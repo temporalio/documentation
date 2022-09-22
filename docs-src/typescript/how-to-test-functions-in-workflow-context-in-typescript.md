@@ -9,17 +9,16 @@ tags:
   - typescript
 ---
 
-
 To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in [WorkerOptions.workflowsPath](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#workflowspath). Then execute it as if it were a Workflow:
 
 `workflows/file-with-workflow-function-to-test.ts`
 
 ```ts
-import { sleep } from '@temporalio/workflow';
+import {sleep} from "@temporalio/workflow";
 
 export async function functionToTest(): Promise<number> {
-  await sleep('1 day')
-  return 42
+  await sleep("1 day");
+  return 42;
 }
 ```
 
@@ -29,7 +28,7 @@ export async function functionToTest(): Promise<number> {
 const worker = await Worker.create({
   connection: testEnv.nativeConnection,
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    "./workflows/file-with-workflow-function-to-test"
   ),
 });
 
@@ -37,17 +36,16 @@ const result = await worker.runUntil(
   testEnv.workflowClient.execute(functionToTest, workflowOptions)
 );
 
-assert.equal(result, 42)
+assert.equal(result, 42);
 ```
 
 If the `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
 
-
 ```ts
-import { sleep } from '@temporalio/workflow';
-import { someWorkflowToRunAsChild } from './some-workflow';
+import {sleep} from "@temporalio/workflow";
+import {someWorkflowToRunAsChild} from "./some-workflow";
 
-export { someWorkflowToRunAsChild };
+export {someWorkflowToRunAsChild};
 
 export async function functionToTest(): Promise<number> {
   const result = await wf.executeChild(someWorkflowToRunAsChild);
