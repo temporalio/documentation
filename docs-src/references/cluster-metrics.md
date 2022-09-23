@@ -10,9 +10,9 @@ tags:
 A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
 All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 
-For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration/##global).
+For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration#global).
 
-The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboards that can be used for monitoring Temporal Server and SDK metrics.
+The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that can be used as a starting point for monitoring the Temporal Cluster and SDK metrics.
 You can use these as a reference to build your own dashboards.
 For any metrics that are missing in the dashboards, use [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) as a reference.
 
@@ -26,7 +26,8 @@ These metrics are emitted with `type`, `operation`, and `namespace` tags, which 
 - Use the `operation` tag in your query to get request rates, error rates or latencies per operation.
 - Use `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go#L108) to get details for the specific service.
 
-All common tags that you can add in your query are listed [here](https://github.com/temporalio/temporal/blob/86966c5d2f78ee74c10b6808857f1a2f64d3c134/common/metrics/defs.go#L90).
+All common tags that you can add in your query are defined in the following file
+**(https://github.com/temporalio/temporal/blob/86966c5d2f78ee74c10b6808857f1a2f64d3c134/common/metrics/defs.go#L90)**.
 
 For example, to see service requests by operation on Frontend, use:
 
