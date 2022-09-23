@@ -1,13 +1,13 @@
 ---
 id: cluster-metrics
-title: Cluster metrics reference
+title: Temporal Cluster metrics reference
 description: The Temporal Cluster reports a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 sidebar_label: Cluser metrics
 tags:
   - reference
 ---
 
-The Temporal Cluster reports a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
+A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
 All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 
 For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration/##global).
