@@ -98,7 +98,7 @@ Example: `sum(rate(task_errors{operation=~"TransferActive.*"}[1m]))`
 
 ### `task_attempt`
 
-Number of attempts on each Task execution. A Task is retried forever, and each retry increases the attempt count.
+Number of attempts on each task execution. A task is retried forever, and each retry increases the attempt count.
 Example: `histogram_quantile($percentile, sum(rate(task_attempt_bucket{service="$service",operation=~"TransferActive.*"}[1m])) by (operation, le))`
 
 ### `task_latency_processing`
@@ -108,11 +108,11 @@ Example: `histogram_quantile($percentile, sum(rate(task_latency_processing_bucke
 
 ### `task_latency`
 
-Shows the processing latency of all attempts within a single Worker.
+Measures the task processing latency for one attempt.
 
 ### `task_latency_queue`
 
-Shows end-to-end Task latency, from the time the Task is generated to when it completes.
+Measures the duration, end-to-end, from when the task should be executed (from the time it was fired), to when the task is done.
 
 ### `task_latency_load`
 
@@ -144,9 +144,9 @@ Some of the most important ones are:
 Emit on every persistence request.
 Examples:
 
-- Prometheus query for getting total number of persistence requests by operation for the history service:
+- Prometheus query for getting total number of persistence requests by operation for the History Service:
   `sum by (operation) (rate(persistence_requests{service="$service",service_name="history"}[1m]))`
-- Prometheus query for getting total number of persistence requests by operation for the matching service:
+- Prometheus query for getting total number of persistence requests by operation for the Matching Service:
   `sum by (operation) (rate(persistence_requests{cluster="$cluster",service_name="matching"}[5m]))`
 
 ### `persistence_errors`
