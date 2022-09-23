@@ -31,7 +31,7 @@ import { MockActivityEnvironment } from '@temporalio/testing';
 const env = new MockActivityEnvironment({ attempt: 2 });
 const result = await env.run(
   async (x) => x + Context.current().info.attempt,
-  2
+  2,
 );
 assert.equal(result, 4);
 ```
@@ -65,7 +65,7 @@ await assert.rejects(
     }),
   (err) => {
     assert.ok(err instanceof CancelledFailure);
-  }
+  },
 );
 ```
 
@@ -125,7 +125,7 @@ test('httpWorkflow with mock activity', async () => {
     await workflowClient.execute(httpWorkflow, {
       workflowId: uuid4(),
       taskQueue: 'test',
-    })
+    }),
   );
   assert.strictEqual(result, 'The answer is 99');
 });
@@ -162,7 +162,7 @@ test('sleep completes almost immediately', async () => {
     testEnv.workflowClient.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
-    })
+    }),
   );
 });
 ```
@@ -272,7 +272,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
           sendDelayedEmailTimeoutMS: ms('1 day'),
         },
       ],
-    })
+    }),
   );
   assert.strictEqual(emailSent, true);
 });
@@ -303,12 +303,12 @@ const worker = await Worker.create({
   ...someOtherOptions,
   connection: testEnv.nativeConnection,
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions)
+  testEnv.workflowClient.execute(functionToTest, workflowOptions),
 );
 ```
 
@@ -346,12 +346,12 @@ const worker = await Worker.create({
     workflowModules: workflowInterceptorModules,
   },
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
+  testEnv.workflowClient.execute(functionToTest, workflowOptions), // Throws WorkflowFailedError
 );
 ```
 
