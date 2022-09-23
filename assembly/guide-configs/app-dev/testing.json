@@ -80,6 +80,31 @@
       "id": "app-dev-context/cancel-an-activity"
     },
     {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-test-cancel-an-activity-in-typescript"
+        }
+      ]
+    },
+    {
       "type": "h2",
       "id": "app-dev-context/testing-workflows"
     },
@@ -100,7 +125,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-mock-activities-in-php"
         },
         {
           "lang": "python",
@@ -133,7 +158,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-skip-time-set-up-in-php"
         },
         {
           "lang": "python",

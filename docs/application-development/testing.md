@@ -144,9 +144,62 @@ await env.run(activityFoo);
 
 If an Activity is supposed to react to Cancellation, you can test whether it reacts correctly by canceling it.
 
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method which cancels the Activity Context:
+
+```ts
+import {MockActivityEnvironment} from "@temporalio/testing";
+import {CancelledFailure, Context} from "@temporalio/activity";
+import assert from "assert";
+
+async function activityFoo(): Promise<void> {
+  Context.current().heartbeat(6);
+  // .sleep() is Cancellation-aware, which means that on Cancellation,
+  // CancelledFailure will be thrown from it.
+  await Context.current().sleep(100);
+}
+
+const env = new MockActivityEnvironment();
+
+env.on("heartbeat", (d: unknown) => {
+  assert(d === 6);
+});
+
+await assert.rejects(env.run(activityFoo), (err) => {
+  assert.ok(err instanceof CancelledFailure);
+});
+```
+
+</TabItem>
+</Tabs>
+
 ## Test Workflows
-
-
 
 ### Mock Activities
 
@@ -169,7 +222,89 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+**RoadRunner config**
+
+To mock an Activity in PHP, use [RoarRunner Key-Value storage](https://github.com/spiral/roadrunner-kv) and add the following lines to your `tests/.rr.test.yaml` file.
+
+```yaml
+# tests/.rr.test.yaml
+kv:
+  test:
+    driver: memory
+    config:
+      interval: 10
+```
+
+Notice, that if you want to have ability to mock activities you should use `WorkerFactory` from `Temporal\Testing` namespace
+in your PHP worker:
+
+```php
+// worker.test.php
+use Temporal\Testing\WorkerFactory;
+
+$factory = WorkerFactory::create();
+$worker = $factory->newWorker();
+
+$worker->registerWorkflowTypes(MyWorkflow::class);
+$worker->registerActivity(MyActivity::class);
+$factory->run();
+```
+
+Then, in your tests to mock an Activity use `ActivityMocker` class.
+
+Assume we have the following activity:
+
+```php
+#[ActivityInterface(prefix: "SimpleActivity.")]
+interface SimpleActivityInterface
+{
+    #[ActivityMethod('doSomething')]
+    public function doSomething(string $input): string;
+```
+
+To mock it in the test you can do this:
+
+```php
+final class SimpleWorkflowTestCase extends TestCase
+{
+    private WorkflowClient $workflowClient;
+    private ActivityMocker $activityMocks;
+
+    protected function setUp(): void
+    {
+        $this->workflowClient = new WorkflowClient(ServiceClient::create('localhost:7233'));
+        $this->activityMocks = new ActivityMocker();
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->activityMocks->clear();
+        parent::tearDown();
+    }
+
+    public function testWorkflowReturnsUpperCasedInput(): void
+    {
+        $this->activityMocks->expectCompletion('SimpleActivity.doSomething', 'world');
+        $workflow = $this->workflowClient->newWorkflowStub(SimpleWorkflow::class);
+        $run = $this->workflowClient->start($workflow, 'hello');
+        $this->assertSame('world', $run->getResult('string'));
+    }
+}
+```
+
+In the test case above we:
+
+1. Instantiate instance of `ActivityMocker` class in `setUp()` method of the test.
+2. Don't forget to clear the cache after each test in `tearDown()`.
+3. Mock an activity call to return a string `world`.
+
+To mock a failure use `expectFailure()` method:
+
+```php
+$this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('something went wrong'));
+```
 
 </TabItem>
 <TabItem value="python">
@@ -201,7 +336,7 @@ const worker = await Worker.create({
 
 ### Skip Time
 
-Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than months. For example, you might have a Workflow sleep for a day or have Activity failures with a long retry interval. When testing this code, you don't need to test whether the sleep functions, as you can trust Temporal executes that functionality correctly. 
+Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than months. For example, you might have a Workflow sleep for a day or have Activity failures with a long retry interval. When testing this code, you don't need to test whether the sleep functions, as you can trust Temporal executes that functionality correctly.
 
 Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
 
@@ -215,7 +350,7 @@ The test framework included in most SDKs is an in-memory implementation of Tempo
 
 #### Setting up
 
-Learn to set up the Time Skip server in the SDK of your choice.
+Learn to set up the time skipping test framework in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
@@ -234,7 +369,49 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+1. Create `bootstrap.php` in `tests` folder with the following contents:
+
+```php
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Temporal\Testing\Environment;
+
+$environment = Environment::create();
+$environment->start();
+register_shutdown_function(fn () => $environment->stop());
+```
+
+If you don't want to run temporal test server with all of your tests you can set, for example,
+add condition to start it only if `RUN_TEMPORAL_TEST_SERVER` environment variable is present:
+
+```php
+if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
+    $environment = Environment::create();
+    $environment->start('./rr serve -c .rr.silent.yaml -w tests');
+    register_shutdown_function(fn() => $environment->stop());
+}
+```
+
+2. Add environment variable and `bootstrap.php` to your `phpunit.xml`:
+
+```xml
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+>
+    <php>
+        <env name="TEMPORAL_ADDRESS" value="127.0.0.1:7233" />
+    </php>
+</phpunit>
+```
+
+3. Add test server executable to `.gitignore`:
+
+```gitignore
+temporal-test-server
+```
 
 </TabItem>
 <TabItem value="python">
@@ -250,7 +427,7 @@ npm install @temporalio/testing
 
 The `@temporalio/testing` package downloads the Test Server and exports [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment), which you use to connect the Client and Worker to the Test Server and interact with the Test Server.
 
-[`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) starts the Test Server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
+[`TestWorkflowEnvironment.createTimeSkipping`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#createtimeskipping) starts the Test Server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
 
 ```typescript
 import {TestWorkflowEnvironment} from "@temporalio/testing";
@@ -259,7 +436,7 @@ let testEnv: TestWorkflowEnvironment;
 
 // beforeAll and afterAll are injected by Jest
 beforeAll(async () => {
-  testEnv = await TestWorkflowEnvironment.create();
+  testEnv = await TestWorkflowEnvironment.createTimeSkipping();
 });
 
 afterAll(async () => {
@@ -267,7 +444,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has a [`workflowClient`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has a [`client.workflow`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';
@@ -281,7 +458,7 @@ test('workflowFoo', async () => {
     ...
   });
   const result = await worker.runUntil(
-    testEnv.workflowClient.execute(workflowFoo, {
+    testEnv.client.workflow.execute(workflowFoo, {
       workflowId: uuid4(),
       taskQueue: 'test',
     })
@@ -827,4 +1004,3 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
-

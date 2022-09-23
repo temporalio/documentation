@@ -15,7 +15,7 @@ npm install @temporalio/testing
 
 The `@temporalio/testing` package downloads the Test Server and exports [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment), which you use to connect the Client and Worker to the Test Server and interact with the Test Server.
 
-[`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) starts the Test Server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
+[`TestWorkflowEnvironment.createTimeSkipping`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#createtimeskipping) starts the Test Server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
 
 ```typescript
 import {TestWorkflowEnvironment} from "@temporalio/testing";
@@ -24,7 +24,7 @@ let testEnv: TestWorkflowEnvironment;
 
 // beforeAll and afterAll are injected by Jest
 beforeAll(async () => {
-  testEnv = await TestWorkflowEnvironment.create();
+  testEnv = await TestWorkflowEnvironment.createTimeSkipping();
 });
 
 afterAll(async () => {
@@ -32,7 +32,7 @@ afterAll(async () => {
 });
 ```
 
-`TestWorkflowEnvironment` has a [`workflowClient`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
+`TestWorkflowEnvironment` has a [`client.workflow`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection) for creating Workers:
 
 ```typescript
 import { Worker } from '@temporalio/worker';
@@ -46,7 +46,7 @@ test('workflowFoo', async () => {
     ...
   });
   const result = await worker.runUntil(
-    testEnv.workflowClient.execute(workflowFoo, {
+    testEnv.client.workflow.execute(workflowFoo, {
       workflowId: uuid4(),
       taskQueue: 'test',
     })

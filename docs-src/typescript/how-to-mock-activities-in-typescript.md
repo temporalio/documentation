@@ -1,7 +1,7 @@
 ---
 id: how-to-mock-activities-in-typescript
 title: How to mock Activities in TypeScript
-sidebar_label: Mock Activities in TypeScript
+sidebar_label: Mock Activities
 description: Mock Activities
 tags:
   - developer-guide
