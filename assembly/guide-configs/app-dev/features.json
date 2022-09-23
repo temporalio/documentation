@@ -587,6 +587,64 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/side-effects"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-execute-a-side-effect-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-use-a-side-effect-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/mutable-side-effects"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-mutable-side-effects-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/environment-variables"
     },
     {
