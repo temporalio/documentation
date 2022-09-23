@@ -4,7 +4,7 @@ title: Temporal Cluster metrics reference
 description: The Temporal Cluster reports a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 sidebar_label: Cluser metrics
 tags:
-  - reference
+ - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -96,7 +96,7 @@ Example: `sum(rate(task_requests{service="$service",operation=~"TransferActive.*
 
 ### `task_errors`
 
-Emit on every Task process error.
+Emit on every task process error.
 Example: `sum(rate(task_errors{operation=~"TransferActive.*"}[1m]))`
 
 ### `task_attempt`

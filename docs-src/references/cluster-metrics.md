@@ -94,7 +94,7 @@ Example: `sum(rate(task_requests{service="$service",operation=~"TransferActive.*
 
 ### `task_errors`
 
-Emit on every Task process error.
+Emit on every task process error.
 Example: `sum(rate(task_errors{operation=~"TransferActive.*"}[1m]))`
 
 ### `task_attempt`
