@@ -90,8 +90,9 @@ The `statsd` sections supports the following settings:
 The `prometheus` sections supports the following settings:
 
 - `framework`: The framework to use, currently supports `opentelemetry` and `tally`, default is `tally`. We plan to switch default to `opentelemetry` once its API become stable.
-- `listenAddress`: Address for prometheus to scrape metrics from. The Temporal Server uses the Prometheus client API and the `listenAddress` configuration is used to listen for metrics.
-- `handlerPath`: Metrics handler path for scraper, default is `/metrics`.
+- `listenAddress`: Address for Prometheus to scrape metrics from.
+  The Temporal Server uses the Prometheus client API, and the `listenAddress` configuration is used to listen for metrics.
+- `handlerPath`: Metrics handler path for scraper; default is `/metrics`.
 
 #### m3
 
