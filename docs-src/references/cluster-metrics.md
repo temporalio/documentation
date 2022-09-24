@@ -152,7 +152,8 @@ Examples:
 
 ### `persistence_errors`
 
-Emit on persistence error, includes `error_type` tag. This metric is a good indicator for connection issues between Server and the Persistence store.
+Emitted on persistence error, includes `error_type` tag.
+This metric is a good indicator for connection issues between Temporal Server and the persistence store.
 Example:
 
 - Prometheus query for getting the persistence errors by service:
