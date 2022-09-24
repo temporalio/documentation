@@ -61,7 +61,7 @@ An indicator for connection issues between different Server roles.
 Example: Client errors
 `sum(rate(client_errors{service_name="frontend",service_role="history"}[5m]))`
 
-In addition to these, you can define some Service-specific metrics to get performance details for each Service.
+In addition to these, you can define some service-specific metrics to get performance details for each service.
 Start with the following list, and use [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) to define additional metrics as required.
 
 ## Matching Service metrics
