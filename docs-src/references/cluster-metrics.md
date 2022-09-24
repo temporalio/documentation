@@ -13,7 +13,7 @@ All metrics emitted by the Cluster are listed in [defs.go](https://github.com/te
 For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration#global).
 
 The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that can be used as a starting point for monitoring the Temporal Cluster and SDK metrics.
-You can use these as a reference to build your own dashboards.
+You can use these templates as references to build your own dashboards.
 For any metrics that are missing in the dashboards, use [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) as a reference.
 
 Note that apart from these metrics emitted by the Cluster, you should also monitor infrastructure-specific metrics like CPU, memory, and network for all hosts that are running Temporal Cluster services.
