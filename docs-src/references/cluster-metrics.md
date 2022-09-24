@@ -29,7 +29,7 @@ These metrics are emitted with `type`, `operation`, and `namespace` tags, which 
 All common tags that you can add in your query are defined in the following file
 **(https://github.com/temporalio/temporal/blob/86966c5d2f78ee74c10b6808857f1a2f64d3c134/common/metrics/defs.go#L90)**.
 
-For example, to see service requests by operation on Frontend, use:
+For example, to see service requests by operation on the Frontend Service, use the following:
 
 `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))`
 
