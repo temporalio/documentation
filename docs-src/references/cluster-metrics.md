@@ -142,7 +142,7 @@ Some of the most important ones are:
 
 ### `persistence_requests`
 
-Emit on every persistence request.
+Emitted on every persistence request.
 Examples:
 
 - Prometheus query for getting total number of persistence requests by operation for the History Service:
