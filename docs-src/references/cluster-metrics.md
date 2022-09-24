@@ -169,7 +169,7 @@ Example:
 
 ## Relevant SDK Metrics for Workflows and Activities
 
-- To monitor task queue backlog look at the `schedule_to_start` latency metrics, for example, `temporal_workflow_task_schedule_to_start_latency_seconds_bucket` and `temporal_activity_schedule_to_start_latency_seconds_bucket` metrics.
+- To monitor Task Queue backlog, look at the `schedule_to_start` latency metrics; for example, the `temporal_workflow_task_schedule_to_start_latency_seconds_bucket` and `temporal_activity_schedule_to_start_latency_seconds_bucket` metrics.
 - For Activity Workers, use the `temporal_worker_task_slots_available` SDK metric with label `worker_type="ActivityWorker"` to help you tune your `WorkerOptions#getMaxConcurrentActivityExecutionSize` setting.
 - `Workflow_endtoend_latency` - measures your Workflow Execution time from start to close.
 - Temporal emits counters on completion of Workflows. These are useful in getting the overall statistics about Workflow completion. Use `workflow_success`, `workflow_failed`, `workflow_timeout`, `workflow_terminate` and `workflow_cancel` counters for each type of Workflow completion. These metrics are also tagged with `namespace` tag.
