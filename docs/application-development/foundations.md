@@ -27,10 +27,10 @@ In this section you can find the following:
 
 - [How to run a dev Cluster](#run-a-dev-cluster)
 - [How to add your SDK](#add-your-sdk)
-- [How to create a Temporal Client](#create-temporal-clients)
+- [How to create a Temporal Client](#connect-to-a-cluster)
 - [How to develop a Workflow](#develop-workflows)
 - [How to develop an Activity](#develop-activities)
-- [How to start an Activity Execution](#start-activity-execution)
+- [How to start an Activity Execution](#activity-execution)
 - [How to run a Worker Process](#run-worker-processes)
 - [How to start a Workflow Execution](#start-workflow-execution)
 
@@ -2574,7 +2574,7 @@ There are three main things the Worker needs:
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
 | Options         | Description                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
 | `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
 | `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |

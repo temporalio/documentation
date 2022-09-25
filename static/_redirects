@@ -105,11 +105,11 @@
 /go/continue-as-new        /go/how-to-continue-as-new-in-go
 /go-create-workflows         /application-development/foundations#develop-workflows
 /go/create-workflows         /application-development/foundations#develop-workflows
-/go/distributed-cron         /application-development/features#cron-jobs
+/go/distributed-cron         /application-development/features#temporal-cron-jobs
 /go-error-handling         /go/error-handling
 /go-hello-world        https://learn.temporal.io/getting_started/go/hello_world_in_go/
 /go/queries        /application-development/features#queries
-/go/retries        /application-development/features#activity-timeouts--retries
+/go/retries        /application-development/features#activity-timeouts
 /go-run-your-first-app         https://learn.temporal.io
 /go-sdk-video-tutorial         https://learn.temporal.io
 /go-search-apis        /go/search-apis
@@ -128,7 +128,7 @@
 /go-versioning         /go/versioning
 /go-workflows        /go/workflows
 /go/workers        /go/how-to-develop-a-worker-program-in-go
-/go-execute-activity         /application-development-guide#start-activity-execution
+/go-execute-activity         /application-development-guide#activity-execution
 /go-activity-async-completion        /go/activities#asynchronous-activity-completion
 /go/how-to-set-startworkflowoptions-in-go*        /go/startworkflowoptions-reference:splat
 /go/how-to-set-activityoptions-in-go*        /go/activityoptions-reference:splat
