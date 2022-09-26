@@ -72,7 +72,7 @@ Activity Types are scoped through Task Queues.
 
 An Activity Execution is the full chain of [Activity Task Executions](/tasks#activity-task-execution).
 
-- [How to spawn an Activity Execution](/application-development/foundations#start-activity-execution)
+- [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
@@ -268,7 +268,7 @@ If this timeout is reached, the Activity Task fails and a retry occurs if a [Ret
 Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
 The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result.
 
-- [How to complete an Activity Asynchronously](/application-development/features#async-activity-completion)
+- [How to complete an Activity Asynchronously](/application-development/features#asynchronous-activity-completion)
 
 #### When to use Async Completion
 
