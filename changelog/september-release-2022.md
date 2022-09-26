@@ -4,13 +4,13 @@ title: September 23 2022
 date: 2022-09-23T00:00:00Z
 ---
 
-Over the past month, the following content has been added or improved:
+During the past month, the following content has been added or improved:
 
 - [Timer section](/application-development/features/#timers) was added to the Application development guide.
-  The sections shows you how to sleep within a Workflow.
+  The section shows you how to sleep within a Workflow.
 
 - [Visibility data migration KB article](/kb/migrate-visibility-data-from-es6) was added that provides instructions on how to migrate from Elasticsearch 6 to Elasticsearch 7+.
-  Temporal Server support for Elasticsearch 6 is removed in v1.18, follow this guide to migrate your data.
+  Temporal Server support for Elasticsearch 6 is removed in v1.18; follow this guide to migrate your data.
 
 - [How to connect to a Cluster](/application-development/foundations/#connect-to-a-cluster) in the Application development guide has been updated and shows how to connect to Temporal Cloud.
   It shows how to use default connection settings for local development and how to quickly switch to using a Cloud Namespace.
@@ -19,4 +19,5 @@ Over the past month, the following content has been added or improved:
 
 - An early iteration of the [Testing section](/application-development/testing) was added to the Application development guide.
 
-- General coverage of code examples across the [Foundations section](/application-development/foundations) of the Application development guide has expanded specifically for [Typescript](/application-development/foundations?lang=typescript) & [PHP](/application-development/foundations?lang=php).
+- General coverage of code examples across the [Foundations section](/application-development/foundations) of the Application development guide has expanded specifically for [Typescript](/application-development/foundations?lang=typescript) and [PHP](/application-development/foundations?lang=php).
+
