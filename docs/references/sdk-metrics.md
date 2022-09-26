@@ -7,7 +7,6 @@ sidebar_label: SDK metrics
 
 <!-- This file is generated. Do not edit it directly. -->
 
-
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
