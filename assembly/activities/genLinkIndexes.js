@@ -58,7 +58,7 @@ async function generateLinkIndex(guideConfig) {
         case "langtabs":
           if (i == 0 || lookBack == 0) {
             for (const langtab of section.langtabs) {
-              if (langtab.id != "none") {
+              if (langtab.id != "none" && langtab.id != "na") {
                 linkIndex.push({
                   file_dir: guideConfig.file_dir,
                   guide_id: guideConfig.id,
@@ -72,7 +72,7 @@ async function generateLinkIndex(guideConfig) {
             const previousSection = guideConfig.sections[i - lookBack];
             if (previousSection.type == "h1" || "h2" || "h3" || "h4") {
               for (const langtab of section.langtabs) {
-                if (langtab.id != "none") {
+                if (langtab.id != "none" && langtab.id != "na") {
                   // console.log(localRef(previousSection.node.label));
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,

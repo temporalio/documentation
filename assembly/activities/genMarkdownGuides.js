@@ -63,6 +63,8 @@ async function generateLangTabs(langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
     if (tab.id == "none") {
       tabStr = `${tabStr}Content is currently unavailable.\n\n`;
+    } else if (tab.id == "na") {
+      tabStr = `${tabStr}The selected SDK does not currently support this feature.\n\n`;
     } else {
       tabStr = `${tabStr}${tab.node.markdown_content}\n\n`;
     }

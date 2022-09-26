@@ -3212,7 +3212,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Content is not applicable for this SDK.
 
 </TabItem>
 </Tabs>
