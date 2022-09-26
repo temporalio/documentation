@@ -20,4 +20,3 @@ During the past month, the following content has been added or improved:
 - An early iteration of the [Testing section](/application-development/testing) was added to the Application development guide.
 
 - General coverage of code examples across the [Foundations section](/application-development/foundations) of the Application development guide has expanded specifically for [Typescript](/application-development/foundations?lang=typescript) and [PHP](/application-development/foundations?lang=php).
-
