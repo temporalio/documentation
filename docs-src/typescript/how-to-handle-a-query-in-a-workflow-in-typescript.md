@@ -13,22 +13,22 @@ Query Handlers can return values inside a Workflow in TypeScript.
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 ```typescript
-import * as wf from '@temporalio/workflow';
+import * as wf from "@temporalio/workflow";
 
-export const unblockSignal = wf.defineSignal('unblock');
-export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
+export const unblockSignal = wf.defineSignal("unblock");
+export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
 
 export async function unblockOrCancel(): Promise<void> {
   let isBlocked = true;
   wf.setHandler(unblockSignal, () => void (isBlocked = false));
   wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log('Blocked');
+  console.log("Blocked");
   try {
     await wf.condition(() => !isBlocked);
-    console.log('Unblocked');
+    console.log("Unblocked");
   } catch (err) {
     if (err instanceof wf.CancelledFailure) {
-      console.log('Cancelled');
+      console.log("Cancelled");
     }
     throw err;
   }

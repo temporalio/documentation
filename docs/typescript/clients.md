@@ -6,7 +6,6 @@ description: Workflow Clients are embedded in your application code, and connect
 ---
 
 <!-- prettier-ignore -->
-
 import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 
 **`@temporalio/client`** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
