@@ -91,9 +91,9 @@ module.exports = {
           position: "left",
         },
         {
-          label: "Docs change log",
-          to: "/change-log",
-          activeBasePath: "change-log",
+          label: "Docs changelog",
+          to: "/changelog",
+          activeBasePath: "changelog",
           position: "left",
         },
       ],
@@ -242,7 +242,7 @@ module.exports = {
                     if (!/^ts$/.test(node.lang)) {
                       return;
                     }
-                    node.value = "// @ts-nocheck\n" + node.value.trim();
+                    node.value = "// @ts-nocheck\n" + node.value;
                   }
 
                   visit(tree, "code", visitor);
@@ -277,6 +277,9 @@ module.exports = {
                     }
                     if (node.value.startsWith("// @ts-nocheck\n")) {
                       node.value = node.value.slice("// @ts-nocheck\n".length);
+                      if (node.lang === "ts") {
+                        node.value = dedent(node.value);
+                      }
                     }
                     // If TS compiled output is empty, replace it with a more helpful comment
                     if (
@@ -370,19 +373,19 @@ module.exports = {
         /**
          * Required for any multi-instance plugin
          */
-        id: "change-log",
+        id: "changelog",
         /**
          * URL route for the blog section of your site.
          * *DO NOT* include a trailing slash.
          */
-        routeBasePath: "change-log",
+        routeBasePath: "changelog",
         /**
          * Path to data on filesystem relative to site dir.
          */
-        path: "change-log",
-        blogTitle: "Temporal documentation change log",
-        blogSidebarTitle: "Docs change log",
-        routeBasePath: "change-log",
+        blogTitle: "Temporal documentation changelog",
+        blogSidebarTitle: "Docs changelog",
+        path: "changelog",
+        routeBasePath: "changelog",
         blogDescription: "A log of changes to this site's content.",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
@@ -427,4 +430,41 @@ function convertIndent4ToIndent2(code) {
   return code.replace(/^( {4})+/gm, (match) => {
     return "  ".repeat(match.length / 4);
   });
+}
+
+// Remove the minimum leading whitespace on each line, excluding whitespace-only
+// lines. Helpful for cleaning up TypeScript examples that are pulled from
+// the body of a function.
+function dedent(code) {
+  const lines = code.split("\n");
+
+  if (!lines.length) {
+    return code;
+  }
+
+  // First, find the minimum number of leading space characters, excluding
+  // lines that are whitespace-only.
+  let minIndent = Number.POSITIVE_INFINITY;
+  for (const line of lines) {
+    if (line.trim().length === 0) {
+      continue;
+    }
+
+    const match = line.match(/^( +)/);
+    if (match && match[0].length < minIndent) {
+      minIndent = match[0].length;
+    } else if (!match) {
+      minIndent = 0;
+    }
+  }
+
+  // If there's no leading whitespace, just return the code
+  if (minIndent === 0 || minIndent === Number.POSITIVE_INFINITY) {
+    return code;
+  }
+
+  // Otherwise, remove leading spaces from each line
+  return lines
+    .map((line) => line.replace(new RegExp(`^ {${minIndent}}`), ""))
+    .join("\n");
 }

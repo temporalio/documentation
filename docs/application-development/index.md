@@ -84,10 +84,10 @@ The application development guide is broken down into four sections:
 
    - [Run a development Cluster](/application-development/foundations#run-a-dev-cluster)
    - [Add an SDK to your project](/application-development/foundations#add-your-sdk)
-   - [How to create a Temporal Client](/application-development/foundations#create-temporal-clients)
-   - [Develop a basic Workflow Definition](/application-development/foundations#develop-workflow)
+   - [How to create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
+   - [Develop a basic Workflow Definition](/application-development/foundations#develop-workflows)
    - [Develop a basic Activity Definition](/application-development/foundations#develop-activities)
-   - [Call to execute an Activity](/application-development/foundations#start-activity-execution)
+   - [Call to execute an Activity](/application-development/foundations#activity-execution)
    - [Run a Worker Process](/application-development/foundations#run-worker-processes)
    - [Start a Workflow Execution](/application-development/foundations#start-workflow-execution)
 
@@ -95,13 +95,13 @@ The application development guide is broken down into four sections:
 
    - [Signals](/application-development/features#signals)
    - [Queries](/application-development/features#queries)
-   - [Workflow timeouts & retries](/application-development/features#workflow-timeouts--retries)
-   - [Activity timeouts & retries](/application-development/features#activity-timeouts--retries)
+   - [Workflow timeouts & retries](/application-development/features#workflow-timeouts)
+   - [Activity timeouts & retries](/application-development/features#activity-timeouts)
    - [Activity Heartbeats](/application-development/features#activity-heartbeats)
-   - [Async Activity Completion](/application-development/features#async-activity-completion)
+   - [Async Activity Completion](/application-development/features#asynchronous-activity-completion)
    - [Child Workflows](/application-development/features#child-workflows)
    - [Continue-As-New](/application-development/features#continue-as-new)
-   - [Cron Jobs](/application-development/features#cron-jobs)
+   - [Cron Jobs](/application-development/features#temporal-cron-jobs)
 
 3. [**Observability**](/application-development/observability): Methods for observing a Temporal Application.
 

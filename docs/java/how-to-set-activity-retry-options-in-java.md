@@ -9,7 +9,7 @@ tags:
   - developer-guide
 ---
 
-To set [Retry Options](/concepts/what-is-a-retry-policy), use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a Retry Policy, known as the [Retry Options](/concepts/what-is-a-retry-policy) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: Server-defined Activity Retry policy.

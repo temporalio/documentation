@@ -383,8 +383,8 @@ module.exports = {
     "glossary",
     {
       type: "link",
-      label: "Docs change log",
-      href: "/change-log",
+      label: "Docs changelog",
+      href: "/changelog",
     },
     {
       type: "link",
@@ -670,7 +670,6 @@ module.exports = {
         "php/activities",
         "php/task-queues",
         "php/workers",
-        "php/how-to-develop-a-worker-program-in-php",
         "php/signals",
         "php/queries",
         "php/retries",

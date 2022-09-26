@@ -27,10 +27,10 @@ In this section you can find the following:
 
 - [How to run a dev Cluster](#run-a-dev-cluster)
 - [How to add your SDK](#add-your-sdk)
-- [How to create a Temporal Client](#create-temporal-clients)
+- [How to create a Temporal Client](#connect-to-a-cluster)
 - [How to develop a Workflow](#develop-workflows)
 - [How to develop an Activity](#develop-activities)
-- [How to start an Activity Execution](#start-activity-execution)
+- [How to start an Activity Execution](#activity-execution)
 - [How to run a Worker Process](#run-worker-processes)
 - [How to start a Workflow Execution](#start-workflow-execution)
 
@@ -330,31 +330,31 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 ## Connect to a Cluster
 
-A [Temporal Client](/temporal#temporal-client) enables you to communicate with a [Temporal Cluster](/clusters#).
-Communications with a Temporal Cluster include, but aren't limited to, the following:
+A [Temporal Client](/temporal#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters#).
+Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
-- starting Workflow Executions
-- sending Signals to Workflow Executions
-- sending Queries to Workflow Executions
-- getting the results of a Workflow Execution
-- providing an Activity Task Token
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
 
 :::caution
 
-A Temporal Client cannot be initialized and used inside Workflow code.
-However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with the Temporal Cluster.
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
 
 :::
 
-When you are running a Cluster locally (such as [temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
 
 When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud/index#)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
-- address and port
-- [Namespace](/namespaces#) (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`)
-- mTLS CA certificate
-- mTLS private key
+- An address and port number.
+- A [Namespace](/namespaces#) Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
+- mTLS CA certificate.
+- mTLS private key.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
@@ -951,9 +951,11 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 </Tabs>
 
-### Customize Workflow Type
+### Workflow Type
 
-You can set a custom name for your Workflow Type.
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
 
 <Tabs
 defaultValue="go"
@@ -1030,7 +1032,12 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
+
+In the following example, the Workflow Type is the name of the function, `helloWorld`.
+
+<!--SNIPSTART typescript-workflow-type -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1396,11 +1403,8 @@ These require special primitives for heartbeating and cancellation. The `shared_
 
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
-```typescript
-export async function greet(name: string): Promise<string> {
-  return `Hello, ${name}!`;
-}
-```
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1522,7 +1526,10 @@ async def your_activity(params: YourParams) -> None:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+This Activity takes a single `name` parameter of type `string`.
+
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1615,26 +1622,20 @@ async def say_hello(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
+In TypeScript, the return value is always a Promise.
 
-```typescript
-import type * as activities from "./activities";
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
-});
+In the following example, `Promise<string>` is the return value.
 
-// A workflow that simply calls an activity
-export async function example(name: string): Promise<string> {
-  return await greet(name);
-}
-```
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
 
 ### Activity Type
 
-You can set a custom name for your Activity Type.
+Activities have a Type that are referred to as the Activity name.
+The following examples demonstrate how to set a custom name for your Activity Type.
 
 <Tabs
 defaultValue="go"
@@ -1720,7 +1721,11 @@ async def your_activity(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+You can customize the name of the Activity when you register it with the Worker.
+In the following example, the Activity Name is `activityFoo`.
+
+<!--SNIPSTART typescript-custom-activity-type -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2733,7 +2738,22 @@ worker = Worker(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
+
+<!--SNIPSTART typescript-worker-create -->
+<!--SNIPEND-->
+
+In this snippet, the Worker bundles the Workflow code at runtime.
+
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
+
+<!--SNIPSTART typescript-bundle-workflow -->
+<!--SNIPEND-->
+
+Then the bundle can be passed to the Worker:
+
+<!--SNIPSTART typescript-production-worker-->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
