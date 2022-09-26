@@ -3207,7 +3207,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is not applicable for this SDK.
 
 </TabItem>
 <TabItem value="typescript">
@@ -3388,3 +3388,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+
