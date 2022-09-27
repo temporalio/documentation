@@ -1,0 +1,16 @@
+---
+id: how-to-send-a-signal-from-a-client-in-python
+title: How to send a Signal from a Client in Python
+sidebar_label: Send a Signal from a Client
+description: Send a Signal from a Client
+tags:
+  - developer-guide
+  - sdk
+  - python
+---
+
+To send a Signal to a Workflow Execution from a Client, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) API in the Workflow interface, from the Client code.
+
+```python
+await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
+```
