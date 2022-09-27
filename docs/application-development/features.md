@@ -28,12 +28,12 @@ In this section you can find the following:
 - [How to develop Signals](#signals)
 - [How to develop Queries](#queries)
 - [How to start a Child Workflow Execution](#child-workflows)
-- [How to start a Temporal Cron Job](#cron-jobs)
+- [How to start a Temporal Cron Job](#temporal-cron-jobs)
 - [How to use Continue-As-New](#continue-as-new)
-- [How to set Workflow timeouts & retries](#workflow-timeouts--retries)
-- [How to set Activity timeouts & retries](#activity-timeouts--retries)
+- [How to set Workflow timeouts & retries](#workflow-timeouts)
+- [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
-- [How to Asynchronously complete an Activity](#async-activity-completion)
+- [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 
 ## Signals
 
@@ -1278,14 +1278,15 @@ Content is currently unavailable.
 </TabItem>
 </Tabs>
 
-## Workflow timeouts & retries
+## Workflow timeouts
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
-A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-### Workflow Execution Timeout
+Workflow timeouts are set when [starting the Workflow Execution](#workflow-timeouts).
 
-Use the [Workflow Execution Timeout](/workflows#workflow-execution-timeout) to limit the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
+- **[Workflow Execution Timeout](/workflows#workflow-execution-timeout)** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **[Workflow Run Timeout](/workflows#workflow-run-timeout)**: restricts the maximum amount of time that a single Workflow Run can last.
+- **[Workflow Task Timeout](/workflows#workflow-task-timeout)**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
 <Tabs
 defaultValue="go"
@@ -1294,15 +1295,21 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
 
-- Type: `time.Duration`
-- Default: Unlimited
+Available timeouts are:
+
+- `WorkflowExecutionTimeout`
+- `WorkflowRunTimeout`
+- `WorkflowTaskTimeout`
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
   // ...
+  // Set Workflow Timeout duration
   WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
+  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
+  // WorkflowTaskTimeout: time.Second * 10,
   // ...
 }
 workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
@@ -1314,10 +1321,13 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Set the [Workflow Execution Timeout](/workflows#workflow-execution-timeout) with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowExecutionTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Client code and set your timeout.
 
-- Type: `time.Duration`
-- Default: Unlimited
+Available timeouts are:
+
+- [setWorkflowExecutionTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration)>)
+- [setWorkflowRunTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration)>)
+- [setWorkflowTaskTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration)>)
 
 ```java
 //create Workflow stub for YourWorkflowInterface
@@ -1325,17 +1335,25 @@ YourWorkflowInterface workflow1 =
     WorkerGreet.greetclient.newWorkflowStub(
         GreetWorkflowInterface.class,
         WorkflowOptions.newBuilder()
-                .setWorkflowId("YourWF")
+                .setWorkflowId("YourWorkflow")
                 .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Execution Timeout duration
+                // Set Workflow Timeout duration
                 .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
+                // .setWorkflowRunTimeout(Duration.ofSeconds(10))
+                // .setWorkflowTaskTimeout(Duration.ofSeconds(10))
                 .build());
 ```
 
 </TabItem>
 <TabItem value="php">
 
-The following code example creates a new Workflow and sets the Workflow ID. Then it sets the Workflow ID resuse policy and the Workflow Execution Timeout to 2 minutes.
+Create an instance of `WorkflowOptions` in the Client code and set your timeout.
+
+Available timeouts are:
+
+- `withWorkflowExecutionTimeout()`
+- `withWorkflowRunTimeout()`
+- `withWorkflowTaskTimeout()`
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -1343,164 +1361,78 @@ $workflow = $this->workflowClient->newWorkflowStub(
     WorkflowOptions::new()
         ->withWorkflowId(DynamicSleepWorkflow::WORKFLOW_ID)
         ->withWorkflowIdReusePolicy(WorkflowIdReusePolicy::WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE)
+        // Set Workflow Timeout duration
         ->withWorkflowExecutionTimeout(CarbonInterval::minutes(2))
+        // ->withWorkflowRunTimeout(CarbonInterval::minute(2))
+        // ->withWorkflowTaskTimeout(CarbonInterval::minute(2))
 );
+```
+
+</TabItem>
+<TabItem value="python">
+
+Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+
+Available timeouts are:
+
+- `execution_timeout`
+- `run_timeout`
+- `task_timeout`
+
+```python
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    # Set Workflow Timeout duration
+    execution_timeout="timedelta(seconds=2)",
+    # run_timeout="timedelta(seconds=2)",
+    # task_timeout="timedelta(seconds=2)",
+)
+```
+
+```python
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    # Set Workflow Timeout duration
+    execution_timeout="timedelta(seconds=2)",
+    # run_timeout="timedelta(seconds=2)",
+    # task_timeout="timedelta(seconds=2)",
+)
 ```
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Create an instance of `WorkflowOptions` from the Client and set your Workflow Timeout.
+
+Available timeouts are:
+
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
+
+<!--SNIPSTART typescript-execution-timeout -->
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-run-timeout -->
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-task-timeout -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
 
-### Workflow Run Timeout
+### Workflow retries
 
-Use the [Workflow Run Timeout](/workflows#workflow-run-timeout) to restrict the maximum amount of time that a single [Workflow Run](/concepts/what-is-a-workflow-execution/#workflow-execution-chain) can last.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowRunTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
-
-- Type: `time.Duration`
-- Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-Set the Workflow Run Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowRunTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
-
-- Type: `time.Duration`
-- Default: Same as [WorkflowExecutionTimeout](#workflow-execution-timeout).
-
-```java
-//create Workflow stub for YourWorkflowInterface
-YourWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
-        GreetWorkflowInterface.class,
-        WorkflowOptions.newBuilder()
-                .setWorkflowId("YourWF")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Run Timeout duration
-                .setWorkflowRunTimeout(Duration.ofSeconds(10))
-                .build());
-```
-
-</TabItem>
-<TabItem value="php">
-
-`WorkflowRunTimeout` runs timeout limits duration of a single Workflow invocation.
-
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-    CronWorkflowInterface::class,
-    WorkflowOptions::new()
-        ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
-        ->withCronSchedule('* * * * *')
-        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
-        ->withWorkflowRunTimeout(CarbonInterval::minute(1))
-);
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is currently unavailable.
-
-</TabItem>
-</Tabs>
-
-### Workflow Task Timeout
-
-Use the [Workflow Task Timeout](/workflows#workflow-task-timeout) to restrict the maximum amount of time that a Worker can execute a [Workflow Task](/tasks#workflow-task).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowTaskTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
-
-- Type: `time.Duration`
-- Default: `time.Seconds * 10`
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  WorkflowTaskTimeout: time.Second * 10,
-  //...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-Set the Workflow Task Timeout with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowTaskTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
-
-- Type: `time.Duration`
-- Default: 10 seconds.
-- Values: Maximum accepted value is 60 seconds.
-
-```java
-//create Workflow stub for YourWorkflowInterface
-YourWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
-        GreetWorkflowInterface.class,
-        WorkflowOptions.newBuilder()
-                .setWorkflowId("YourWF")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Task Timeout duration
-                .setWorkflowTaskTimeout(Duration.ofSeconds(10))
-                .build());
-```
-
-</TabItem>
-<TabItem value="php">
-
-`WorkflowTaskTimeout` runs timeout limits duration of a single Workflow invocation.
-
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-    CronWorkflowInterface::class,
-    WorkflowOptions::new()
-        ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
-        ->withCronSchedule('* * * * *')
-        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
-        ->withWorkflowTaskTimeout(CarbonInterval::minute(1))
-);
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is currently unavailable.
-
-</TabItem>
-</Tabs>
-
-### Workflow Retry Policy
+A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Use a [Retry Policy](/retry-policies#) to retry a Workflow Execution in the event of a failure.
 
@@ -1537,7 +1469,7 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-Set Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance using [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: `Null` which means no retries will be attempted.
@@ -1574,21 +1506,54 @@ $workflow = $this->workflowClient->newWorkflowStub(
 For more detailed information about `RetryOptions` object see [retries](/php/retries) for more details.
 
 </TabItem>
+<TabItem value="python">
+
+Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+
+```python
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
+```
+
+```python
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+
+<!--SNIPSTART typescript-retry-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
 
-## Activity timeouts and retries
+## Activity timeouts
 
 Each Activity timeout controls the maximum duration of a different aspect of an Activity Execution.
-A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-### Schedule-To-Close Timeout
+The following timeouts are available in the Activity Options.
 
-Use the [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout) to limit the maximum duration of an [Activity Execution](/activities#activity-execution).
+- **[Schedule-To-Close Timeout](/activities#schedule-to-close-timeout)**: is the maximum amount of time allowed for the overall [Activity Execution](/activities#activity-execution).
+- **[Start-To-Close Timeout](/activities#start-to-close-timeout)**: is the maximum time allowed for a single [Activity Task Execution](/tasks#activity-task-execution).
+- **[Schedule-To-Start Timeout](/activities#schedule-to-start-timeout)**: is the maximum amount of time that is allowed from when an [Activity Task](/tasks#activity-task) is scheduled to when a [Worker](/workers#) starts that Activity Task.
+
+An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
 <Tabs
 defaultValue="go"
@@ -1597,16 +1562,20 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-This or `StartToCloseTimeout` must be set.
+Available timeouts are:
 
-- Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
+- `StartToCloseTimeout`
+- `ScheduleToClose`
+- `ScheduleToStartTimeout`
 
 ```go
 activityoptions := workflow.ActivityOptions{
+  // Set Activity Timeout duration
   ScheduleToCloseTimeout: 10 * time.Second,
+  // StartToCloseTimeout: 10 * time.Second,
+  // ScheduleToStartTimeout: 10 * time.Second,
 }
 ctx = workflow.WithActivityOptions(ctx, activityoptions)
 var yourActivityResult YourActivityResult
@@ -1619,318 +1588,82 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-To set a [Schedule-To-Close Timeout](/activities#schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
 
-This or `StartToCloseTimeout` must be set.
+Available timeouts are:
 
-- Type: `Duration`
-- Default: Unlimited.
-  Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
+- ScheduleToCloseTimeout()
+- ScheduleToStartTimeout()
+- StartToCloseTimeout()
 
 You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
-- With `ActivityStub`
+The following uses `ActivityStub`.
 
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                  ActivityOptions.newBuilder()
-                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                          .build());
-  ```
+```java
+GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                ActivityOptions.newBuilder()
+                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                        // .setStartToCloseTimeout(Duration.ofSeconds(2)
+                        // .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                        .build());
+```
 
-- With `WorkflowImplementationOptions`
+The following uses `WorkflowImplementationOptions`.
 
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                      "GetCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                                          .build()))
-                      .build();
-  ```
+```java
+WorkflowImplementationOptions options =
+            WorkflowImplementationOptions.newBuilder()
+                    .setActivityOptions(
+                            ImmutableMap.of(
+                                    "GetCustomerGreeting",
+                                    // Set Activity Execution timeout
+                                    ActivityOptions.newBuilder()
+                                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                        // .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                        // .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                        .build()))
+                    .build();
+```
+
+:::note
+
+If you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+:::
 
 </TabItem>
 <TabItem value="php">
 
 Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The following code creates an Activity with a `ScheduleToCloseTimeout` set to 2 seconds.
+
+Available timeouts are:
+
+- withScheduleToCloseTimeout()
+- withStartToCloseTimeout()
+- withScheduleToStartTimeout()
 
 ```php
 $this->greetingActivity = Workflow::newActivityStub(
     GreetingActivityInterface::class,
+    // Set Activity Timeout duration
     ActivityOptions::new()
         ->withScheduleToCloseTimeout(CarbonInterval::seconds(2))
+        // ->withStartToCloseTimeout(CarbonInterval::seconds(2))
+        // ->withScheduleToStartTimeout(CarbonInterval::seconds(10))
 );
 ```
 
 </TabItem>
 <TabItem value="python">
 
-Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
+Activity options are set as keyword arguments after the Activity arguments.
 
-The following code example sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_close_timeout` to 5 seconds.
+Available timeouts are:
 
-```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
-        )
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
-
-Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
-
-Type: time.Duration
-Default: ∞ (infinity – no limit)
-
-In this example, you can set the `scheduleToCloseTimeout` to 5 m.
-
-```typescript
-// Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: "5m",
-  retry: {
-    // default retry policy if not specified
-    initialInterval: "1s",
-    backoffCoefficient: 2,
-    maximumAttempts: Infinity,
-    maximumInterval: 100 * initialInterval,
-    nonRetryableErrorTypes: [],
-  },
-});
-```
-
-</TabItem>
-</Tabs>
-
-### Start-To-Close Timeout
-
-Use the [Start-To-Close Timeout](/activities#start-to-close-timeout) to limit the maximum duration of a single [Activity Task Execution](/tasks#activity-task-execution).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-To set a [Start-To-Close Timeout](/activities#start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
-
-This or `ScheduleToClose` must be set.
-
-- Type: `time.Duration`
-- Default: Same as the `ScheduleToCloseTimeout`
-
-```go
-activityoptions := workflow.ActivityOptions{
-  StartToCloseTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-To set a [Start-To-Close Timeout](/activities#start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
-
-This or `ScheduleToClose` must be set.
-
-- Type: `Duration`
-- Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
-- With `ActivityStub`
-
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-              ActivityOptions.newBuilder()
-                      .setStartToCloseTimeout(Duration.ofSeconds(2))
-                      .build());
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                            // Set Activity Execution timeout (single run)
-                                            .setStartToCloseTimeout(Duration.ofSeconds(2))
-                                            .build()))
-                      .build();
-  ```
-
-</TabItem>
-<TabItem value="php">
-
-Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The following code creates an Activity with a `StartToCloseTimeout` set to 2 seconds.
-
-```php
-$this->greetingActivity = Workflow::newActivityStub(
-    GreetingActivityInterface::class,
-    ActivityOptions::new()->withStartToCloseTimeout(CarbonInterval::seconds(2))
-);
-```
-
-</TabItem>
-<TabItem value="python">
-
-Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
-
-```python
-start_to_close_timeout = timedelta(seconds=5)
-```
-
-The following code example executes an Activity with a `start_to_close_timeout` of 5 seconds.
-
-```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            your_activity, name, start_to_close_timeout=timedelta(seconds=5)
-        )
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
-
-Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
-
-Type: time.Duration
-Default: ∞ (infinity – no limit)
-
-In this example, you can set the `startToCloseTimeout` to 30 seconds.
-
-```typescript
-// Sample of typical options you can set
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "30s", // recommended
-  retry: {
-    // default retry policy if not specified
-    initialInterval: "1s",
-    backoffCoefficient: 2,
-    maximumAttempts: Infinity,
-    maximumInterval: 100 * initialInterval,
-    nonRetryableErrorTypes: [],
-  },
-});
-```
-
-</TabItem>
-</Tabs>
-
-### Schedule-To-Start Timeout
-
-Use the [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) to limit the maximum amount of time that an Activity Task can be enqueued to be picked up by a Worker.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-To set a [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
-
-- Type: `time.Duration`
-- Default: ∞ (infinity - no limit)
-
-```go
-activityoptions := workflow.ActivityOptions{
-  ScheduleToStartTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-To set a [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
-
-- Type: `Duration`
-- Default: Unlimited. This timeout is non-retryable.
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
-- With `ActivityStub`
-
-  ```java
-  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                  ActivityOptions.newBuilder()
-                          .setScheduleToStartTimeout(Duration.ofSeconds(5))
-                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                          // required when setting Activity options.
-                          .setScheduletoCloseTimeout(Duration.ofSeconds(20))
-                          .build());
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-  WorkflowImplementationOptions options =
-             WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "GetCustomerGreeting",
-                                ActivityOptions.newBuilder()
-                                    .setScheduleToStartTimeout(Duration.ofSeconds(5))
-                                    .build()))
-                      .build();
-  ```
-
-</TabItem>
-<TabItem value="php">
-
-Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
-The following code creates an Activity with a `ScheduleToStartTimeout` set to 10 seconds.
-
-```php
-// Creating a stub for the activity.
-        $this->greetingActivity = Workflow::newActivityStub(
-            GreetingActivityInterface::class,
-            ActivityOptions::new()
-                ->withScheduleToStartTimeout(CarbonInterval::seconds(10))
-        );
-```
-
-</TabItem>
-<TabItem value="python">
-
-Activity options are set as keyword arguments after the Activity arguments. At least one of `start_to_close_timeout` or `schedule_to_close_timeout` must be provided.
-
-The following code sets a Schedule-to-Close timeout in Python, by calling the Activity with the argument `name` and setting the `schedule_to_start_timeout` to 1 seconds.
+- schedule_to_close_timeout
+- schedule_to_start_timeout
+- start_to_close_timeout
 
 ```python
 @workflow.defn
@@ -1940,8 +1673,9 @@ class YourWorkflow:
         return await workflow.execute_activity(
             your_activity,
             name,
-            schedule_to_close_timeout=5000,
-            schedule_to_start_timeout=1000,
+            schedule_to_close_timeout=timedelta(seconds=5),
+            # schedule_to_start_timeout=timedelta(seconds=5),
+            # start_to_close_timeout=timedelta(seconds=5),
         )
 ```
 
@@ -1950,18 +1684,19 @@ class YourWorkflow:
 
 When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
 
-Either `scheduleToCloseTimeout` or `scheduleToStartTimeout` must be set.
+Available timeouts are:
 
-Type: time.Duration
-Default: ∞ (infinity – no limit)
-
-In this example, you can set the `scheduleToStartTimeout` to 60 seconds.
+- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
+- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
 
 ```typescript
 // Sample of typical options you can set
 const {greet} = proxyActivities<typeof activities>({
   scheduleToCloseTimeout: "5m",
-  scheduleToStartTimeout: "60s",
+  // startToCloseTimeout: "30s", // recommended
+  // scheduleToStartTimeout: "60s",
+
   retry: {
     // default retry policy if not specified
     initialInterval: "1s",
@@ -1976,7 +1711,9 @@ const {greet} = proxyActivities<typeof activities>({
 </TabItem>
 </Tabs>
 
-### Activity Retry Policy
+### Activity retries
+
+A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
 Activity Executions are automatically associated with a default [Retry Policy](/retry-policies#) if a custom one is not provided.
 
@@ -1987,7 +1724,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a [RetryPolicy](/retry-policies#), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [RetryPolicy](/retry-policies#), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
@@ -2025,7 +1762,7 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-To set [Retry Options](/retry-policies#), use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a Retry Policy, known as the [Retry Options](/retry-policies#) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: Server-defined Activity Retry policy.
@@ -2069,7 +1806,7 @@ To set [Retry Options](/retry-policies#), use [`ActivityOptions.newBuilder.setRe
 </TabItem>
 <TabItem value="php">
 
-To enable Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
+To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
 The follow example creates a new Activity with the given options.
 
 ```php
@@ -3147,6 +2884,86 @@ workflow.continue_as_new("your-workflow-name")
 <TabItem value="typescript">
 
 Content is currently unavailable.
+
+</TabItem>
+</Tabs>
+
+## Timers
+
+A Workflow can set a durable timer for a fixed time period.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
+
+A Workflow can sleep for months.
+Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
+
+Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a Timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.
+
+```go
+timer := workflow.NewTimer(timerCtx, duration)
+```
+
+To set a sleep duration in Go, use the [`sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing.
+A zero or negative sleep duration causes the function to return immediately.
+
+```go
+sleep = workflow.Sleep(ctx, 10*time.Second)
+```
+
+For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
+
+</TabItem>
+<TabItem value="java">
+
+To set a Timer in Java, use [`sleep()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep) and pass the number of seconds you want to wait before continuing.
+
+```java
+sleep(5);
+```
+
+</TabItem>
+<TabItem value="php">
+
+To set a Timer in PHP, use `Workflow::timer()` and pass the number of seconds you want to wait before continuing.
+
+The following example yields a sleep method for 5 minutes.
+
+```php
+yield Workflow::timer(300); // sleep for 5 minutes
+```
+
+You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.
+
+</TabItem>
+<TabItem value="python">
+
+To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
+
+```python
+await asyncio.sleep(5)
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+To set a Timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how long you want to wait before continuing (using an [ms-formatted string](https://www.npmjs.com/package/ms) or number of milliseconds).
+
+```typescript
+import {sleep} from "@temporalio/workflow";
+
+export async function sleepWorkflow(): Promise<void> {
+  await sleep("2 months");
+  console.log("done sleeping");
+}
+```
 
 </TabItem>
 </Tabs>

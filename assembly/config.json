@@ -8,9 +8,9 @@
     "docs/concepts",
     "docs/go",
     "docs/java",
-    "docs/python",
-    "docs/php",
-    "docs/typescript",
+    "docs-src/python",
+    "docs-src/php",
+    "docs-src/typescript",
     "docs-src/references"
   ],
   "content_write_dir": "docs",
