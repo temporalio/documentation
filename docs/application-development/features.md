@@ -2403,6 +2403,10 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
 After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/workflows#parent-close-policy) set in the Child Workflow Options.
 
+To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
+
+Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -2445,7 +2449,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` event to appear in its event history before it completes.
 
 If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
 
@@ -2655,9 +2659,31 @@ $childResult = yield Workflow::executeChildWorkflow(
 ```
 
 </TabItem>
+<TabItem value="python">
+
+To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function. `execute_child_workflow()` starts the Child Workflow and waits for completion.
+
+```python
+await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", "my-child-id")
+```
+
+Alternatively, use [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function, to start a Child Workflow and return its handle. `start_child_workflow()` is a helper function for `execute_child_workflow()`.
+
+```python
+await workflow.start_child_workflow(MyWorkflow.run, "my child arg", "my-child-id")
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To start a Child Workflow and return a client-side handle that implements a Child Workflow interface, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+
+To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
+
+By default, a child will be scheduled on the same Task Queue as the parent.
+
+<!--SNIPSTART typescript-child-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

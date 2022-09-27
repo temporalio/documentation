@@ -43,7 +43,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` event to appear in its event history before it completes.
 
 If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
 
