@@ -1,13 +1,12 @@
 ---
 id: description
-title: description
+title: tctl description modifier
 description: definition for the --description modifier
+sidebar_label: --description
 tags:
   - reference
   - tctl
 ---
-
-### `--description`
 
 Specify a description when registering a [Namespace](/concepts/what-is-a-namespace).
 

@@ -1,13 +1,12 @@
 ---
 id: clusters
-title: clusters
+title: tctl clusters modifier
 description: definition for the --clusters modifier
+sidebar_label: --clusters
 tags:
   - reference
   - tctl
 ---
-
-### `--clusters`
 
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 

@@ -4,7 +4,6 @@ title: tctl batch describe
 sidebar_label: describe
 description: How to describe the progress of a batch job using tctl.
 tags:
-  - reference
   - tctl
 ---
 

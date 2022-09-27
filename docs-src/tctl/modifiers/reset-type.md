@@ -1,13 +1,12 @@
 ---
 id: reset-type
-title: reset-type
+title: tctl reset-type modifier
 description: definition for the --reset-type modifier
+sidebar_label: --reset-type
 tags:
   - reference
   - tctl
 ---
-
-### `--reset-type`
 
 Specify the event type to which you want to reset.
 

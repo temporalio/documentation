@@ -1,12 +1,11 @@
 ---
 id: limit
-title: limit
+title: tctl limit modifier
 description: definition for the --limit modifier
+sidebar_label: --limit
 tags:
   - reference
   - tctl
 ---
-
-### `--limit`
 
 Sets the number of items to print.

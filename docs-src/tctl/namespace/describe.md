@@ -4,7 +4,6 @@ title: tctl namespace describe
 sidebar_label: describe
 description: How to describe a Namespace using tctl.
 tags:
-  - reference
   - tctl
 ---
 

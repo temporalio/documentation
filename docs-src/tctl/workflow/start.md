@@ -4,7 +4,6 @@ title: tctl workflow start
 sidebar_label: start
 description: How to start a new Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

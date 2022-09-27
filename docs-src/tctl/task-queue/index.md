@@ -1,9 +1,9 @@
 ---
 id: index
 title: tctl task-queue
+sidebar_label: task-queue
 description: How to operate Task Queues using tctl.
 tags:
-  - reference
   - tctl
 ---
 

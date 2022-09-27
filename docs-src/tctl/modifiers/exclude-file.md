@@ -1,13 +1,12 @@
 ---
 id: exclude-file
-title: exclude-file
-description: definition for the --exclude-file modifier
+title: tctl exclude-file modifier
+description: definition for the --exclude-file
+sidebar_label: --exclude-file
 tags:
   - reference
   - tctl
 ---
-
-### `--exclude-file`
 
 Provide an input file that specifies [Workflow Executions](/concepts/what-is-a-workflow-execution) to exclude from resetting.
 

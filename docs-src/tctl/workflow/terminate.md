@@ -4,7 +4,6 @@ title: tctl workflow terminate
 sidebar_label: terminate
 description: How to terminate a Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

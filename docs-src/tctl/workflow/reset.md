@@ -4,7 +4,6 @@ title: tctl workflow reset
 sidebar_label: reset
 description: How to reset a Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

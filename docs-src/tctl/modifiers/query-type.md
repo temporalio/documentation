@@ -1,13 +1,12 @@
 ---
 id: query-type
-title: query-type
-description: definition for the --query-type modifier in tctl
+title: tctl query-type modifier
+description: definition for the --query-type modifier
+sidebar_label: --query-modifier
 tags:
   - reference
   - tctl
 ---
-
-### `--query-type`
 
 Specify the type of Query to run.
 

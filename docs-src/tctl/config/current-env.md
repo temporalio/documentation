@@ -1,8 +1,9 @@
 ---
 id: current-env
 title: tctl config current-env
+sidebar_label: current-env
 description: Print the current environment name.
-  - reference
+tags:
   - tctl
 ---
 

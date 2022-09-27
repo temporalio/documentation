@@ -1,13 +1,12 @@
 ---
 id: archived
-title: archived
+title: tctl archived modifier
 description: definition for the --archived modifier
+sidebar_label: --archived
 tags:
   - reference
   - tctl
 ---
-
-### `--archived`
 
 **This is an experimental feature.**
 

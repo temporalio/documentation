@@ -1,13 +1,12 @@
 ---
 id: task-queue-type
-title: task-queue-type
-description: definition for the --task-queue-type modifier in tctl
+title: tctl task-queue-type modifier
+description: definition for the --task-queue-type modifier
+sidebar_label: --task-queue-type
 tags:
   - reference
   - tctl
 ---
-
-### `--taskqueuetype`
 
 Specify the type of a [Task Queue](/concepts/what-is-a-task-queue).
 The type can be `workflow` or `activity`.

@@ -4,7 +4,6 @@ title: tctl cluster get-search-attributes
 sidebar_label: get-search-attributes
 description: How to list all Search Attributes using tctl.
 tags:
-  - reference
   - tctl
 ---
 

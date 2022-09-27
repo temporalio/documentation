@@ -1,13 +1,12 @@
 ---
 id: memo
-title: memo
+title: tctl memo modifier
 description: definition for the --memo modifier
+sidebar_label: --memo
 tags:
   - reference
   - tctl
 ---
-
-### `--memo`
 
 Pass a memo.
 A memo is information in JSON format that can be shown when the Workflow is listed.

@@ -1,13 +1,12 @@
 ---
 id: input-file
-title: input-file
+title: tctl input-file modifier
 description: definition for the --input-file modifier
+sidebar_label: --input-file
 tags:
   - reference
   - tctl
 ---
-
-### `--input-file`
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.

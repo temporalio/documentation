@@ -4,7 +4,6 @@ title: tctl namespace update
 sidebar_label: update
 description: How to update a Namespace using tctl.
 tags:
-  - reference
   - tctl
 ---
 

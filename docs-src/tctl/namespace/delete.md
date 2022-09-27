@@ -4,7 +4,6 @@ title: tctl namespace delete
 sidebar_label: delete
 description: Deleting a Namespace using tctl.
 tags:
-  - reference
   - tctl
 ---
 

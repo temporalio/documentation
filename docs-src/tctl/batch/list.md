@@ -4,7 +4,6 @@ title: tctl batch list
 sidebar_label: list
 description: How to list batch jobs using tctl.
 tags:
-  - reference
   - tctl
 ---
 

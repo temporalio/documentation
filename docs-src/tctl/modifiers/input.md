@@ -1,13 +1,12 @@
 ---
 id: input
-title: input
+title: tctl input modifier
 description: definition for the --input modifier
+sidebar_label: --input
 tags:
   - reference
   - tctl
 ---
-
-### `--input`
 
 Pass input for the Workflow.
 Input must be in JSON format.

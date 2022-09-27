@@ -1,9 +1,9 @@
 ---
 id: index
 title: tctl workflow
+sidebar_label: workflow
 description: How to operate Workflow Executions using tctl.
 tags:
-  - reference
   - tctl
 ---
 

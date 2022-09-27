@@ -1,8 +1,9 @@
 ---
 id: show-env
 title: tctl config show-env
+sidebar_label: show-env
 description: Prints current environment properties.
-  - reference
+tags:
   - tctl
 ---
 

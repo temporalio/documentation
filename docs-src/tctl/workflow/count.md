@@ -4,7 +4,6 @@ title: tctl workflow count
 sidebar_label: count
 description: How to count Workflow Executions using tctl.
 tags:
-  - reference
   - tctl
 ---
 

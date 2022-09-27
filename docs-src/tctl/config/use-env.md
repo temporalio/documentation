@@ -1,9 +1,9 @@
 ---
 id: use-env
 title: tctl config use-env
+sidebar_label: use-env
 description: Switches enviroments in tctl.
 tags:
-  - reference
   - tctl
 ---
 

@@ -1,9 +1,9 @@
 ---
 id: index
 title: tctl alias
+sidebar_label: alias
 description: Creates an alias for a given command.
 tags:
-  - reference
   - tctl
 ---
 

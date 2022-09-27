@@ -1,13 +1,12 @@
 ---
 id: job-id
-title: result
-description: definition for the --result modifier
+title: tctl job-id modifier
+description: definition for the --job-id modifier
+sidebar_label: --job-id
 tags:
   - reference
   - tctl
 ---
-
-### `--job-id`
 
 _Required modifier_
 

@@ -1,13 +1,12 @@
 ---
 id: pagesize
-title: pagesize
-description: definition for the --pagesize modifier
+title: tctl pagesize modifier
+description: definition for the --pagesize
+sidebar_label: --pagesize
 tags:
   - reference
   - tctl
 ---
-
-### `--pagesize`
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
 

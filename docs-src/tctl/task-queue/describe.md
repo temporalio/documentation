@@ -4,7 +4,6 @@ title: tctl taskqueue describe
 sidebar_label: describe
 description: How to describe the poller information of a Task Queue using tctl.
 tags:
-  - reference
   - tctl
 ---
 

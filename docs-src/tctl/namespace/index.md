@@ -1,9 +1,9 @@
 ---
 id: index
 title: tctl namespace
+sidebar_label: namespace
 description: How to operate Namespaces using tctl.
 tags:
-  - reference
   - tctl
 ---
 

@@ -4,7 +4,6 @@ title: tctl workflow cancel
 sidebar_label: cancel
 description: How to cancel a Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

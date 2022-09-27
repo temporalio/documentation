@@ -1,13 +1,12 @@
 ---
 id: memo-key
-title: memo-key
+title: tctl memo-key modifier
 description: definition for the --memo-key modifier
+sidebar_label: --memo-key
 tags:
   - reference
   - tctl
 ---
-
-### `--memo-key`
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.

@@ -4,7 +4,6 @@ title: tctl workflow query
 sidebar_label: query
 description: How to send a Query to a Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

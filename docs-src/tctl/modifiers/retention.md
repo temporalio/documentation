@@ -1,13 +1,12 @@
 ---
 id: retention
-title: retention
+title: tctl retention modifier
 description: definition for the --retention modifier
+sidebar_label: --retention
 tags:
   - reference
   - tctl
 ---
-
-### `--retention`
 
 Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
 

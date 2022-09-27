@@ -1,13 +1,12 @@
 ---
 id: search-attribute-value
-title: search-attribute-value
+title: tctl search-attribute-value modifier
 description: definition for the --search-attribute-value modifier
+sidebar_label: --search-attribute-value
 tags:
   - reference
   - tctl
 ---
-
-### `--search-attribute-value`
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.

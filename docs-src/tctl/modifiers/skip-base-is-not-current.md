@@ -1,12 +1,11 @@
 ---
-id: skip-base-is-not-open
-title: skip-base-is-not-open
-description: definition for the --skip-base-is-not-open modifier
+id: skip-base-is-not-current
+title: tctl skip-base-is-not-current modifier
+description: definition for the --skip-base-is-not-current modifier
+sidebar_label: --skip-base-is-not-current
 tags:
   - reference
   - tctl
 ---
-
-### `--skip-base-is-not-current`
 
 Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be skipped if the base Run is not the current Run.

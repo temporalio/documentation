@@ -4,7 +4,6 @@ title: tctl workflow list
 sidebar_label: list
 description: How to list open or closed Workflow Executions using tctl.
 tags:
-  - reference
   - tctl
 ---
 

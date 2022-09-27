@@ -4,7 +4,6 @@ title: tctl namespace list
 sidebar_label: list
 description: How to list all Namespaces using tctl.
 tags:
-  - reference
   - tctl
 ---
 

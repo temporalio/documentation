@@ -1,13 +1,12 @@
 ---
 id: memo-file
-title: memo-file
+title: tctl memo-file modifier
 description: definition for the --memo-file modifier
+sidebar_label: --memo-file
 tags:
   - reference
   - tctl
 ---
-
-### `--memo-file`
 
 Pass information for a memo from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.

@@ -4,7 +4,6 @@ title: tctl workflow signal
 sidebar_label: signal
 description: How to Signal a Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

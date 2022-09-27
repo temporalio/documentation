@@ -1,9 +1,9 @@
 ---
 id: index
 title: tctl cluster
+sidebar_label: cluster
 description: How to operate Temporal Clusters using tctl.
 tags:
-  - reference
   - tctl
 ---
 

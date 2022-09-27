@@ -1,9 +1,9 @@
 ---
 id: index
 title: tctl data-converter
+sidebar_label: data-converter
 description: How to operate custom Data Converters using tctl.
 tags:
-  - reference
   - tctl
 ---
 

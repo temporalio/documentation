@@ -1,13 +1,12 @@
 ---
 id: reason
-title: reason
+title: tctl reason modifier
 description: definition for the --reason modifier
+sidebar_label: --reason
 tags:
   - reference
   - tctl
 ---
-
-### `--reason`
 
 Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 

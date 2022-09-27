@@ -4,7 +4,6 @@ title: tctl workflow describe
 sidebar_label: describe
 description: How to show information about a Workflow Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

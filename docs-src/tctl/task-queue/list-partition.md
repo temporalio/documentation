@@ -4,7 +4,6 @@ title: tctl task-queue list-partition
 sidebar_label: list-partition
 description: How to list Task Queue partitions and the hostname for partitions using tctl.
 tags:
-  - reference
   - tctl
 ---
 

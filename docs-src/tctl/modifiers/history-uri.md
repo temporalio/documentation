@@ -1,13 +1,12 @@
 ---
 id: history-uri
-title: history-uri
+title: tctl history-uri modifier
 description: definition for the --history-uri modifier
+sidebar_label: --history-uri
 tags:
   - reference
   - tctl
 ---
-
-### `--history-uri`
 
 Specify the URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.

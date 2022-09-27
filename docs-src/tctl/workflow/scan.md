@@ -4,7 +4,6 @@ title: tctl workflow scan
 sidebar_label: scan
 description: How to quickly list Workflow Executions without sorting using tctl.
 tags:
-  - reference
   - tctl
 ---
 

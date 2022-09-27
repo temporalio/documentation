@@ -4,7 +4,6 @@ title: tctl namespace register
 sidebar_label: register
 description: How to register a Namespace using tctl.
 tags:
-  - reference
   - tctl
 ---
 

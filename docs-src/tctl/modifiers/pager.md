@@ -1,13 +1,12 @@
 ---
 id: pager
-title: pager
+title: tctl pager modifier
 description: definition for the --pager modifier
+sidebar_label: --pager
 tags:
   - reference
   - tctl
 ---
-
-### `--pager`
 
 Specifies the pager to use.
 

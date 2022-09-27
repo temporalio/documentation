@@ -1,13 +1,12 @@
 ---
 id: input-parallelism
-title: input-parallelism
+title: tctl input-parallelism modifier
 description: definition for the --input-parallelism modifier
+sidebar_label: --input-parallelism
 tags:
   - reference
   - tctl
 ---
-
-### `--input-parallism`
 
 Specify the number of goroutines to run in parallel.
 Each goroutine processes one line for every second.

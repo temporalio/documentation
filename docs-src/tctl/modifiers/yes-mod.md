@@ -1,12 +1,11 @@
 ---
 id: yes-mod
-title: yes-mod
-description: definition for the --yes modifier
+title: tctl yes-mod modifier
+description: definition for the --yes-mod modifier
+sidebar_label: --yes-mod
 tags:
   - reference
   - tctl
 ---
-
-### `--yes`
 
 Disable the confirmation prompt by automatically approving the prompt.

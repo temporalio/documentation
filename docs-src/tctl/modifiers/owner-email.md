@@ -1,13 +1,12 @@
 ---
 id: owner-email
-title: owner-email
+title: tctl owner-email modifier
 description: definition for the --owner-email modifier
+sidebar_label: --owner-email
 tags:
   - reference
   - tctl
 ---
-
-### `--owner-email`
 
 Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
 

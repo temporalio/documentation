@@ -4,7 +4,6 @@ title: tctl workflow delete
 sidebar_label: delete
 description: Delete a Workflow using tctl.
 tags:
-  - reference
   - tctl
 ---
 

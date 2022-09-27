@@ -4,7 +4,6 @@ title: tctl batch start
 sidebar_label: start
 description: How to start a batch job using tctl.
 tags:
-  - reference
   - tctl
 ---
 

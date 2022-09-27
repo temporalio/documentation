@@ -4,7 +4,6 @@ title: tctl batch terminate
 sidebar_label: terminate
 description: How to terminate a batch job using tctl.
 tags:
-  - reference
   - tctl
 ---
 

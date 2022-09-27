@@ -4,7 +4,6 @@ title: tctl workflow reset-batch
 sidebar_label: reset-batch
 description: How to reset a batch of Workflow Executions using tctl.
 tags:
-  - reference
   - tctl
 ---
 

@@ -4,7 +4,6 @@ title: tctl data-converter web
 sidebar_label: web
 description: How to specify the WebSocket URL of a custom Data Converter using tctl.
 tags:
-  - reference
   - tctl
 ---
 

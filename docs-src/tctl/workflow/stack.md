@@ -4,7 +4,6 @@ title: tctl workflow stack
 sidebar_label: stack
 description: How to query Workflow Executions with --stack-trace using tctl.
 tags:
-  - reference
   - tctl
 ---
 

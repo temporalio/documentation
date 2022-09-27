@@ -1,13 +1,12 @@
 ---
 id: workflow-id-reuse-policy
-title: workflow-id-reuse-policy
-description: definition for the --workflow-id-reuse-policy modifier in tctl
+title: tctl workflow-id-reuse-policy modifier
+description: definition for the --workflow-id-reuse-policy modifier
+sidebar_label: --workflow-id-reuse-policy
 tags:
   - reference
   - tctl
 ---
-
-### `--workflow-id-reuse-policy`
 
 Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).

@@ -4,7 +4,6 @@ title: tctl workflow execute
 sidebar_label: execute
 description: How to start a new Workflow Execution and get Workflow progress using tctl.
 tags:
-  - reference
   - tctl
 ---
 

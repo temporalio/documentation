@@ -4,7 +4,6 @@ title: tctl activity fail
 sidebar_label: fail
 description: How to fail an Activity Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

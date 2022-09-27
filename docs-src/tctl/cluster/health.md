@@ -4,7 +4,6 @@ title: tctl cluster health
 sidebar_label: health
 description: How to check the health of the Frontend Service using tctl.
 tags:
-  - reference
   - tctl
 ---
 

@@ -4,7 +4,6 @@ title: tctl activity complete
 sidebar_label: complete
 description: How to provide a result and complete an Activity Execution using tctl.
 tags:
-  - reference
   - tctl
 ---
 

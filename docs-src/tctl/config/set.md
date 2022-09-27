@@ -1,8 +1,9 @@
 ---
 id: set
 title: tctl config set
+sidebar_label: set
 description: Set configuration values.
-  - reference
+tags:
   - tctl
 ---
 
