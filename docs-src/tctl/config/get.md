@@ -2,7 +2,8 @@
 id: get
 title: tctl config get
 description: Print configuration values.
-  - reference
+sidebar_label: get
+tags:
   - tctl
 ---
 
