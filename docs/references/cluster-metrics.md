@@ -4,7 +4,7 @@ title: Temporal Cluster metrics reference
 description: The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 sidebar_label: Cluster metrics
 tags:
-  - reference
+ - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -85,6 +85,12 @@ Measures the time from creation to delivery for async matched Tasks.
 The larger this latency, the longer Tasks are sitting in the queue waiting for your Workers to pick them up.
 Example: `histogram_quantile(0.95, sum(rate(asyncmatch_latency_bucket{service_name=~"matching"}[5m])) by (operation, le))`
 
+### `no_poller_tasks`
+
+Emitted whenever a task is added to a task queue that has no poller, and is a counter metric.
+This is usually an indicator that either the Worker or the starter programs are using the wrong Task Queue.
+Use `no_poller_tasks_per_tl` to get data per Task Queue.
+
 ## History Service metrics
 
 A History Task is an internal Task in Temporal that is created as part of a transaction to update Workflow state and is processed by the Temporal History service.
@@ -114,7 +120,7 @@ Example: `histogram_quantile($percentile, sum(rate(task_latency_processing_bucke
 
 ### `task_latency`
 
-Measures the Task processing latency for one attempt.
+Measures the in-memory latency across multiple attempts.
 
 ### `task_latency_queue`
 
@@ -159,11 +165,18 @@ Examples:
 
 ### `persistence_errors`
 
-Emitted on persistence error, includes `error_type` tag.
-This metric is a good indicator for connection issues between Temporal Server and the persistence store.
+Shows all persistence errors.
+This metric is a good indicator for connection issues between Temporal Cluster and the persistence store.
 Example:
 
-- Prometheus query for getting the persistence errors by service:
+- Prometheus query for getting all persistence errors by service (history)
+  `sum (rate(persistence_errors{service="$service",service_name="history"}[1m]))`
+
+### `persistence_error_with_type`
+
+Shows all errors related to the persistence store with type, and contain an `error_type` tag.
+
+- Prometheus query for getting persistence errors with type by (history) and by error type:
   `sum(rate(persistence_error_with_type{service="$service",service_name="history"}[1m])) by (error_type)`
 
 ### `persistence_latency`
