@@ -11,10 +11,6 @@ The `tctl config get` command prints the configuration values of the current env
 
 `tctl config get <modifiers>`
 
-The following modifier changes the behavior of this command.
+The following modifier is supported and controls the behavior of the command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
+- [--namespace](/tctl/modifiers/namespace)

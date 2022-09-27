@@ -20,70 +20,17 @@ tctl --namespace your-namespace namespace register
 tctl --ns your-namespace n re
 ```
 
-The following modifiers control the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--ActiveCluster-->
-
-import AC from '../../tctl/modifiers/active-cluster.md'
-
-<AC />
-
-<!--Clusters-->
-
-import Clusters from '../../tctl/modifiers/clusters.md'
-
-<Clusters />
-
-<!--Description-->
-
-import Description from '../../tctl/modifiers/description.md'
-
-<Description />
-
-<!--GlobalNamespace-->
-
-import GN from '../../tctl/modifiers/global-namespace.md'
-
-<GN />
-
-<!--HistoryArchivalState-->
-
-import HAS from '../../tctl/modifiers/history-archival-state.md'
-
-<HAS />
-
-<!--HistoryUri-->
-
-import HURI from '../../tctl/modifiers/history-uri.md'
-
-<HURI />
-
-<!--NamespaceData-->
-
-import ND from '../../tctl/modifiers/namespace-data.md'
-
-<ND />
-
-<!--OwnerEmail-->
-
-import OwnerEmail from '../../tctl/modifiers/owner-email.md'
-
-<OwnerEmail />
-
-<!--Retention-->
-
-import Retention from '../../tctl/modifiers/retention.md'
-
-<Retention />
-
-<!--VisibilityArchivalState-->
-
-import VAS from '../../tctl/modifiers/visibility-archival-state.md'
-
-<VAS />
-
-<!--VisibilityUri-->
-
-import VURI from '../../tctl/modifiers/visibility-uri.md'
-
-<VURI />
+- [--active-cluster](/tctl/modifiers/active-cluster)
+- [--clusters](/tctl/modifiers/clusters)
+- [--description](/tctl/modifiers/description)
+- [--global-namespace](/tctl/modifiers/global-namespace)
+- [--history-archival-state](/tctl/modifiers/history-archival-state)
+- [--history-uri](/tctl/modifiers/history-uri)
+- [--namespace-data](/tctl/modifiers/namespace-data)
+- [--owner-email](tcvtl/modifiers/owner-email)
+- [--retention](/tctl/modifiers/retention)
+- [--visibility-archival-state](/tctl/modifiers/visibility-archival-state)
+- [--visibility-uri](/tctl/modifiers/visibility-uri)

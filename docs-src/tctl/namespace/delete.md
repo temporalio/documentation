@@ -11,16 +11,8 @@ The `tctl namespace delete` command deletes a [Namespace](/concepts/what-is-a-na
 
 `tctl namespace delete`
 
-The following modifiers control the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--Yes-->
-
-import Yes from '../../tctl/modifiers/yes-mod.md'
-
-<Yes />
+- [--namespace](/tctl/modifiers/namespace)
+- [--yes-mod](/tctl/modifiers/yes-mod)

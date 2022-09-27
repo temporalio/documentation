@@ -11,16 +11,8 @@ The `tctl config show-env` command prints the properties of the given environmen
 
 `tctl config show-env <modifiers>`
 
-The following modifiers change the behavior of this command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--Output-->
-
-import output from '../../tctl/modifiers/output.md'
-
-<Output />
+- [--namespace](/tctl/modifiers/namespace)
+- [--output](/tctl/modifiers/output)

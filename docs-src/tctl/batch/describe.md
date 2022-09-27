@@ -13,16 +13,8 @@ The `tctl batch describe` command describes the progress of a batch job.
 
 `tctl batch describe --job-id <value>`
 
-The following modifier controls the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--JobId-->
-
-import JobId from '../../tctl/modifiers/job-id.md'
-
-<JobId />
-
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
+- [--job-id](/tctl/modifiers/job-id)
+- [--namespace](/tctl/modifiers/namespace)

@@ -11,10 +11,6 @@ The `tctl config current-env` command prints the name of the current environment
 
 `tctl config current-env <modifiers>`
 
-The follow modifier changes the behavior of this command.
+The following modifier is supported and controls the behavior of the command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
+- [--namespace](/tctl/modifiers/namespace)

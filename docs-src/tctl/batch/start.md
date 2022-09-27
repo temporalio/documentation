@@ -11,52 +11,14 @@ The `tctl batch start` command starts a batch job.
 
 `tctl batch start --query <value> <modifiers>`
 
-The following modifiers control the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--BatchType-->
-
-import BatchType from '../../tctl/modifiers/batch-type.md'
-
-<BatchType />
-
-<!--Input-->
-
-import Input from '../../tctl/modifiers/input.md'
-
-<Input />
-
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--Query-->
-
-import Query from '../../tctl/modifiers/query.md'
-
-<Query />
-
-<!--Reason-->
-
-import Reason from '../../tctl/modifiers/reason.md'
-
-<Reason />
-
-<!--RPS-->
-
-import RPS from '../../tctl/modifiers/rps.md'
-
-<RPS />
-
-<!--SignalName-->
-
-import SignalName from '../../tctl/modifiers/signal-name.md'
-
-<SignalName />
-
-<!--Yes-->
-
-import Yes from '../../tctl/modifiers/yes-mod.md'
-
-<Yes />
+- [--batch-type](/tctl/modifiers/batch-type)
+- [--input](/tctl/modifiers/input)
+- [--namespace](/tctl/modifiers/namespace)
+- [--query](/tctl/modifiers/query)
+- [--reason](/tctl/modifiers/reason)
+- [--rps](/tctl/modifiers/rps)
+- [--signal-name](/tctl/modifiers/signal-name)
+- [--yes-mod](/tctl/modifiers/yes-mod)

@@ -13,13 +13,10 @@ The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
 Alias: `d`
 
-The following modifier controls the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/yes-mod.md'
-
-<Namespace />
+- [--namespace](/tctl/modifiers/namespace)
 
 ### `--namespace-id`
 

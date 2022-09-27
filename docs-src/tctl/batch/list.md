@@ -13,16 +13,8 @@ The `tctl batch list` command lists all batch jobs.
 
 `tctl batch list [<modifiers>]`
 
-The following modifier controls the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--PageSize-->
-
-import PageSize from '../../tctl/modifiers/pagesize.md'
-
-<PageSize />
+- [--namespace](/tctl/modifiers/namespace)
+- [--pagesize](/tctl/modifiers/pagesize)

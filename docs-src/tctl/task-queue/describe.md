@@ -13,25 +13,12 @@ The `tctl taskqueue describe` command describes the poller information of a [Tas
 
 `tctl taskqueue describe <modifiers>`
 
-The following modifiers control the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Fields-->
-
-import Fields from '../../tctl/modifiers/fields.md'
-
-<Fields />
-
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--Output-->
-
-import Output from '../../tctl/modifiers/namespace.md'
-
-<Output />
+- [--fields](/tctl/modifiers/fields)
+- [--namespace](/tctl/modifiers/namespace)
+- [--output](/tctl/modifiers/output)
 
 <!--TaskQueue-->
 

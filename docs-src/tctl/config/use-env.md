@@ -11,10 +11,6 @@ The `tctl config use-env` command switches the environment that tctl is operatin
 
 `tctl config use-env <modifiers>`
 
-The following modifier changes the behavior of this command.
+The following modifier is supported and controls the behavior of the command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
+- [--namespace](/tctl/modifiers/namespace)
