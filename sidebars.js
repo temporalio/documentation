@@ -185,7 +185,7 @@ module.exports = {
     },
     "cluster-deployment-guide",
     "server/security",
-    {
+    /* {
       type: "category",
       label: "tctl",
       collapsible: true,
@@ -339,7 +339,7 @@ module.exports = {
           ],
         },
       ],
-    },
+    }, */
     "web-ui",
     {
       type: "category",
