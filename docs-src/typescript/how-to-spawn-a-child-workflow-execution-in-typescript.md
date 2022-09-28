@@ -7,7 +7,7 @@ tags:
   - typescript
 ---
 
-To start a Child Workflow and return a client-side handle that implements a Child Workflow interface, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.childworkflowhandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 
 To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
 
