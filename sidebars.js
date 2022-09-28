@@ -49,6 +49,7 @@ module.exports = {
         "cloud/how-to-manage-certificates-in-temporal-cloud",
         "cloud/how-to-manage-namespaces-in-temporal-cloud",
         "cloud/how-to-monitor-temporal-cloud-metrics",
+        "cloud/what-are-the-default-limits-for-temporal-cloud",
         {
           type: "category",
           label: "tcld",
