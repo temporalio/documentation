@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To send a Signal to a Workflow Execution from a Client, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) API in the Workflow interface, from the Client code.
+To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) API in the Workflow interface.
 
 ```python
 await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
