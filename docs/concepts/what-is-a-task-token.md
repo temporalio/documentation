@@ -8,6 +8,9 @@ tags:
   - explanation
 ---
 
-A Task Token is a unique Id that correlates to an [Activity Execution](/concepts/what-is-an-activity-execution).
+A Task Token is a unique identifier for an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-Activity Execution completion calls take either a single Task Token, or the [Namespace](/concepts/what-is-a-namespace), [Workflow Id](/concepts/what-is-a-workflow-id), and [Activity Id](/concepts/what-is-an-activity-id) as a set of arguments.
+[Asynchronous Activity Completion](/concepts/what-is-asynchronous-activity-completion/) calls take either of the following as arguments:
+
+- a Task Token, or
+- an [Activity Id](/concepts/what-is-an-activity-id), a [Workflow Id](/concepts/what-is-a-workflow-id), and optionally a [Run Id](/concepts/what-is-a-run-id/).
