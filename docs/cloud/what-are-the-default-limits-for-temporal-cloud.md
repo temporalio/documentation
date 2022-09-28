@@ -14,7 +14,7 @@ Some of these limits are configurable.
 
 ## Account default limits
 
-|                                      | Default                | Max (self-serve) | Max (system)                         |
+|                                      | Default                | Maximum (self-serve) | Maximum (system)                         |
 | ------------------------------------ | ---------------------- | ---------------- | ------------------------------------ |
 | Audit Log Retention Period           | 7 days                 |                  | 7 days                               |
 | Namespaces                           | 10                     | 10               | 1,000                                |
@@ -25,7 +25,7 @@ Some of these limits are configurable.
 
 ## Namespace default limits
 
-|                          | Default                                                | Max (self-serve) | Max (system)                         |
+|                          | Default                                                | Maximum (self-serve) | Maximum (system)                         |
 | ------------------------ | ------------------------------------------------------ | ---------------- | ------------------------------------ |
 | Actions per second       | 100                                                    | 100              | unlimited                            |
 | Certificates             | 32-KB payload or 16 certificates, whichever is smaller |                  | 32-KB payload or 16 certificates     |
