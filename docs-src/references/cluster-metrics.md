@@ -185,7 +185,7 @@ Example:
 - Prometheus query for getting latency by percentile:
   `histogram_quantile($percentile, sum(rate(persistence_latency_bucket{service="$service" service_name="history"}[1m])) by (operation, le))`
 
-## Relevant SDK Metrics for Workflows and Activities
+## Relevant SDK metrics for Workflows and Activities
 
 - To monitor Task Queue backlog, look at the `schedule_to_start` latency metrics; for example, the `temporal_workflow_task_schedule_to_start_latency_seconds_bucket` and `temporal_activity_schedule_to_start_latency_seconds_bucket` metrics.
 - For Activity Workers, use the `temporal_worker_task_slots_available` SDK metric with label `worker_type="ActivityWorker"` to help you tune your `WorkerOptions#getMaxConcurrentActivityExecutionSize` setting.
