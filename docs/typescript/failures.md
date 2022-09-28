@@ -19,12 +19,12 @@ If, for example, a TypeScript Workflow starts a Java Child Workflow which calls 
 <!--TODO: use snipsync-->
 
 ```ts
-import { executeChild } from '@temporalio/workflow';
 import {
   ActivityFailure,
   ApplicationFailure,
   ChildWorkflowFailure,
 } from '@temporalio/common';
+import { executeChild } from '@temporalio/workflow';
 
 // Define the TypeScript version of the Java Workflow interface
 // to get a type safe child WorkflowHandle
@@ -117,8 +117,8 @@ As explained above, cancellation might not be the immediate cause of failure —
 ```ts
 import {
   CancellationScope,
-  proxyActivities,
   isCancellation,
+  proxyActivities,
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 

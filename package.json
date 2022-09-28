@@ -15,7 +15,7 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "gen": "./assemble.js",
-    "dprint": "dprint output-format-times"
+    "dprint": "dprint fmt"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
