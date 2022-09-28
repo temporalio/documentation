@@ -20,7 +20,7 @@ Some of these limits are configurable.
 ## Namespace default limits
 
 | | Default | Max (self-serve) | Max (system) |
-| --- |  --- | --- | --- |
+| --- | --- | --- | --- |
 | Actions per second | 100 | 100 | unlimited |
 | Certificates | 32-KB payload or 16 certificates, whichever is smaller | | 32-KB payload or 16 certificates |
 | Concurrent Task pollers | 2,000 | 100,000 | 100,000 |
