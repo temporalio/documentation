@@ -5,6 +5,8 @@ sidebar_label: Cloud limits
 description: The default experience in Temporal Cloud has limits, some of which are configurable.
 ---
 
+<!--- What are the default limits for Temporal Cloud? --->
+
 The default experience in Temporal Cloud has the following limits.
 Some of these limits are configurable.
 
