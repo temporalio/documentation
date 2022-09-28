@@ -19,7 +19,7 @@ See also [`tctl workflow list`](/tctl/workflow/list).
 The following modifiers control the behavior of the command.
 
 - [--fields](/tctl/modifiers/fields)
-- [--limit](tctl/modifiers/limit)
+- [--limit](/tctl/modifiers/limit)
 - [--no-pager](/tctl/modifiers/no-pager)
 - [--output](/tctl/modifiers/output)
 - [--pager](/tctl/modifiers/pager)

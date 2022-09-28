@@ -23,7 +23,7 @@ Always include required modifiers when executing this command.
 - [--fields](/tctl/modifiers/fields)
 - [--input](/tctl/modifiers/input)
 - [--input-file](/tctl/modifiers/input-file)
-- [--limit](tctl/modifiers/limit)
+- [--limit](/tctl/modifiers/limit)
 - [--max-field-length](/tctl/modifiers/max-field-length)
 - [--memo-key](/tctl/modifiers/memo-key)
 - [--memo](/tctl/modifiers/memo)

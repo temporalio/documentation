@@ -21,7 +21,7 @@ The following modifiers are supported and control the behavior of the command.
 
 - [--archived](/tctl/modifiers/archived)
 - [--fields](/tctl/modifiers/fields)
-- [--limit](tctl/modifiers/limit)
+- [--limit](/tctl/modifiers/limit)
 - [--no-pager](/tctl/modifiers/no-pager)
 - [--output](/tctl/modifiers/output)
 - [--pager](/tctl/modifiers/pager)

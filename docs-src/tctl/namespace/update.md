@@ -21,7 +21,7 @@ Always include required modifiers when executing this command.
 - [--history-archival-state](/tctl/modifiers/history-archival-state)
 - [--history-uri](/tctl/modifiers/history-uri)
 - [--namespace-data](/tctl/modifiers/namespace-data)
-- [--owner-email](tctl/modifiers/owner-email)
+- [--owner-email](/tctl/modifiers/owner-email)
 - [--reason](/tctl/modifiers/reason)
 - [--remove-bad-binary](/tctl/modifiers/remove-bad-binary)
 - [--retention](/tctl/modifiers/retention)

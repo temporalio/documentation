@@ -17,7 +17,7 @@ The following modifiers control the behavior of the command.
 
 - [--fields](/tctl/modifiers/fields)
 - [--follow](/tctl/modifiers/follow)
-- [--limit](tctl/modifiers/limit)
+- [--limit](/tctl/modifiers/limit)
 - [--max-field-length](/tctl/modifiers/max-field-length)
 - [--no-pager](/tctl/modifiers/no-pager)
 - [--output](/tctl/modifiers/output)
