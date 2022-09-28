@@ -1,18 +1,19 @@
-import {Client, LogLevel} from "@notionhq/client";
+import {Client} from "@notionhq/client";
 import fs from "fs-extra";
+import path from "path";
 
 export async function getQuestionsFromNotion(config) {
-  console.log("getting questions from Notion...");
+  console.log("getting pages from the Coverage Board...");
+  const notionCreds = await fs.readJSON("./secure/notion-creds.json");
   const notion = new Client({
-    auth: config.notion_key,
-    // logLevel: LogLevel.DEBUG,
+    auth: notionCreds.notion_key,
   });
   const notionPages = [];
   let hasMore = true;
   let cursor = undefined;
   while (hasMore) {
     const pages = await notion.databases.query({
-      database_id: config.notion_db,
+      database_id: notionCreds.notion_db,
       page_size: 100,
       start_cursor: cursor,
       filter: {
@@ -30,7 +31,11 @@ export async function getQuestionsFromNotion(config) {
     cursor = pages.next_cursor;
     notionPages.push(...pages.results);
   }
-  console.log("writing questions to file...");
-  await fs.writeJSON(config.notion_store_file_name, notionPages);
+  const writePath = path.join(
+    config.root_dir,
+    config.temp_write_dir,
+    config.notion_store_file_name
+  );
+  await fs.writeJSON(writePath, notionPages);
   return;
 }
