@@ -28,12 +28,12 @@ In this section you can find the following:
 - [How to develop Signals](#signals)
 - [How to develop Queries](#queries)
 - [How to start a Child Workflow Execution](#child-workflows)
-- [How to start a Temporal Cron Job](#cron-jobs)
+- [How to start a Temporal Cron Job](#temporal-cron-jobs)
 - [How to use Continue-As-New](#continue-as-new)
-- [How to set Workflow timeouts & retries](#workflow-timeouts--retries)
-- [How to set Activity timeouts & retries](#activity-timeouts--retries)
+- [How to set Workflow timeouts & retries](#workflow-timeouts)
+- [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
-- [How to Asynchronously complete an Activity](#async-activity-completion)
+- [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 
 ## Signals
 
@@ -2884,6 +2884,86 @@ workflow.continue_as_new("your-workflow-name")
 <TabItem value="typescript">
 
 Content is currently unavailable.
+
+</TabItem>
+</Tabs>
+
+## Timers
+
+A Workflow can set a durable timer for a fixed time period.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
+
+A Workflow can sleep for months.
+Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
+
+Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a Timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.
+
+```go
+timer := workflow.NewTimer(timerCtx, duration)
+```
+
+To set a sleep duration in Go, use the [`sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing.
+A zero or negative sleep duration causes the function to return immediately.
+
+```go
+sleep = workflow.Sleep(ctx, 10*time.Second)
+```
+
+For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
+
+</TabItem>
+<TabItem value="java">
+
+To set a Timer in Java, use [`sleep()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep) and pass the number of seconds you want to wait before continuing.
+
+```java
+sleep(5);
+```
+
+</TabItem>
+<TabItem value="php">
+
+To set a Timer in PHP, use `Workflow::timer()` and pass the number of seconds you want to wait before continuing.
+
+The following example yields a sleep method for 5 minutes.
+
+```php
+yield Workflow::timer(300); // sleep for 5 minutes
+```
+
+You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.
+
+</TabItem>
+<TabItem value="python">
+
+To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
+
+```python
+await asyncio.sleep(5)
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+To set a Timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how long you want to wait before continuing (using an [ms-formatted string](https://www.npmjs.com/package/ms) or number of milliseconds).
+
+```typescript
+import {sleep} from "@temporalio/workflow";
+
+export async function sleepWorkflow(): Promise<void> {
+  await sleep("2 months");
+  console.log("done sleeping");
+}
+```
 
 </TabItem>
 </Tabs>

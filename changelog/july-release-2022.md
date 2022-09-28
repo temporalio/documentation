@@ -1,8 +1,6 @@
 ---
 slug: july-release-2022
 title: July 25 2022
-tags:
-  - docs-changelog
 date: 2022-07-25T00:00:00Z
 ---
 

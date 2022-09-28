@@ -27,10 +27,10 @@ In this section you can find the following:
 
 - [How to run a dev Cluster](#run-a-dev-cluster)
 - [How to add your SDK](#add-your-sdk)
-- [How to create a Temporal Client](#create-temporal-clients)
+- [How to create a Temporal Client](#connect-to-a-cluster)
 - [How to develop a Workflow](#develop-workflows)
 - [How to develop an Activity](#develop-activities)
-- [How to start an Activity Execution](#start-activity-execution)
+- [How to start an Activity Execution](#activity-execution)
 - [How to run a Worker Process](#run-worker-processes)
 - [How to start a Workflow Execution](#start-workflow-execution)
 
