@@ -422,7 +422,6 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
-
 ```
 
 After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
@@ -437,7 +436,6 @@ WorkflowClient client = WorkflowClient.newInstance(
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
                     .build());
-
 ```
 
 For more information, see [WorkflowClientOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html).
@@ -484,19 +482,19 @@ Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) m
 Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
 
 ```python
-    client = await Client.connect(
-        #  target_host for the Temporal Cloud
-        "your-custom-namespace.tmprl.cloud:7233",
-        # target_host for Temporalite
-        # "127.0.0.1:7233"
-        namespace="your-custom-namespace",
-        tls=TLSConfig(
-            client_cert=client_cert,
-            client_private_key=client_private_key,
-            # domain=domain
-            # server_root_ca_cert=server_root_ca_cert,
-        ),
-    )
+client = await Client.connect(
+    #  target_host for the Temporal Cloud
+    "your-custom-namespace.tmprl.cloud:7233",
+    # target_host for Temporalite
+    # "127.0.0.1:7233"
+    namespace="your-custom-namespace",
+    tls=TLSConfig(
+        client_cert=client_cert,
+        client_private_key=client_private_key,
+        # domain=domain
+        # server_root_ca_cert=server_root_ca_cert,
+    ),
+)
 ```
 
 </TabItem>
@@ -1264,20 +1262,20 @@ When an Activity implementation that extends `DynamicActivity` is registered, it
 The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
 
 ```java
- // Dynamic Activity implementation
-  public static class DynamicGreetingActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-      return activityType
-          + ": "
-          + args.get(0, String.class)
-          + " "
-          + args.get(1, String.class)
-          + " from: "
-          + args.get(2, String.class);
-    }
-  }
+// Dynamic Activity implementation
+ public static class DynamicGreetingActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
 ```
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
@@ -1476,20 +1474,20 @@ public interface YourActivities {
 The `execute` method in the dynamic Activity interface implementation takes in `EncodedValues` that are inputs to the Activity Execution, as shown in the following example.
 
 ```java
- // Dynamic Activity implementation
-  public static class DynamicActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-      return activityType
-          + ": "
-          + args.get(0, String.class)
-          + " "
-          + args.get(1, String.class)
-          + " from: "
-          + args.get(2, String.class);
-    }
-  }
+// Dynamic Activity implementation
+ public static class DynamicActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
 ```
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
@@ -1624,7 +1622,16 @@ async def say_hello(name: str) -> str:
 
 In TypeScript, the return value is always a Promise.
 
+<<<<<<< HEAD
+
+````typescript
+import type * as activities from './activities';
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+=======
 In the following example, `Promise<string>` is the return value.
+>>>>>>> master
 
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
@@ -1658,7 +1665,7 @@ registerOptions := activity.RegisterOptions{
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
-```
+````
 
 </TabItem>
 <TabItem value="java">
@@ -2532,7 +2539,7 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
+import {NativeConnection, Worker} from "@temporalio/worker";
 import * as activities from "./activities";
 
 async function run() {
@@ -2646,12 +2653,12 @@ You can pass any number of dependencies in the Activity implementation construct
 The following example shows how to register a Workflow and an Activity with a Worker.
 
 ```java
-    Worker worker = workerFactory.newWorker("your_task_queue");
-    ...
-    // Register Workflow
-    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-    // Register Activity
-    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+Worker worker = workerFactory.newWorker("your_task_queue");
+...
+// Register Workflow
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+// Register Activity
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
 
 When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
@@ -2881,7 +2888,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
   ```
 
 - Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The `WorkflowClient`<https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+  The `WorkflowClient` <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
 
   The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
 
@@ -3163,7 +3170,6 @@ $yourWorkflow = $workflowClient->newWorkflowStub(
 );
 
 $result = $yourWorkflow->workflowMethod();
-
 ```
 
 2. A Task Queue name must be provided as a parameter when creating a Worker.
@@ -3412,7 +3418,7 @@ interface SubscriptionWorkflowInterface
 You can also set the Workflow Id as a constant, for example:
 
 ```php
- public const WORKFLOW_ID = Your-Workflow-Id
+public const WORKFLOW_ID = Your-Workflow-Id
 ```
 
 </TabItem>
