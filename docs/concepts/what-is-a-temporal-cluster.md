@@ -67,9 +67,10 @@ Any software that can pull metrics that supports the same format could be used, 
 Temporal has built-in [Visibility](/concepts/what-is-visibility) features.
 To enhance this feature, Temporal supports an [integration with Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 
+- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported in all Temporal versions
-- Both versions are explicitly supported with AWS Elasticsearch
+- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
+- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
 
 ### mTLS encryption
 

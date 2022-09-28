@@ -26,6 +26,7 @@ This section covers features related to viewing the state of the application, in
 - [Tracing](#tracing)
 - [Logging](#logging)
 - [Visibility](#visibility)
+- [Replays](#replays)
 
 ## Metrics
 
@@ -109,12 +110,12 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
 
 ```typescript
-  telemetryOptions: {
-      metrics: {
-        prometheus: { bindAddress: '0.0.0.0:9464' },
-      },
-      logging: { forward: { level: 'DEBUG' } },
+telemetryOptions: {
+    metrics: {
+      prometheus: { bindAddress: '0.0.0.0:9464' },
     },
+    logging: { forward: { level: 'DEBUG' } },
+  },
 ```
 
 </TabItem>
@@ -183,8 +184,8 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   import {propagation} from "@opentelemetry/api";
   import {
     CompositePropagator,
-    W3CTraceContextPropagator,
     W3CBaggagePropagator,
+    W3CTraceContextPropagator,
   } from "@opentelemetry/core";
   import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
 
@@ -317,7 +318,7 @@ Sinks are written as objects with methods. Similar to Activities, they are decla
 
 <details>
   <summary>Comparing Sinks, Activities and Interceptors</summary>
-  
+
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
 
@@ -429,7 +430,7 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import {DefaultLogger, Runtime} from "@temporalio/worker";
 
 const logger = new DefaultLogger("WARN", ({level, message}) => {
   console.log(`Custom logger: ${level} — ${message}`);

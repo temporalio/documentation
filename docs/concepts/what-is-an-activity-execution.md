@@ -10,7 +10,7 @@ tags:
 
 An Activity Execution is the full chain of [Activity Task Executions](/concepts/what-is-an-activity-task-execution).
 
-- [How to spawn an Activity Execution](/application-development/foundations#start-activity-execution)
+- [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 

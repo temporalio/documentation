@@ -6,6 +6,14 @@ tags:
   - php
 ---
 
+:::info Try the Application development guide
+
+The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+
+However, if you can't find what you are looking for there, we recommend checking this doc set as well.
+
+:::
+
 If a Workflow execution has been stuck at a state for longer than an expected period of time, you
 might want to query the current call stack. You can use the Temporal CLI to perform this query. For
 example:

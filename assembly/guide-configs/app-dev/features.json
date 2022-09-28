@@ -247,86 +247,36 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/workflow-timeouts-and-retries"
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/workflow-execution-timeout"
+      "id": "app-dev-context/workflow-timeouts"
     },
     {
       "type": "langtabs",
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-workflow-execution-timeout-in-go"
+          "id": "go/how-to-set-workflow-timeouts-in-go"
         },
         {
           "lang": "java",
-          "id": "java/how-to-set-a-workflow-execution-timeout-in-java"
+          "id": "java/how-to-set-workflow-timeouts-in-java"
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-workflow-execution-timeout-in-php"
+          "id": "php/how-to-set-workflow-timeouts-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-workflow-timeouts-in-python"
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-set-workflow-timeouts-in-typescript"
         }
       ]
     },
     {
       "type": "h3",
-      "id": "app-dev-context/workflow-run-timeout"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-set-a-workflow-run-timeout-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-set-a-workflow-run-timeout-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "php/how-to-set-a-workflow-run-timeout-in-php"
-        },
-        {
-          "lang": "typescript",
-          "id": "none"
-        }
-      ]
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/workflow-task-timeout"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-set-a-workflow-task-timeout-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-set-a-workflow-task-timeout-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "php/how-to-set-a-workflow-task-timeout-in-php"
-        },
-        {
-          "lang": "typescript",
-          "id": "none"
-        }
-      ]
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/workflow-retry-policy"
+      "id": "app-dev-context/workflow-retries"
     },
     {
       "type": "langtabs",
@@ -344,105 +294,47 @@
           "id": "php/how-to-set-workflow-retry-options-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-set-workflow-retry-options-in-python"
+        },
+        {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-set-workflow-retry-options-in-typescript"
         }
       ]
     },
     {
       "type": "h2",
-      "id": "app-dev-context/activity-timeouts-and-retries"
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/schedule-to-close"
+      "id": "app-dev-context/activity-timeouts"
     },
     {
       "type": "langtabs",
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-schedule-to-close-timeout-in-go"
+          "id": "go/how-to-set-activity-timeouts-in-go"
         },
         {
           "lang": "java",
-          "id": "java/how-to-set-a-schedule-to-close-timeout-in-java"
+          "id": "java/how-to-set-activity-timeouts-in-java"
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-schedule-to-close-timeout-in-php"
+          "id": "php/how-to-set-activity-timeouts-in-php"
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-a-schedule-to-close-timeout-in-python"
+          "id": "python/how-to-set-activity-timeouts-in-python"
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-set-a-schedule-to-close-timeout-in-typescript"
+          "id": "typescript/how-to-set-activity-timeouts-in-typescript"
         }
       ]
     },
     {
       "type": "h3",
-      "id": "app-dev-context/start-to-close"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-set-a-start-to-close-timeout-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-set-a-start-to-close-timeout-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "php/how-to-set-a-start-to-close-timeout-in-php"
-        },
-        {
-          "lang": "python",
-          "id": "python/how-to-set-a-start-to-close-timeout-in-python"
-        },
-        {
-          "lang": "typescript",
-          "id": "typescript/how-to-set-a-start-to-close-timeout-in-typescript"
-        }
-      ]
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/schedule-to-start"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-set-a-schedule-to-start-timeout-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-set-a-schedule-to-start-timeout-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "php/how-to-set-a-schedule-to-start-timeout-in-php"
-        },
-        {
-          "lang": "python",
-          "id": "python/how-to-set-a-schedule-to-start-timeout-in-python"
-        },
-        {
-          "lang": "typescript",
-          "id": "typescript/how-to-set-a-schedule-to-start-timeout-in-typescript"
-        }
-      ]
-    },
-    {
-      "type": "h3",
-      "id": "app-dev-context/activity-retry-policy"
+      "id": "app-dev-context/activity-retries"
     },
     {
       "type": "langtabs",
@@ -632,6 +524,35 @@
         {
           "lang": "typescript",
           "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/timers"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-timers-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-timers-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-set-timers-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-timers-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-timers-in-typescript"
         }
       ]
     },

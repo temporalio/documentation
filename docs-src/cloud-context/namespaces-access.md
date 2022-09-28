@@ -4,7 +4,7 @@ title: How to access a Namespace in Temporal Cloud
 sidebar_label: Access Namespaces
 description: You can access a Namespace in Temporal Cloud via gRPC and HTTPS endpoints.
 tags:
-  - how-to
+  - guide-context
 ---
 
 <!--- How to access a Namespace in Temporal Cloud --->
