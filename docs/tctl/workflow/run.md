@@ -187,7 +187,7 @@ tctl workflow run --memo_file <filename>
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) key.
 For multiple keys, concatenate them and use pipes (`|`) as separators.
 
-To list valid keys, use the `tctl cluster get-search-attr` command.
+To list valid keys, use the `tctl cluster get-search-attributes` command.
 
 **Example**
 
@@ -201,7 +201,7 @@ Specify a [Search Attribute](/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
 If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
 
-To list valid keys and value types, use the `tctl cluster get-search-attr` command.
+To list valid keys and value types, use the `tctl cluster get-search-attributes` command.
 
 **Example**
 
