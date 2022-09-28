@@ -19,26 +19,7 @@ Alias: `d`
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-<!--Raw-->
-
-import Raw from '../../tctl/modifiers/raw.md'
-
-<Raw />
-
-<!--ResetPointsOnly-->
-
-import ResetPointsOnly from '../../tctl/modifiers/reset-points-only.md'
-
-<ResetPointsOnly />
-
-<!--RunId-->
-
-import RunId from '../../tctl/modifiers/run-id.md'
-
-<RunId />
-
-<!--WorkflowId-->
-
-import WorkflowId from '../../tctl/modifiers/workflow-id.md'
-
-<WorkflowId />
+- [--raw](/tctl/modifiers/raw)
+- [--reset-points-only](/tctl/modifiers/reset-points-only)
+- [--run-id](/tctl/modifiers/run-id)
+- [--workflow-id](/tctl/modifiers/workflow-id)

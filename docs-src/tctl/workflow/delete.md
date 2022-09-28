@@ -11,22 +11,9 @@ The `tctl workflow delete` command deletes a [Workflow Execution](/concepts/what
 
 `tctl workflow delete`
 
-The following modifiers control the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--RunId-->
-
-import RunId from '../../tctl/modifiers/run-id.md'
-
-<RunId />
-
-<!--WorkflowId-->
-
-import WorkflowId from '../../tctl/modifiers/workflow-id.md'
-
-<WorkflowId />
+- [--namespace](/tctl/modifiers/namespace)
+- [--run-id](/tctl/modifiers/run-id)
+- [--workflow-id](/tctl/modifiers/workflow-id)

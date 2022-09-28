@@ -19,21 +19,6 @@ Always include required modifiers when executing this command.
 - [--fields](/tctl/modifiers/fields)
 - [--namespace](/tctl/modifiers/namespace)
 - [--output](/tctl/modifiers/output)
-
-<!--TaskQueue-->
-
-import TaskQueue from '../../tctl/modifiers/task-queue.md'
-
-<TaskQueue />
-
-<!--TaskQueueType-->
-
-import TQT from '../../tctl/modifiers/task-queue-type.md'
-
-<TQT />
-
-<!--TimeFormat-->
-
-import TimeFormat from '../../tctl/modifiers/time-format.md'
-
-<TimeFormat />
+- [--task-queue](/tctl/modifiers/task-queue)
+- [--task-queue-type](/tctl/modifiers/task-queue-time)
+- [--time-format](/tctl/modifiers/time-format)

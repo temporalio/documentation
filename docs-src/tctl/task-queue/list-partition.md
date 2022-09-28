@@ -11,22 +11,9 @@ The `tctl task-queue list-partition` command lists the partitions of a [Task Que
 
 `tctl task-queue list-partition --task-queue <value>`
 
-The following modifier controls the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--Namespace-->
-
-import Namespace from '../../tctl/modifiers/namespace.md'
-
-<Namespace />
-
-<!--Output-->
-
-import Output from '../../tctl/modifiers/output.md'
-
-<Output />
-
-<!--TaskQueue-->
-
-import TaskQueue from '../../tctl/modifiers/task-queue.md'
-
-<TaskQueue />
+- [--namespace](/tctl/modifiers/namespace)
+- [--output](/tctl/modifiers/output)
+- [--task-queue](/tctl/modifiers/task-queue)

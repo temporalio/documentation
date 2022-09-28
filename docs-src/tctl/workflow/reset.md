@@ -15,44 +15,10 @@ Resetting a Workflow allows the process to be resumed from a certain point witho
 
 The following modifiers control the behavior of the command.
 
-<!--EventId-->
-
-import EventId from '../../tctl/modifiers/event-id.md'
-
-<EventId />
-
-<!--Reason-->
-
-import Reason from '../../tctl/modifiers/reason.md'
-
-<Reason />
-
-<!--ResetType-->
-
-import ResetType from '../../tctl/modifiers/reset-type.md'
-
-<ResetType />
-
-<!--ResetReapplyType-->
-
-import RRT from '../../tctl/modifiers/reset-reapply-type.md'
-
-<RRT />
-
-<!--ResetBadBinaryChecksum-->
-
-import RBBC from '../../tctl/modifiers/reset-bad-binary-checksum.md'
-
-<RRBC />
-
-<!--RunId-->
-
-import RunId from '../../tctl/modifiers/run-id.md'
-
-<RunId />
-
-<!--WorkflowId  -->
-
-import WorkflowId from '../../tctl/modifiers/workflow-id.md'
-
-<WorkflowId />
+- [--event-id](/tctl/modifiers/event-id)
+- [--reason](/tctl/modifiers/reason)
+- [--reset-type](/tctl/modifiers/reset-type)
+- [--reset-reapply-type](/tctl/modifiers/reset-reapply-type)
+- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
+- [--run-id](/tctl/modifiers/run-id)
+- [--workflow-id](/tctl/modifiers/workflow-id)

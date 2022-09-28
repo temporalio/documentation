@@ -17,16 +17,8 @@ See also [`tctl workflow terminate`](/tctl/workflow/terminate).
 
 `tctl workflow cancel <modifiers>`
 
-The following modifiers control the behavior of the command.
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
 
-<!--WorkflowId-->
-
-import WorkflowId from '../../tctl/modifiers/workflow-id.md'
-
-<WorkflowId />
-
-<!--RunId-->
-
-import RunId from '../../tctl/modifiers/run-id.md'
-
-<RunId />
+- [--run-id](/tctl/modifiers/run-id)
+- [--workflow-id](/tctl/modifiers/workflow-id)

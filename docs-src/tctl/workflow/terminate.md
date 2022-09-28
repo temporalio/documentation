@@ -18,20 +18,6 @@ See also [`tctl workflow cancel`](/tctl/workflow/cancel).
 
 The following modifiers control the behavior of the command.
 
-<!--WorkflowId-->
-
-import WorkflowId from '../../tctl/modifiers/workflow-id.md'
-
-<WorkflowId />
-
-<!--RunId-->
-
-import RunId from '../../tctl/modifiers/run-id.md'
-
-<RunId />
-
-<!--Reason-->
-
-import Reason from '../../tctl/modifiers/reason.md'
-
-<Reason />
+- [--reason](/tctl/modifiers/reason)
+- [--run-id](tctl/modifiers/run-id)
+- [--workflow-id](/tctl/modifiers/workflow-id)

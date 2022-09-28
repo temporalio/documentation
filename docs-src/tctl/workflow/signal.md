@@ -88,32 +88,8 @@ tctl workflow signal --workflow-id [modifiers]
 The following modifiers control the behavior of the command.
 Make sure to include required modifiers in all command executions.
 
-<!--Input-->
-
-import Input from '../../tctl/modifiers/input.md'
-
-<Input />
-
-<!--InputFile-->
-
-import InputFile from '../../tctl/modifiers/input-file.md'
-
-<InputFile />
-
-<!--Name-->
-
-import Name from '../../tctl/modifiers/name.md'
-
-<Name />
-
-<!--RunId-->
-
-import RunId from '../../tctl/modifiers/run-id.md'
-
-<RunId />
-
-<!--WorkflowId-->
-
-import WorkflowId from '../../tctl/modifiers/workflow-id.md'
-
-<WorkflowId />
+- [--input](/tctl/modifiers/input)
+- [--input-file](/tctl/modifiers/input-file)
+- [--name](/tctl/modifiers/name)
+- [--run-id](/tctl/modifiers/run-id)
+- [--workflow-id](/tctl/modifiers/workflow-id)

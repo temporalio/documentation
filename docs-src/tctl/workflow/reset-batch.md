@@ -15,68 +15,14 @@ Resetting a Workflow allows the process to be resumed from a certain point witho
 
 The following modifiers control the behavior of the command.
 
-<!--DryRun-->
-
-import DryRun from '../../tctl/modifiers/dry-run.md'
-
-<DryRun />
-
-<!--ExcludeFile-->
-
-import ExcludeFile from '../../tctl/modifiers/exclude-file.md'
-
-<ExcludeFile />
-
-<!--InputFile-->
-
-import InputFile from '../../tctl/modifiers/input-file.md'
-
-<InputFile />
-
-<!--InputParallelism-->
-
-import IP from '../../tctl/modifiers/input-parallelism.md'
-
-<IP />
-
-<!--NonDeterministic-->
-
-import NonDeterministic from '../../tctl/modifiers/non-deterministic.md'
-
-<NonDeterministic />
-
-<!--Query-->
-
-import Query from '../../tctl/modifiers/query.md'
-
-<Query />
-
-<!--Reason-->
-
-import Reason from '../../tctl/modifiers/reason.md'
-
-<Reason />
-
-<!--ResetBadBinaryChecksum-->
-
-import ResetBadBinaryChecksum from '../../tctl/modifiers/reset-bad-binary-checksum.md'
-
-<ResetBadBinaryChecksum />
-
-<!--ResetType-->
-
-import ResetType from '../../tctl/modifiers/reset-type.md'
-
-<ResetType />
-
-<!--SkipCurrentOpen-->
-
-import SCO from '../../tctl/modifiers/skip-current-open.md'
-
-<SCO />
-
-<!--SkipBaseIsNotCurrent-->
-
-import SkipBaseNotCurrent from '../../tctl/modifiers/skip-base-is-not-current.md'
-
-<SkipBaseNotCurrent />
+- [--dry-run](/tctl/modifiers/dry-run)
+- [--exclude-file](/tctl/modifiers/exclude-file)
+- [--input-file](/tctl/modifiers/input-file)
+- [--input-parallelism](/tctl/modifiers/input-parallelism)
+- [--non-deterministic](/tctl/modifiers/non-deterministic)
+- [--query](/tctl/modifiers/query)
+- [--reason](/tctl/modifiers/reason)
+- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
+- [--reset-type](/tctl/modifiers/reset-type)
+- [--skip-current-open](/tctl/modifiers/skip-current-open)
+- [--skip-base-not-current](/tctl/modifiers/skip-base-not-current)

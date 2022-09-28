@@ -18,44 +18,10 @@ See also [`tctl workflow list`](/tctl/workflow/list).
 
 The following modifiers control the behavior of the command.
 
-<!--Fields-->
-
-import Fields from '../../tctl/modifiers/fields.md'
-
-<Fields />
-
-<!--Limit-->
-
-import Limit from '../../tctl/modifiers/limit.md'
-
-<Limit />
-
-<!--NoPager-->
-
-import NoPager from '../../tctl/modifiers/no-pager.md'
-
-<NoPager />
-
-<!--Output-->
-
-import Output from '../../tctl/modifiers/output.md'
-
-<Output />
-
-<!--Pager-->
-
-import Pager from '../../tctl/modifiers/pager.md'
-
-<Pager />
-
-<!--Query-->
-
-import Query from '../../tctl/modifiers/query.md'
-
-<Query />
-
-<!--TimeFormat-->
-
-import TimeFormat from '../../tctl/modifiers/time-format.md'
-
-<TimeFormat />
+- [--fields](/tctl/modifiers/fields)
+- [--limit](tctl/modifiers/limit)
+- [--no-pager](/tctl/modifiers/no-pager)
+- [--output](/tctl/modifiers/output)
+- [--pager](/tctl/modifiers/pager)
+- [--query](/tctl/modifiers/query)
+- [--time-format](/tctl/modifiers/time-format)
