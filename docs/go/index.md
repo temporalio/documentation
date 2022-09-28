@@ -11,7 +11,8 @@ tags:
 
 The information provided in this documentation set is intended to be available in the [Application development guide](/application-development).
 
-However, the guide is still a work in progress and while much of the information is already represented there, if you can not find what you are looking for, we still encourage you to check this legacy docs set.
+However, the guide is still a work in progress.
+Although much of the information is already represented there, if you can't find what you are looking for, we still encourage you to check this legacy docs set.
 
 :::
 
