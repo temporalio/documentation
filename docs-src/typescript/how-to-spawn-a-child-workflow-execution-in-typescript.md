@@ -11,7 +11,7 @@ To start a Child Workflow and return a client-side handle that implements a Chil
 
 To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
 
-By default, a child will be scheduled on the same Task Queue as the parent.
+By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
 <!--SNIPEND-->

@@ -13,7 +13,8 @@ To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow(
 await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", "my-child-id")
 ```
 
-Alternatively, use [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function, to start a Child Workflow and return its handle. `start_child_workflow()` is a helper function for `execute_child_workflow()`.
+Alternatively, use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle.
+`start_child_workflow()` is a helper function for `execute_child_workflow()`.
 
 ```python
 await workflow.start_child_workflow(MyWorkflow.run, "my child arg", "my-child-id")
