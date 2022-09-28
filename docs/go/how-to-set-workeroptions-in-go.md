@@ -282,7 +282,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 
 This method of passing dependencies between Activity Task Executions is not recommended anymore.
 
-Instead, we recommend using a struct with fields that contain dependencies and [develop Activity Definitions](/go/how-to-develop-an-activity-definition-in-go) as struct methods and then pass all the dependencies on the structure initialization.
+Instead, we recommend using a struct with fields that contain dependencies and [develop Activity Definitions](/application-development/foundations#develop-activities) as struct methods and then pass all the dependencies on the structure initialization.
 
 :::
 
