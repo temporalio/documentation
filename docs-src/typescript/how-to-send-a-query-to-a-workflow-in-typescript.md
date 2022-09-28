@@ -2,7 +2,7 @@
 id: how-to-send-a-query-to-a-workflow-in-typescript
 title: How to send a Query to a Workflow in TypeScript
 sidebar_label: Send a Query
-description: To send a Query to a Workflow.
+description: Use `WorkflowHandle.query` to query a running or completed Workflow.
 tags:
   - typescript
   - developer-guide
