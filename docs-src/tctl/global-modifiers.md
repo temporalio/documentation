@@ -1,35 +1,21 @@
 ---
-id: index
-title: What is tctl?
-description: tctl is a command-line tool that you can use to interact with a Temporal Cluster.
+id: global-modifiers
+title: tctl global modifiers
+description: Global modifiers are provided before
+sidebar_label: Global modifiers
 tags:
   - operation-guide
   - tctl
 ---
 
-This documentation reflects tctl version 1.17.
+Global modifiers are provided after `tctl` in the command structure but before the commands themselves.
+For example:
 
-The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
-It can perform [Namespace](/concepts/what-is-a-namespace) operations (such as register, update, and describe) and [Workflow](/concepts/what-is-a-workflow) operations (such as start
-Workflow, show Workflow History, and Signal Workflow).
+```
+tctl --address <value> workflow start --task_queue <value> ...
+```
 
-- [How to install tctl](/tctl/how-to-install-tctl)
-- [Environment variables for tctl](/tctl/environment-variables)
-- [How to add a custom Search Attribute to a Cluster using tctl](/tctl/admin/cluster/add-search-attributes)
-
-## tctl commands
-
-- [`tctl activity`](/tctl/activity/)
-- [`tctl batch`](/tctl/batch/)
-- [`tctl cluster`](/tctl/cluster/)
-- [`tctl data-converter`](/tctl/data-converter/)
-- [`tctl namespace`](/tctl/namespace/)
-- [`tctl task-queue`](/tctl/taskqueue/)
-- [`tctl workflow`](/tctl/workflow/)
-
-## Global modifiers
-
-You can supply the values for many of these modifiers by setting [environment variables](/tctl/environment-variables) instead of including the modifiers in a tctl command.
+You can supply the values for many of these modifiers by setting [environment variables](/tctl/environment-variables) instead of including the modifiers in each tctl command.
 
 ### `--address`
 

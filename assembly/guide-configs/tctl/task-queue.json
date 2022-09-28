@@ -1,0 +1,25 @@
+{
+    "file_name": "task-queue.md",
+    "file_dir": "tctl",
+    "id": "task-queue",
+    "title": "tctl task-queue command reference",
+    "sidebar_label": "schedule",
+    "description": "How to use the tctl task-queue command",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+      {
+      "type": "p",
+      "id": "tctl/task-queue/index"
+      },
+      {
+      "type": "h2",
+      "id": "tctl/task-queue/describe"
+      },
+      {
+      "type": "h2",
+      "id": "tctl/task-queue/list-partition"
+      }
+    ]
+  }
