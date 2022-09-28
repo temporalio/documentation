@@ -31,5 +31,5 @@ interface SubscriptionWorkflowInterface
 You can also set the Workflow Id as a constant, for example:
 
 ```php
- public const WORKFLOW_ID = Your-Workflow-Id
+public const WORKFLOW_ID = Your-Workflow-Id
 ```
