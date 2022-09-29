@@ -13,8 +13,8 @@ import TabItem from '@theme/TabItem';
 
 The `tctl cluster` command enables [Temporal Cluster](/clusters#) operations.
 
-- [`tctl cluster health`](#health)
-- [`tctl cluster list-search-attributes`](#get-search-attributes)
+- [`tctl cluster health`](/tctl/cluster#health)
+- [`tctl cluster list-search-attributes`](/tctl/cluster#get-search-attributes)
 
 ## get-search-attributes
 
