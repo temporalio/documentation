@@ -906,7 +906,7 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define a query method for a Workflow.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
 <!--SNIPEND-->
@@ -1165,9 +1165,8 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to return values inside a Workflow.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
 <!--SNIPEND-->
@@ -3184,3 +3183,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+
