@@ -124,7 +124,7 @@ New tasks will target `2.1`, but since you have not yet deployed any `2.1` worke
 #### Graph constraints
 
 The graph has a maximum size limit, which defaults to 1000 versions.
-This limit is configurable on Temporal Server via the `limit.versionGraphNodeSize` dynamic config property. 
+This limit is configurable on Temporal Server via the `limit.versionGraphNodeSize` dynamic config property.
 When this limit is exceeded, the oldest nodes in the graph are dropped to make room for new ones.
 In practice this should never be an issue, because a version is no longer needed after no open Workflows are using that version.
 
