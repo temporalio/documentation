@@ -10,6 +10,5 @@ tags:
 
 Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
-
 <!--SNIPSTART typescript-handle-query -->
 <!--SNIPEND-->
