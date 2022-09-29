@@ -1,7 +1,7 @@
 ---
 id: docker-env-vars
-title: Web UI Docker Env. Variables
-sidebar_label: web-ui-docker-env-vars
+title: Web UI Docker Environmental Variables
+sidebar_label: Web UI Docker Environmental Variables
 description: How to set the docker environmental variables quickly.
 tags:
   - docker
@@ -32,17 +32,17 @@ docker run \
 
 The environmental variables are defined below:
 
-- `TEMPORAL_ADDRESS` : Temporal frontend address
-- `TEMPORAL_UI_PORT` : port to serve HTTP API and UI
-- `TEMPORAL_AUTH_ENABLED` : enable or disable auth
-- `TEMPORAL_AUTH_PROVIDER_URL` : Auth OIDC provider URL
-- `TEMPORAL_AUTH_CLIENT_ID` : auth client ID
-- `TEMPORAL_AUTH_CLIENT_SECRET` : auth client secret
-- `TEMPORAL_AUTH_CALLBACK_URL` : auth callback URL
-- `TEMPORAL_UI_ENABLED` : enable or disable serve UI
-- `TEMPORAL_OPENAPI_ENABLED` : enable or disable serve open API UI
-- `TEMPORAL_TLS_CA` : TLS Certificate Authority path
-- `TEMPORAL_TLS_CERT` : TLS cert path
-- `TEMPORAL_TLS_KEY` : TLS key path
-- `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` : enable or disable TLS host verification
-- `TEMPORAL_TLS_SERVER_NAME` : TLS server name
+- `TEMPORAL_ADDRESS` : Temporal frontend address.
+- `TEMPORAL_UI_PORT` : port to serve HTTP API and UI.
+- `TEMPORAL_AUTH_ENABLED` : enable or disable authentication/authorization.
+- `TEMPORAL_AUTH_PROVIDER_URL` : Authentication/authorization OIDC provider URL.
+- `TEMPORAL_AUTH_CLIENT_ID` : authentication/authorization client ID.
+- `TEMPORAL_AUTH_CLIENT_SECRET` : authentication/authorization client secret.
+- `TEMPORAL_AUTH_CALLBACK_URL` : authentication/authorization callback URL.
+- `TEMPORAL_UI_ENABLED` : enable or disable serve UI.
+- `TEMPORAL_OPENAPI_ENABLED` : enable or disable serve open API UI.
+- `TEMPORAL_TLS_CA` : TLS Certificate Authority path.
+- `TEMPORAL_TLS_CERT` : TLS certificate path.
+- `TEMPORAL_TLS_KEY` : TLS key path.
+- `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` : enable or disable TLS host verification.
+- `TEMPORAL_TLS_SERVER_NAME` : TLS server name.
