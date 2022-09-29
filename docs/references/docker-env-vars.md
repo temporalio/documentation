@@ -6,6 +6,7 @@ description: How to set the docker environmental variables quickly.
 tags:
   - docker
   - webui
+  - reference
 ---
 
 Docker containers can be configured for use in a production setting.
