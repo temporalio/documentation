@@ -4,7 +4,6 @@ title: tctl namespace modifier
 description: definition for the --namespace modifier
 sidebar_label: --namespace
 tags:
-  - reference
   - tctl
 ---
 

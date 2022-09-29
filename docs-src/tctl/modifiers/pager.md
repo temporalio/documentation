@@ -4,7 +4,6 @@ title: tctl pager modifier
 description: definition for the --pager modifier
 sidebar_label: --pager
 tags:
-  - reference
   - tctl
 ---
 

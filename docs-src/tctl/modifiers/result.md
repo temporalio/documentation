@@ -4,7 +4,6 @@ title: tctl result modifier
 description: definition for the --result modifier
 sidebar_label: --result
 tags:
-  - reference
   - tctl
 ---
 

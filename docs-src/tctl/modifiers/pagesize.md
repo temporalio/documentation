@@ -4,7 +4,6 @@ title: tctl pagesize modifier
 description: definition for the --pagesize
 sidebar_label: --pagesize
 tags:
-  - reference
   - tctl
 ---
 

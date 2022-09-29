@@ -4,7 +4,6 @@ title: tctl visibility-archival-state modifier
 description: definition for the --visibility-archival-state modifier
 sidebar_label: --visibility-archival-state
 tags:
-  - reference
   - tctl
 ---
 

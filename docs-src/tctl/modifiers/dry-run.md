@@ -4,7 +4,6 @@ title: tctl dry-run modifier
 description: definition for the --dry-run modifier
 sidebar_label: --dry-run
 tags:
-  - reference
   - tctl
 ---
 

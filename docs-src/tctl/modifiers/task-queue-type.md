@@ -4,7 +4,6 @@ title: tctl task-queue-type modifier
 description: definition for the --task-queue-type modifier
 sidebar_label: --task-queue-type
 tags:
-  - reference
   - tctl
 ---
 

@@ -2,9 +2,8 @@
 id: history-archival-state
 title: tctl history-archival-state modifier
 description: definition for the --history-archival-state modifier
-sidebar_label:
+sidebar_label: --history-archival-state
 tags:
-  - reference
   - tctl
 ---
 

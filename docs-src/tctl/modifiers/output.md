@@ -4,7 +4,6 @@ title: tctl output modifier
 description: definition for the --output modifier
 sidebar_label: --modifier
 tags:
-  - reference
   - tctl
 ---
 

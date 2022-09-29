@@ -4,7 +4,6 @@ title: tctl reset-bad-binary-checksum
 description: definition for the --reset-bad-binary-checksum modifier
 sidebar_label: --reset-bad-binary-checksum
 tags:
-  - reference
   - tctl
 ---
 

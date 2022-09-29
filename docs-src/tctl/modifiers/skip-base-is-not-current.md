@@ -4,7 +4,6 @@ title: tctl skip-base-is-not-current modifier
 description: definition for the --skip-base-is-not-current modifier
 sidebar_label: --skip-base-is-not-current
 tags:
-  - reference
   - tctl
 ---
 

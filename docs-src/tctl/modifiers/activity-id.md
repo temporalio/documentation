@@ -4,7 +4,6 @@ title: tctl activity-id modifier
 description: definition for the --activity-id modifier
 sidebar_label: --activity-id
 tags:
-  - reference
   - tctl
 ---
 

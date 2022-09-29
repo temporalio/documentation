@@ -4,7 +4,6 @@ title: tctl skip-current-open modifier
 description: definition for the --skip-current-open modifier
 sidebar_label: --skip-current-open
 tags:
-  - reference
   - tctl
 ---
 

@@ -4,7 +4,6 @@ title: tctl description modifier
 description: definition for the --description modifier
 sidebar_label: --description
 tags:
-  - reference
   - tctl
 ---
 

@@ -4,7 +4,6 @@ title: tctl memo-key modifier
 description: definition for the --memo-key modifier
 sidebar_label: --memo-key
 tags:
-  - reference
   - tctl
 ---
 

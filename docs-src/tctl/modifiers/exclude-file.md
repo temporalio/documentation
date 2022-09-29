@@ -4,7 +4,6 @@ title: tctl exclude-file modifier
 description: definition for the --exclude-file
 sidebar_label: --exclude-file
 tags:
-  - reference
   - tctl
 ---
 

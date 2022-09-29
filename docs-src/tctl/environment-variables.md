@@ -4,7 +4,6 @@ title: Environment variables for tctl
 sidebar_label: Environment variables
 description: What are the environment variables for tctl?
 tags:
-  - reference
   - tctl
 ---
 

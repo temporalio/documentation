@@ -4,7 +4,6 @@ title: tctl clusters modifier
 description: definition for the --clusters modifier
 sidebar_label: --clusters
 tags:
-  - reference
   - tctl
 ---
 

@@ -15,6 +15,7 @@ export async function linkMagic(config) {
     updatedGuides.push(guideCfg);
   }
   matchedGuides.cfgs = updatedGuides;
+  console.log("writing matcheded guides again...");
   await fs.writeJSON(matchedGuidesPath, matchedGuides);
   await linkMagicReferences(config, matchedGuides.full_index);
   return;
@@ -50,6 +51,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
 }
 
 async function linkMagicReferences(config, link_index) {
+  console.log("link magic on references...");
   const sourceNodesPath = path.join(
     config.root_dir,
     config.temp_write_dir,
@@ -61,6 +63,7 @@ async function linkMagicReferences(config, link_index) {
     if (node.tags !== undefined) {
       tagloop: for (const tag of node.tags) {
         if (tag == "reference") {
+          console.log(node.id);
           node.markdown_content = await parseAndReplace(
             node.markdown_content,
             link_index,
@@ -78,8 +81,10 @@ async function linkMagicReferences(config, link_index) {
         config.content_write_dir,
         `${node.id}.md`
       );
+      console.log(refWritePath);
       await fs.writeFile(refWritePath, refString);
     }
+    isReference = false;
   }
   return;
 }

@@ -139,7 +139,7 @@ A Temporal Workflow Execution is a durable, reliable, and scalable function exec
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
 - [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using tctl](/tctl/workflow/start)
+- [How to start a Workflow Execution using tctl](/tctl/workflow#start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](#signal) and the environment through [Activities](/activities#).
@@ -407,7 +407,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
 - [How to develop, send, and handle Signals in code](/application-development/features#signals)
-- [How to send a Signal using tctl](/tctl/workflow/signal)
+- [How to send a Signal using tctl](/tctl/workflow#signal)
 
 A Signal delivers data to a running Workflow Execution.
 It cannot return data to the caller; to do so, use a [Query](#queries) instead.
@@ -432,7 +432,7 @@ A Query is a synchronous operation that is used to get the state of a [Workflow 
 The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
-- [How to send a Query using tctl](/tctl/workflow/query)
+- [How to send a Query using tctl](/tctl/workflow#query)
 - [How to send and handle Queries with an SDK](/application-development/features#queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
@@ -720,7 +720,7 @@ For more operational control, embed the contents of the time zone database file 
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl/schedule/trigger) command.
+However, you can still force manual actions by using the [tctl schedule trigger](/tctl/schedule#trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 

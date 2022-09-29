@@ -4,7 +4,6 @@ title: tctl history-uri modifier
 description: definition for the --history-uri modifier
 sidebar_label: --history-uri
 tags:
-  - reference
   - tctl
 ---
 

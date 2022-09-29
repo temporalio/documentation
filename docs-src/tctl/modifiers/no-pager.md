@@ -4,7 +4,6 @@ title: tctl no-pager modifier
 description: definition for the --no-pager modifier
 sidebar_label: --no-pager
 tags:
-  - reference
   - tctl
 ---
 

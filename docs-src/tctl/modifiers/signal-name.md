@@ -4,7 +4,6 @@ title: tctl signal-name modifier
 description: definition for the --signal-name modifier
 sidebar_label: --signal-name
 tags:
-  - reference
   - tctl
 ---
 

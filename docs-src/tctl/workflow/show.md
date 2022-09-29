@@ -1,7 +1,7 @@
 ---
 id: show
 title: tctl workflow show
-sidebar-label: show
+sidebar_label: show
 description: How to show Workflow History using tctl.
 tags:
   - tctl

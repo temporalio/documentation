@@ -4,7 +4,6 @@ title: tctl global modifiers
 description: Global modifiers are provided before
 sidebar_label: Global modifiers
 tags:
-  - operation-guide
   - tctl
 ---
 

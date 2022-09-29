@@ -4,7 +4,6 @@ title: tctl execution-timeout modifier
 description: definition for the --execution-timeout modifier
 sidebar_label: --execution-modifier
 tags:
-  - reference
   - tctl
 ---
 

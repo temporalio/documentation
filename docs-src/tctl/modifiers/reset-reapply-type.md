@@ -4,7 +4,6 @@ title: tctl reset-reapply-type modifier
 description: definition for the --reset-reapply-type modifier
 sidebar_label: --reset-reapply-type
 tags:
-  - reference
   - tctl
 ---
 

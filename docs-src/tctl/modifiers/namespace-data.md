@@ -4,7 +4,6 @@ title: tctl namespace-data modifier
 description: definition for the --namespace-data modifier
 sidebar_label: --namespace-data
 tags:
-  - reference
   - tctl
 ---
 

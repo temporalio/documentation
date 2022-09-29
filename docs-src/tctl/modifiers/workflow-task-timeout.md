@@ -4,7 +4,6 @@ title: tctl workflow-task-timeout modifier
 description: definition for the --workflow-task-timeout modifier
 sidebar_label: --workflow-task-timeout
 tags:
-  - reference
   - tctl
 ---
 

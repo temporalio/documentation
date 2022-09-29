@@ -4,7 +4,6 @@ title: tctl reset-type modifier
 description: definition for the --reset-type modifier
 sidebar_label: --reset-type
 tags:
-  - reference
   - tctl
 ---
 

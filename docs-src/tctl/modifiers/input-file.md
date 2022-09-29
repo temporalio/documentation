@@ -4,7 +4,6 @@ title: tctl input-file modifier
 description: definition for the --input-file modifier
 sidebar_label: --input-file
 tags:
-  - reference
   - tctl
 ---
 

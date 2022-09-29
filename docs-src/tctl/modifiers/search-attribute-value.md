@@ -4,7 +4,6 @@ title: tctl search-attribute-value modifier
 description: definition for the --search-attribute-value modifier
 sidebar_label: --search-attribute-value
 tags:
-  - reference
   - tctl
 ---
 

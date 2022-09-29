@@ -4,7 +4,6 @@ title: tctl reset-points-only modifier
 description: definition for the --reset-points-only modifier
 sidebar_label: --reset-points-only
 tags:
-  - reference
   - tctl
 ---
 

@@ -4,7 +4,6 @@ title: tctl query modifier
 description: definition for the --query modifier
 sidebar_label: --query
 tags:
-  - reference
   - tctl
 ---
 

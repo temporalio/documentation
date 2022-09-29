@@ -4,7 +4,6 @@ title: tctl active-cluster modifier
 description: definition for the --active-cluster modifier
 sidebar_label: --active-cluster
 tags:
-  - reference
   - tctl
 ---
 

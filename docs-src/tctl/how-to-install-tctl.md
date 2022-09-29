@@ -4,7 +4,6 @@ title: How to install tctl
 sidebar_label: Install
 description: You can install tctl in four ways, described in this topic.
 tags:
-  - operation-guide
   - tctl
 ---
 

@@ -1,37 +1,37 @@
 {
-    "file_name": "config.md",
-    "file_dir": "tctl",
-    "id": "config",
-    "title": "tctl config command reference",
-    "sidebar_label": "config",
-    "description": "How to use the tctl config command",
-    "use_description": false,
-    "toc_max_heading_level": 4,
-    "add_tabs_support": true,
-    "sections": [
-      {
-        "type": "p",
-        "id": "tctl/config/index"
-      },
-      {
-        "type": "h2",
-        "id": "tctl/config/current-env"
-      },
-      {
-        "type": "h2",
-        "id": "tctl/config/get"
-      },
-      {
-        "type": "h2",
-        "id": "tctl/config/set"
-      },
-      {
-        "type": "h2",
-        "id": "tctl/config/show-env"
-      },
-      {
-        "type": "h2",
-        "id": "tctl/config/use-env"
-      }
-    ]
-  }
+  "file_name": "config.md",
+  "file_dir": "tctl",
+  "id": "config",
+  "title": "tctl config command reference",
+  "sidebar_label": "config",
+  "description": "How to use the tctl config command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl/config/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl/config/current-env"
+    },
+    {
+      "type": "h2",
+      "id": "tctl/config/get"
+    },
+    {
+      "type": "h2",
+      "id": "tctl/config/set"
+    },
+    {
+      "type": "h2",
+      "id": "tctl/config/show-env"
+    },
+    {
+      "type": "h2",
+      "id": "tctl/config/use-env"
+    }
+  ]
+}

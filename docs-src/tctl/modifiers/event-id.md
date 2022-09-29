@@ -4,7 +4,6 @@ title: tctl event-id modifier
 description: definition for the --event-id modifier
 sidebar_label: --event-id
 tags:
-  - reference
   - tctl
 ---
 

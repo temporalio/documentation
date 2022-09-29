@@ -1,13 +1,16 @@
 ---
 id: server-options
 title: Temporal Server options
-description: undefined
+description: You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 sidebar_label: Start options
+tags:
+  - reference
+  - web-ui
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
 
-You can run the [Temporal Server](/concepts/what-is-the-temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
+You can run the [Temporal Server](/clusters#temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 
 The Temporal Server services can be [run in various ways](/kb/install-temporal-cluster-for-development).
 We recommend this approach for a limited number of situations.
@@ -72,7 +75,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level [authorization mechanism](/concepts/what-is-an-authorizer-plugin) that determines whether to allow or deny inbound API calls.
+Sets a low level [authorization mechanism](/clusters#authorizer-plugin) that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(

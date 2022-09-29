@@ -4,7 +4,6 @@ title: tctl input-parallelism modifier
 description: definition for the --input-parallelism modifier
 sidebar_label: --input-parallelism
 tags:
-  - reference
   - tctl
 ---
 

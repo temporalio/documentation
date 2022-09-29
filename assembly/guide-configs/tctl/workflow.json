@@ -23,27 +23,19 @@
     },
     {
       "type": "h2",
+      "id": "tctl/workflow/delete"
+    },
+    {
+      "type": "h2",
       "id": "tctl/workflow/describe"
     },
     {
       "type": "h2",
-      "id": "tctl/workflow/describeid"
+      "id": "tctl/workflow/execute"
     },
     {
       "type": "h2",
       "id": "tctl/workflow/list"
-    },
-    {
-      "type": "h2",
-      "id": "tctl/workflow/listall"
-    },
-    {
-      "type": "h2",
-      "id": "tctl/workflow/listarchived"
-    },
-    {
-      "type": "h2",
-      "id": "tctl/workflow/observe"
     },
     {
       "type": "h2",
@@ -59,19 +51,11 @@
     },
     {
       "type": "h2",
-      "id": "tctl/workflow/run"
-    },
-    {
-      "type": "h2",
       "id": "tctl/workflow/scan"
     },
     {
       "type": "h2",
       "id": "tctl/workflow/show"
-    },
-    {
-      "type": "h2",
-      "id": "tctl/workflow/showid"
     },
     {
       "type": "h2",

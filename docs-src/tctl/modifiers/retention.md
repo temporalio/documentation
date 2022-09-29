@@ -4,7 +4,6 @@ title: tctl retention modifier
 description: definition for the --retention modifier
 sidebar_label: --retention
 tags:
-  - reference
   - tctl
 ---
 

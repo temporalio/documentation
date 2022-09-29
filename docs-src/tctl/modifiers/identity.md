@@ -4,7 +4,6 @@ title: tctl identity modifier
 description: definition for the --identity modifier
 sidebar_label: --identity
 tags:
-  - reference
   - tctl
 ---
 

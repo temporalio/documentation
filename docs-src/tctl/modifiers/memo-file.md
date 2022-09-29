@@ -4,7 +4,6 @@ title: tctl memo-file modifier
 description: definition for the --memo-file modifier
 sidebar_label: --memo-file
 tags:
-  - reference
   - tctl
 ---
 

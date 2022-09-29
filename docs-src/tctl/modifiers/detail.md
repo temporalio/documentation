@@ -4,7 +4,6 @@ title: tctl detail modifier
 description: definition for the --detail modifier
 sidebar_label: --detail
 tags:
-  - reference
   - tctl
 ---
 

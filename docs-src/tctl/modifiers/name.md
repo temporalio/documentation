@@ -4,7 +4,6 @@ title: tctl name modifier
 description: definition for the --name modifier
 sidebar_label: --name
 tags:
-  - reference
   - tctl
 ---
 

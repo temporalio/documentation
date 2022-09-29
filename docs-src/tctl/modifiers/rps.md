@@ -4,7 +4,6 @@ title: tctl rps modifier
 description: definition for the --rps modifier
 sidebar_label: --rps
 tags:
-  - reference
   - tctl
 ---
 

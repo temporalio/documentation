@@ -4,7 +4,6 @@ title: tctl visibility-uri modifier
 description: definition for the --visibility-uri modifier
 sidebar_label: --visibility-uri
 tags:
-  - reference
   - tctl
 ---
 

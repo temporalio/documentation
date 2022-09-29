@@ -4,7 +4,6 @@ title: tctl input modifier
 description: definition for the --input modifier
 sidebar_label: --input
 tags:
-  - reference
   - tctl
 ---
 

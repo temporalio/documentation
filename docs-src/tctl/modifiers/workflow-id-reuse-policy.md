@@ -4,7 +4,6 @@ title: tctl workflow-id-reuse-policy modifier
 description: definition for the --workflow-id-reuse-policy modifier
 sidebar_label: --workflow-id-reuse-policy
 tags:
-  - reference
   - tctl
 ---
 

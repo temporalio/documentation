@@ -4,7 +4,6 @@ title: tctl query-reject-condition modifier
 description: definition for the --query-reject-condition modifier
 sidebar_label: --query-reject-condition
 tags:
-  - reference
   - tctl
 ---
 

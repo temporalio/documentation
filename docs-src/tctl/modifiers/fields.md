@@ -4,7 +4,6 @@ title: tctl fields modifier
 description: definition for the --fields modifier
 sidebar_label: --fields
 tags:
-  - reference
   - tctl
 ---
 

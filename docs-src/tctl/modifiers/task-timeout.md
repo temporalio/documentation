@@ -4,7 +4,6 @@ title: tctl task-timeout modifier
 description: definition for the --task-timeout modifier
 sidebar_label: --task-timeout
 tags:
-  - reference
   - tctl
 ---
 

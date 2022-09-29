@@ -4,7 +4,6 @@ title: tctl owner-email modifier
 description: definition for the --owner-email modifier
 sidebar_label: --owner-email
 tags:
-  - reference
   - tctl
 ---
 
