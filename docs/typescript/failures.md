@@ -70,7 +70,7 @@ The expected behavior is:
 - Other TemporalFailures -> same as retryable application failure
 - Any other error -> fails the workflow task and can be retried
 
-> Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "retryable". The semantics of this was corrected in v0.17.
+> Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were Application Failures. The semantics of this was corrected in v0.17.
 
 ### Pattern: Wrapping Errors with Interceptors
 
