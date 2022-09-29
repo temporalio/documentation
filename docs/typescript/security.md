@@ -72,7 +72,7 @@ const client = new WorkflowClient({
 A full example for Workers looks like this:
 
 ```js
-import { Worker, NativeConnection } from '@temporalio/worker';
+import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from './activities';
 
 async function run() {

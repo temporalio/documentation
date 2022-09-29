@@ -123,11 +123,13 @@ To run the Assembly Workflow using Temporal Cloud, do the following:
 
 - `docs-assembly.pem`: Paste and save the full CA certificate text.
 - `docs-assembly.key`: Paste and save the full secret that was generated with the certificate.
-- `uniqueId.json`: Paste the following JSON, replacing `your-unique-name` with your own.
+- `cloud-connection.json`: Paste the following JSON, replacing the values with your own.
 
 ```
 {
-  "unique_id": "your-unique-name"
+  "address": "your-cloud-address",
+  "unique_id": "your-unique-custom-id",
+  "namespace": "your-namespace"
 }
 ```
 
