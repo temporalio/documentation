@@ -15,7 +15,7 @@ The `tctl task-queue` commands enable [Task Queue](/tasks#task-queue) operations
 
 Alias: `tq`
 
-- [`tctl task-queue describe`](/tctl/taskqueue/describe)
+- [`tctl task-queue describe`](/tctl/task-queue/describe)
 - [`tctl task-queue list-partition`](#list-partition)
 
 ## describe

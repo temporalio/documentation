@@ -16,7 +16,6 @@ Workflow, show Workflow History, and Signal Workflow).
 
 - [How to install tctl](/tctl/how-to-install-tctl)
 - [Environment variables for tctl](/tctl/environment-variables)
-- [How to add a custom Search Attribute to a Cluster using tctl](/tctl/admin/cluster/add-search-attributes)
 
 ## tctl commands
 
@@ -25,5 +24,5 @@ Workflow, show Workflow History, and Signal Workflow).
 - [`tctl cluster`](/tctl/cluster/)
 - [`tctl data-converter`](/tctl/data-converter/)
 - [`tctl namespace`](/tctl/namespace/)
-- [`tctl task-queue`](/tctl/taskqueue/)
+- [`tctl task-queue`](/tctl/task-queue/)
 - [`tctl workflow`](/tctl/workflow/)

@@ -37,8 +37,8 @@ Or you could use them to ensure Workflow Executions between different teams neve
 
 A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
 
-- [How to register a Global Namespace](/tctl/namespace/register/#--global-namespace)
-- [How to change the active Cluster for a Global Namespace](/tctl/namespace/update/#--active-cluster)
+- [How to register a Global Namespace](/tctl/namespace/register)
+- [How to change the active Cluster for a Global Namespace](/tctl/namespace/update/active-cluster)
 
 The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
 

@@ -19,7 +19,6 @@ Workflow, show Workflow History, and Signal Workflow).
 
 - [How to install tctl](#install)
 - [Environment variables for tctl](#environment-variables)
-- [How to add a custom Search Attribute to a Cluster using tctl](/tctl/admin/cluster/add-search-attributes)
 
 ## tctl commands
 
