@@ -9,7 +9,7 @@ tags:
 ---
 
 Docker containers can be configured for use in a production setting.
-Use `docker run` to configure the WebUI environmental variables.
+Use `docker run` to configure the Web UI environmental variables.
 
 ```
 docker run \
