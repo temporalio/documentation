@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define a query method for a Workflow.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
 <!--SNIPEND-->
