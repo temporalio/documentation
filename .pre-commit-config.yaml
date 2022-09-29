@@ -1,0 +1,4 @@
+- repo: https://github.com/adamchainz/pre-commit-dprint
+  rev: "" # Use the sha / tag you want to point at
+  hooks:
+    - id: dprint
