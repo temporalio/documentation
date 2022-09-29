@@ -14,6 +14,6 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
 After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/concepts/what-is-a-parent-close-policy) set in the Child Workflow Options.
 
-To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of `ChildWorkflowFuture`, which returns a different Future.
+To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
 
-Then call the `Get()` method on that Future, which is what waits until the Child Workflow Execution has spawned.
+Then call a `Get()` method, or equivalent, on that future, which is what waits until the Child Workflow Execution has spawned.
