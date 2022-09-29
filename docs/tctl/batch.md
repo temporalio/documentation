@@ -41,54 +41,26 @@ Terminating a batch job does not roll back the operations already performed by t
 
 - [`tctl batch describe`](#describe)
 - [`tctl batch list`](#list)
+- [`tctl batch start`](#start)
 - [`tctl batch terminate`](#terminate)
-- [`tctl workflow signal --query ...`](#workflow-signal)
-- [`tctl workflow terminate --query ...`](#workflow-terminate)
-- [`tctl workflow cancel --query ...`](#workflow-cancel)
 
-## workflow signal
+## start
 
-The `tctl workflow signal --query` command starts a batch job that signals Workflow Executions according to the List Filter provided.
+The `tctl batch start` command starts a batch job.
 
-`tctl workflow signal --query <value> <modifiers>`
+`tctl batch start --query <value> <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--namespace](/tctl/modifiers#--namespace)
-- [--name](/tctl/modifiers#--name)
+- [--batch-type](/tctl/modifiers#--batch-type)
 - [--input](/tctl/modifiers#--input)
-- [--query](/tctl/modifiers#--query)
-- [--reason](/tctl/modifiers#--reason)
-- [--yes](/tctl/modifiers#--yes)
-
-## workflow terminate
-
-The `tctl workflow terminate --query` command starts a batch job that terminates Workflow Executions according to the List Filter provided.
-
-`tctl workflow terminate --query <value> <modifiers>`
-
-The following modifiers are supported and control the behavior of the command.
-Always include required modifiers when executing this command.
-
 - [--namespace](/tctl/modifiers#--namespace)
 - [--query](/tctl/modifiers#--query)
 - [--reason](/tctl/modifiers#--reason)
-- [--yes](/tctl/modifiers#--yes)
-
-## workflow cancel
-
-The `tctl workflow cancel --query` command starts a batch job that cancels Workflow Executions according to the List Filter provided.
-
-`tctl workflow cancel --query <value> <modifiers>`
-
-The following modifiers are supported and control the behavior of the command.
-Always include required modifiers when executing this command.
-
-- [--namespace](/tctl/modifiers#--namespace)
-- [--query](/tctl/modifiers#--query)
-- [--reason](/tctl/modifiers#--reason)
-- [--yes](/tctl/modifiers#--yes)
+- [--rps](/tctl/modifiers#--rps)
+- [--signal-name](/tctl/modifiers#--signal-name)
+- [--yes-mod](/tctl/modifiers#--yes-mod)
 
 ## list
 
@@ -102,12 +74,7 @@ The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--namespace](/tctl/modifiers#--namespace)
-- [--pagesize](/tctl/modifiers#--fields)
-- [--pagesize](/tctl/modifiers#--limit)
-- [--pagesize](/tctl/modifiers#--output)
-- [--pagesize](/tctl/modifiers#--no-pager)
-- [--pagesize](/tctl/modifiers#--pager)
-- [--pagesize](/tctl/modifiers#--time-format)
+- [--pagesize](/tctl/modifiers#--pagesize)
 
 ## describe
 
@@ -122,9 +89,6 @@ Always include required modifiers when executing this command.
 
 - [--job-id](/tctl/modifiers#--job-id)
 - [--namespace](/tctl/modifiers#--namespace)
-- [--pagesize](/tctl/modifiers#--fields)
-- [--pagesize](/tctl/modifiers#--output)
-- [--pagesize](/tctl/modifiers#--time-format)
 
 ## terminate
 

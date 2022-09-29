@@ -116,18 +116,20 @@ Always include required modifiers when executing this command.
 - [--input-file](/tctl/modifiers#--input-file)
 - [--limit](/tctl/modifiers#--limit)
 - [--max-field-length](/tctl/modifiers#--max-field-modifier)
+- [--memo-key](/tctl/modifiers#--memo-key)
 - [--memo](/tctl/modifiers#--memo)
 - [--memo-file](/tctl/modifiers#--memo-file)
 - [--no-pager](/tctl/modifiers#--no-pager)
 - [--output](/tctl/modifiers#--modifier)
 - [--pager](/tctl/modifiers#--pager)
-- [--search-attribute](/tctl/modifiers#--search-attribute)
+- [--search-attribute-key](/tctl/modifiers#--search-attribute-key)
+- [--search-attribute-value](/tctl/modifiers#--search-attribute-value)
 - [--task-queue](/tctl/modifiers#--task-queue)
 - [--task-timeout](/tctl/modifiers/task-queue-timeout)
 - [--time-format](/tctl/modifiers#--time-format)
 - [--type](/tctl/modifiers#--type)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
-- [--id-reuse-policy](/tctl/modifiers#--id-reuse-policy)
+- [--workflow-id-reuse-policy](/tctl/modifiers#--workflow-id-reuse-policy)
 
 ## list
 
@@ -202,7 +204,7 @@ Always include required modifiers when executing this command.
 
 - [--input](/tctl/modifiers#--input)
 - [--input-file](/tctl/modifiers#--input-file)
-- [--reject-condition](/tctl/modifiers#--reject-condition)
+- [--query-reject-condition](/tctl/modifiers#--query-reject-condition)
 - [--query-type](/tctl/modifiers#--query-modifier)
 - [--run-id](/tctl/modifiers#--run-id)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
@@ -221,6 +223,7 @@ The following modifiers control the behavior of the command.
 - [--reason](/tctl/modifiers#--reason)
 - [--reset-type](/tctl/modifiers#--reset-type)
 - [--reset-reapply-type](/tctl/modifiers#--reset-reapply-type)
+- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
 - [--run-id](/tctl/modifiers#--run-id)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
 
@@ -241,6 +244,7 @@ The following modifiers control the behavior of the command.
 - [--non-deterministic](/tctl/modifiers#--non-deterministic)
 - [--query](/tctl/modifiers#--query)
 - [--reason](/tctl/modifiers#--reason)
+- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
 - [--reset-type](/tctl/modifiers#--reset-type)
 - [--skip-current-open](/tctl/modifiers#--skip-current-open)
 - [--skip-base-not-current](/tctl/modifiers/skip-base-not-current)
@@ -297,7 +301,7 @@ Workflows listen for Signals by their Signal name, and can be made to listen to 
 The Workflow below listens for instances of "HelloSignal":
 
 ```bash
-tctl workflow start  --workflow-id "HelloSignal" --task-queue HelloWorldTaskQueue --type HelloWorld --execution-timeout 3600 --input \"World\"
+tctl workflow start  --workflow-id "HelloSignal" --taskqueue HelloWorldTaskQueue --workflow-type HelloWorld --execution-timeout 3600 --input \"World\"
 ```
 
 The Worker would return this output upon receiving the Signal:
@@ -388,7 +392,7 @@ The following modifiers control the behavior of the command.
 
 - [--input](/tctl/modifiers#--input)
 - [--input-file](/tctl/modifiers#--input-file)
-- [--reject-condition](/tctl/modifiers#--reject-condition)
+- [--query-reject-condition](/tctl/modifiers#--query-reject-condition)
 - [--run-id](/tctl/modifiers#--run-id)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
 
@@ -409,20 +413,22 @@ Always include required modifiers when executing this command.
 - [--input-file](/tctl/modifiers#--input-file)
 - [--limit](/tctl/modifiers#--limit)
 - [--max-field-length](/tctl/modifiers#--max-field-modifier)
+- [--memo-key](/tctl/modifiers#--memo-key)
 - [--memo](/tctl/modifiers#--memo)
 - [--memo-file](/tctl/modifiers#--memo-file)
 - [--no-pager](/tctl/modifiers#--no-pager)
 - [--output](/tctl/modifiers#--modifier)
 - [--pager](/tctl/modifiers#--pager)
 - [--run-timeout](/tctl/modifiers#--run-timeout)
-- [--search-attribute](/tctl/modifiers#--search-attribute)
+- [--search-attribute-key](/tctl/modifiers#--search-attribute-key)
+- [--search-attribute-value](/tctl/modifiers#--search-attribute-value)
 - [--task-queue](/tctl/modifiers#--task-queue)
 - [--task-timeout](/tctl/modifiers/task-queue-timeout)
 - [--time-format](/tctl/modifiers#--time-format)
 - [--type](/tctl/modifiers#--type)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
-- [--task-timeout](/tctl/modifiers#--task-timeout)
-- [--id-reuse-policy](/tctl/modifiers#--id-reuse-policy)
+- [--workflow-task-timeout](/tctl/modifiers#--workflow-task-timeout)
+- [--workflow-id-reuse-policy](/tctl/modifiers#--workflow-id-reuse-policy)
 
 ## terminate
 

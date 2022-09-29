@@ -11,10 +11,10 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## --active-cluster
-
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/namespaces#).
 This value changes for Global Namespaces when a failover occurs.
+
+Alias: `--ac`
 
 ## --activity-id
 
@@ -30,15 +30,23 @@ List archived Workflow Executions.
 
 Alias: `-a`
 
-## --cluster
+## --batch-type
+
+Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
+
+Alias: `--bt`
+
+## --clusters
 
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/namespaces#).
 
-The flag contains a single name of a Cluster to which the Namespace can fail over. For multiple Clusters pass each in a separate `--cluster` option.
+The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 Make sure to include to the currently active Cluster.
 This is a read-only setting and cannot be changed.
 
-This modifier is valid only when the `--global` modifier is set to true.
+This modifier is valid only when the `--global-namespace` modifier is set to true.
+
+Alias `--cl`
 
 ## --cron
 
@@ -88,21 +96,27 @@ Follows the progress of a Workflow Execution.
 
 Alias: `-f`
 
-## --global
+## --global-namespace
 
 Specifies whether a [Namespace](/namespaces#) is a [Global Namespace](/namespaces#global-namespace).
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
 This is a read-only setting and cannot be changed.
+
+Alias `--gn`
 
 ## --history-archival-state
 
 Set the state of [Archival](/clusters#archival).
 Valid values are `disabled` and `enabled`.
 
+Alias `--has`
+
 ## --history-uri
 
 Specify the URI for [Archival](/clusters#archival).
 The URI cannot be changed after Archival is first enabled.
+
+Alias `--huri`
 
 ## --identity
 
@@ -113,6 +127,8 @@ Specify the identity of the operator when using tctl to fail an [Activity Execut
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
+
+Alias: `--if`
 
 ## --input-parallelism
 
@@ -147,24 +163,35 @@ The default value is 500.
 
 Alias: `--maxl`
 
-## --memo
-
-Pass a memo in a format key=value
-
-A memo is information in JSON format that can be shown when the Workflow is listed.
-For multiple memos, pass each in a separate `--memo`
-
 ## --memo-file
 
-Pass a memo from a file, where each line follows the format key=value. Use valid JSON formats for value
+Pass information for a memo from a JSON file.
+For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
+The order must match the order of keys in `--memo-key`.
+
+## --memo-key
+
+Pass a key for a memo.
+For multiple keys, concatenate them and use spaces as separators.
+
+## --memo
+
+Pass a memo.
+A memo is information in JSON format that can be shown when the Workflow is listed.
+For multiple memos, concatenate them and use spaces as separators.
+The order must match the order of keys in `--memo-key`.
 
 ## --name
 
 Specify the name of a [Signal](/workflows#signal).
 
-## --data
+Alias: `-n`
+
+## --namespace-data
 
 Specify data for a [Namespace](/namespaces#) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
+
+Alias `--nd`
 
 ## --namespace
 
@@ -186,16 +213,21 @@ Indicate that a [Workflow Execution](/workflows#workflow-execution) should be re
 
 Serialize an Event to a file.
 
-## --output
+Alias: `--of`
+
+## --modifier
 
 Specifies the format for printed output.
-`Alias:`-o`
+
+Alias: `-o`
 
 Values: table, json, card
 
-## --email
+## --owner-email
 
 Specify the email address of the [Namespace](/namespaces#) owner.
+
+Alias `--oe`
 
 ## --pager
 
@@ -207,10 +239,20 @@ Values: less, more, favoritePager..[$PAGER]
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
 
-## --reject-condition
+Alias: `--ps`
+
+## --query-reject-condition
 
 Reject Queries based on Workflow state.
 Valid values are `not-open` and `not-completed-cleanly`.
+
+Alias: `--qrc`
+
+## --query-modifier
+
+Specify the type of Query to run.
+
+Alias: `--qt`
 
 ## --query
 
@@ -220,7 +262,7 @@ The `--query` flag is supported only when [Advanced Visibility](/visibility#adva
 
 Specify an SQL-like query of [Search Attributes](/visibility#search-attribute).
 
-Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest-time`, `latest-time`, `workflow-id`, and `type`.
+Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest-time`, `latest-time`, `workflow-id`, and `workflow-type`.
 
 Alias: `-q`
 
@@ -233,6 +275,10 @@ Print properties exactly as they are stored.
 Specify a reason for terminating the [Workflow Execution](/workflows#workflow-execution).
 
 Alias: `-r`
+
+## --reset-bad-binary-checksum
+
+Specify the binary checksum when using `--reset-type BadBinary`.
 
 ## --reset-points-only
 
@@ -258,6 +304,7 @@ Specify the event type to which you want to reset.
 | `FirstWorkflowTask`  | Reset to the beginning of the Event History.                |
 | `LastWorkflowTask`   | Reset to the end of the Event History.                      |
 | `LastContinuedAsNew` | Reset to the end of the Event History for the previous Run. |
+| `BadBinary`          | Reset to the point where a bad binary was used.             |
 
 ## --result
 
@@ -271,6 +318,10 @@ The Retention Period applies to Closed [Workflow Executions](/workflows#workflow
 
 Alias `--rd`
 
+## --rps
+
+Specify RPS of processing. The default value is 50.
+
 ## --run-id
 
 Show the History of a [Workflow Execution](/workflows#workflow-execution) by specifying a [Run Id](/workflows#run-id).
@@ -281,16 +332,28 @@ Alias: `--rid`
 
 Single Workflow Run timeout, in seconds.
 
-## --search-attribute
+Alias: `--rt`
 
-Pass a [Search Attribute](/visibility#search-attribute) in a format key=value.
-For multiple values, pass each in a separate `--search-attribute`
+## --search-attribute-key
 
-To list valid keys, use the `tctl search-attribute list` command.
+Specify a [Search Attribute](/visibility#search-attribute) key.
+For multiple keys, concatenate them and use pipes (`|`) as separators.
 
-## --name
+To list valid keys, use the `tctl cluster get-search-attribute` command.
 
-Specify the name of a [Signal](/workflows#signal)
+## --search-attribute-value
+
+Specify a [Search Attribute](/visibility#search-attribute) value.
+For multiple values, concatenate them and use pipes (`|`) as separators.
+If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
+
+To list valid keys and value types, use the `tctl cluster get-search-attribute` command.
+
+## --signal-name
+
+Specify the name of a [Signal](/workflows#signal). This modifier is required when `--batch-type` is `signal`.
+
+Alias: `--sn`
 
 ## --skip-base-is-not-current
 
@@ -306,6 +369,8 @@ Specify the type of a [Task Queue](/tasks#task-queue).
 The type can be `workflow` or `activity`.
 The default is `workflow`.
 
+Alias: `--tqt`
+
 ## --task-queue
 
 Specify a [Task Queue](/tasks#task-queue).
@@ -317,6 +382,8 @@ Alias: `--t`
 Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
 The default value is 10.
 
+Alias: `--tt`
+
 ## --time-format
 
 Specifies the format for time values.
@@ -326,21 +393,26 @@ Values: relative, iso, raw
 ## --type
 
 Specify the name of a [Workflow Type](/workflows#workflow-type).
-Specify the type of Query to run.
+
+Alias: `-t`
 
 ## --visibility-archival-state
 
 Set the visibility state for [Archival](/clusters#archival).
 Valid values are `disabled` and `enabled`.
 
+Alias `--vas`
+
 ## --visibility-uri
 
 Specify the visibility URI for [Archival](/clusters#archival).
 The URI cannot be changed after Archival is first enabled.
 
-## --id-reuse-policy
+Alias `--vuri`
 
-Specify a [Workflow Id Reuse Policy](/workflows#id-reuse-policy).
+## --workflow-id-reuse-policy
+
+Specify a [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflows#workflow-execution).
 
 Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
@@ -348,9 +420,9 @@ Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 **Examples**
 
 ```bash
-tctl workflow <command> --id-reuse-policy AllowDuplicate
-tctl workflow <command> --id-reuse-policy AllowDuplicateFailedOnly
-tctl workflow <command> --id-reuse-policy RejectDuplicate
+tctl workflow <command> --workflow-id-reuse-policy AllowDuplicate
+tctl workflow <command> --workflow-id-reuse-policy AllowDuplicateFailedOnly
+tctl workflow <command> --workflow-id-reuse-policy RejectDuplicate
 ```
 
 ## --workflow-id
@@ -359,11 +431,13 @@ Show the History of a [Workflow Execution](/workflows#workflow-execution) by spe
 
 Alias: `--wid`
 
-## --task-timeout
+## --workflow-task-timeout
 
 Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
 The default value is 10.
 
-## --yes
+Alias: `--wtt`
 
-Automatically confirm all prompts.
+## --yes-mod
+
+Disable the confirmation prompt by automatically approving the prompt.

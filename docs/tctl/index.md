@@ -27,7 +27,7 @@ Workflow, show Workflow History, and Signal Workflow).
 - [`tctl cluster`](/tctl/cluster/)
 - [`tctl data-converter`](/tctl/data-converter/)
 - [`tctl namespace`](/tctl/namespace/)
-- [`tctl task-queue`](/tctl/taskqueue/)
+- [`tctl task-queue`](/tctl/task-queue/)
 - [`tctl workflow`](/tctl/workflow/)
 
 ## Install

@@ -30,7 +30,7 @@ The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--namespace](/tctl/modifiers#--namespace)
-- [--yes](/tctl/modifiers#--yes)
+- [--yes-mod](/tctl/modifiers#--yes-mod)
 
 ## describe
 
@@ -103,11 +103,11 @@ Always include required modifiers when executing this command.
 - [--active-cluster](/tctl/modifiers#)
 - [--clusters](/tctl/modifiers#--clusters)
 - [--description](/tctl/modifiers#--description)
-- [--global](/tctl/modifiers#--global)
+- [--global-namespace](/tctl/modifiers#--global-namespace)
 - [--history-archival-state](/tctl/modifiers#--history-archival-state)
 - [--history-uri](/tctl/modifiers#--history-uri)
-- [--data](/tctl/modifiers#--data)
-- [--email](tcvtl/modifiers/email)
+- [--namespace-data](/tctl/modifiers#--namespace-data)
+- [--owner-email](tcvtl/modifiers/owner-email)
 - [--retention](/tctl/modifiers#--retention)
 - [--visibility-archival-state](/tctl/modifiers#--visibility-archival-state)
 - [--visibility-uri](/tctl/modifiers#--visibility-uri)
@@ -122,13 +122,15 @@ The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--active-cluster](/tctl/modifiers#)
-- [--cluster](/tctl/modifiers#--clusters)
+- [--add-bad-binary](/tctl/modifiers/add-bad-binary)
+- [--clusters](/tctl/modifiers#--clusters)
 - [--description](/tctl/modifiers#--description)
 - [--history-archival-state](/tctl/modifiers#--history-archival-state)
 - [--history-uri](/tctl/modifiers#--history-uri)
-- [--data](/tctl/modifiers#--data)
-- [--email](/tctl/modifiers#--email)
+- [--namespace-data](/tctl/modifiers#--namespace-data)
+- [--owner-email](/tctl/modifiers#--owner-email)
 - [--reason](/tctl/modifiers#--reason)
+- [--remove-bad-binary](/tctl/modifiers/remove-bad-binary)
 - [--retention](/tctl/modifiers#--retention)
 - [--visibility-archival-state](/tctl/modifiers#--visibility-archival-state)
 - [--visibility-uri](/tctl/modifiers#--visibility-uri)

@@ -105,6 +105,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 #### Add custom Search Attributes (optional)
 
 This step is optional.
+
 Here we are adding custom Search Attributes to your Cluster.
 
 Run the following command to create search attributes: `tctl search-attribute create`
