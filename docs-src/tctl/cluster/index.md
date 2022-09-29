@@ -9,5 +9,5 @@ tags:
 
 The `tctl cluster` command enables [Temporal Cluster](/concepts/what-is-a-temporal-cluster) operations.
 
-- [`tctl cluster health`](/tctl/cluster/health)
-- [`tctl cluster list-search-attributes`](/tctl/cluster/get-search-attributes)
+- [`tctl cluster health`](/tctl/cluster#health)
+- [`tctl cluster list-search-attributes`](/tctl/cluster#get-search-attributes)
