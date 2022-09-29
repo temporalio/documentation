@@ -26,7 +26,7 @@ This information needs to be decoded before it can be viewed.
 You can use [tctl workflow showid](/tctl/workflow/show) to view a Workflow Execution Event History.
 
 ```bash
-    tctl workflow showid <workflowID>
+tctl workflow showid <workflowID>
 ```
 
 With a Codec Server, the Payload is decoded before being deserialized by tctl's default Data Converter. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
