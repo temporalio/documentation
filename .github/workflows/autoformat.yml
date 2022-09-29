@@ -8,9 +8,8 @@ on:
   push:
     branches:
       - master
-- uses: actions/checkout@v2
-  with:
-    ref: ${{ github.head_ref }}
+
+
 jobs:
   style:
     runs-on: ubuntu-latest
