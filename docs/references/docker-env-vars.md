@@ -30,19 +30,21 @@ docker run \
     temporalio/ui:<tag>
 ```
 
+## Environmental Variables
+
 The environmental variables are defined below:
 
-- [`TEMPORAL_ADDRESS`](#temporal-address) : Temporal frontend address.
-- [`TEMPORAL_UI_PORT`](#temporal-ui-port) : port to serve HTTP API and UI.
-- [`TEMPORAL_AUTH_ENABLED`](#temporal-auth-enabled) : enable or disable authentication/authorization.
-- [`TEMPORAL_AUTH_PROVIDER_URL`](#temporal-auth-provider-url) : Authentication/authorization OIDC provider URL.
-- [`TEMPORAL_AUTH_CLIENT_ID`](#temporal-auth-client-id) : authentication/authorization client ID.
-- [`TEMPORAL_AUTH_CLIENT_SECRET`](#temporal-auth-client-secret) : authentication/authorization client secret.
-- [`TEMPORAL_AUTH_CALLBACK_URL`](#temporal-auth-callback-url) : authentication/authorization callback URL.
-- [`TEMPORAL_UI_ENABLED`](#temporal-ui-enabled) : enable or disable serve UI.
-- [`TEMPORAL_OPENAPI_ENABLED`](#temporal-openapi-enabled) : enable or disable serve open API UI.
-- [`TEMPORAL_TLS_CA`](#temporal-tls-ca) : TLS Certificate Authority path.
-- [`TEMPORAL_TLS_CERT`](#temporal-tls-cert) : TLS certificate path.
-- [`TEMPORAL_TLS_KEY`](#temporal-tls-key) : TLS key path.
-- [`TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`](temporal-tls-enable-host-verification) : enable or disable TLS host verification.
-- [`TEMPORAL_TLS_SERVER_NAME](#temporal-tls-server-name) : TLS server name.
+- `TEMPORAL_ADDRESS` : Temporal frontend address.
+- `TEMPORAL_UI_PORT` : port to serve HTTP API and UI.
+- `TEMPORAL_AUTH_ENABLED` : enable or disable authentication/authorization.
+- `TEMPORAL_AUTH_PROVIDER_URL` : Authentication/authorization OIDC provider URL.
+- `TEMPORAL_AUTH_CLIENT_ID` : authentication/authorization client ID.
+- `TEMPORAL_AUTH_CLIENT_SECRET` : authentication/authorization client secret.
+- `TEMPORAL_AUTH_CALLBACK_URL` : authentication/authorization callback URL.
+- `TEMPORAL_UI_ENABLED` : enable or disable serve UI.
+- `TEMPORAL_OPENAPI_ENABLED` : enable or disable serve open API UI.
+- `TEMPORAL_TLS_CA` : TLS Certificate Authority path.
+- `TEMPORAL_TLS_CERT` : TLS certificate path.
+- `TEMPORAL_TLS_KEY` : TLS key path.
+- `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` : enable or disable TLS host verification.
+- `TEMPORAL_TLS_SERVER_NAME` : TLS server name.
