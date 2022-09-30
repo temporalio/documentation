@@ -19,7 +19,7 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import {DefaultLogger, Runtime} from "@temporalio/worker";
 
 const logger = new DefaultLogger("WARN", ({level, message}) => {
   console.log(`Custom logger: ${level} — ${message}`);

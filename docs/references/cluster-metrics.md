@@ -4,7 +4,7 @@ title: Temporal Cluster metrics reference
 description: The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 sidebar_label: Cluster metrics
 tags:
- - reference
+  - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -186,3 +186,4 @@ Example:
 
 - Prometheus query for getting latency by percentile:
   `histogram_quantile($percentile, sum(rate(persistence_latency_bucket{service="$service" service_name="history"}[1m])) by (operation, le))`
+  

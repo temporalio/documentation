@@ -25,7 +25,7 @@ Sinks are written as objects with methods. Similar to Activities, they are decla
 
 <details>
   <summary>Comparing Sinks, Activities and Interceptors</summary>
-  
+
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
 

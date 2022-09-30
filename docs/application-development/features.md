@@ -751,7 +751,7 @@ async def main():
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {yourWorkflow, joinSignal} from "./workflows";
+import {joinSignal, yourWorkflow} from "./workflows";
 
 const client = new WorkflowClient();
 
@@ -2060,7 +2060,7 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
   }
 }
 
-//...
+// ...
 
 // workflow code calling activity
 const {example} = proxyActivities<typeof activities>({

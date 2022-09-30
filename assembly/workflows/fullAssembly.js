@@ -23,6 +23,12 @@ export async function fullAssembly(params) {
 
   await activities.genGlossary(config);
 
+  if (params.runCoverageUpdate) {
+    await activities.getQuestionsFromNotion(config);
+
+    await activities.updateCoverageBoard(config);
+  }
+
   await activities.cleanUpTempDir(config);
 
   return "Assembly completed successfully!";
