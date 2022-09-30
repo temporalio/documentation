@@ -186,4 +186,3 @@ Example:
 
 - Prometheus query for getting latency by percentile:
   `histogram_quantile($percentile, sum(rate(persistence_latency_bucket{service="$service" service_name="history"}[1m])) by (operation, le))`
-  
