@@ -13,7 +13,7 @@ A Query is a synchronous operation that is used to get the state of a [Workflow 
 The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
-- [How to send a Query using tctl](/tctl/workflow/query)
+- [How to send a Query using tctl](/tctl/workflow#query)
 - [How to send and handle Queries with an SDK](/application-development/features#queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
