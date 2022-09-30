@@ -20,5 +20,5 @@ See also [`tctl workflow terminate`](/tctl/workflow/terminate).
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)

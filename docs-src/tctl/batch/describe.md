@@ -16,5 +16,5 @@ The `tctl batch describe` command describes the progress of a batch job.
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--job-id](/tctl/modifiers/job-id)
-- [--namespace](/tctl/modifiers/namespace)
+- [--job-id](/tctl/modifiers#--job-id)
+- [--namespace](/tctl/modifiers#--namespace)

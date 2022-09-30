@@ -17,7 +17,7 @@ Alias: `d`
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--raw](/tctl/modifiers/raw)
-- [--reset-points-only](/tctl/modifiers/reset-points-only)
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--raw](/tctl/modifiers#--raw)
+- [--reset-points-only](/tctl/modifiers#--reset-points-only)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)

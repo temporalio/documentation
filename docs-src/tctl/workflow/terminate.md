@@ -18,6 +18,6 @@ See also [`tctl workflow cancel`](/tctl/workflow/cancel).
 
 The following modifiers control the behavior of the command.
 
-- [--reason](/tctl/modifiers/reason)
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--reason](/tctl/modifiers#--reason)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)

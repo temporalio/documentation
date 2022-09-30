@@ -37,9 +37,9 @@ Queries are written as follows:
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--input](/tctl/modifiers/input)
-- [--input-file](/tctl/modifiers/input-file)
-- [--query-reject-condition](/tctl/modifiers/query-reject-condition)
-- [--query-type](/tctl/modifiers/query-type)
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--input](/tctl/modifiers#--input)
+- [--input-file](/tctl/modifiers#--input-file)
+- [--query-reject-condition](/tctl/modifiers#--query-reject-condition)
+- [--query-type](/tctl/modifiers#--query-type)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)

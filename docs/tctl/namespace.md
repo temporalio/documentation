@@ -107,7 +107,7 @@ Always include required modifiers when executing this command.
 - [--history-archival-state](/tctl/modifiers#--history-archival-state)
 - [--history-uri](/tctl/modifiers#--history-uri)
 - [--namespace-data](/tctl/modifiers#--namespace-data)
-- [--owner-email](tcvtl/modifiers/owner-email)
+- [--owner-email](tctl/modifiers/owner-email)
 - [--retention](/tctl/modifiers#--retention)
 - [--visibility-archival-state](/tctl/modifiers#--visibility-archival-state)
 - [--visibility-uri](/tctl/modifiers#--visibility-uri)

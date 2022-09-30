@@ -14,11 +14,11 @@ The `tctl batch start` command starts a batch job.
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--batch-type](/tctl/modifiers/batch-type)
-- [--input](/tctl/modifiers/input)
-- [--namespace](/tctl/modifiers/namespace)
-- [--query](/tctl/modifiers/query)
-- [--reason](/tctl/modifiers/reason)
-- [--rps](/tctl/modifiers/rps)
-- [--signal-name](/tctl/modifiers/signal-name)
-- [--yes-mod](/tctl/modifiers/yes-mod)
+- [--batch-type](/tctl/modifiers#--batch-type)
+- [--input](/tctl/modifiers#--input)
+- [--namespace](/tctl/modifiers#--namespace)
+- [--query](/tctl/modifiers#--query)
+- [--reason](/tctl/modifiers#--reason)
+- [--rps](/tctl/modifiers#--rps)
+- [--signal-name](/tctl/modifiers#--signal-name)
+- [--yes-mod](/tctl/modifiers#--yes-mod)

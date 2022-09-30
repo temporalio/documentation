@@ -14,8 +14,8 @@ The `tctl activity complete` command completes an [Activity Execution](/concepts
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--activity-id](/tctl/modifiers/activity-id)
-- [--identity](/tctl/modifiers/identity)
-- [--reason](/tctl/modifiers/reason)
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--activity-id](/tctl/modifiers#--activity-id)
+- [--identity](/tctl/modifiers#--identity)
+- [--reason](/tctl/modifiers#--reason)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)

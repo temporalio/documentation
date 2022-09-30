@@ -19,14 +19,14 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 
 The following modifiers are supported and control the behavior of the command.
 
-- [--archived](/tctl/modifiers/archived)
-- [--fields](/tctl/modifiers/fields)
-- [--limit](/tctl/modifiers/limit)
-- [--no-pager](/tctl/modifiers/no-pager)
-- [--output](/tctl/modifiers/output)
-- [--pager](/tctl/modifiers/pager)
-- [--query](/tctl/modifiers/query)
-- [--time-format](/tctl/modifiers/time-format)
+- [--archived](/tctl/modifiers#--archived)
+- [--fields](/tctl/modifiers#--fields)
+- [--limit](/tctl/modifiers#--limit)
+- [--no-pager](/tctl/modifiers#--no-pager)
+- [--output](/tctl/modifiers#--output)
+- [--pager](/tctl/modifiers#--pager)
+- [--query](/tctl/modifiers#--query)
+- [--time-format](/tctl/modifiers#--time-format)
 
 **Examples**
 

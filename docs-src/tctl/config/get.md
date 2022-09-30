@@ -13,4 +13,4 @@ The `tctl config get` command prints the configuration values of the current env
 
 The following modifier is supported and controls the behavior of the command.
 
-- [--namespace](/tctl/modifiers/namespace)
+- [--namespace](/tctl/modifiers#--namespace)

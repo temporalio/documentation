@@ -13,4 +13,4 @@ The `tctl config set` command modifies the configuration values within your envi
 
 The following modifier is supported and controls the behavior of the command.
 
-- [--namespace](/tctl/modifiers/namespace)
+- [--namespace](/tctl/modifiers#--namespace)

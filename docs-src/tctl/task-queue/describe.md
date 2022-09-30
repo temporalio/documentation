@@ -21,9 +21,9 @@ Once it has been 5 minutes since the last poll request, the Worker will no longe
 The following modifiers are supported and control the behavior of the command.
 `--task-queue` is required.
 
-- [--fields](/tctl/modifiers/fields)
-- [--namespace](/tctl/modifiers/namespace)
-- [--output](/tctl/modifiers/output)
-- [--task-queue](/tctl/modifiers/task-queue)
-- [--task-queue-type](/tctl/modifiers/task-queue-time)
-- [--time-format](/tctl/modifiers/time-format)
+- [--fields](/tctl/modifiers#--fields)
+- [--namespace](/tctl/modifiers#--namespace)
+- [--output](/tctl/modifiers#--output)
+- [--task-queue](/tctl/modifiers#--task-queue)
+- [--task-queue-type](/tctl/modifiers#--task-queue-time)
+- [--time-format](/tctl/modifiers#--time-format)

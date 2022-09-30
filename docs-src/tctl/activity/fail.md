@@ -14,9 +14,9 @@ The `tctl activity fail` command fails an [Activity Execution](/concepts/what-is
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--activity-id](/tctl/modifiers/activity-id)
-- [--detail](/tctl/modifiers/detail)
-- [--identity](/tctl/modifiers/identity)
-- [--reason](/tctl/modifiers/reason)
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--activity-id](/tctl/modifiers#--activity-id)
+- [--detail](/tctl/modifiers#--detail)
+- [--identity](/tctl/modifiers#--identity)
+- [--reason](/tctl/modifiers#--reason)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)

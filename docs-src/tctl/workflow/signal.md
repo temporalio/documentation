@@ -88,8 +88,8 @@ tctl workflow signal --workflow-id [modifiers]
 The following modifiers control the behavior of the command.
 Make sure to include required modifiers in all command executions.
 
-- [--input](/tctl/modifiers/input)
-- [--input-file](/tctl/modifiers/input-file)
-- [--name](/tctl/modifiers/name)
-- [--run-id](/tctl/modifiers/run-id)
-- [--workflow-id](/tctl/modifiers/workflow-id)
+- [--input](/tctl/modifiers#--input)
+- [--input-file](/tctl/modifiers#--input-file)
+- [--name](/tctl/modifiers#--name)
+- [--run-id](/tctl/modifiers#--run-id)
+- [--workflow-id](/tctl/modifiers#--workflow-id)
