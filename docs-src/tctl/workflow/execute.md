@@ -34,7 +34,7 @@ Always include required modifiers when executing this command.
 - [--search-attribute-key](/tctl/modifiers/search-attribute-key)
 - [--search-attribute-value](/tctl/modifiers/search-attribute-value)
 - [--task-queue](/tctl/modifiers/task-queue)
-- [--task-timeout](/tctl/modifiers/task-queue-timeout)
+- [--task-timeout](/tctl/modifiers/task-timeout)
 - [--time-format](/tctl/modifiers/time-format)
 - [--type](/tctl/modifiers/type)
 - [--workflow-id](/tctl/modifiers/workflow-id)

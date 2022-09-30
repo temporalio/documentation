@@ -11,8 +11,6 @@ The `tctl workflow show` command shows the [Event History](/concepts/what-is-an-
 
 `tctl workflow show <modifiers>`
 
-See also [`tctl workflow showid`](/tctl/workflow/showid).
-
 The following modifiers control the behavior of the command.
 
 - [--fields](/tctl/modifiers/fields)

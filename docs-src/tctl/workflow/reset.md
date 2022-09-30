@@ -19,6 +19,6 @@ The following modifiers control the behavior of the command.
 - [--reason](/tctl/modifiers/reason)
 - [--reset-type](/tctl/modifiers/reset-type)
 - [--reset-reapply-type](/tctl/modifiers/reset-reapply-type)
-- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
+- [--reset-bad-binary-checksum](/tctl/modifiers/reset-bad-binary-checksum)
 - [--run-id](/tctl/modifiers/run-id)
 - [--workflow-id](/tctl/modifiers/workflow-id)

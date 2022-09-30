@@ -82,8 +82,6 @@ Always include required modifiers when executing this command.
 The `tctl workflow describe` command shows information about a [Workflow Execution](/workflows#workflow-execution).
 This information can be used to locate a failed Workflow Execution, for example.
 
-To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](/tctl/workflow/describeid).
-
 `tctl workflow describe <modifiers>`
 
 Alias: `d`
@@ -125,7 +123,7 @@ Always include required modifiers when executing this command.
 - [--search-attribute-key](/tctl/modifiers#--search-attribute-key)
 - [--search-attribute-value](/tctl/modifiers#--search-attribute-value)
 - [--task-queue](/tctl/modifiers#--task-queue)
-- [--task-timeout](/tctl/modifiers/task-queue-timeout)
+- [--task-timeout](/tctl/modifiers#--task-timeout)
 - [--time-format](/tctl/modifiers#--time-format)
 - [--type](/tctl/modifiers#--type)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
@@ -223,7 +221,7 @@ The following modifiers control the behavior of the command.
 - [--reason](/tctl/modifiers#--reason)
 - [--reset-type](/tctl/modifiers#--reset-type)
 - [--reset-reapply-type](/tctl/modifiers#--reset-reapply-type)
-- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
+- [--reset-bad-binary-checksum](/tctl/modifiers#--reset-bad-binary-checksum)
 - [--run-id](/tctl/modifiers#--run-id)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
 
@@ -244,10 +242,10 @@ The following modifiers control the behavior of the command.
 - [--non-deterministic](/tctl/modifiers#--non-deterministic)
 - [--query](/tctl/modifiers#--query)
 - [--reason](/tctl/modifiers#--reason)
-- [--reset-bad-binary-checksum](/tctl/modifiers/rest-bad-binary-checksum)
+- [--reset-bad-binary-checksum](/tctl/modifiers#--reset-bad-binary-checksum)
 - [--reset-type](/tctl/modifiers#--reset-type)
 - [--skip-current-open](/tctl/modifiers#--skip-current-open)
-- [--skip-base-not-current](/tctl/modifiers/skip-base-not-current)
+- [--skip-base-not-current](/tctl/modifiers#--skip-base-is-not-current)
 
 ## scan
 
@@ -275,8 +273,6 @@ The following modifiers control the behavior of the command.
 The `tctl workflow show` command shows the [Event History](/workflows#event-history) for the specified [Workflow Execution](/workflows#workflow-execution).
 
 `tctl workflow show <modifiers>`
-
-See also [`tctl workflow showid`](/tctl/workflow/showid).
 
 The following modifiers control the behavior of the command.
 
@@ -423,7 +419,7 @@ Always include required modifiers when executing this command.
 - [--search-attribute-key](/tctl/modifiers#--search-attribute-key)
 - [--search-attribute-value](/tctl/modifiers#--search-attribute-value)
 - [--task-queue](/tctl/modifiers#--task-queue)
-- [--task-timeout](/tctl/modifiers/task-queue-timeout)
+- [--task-timeout](/tctl/modifiers#--task-timeout)
 - [--time-format](/tctl/modifiers#--time-format)
 - [--type](/tctl/modifiers#--type)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
