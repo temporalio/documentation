@@ -463,16 +463,51 @@ For more information, see the following:
 </TabItem>
 <TabItem value="php">
 
-The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
+Create an instance of the `$workflowClient` class and use the `create()` method connect to a Temporal Client to the Temporal Cluster.
 
-<!--SNIPSTART php-hello-client {"enable_source_link": true}-->
-<!--SNIPEND-->
+Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
 
-The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
-Use an instance of `WorkflowClientInterface` to create, retrieve, or start a Workflow.
-Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execution Timeout of one minute.
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowOptions;
+# . . .
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         'certs/ca.cert',
+         'certs/client.key',
+         'certs/client.pem',
+         'tls-sample',
+     ),
+ );
+```
 
-Then we print some information and start the Workflow.
+To provide the Client Options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+
+```yml
+temporal:
+  # . . .
+  tls:
+    key: "certs/client.key"
+    cert: "certs/client.pem"
+    root_ca: "certs/ca.cert"
+    client_auth_type: require_and_verify_client_cert
+    server_name: "tls-sample"
+```
+
+Then update your application and use the SSL connection for `ServiceClient`.
+
+```php
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         getenv('TEMPORAL_SERVER_ROOT_CA_CERT_PATH'),
+         getenv('TEMPORAL_CLIENT_KEY_PATH'),
+         getenv('TEMPORAL_CLIENT_CERT_PATH'),
+         getenv('TEMPORAL_SERVER_NAME_OVERRIDE')
+     ),
+ );
+```
 
 </TabItem>
 <TabItem value="python">
@@ -679,9 +714,11 @@ type ExampleArgs = {
   name: string;
 };
 
-export async function example(args: ExampleArgs): Promise<{greeting: string}> {
+export async function example(
+  args: ExampleArgs,
+): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
-  return {greeting};
+  return { greeting };
 }
 ```
 
@@ -825,7 +862,7 @@ interface ExampleParam {
   name: string;
   born: number;
 }
-export async function example({name, born}: ExampleParam): Promise<string> {
+export async function example({ name, born }: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```
@@ -941,7 +978,7 @@ interface ExampleParam {
   name: string;
   born: number;
 }
-export async function example({name, born}: ExampleParam): Promise<string> {
+export async function example({ name, born }: ExampleParam): Promise<string> {
   return `Hello ${name}, you were born in ${born}.`;
 }
 ```
@@ -1622,19 +1659,12 @@ async def say_hello(name: str) -> str:
 
 In TypeScript, the return value is always a Promise.
 
-<<<<<<< HEAD
-
-````typescript
-import type * as activities from './activities';
-const { greet } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 minute',
-});
-=======
 In the following example, `Promise<string>` is the return value.
->>>>>>> master
 
+```
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
+```
 
 </TabItem>
 </Tabs>
@@ -1665,7 +1695,7 @@ registerOptions := activity.RegisterOptions{
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
-````
+```
 
 </TabItem>
 <TabItem value="java">
@@ -2075,12 +2105,12 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
 
 ```typescript
-import {proxyActivities} from "@temporalio/workflow";
+import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
-import type * as activities from "./activities";
+import type * as activities from './activities';
 
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
 });
 
 // A workflow that calls an activity
@@ -2278,7 +2308,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
   // these are equivalent
   await acts.activity1();
-  await acts["activity1"]();
+  await acts['activity1']();
 
   let result = await acts[activityName](...args);
   return result;
@@ -2539,13 +2569,13 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {NativeConnection, Worker} from "@temporalio/worker";
-import * as activities from "./activities";
+import { NativeConnection, Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   const connection = await NativeConnection.connect({
     // defaults port to 7233 if not specified
-    address: "foo.bar.tmprl.cloud",
+    address: 'foo.bar.tmprl.cloud',
     tls: {
       // set to true if TLS without mTLS
       // See docs for other TLS options
@@ -2558,7 +2588,7 @@ async function run() {
 
   const worker = await Worker.create({
     connection,
-    namespace: "foo.bar", // as explained in Namespaces section
+    namespace: 'foo.bar', // as explained in Namespaces section
     // ...
   });
   await worker.run();
@@ -3083,9 +3113,9 @@ When you have a Workflow Client, you can schedule the start of a Workflow with `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "your-workflow-id",
-  taskQueue: "your-task-queue",
-  args: ["argument01", "argument02", "argument03"], // this is typechecked against workflowFn's args
+  workflowId: 'your-workflow-id',
+  taskQueue: 'your-task-queue',
+  args: ['argument01', 'argument02', 'argument03'], // this is typechecked against workflowFn's args
 });
 const handle = client.getHandle(workflowId);
 const result = await handle.result();
@@ -3281,16 +3311,16 @@ There are three main things the Worker needs:
   - Or pass a prebuilt bundle to `workflowBundle`, if you prefer to handle the bundling yourself.
 
 ```ts
-import {Worker} from "@temporalio/worker";
-import * as activities from "./activities";
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
 
 async function run() {
   // Step 1: Register Workflows and Activities with the Worker and connect to
   // the Temporal server.
   const worker = await Worker.create({
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: require.resolve('./workflows'),
     activities,
-    taskQueue: "hello-world",
+    taskQueue: 'hello-world',
   });
   // Worker connects to localhost by default and uses console.error for logging.
   // Customize the Worker by passing more options to create():
@@ -3313,15 +3343,15 @@ run().catch((err) => {
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```ts
-import {Connection, WorkflowClient} from "@temporalio/client";
+import { Connection, WorkflowClient } from '@temporalio/client';
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({connection});
+const client = new WorkflowClient({ connection });
 const result = await client.execute(yourWorkflow, {
   // required
-  taskQueue: "your-task-queue",
+  taskQueue: 'your-task-queue',
   // required
-  workflowId: "your-workflow-id",
+  workflowId: 'your-workflow-id',
 });
 ```
 
@@ -3331,7 +3361,7 @@ When creating a Worker, you must pass the `taskQueue` option to the `Worker.crea
 const worker = await Worker.create({
   // imported elsewhere
   activities,
-  taskQueue: "your-task-queue",
+  taskQueue: 'your-task-queue',
 });
 ```
 
@@ -3444,9 +3474,9 @@ Connect to a Client with `client.start()` and any arguments. Then specify your `
 
 ```typescript
 const handle = await client.start(example, {
-  workflowId: "yourWorkflowId",
-  taskQueue: "yourTaskQueue",
-  args: ["your", "arg", "uments"],
+  workflowId: 'yourWorkflowId',
+  taskQueue: 'yourTaskQueue',
+  args: ['your', 'arg', 'uments'],
 });
 ```
 
@@ -3692,10 +3722,10 @@ To return the results of a Workflow Execution:
 
 ```typescript
 return (
-  "Completed " +
-  wf.workflowInfo().workflowId +
-  ", Total Charged: " +
-  totalCharged
+  'Completed '
+  + wf.workflowInfo().workflowId
+  + ', Total Charged: '
+  + totalCharged
 );
 ```
 
@@ -3722,11 +3752,11 @@ try {
   const result = await handle.result();
 } catch (err) {
   if (err instanceof WorkflowFailedError) {
-    throw new Error("Temporal workflow failed: " + workflowId, {
+    throw new Error('Temporal workflow failed: ' + workflowId, {
       cause: err,
     });
   } else {
-    throw new Error("error from Temporal workflow " + workflowId, {
+    throw new Error('error from Temporal workflow ' + workflowId, {
       cause: err,
     });
   }
