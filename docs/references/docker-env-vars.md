@@ -37,6 +37,7 @@ The environmental variables are defined as follows:
 ## `TEMPORAL_ADDRESS`
 
 Temporal frontend address.
+
 - `TEMPORAL_UI_PORT` : port to serve HTTP API and UI.
 - `TEMPORAL_AUTH_ENABLED` : enable or disable authentication/authorization.
 - `TEMPORAL_AUTH_PROVIDER_URL` : Authentication/authorization OIDC provider URL.
