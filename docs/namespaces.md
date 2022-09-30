@@ -14,6 +14,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 - [How to list Namespaces in a Cluster using tctl](/tctl/namespace/list)
 - [How to register a new Namespace using tctl](/tctl/namespace/register)
+- [How to register a new Namespace using SDK](/application-development/features#namespaces)
 - [How to set the Namespace for a Temporal Client](/application-development/foundations#set-namespace)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl/namespace/describe)
 
