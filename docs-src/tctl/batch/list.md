@@ -11,7 +11,7 @@ Alias: `l`
 
 The `tctl batch list` command lists all batch jobs.
 
-`tctl batch list [<modifiers>]`
+`tctl batch list <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.

@@ -13,7 +13,7 @@ Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequest
 A new command task will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
-See also [`tctl workflow terminate`](/tctl/workflow/terminate).
+See also [`tctl workflow terminate`](/tctl/workflow#terminate).
 
 `tctl workflow cancel <modifiers>`
 

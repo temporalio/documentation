@@ -12,7 +12,7 @@ tags:
 A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/concepts/what-is-a-workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
-Use [tctl batch start](/tctl/batch/start) to start a batch job.
+Use [tctl batch start](/tctl/batch#start) to start a batch job.
 
 When starting a batch job, you must provide a [List Filter](/concepts/what-is-a-list-filter) and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
@@ -35,7 +35,7 @@ Terminating a batch job does not roll back the operations already performed by t
 
 ### tctl batch commands
 
-- [`tctl batch describe`](/tctl/batch/describe)
-- [`tctl batch list`](/tctl/batch/list)
-- [`tctl batch start`](/tctl/batch/start)
-- [`tctl batch terminate`](/tctl/batch/terminate)
+- [`tctl batch describe`](/tctl/batch#describe)
+- [`tctl batch list`](/tctl/batch#list)
+- [`tctl batch start`](/tctl/batch#start)
+- [`tctl batch terminate`](/tctl/batch#terminate)

@@ -11,5 +11,5 @@ The `tctl activity` commands enable [Activity Execution](/concepts/what-is-an-ac
 
 Alias: `a`
 
-- [`tctl activity complete`](/tctl/activity/complete)
-- [`tctl activity fail`](/tctl/activity/fail)
+- [`tctl activity complete`](/tctl/activity#complete)
+- [`tctl activity fail`](/tctl/activity#fail)

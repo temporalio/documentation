@@ -12,7 +12,7 @@ The `tctl workflow scan` command lists [Workflow Executions](/concepts/what-is-a
 By default, this command lists a maximum of 2000 Workflow Executions.
 To set the size of a page, use the `--pagesize` option.
 
-See also [`tctl workflow list`](/tctl/workflow/list).
+See also [`tctl workflow list`](/tctl/workflow#list).
 
 `tctl workflow scan <modifiers>`
 

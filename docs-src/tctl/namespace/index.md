@@ -11,7 +11,7 @@ The `tctl namespace` commands enable [Namespace](/concepts/what-is-a-namespace) 
 
 Alias: `n`
 
-- [`tctl namespace describe`](/tctl/namespace/describe)
-- [`tctl namespace list`](/tctl/namespace/list)
-- [`tctl namespace register`](/tctl/namespace/register)
-- [`tctl namespace update`](/tctl/namespace/update)
+- [`tctl namespace describe`](/tctl/namespace#describe)
+- [`tctl namespace list`](/tctl/namespace#list)
+- [`tctl namespace register`](/tctl/namespace#register)
+- [`tctl namespace update`](/tctl/namespace#update)
