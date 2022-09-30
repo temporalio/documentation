@@ -493,6 +493,7 @@ module.exports = {
         "references/configuration",
         "references/ui-configuration",
         "references/server-options",
+        "references/docker-env-vars",
         {
           type: "link",
           label: "Go SDK API",
