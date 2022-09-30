@@ -30,24 +30,60 @@ docker run \
     temporalio/ui:<tag>
 ```
 
-## Environmental Variables
-
 The environmental variables are defined as follows:
 
 ## `TEMPORAL_ADDRESS`
 
 Temporal frontend address.
 
-- `TEMPORAL_UI_PORT` : port to serve HTTP API and UI.
-- `TEMPORAL_AUTH_ENABLED` : enable or disable authentication/authorization.
-- `TEMPORAL_AUTH_PROVIDER_URL` : Authentication/authorization OIDC provider URL.
-- `TEMPORAL_AUTH_CLIENT_ID` : authentication/authorization client ID.
-- `TEMPORAL_AUTH_CLIENT_SECRET` : authentication/authorization client secret.
-- `TEMPORAL_AUTH_CALLBACK_URL` : authentication/authorization callback URL.
-- `TEMPORAL_UI_ENABLED` : enable or disable serve UI.
-- `TEMPORAL_OPENAPI_ENABLED` : enable or disable serve open API UI.
-- `TEMPORAL_TLS_CA` : TLS Certificate Authority path.
-- `TEMPORAL_TLS_CERT` : TLS certificate path.
-- `TEMPORAL_TLS_KEY` : TLS key path.
-- `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` : enable or disable TLS host verification.
-- `TEMPORAL_TLS_SERVER_NAME` : TLS server name.
+## `TEMPORAL_UI_PORT`
+
+Port to serve HTTP API and UI.
+
+## `TEMPORAL_AUTH_ENABLED`
+
+Enable or disable authentication/authorization.
+
+## `TEMPORAL_AUTH_PROVIDER_URL`
+
+Authentication/authorization OIDC provider URL.
+
+## `TEMPORAL_AUTH_CLIENT_ID`
+
+Authentication/authorization client ID.
+
+## `TEMPORAL_AUTH_CLIENT_SECRET`
+
+Authentication/authorization client secret.
+
+## `TEMPORAL_AUTH_CALLBACK_URL`
+
+Authentication/authorization callback URL.
+
+## `TEMPORAL_UI_ENABLED`
+
+Enable or disable serve UI.
+
+## `TEMPORAL_OPENAPI_ENABLED`
+
+Enable or disable serve open API UI.
+
+## `TEMPORAL_TLS_CA`
+
+TLS Certificate Authority path.
+
+## `TEMPORAL_TLS_CERT`
+
+TLS certificate path.
+
+## `TEMPORAL_TLS_KEY`
+
+TLS key path.
+
+## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
+
+Enable or disable TLS host verification.
+
+## `TEMPORAL_TLS_SERVER_NAME`
+
+TLS server name.
