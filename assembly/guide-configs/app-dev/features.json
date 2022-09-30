@@ -191,7 +191,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-define-a-query-in-typescript"
         }
       ]
     },
@@ -245,7 +245,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-send-a-query-to-a-workflow-in-typescript"
         }
       ]
     },

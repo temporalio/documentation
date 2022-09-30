@@ -488,6 +488,7 @@ module.exports = {
       },
       items: [
         "references/sdk-metrics",
+        "references/cluster-metrics",
         "references/commands",
         "references/events",
         "references/configuration",
