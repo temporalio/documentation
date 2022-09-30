@@ -1654,7 +1654,7 @@ registerOptions := activity.RegisterOptions{
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
-````
+```
 
 </TabItem>
 <TabItem value="java">
