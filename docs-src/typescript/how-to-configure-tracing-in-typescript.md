@@ -30,8 +30,8 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   import {propagation} from "@opentelemetry/api";
   import {
     CompositePropagator,
-    W3CTraceContextPropagator,
     W3CBaggagePropagator,
+    W3CTraceContextPropagator,
   } from "@opentelemetry/core";
   import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
 
