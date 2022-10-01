@@ -18,8 +18,9 @@ Before integrating a database, the total number of History Shards for the Tempor
 After the Shard count is configured and the database integrated, the total number of History Shards for the Cluster cannot be changed.
 
 In theory, a Temporal Cluster can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Cluster.
-Temporal Clusters have operated successfully using anywhere from 1 to 64K History Shards, with each Shard responsible for tens of thousands of Workflow Executions.
-However, the correct number of History Shards for any given Cluster depends entirely on the Temporal Application that it is supporting and the type of database.
+Temporal Clusters have operated successfully using anywhere from 1 to 128K History Shards, with each Shard responsible for tens of thousands of Workflow Executions.
+One Shard is useful only in small scale setups designed for testing, while 128k Shards is useful only in very large scale production environments.
+The correct number of History Shards for any given Cluster depends entirely on the Temporal Application that it is supporting and the type of database.
 
 A History Shard is represented as a hashed integer.
 Each Workflow Execution is automatically assigned to a History Shard.

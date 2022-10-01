@@ -7,7 +7,7 @@ tags:
   - term
 ---
 
-The Matching Service is responsible for hosting external [Task Queues](/concepts/what-is-a-task-queue) for Task dispatching.
+The Matching Service is responsible for hosting user-facing [Task Queues](/concepts/what-is-a-task-queue) for Task dispatching.
 
 ![Matching Service](/diagrams/temporal-matching-service.svg)
 

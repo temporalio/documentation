@@ -14,11 +14,11 @@ The Frontend Service is responsible for rate limiting, authorizing, validating, 
 
 Types of inbound calls include the following:
 
-- Domain CRUD
+- [Namespace](/concepts/what-is-a-namespace) CRUD
 - External events
 - Worker polls
-- Visibility requests
-- Admin operations via [tctl](/tctl) (the Temporal CLI)
+- [Visibility](/concepts/what-is-visibility) requests
+- [tctl](/tctl) (the Temporal CLI) operations
 - Calls from a remote Cluster related to [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
