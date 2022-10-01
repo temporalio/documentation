@@ -18,3 +18,5 @@ It talks to the Frontend Service, History Service, and the database.
 
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
+
+Ports are configurable in the Cluster configuration.

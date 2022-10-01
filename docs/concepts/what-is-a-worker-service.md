@@ -14,3 +14,5 @@ The Worker Service runs background processing for the eplication queue, system W
 It talks to the Frontend Service.
 
 - It uses port 6939 for membership-related communication.
+
+Ports are configurable in the Cluster configuration.

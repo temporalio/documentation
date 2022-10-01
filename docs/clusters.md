@@ -195,6 +195,8 @@ The Frontend Service talks to the Matching Service, History Service, Worker Serv
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership-related communication.
 
+Ports are configurable in the Cluster configuration.
+
 ### History Service
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using [History Shards](#history-shard).
@@ -211,6 +213,8 @@ The History Service talks to the Matching Service and the database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.
+
+Ports are configurable in the Cluster configuration.
 
 #### History Shard
 
@@ -256,6 +260,8 @@ It talks to the Frontend Service, History Service, and the database.
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
 
+Ports are configurable in the Cluster configuration.
+
 ### Worker Service
 
 The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
@@ -265,6 +271,8 @@ The Worker Service runs background processing for the eplication queue, system W
 It talks to the Frontend Service.
 
 - It uses port 6939 for membership-related communication.
+
+Ports are configurable in the Cluster configuration.
 
 ### Retention Period
 

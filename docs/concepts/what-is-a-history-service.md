@@ -21,3 +21,5 @@ The History Service talks to the Matching Service and the database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.
+
+Ports are configurable in the Cluster configuration.

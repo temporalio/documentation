@@ -30,3 +30,5 @@ The Frontend Service talks to the Matching Service, History Service, Worker Serv
 
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership-related communication.
+
+Ports are configurable in the Cluster configuration.
