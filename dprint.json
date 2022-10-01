@@ -16,7 +16,7 @@
   },
   "prettier": {
     "arrowParens": "always",
-    "bracketSpacing": false,
+    "bracketSpacing": true,
     "embeddedLanguageFormatting": "auto",
     "htmlWhitespaceSensitivity": "css",
     "insertPragma": false,
@@ -26,17 +26,18 @@
     "quoteProps": "as-needed",
     "requirePragma": false,
     "semi": true,
-    "singleQuote": false,
+    "singleQuote": true,
     "tabWidth": 2,
     "trailingComma": "es5",
     "useTabs": false
   },
   "includes": [
-    "docs/*.{md}",
-    "docs/**/*.{md}",
-    "guide-gen/**/*.{md}",
-    "versioned_docs/*.{md}",
-    "versioned_docs/**/*.{md}"
+    "docs-src/**/*.{md}",
+    "docs/application-development/*.md",
+    "docs/typescript/**/*.md",
+    "docs/typescript/*.md",
+    "docs/cloud/**/*.md",
+    "docs/concepts/*.md"
   ],
   "excludes": [
     "**/node_modules",

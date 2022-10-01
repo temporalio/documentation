@@ -11,7 +11,7 @@ tags:
 Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
 The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result.
 
-- [How to complete an Activity Asynchronously](/application-development/features#async-activity-completion)
+- [How to complete an Activity Asynchronously](/application-development/features#asynchronous-activity-completion)
 
 #### When to use Async Completion
 

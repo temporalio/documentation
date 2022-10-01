@@ -15,15 +15,10 @@ You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
 
 :::
 
-Access to Temporal Cloud is secured with the mutual Transport Layer Security (mTLS) protocol.
+Access to [Temporal Cloud](https://temporal.io/cloud) is secured with the mutual Transport Layer Security (mTLS) protocol.
 This protocol requires a CA certificate from you.
 
-The benefits of using a CA certificate include the following:
-
-- You can use your CA to issue client certificates to comply with your security policies for certificate expiration and rotation.
-  Client certificates can be issued and rotated without having to configure or update CA certificates shared with Temporal.
-- Temporal does not need to receive certificate private keys.
-  When you configure access to Temporal Cloud, no exchange of secrets is required.
+[Worker Processes](/workers/#worker-process) use both CA certificates and private keys to connect to Temporal Cloud. Private keys remain in your control; Temporal Cloud requires no exchange of secrets.
 
 ## Certificate requirements
 
@@ -102,7 +97,7 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
-[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters-in-temporal-cloud)
+[How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
 
 ## Manage certificates
 

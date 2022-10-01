@@ -39,6 +39,7 @@ async function generateLinkIndex(guideConfig) {
               guide_id: guideConfig.id,
               local_ref: "",
               node_id: section.node.id,
+              node_title: section.node.title,
             });
             noAnchor = false;
           } else {
@@ -50,6 +51,7 @@ async function generateLinkIndex(guideConfig) {
                 guide_id: guideConfig.id,
                 local_ref: localRef(previousSection.node.label),
                 node_id: section.node.id,
+                node_title: section.node.title,
               });
             }
             noAnchor = false;
@@ -64,6 +66,7 @@ async function generateLinkIndex(guideConfig) {
                   guide_id: guideConfig.id,
                   local_ref: "",
                   node_id: langtab.node.id,
+                  node_title: langtab.node.title,
                 });
               }
             }
@@ -79,6 +82,7 @@ async function generateLinkIndex(guideConfig) {
                     guide_id: guideConfig.id,
                     local_ref: localRef(previousSection.node.label),
                     node_id: langtab.node.id,
+                    node_title: langtab.node.title,
                   });
                 }
               }
@@ -93,6 +97,7 @@ async function generateLinkIndex(guideConfig) {
             guide_id: guideConfig.id,
             local_ref: localRef(section.node.label),
             node_id: section.node.id,
+            node_title: section.node.title,
           });
           noAnchor = false;
       }

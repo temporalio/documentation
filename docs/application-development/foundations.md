@@ -27,10 +27,10 @@ In this section you can find the following:
 
 - [How to run a dev Cluster](#run-a-dev-cluster)
 - [How to add your SDK](#add-your-sdk)
-- [How to create a Temporal Client](#create-temporal-clients)
+- [How to create a Temporal Client](#connect-to-a-cluster)
 - [How to develop a Workflow](#develop-workflows)
 - [How to develop an Activity](#develop-activities)
-- [How to start an Activity Execution](#start-activity-execution)
+- [How to start an Activity Execution](#activity-execution)
 - [How to run a Worker Process](#run-worker-processes)
 - [How to start a Workflow Execution](#start-workflow-execution)
 
@@ -44,7 +44,7 @@ The following sections list various methods of deploying your [Temporal Clusters
 
 **For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](/cloud) documentation.**
 
-#### Temporalite
+### Temporalite
 
 Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies.
 It supports persistence to disk and in-memory mode through SQLite.
@@ -71,7 +71,7 @@ The following steps start and run a Temporal Cluster.
 
 <!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
-#### Docker Compose
+### Docker Compose
 
 Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
 
@@ -100,7 +100,7 @@ The following steps start and run a Temporal Cluster using the default configura
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 
-#### Gitpod
+### Gitpod
 
 You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
 
@@ -118,8 +118,9 @@ A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Appl
 An SDK provides you with the following:
 
 - A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
-- APIs to use within your [Workflows](/workflows#).
+- APIs to develop [Workflows](/workflows#).
 - APIs to create and manage [Worker Processes](/workers#).
+- APIs to author [Activities](/activities#activity-definition).
 
 <Tabs
 defaultValue="go"
@@ -211,23 +212,7 @@ pip install temporalio
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
-To download the latest version of the Temporal TypeScript Command, run the following command:
-
-```bash
-npm i @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
-```
-
-Or clone the TypeScript SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-typescript.git
-```
-
 This project requires Node.js 14 or later.
-
-:::note
-Both TypeScript and JavaScript can be used with the TypeScript SDK.
-:::
 
 **Create a new project**
 
@@ -240,6 +225,12 @@ npx @temporalio/create@latest ./your-app
 ```bash
 npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity @temporalio/common
 ```
+
+:::note
+
+The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
+
+:::
 
 </TabItem>
 </Tabs>
@@ -282,9 +273,7 @@ The Temporal TypeScript SDK API reference is published on [typescript.temporal.i
 
 #### Code samples
 
-You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio).
-
-The [Temporal Simple Polyglot](https://github.com/temporalio/temporal-polyglot) repository showcases how Workflow Executions, written in different languages, can send messages to each other. Go, Java, PHP, and TypeScript SDKs are represented in this sample. It also shows how to properly propagate errors, including how to do so across Workflows written in different languages. For more information, see the [Polyglot Microservice Orchestration](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTLo5URV5IK6lCmiM3ir3f5) video on YouTube.
+You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
 Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 
@@ -339,29 +328,37 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 </TabItem>
 </Tabs>
 
-## Create Temporal Client
+## Connect to a Cluster
 
-A [Temporal Client](/temporal#temporal-client) is needed to [run Worker Processes](#run-worker-processes) and to communicate with a [Temporal Cluster](/clusters).
-Communication with the Temporal Cluster includes, but is not limited to, starting Workflow Executions, sending Signals to Workflow Executions, sending Queries to Workflow Executions, and getting the result of a Workflow Execution.
+A [Temporal Client](/temporal#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters#).
+Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
-A Temporal Client cannot be initialized and used inside Workflow code.
-However, it is acceptable and common to use a Temporal Client inside an Activity, to communicate with the Temporal Cluster.
+- Starting Workflow Executions.
+- Sending Signals to Workflow Executions.
+- Sending Queries to Workflow Executions.
+- Getting the results of a Workflow Execution.
+- Providing an Activity Task Token.
 
-### Connect to a Cluster
+:::caution
 
-When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.
-
-- To connect to our Docker image, use `127.0.0.1:7233`.
-- To connect to a Temporal Cloud Namespace use `<Namespace_ID>.tmprl.cloud`.
-
-:::note
-
-The difference between the gRPC and Temporal Web endpoints:
-
-- The gRPC endpoint has a DNS address of `<Namespace_ID>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud`.
-- The Temporal Web endpoint is `web.<Namespace_ID>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
+A Temporal Client cannot be initialized and used inside a Workflow.
+However, it is acceptable and common to use a Temporal Client inside an Activity to communicate with a Temporal Cluster.
 
 :::
+
+When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
+
+When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
+
+- An address and port number.
+- A [Namespace](/namespaces#) Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <Tabs
 defaultValue="go"
@@ -372,7 +369,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+
+Set a custom Namespace name in the Namespace field on an instance of the Client Options.
+
+Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API to connect a Client with mTLS.
 
 ```go
 import (
@@ -380,34 +381,19 @@ import (
 
   "go.temporal.io/sdk/client"
 )
-
 func main() {
-  temporalClient, err := client.Dial(client.Options{})
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
-  // ...
-}
-```
-
-To connect to your Cluster, specify `HostPort` followed by your Cluster address.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/client"
-)
-
-func main() {
-  temporalClient, err := client.Dial(client.Options{
-    HostPort: "web.<Namespace_ID>.tmprl.cloud.",
-  })
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
+    cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+    if err != nil {
+        return err
+    }
+    client, err := client.Dial(client.Options{
+        HostPort:  "your-custom-namespace.tmprl.cloud:7233",
+        Namespace: "your-custom-namespace",
+        ConnectionOptions: client.ConnectionOptions{
+            TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+        },
+    }
+    defer temporalClient.Close()
   // ...
 }
 ```
@@ -493,315 +479,74 @@ Then we print some information and start the Workflow.
 </TabItem>
 <TabItem value="python">
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
+Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
 
-Specify the `target_host` parameter as a string.
-
-**Connect to Docker**
+Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
 
 ```python
-await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
-```
-
-**Connect to your Cluster**
-
-```python
-await Client.connect(
-    "web.<Namespace_ID>.tmprl.cloud", namespace="your-custom-namespace"
+client = await Client.connect(
+    #  target_host for the Temporal Cloud
+    "your-custom-namespace.tmprl.cloud:7233",
+    # target_host for Temporalite
+    # "127.0.0.1:7233"
+    namespace="your-custom-namespace",
+    tls=TLSConfig(
+        client_cert=client_cert,
+        client_private_key=client_private_key,
+        # domain=domain
+        # server_root_ca_cert=server_root_ca_cert,
+    ),
 )
 ```
 
-A `Client` does not have an explicit close.
-
 </TabItem>
 <TabItem value="typescript">
-
-Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to create a new Client.
-
-```typescript
-import {Connection, WorkflowClient} from "@temporalio/client";
-const connection = await Connection.connect(); // to configure for production
-const client = new WorkflowClient({connection});
-```
 
 Declaring the `WorflowClient()` creates a new connection to the Temporal service.
 
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
 However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
-The following example, creates a Client, connects to an account, and declares your Namespace.
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
+
+Use a new `WorflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
+
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
 
 ```typescript
+import fs from "fs-extra";
 import {Connection, WorkflowClient} from "@temporalio/client";
+import path = from "path";
 
-const connection = await Connection.connect({
-  address: "<Namespace_ID>.tmprl.cloud",
-});
-const client = new WorkflowClient({
-  connection,
-  namespace: "your.namespace",
-});
-```
+async function run() {
+  const cert = await fs.readFile("./path-to/your.pem");
+  const key = await fs.readFile("./path-to/your.key");
 
-</TabItem>
-</Tabs>
-
-### Set Namespace
-
-[Namespaces](/namespaces#) are a logical unit of isolation within the Temporal Platform.
-
-To set a custom Namespace, register your custom Namespace with the Temporal Cluster first, and then set it in the Temporal Client with the Client Options.
-
-To register a Namespace, use `tctl --namespace your-custom-namespace namespace register`.
-
-For more information, see [tctl namespace reference](/tctl/namespace/register).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Set the `Namespace` field on an instance of the Client Options.
-
-```go
-// ...
-clientOptions := client.Options{
-  Namespace: "your-custom-namespace",
-}
-temporalClient, err := client.Dial(clientOptions)
-// ...
-```
-
-</TabItem>
-<TabItem value="java">
-
-Use the `setNamespace()` method on Workflow Client Options Builder.
-
-```java
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance();
-WorkflowClientOptions clientOptions = WorkflowClientOptions.newBuilder()
-        .setNamespace("your-custom-namespace").build();
-WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
-```
-
-</TabItem>
-<TabItem value="php">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="python">
-
-To specify a Namespace, set the `namespace` parameter from the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method.
-
-```python
-await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
-```
-
-`Client` can be directly instantiated with a service of another, such as when you need to create another Client to use an additional Namespace.
-
-Clients also provide a shallow copy of their config for use in making slightly different Clients backed by the same connection with [`config`](https://python.temporal.io/temporalio.client.client#config). The following example creates a new Client with the same connection but a different Namespace.
-
-```python
-config = client.config()
-config["namespace"] = "your-other-namespace"
-other_ns_client = Client(**config)
-```
-
-</TabItem>
-<TabItem value="typescript">
-
-Set the [`namespace`](https://typescript.temporal.io/api/namespaces/client/) field on the options object.
-
-```ts
-const connection = await Connection.connect();
-// https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions
-const client = new WorkflowClient({
-  connection,
-  namespace: "your-custom-namespace",
-});
-```
-
-</TabItem>
-</Tabs>
-
-### Set mTLS
-
-When connecting to the Temporal Cloud with mTLS, you must provide the following configuration details:
-
-- Client certificate for mTLS
-- Client private key for mTLS
-
-For information about generating Client certification, see the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) Docker image to generate Client-side certificates along with keys and configuration files.
-​
-This Docker image is to be used in conjunction with the Temporal SDK.
-Keys and their configuration files are valid for 365 days from creation.
-
-For information about configuring TLS to secure network communication with and within Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-For more information about mTLS, see [How to manage certificates](cloud/how-to-manage-certificates-in-temporal-cloud.md) in the Temporal Cloud user guide.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to connect a Client with mTLS.
-
-```go
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		return err
-	}
-	client, err := client.Dial(client.Options{
-		HostPort:  "foo.bar.tmprl.cloud:7233",
-		Namespace: "foo.bar",
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-```
-
-</TabItem>
-<TabItem value="java">
-
-To set the mTLS configuration in Java, provide the certificate and private key in an instance of `WorkflowServiceStub`.
-
-The following example shows how to set up certificates and pass the `SSLContext` for the Client.
-
-```java
-import io.temporal.serviceclient.SimpleSslContextBuilder;
-...
-// Load your client certificate, which should look like:
-    // -----BEGIN CERTIFICATE-----
-    // ...
-    // -----END CERTIFICATE-----
-    InputStream clientCert = new FileInputStream(System.getenv("TEMPORAL_CLIENT_CERT"));
-    // PKCS8 client key, which should look like:
-    // -----BEGIN PRIVATE KEY-----
-    // ...
-    // -----END PRIVATE KEY-----
-    InputStream clientKey = new FileInputStream(System.getenv("TEMPORAL_CLIENT_KEY"));
-    // For Temporal Cloud this would likely be ${namespace}.tmprl.cloud:7233
-    String targetEndpoint = System.getenv("TEMPORAL_ENDPOINT");
-    // Your registered Namespace.
-    String namespace = System.getenv("TEMPORAL_NAMESPACE");
-    // Create SSL enabled client by passing SslContext, created by SimpleSslContextBuilder.
-    WorkflowServiceStubs service =
-        WorkflowServiceStubs.newInstance(
-            WorkflowServiceStubsOptions.newBuilder()
-                .setSslContext(SimpleSslContextBuilder.forPKCS8(clientCert, clientKey).build())
-                .setTarget(targetEndpoint)
-                .build());
-
-```
-
-For more information, see [Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/ssl/SslEnabledWorker.java).
-
-</TabItem>
-<TabItem value="php">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="python">
-
-Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with mTLS.
-
-The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
-
-```python
-await Client.connect(
-    "foo.bar.tmprl.cloud",
-    namespace="foo.bar",
-    tls_config=TLSConfig(
-        client_cert=client_cert,
-        client_private_key=client_private_key,
-    ),
-)
-```
-
-[The Hello World mTLS sample](https://github.com/temporalio/samples-python/blob/main/hello/hello_mtls.py) demonstrates sample code used to connect to a Temporal Cloud account with the `argparse` library.
-
-</TabItem>
-<TabItem value="typescript">
-
-To set the mTLS configuration in TypeScript, use the [`tls`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#tls) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client) class to connect to a Temporal Client with mTLS.
-
-```typescript
-const connection = await Connection.connect({
-  address: "foo.bar.tmprl.cloud",
-  tls: {
-    clientCertPair: {
-      crt: clientCertPath,
-      key: clientKeyPath,
+  const connectionOptions = {
+    address: "your-custom-namespace.tmprl.cloud:7233",
+    tls: {
+      clientCertPair: {
+        crt: cert,
+        key: key,
+      },
+    // serverRootCACertificatePath: "ca.cert",
     },
-  },
-});
-const client = new WorkflowClient({connection, namespace: "foo.bar"});
-```
-
-[The Hello World mTLS sample](https://github.com/temporalio/samples-typescript/tree/main/hello-world-mtls/) demonstrates sample code used to connect to a Temporal Cloud account.
-When signing up to Temporal Cloud, you should receive a Namespace, a Server address, and a Client certificate and key. Use the following environment variables to set up the sample:
-
-- **TEMPORAL_ADDRESS**: looks like `foo.bar.tmprl.cloud` (NOT web.foo.bar.tmprl.cloud)
-- **TEMPORAL_NAMESPACE**: looks like `foo.bar`
-- **TEMPORAL_CLIENT_CERT_PATH**: `/tls/ca.pem` (file contents start with -----BEGIN CERTIFICATE-----)
-- **TEMPORAL_CLIENT_KEY_PATH**: `/tls/ca.key` (file contents start with -----BEGIN PRIVATE KEY-----)
-
-You can leave the remaining variables, like `TEMPORAL_SERVER_NAME_OVERRIDE` and `TEMPORAL_SERVER_ROOT_CA_CERT_PATH`, blank.
-If needed, you can customize `TEMPORAL_TASK_QUEUE`; the following example defaults to `hello-world-mtls`.
-
-```typescript
-export function getEnv(): Env {
-  return {
-    // NOT web.foo.bar.tmprl.cloud
-    address: "web.<Namespace_ID>.tmprl.cloud",
-    // as assigned
-    namespace: "your.namespace",
-    // in project root
-    clientCertPath: "foobar.pem",
-    clientKeyPath: "foobar.key",
-    // just to ensure task queue is same on client and worker, totally optional
-    taskQueue: process.env.TEMPORAL_TASK_QUEUE || "hello-world-mtls",
-    // not usually needed:
-    // serverNameOverride: process.env.TEMPORAL_SERVER_NAME_OVERRIDE,
-    // serverRootCACertificatePath: process.env.TEMPORAL_SERVER_ROOT_CA_CERT_PATH,
   };
+  const connection = await Connection.connect(connectionOptions);
+
+  const client = new WorkflowClient({
+    connection,
+    // connects to 'default' namespace if not specified
+    namespace: "your-custom-namespace",
+  });
+
+    // . . .
 }
-```
 
-If you are using mTLS, it is completely up to you how to get the `clientCert` and `clientKey` pair into your code, whether it is reading from file system, secrets manager, or both. Just keep in mind that they are whitespace sensitive, and some environment variable systems have been known to cause frustration because they modify whitespace.
-
-The following code example works for local development and for certifications hosted in an Amazon S3 bucket.
-
-```typescript
-let serverRootCACertificate: Buffer | undefined;
-let clientCertificate: Buffer | undefined;
-let clientKey: Buffer | undefined;
-if (certificateS3Bucket) {
-  const s3 = new S3client({region: certificateS3BucketRegion});
-  serverRootCACertificate = await s3.getObject({
-    bucket: certificateS3Bucket,
-    key: serverRootCACertificatePath,
-  });
-  clientCertificate = await s3.getObject({
-    bucket: certificateS3Bucket,
-    key: clientCertPath,
-  });
-  clientKey = await s3.getObject({
-    bucket: certificateS3Bucket,
-    key: clientKeyPath,
-  });
-} else {
-  serverRootCACertificate = fs.readFileSync(serverRootCACertificatePath);
-  clientCertificate = fs.readFileSync(clientCertPath);
-  clientKey = fs.readFileSync(clientKeyPath);
-}
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
 
 </TabItem>
@@ -889,13 +634,13 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 </TabItem>
 <TabItem value="php">
 
-In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[YourWorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
 ```php
 use Temporal\Workflow\YourWorkflowInterface;
 use Temporal\Workflow\WorkflowMethod;
 
-#[YourWorkflowInterface]
+#[WorkflowInterface]
 interface FileProcessingWorkflow
 {
     #[WorkflowMethod]
@@ -1017,7 +762,21 @@ public interface YourWorkflow {
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+A method annotated with `#[WorkflowMethod]` can have any number of parameters.
+
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
+
+Note that all inputs should be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+You can create a custom object and pass it to the Workflow method, as shown in the following example:
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -1192,9 +951,11 @@ export async function example({name, born}: ExampleParam): Promise<string> {
 </TabItem>
 </Tabs>
 
-### Customize Workflow Type
+### Workflow Type
 
-You can set a custom name for your Workflow Type.
+Workflows have a Type that are referred to as the Workflow name.
+
+The following examples demonstrate how to set a custom name for your Workflow Type.
 
 <Tabs
 defaultValue="go"
@@ -1271,7 +1032,12 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
+
+In the following example, the Workflow Type is the name of the function, `helloWorld`.
+
+<!--SNIPSTART typescript-workflow-type -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1637,11 +1403,8 @@ These require special primitives for heartbeating and cancellation. The `shared_
 
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
-```typescript
-export async function greet(name: string): Promise<string> {
-  return `Hello, ${name}!`;
-}
-```
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1763,7 +1526,10 @@ async def your_activity(params: YourParams) -> None:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+This Activity takes a single `name` parameter of type `string`.
+
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1814,7 +1580,31 @@ Ensure that your Workflow or Client can handle an Object type return or is able 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Return values must be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+Thus, you can return both primitive types:
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        return $greeting . ' ' . $name;
+    }
+}
+```
+
+And objects:
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): Greeting
+    {
+        return new Greeting($greeting, $name);
+    }
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -1832,18 +1622,13 @@ async def say_hello(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-To import the types of the Activities defined in `./activities`, you must first retrieve an Activity from an _Activity Handle_ before you can call it, then define Return Types in your Activity.
+In TypeScript, the return value is always a Promise.
 
-```typescript
-import type * as activities from "./activities";
-const {greet} = proxyActivities<typeof activities>({
-  startToCloseTimeout: "1 minute",
-});
+In the following example, `Promise<string>` is the return value.
 
-// A workflow that simply calls an activity
-export async function example(name: string): Promise<string> {
-  return await greet(name);
-}
+```
+<!--SNIPSTART typescript-activity-fn -->
+<!--SNIPEND-->
 ```
 
 </TabItem>
@@ -1851,7 +1636,8 @@ export async function example(name: string): Promise<string> {
 
 ### Activity Type
 
-You can set a custom name for your Activity Type.
+Activities have a Type that are referred to as the Activity name.
+The following examples demonstrate how to set a custom name for your Activity Type.
 
 <Tabs
 defaultValue="go"
@@ -1937,7 +1723,11 @@ async def your_activity(name: str) -> str:
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+You can customize the name of the Activity when you register it with the Worker.
+In the following example, the Activity Name is `activityFoo`.
+
+<!--SNIPSTART typescript-custom-activity-type -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2562,6 +2352,17 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
 }
 ```
 
+:::tip
+
+If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
+
+```bash
+go install github.com/mitranim/gow@latest
+gow run worker/main.go # automatically reload when file changed
+```
+
+:::
+
 </TabItem>
 <TabItem value="java">
 
@@ -2733,7 +2534,7 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
+import {NativeConnection, Worker} from "@temporalio/worker";
 import * as activities from "./activities";
 
 async function run() {
@@ -2906,7 +2707,32 @@ You can register only one Activity instance that implements `DynamicActivity` wi
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Worker listens on a task queue and hosts both workflow and activity implementations:
+
+```php
+// Workflows are stateful. So you need a type to create instances:
+$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+// Activities are stateless and thread safe:
+$worker->registerActivity(App\DemoActivity::class);
+```
+
+In case an activity class requires some external dependencies provide a callback - factory
+that creates or builds a new activity instance. The factory should be a callable which accepts
+an instance of ReflectionClass with an activity class which should be created.
+
+```php
+$worker->registerActivity(
+    App\DemoActivity::class,
+    fn(ReflectionClass $class) => $container->create($class->getName())
+);
+```
+
+If you want to clean up some resources after activity is done, you may register a finalizer. This callback is called
+after each activity invocation:
+
+```php
+$worker->registerActivityFinalizer(fn() => $kernel->showtdown());
+```
 
 </TabItem>
 <TabItem value="python">
@@ -2925,7 +2751,22 @@ worker = Worker(
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
+
+<!--SNIPSTART typescript-worker-create -->
+<!--SNIPEND-->
+
+In this snippet, the Worker bundles the Workflow code at runtime.
+
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
+
+<!--SNIPSTART typescript-bundle-workflow -->
+<!--SNIPEND-->
+
+Then the bundle can be passed to the Worker:
+
+<!--SNIPSTART typescript-production-worker-->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -3122,7 +2963,80 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
+via `Temporal\Client\WorkflowClient`. To create workflow client:
+
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
+
+$workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233'));
+```
+
+**Synchronous start**
+
+A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
+invocation process and will continue executing even if the waiting process crashes or stops.
+
+Make sure to acquire workflow interface or class name you want to start. For example:
+
+```php
+#[WorkflowInterface]
+interface AccountTransferWorkflowInterface
+{
+    #[WorkflowMethod(name: "MoneyTransfer")]
+    #[ReturnType('int')]
+    public function transfer(
+        string $fromAccountId,
+        string $toAccountId,
+        string $referenceId,
+        int $amountCents
+    );
+}
+```
+
+To start such workflow in sync mode:
+
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
+
+$result = $accountTransfer->transfer(
+    'fromID',
+    'toID',
+    'refID',
+    1000
+);
+```
+
+**Asynchronous start**
+
+An asynchronous start initiates a Workflow execution and immediately returns to the caller without waiting for a result.
+This is the most common way to start Workflows in a live environment.
+
+To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
+method.
+
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
+
+$run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+```
+
+Once started you can receive workflow ID via `WorkflowRun` object returned by start method:
+
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+
+var_dump($run->getExecution()->getID());
+```
+
+**Recurring start**
+
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
 
 </TabItem>
 <TabItem value="python">
@@ -3251,7 +3165,6 @@ $yourWorkflow = $workflowClient->newWorkflowStub(
 );
 
 $result = $yourWorkflow->workflowMethod();
-
 ```
 
 2. A Task Queue name must be provided as a parameter when creating a Worker.
@@ -3500,7 +3413,7 @@ interface SubscriptionWorkflowInterface
 You can also set the Workflow Id as a constant, for example:
 
 ```php
- public const WORKFLOW_ID = Your-Workflow-Id
+public const WORKFLOW_ID = Your-Workflow-Id
 ```
 
 </TabItem>

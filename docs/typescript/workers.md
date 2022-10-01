@@ -38,9 +38,7 @@ If you are experiencing issues, you can check the status of Workers and the Task
 
 ### How to develop a Worker
 
-import Content from '../typescript/how-to-develop-a-worker-program-in-typescript.md'
-
-<Content />
+See the [How to develop a Worker](/application-development/foundations?lang=typescript#run-worker-processes) in the Application development guide.
 
 <details>
 <summary>
@@ -116,10 +114,10 @@ In production settings, you can configure the `address` and `namespace` the Work
 
 ```js
 import {
-  Worker,
   DefaultLogger,
-  Runtime,
   NativeConnection,
+  Runtime,
+  Worker,
 } from '@temporalio/worker';
 
 const logger = new DefaultLogger('DEBUG');
