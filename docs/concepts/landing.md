@@ -9,12 +9,12 @@ tags:
 
 :::info Legacy docs set
 
-The information in this specific sidebar is now largely reflected in the [concept guides](/concepts).
+The information in this specific sidebar (left nav) is now largely reflected in the [concept guides](/concepts).
 
 :::
 
 :::info See the Glossary
 
-For complete list of defined terms, see the [Glossary](/glossary).
+For the complete list of defined terms, see the [Glossary](/glossary).
 
 :::
