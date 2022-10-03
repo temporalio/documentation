@@ -15,8 +15,8 @@ The `tctl task-queue` commands enable [Task Queue](/tasks#task-queue) operations
 
 Alias: `tq`
 
-- [`tctl task-queue describe`](/tctl/taskqueue/describe)
-- [`tctl task-queue list-partition`](#list-partition)
+- [`tctl task-queue describe`](/tctl/task-queue#describe)
+- [`tctl task-queue list-partition`](/tctl/task-queue#list-partition)
 
 ## describe
 
@@ -36,9 +36,9 @@ The following modifiers are supported and control the behavior of the command.
 
 - [--fields](/tctl/modifiers#--fields)
 - [--namespace](/tctl/modifiers#--namespace)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--task-queue](/tctl/modifiers#--task-queue)
-- [--task-queue-type](/tctl/modifiers/task-queue-time)
+- [--task-queue-type](/tctl/modifiers#--task-queue-type)
 - [--time-format](/tctl/modifiers#--time-format)
 
 ## list-partition
@@ -51,5 +51,5 @@ The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--namespace](/tctl/modifiers#--namespace)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--task-queue](/tctl/modifiers#--task-queue)

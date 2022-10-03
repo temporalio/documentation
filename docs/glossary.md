@@ -83,4 +83,4 @@ The following terms are used in [Temporal Platform](/concepts/what-is-the-tempor
 - [Workflow Task Execution](/concepts/what-is-a-workflow-task-execution)
 - [Workflow Task Timeout](/concepts/what-is-a-workflow-task-timeout)
 - [Workflow Type](/concepts/what-is-a-workflow-type)
-- [tctl](/tctl/)
+- [tctl](/concepts/what-is-tctl)

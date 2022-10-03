@@ -15,10 +15,10 @@ The `tctl namespace` commands enable [Namespace](/namespaces#) operations.
 
 Alias: `n`
 
-- [`tctl namespace describe`](#describe)
-- [`tctl namespace list`](#list)
-- [`tctl namespace register`](#register)
-- [`tctl namespace update`](#update)
+- [`tctl namespace describe`](/tctl/namespace#describe)
+- [`tctl namespace list`](/tctl/namespace#list)
+- [`tctl namespace register`](/tctl/namespace#register)
+- [`tctl namespace update`](/tctl/namespace#update)
 
 ## delete
 
@@ -100,7 +100,7 @@ tctl --ns your-namespace n re
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--active-cluster](/tctl/modifiers#)
+- [--active-cluster](/tctl/modifiers#--active-cluster)
 - [--clusters](/tctl/modifiers#--clusters)
 - [--description](/tctl/modifiers#--description)
 - [--global-namespace](/tctl/modifiers#--global-namespace)
@@ -121,7 +121,7 @@ The `tctl namespace update` command updates a [Namespace](/namespaces#).
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--active-cluster](/tctl/modifiers#)
+- [--active-cluster](/tctl/modifiers#--active-cluster)
 - [--add-bad-binary](/tctl/modifiers#--add-bad-binary)
 - [--clusters](/tctl/modifiers#--clusters)
 - [--description](/tctl/modifiers#--description)

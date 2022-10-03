@@ -15,19 +15,19 @@ The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-exe
 
 Alias: `w`
 
-- [`tctl workflow cancel`](#cancel)
-- [`tctl workflow count`](#count)
-- [`tctl workflow describe`](#describe)
-- [`tctl workflow list`](#list)
-- [`tctl workflow query`](#query)
-- [`tctl workflow reset`](#reset)
-- [`tctl workflow reset-batch`](#reset-batch)
-- [`tctl workflow scan`](#scan)
-- [`tctl workflow show`](#show)
-- [`tctl workflow signal`](#signal)
-- [`tctl workflow stack`](#stack)
-- [`tctl workflow start`](#start)
-- [`tctl workflow terminate`](#terminate)
+- [`tctl workflow cancel`](/tctl/workflow#cancel)
+- [`tctl workflow count`](/tctl/workflow#count)
+- [`tctl workflow describe`](/tctl/workflow#describe)
+- [`tctl workflow list`](/tctl/workflow#list)
+- [`tctl workflow query`](/tctl/workflow#query)
+- [`tctl workflow reset`](/tctl/workflow#reset)
+- [`tctl workflow reset-batch`](/tctl/workflow#reset-batch)
+- [`tctl workflow scan`](/tctl/workflow#scan)
+- [`tctl workflow show`](/tctl/workflow#show)
+- [`tctl workflow signal`](/tctl/workflow#signal)
+- [`tctl workflow stack`](/tctl/workflow#stack)
+- [`tctl workflow start`](/tctl/workflow#start)
+- [`tctl workflow terminate`](/tctl/workflow#terminate)
 
 ## cancel
 
@@ -37,7 +37,7 @@ Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequest
 A new command task will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
-See also [`tctl workflow terminate`](#terminate).
+See also [`tctl workflow terminate`](/tctl/workflow#terminate).
 
 `tctl workflow cancel <modifiers>`
 
@@ -108,17 +108,17 @@ The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--cron](/tctl/modifiers#--cron)
-- [--execution-timeout](/tctl/modifiers#--execution-modifier)
+- [--execution-timeout](/tctl/modifiers#--execution-timeout)
 - [--fields](/tctl/modifiers#--fields)
 - [--input](/tctl/modifiers#--input)
 - [--input-file](/tctl/modifiers#--input-file)
 - [--limit](/tctl/modifiers#--limit)
-- [--max-field-length](/tctl/modifiers#--max-field-modifier)
+- [--max-field-length](/tctl/modifiers#--max-field-length)
 - [--memo-key](/tctl/modifiers#--memo-key)
 - [--memo](/tctl/modifiers#--memo)
 - [--memo-file](/tctl/modifiers#--memo-file)
 - [--no-pager](/tctl/modifiers#--no-pager)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--pager](/tctl/modifiers#--pager)
 - [--search-attribute-key](/tctl/modifiers#--search-attribute-key)
 - [--search-attribute-value](/tctl/modifiers#--search-attribute-value)
@@ -147,7 +147,7 @@ The following modifiers are supported and control the behavior of the command.
 - [--fields](/tctl/modifiers#--fields)
 - [--limit](/tctl/modifiers#--limit)
 - [--no-pager](/tctl/modifiers#--no-pager)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--pager](/tctl/modifiers#--pager)
 - [--query](/tctl/modifiers#--query)
 - [--time-format](/tctl/modifiers#--time-format)
@@ -203,7 +203,7 @@ Always include required modifiers when executing this command.
 - [--input](/tctl/modifiers#--input)
 - [--input-file](/tctl/modifiers#--input-file)
 - [--query-reject-condition](/tctl/modifiers#--query-reject-condition)
-- [--query-type](/tctl/modifiers#--query-modifier)
+- [--query-type](/tctl/modifiers#--query-type)
 - [--run-id](/tctl/modifiers#--run-id)
 - [--workflow-id](/tctl/modifiers#--workflow-id)
 
@@ -254,7 +254,7 @@ The `tctl workflow scan` command lists [Workflow Executions](/workflows#workflow
 By default, this command lists a maximum of 2000 Workflow Executions.
 To set the size of a page, use the `--pagesize` option.
 
-See also [`tctl workflow list`](#list).
+See also [`tctl workflow list`](/tctl/workflow#list).
 
 `tctl workflow scan <modifiers>`
 
@@ -263,7 +263,7 @@ The following modifiers control the behavior of the command.
 - [--fields](/tctl/modifiers#--fields)
 - [--limit](/tctl/modifiers#--limit)
 - [--no-pager](/tctl/modifiers#--no-pager)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--pager](/tctl/modifiers#--pager)
 - [--query](/tctl/modifiers#--query)
 - [--time-format](/tctl/modifiers#--time-format)
@@ -279,9 +279,9 @@ The following modifiers control the behavior of the command.
 - [--fields](/tctl/modifiers#--fields)
 - [--follow](/tctl/modifiers#--follow)
 - [--limit](/tctl/modifiers#--limit)
-- [--max-field-length](/tctl/modifiers#--max-field-modifier)
+- [--max-field-length](/tctl/modifiers#--max-field-length)
 - [--no-pager](/tctl/modifiers#--no-pager)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--output-filename](/tctl/modifiers#--output-filename)
 - [--pager](/tctl/modifiers#--pager)
 - [--reset-points-only](/tctl/modifiers#--reset-points-only)
@@ -403,17 +403,17 @@ The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--cron](/tctl/modifiers#--cron)
-- [--execution-timeout](/tctl/modifiers#--execution-modifier)
+- [--execution-timeout](/tctl/modifiers#--execution-timeout)
 - [--fields](/tctl/modifiers#--fields)
 - [--input](/tctl/modifiers#--input)
 - [--input-file](/tctl/modifiers#--input-file)
 - [--limit](/tctl/modifiers#--limit)
-- [--max-field-length](/tctl/modifiers#--max-field-modifier)
+- [--max-field-length](/tctl/modifiers#--max-field-length)
 - [--memo-key](/tctl/modifiers#--memo-key)
 - [--memo](/tctl/modifiers#--memo)
 - [--memo-file](/tctl/modifiers#--memo-file)
 - [--no-pager](/tctl/modifiers#--no-pager)
-- [--output](/tctl/modifiers#--modifier)
+- [--output](/tctl/modifiers#--output)
 - [--pager](/tctl/modifiers#--pager)
 - [--run-timeout](/tctl/modifiers#--run-timeout)
 - [--search-attribute-key](/tctl/modifiers#--search-attribute-key)
@@ -433,7 +433,7 @@ The `tctl workflow terminate` command terminates a [Workflow Execution](/workflo
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
 No more command tasks will be scheduled.
 
-See also [`tctl workflow cancel`](#cancel).
+See also [`tctl workflow cancel`](/tctl/workflow#cancel).
 
 `tctl workflow terminate <modifiers>`
 

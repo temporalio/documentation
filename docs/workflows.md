@@ -643,7 +643,7 @@ A Schedule contains instructions for starting a [Workflow Execution](#workflow-e
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](#temporal-cron-job).
 
 - [How to enable Schedules](#how-to-enable-schedules)
-- [How to operate Schedules using tctl](/tctl/schedule/)
+- [How to operate Schedules using tctl](/tctl/schedule#)
 
 A Schedule has identity, and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.

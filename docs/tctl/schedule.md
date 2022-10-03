@@ -15,14 +15,14 @@ A [Schedule](/workflows#schedule) is an experimental feature and the `schedule` 
 Version 1.17.0-alpha.2 is currently available in version 1.16.2.
 Use `tctl config set version next` command while on version 1.16.2.
 
-- [Backfill a Schedule using tctl](#backfill)
-- [Create a Schedule using tctl](#create)
-- [Delete a Schedule using tctl](#delete)
-- [Describe a Schedule using tctl](#describe)
-- [List Schedules using tctl](#list)
-- [Toggle Pause on Schedule using tctl](#toggle)
-- [Trigger an Action on a Schedule using tctl](#trigger)
-- [Update a Schedule using tctl](#update)
+- [Backfill a Schedule using tctl](/tctl/schedule#backfill)
+- [Create a Schedule using tctl](/tctl/schedule#create)
+- [Delete a Schedule using tctl](/tctl/schedule#delete)
+- [Describe a Schedule using tctl](/tctl/schedule#describe)
+- [List Schedules using tctl](/tctl/schedule#list)
+- [Toggle Pause on Schedule using tctl](/tctl/schedule#toggle)
+- [Trigger an Action on a Schedule using tctl](/tctl/schedule#trigger)
+- [Update a Schedule using tctl](/tctl/schedule#update)
 
 ## backfill
 
@@ -36,7 +36,7 @@ tctl schedule backfill --sid 'your-schedule-id' \
   --end-time   '2022-05-31T23:59:59Z'
 ```
 
-Note that, similar to [tctl schedule trigger](#trigger) immediately, you probably want to override the Overlap Policy.
+Note that, similar to [tctl schedule trigger](/tctl/schedule#trigger) immediately, you probably want to override the Overlap Policy.
 Specifying `AllowAll` runs all the backfilled Workflows at once; `BufferAll` runs them sequentially.
 The other policies don't make much sense in this context.
 
@@ -69,7 +69,7 @@ A Schedule can be deleted.
 
 Deleting a Schedule **does not** affect any Workflows started by the Schedule.
 Workflow Executions started by Schedules can be cancelled or terminated using the same methods as any others.
-However, Workflow Executions started by a Schedule can be identified by the Search Attributes added to them and can be targeted by a [batch](/tctl/batch/) command for termination.
+However, Workflow Executions started by a Schedule can be identified by the Search Attributes added to them and can be targeted by a [batch](/tctl/batch#) command for termination.
 
 ```shell
 $ tctl schedule delete --sid 'your-schedule-id'

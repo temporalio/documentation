@@ -15,8 +15,8 @@ The `tctl activity` commands enable [Activity Execution](/activities#activity-ex
 
 Alias: `a`
 
-- [`tctl activity complete`](#complete)
-- [`tctl activity fail`](#fail)
+- [`tctl activity complete`](/tctl/activity#complete)
+- [`tctl activity fail`](/tctl/activity#fail)
 
 ## complete
 
