@@ -130,7 +130,7 @@ Always include required modifiers when executing this command.
 - [--namespace-data](/tctl/modifiers#--namespace-data)
 - [--owner-email](/tctl/modifiers#--owner-email)
 - [--reason](/tctl/modifiers#--reason)
-- [--remove-bad-binary](/tctl/modifiers/remove-bad-binary)
+- [--remove-bad-binary](/tctl/modifiers#--remove-bad-binary)
 - [--retention](/tctl/modifiers#--retention)
 - [--visibility-archival-state](/tctl/modifiers#--visibility-archival-state)
 - [--visibility-uri](/tctl/modifiers#--visibility-uri)
