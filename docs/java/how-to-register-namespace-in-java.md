@@ -30,7 +30,7 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Java](/app-dev-context/connect-to-a-cluster) for details.
+See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
 
 Note that Namespace registration using this API takes up to 15 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
