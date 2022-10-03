@@ -25,5 +25,5 @@ The following modifiers are supported and control the behavior of the command.
 - [--namespace](/tctl/modifiers#--namespace)
 - [--output](/tctl/modifiers#--output)
 - [--task-queue](/tctl/modifiers#--task-queue)
-- [--task-queue-type](/tctl/modifiers#--task-queue-time)
+- [--task-queue-type](/tctl/modifiers#--task-queue-type)
 - [--time-format](/tctl/modifiers#--time-format)
