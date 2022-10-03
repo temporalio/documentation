@@ -246,8 +246,8 @@ It talks to the Frontend Service.
 
 A Retention Period is the amount of time, in days, that a Workflow Execution Event History remains in the Cluster's persistence store.
 
-- [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
-- [How to set the Retention Period for the Namespace using SDK](/application-development/features/#namespaces)
+- [How to set the Retention Period for a Namespace](/tctl/namespace/register/#--retention)
+- [How to set the Retention Period for a Namespace using an SDK](/application-development/features#namespaces)
 
 A Retention Period applies to a single [Namespace](/namespaces#) and is set when the Namespace is registered.
 
@@ -829,3 +829,4 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 ```go
 a := authorization.NewDefaultAuthorizer()
 ```
+

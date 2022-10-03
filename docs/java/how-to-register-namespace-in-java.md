@@ -12,9 +12,9 @@ tags:
 Use the `RegisterNamespaceRequest` API to register a [Namespace](/concepts/what-is-a-namespace) and set the [Retention Period](/concepts/what-is-a-retention-period) for the Workflow Execution Event History for the Namespace.
 
 ```java
-...
+//...
 import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
-...
+//...
 public static void createNamespace(String name) {
     RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
             .setNamespace("your-custom-namespace")
@@ -23,13 +23,14 @@ public static void createNamespace(String name) {
             .build();
     service.blockingStub().registerNamespace(req);
 }
-...
+//...
 ```
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/app-dev-context/connect-to-a-cluster) for details.
 
 Note that Namespace registration using this API takes up to 15 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.

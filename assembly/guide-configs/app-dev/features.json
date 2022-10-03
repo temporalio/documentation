@@ -605,6 +605,10 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-use-environment-variables-in-typescript"
         }
@@ -619,7 +623,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "none"
+          "id": "go/how-to-register-namespace-in-go"
         },
         {
           "lang": "java",
@@ -627,6 +631,10 @@
         },
         {
           "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
           "id": "none"
         },
         {

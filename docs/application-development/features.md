@@ -3099,6 +3099,11 @@ Content is currently unavailable.
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 **Using in Activity code**
@@ -3191,8 +3196,8 @@ A Namespace is a unit of isolation within the Temporal Platform.
 You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
 Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 
-The register and update Namespace APIs send a gRPC request to the Fronend Service to create or update a Namespace.
-Use a custom authorizor on your Frontend Service in the Temporal Cluster to set restrictions on who can create or update Namespaces.
+The register and update Namespace APIs send a gRPC request to the Frontend Service to create or update a Namespace.
+Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create or update Namespaces.
 
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
 
@@ -3203,7 +3208,27 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Use `Register` API with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+```go
+    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+            //...
+        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+            Name: your-namespace-name,
+            WorkflowExecutionRetentionPeriod: &retention,
+        })
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Go](/application-development/foundations#connect-to-a-cluster) for details.
+
+Note that Namespace registration using this API takes up to 15 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
 
 </TabItem>
 <TabItem value="java">
@@ -3211,9 +3236,9 @@ Content is currently unavailable.
 Use the `RegisterNamespaceRequest` API to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
 ```java
-...
+//...
 import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
-...
+//...
 public static void createNamespace(String name) {
     RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
             .setNamespace("your-custom-namespace")
@@ -3222,13 +3247,14 @@ public static void createNamespace(String name) {
             .build();
     service.blockingStub().registerNamespace(req);
 }
-...
+//...
 ```
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/application-development/foundations#connect-to-a-cluster) for details.
 
 Note that Namespace registration using this API takes up to 15 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
@@ -3241,9 +3267,15 @@ You can also [register Namespaces using the tctl command-line tool](/tctl/namesp
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+

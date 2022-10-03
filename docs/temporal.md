@@ -109,3 +109,4 @@ The most common operations that a Temporal Client enables you to perform are the
 - Query a Workflow Execution.
 - Signal a Workflow Execution.
 - Start a Workflow Execution.
+
