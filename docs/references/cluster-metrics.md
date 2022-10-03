@@ -26,10 +26,9 @@ Temporal emits metrics for each gRPC service request.
 These metrics are emitted with `type`, `operation`, and `namespace` tags, which provide visibility into Service usage and show the request rates across Services, Namespaces, and Operations.
 
 - Use the `operation` tag in your query to get request rates, error rates, or latencies per operation.
-- Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go#L108) to get details for the specific service.
+- Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go) to get details for the specific service.
 
-All common tags that you can add in your query are defined in the following file:
-https://github.com/temporalio/temporal/blob/86966c5d2f78ee74c10b6808857f1a2f64d3c134/common/metrics/defs.go#L90.
+All common tags that you can add in your query are defined in the [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) file.
 
 For example, to see service requests by operation on the Frontend Service, use the following:
 
