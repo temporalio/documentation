@@ -15,11 +15,11 @@ The concepts, components, and features of the platform are described in detail a
 - [Workflows](/workflows)
 - [Activities](/activities)
 - [Retry Policies](/retry-policies)
-- [Tasks](/tasks)
 - [Workers](/workers)
+- [Tasks](/tasks)
 - [Clusters](/clusters)
-- [Namespaces](/namespaces)
 - [Visibility](/visibility)
+- [Namespaces](/namespaces)
 
 For the complete list of defined terms, see the [Glossary](/glossary).
 
