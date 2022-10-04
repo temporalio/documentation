@@ -1,5 +1,5 @@
 ---
-id: docker-env-vars
+id: web-ui-server-env-vars
 title: Docker environmental variables for Web UI
 sidebar_label: Docker environmental variables
 description: How to set Docker environmental variables for Temporal Web UI.
