@@ -19,6 +19,26 @@
     },
     {
       "type": "h3",
+      "id": "concepts/what-is-a-frontend-service"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-history-service"
+    },
+    {
+      "type": "h4",
+      "id": "concepts/what-is-a-history-shard"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-matching-service"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-worker-service"
+    },
+    {
+      "type": "h3",
       "id": "concepts/what-is-a-retention-period"
     },
     {
