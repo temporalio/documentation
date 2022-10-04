@@ -17,7 +17,7 @@ func SimpleWorkflow(ctx workflow.Context, value string) error {
 }
 ```
 
-To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
+To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not empty (i.e. `""`).
 
 **Notes**
 
