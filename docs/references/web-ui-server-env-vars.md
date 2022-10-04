@@ -9,6 +9,8 @@ tags:
 ---
 
 Docker containers can be configured for use in a production setting.
+This is necessary for setting up a Web UI server for your application.
+
 Use `docker run` to configure the Web UI environmental variables.
 
 ```
@@ -30,7 +32,8 @@ docker run \
     temporalio/ui:<tag>
 ```
 
-The environmental variables are defined as follows:
+The environmental variables are defined as follows.
+For more information on setting up a server environment, check out our [mTLS configuration guide](/docs/typescript/security)
 
 ## `TEMPORAL_ADDRESS`
 
