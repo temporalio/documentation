@@ -3233,7 +3233,7 @@ You can also [register Namespaces using the tctl command-line tool](/tctl/namesp
 </TabItem>
 <TabItem value="java">
 
-Use the `RegisterNamespaceRequest` API to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
 ```java
 //...
@@ -3258,6 +3258,8 @@ See [how to set Namespace in a Client in Java](/application-development/features
 
 Note that Namespace registration using this API takes up to 15 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
 
 You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
 
