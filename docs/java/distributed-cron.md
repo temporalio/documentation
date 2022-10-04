@@ -3,9 +3,6 @@ id: distributed-cron
 title: Distributed CRON
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
-
 This is how you set a cron schedule in Java:
 
 ```java
@@ -22,7 +19,7 @@ This is how you set a cron schedule in Java:
     GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
 ```
 
-Setting `setCronSchedule` turns the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
+Setting `setCronSchedule` turns the Workflow Execution into a [Temporal Cron Job](/workflows#temporal-cron-job)
 
 You can check our [Java samples](https://github.com/temporalio/samples-java/blob/master/src/main/java/io/temporal/samples/hello/HelloCron.java) for example code.
 

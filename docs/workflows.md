@@ -340,6 +340,10 @@ An attempt to spawn a Workflow Execution with a Workflow Id that is the same as 
 
 A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/namespaces#), Workflow Id, and [Run Id](#run-id).
 
+### Memo
+
+A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.
+
 #### Workflow Id Reuse Policy
 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
@@ -459,6 +463,15 @@ In many SDKs, the Temporal Client exposes a predefined `__stack_trace` Query tha
 This is a great way to troubleshoot a Workflow Execution in production.
 For example, if a Workflow Execution has been stuck at a state for longer than an expected period of time, you can send a `__stack_trace` Query to return the current call stack.
 The `__stack_trace` Query name does not require special handling in your Workflow code.
+
+## Side Effect
+
+A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
+
+A Side Effect does not re-execute upon replay, but instead returns the recorded result.
+
+Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
+If there is any chance that the code provided to the Side Effect could fail, use an Activity.
 
 ## Child Workflow
 

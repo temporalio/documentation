@@ -15,7 +15,7 @@ You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 
 - [**Default** Search Attributes](/concepts/what-is-a-search-attribute/#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/concepts/what-is-a-search-attribute/#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/clusters/quick-install/#docker-compose).
+  - A few [generic Custom Search Attributes](/concepts/what-is-a-search-attribute/#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/clusters/quick-install).
 
 The steps to using custom Search Attributes are:
 

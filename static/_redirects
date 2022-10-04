@@ -212,24 +212,25 @@
 /server/multi-cluster        /concepts/what-is-multi-cluster-replication
 /server-options        /references/server-options
 /server/options        /references/server-options
-/server-production-deploy        /server/production-deploy
-/server-production-deployment  /server/production-deploy
-/server-quick-install        /clusters/quick-install
-/server/quick-install        /clusters/quick-install
-/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /clusters/quick-install/#helm-charts
-/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose        /clusters/quick-install/#docker-compose
-/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /clusters/quick-install/#helm-charts
-/content/how-to-quickly-install-the-temporal-server        /clusters/quick-install
+/server-production-deploy        /cluster-deployment-guide
+/server-production-deployment  /cluster-deployment-guide
+/server-quick-install        /application-development/foundations#run-a-dev-cluster
+/server/quick-install        /application-development/foundations#run-a-dev-cluster
+/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /kb/install-temporal-cluster-for-development#helm-charts
+/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose        /application-development/foundations#docker-compose
+/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development        /kb/install-temporal-cluster-for-development#helm-charts
+/content/how-to-quickly-install-the-temporal-server        /application-development/foundations#run-a-dev-cluster
 
-/content/how-to-integrate-elasticsearch-into-a-temporal-cluster        /clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
-/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster        /clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster
+/content/how-to-integrate-elasticsearch-into-a-temporal-cluster        /cluster-deployment-guide#elasticsearch
+/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster        /cluster-deployment-guide#elasticsearch
 
-/server-security         /server/security
+/server-security        /security
+/server/security        /security
 /server-versions-and-dependencies        /clusters
 /clusters        /clusters
 /server/workflow-search        /visibility
 
-/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
+/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl
 /operation/how-to-tune-workers        /application-development/worker-performance
 
 /cadence-to-temporal        /kb/cadence-to-temporal

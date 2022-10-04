@@ -3,6 +3,8 @@ id: configuration
 title: Temporal Cluster configuration reference
 sidebar_label: Cluster configuration
 toc_max_heading_level: 5
+tags:
+  - reference
 ---
 
 Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file and may contain the following top-level sections:

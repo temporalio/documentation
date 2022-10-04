@@ -171,8 +171,8 @@ module.exports = {
         {
           items: [
             {
-              label: "Security",
-              to: "/security",
+              label: "Company security",
+              to: "/temporal-technologies-inc-security",
             },
             {
               label: "Privacy policy",

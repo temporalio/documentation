@@ -9,9 +9,7 @@ tags:
   - auth
 ---
 
-import RelatedReadList from '../components/RelatedReadList.js'
-
-The Temporal Server [expects](/server/security/#authentication) an `authorization` gRPC header with an authorization token to be passed with API calls if [requests authorization](/server/security/#authorization) is configured.
+The Temporal Server expects an `authorization` gRPC header with an authorization token to be passed with API calls if requests authorization is configured.
 
 Authorization Tokens may be provided to the Temporal Java SDK by implementing a `io.temporal.authorization.AuthorizationTokenSupplier` interface.
 The implementation should be used to create `io.temporal.authorization.AuthorizationGrpcMetadataProvider` that may be configured on ServiceStub gRPC interceptors list.
@@ -21,7 +19,7 @@ The implementation is called for each SDK gRPC request and may supply dynamic to
 **JWT**
 
 One of the token types that may be passed this way are JWT tokens.
-Temporal Server provides a [default implementation of JWT authentication](/server/security/#default-jwt-claimmapper).
+Temporal Server provides a [default implementation of JWT authentication](/concepts/what-is-a-claimmapper-plugin#default-jwt-claimmapper).
 
 **Example**
 
@@ -37,7 +35,3 @@ Temporal Server provides a [default implementation of JWT authentication](/serve
   WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
   WorkflowClient client = WorkflowClient.newInstance(service);
 ```
-
-Related read:
-
-- [How to secure a Temporal Cluster](/server/security)

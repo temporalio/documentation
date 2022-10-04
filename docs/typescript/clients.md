@@ -5,9 +5,6 @@ sidebar_label: Clients
 description: Workflow Clients are embedded in your application code, and connect to Temporal Server via gRPC. They are the only way to schedule new Workflow Executions with Temporal Server.
 ---
 
-<!-- prettier-ignore -->
-import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
-
 **`@temporalio/client`** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
 
 **Workflow Clients are embedded in your application code and connect to Temporal Server via gRPC**.
@@ -213,7 +210,7 @@ const handle = await client.start(scheduledWorkflow, {
 
 :::info Should I use Cron Workflows or Timers?
 
-This section is specifically about <preview page={WhatIsATemporalCronJob}>Temporal Cron Jobs</preview>, which are Workflows that have the `cronSchedule` option set in Temporal.
+This section is specifically about [Temporal Cron Jobs](/workflows#temporal-cron-job), which are Workflows that have the `cronSchedule` option set in Temporal.
 Because Temporal Workflows have [Timers](/typescript/workflows#timers), can loop indefinitely, and can spawn [Child Workflows](/typescript/workflows#child-workflows), it is natural to ask when to use which.
 
 Cron Workflows are rigid and come with a lot of caveats.
@@ -347,4 +344,4 @@ Outputs something like:
 
 **For the full list of gRPC calls, see the Methods section of the [WorkflowService](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.WorkflowService-1#methods) API reference.**
 
-Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster/) (this is enabled by default for all Temporal Cloud customers).
+Note that if you are trying to do a lot of list-then-filter operations (e.g. `listClosedWorkflowExecutions`), the [Visibility APIs](/typescript/search-attributes) are a better choice for Temporal deployments with [ElasticSearch enabled](/cluster-deployment-guide#elasticsearch) (this is enabled by default for all Temporal Cloud customers).

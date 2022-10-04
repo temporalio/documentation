@@ -11,8 +11,8 @@ export default function Security() {
   const {siteConfig = {}} = context;
   return (
     <Layout
-      title="Temporal Security"
-      permalink="/security"
+      title="Temporal Technologies Inc general security"
+      permalink="/temporal-technologies-inc-security"
       description="<head />"
     >
       <header className={clsx("hero hero--primary", styles.heroBanner)}>

@@ -50,6 +50,10 @@
       "id": "concepts/what-is-a-workflow-id"
     },
     {
+      "type": "h3",
+      "id": "concepts/what-is-a-memo"
+    },
+    {
       "type": "h4",
       "id": "concepts/what-is-a-workflow-id-reuse-policy"
     },
@@ -69,12 +73,14 @@
       "type": "h2",
       "id": "concepts/what-is-a-signal"
     },
-
     {
       "type": "h2",
       "id": "concepts/what-is-a-query"
     },
-
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-side-effect"
+    },
     {
       "type": "h2",
       "id": "concepts/what-is-a-child-workflow-execution"

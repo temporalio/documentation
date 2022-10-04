@@ -346,8 +346,8 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as [Temporalite](#run-a-dev-cluster)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](#run-a-dev-cluster) serve (`127.0.0.1:7233`).
 
 When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
@@ -356,7 +356,7 @@ When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud).
 
 For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -885,7 +885,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 
 Related references:
 
-- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- [What is a Data Converter?](/security#data-converter)
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1574,7 +1574,7 @@ Activity return values must be serializable and deserializable by the provided [
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
-- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- [What is a Data Converter?](/security#data-converter)
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>

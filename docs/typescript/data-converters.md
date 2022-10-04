@@ -5,7 +5,7 @@ sidebar_label: Data Converters
 description: Learn and customize how data is serialized in the TypeScript SDK
 ---
 
-> Background reading: [Data Converters in Temporal](/concepts/what-is-a-data-converter/)
+> Background reading: [Data Converters in Temporal](/security#data-converter)
 
 Contents:
 
@@ -33,7 +33,7 @@ To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JS
 - [`new WorkflowClient({ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
 - [`Worker.create({ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
-Data Converters have [two parts](/concepts/what-is-a-data-converter#payload-codecs):
+Data Converters have [two parts](/security#payload-codecs):
 
 - [`PayloadConverter`](#payloadconverter): sync methods that sometimes run inside the Workflow isolate (and are thus [limited](/typescript/determinism#imports-in-workflow-code))
 - [`PayloadCodec`](#payloadcodec): async methods that are run outside the isolate
@@ -201,7 +201,7 @@ interface PayloadCodec {
 
 #### Encryption
 
-> Background: [Data Converter ➡️ Encryption](/concepts/what-is-a-data-converter#encryption)
+> Background: [Data Converter ➡️ Encryption](/security#encryption)
 
 Here's an example class that implements the `PayloadCodec` interface:
 

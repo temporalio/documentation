@@ -12,7 +12,7 @@ There are three main features to know:
 - **TLS Encryption** helps encrypt code in transit
 - **Data Converter** helps encrypt code at rest (available soon)
 
-Temporal Server internally has [other Security features](/server/security), particularly Authorization.
+Temporal Server internally has [other Security features](/security), particularly Authorization.
 
 An important part of Temporal's security model is that Temporal Server only manages state and time - it never actually sees or runs your Workflow/Activity code.
 Code is hosted by Temporal Workers that you run, and Temporal Server only sees inbound/outbound gRPC messages.
@@ -20,9 +20,7 @@ This eliminates a whole class of problems particularly when providing Temporal t
 
 ## Namespaces
 
-import Content from '../concepts/what-is-a-namespace.md'
-
-<Content />
+[What is a Namespace?](/namespaces)
 
 All SDK connections (whether Workers or Clients) are to a specific namespace.
 If not specified in [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions), this defaults to the `default` namespace.
@@ -212,5 +210,5 @@ Temporal has no opinions on production deployment strategy other than the connec
 
 ## Encryption at rest with Payload Codec
 
-- [Data Converter ➡️ Encryption](/concepts/what-is-a-data-converter#encryption)
+- [Data Converter ➡️ Encryption](/security#encryption)
 - [Data Converters in TypeScript ➡️ Encryption](/typescript/data-converters#encryption)

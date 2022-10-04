@@ -2,6 +2,8 @@
 id: server-options
 title: Temporal Server options
 sidebar_label: Start options
+tags:
+  - reference
 ---
 
 You can run the [Temporal Server](/concepts/what-is-the-temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
@@ -90,7 +92,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a [mechanism to map roles](/server/security/#claimmapper-plugin-interface) to `Claims` for authorization.
+Configures a [mechanism to map roles](/security/#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(

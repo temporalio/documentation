@@ -9,7 +9,7 @@ tags:
 
 A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl) or the [Web UI](/web-ui).
 
-- [How to set up a Codec Server](/clusters/how-to-set-up-codec-server/)
+- [How to set up a Codec Server](/security/how-to-set-up-codec-server)
 
 The Web UI and tctl both use a default [Data Converter](/concepts/what-is-a-data-converter), which is capable of serialization only.
 
@@ -18,7 +18,7 @@ These measures can further secure your data.
 
 ![](/img/tctl-diagram-codec-server.svg)
 
-## Use case: tctl
+### Use case: tctl
 
 Suppose that you want to view Workflow History.
 This information needs to be decoded before it can be viewed.
@@ -33,11 +33,11 @@ With a Codec Server, the Payload is decoded before being deserialized by tctl's 
 
 The Data Converter passes this result back to the command line, which prints the decoded result.
 
-## Use case - Web UI
+### Use case - Web UI
 
 Workflow Execution Event History is available in the Web UI.
 Payload information for each Event is captured within Event 'input' and 'result' fields.
 Without a Codec Server, this information remains encoded.
 
 Passing these Payloads through a Codec Server returns decoded results to the Web UI.
-Make sure to [enter a valid URL and port](/clusters/how-to-set-up-codec-server#web-ui) for the codec endpoint when configuring the Codec Server.
+Make sure to [enter a valid URL and port](/security/how-to-set-up-codec-server) for the codec endpoint when configuring the Codec Server.

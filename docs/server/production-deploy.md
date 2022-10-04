@@ -6,7 +6,7 @@ sidebar_label: Production deployment
 
 ## Overview
 
-While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/clusters/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
+While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/application-development/foundations#run-a-dev-cluster)), there is far less of an established framework for deploying Temporal to a live (production) environment.
 That is because the set up of the Server depends very much on your intended use-case and the hosting infrastructure.
 
 This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
@@ -28,18 +28,7 @@ But if you are building Temporal or running it from source, [Go v1.16+ is requir
 
 While Temporal can be run as a single Go binary, we recommend that production deployments of Temporal Server should deploy each of the 4 internal services separately (if you are using Kubernetes, one service per pod) so they can be scaled independently in future.
 
-See below for a refresher on the 4 internal services:
-
-<details>
-<summary>
-Temporal Cluster Architecture
-</summary>
-
-import WhatIsCluster from "../concepts/what-is-a-temporal-cluster.md"
-
-<WhatIsCluster />
-
-</details>
+See the [Cluster concept guide](/clusters) for more details.
 
 In practice, this means you will run each container with a flag specifying each service, e.g.
 
@@ -61,9 +50,9 @@ Though **neither are blessed for production use**, you can consult our [Docker-C
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/cluster-deployment-guide#elasticsearch).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
-- Each language SDK also has minimum version requirements. See the [versions & dependencies page](/clusters/) for precise versions we support together with these features.
+- Each language SDK also has minimum version requirements. See the [versions & dependencies page](/clusters) for precise versions we support together with these features.
 
 Kubernetes is not required for Temporal, but it is a popular deployment platform anyway.
 We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) you can use as a reference, but you are responsible for customizing it to your needs.
@@ -124,7 +113,7 @@ Every shard is low contention by design and it is very difficult to oversubscrib
 With that said, here are some guidelines to some common bottlenecks:
 
 - **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `schedule_to_start_latency`** to look out for this. Also check if your database connection is getting saturated.
-- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/concepts/what-is-a-temporal-cluster)).
+- **Internal services**. The next layer will be scaling the 4 internal services of Temporal ([Frontend, Matching, History, and Worker](/clusters#temporal-server)).
   Monitor each accordingly. The Frontend Service is more CPU bound, whereas the History and Matching Services require more memory.
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](/references/configuration/).
 - See [Platform limits](/kb/temporal-platform-limits-sheet) for other limits you will want to keep in mind when doing system design, including event history length.
@@ -177,7 +166,7 @@ You may sometimes want to have multiple parallel deployments on the same cluster
 
 ## Securing Temporal
 
-Please see our dedicated docs on [Temporal Server Security](/server/security).
+Please see our dedicated docs on [Temporal Server Security](/security).
 
 ## Debugging Temporal
 

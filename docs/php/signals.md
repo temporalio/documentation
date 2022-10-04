@@ -14,14 +14,7 @@ However, if you can't find what you are looking for there, we recommend checking
 
 :::
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsASignal} />
-</RelatedReadContainer>
+[What is a Signal?](/workflows#signal)
 
 ```php
 use Temporal\Workflow;

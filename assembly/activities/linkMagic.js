@@ -80,6 +80,7 @@ async function linkMagicReferences(config, link_index) {
       );
       await fs.writeFile(refWritePath, refString);
     }
+    isReference = false;
   }
   return;
 }

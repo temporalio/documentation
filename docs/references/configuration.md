@@ -3,6 +3,8 @@ id: configuration
 title: Temporal Cluster configuration reference
 description: undefined
 sidebar_label: Cluster configuration
+tags:
+  - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -304,7 +306,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication).
+`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/clusters#multi-cluster-replication).
 
 An example `clusterMetadata` section:
 

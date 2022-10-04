@@ -3,6 +3,9 @@ id: how-to-set-up-codec-server
 title: How to set up a Codec Server
 sidebar_label: Codec Server
 description: Implementation of a remote encryption/decryption server.
+tags:
+  - security
+  - how-to
 ---
 
 The [Codec Server Go sample](https://github.com/temporalio/samples-go/tree/main/codec-server) is an example that shows how to decode a Payload that has been encoded so the Payload can be displayed by [tctl](/tctl) and the [Web UI](/web-ui).

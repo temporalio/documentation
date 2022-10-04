@@ -29,7 +29,7 @@ The main pieces of data that run through the Data Converter are arguments and re
 
 Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) Protobuf message, which consists of binary `data` and key-value `metadata`.
 
-## Default Data Converter
+### Default Data Converter
 
 Each Temporal SDK includes a default Data Converter.
 In most SDKs, the default converter supports binary, JSON, and Protobufs.
@@ -48,7 +48,7 @@ For example:
 
 The default converter also supports decoding binary Protobufs.
 
-## Custom Data Converter
+### Custom Data Converter
 
 Applications can create their own custom Data Converters to alter the format (for example using [MessagePack](https://msgpack.org/) instead of JSON) or add compression or encryption.
 
@@ -63,7 +63,7 @@ Custom Data Converters are not applied to all data:
 - `searchAttributes` are always encoded with JSON.
 - Headers are not encoded by the SDK (the one exception will be—when implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
 
-### Payload Codecs
+#### Payload Codecs
 
 In [TypeScript](/typescript/data-converters#custom-data-converter) and [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), data conversion happens in two stages:
 
@@ -83,7 +83,7 @@ In codec implementations, we recommended running the function (whether it be com
 - [`ZlibCodec`](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105) in the Go SDK
 - [Encryption Data Converter](https://github.com/temporalio/samples-go/blob/15be864c80d4d983ebb8a8fbd3fa5263bcef6930/encryption/data_converter.go#L100-L126) in Go's encryption sample
 
-### Encryption
+#### Encryption
 
 Doing encryption in a custom Data Converter ensures that all application data is encrypted during the following actions:
 

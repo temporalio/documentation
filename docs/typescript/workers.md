@@ -139,16 +139,7 @@ Temporal also supports mTLS encryption (required by Temporal Cloud) this way - p
 
 ## Task Queues
 
-import WhatIsATaskQueue from '../concepts/what-is-a-task-queue.md'
-
-<details>
-<summary>
-A Task Queue is a dynamic queue in Temporal Server polled by one or more Workers.
-</summary>
-
-<WhatIsATaskQueue />
-
-</details>
+[What is a Task Queue?](/tasks)
 
 ### Where Task Queues are used
 
@@ -222,4 +213,4 @@ Worker Code:
 <!--SNIPEND-->
 
 This pattern is [in use at Netflix](https://www.youtube.com/watch?v=LliBP7YMGyA&t=24s).
-Note that this is unrelated to [Sticky Queues](/concepts/what-is-a-sticky-execution), which are an internal implementation detail.
+Note that this is unrelated to [Sticky Queues](/tasks#sticky-execution), which are an internal implementation detail.

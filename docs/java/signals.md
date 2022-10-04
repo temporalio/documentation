@@ -6,14 +6,7 @@ tags:
   - java
 ---
 
-import {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsASignal} />
-</RelatedReadContainer>
+[What is a Signal?](/workflows#signal)
 
 Signal methods can only be defined inside Workflows Interfaces and are methods annotated with the `@SignalMethod` annotation, for example:
 

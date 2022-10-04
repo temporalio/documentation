@@ -11,9 +11,6 @@ However, if you can't find what you are looking for there, we recommend checking
 
 :::
 
-<!-- prettier-ignore -->
-import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
-
 This is how you set a Cron Schedule in PHP:
 
 ```php
@@ -36,7 +33,7 @@ This is how you set a Cron Schedule in PHP:
   }
 ```
 
-Setting `withCronSchedule` turns the Workflow Execution into a <preview page={WhatIsATemporalCronJob}>Temporal Cron Job</preview>
+Setting `withCronSchedule` turns the Workflow Execution into a [Temporal Cron Job](/workflows#temporal-cron-job).
 
 You can check our [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code.
 

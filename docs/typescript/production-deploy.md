@@ -25,7 +25,7 @@ Take a look at [our recommended .eslintrc file](https://github.com/temporalio/sa
 
 Temporal Clients and Workers connect with Temporal Clusters through gRPC.
 
-- While you were developing locally, all these connections were set to their [default gRPC ports](/concepts/what-is-a-temporal-cluster) on localhost.
+- While you were developing locally, all these connections were set to their [default gRPC ports](/clusters) on localhost.
 - In production, you will need to configure address, Namespace, and encryption settings:
 
   ```ts
@@ -82,7 +82,7 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
 - [Worker Options](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#maxcachedworkflows), for example:
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
-  - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/concepts/what-is-a-sticky-execution)
+  - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/tasks#sticky-execution)
   - See [Worker Tuning Guide](/application-development/worker-performance)
 - [Activity Timeouts and Retries](/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and Retry Policy to reflect your desired behavior.
   - Note that there are separate [Timeouts and Retry Policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.

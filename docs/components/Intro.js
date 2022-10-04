@@ -693,7 +693,9 @@ function Cluster() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <Link
-            to={useBaseUrl("/clusters/quick-install/#docker-compose")}
+            to={useBaseUrl(
+              "/application-development/foundations#docker-compose"
+            )}
             className="hover:underline"
           >
             <a className="font-normal">Run a Cluster using Docker Compose</a>
@@ -701,9 +703,7 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl(
-              "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
-            )}
+            to={useBaseUrl("/cluster-deployment-guide#elasticsearch")}
             className="hover:underline"
           >
             <a className="font-normal">
@@ -718,7 +718,9 @@ function Cluster() {
         </li>
         <li className="">
           <Link
-            to={useBaseUrl("/clusters/quick-install/#helm-charts")}
+            to={useBaseUrl(
+              "/kb/install-temporal-cluster-for-development#helm-charts"
+            )}
             className="hover:underline"
           >
             <a className="font-normal">Deploy to Kubernetes</a>

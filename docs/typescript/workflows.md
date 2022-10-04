@@ -7,11 +7,6 @@ description: Workflows are async functions that can orchestrate Activities and a
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import RelatedReadList, {RelatedReadContainer, RelatedReadItem} from '../components/RelatedReadList.js'
-
-<!-- prettier-ignore -->
-import * as WhatIsASignal from '../concepts/what-is-a-signal.md'
-import * as WhatIsAQuery from '../concepts/what-is-a-query.md'
 
 **`@temporalio/workflow`** [![NPM](https://img.shields.io/npm/v/@temporalio/workflow)](https://www.npmjs.com/package/@temporalio/workflow) [API reference](https://typescript.temporal.io/api/namespaces/workflow) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/workflow)
 
@@ -115,11 +110,6 @@ The rest of this document explains the major Workflow APIs you should know:
 ## Signals and Queries
 
 > _Background reading: [Signals and Queries in Temporal](/workflows/#signals)_
-
-<RelatedReadContainer>
-  <RelatedReadItem page={WhatIsASignal} />
-  <RelatedReadItem page={WhatIsAQuery} />
-</RelatedReadContainer>
 
 #### How to define and receive Signals and Queries
 
@@ -880,7 +870,7 @@ Child Workflows and Activities are both started from Workflows, so you may feel 
 Here are some important differences:
 
 - Child Workflows have access to all Workflow APIs, but are subject to [Workflow Limitations](/typescript/workflows#workflow-limitations). Activities have the inverse pros and cons.
-- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/concepts/what-is-a-parent-close-policy/) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/typescript/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
+- Child Workflows can continue on if their Parent is canceled, with a [ParentClosePolicy](/workflows#parent-close-policy) of `ABANDON`, whereas Activities are _always_ canceled when their Workflow is canceled (they may react to a [cancellationSignal](/typescript/activities#activity-cancellation) for cleanup if canceled). The decision is roughly analogous to spawning a child process in a terminal to do work vs doing work in the same process.
 - Temporal tracks all state changes within Child Workflows in Event History, whereas only the input, output, and retry attempts of Activities are tracked.
 
 Activities usually model a single operation on the external world. Workflows are modeling composite operations that consist of multiple activities or other child workflows.
@@ -889,28 +879,22 @@ Activities usually model a single operation on the external world. Workflows are
 
 </details>
 
-<RelatedReadList
-readlist={[
-["What is a Child Workflow Execution?","/concepts/what-is-a-child-workflow-execution","explanation"]
-]}
-/>
+[What is a Child Workflow Execution?](/workflows#child-workflow)
 
 ### Parent Close Policy
 
-import PCP from '../concepts/what-is-a-parent-close-policy.md'
-
-<PCP />
+[What is a Parent Close Policy?](/workflows#parent-close-policy)
 
 <span id="continueasnew" />
 
 ## `continueAsNew`
 
-We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
+We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](/workflows#event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
 <summary>More info</summary>
 
-[What is Continue-As-New?](/concepts/what-is-continue-as-new)
+[What is Continue-As-New?](/workflows#continue-as-new)
 
 </details>
 
