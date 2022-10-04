@@ -308,10 +308,10 @@ const { example } = proxyActivities<typeof activities>({
 });
 ```
 
-Without Heartbeating, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled or activity worker died, Temporal would have to wait out the 1 hour before retrying.
+Without Heartbeating, if your activity `StartToCloseTimeout` is 1 hour and the activity stalled, or activity worker died, Temporal would have to wait out the 1 hour before retrying.
 But if you used the Heartbeat API, set a `heartbeatTimeout` for 10 seconds, the absence of Heartbeats in the `heartbeatTimeout` window would inform the Server that the Activity has stalled and should be retried right away rather than at the end of the `StartToCloseTimeout`.
 
-The second major benefit of Heartbeating is being able to resume from failure by checkpointing data as `heartbeatDetails`.
+The second major benefit of Heartbeating is being able to resume from failure by check pointing data as `heartbeatDetails`.
 Extending the example above:
 
 ```ts
@@ -370,9 +370,9 @@ Normally, an Activity is started and ended in the same Worker, for example a sho
 However, sometimes you may want to record an Activity completion in a different process than when you started it.
 
 > If you are modeling human actions, we recommend using Signals rather than Async Activity Completion.
-> This is because Activities only have one timeout and, if your Activity is split into two steps, one for kicking off the process (for example, storing information in the data base), and one for human based resolution, it's best to use the timeout to detect failure in the former so it can be retried by the system.
+> This is because Activities only have one timeout and, if your Activity is split into two steps, one for kicking off the process (for example, storing information in the data base), and one for human based resolution, it's best to use the timeout to detect failure in the former, so it can be retried by the system.
 
-Async Activity completion is done through a two step process:
+Async Activity completion is done through a two-step process:
 
 - Throw a `CompleteAsyncError` from an Activity
 - Use a `AsyncCompletionClient` to mark it as completed, failed, or more.

@@ -241,8 +241,8 @@ Then register a new Namespace with Archival enabled.
 
 :::note
 
-If the retention period isn't set, it defaults to 2 days.
-The minimum retention period is 1 day.
+If the retention period isn't set, it defaults to two days.
+The minimum retention period is one day.
 The maximum retention period is 30 days.
 
 Setting the retention period to 0 results in the error _A valid retention period is not set on request_.
@@ -592,3 +592,4 @@ tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_addr
 tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
 tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
 ```
+

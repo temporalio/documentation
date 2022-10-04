@@ -46,7 +46,7 @@ For testing workflows there is no need to run a full Temporal server (with stora
 Instead, we can use a light-weight test server.
 
 The code in `bootstrap.php` will start/stop (and download if it doesn't exist) Temporal test
-server and RoadRunner for every phpunit run. Test server runs as a regular server on 7233 port.
+server and RoadRunner for every phpunit run. test server runs as a regular server on 7233 port.
 Thus, if you use default connection settings, there is no need to change them.
 
 Under the hood RoadRunner is started with `rr serve` command. You can specify your own command in `bootstrap.php`:

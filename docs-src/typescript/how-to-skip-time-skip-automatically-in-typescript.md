@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-The Test Server starts in "normal" time. When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the Test Server is switched to "skipped" time mode until the Workflow completes. In "skipped" mode, timers (`sleep()`s and `condition()` timeouts) are fast-forwarded except when Activities are running.
+The test server starts in "normal" time. When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the test server is switched to "skipped" time mode until the Workflow completes. In "skipped" mode, timers (`sleep()`s and `condition()` timeouts) are fast-forwarded except when Activities are running.
 
 `workflows.ts`
 

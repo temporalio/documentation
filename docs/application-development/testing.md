@@ -13,15 +13,15 @@ The testing section of the Temporal Application development guide describes the 
 In the context of Temporal, you can create these types of automated tests:
 
 - **End-to-end**: Running a Temporal Server and Worker with all its Workflows and Activities; starting and interacting with Workflows from a Client.
+- **Integration**: Anything between end-to-end and unit testing.
   - Running Activities with mocked Context and other SDK imports (and usually network requests).
   - Running Workers with mock Activities, and using a Client to start Workflows.
   - Running Workflows with mocked SDK imports.
-- **Integration**: Anything between end-to-end and unit testing, including:
 - **Unit**: Running a piece of Workflow or Activity code (a function or method) and mocking any code it calls.
 
 We generally recommend writing the majority of your tests as integration tests.
 
-For both end-to-end tests and integration tests with a Worker, we recommend using the Test Server, as it supports [skipping time](#skip-time).
+Use the test server for both end-to-end and integration tests with Workers, as the test server supports skipping time.
 
 ## Test Activities
 
@@ -201,6 +201,8 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
@@ -346,7 +348,7 @@ Skipping time is not relevant to unit testing Workflow code, since in that case 
 
 :::
 
-The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the Test Server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the Test Server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
+The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the test server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the test server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
 #### Setting up
 
@@ -425,9 +427,9 @@ Content is currently unavailable.
 npm install @temporalio/testing
 ```
 
-The `@temporalio/testing` package downloads the Test Server and exports [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment), which you use to connect the Client and Worker to the Test Server and interact with the Test Server.
+The `@temporalio/testing` package downloads the test server and exports [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment), which you use to connect the Client and Worker to the test server and interact with the test server.
 
-[`TestWorkflowEnvironment.createTimeSkipping`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#createtimeskipping) starts the Test Server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
+[`TestWorkflowEnvironment.createTimeSkipping`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#createtimeskipping) starts the test server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
 
 ```typescript
 import {TestWorkflowEnvironment} from "@temporalio/testing";
@@ -467,7 +469,7 @@ test('workflowFoo', async () => {
 });
 ```
 
-This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result. The Workflow is executed using `testEnv.workflowClient`, which is connected to the Test Server.
+This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result. The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
 
 </TabItem>
 </Tabs>
@@ -503,7 +505,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-The Test Server starts in "normal" time. When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the Test Server is switched to "skipped" time mode until the Workflow completes. In "skipped" mode, timers (`sleep()`s and `condition()` timeouts) are fast-forwarded except when Activities are running.
+The test server starts in "normal" time. When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the test server is switched to "skipped" time mode until the Workflow completes. In "skipped" mode, timers (`sleep()`s and `condition()` timeouts) are fast-forwarded except when Activities are running.
 
 `workflows.ts`
 
@@ -570,7 +572,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-You can also call `testEnv.sleep()` from your test code to advance the Test Server's time.
+You can also call `testEnv.sleep()` from your test code to advance the test server's time.
 This is useful for testing intermediate state, or for testing indefinitely long-running Workflows.
 However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by starting the Workflow with `.start()` instead of `.execute()` (and not calling `.result()`).
 
@@ -654,11 +656,11 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Call
-[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep)
-from the mock Activity.
+Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep) from the mock Activity.
 
-In the below test, `processOrderWorkflow` sends a notification to the user after 1 day. The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days’)`, during which the Workflow will send the email (by calling the `sendNotificationEmail` Activity). Then once the Workflow completes, we assert that `sendNotificationEmail` was called.
+In the following test, `processOrderWorkflow` sends a notification to the user after one day. The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days’)`, during which the Workflow will send the email (by calling the `sendNotificationEmail` Activity).
+
+Then, once the Workflow completes, we assert that `sendNotificationEmail` was called.
 
 <details>
 <summary>
@@ -871,11 +873,9 @@ TypeScript has sample tests with [Jest](https://jestjs.io/) and [Mocha](https://
 **Jest**
 
 - Minimum Jest version: `27.0.0`
-  <<<<<<< HEAD
 - # [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
 - [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.t
   est.ts)
-  > > > > > > > cc8379314f58230c1c25a621f5549015901dd17f
 - [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (Must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.)
 
 **Mocha**
@@ -1004,3 +1004,4 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
+

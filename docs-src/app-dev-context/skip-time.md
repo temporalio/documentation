@@ -1,7 +1,7 @@
 ---
 id: skip-time
 title: How to Skip Time
-description: The Test Server included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
+description: The test serveris included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
 sidebar_label: Skip Time
 tags:
   - guide-context
@@ -17,4 +17,4 @@ Skipping time is not relevant to unit testing Workflow code, since in that case 
 
 :::
 
-The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the Test Server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the Test Server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
+The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the test server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the test server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.

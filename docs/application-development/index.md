@@ -78,7 +78,7 @@ TypeScript / JavaScript is currently selected!
 
 ## Guide structure
 
-The application development guide is broken down into four sections:
+The application development guide is broken down into five sections:
 
 1. [**Foundations**](/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
@@ -110,7 +110,13 @@ The application development guide is broken down into four sections:
    - [Logging](/application-development/observability#logging)
    - [Visibility](/application-development/observability#visibility)
 
-4. [**Worker performance**](/application-development/worker-performance)
+4. [**Testing**](/application-development/testing):
+   - [Test Activities](/application-development/testing#test-activities)
+   - [Test Workflows](/application-development/testing#test-workflows)
+   - [Test Frameworks](/application-development/testing#test-frameworks)
+   - [Replays](/application-development/testing#replay)
+
+5. [**Worker performance**](/application-development/worker-performance)
 
    - [Metrics](/application-development/worker-performance#metrics)
    - [Configuration](/application-development/worker-performance#configuration)

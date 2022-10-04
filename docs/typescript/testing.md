@@ -248,7 +248,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
   // createActivities defintion omitted for brevity
   const activities: ReturnType<typeof createActivities> = {
     async processOrder() {
-      // Test server switches to "normal" time while an activity is executing.
+      // test server switches to "normal" time while an activity is executing.
       // Call `sleep` to skip time by "2 days".
       await testEnv.sleep('2 days');
     },

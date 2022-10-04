@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-You can also call `testEnv.sleep()` from your test code to advance the Test Server's time.
+You can also call `testEnv.sleep()` from your test code to advance the test server's time.
 This is useful for testing intermediate state, or for testing indefinitely long-running Workflows.
 However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by starting the Workflow with `.start()` instead of `.execute()` (and not calling `.result()`).
 
