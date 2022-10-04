@@ -18,7 +18,7 @@ A Retention Period applies to a single [Namespace](/concepts/what-is-a-namespace
 The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the associated Workflow Execution Event History on that Namespace.
 
 On Temporal Cluster version 1.18 and later, Namespaces can use any Retention Period as needed. Ensure that your Persistence store has enough capacity for the storage.
-The maximum retention period on Temporal Cluster versions 1.17 and before is 30 days.
+The maximum retention period on Temporal Cluster versions 1.17 and earlier is 30 days.
 
 If you don't set the Retention Period value when using the [`tctl register`](/tctl/namespace/register/#--retention) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the [`RegisterNamespaceRequest](/application-development/features/#namespaces) API, it returns an error.
