@@ -6,7 +6,7 @@ title: Temporal Platform references
 - [SDK metrics reference](/references/sdk-metrics)
 - [Commands reference](/references/commands)
 - [Events reference](/references/events)
-- [Docker environmental variables reference](/references/docker-env-vars)
+- [Web UI environmental variables reference](/references/docker-env-vars)
 - [Temporal Cluster configuration reference](/references/configuration)
 - [Temporal Web UI configuration reference](/references/ui-configuration)
 - [Go SDK API reference](https://pkg.go.dev/go.temporal.io/sdk)
