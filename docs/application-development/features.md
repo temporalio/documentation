@@ -73,8 +73,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@SignalMethod
-   void mySignal(String signalName);
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -332,9 +332,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -906,7 +906,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+
+<!--SNIPSTART typescript-define-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1049,9 +1052,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1162,32 +1165,10 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
-
-```typescript
-import * as wf from "@temporalio/workflow";
-
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
-
-export async function unblockOrCancel(): Promise<void> {
-  let isBlocked = true;
-  wf.setHandler(unblockSignal, () => void (isBlocked = false));
-  wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
-  try {
-    await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
-  } catch (err) {
-    if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
-    }
-    throw err;
-  }
-}
-```
+<!--SNIPSTART typescript-handle-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1273,7 +1254,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+
+<!--SNIPSTART typescript-send-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2717,17 +2701,17 @@ Set [Parent Close Policy](/workflows#parent-close-policy) on an instance of `Chi
 - Default: None.
 
 ```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
 ```
 
 In this example, we are:
