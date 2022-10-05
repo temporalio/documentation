@@ -35,13 +35,13 @@ async function yourWorkflow(): Promise<void> {
     await executeChild<JavaWorkflow>('RunAnActivityWorkflow');
   } catch (err) {
     if (
-      err instanceof ChildWorkflowFailure
-      && err.cause instanceof ActivityFailure
-      && err.cause.cause instanceof ApplicationFailure
+      err instanceof ChildWorkflowFailure &&
+      err.cause instanceof ActivityFailure &&
+      err.cause.cause instanceof ApplicationFailure
     ) {
       console.log(
         'Child workflow failure root cause was a failed activity',
-        err.cause.cause.message,
+        err.cause.cause.message
       );
     }
     throw err;
@@ -84,7 +84,7 @@ async function wrapError<T>(fn: () => Promise<T>): Promise<T> {
     if (err instanceof MySpecialRetryableError) {
       throw ApplicationFailure.retryable(
         err.message,
-        'MySpecialRetryableError',
+        'MySpecialRetryableError'
       ); // can also make this nonRetryable if that is the intent. remember to change the error name.
     }
     throw err;
@@ -94,14 +94,14 @@ async function wrapError<T>(fn: () => Promise<T>): Promise<T> {
 class WorkflowErrorInterceptor implements WorkflowInboundCallsInterceptor {
   async execute(
     input: WorkflowExecuteInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
   ): Promise<unknown> {
     return await wrapError(() => next(input));
   }
 
   async handleSignal(
     input: SignalInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>,
+    next: Next<WorkflowInboundCallsInterceptor, 'handleSignal'>
   ): Promise<void> {
     return await wrapError(() => next(input));
   }
@@ -124,16 +124,15 @@ import * as activities from '../activities';
 
 export function yourWorkflow(
   urls: string[],
-  timeoutMs: number,
+  timeoutMs: number
 ): Promise<any[]> {
   const { httpGetJSON } = proxyActivities<typeof activities>({
     scheduleToCloseTimeout: timeoutMs,
   });
 
   try {
-    return await CancellationScope.withTimeout(
-      timeoutMs,
-      () => Promise.all(urls.map((url) => httpGetJSON(url))),
+    return await CancellationScope.withTimeout(timeoutMs, () =>
+      Promise.all(urls.map((url) => httpGetJSON(url)))
     );
   } catch (err) {
     if (isCancellation(err)) {
