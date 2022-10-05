@@ -14,18 +14,19 @@ A single Namespace is still multi-tenant.
 
 ### Usage
 
-You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
-Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+Namespaces are created on the Temporal Cluster, and provide a range of controls to achieve isolation on Workflow Executions.
 
+- You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
+  Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 - If no other Namespace is specified, the Temporal Cluster uses the Namespace "default" for all Temporal SDKs and tctl.
   See the [Registration](#registration) section for details.
 - **Case Insensitive**: Because of DNS, Namespaces are case insensitive on the network and routing side.
-  We recommend using lowercase for namespace names to avoid potential issues.
+  We recommend using lowercase for Namespace names to avoid potential issues.
 - **Membership**: [Task Queue](/concepts/what-is-a-task-queue) names and [Workflow Ids](/concepts/what-is-a-workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the [Retention Period](/concepts/what-is-a-retention-period) and the [Archival](/concepts/what-is-archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl).
+- **Namespace Configuration**: Various configuration options like the [Retention Period](/concepts/what-is-a-retention-period) and the [Archival](/concepts/what-is-archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl/namespace).
 
 ### Registration
 
