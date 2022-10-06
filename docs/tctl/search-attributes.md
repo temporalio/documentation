@@ -1,7 +1,7 @@
 ---
 id: search-attributes
 title: tctl search attribute command reference
-sidebar_label: search attribute
+sidebar_label: search attributes
 description: How to use the tctl search-attribute command
 toc_max_heading_level: 4
 ---
