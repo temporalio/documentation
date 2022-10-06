@@ -57,11 +57,9 @@ Temporalite requires Go 1.18 or later.
 
 The following steps start and run a Temporal Cluster.
 
-1. Build from source.
+1. Build from source by using `go install`.
    ```bash
-   git clone https://github.com/temporalio/temporalite.git
-   cd temporalite
-   go build ./cmd/temporalite
+   go install github.com/temporalio/temporalite/cmd/temporalite@latest
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
@@ -1530,8 +1528,6 @@ async def your_activity(params: YourParams) -> None:
 
 This Activity takes a single `name` parameter of type `string`.
 
-In the following example, `Promise<string>` is the return value.
-
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
 
@@ -1627,6 +1623,7 @@ async def say_hello(name: str) -> str:
 <TabItem value="typescript">
 
 In TypeScript, the return value is always a Promise.
+
 In the following example, `Promise<string>` is the return value.
 
 ```
