@@ -1,7 +1,7 @@
 ---
 id: task-queue
 title: tctl task-queue command reference
-sidebar_label: schedule
+sidebar_label: task-queue
 description: How to use the tctl task-queue command
 toc_max_heading_level: 4
 ---

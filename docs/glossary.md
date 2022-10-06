@@ -88,3 +88,4 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Workflow Task Execution](/tasks#workflow-task-execution)
 - [Workflow Task Timeout](/workflows#workflow-task-timeout)
 - [Workflow Type](/workflows#workflow-type)
+- [tctl](/tctl/index#)
