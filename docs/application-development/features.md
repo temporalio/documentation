@@ -73,8 +73,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@SignalMethod
-   void mySignal(String signalName);
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -332,9 +332,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -1049,9 +1049,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -2717,17 +2717,17 @@ Set [Parent Close Policy](/workflows#parent-close-policy) on an instance of `Chi
 - Default: None.
 
 ```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
 ```
 
 In this example, we are:
@@ -3084,15 +3084,17 @@ const handle = await client.start(scheduledWorkflow, {
 
 ## Side Effects
 
-A Side Effect is a method of execution to produce nondeterministic code, such as generating a UUID or a random number.
-By implementing a Side Effect in your Workflow Execution, you can execute the provided function once and record its result into the Workflow Execution [Event History](/workflows/#event-history).
+Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
-Side Effects should not fail, because failure results in the Side Effect function executing more than once. If there’s a chance of failure, use an Activity.
+
+Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+
+An Activity or a Local Activity may also be used instead of a Side effect, as its result is also persisted in Workflow Execution History.
 
 :::note
 
-You shouldn’t modify the Workflow state inside a Side Effect. Instead, use the return value.
+You shouldn’t modify the Workflow state inside a Side Effect function, because it is not reexecuted during Replay. Side Effect function should be used to return a value.
 
 :::
 
@@ -3103,7 +3105,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) API from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
@@ -3207,12 +3209,12 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is not applicable for this SDK.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is not applicable for this SDK.
+Not applicable to this SDK.
 
 </TabItem>
 </Tabs>
@@ -3223,12 +3225,12 @@ Mutable Side Effects execute the provided function once, and then it looks up th
 
 - If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
 - If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
-  - If the values are equal, then it returns the original value without recording a new History
+  - If the values are equal, then it returns the value without recording a new Marker Event
   - If the values aren't equal, then it records the new value with the same ID on the History.
 
 :::note
 
-During a Workflow Execution, every new Side Effect call results in a new mark recorded on the Workflow History; whereas Mutable Side Effects only record an entry on the Workflow History if the value changes.
+During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Workflow History; whereas Mutable Side Effects only records a new Marker on the Workflow History if the value for the Side Effect ID changes or is set the first time.
 
 During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
 
@@ -3241,12 +3243,12 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide the Workflow Id.
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
 
 ```go
 if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
-		panic("can't decode number:" + err.Error())
-	}
+    panic("can't decode number:" + err.Error())
+  }
 ```
 
 </TabItem>
@@ -3388,3 +3390,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+

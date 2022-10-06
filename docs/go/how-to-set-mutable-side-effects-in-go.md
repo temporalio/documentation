@@ -9,10 +9,10 @@ tags:
   - Go
 ---
 
-To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide the Workflow Id.
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
 
 ```go
 if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
-		panic("can't decode number:" + err.Error())
-	}
+    panic("can't decode number:" + err.Error())
+  }
 ```
