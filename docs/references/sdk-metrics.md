@@ -296,7 +296,7 @@ A Worker Entity has been registered, created, or started.
 
 ### worker_task_slots_available
 
-The total number of task execution slots that are currently available.
+The total number of Task Execution slots that are currently available.
 Use the `worker_type` key to differentiate execution slots:
 
 - `worker_type: WorkflowWorker`: Workflow Tasks
