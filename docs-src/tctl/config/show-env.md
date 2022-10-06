@@ -9,10 +9,8 @@ tags:
 
 The `tctl config show-env` command prints the properties of the given environment.
 
-`tctl config show-env <modifiers>`
+`tctl config show-env [options] ev_name`
 
-The following modifiers are supported and control the behavior of the command.
-Always include required modifiers when executing this command.
+The following modifier supports and controls the behavior of the command.
 
-- [--namespace](/tctl/modifiers#--namespace)
 - [--output](/tctl/modifiers#--output)

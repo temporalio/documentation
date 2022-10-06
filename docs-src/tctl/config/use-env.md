@@ -9,8 +9,6 @@ tags:
 
 The `tctl config use-env` command switches the environment that tctl is operating in.
 
-`tctl config use-env <modifiers>`
+`tctl config use-env [options] env_name`
 
-The following modifier is supported and controls the behavior of the command.
-
-- [--namespace](/tctl/modifiers#--namespace)
+There are no modifiers for this command.

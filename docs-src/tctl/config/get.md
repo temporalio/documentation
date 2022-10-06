@@ -7,10 +7,9 @@ tags:
   - tctl
 ---
 
-The `tctl config get` command prints the configuration values of the current environment.
+The `tctl config get` command prints the value of a given environmental property.
+The command is written as follows:
 
-`tctl config get <modifiers>`
+`tctl config get [options] [env.env_name]property_name`
 
-The following modifier is supported and controls the behavior of the command.
-
-- [--namespace](/tctl/modifiers#--namespace)
+This command has no modifiers.

@@ -9,8 +9,7 @@ tags:
 
 The `tctl alias` command creates an alias for a given command.
 
-The following modifiers change the behavior of this command.
+The following modifier changes the behavior of this command.
 
-`--alias`
-
-`--command`
+`--show`
+Shows a list of commands, or help for a given command.

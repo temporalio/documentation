@@ -8,9 +8,8 @@ tags:
 ---
 
 The `tctl config set` command modifies the configuration values within your environment.
+Use this command to set the value of a given environmental property.
 
-`tctl config set <modifiers>`
+`tctl config set [options] [env.env_name]property_name`
 
-The following modifier is supported and controls the behavior of the command.
-
-- [--namespace](/tctl/modifiers#--namespace)
+This command has no modifiers.
