@@ -39,7 +39,7 @@ func main() {
    w.RegisterWorkflow(YourWorkflowDefinition)
    w.RegisterActivity(YourActivityDefinition)
    err = w.Run(worker.InterruptCh())
-   if err != nil
+   if err != nil {
        // ...
    }
  // ...
@@ -53,3 +53,14 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
  // ...
 }
 ```
+
+:::tip
+
+If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
+
+```bash
+go install github.com/mitranim/gow@latest
+gow run worker/main.go # automatically reload when file changed
+```
+
+:::

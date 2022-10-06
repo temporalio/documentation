@@ -187,7 +187,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-define-a-query-in-typescript"
         }
       ]
     },
@@ -241,7 +241,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-send-a-query-to-a-workflow-in-typescript"
         }
       ]
     },
@@ -524,6 +524,35 @@
         {
           "lang": "typescript",
           "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/timers"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-timers-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-timers-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-set-timers-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-timers-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-timers-in-typescript"
         }
       ]
     },

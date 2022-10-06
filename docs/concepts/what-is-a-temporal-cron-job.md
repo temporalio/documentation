@@ -85,7 +85,7 @@ Intervals just take a string that can be accepted by [time.ParseDuration](http:/
 
 _This feature only applies in Temporal 1.15 and up_
 
-You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York ` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
+You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
 
 Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
 **If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.

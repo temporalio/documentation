@@ -98,7 +98,7 @@ Sending Signals requires a Workflow handle from a Temporal Client.
 The following code is from inside the Client code.
 
 ```typescript
-import {increment, count} from "./workflow";
+import {count, increment} from "./workflow";
 
 // init client code omitted - see Client docs
 const handle = client.getHandle(workflowId);

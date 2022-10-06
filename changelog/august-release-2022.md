@@ -1,8 +1,6 @@
 ---
 slug: august-release-2022
 title: August 23 2022
-tags:
-  - docs-change-log
 date: 2022-08-23T00:00:00Z
 ---
 

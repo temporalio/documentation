@@ -243,7 +243,7 @@ Sending Signals and making Queries requires having a Workflow handle from a [Tem
 
 ```ts
 // // inside Client code! not Workflow code!
-import { increment, count } from './workflow';
+import { count, increment } from './workflow';
 
 // init client code omitted - see Client docs
 const handle = client.getHandle(workflowId);
@@ -676,7 +676,7 @@ Racing Signals
 Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
 
 ```ts
-import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
+import { defineSignal, sleep, Trigger } from '@temporalio/workflow';
 
 const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');
@@ -799,7 +799,7 @@ Trigger Code Example
 </summary>
 
 ```ts
-import { Trigger, sleep, defineSignal } from '@temporalio/workflow';
+import { defineSignal, sleep, Trigger } from '@temporalio/workflow';
 
 const userInteraction = new Trigger<boolean>();
 const completeUserInteraction = defineSignal('completeUserInteraction');

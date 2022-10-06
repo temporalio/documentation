@@ -19,12 +19,12 @@ If, for example, a TypeScript Workflow starts a Java Child Workflow which calls 
 <!--TODO: use snipsync-->
 
 ```ts
-import { executeChild } from '@temporalio/workflow';
 import {
   ActivityFailure,
   ApplicationFailure,
   ChildWorkflowFailure,
 } from '@temporalio/common';
+import { executeChild } from '@temporalio/workflow';
 
 // Define the TypeScript version of the Java Workflow interface
 // to get a type safe child WorkflowHandle
@@ -70,7 +70,7 @@ The expected behavior is:
 - Other TemporalFailures -> same as retryable application failure
 - Any other error -> fails the workflow task and can be retried
 
-> Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were "retryable". The semantics of this was corrected in v0.17.
+> Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow execution to fail - in other words, all errors were Application Failures. The semantics of this was corrected in v0.17.
 
 ### Pattern: Wrapping Errors with Interceptors
 
@@ -117,8 +117,8 @@ As explained above, cancellation might not be the immediate cause of failure —
 ```ts
 import {
   CancellationScope,
-  proxyActivities,
   isCancellation,
+  proxyActivities,
 } from '@temporalio/workflow';
 import * as activities from '../activities';
 

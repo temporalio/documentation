@@ -4,6 +4,14 @@ title: Workers in PHP
 sidebar_label: Workers
 ---
 
+:::info Try the Application development guide
+
+The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+
+However, if you can't find what you are looking for there, we recommend checking this doc set as well.
+
+:::
+
 The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP worker processes based on provided `.rr.yaml` configuration.
 
 Each worker might connect to one or multiple task queues. Worker poll _Temporal service_ for tasks, performs those tasks,

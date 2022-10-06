@@ -223,8 +223,8 @@ You may proxy multiple Activities from the same `proxyActivities` call if you wa
 ```ts
 export async function Workflow(name: string): Promise<string> {
   // destructuring multiple activities with the same options
-  const { act1, act2, act3 } =
-    proxyActivities<typeof activities>(/* activityOptions */);
+  const { act1, act2, act3 } = proxyActivities<typeof activities>();
+  /* activityOptions */
   await act1();
   await Promise.all([act2, act3]);
 }
