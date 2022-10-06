@@ -57,9 +57,11 @@ Temporalite requires Go 1.18 or later.
 
 The following steps start and run a Temporal Cluster.
 
-1. Build from source by using `go install`.
+1. Build from source.
    ```bash
-   go install github.com/temporalio/temporalite/cmd/temporalite@latest
+   git clone https://github.com/temporalio/temporalite.git
+   cd temporalite
+   go build ./cmd/temporalite
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
@@ -349,7 +351,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
 
-When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud/index#)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
+When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
 - An address and port number.
 - A [Namespace](/namespaces#) Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
@@ -1528,6 +1530,8 @@ async def your_activity(params: YourParams) -> None:
 
 This Activity takes a single `name` parameter of type `string`.
 
+In the following example, `Promise<string>` is the return value.
+
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
 
@@ -1623,7 +1627,6 @@ async def say_hello(name: str) -> str:
 <TabItem value="typescript">
 
 In TypeScript, the return value is always a Promise.
-
 In the following example, `Promise<string>` is the return value.
 
 ```
@@ -2337,7 +2340,7 @@ func main() {
    w.RegisterWorkflow(YourWorkflowDefinition)
    w.RegisterActivity(YourActivityDefinition)
    err = w.Run(worker.InterruptCh())
-   if err != nil
+   if err != nil {
        // ...
    }
  // ...
