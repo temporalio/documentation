@@ -19,7 +19,6 @@ A single Namespace is still multi-tenant.
 Namespaces are created on the Temporal Cluster, and provide a range of controls to achieve isolation on Workflow Executions.
 
 - You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
-  Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 - If no other Namespace is specified, the Temporal Cluster uses the Namespace "default" for all Temporal SDKs and tctl.
   See the [Registration](#registration) section for details.
 - **Case Insensitive**: Because of DNS, Namespaces are case insensitive on the network and routing side.
@@ -87,3 +86,4 @@ Worker Processes on the standby Clusters are idle until a failover occurs and th
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
+

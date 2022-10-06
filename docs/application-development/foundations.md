@@ -57,11 +57,9 @@ Temporalite requires Go 1.18 or later.
 
 The following steps start and run a Temporal Cluster.
 
-1. Build from source.
+1. Build from source by using `go install`.
    ```bash
-   git clone https://github.com/temporalio/temporalite.git
-   cd temporalite
-   go build ./cmd/temporalite
+   go install github.com/temporalio/temporalite/cmd/temporalite@latest
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
@@ -3732,3 +3730,4 @@ try {
 
 </TabItem>
 </Tabs>
+
