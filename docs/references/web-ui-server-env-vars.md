@@ -12,6 +12,9 @@ Docker containers can be configured for use in a production setting.
 This is necessary for setting up a Web UI server for your application.
 
 Use `docker run` to configure the Web UI environmental variables.
+`docker run` requires at least 1 argument.
+
+`docker run [options] <image> <command> [args]`
 
 ```
 docker run \
@@ -45,23 +48,23 @@ Port to serve HTTP API and UI.
 
 ## `TEMPORAL_AUTH_ENABLED`
 
-Enable or disable authentication/authorization.
+Enable or disable authentication and authorization.
 
 ## `TEMPORAL_AUTH_PROVIDER_URL`
 
-Authentication/authorization OIDC provider URL.
+Authentication or authorization OIDC provider URL.
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
-Authentication/authorization client ID.
+Authentication or authorization client ID.
 
 ## `TEMPORAL_AUTH_CLIENT_SECRET`
 
-Authentication/authorization client secret.
+Authentication or authorization client secret.
 
 ## `TEMPORAL_AUTH_CALLBACK_URL`
 
-Authentication/authorization callback URL.
+Authentication or authorization callback URL.
 
 ## `TEMPORAL_UI_ENABLED`
 
