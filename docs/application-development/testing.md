@@ -476,7 +476,7 @@ This test uses the test connection to create a Worker, runs the Worker until the
 
 #### Automatic method
 
-Learn to Time Skip automatically in the SDK of your choice.
+Learn to Time Skip automatically in the SDK of your choice.  Start a test server process that automatically skips time as needed. For example, in the time skipping mode, timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
 <Tabs
 defaultValue="go"
@@ -500,7 +500,11 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.workflowenvironment#start_time_skipping) method to start a test server process and skip time automatically.
+
+Use the [`start_local()`](https://python.temporal.io/temporalio.testing.workflowenvironment#start_local) method for a full local Temporal server.
+
+Use the [`from_client`](https://python.temporal.io/temporalio.testing.workflowenvironment#from_client) method for an existing Temporal sever.
 
 </TabItem>
 <TabItem value="typescript">

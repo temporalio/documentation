@@ -1,7 +1,7 @@
 ---
 id: skip-time
 title: How to Skip Time
-description: The test serveris included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
+description: The test server is included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
 sidebar_label: Skip Time
 tags:
   - guide-context
