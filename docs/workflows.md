@@ -366,7 +366,7 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout](/application-development/features#workflow-execution-timeout)
+- [How to set a Workflow Execution Timeout](/go/how-to-set-a-workflow-execution-timeout-in-go)
 
 ![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
 
@@ -608,7 +608,7 @@ Intervals just take a string that can be accepted by [time.ParseDuration](http:/
 
 _This feature only applies in Temporal 1.15 and up_
 
-You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York ` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
+You can change the time zone that a Cron Schedule is interpreted in by prefixing the specification with `CRON_TZ=America/New_York` (or your [desired time zone from tz](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)). `CRON_TZ=America/New_York 15 8 * * *` therefore spawns a Workflow Execution every day at 8:15 AM New York time, subject to caveats listed below.
 
 Consider that using time zones in production introduces a surprising amount of complexity and failure modes!
 **If at all possible, we recommend specifying Cron Schedules in UTC (the default)**.

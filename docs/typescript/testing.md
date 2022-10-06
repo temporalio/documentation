@@ -5,8 +5,7 @@ sidebar_label: Testing
 ---
 
 :::note Sample available
-
-A complete sample for testing with Jest can be found in our [samples repo](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts).
+Our samples repo contains examples of [testing with Jest](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts) and [Mocha](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/mocha/workflows.test.ts)
 :::
 
 The TypeScript SDK comes with an optional test framework (npm `@temporalio/testing`).
@@ -26,8 +25,8 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
 
 ```ts
-import { MockActivityEnvironment } from '@temporalio/testing';
 import { Context } from '@temporalio/activity';
+import { MockActivityEnvironment } from '@temporalio/testing';
 
 const env = new MockActivityEnvironment({ attempt: 2 });
 const result = await env.run(
@@ -47,8 +46,8 @@ assert.equal(result, 4);
 It also exposes a `cancel` method which cancels the Activity Context.
 
 ```ts
-import { MockActivityEnvironment } from '@temporalio/testing';
 import { CancelledFailure, Context } from '@temporalio/activity';
+import { MockActivityEnvironment } from '@temporalio/testing';
 
 const env = new MockActivityEnvironment();
 
@@ -74,20 +73,24 @@ await assert.rejects(
 
 Workflows can be tested with [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment).
 
-A typical test suite would set up a single instance of the test environment to be reused in all tests (e.g. in a [jest](https://jestjs.io/) `beforeAll` hook).
+A typical test suite would set up a single instance of the test environment to be reused in all tests (e.g. in a [Mocha](https://mochajs.org/) `before()` hook or a [Jest](https://jestjs.io/) `beforeAll` hook).
 
 When creating an environment, [`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) will automatically start a test server that you can access with [`workflowClient`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
 
 ### Example setup
 
-> NOTE: `beforeAll` and `afterAll` are injected by `jest`.
+`beforeAll` and `afterAll` are injected by `jest`. To use mocha instead, change them to `before` and `after`, and import:
+
+```ts
+import { after, before } from 'mocha';
+```
 
 ```ts
 import { TestWorkflowEnvironment } from '@temporalio/testing';
 import { Worker } from '@temporalio/worker';
 import { v4 as uuid4 } from 'uuid';
-import { httpWorkflow } from './workflows';
 import type * as Activities from './activities'; // Uses types to ensure our mock signatures match
+import { httpWorkflow } from './workflows';
 
 let testEnv: TestWorkflowEnvironment;
 
@@ -124,7 +127,7 @@ test('httpWorkflow with mock activity', async () => {
       taskQueue: 'test',
     })
   );
-  expect(result).toEqual('The answer is 99');
+  assert.strictEqual(result, 'The answer is 99');
 });
 ```
 
@@ -193,7 +196,7 @@ export async function sleeperWorkflow() {
 `test.ts`
 
 ```ts
-test('advancing time using `testEnv.sleep()`', async function () {
+test('advancing time using `testEnv.sleep()`', async () => {
   const client = testEnv.workflowClient;
 
   // Important: `start()` starts the test server in "normal" mode,
@@ -205,19 +208,19 @@ test('advancing time using `testEnv.sleep()`', async function () {
   });
 
   let numDays = await handle.query(daysQuery);
-  assert.equal(numDays, 0);
+  assert.strictEqual(numDays, 0);
 
   // Advance the test server's time by 25 hours and assert that
   // `sleeperWorkflow()` correctly incremented `numDays`.
   await testEnv.sleep('25 hours');
   numDays = await handle.query(daysQuery);
-  assert.equal(numDays, 1);
+  assert.strictEqual(numDays, 1);
 
   // Advance the test server's time by an additional 25 hours and
   // assert that `sleeperWorkflow()` incremented `numDays` a second time.
   await testEnv.sleep('25 hours');
   numDays = await handle.query(daysQuery);
-  assert.equal(numDays, 2);
+  assert.strictEqual(numDays, 2);
 });
 ```
 
@@ -271,7 +274,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
       ],
     })
   );
-  expect(emailSent).toBe(true);
+  assert.strictEqual(emailSent, true);
 });
 ```
 
@@ -351,3 +354,10 @@ await worker.runUntil(
   testEnv.workflowClient.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
 );
 ```
+
+### Testing with Jest
+
+There are a couple of caveats for testing with Jest:
+
+1. The Temporal TypeScript SDK only supports Jest `>= 27.0.0`.
+1. Make sure you run Jest with [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.
