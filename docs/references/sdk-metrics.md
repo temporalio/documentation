@@ -31,7 +31,7 @@ Each metric may have some combination of the following keys attached to them:
   - `workflow_task`
   - `activity_task`
   - `sticky_workflow_task`
-- `worker_type`: One of the below values. Note that if a single Worker is configured to handle all three types of tasks, it will emit all three metrics.
+- `worker_type`: One of the following values. Note that if a single Worker is configured to handle all three types of Tasks, it emits all three metrics.
   - `WorkflowWorker`
   - `ActivityWorker`
   - `LocalActivityWorker`
