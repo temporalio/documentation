@@ -26,7 +26,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
     if (section.type == "langtabs") {
       const updatedLangTabs = [];
       for (let langtab of section.langtabs) {
-        if (langtab.id != "none") {
+        if (langtab.id != "none" && langtab.id != "na") {
           langtab.node.markdown_content = await parseAndReplace(
             langtab.node.markdown_content,
             fullIndex,
