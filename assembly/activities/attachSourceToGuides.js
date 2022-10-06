@@ -54,7 +54,7 @@ async function findMatches(guideConfig, infoNodes) {
 async function matchLangTabs(langtabs, infoNodes) {
   let updatedTabs = [];
   for (const langtab of langtabs) {
-    if (langtab.id != "none") {
+    if (langtab.id != "none" && langtab.id != "na") {
       langtab.node = await matchNode(langtab.id, infoNodes);
     }
     updatedTabs.push(langtab);

@@ -1528,8 +1528,6 @@ async def your_activity(params: YourParams) -> None:
 
 This Activity takes a single `name` parameter of type `string`.
 
-In the following example, `Promise<string>` is the return value.
-
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
 
@@ -1625,6 +1623,7 @@ async def say_hello(name: str) -> str:
 <TabItem value="typescript">
 
 In TypeScript, the return value is always a Promise.
+
 In the following example, `Promise<string>` is the return value.
 
 ```
