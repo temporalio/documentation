@@ -27,10 +27,10 @@ In this section you can find the following:
 
 - [How to run a dev Cluster](#run-a-dev-cluster)
 - [How to add your SDK](#add-your-sdk)
-- [How to create a Temporal Client](#create-temporal-clients)
+- [How to create a Temporal Client](#connect-to-a-cluster)
 - [How to develop a Workflow](#develop-workflows)
 - [How to develop an Activity](#develop-activities)
-- [How to start an Activity Execution](#start-activity-execution)
+- [How to start an Activity Execution](#activity-execution)
 - [How to run a Worker Process](#run-worker-processes)
 - [How to start a Workflow Execution](#start-workflow-execution)
 
@@ -57,9 +57,11 @@ Temporalite requires Go 1.18 or later.
 
 The following steps start and run a Temporal Cluster.
 
-1. Build from source by using `go install`.
+1. Build from source.
    ```bash
-   go install github.com/temporalio/temporalite/cmd/temporalite@latest
+   git clone https://github.com/temporalio/temporalite.git
+   cd temporalite
+   go build ./cmd/temporalite
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
@@ -349,7 +351,7 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
 
-When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud/index#)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
+When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
 - An address and port number.
 - A [Namespace](/namespaces#) Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
@@ -484,19 +486,19 @@ Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) m
 Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
 
 ```python
-    client = await Client.connect(
-        #  target_host for the Temporal Cloud
-        "your-custom-namespace.tmprl.cloud:7233",
-        # target_host for Temporalite
-        # "127.0.0.1:7233"
-        namespace="your-custom-namespace",
-        tls=TLSConfig(
-            client_cert=client_cert,
-            client_private_key=client_private_key,
-            # domain=domain
-            # server_root_ca_cert=server_root_ca_cert,
-        ),
-    )
+client = await Client.connect(
+    #  target_host for the Temporal Cloud
+    "your-custom-namespace.tmprl.cloud:7233",
+    # target_host for Temporalite
+    # "127.0.0.1:7233"
+    namespace="your-custom-namespace",
+    tls=TLSConfig(
+        client_cert=client_cert,
+        client_private_key=client_private_key,
+        # domain=domain
+        # server_root_ca_cert=server_root_ca_cert,
+    ),
+)
 ```
 
 </TabItem>
@@ -1528,6 +1530,8 @@ async def your_activity(params: YourParams) -> None:
 
 This Activity takes a single `name` parameter of type `string`.
 
+In the following example, `Promise<string>` is the return value.
+
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
 
@@ -1623,11 +1627,12 @@ async def say_hello(name: str) -> str:
 <TabItem value="typescript">
 
 In TypeScript, the return value is always a Promise.
-
 In the following example, `Promise<string>` is the return value.
 
+```
 <!--SNIPSTART typescript-activity-fn -->
 <!--SNIPEND-->
+```
 
 </TabItem>
 </Tabs>
@@ -2335,7 +2340,7 @@ func main() {
    w.RegisterWorkflow(YourWorkflowDefinition)
    w.RegisterActivity(YourActivityDefinition)
    err = w.Run(worker.InterruptCh())
-   if err != nil
+   if err != nil {
        // ...
    }
  // ...
@@ -2349,6 +2354,17 @@ func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourA
  // ...
 }
 ```
+
+:::tip
+
+If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
+
+```bash
+go install github.com/mitranim/gow@latest
+gow run worker/main.go # automatically reload when file changed
+```
+
+:::
 
 </TabItem>
 <TabItem value="java">
@@ -2521,7 +2537,7 @@ Below is an example of starting a Worker that polls the Task Queue named `tutori
 A full example for Workers looks like this:
 
 ```typescript
-import {Worker, NativeConnection} from "@temporalio/worker";
+import {NativeConnection, Worker} from "@temporalio/worker";
 import * as activities from "./activities";
 
 async function run() {
@@ -3152,7 +3168,6 @@ $yourWorkflow = $workflowClient->newWorkflowStub(
 );
 
 $result = $yourWorkflow->workflowMethod();
-
 ```
 
 2. A Task Queue name must be provided as a parameter when creating a Worker.
@@ -3401,7 +3416,7 @@ interface SubscriptionWorkflowInterface
 You can also set the Workflow Id as a constant, for example:
 
 ```php
- public const WORKFLOW_ID = Your-Workflow-Id
+public const WORKFLOW_ID = Your-Workflow-Id
 ```
 
 </TabItem>

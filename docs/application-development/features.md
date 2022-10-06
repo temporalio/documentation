@@ -28,12 +28,12 @@ In this section you can find the following:
 - [How to develop Signals](#signals)
 - [How to develop Queries](#queries)
 - [How to start a Child Workflow Execution](#child-workflows)
-- [How to start a Temporal Cron Job](#cron-jobs)
+- [How to start a Temporal Cron Job](#temporal-cron-jobs)
 - [How to use Continue-As-New](#continue-as-new)
-- [How to set Workflow timeouts & retries](#workflow-timeouts--retries)
-- [How to set Activity timeouts & retries](#activity-timeouts--retries)
+- [How to set Workflow timeouts & retries](#workflow-timeouts)
+- [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
-- [How to Asynchronously complete an Activity](#async-activity-completion)
+- [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 
 ## Signals
 
@@ -750,7 +750,7 @@ async def main():
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {yourWorkflow, joinSignal} from "./workflows";
+import {joinSignal, yourWorkflow} from "./workflows";
 
 const client = new WorkflowClient();
 
@@ -906,7 +906,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+
+<!--SNIPSTART typescript-define-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1162,32 +1165,10 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
-
-```typescript
-import * as wf from "@temporalio/workflow";
-
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
-
-export async function unblockOrCancel(): Promise<void> {
-  let isBlocked = true;
-  wf.setHandler(unblockSignal, () => void (isBlocked = false));
-  wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
-  try {
-    await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
-  } catch (err) {
-    if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
-    }
-    throw err;
-  }
-}
-```
+<!--SNIPSTART typescript-handle-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1273,7 +1254,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+
+<!--SNIPSTART typescript-send-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2059,7 +2043,7 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
   }
 }
 
-//...
+// ...
 
 // workflow code calling activity
 const {example} = proxyActivities<typeof activities>({

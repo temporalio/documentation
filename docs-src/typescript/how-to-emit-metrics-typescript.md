@@ -17,10 +17,10 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
 
 ```typescript
-  telemetryOptions: {
-      metrics: {
-        prometheus: { bindAddress: '0.0.0.0:9464' },
-      },
-      logging: { forward: { level: 'DEBUG' } },
+telemetryOptions: {
+    metrics: {
+      prometheus: { bindAddress: '0.0.0.0:9464' },
     },
+    logging: { forward: { level: 'DEBUG' } },
+  },
 ```
