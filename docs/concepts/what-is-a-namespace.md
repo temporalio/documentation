@@ -16,11 +16,12 @@ A single Namespace is still multi-tenant.
 
 Namespaces are created on the Temporal Cluster, and provide a range of controls to achieve isolation on Workflow Executions.
 
-- You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
+- Namespaces are a mechanism for resource isolation. Heavy traffic from one Namespace will not impact other Namespaces running on the same cluster.
+  For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
 - If no other Namespace is specified, the Temporal Cluster uses the Namespace "default" for all Temporal SDKs and tctl.
   See the [Registration](#registration) section for details.
-- **Case Insensitive**: Because of DNS, Namespaces are case insensitive on the network and routing side.
-  We recommend using lowercase for Namespace names to avoid potential issues.
+- Namespaces created on self-hosted Temporal Clusters are case-sensitive. For example, `foo` and `Foo` are two different Namespaces.
+  On Temporal Cloud, Namespaces are case-insensitive, and we recommend using lowercase for Namespace names to avoid potential issues.
 - **Membership**: [Task Queue](/concepts/what-is-a-task-queue) names and [Workflow Ids](/concepts/what-is-a-workflow-id) must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
@@ -41,15 +42,15 @@ You can register your Namespaces in the following ways:
   For example:
 
   - If deploying through Docker Compose or using the [auto-setup image](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) in a custom Docker Compose application, the Namespace "default" is created, through the auto-setup script.
-  - If deploying through the [Temporal Helm charts](https://github.com/temporalio/helm-charts), you can create the "default" Namespace by using tctl; for example, `tctl namespace default`.
-
-- In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
-
-  - [How to register a new Namespace using SDK](/application-development/features#namespaces)
+  - If deploying through the [Temporal Helm charts](https://github.com/temporalio/helm-charts), you can create the "default" Namespace by using tctl; for example, `tctl --namespace default namespace register`.
 
 - Use the `tctl namespace register` command with the `--retention` modfiier to register your Namespaces, one by one, and set the Retention Period on each.
 
   - [How to register a new Namespace using tctl](/tctl/namespace/register)
+
+- In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
+
+  - [How to register a new Namespace using SDK](/application-development/features#namespaces)
 
 Note that registering a Namespace takes up to 15 seconds to complete. Ensure that you are waiting for this process to complete before making calls to the Namespace.
 

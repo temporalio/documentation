@@ -3391,6 +3391,8 @@ Or you could use them to ensure Workflow Executions between different teams neve
 The `RegisterNamespace` and `UpdateNamespace` APIs send a gRPC request to the Frontend Service to create or update a Namespace.
 Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create or update Namespaces.
 
+Note that it takes up to 10 seconds for the Namespace to become available for use once the registration is done.
+
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
 
 <Tabs
@@ -3448,7 +3450,7 @@ The minimum value you can set for this period is 1 day.
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
 See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
 
-Note that Namespace registration using this API takes up to 15 seconds to complete.
+Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
 
 To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
@@ -3472,3 +3474,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+

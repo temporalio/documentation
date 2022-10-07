@@ -15,4 +15,6 @@ Or you could use them to ensure Workflow Executions between different teams neve
 The `RegisterNamespace` and `UpdateNamespace` APIs send a gRPC request to the Frontend Service to create or update a Namespace.
 Use a custom [Authorizer](/concepts/what-is-an-authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create or update Namespaces.
 
+Note that it takes up to 10 seconds for the Namespace to become available for use once the registration is done.
+
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
