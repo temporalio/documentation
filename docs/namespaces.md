@@ -87,4 +87,3 @@ Worker Processes on the standby Clusters are idle until a failover occurs and th
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
-
