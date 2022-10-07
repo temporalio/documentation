@@ -32,10 +32,10 @@ Each metric may have some combination of the following keys attached to them:
   - `workflow_task`
   - `activity_task`
   - `sticky_workflow_task`
-- `worker_type`: One of the following:
-  - `ActivityWorker`
+- `worker_type`: One of the following values. Note that if a single Worker is configured to handle all three types of Tasks, it emits all three metrics.
   - `WorkflowWorker`
-  - `LocalActivityWorker` (Go and Java only)
+  - `ActivityWorker`
+  - `LocalActivityWorker`
 - `activity_type`: The name of the Activity Function the metric is associated with
 - `workflow_type`: The name of the Workflow Function the metric is associated with
 - `operation`: RPC method name; available for metrics related to Temporal Client gRPC requests
@@ -297,9 +297,14 @@ A Worker Entity has been registered, created, or started.
 
 ### worker_task_slots_available
 
-The total number of Workflow Task and Activity Task execution slots that are currently available.
-Use the `worker_type` key to differentiate execution slots.
-(Workflow Workers execute Workflow Tasks; Activity Workers execute Activity Tasks.)
+The total number of Task Execution slots that are currently available.
+Use the `worker_type` key to differentiate execution slots:
+
+- `worker_type: WorkflowWorker`: Workflow Tasks
+- `worker_type: ActivityWorker`: Activity Tasks
+- `worker_type: LocalActivityWorker`: Local Activity Tasks
+
+For example, if `WorkerOptions.maxConcurrentActivityTaskExecutions` is set to 100 and the Worker currently has 10 running Activity Task Executions, `worker_task_slots_available` with `worker_type: ActivityWorker` should be 90.
 
 - Type: Gauge
 - Available in: Go, PHP, Java
