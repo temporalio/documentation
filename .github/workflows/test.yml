@@ -1,0 +1,20 @@
+name: test adding an action
+
+on: 
+  # runs when any PR changes
+  pull_request:
+
+jobs:
+  test-format:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v1
+
+    - name: Run dprint
+      run: npm run fmt
+
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4
