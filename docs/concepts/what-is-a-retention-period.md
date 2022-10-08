@@ -8,14 +8,14 @@ tags:
   - explanation
 ---
 
-A Retention Period is the amount of time, in days, that a Workflow Execution Event History remains in the Cluster's persistence store.
+Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/tctl/namespace/register/#--retention)
 - [How to set the Retention Period for a Namespace using an SDK](/application-development/features/#namespaces)
 
-A Retention Period applies to a single [Namespace](/concepts/what-is-a-namespace) and is set when the Namespace is registered.
+A Retention Period applies to all closed Workflow Executions within a [Namespace](/concepts/what-is-a-namespace) and is set when the Namespace is registered.
 
-The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the data associated with the Workflow Execution on that Namespace.
+The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
 mutable
 The minimum Retention Period is 1 day.
 On Temporal Cluster version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
