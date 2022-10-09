@@ -122,6 +122,45 @@ An SDK provides you with the following:
 - APIs to create and manage [Worker Processes](/workers#).
 - APIs to author [Activities](/activities#activity-definition).
 
+#### API reference
+
+Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
+
+</TabItem>
+<TabItem value="java">
+
+The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
+
+</TabItem>
+<TabItem value="typescript">
+
+The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
+
+</TabItem>
+</Tabs>
+
+
+#### Add the Temporal SDK to your project
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -231,42 +270,6 @@ npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporal
 The TypeScript SDK is designed with TypeScript-first developer experience in mind, but it works equally well with JavaScript.
 
 :::
-
-</TabItem>
-</Tabs>
-
-#### API reference
-
-Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
-
-</TabItem>
-<TabItem value="java">
-
-The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
-
-</TabItem>
-<TabItem value="php">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="python">
-
-The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
-
-</TabItem>
-<TabItem value="typescript">
-
-The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
 
 </TabItem>
 </Tabs>
