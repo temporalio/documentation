@@ -194,6 +194,7 @@ Follow this tutorial for setting up mTLS (Mutual TLS authentication) with Tempor
    - Follow [these instructions](https://github.com/temporalio/samples-server/tree/master/tls/tls-simple#readme) to set up a local server with mTLS
    - The sample does not register the default Namespace on startup, register it with: `docker exec -it tls-simple_temporal-admin-tools_1 tctl n re --retention 1 default`
 1. Configure your Temporal Client and Worker to connect with mTLS
+   - _NOTE: There is an issue with Node.js 18 where this step might fail. Please follow this [slack thread](https://temporalio.slack.com/archives/CTRCR8RBP/p1664991819126059) for the most recent updates. In the meantime please directly clone your template from [samples-typescript](https://github.com/temporalio/samples-typescript)_
    - Scaffold a new Temporal project with `npx @temporalio/create@latest` using the `hello-world-mtls` template, or copy the relevant configuration from the snippets below into an existing project.
    - Export the required environment variables:
      ```bash

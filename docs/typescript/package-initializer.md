@@ -13,6 +13,8 @@ description: temporalio/create is an optional tool to set up a new Temporal proj
 
 > See the [Getting started](/typescript/introduction/#getting-started) guide for basic usage and environment set up before running this tool.
 
+_NOTE: There is an issue with Node.js 18 where this step might fail. Please follow this [slack thread](https://temporalio.slack.com/archives/CTRCR8RBP/p1664991819126059) for the most recent updates. In the meantime please directly clone your template from [samples-typescript](https://github.com/temporalio/samples-typescript)_
+
 ```bash
 npx @temporalio/create@latest ./example
 ```

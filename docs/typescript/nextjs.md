@@ -16,6 +16,9 @@ If you run into trouble, you are welcome to reach out on the [Temporal Slack](ht
 
 **To skip straight to a fully working example, you can check our [samples-typescript repo](https://github.com/temporalio/samples-typescript/tree/main/nextjs-ecommerce-oneclick)**, which you can also clone from scratch with [package initializer](/typescript/package-initializer) skeleton:
 
+_NOTE: There is an issue with Node.js 18 where this step might fail. Please follow this [slack thread](https://temporalio.slack.com/archives/CTRCR8RBP/p1664991819126059) for the most recent updates. In the meantime please directly clone your template from [samples-typescript](https://github.com/temporalio/samples-typescript)_
+
+
 ```bash
 npx @temporalio/create@latest nextjs-temporal-app --sample nextjs-ecommerce-oneclick
 ```

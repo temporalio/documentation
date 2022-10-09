@@ -74,6 +74,9 @@ If you want to run Temporal without Docker, [Temporalite](https://github.com/tem
 
 Use the [package initializer](/typescript/package-initializer) to create a new project:
 
+_NOTE: There is an issue with Node.js 18 where this step might fail. Please follow this [slack thread](https://temporalio.slack.com/archives/CTRCR8RBP/p1664991819126059) for the most recent updates. In the meantime please directly clone your template from [samples-typescript](https://github.com/temporalio/samples-typescript)_
+
+
 ```bash
 npx @temporalio/create@latest ./example
 cd example

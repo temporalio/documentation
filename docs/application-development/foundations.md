@@ -214,6 +214,8 @@ pip install temporalio
 
 This project requires Node.js 14 or later.
 
+_NOTE: There is an issue with Node.js 18 where this step might fail. Please follow this [slack thread](https://temporalio.slack.com/archives/CTRCR8RBP/p1664991819126059) for the most recent updates. In the meantime please directly clone your template from [samples-typescript](https://github.com/temporalio/samples-typescript)_
+
 **Create a new project**
 
 ```bash
