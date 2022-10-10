@@ -23,7 +23,7 @@ $workflowClient = Temporal\Client\WorkflowClient::create(
  );
 ```
 
-To provide the Client Options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+To provide the client options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
 
 ```yml
 temporal:
