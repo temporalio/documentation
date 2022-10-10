@@ -418,6 +418,11 @@ Content is currently unavailable.
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Use the built-in [Logging facility for Python](https://docs.python.org/3/library/logging.html) to set a custom logger.
+
+</TabItem>
 <TabItem value="typescript">
 
 **Logging in Workers and Clients**

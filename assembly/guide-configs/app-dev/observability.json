@@ -112,6 +112,10 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-set-a-custom-logger-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-set-a-custom-logger-in-typescript"
         }
