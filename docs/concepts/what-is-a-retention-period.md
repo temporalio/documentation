@@ -22,5 +22,5 @@ On Temporal Cluster version 1.18 and later, the maximum Retention Period value f
 On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
-If you don't set the Retention Period value when using the [`tctl register`](/tctl/namespace/register/#--retention) command, it defaults to 3 days.
+If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl/namespace/register/#--retention) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the [`RegisterNamespaceRequest](/application-development/features/#namespaces) API, it returns an error.
