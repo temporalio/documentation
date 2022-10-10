@@ -11,7 +11,7 @@ tags:
 Docker containers can be configured for use in a production setting.
 This is necessary for setting up a Web UI server for your application.
 
-Use `docker run` to configure the Web UI environmental variables.
+Use `docker run` as the image name needed to configure the Web UI environmental variables.
 `docker run` requires at least 1 argument.
 
 `docker run [options] <image> <command> [args]`
@@ -38,58 +38,4 @@ docker run \
 The environmental variables are defined as follows.
 For more information on setting up a server environment, see [mTLS configuration guide](/typescript/security)
 
-## `TEMPORAL_ADDRESS`
-
-Temporal frontend address.
-
-## `TEMPORAL_UI_PORT`
-
-Port to serve HTTP API and UI.
-
-## `TEMPORAL_AUTH_ENABLED`
-
-Enable or disable authentication and authorization.
-
-## `TEMPORAL_AUTH_PROVIDER_URL`
-
-Authentication or authorization OIDC provider URL.
-
-## `TEMPORAL_AUTH_CLIENT_ID`
-
-Authentication or authorization client ID.
-
-## `TEMPORAL_AUTH_CLIENT_SECRET`
-
-Authentication or authorization client secret.
-
-## `TEMPORAL_AUTH_CALLBACK_URL`
-
-Authentication or authorization callback URL.
-
-## `TEMPORAL_UI_ENABLED`
-
-Enable or disable serve UI.
-
-## `TEMPORAL_OPENAPI_ENABLED`
-
-Enable or disable serve open API UI.
-
-## `TEMPORAL_TLS_CA`
-
-TLS Certificate Authority path.
-
-## `TEMPORAL_TLS_CERT`
-
-TLS certificate path.
-
-## `TEMPORAL_TLS_KEY`
-
-TLS key path.
-
-## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
-
-Enable or disable TLS host verification.
-
-## `TEMPORAL_TLS_SERVER_NAME`
-
-TLS server name.
+To view a full list of the environmental variables, refer to the [configuration template](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
