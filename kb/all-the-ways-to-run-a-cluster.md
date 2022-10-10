@@ -3,7 +3,7 @@ slug: all-the-ways-to-run-a-cluster
 title: All the ways to run a Temporal Cluster
 tags:
   - kb-article
-date: 2022-06-07T00:00:00Z
+date: 2022-10-08T00:00:00Z
 ---
 
 There are many ways to run a [Temporal Cluster](/clusters) on your own.
@@ -23,6 +23,7 @@ Although it does currently default to one History Shard, we plan to make this se
 In theory, performance at this point is limited to your machine's processing capabilities, SQLite capacity, and SQLite read/write speeds.
 
 One drawback is that Temporalite does not yet support [Advanced Visibility](/visibility/#advanced-visibility), or other Cluster features such as Archival.
+However, there is work in progress to bring Advanced Visibility to SQLite as an "out-of-the-box" feature.
 
 Temporalite also requires that you have Go 1.18 or later installed.
 
@@ -47,9 +48,12 @@ If you have Docker and Docker Compose installed, all you need to do is clone the
 
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
 It also enables you to try [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), emit metrics, and even play with the [Archival](/clusters/#archival) feature.
+The Docker images in this repo are produced using the Temporal Server [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
+This script defaults to creating images that run all of the Temporal Server services in a single process.
+However you can use this script as a starting point for producing your own images.
 
 Running your Cluster in Docker is convenient and enables you to play with features.
-However, it does not offer the same performace in terms of processing Workflow Executions per second as Temporalite.
+However, on your local machine, it usually does not offer the same performace in terms of processing Workflow Executions per second as Temporalite.
 Granted, you would notice this limitation only if you run hundreds of Workflows concurrently.
 
 The following commands start and run a Temporal Cluster in Docker using the default configuration (docker-compose.yml):
@@ -71,7 +75,7 @@ The Temporal Server is a standalone Go application that can be [imported](/refer
 The main reason you might want to do this is to pass in custom plugins or any other customizations through the [Server Options](/references/server-options).
 Then you can build and run a binary that contains your customizations.
 
-Doing this requires [Go v1.16+](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
+Doing this requires [Go v1.18+](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
 
 ## Temporal Server as a binary
 
@@ -111,7 +115,9 @@ This approach is often used for ephemeral purposes, such as learning and demos.
 
 [Temporal Helm charts](https://github.com/temporalio/helm-charts) enables you to get a Cluster running on [Kubernetes](https://kubernetes.io/) by deploying the Temporal Server services to individual pods and connecting them to your existing database and Elasticsearch instances.
 
-This approach requires a lot of customizations and can easily become very complex if you try to scale services or run many Workflows concurrently.
+The template in the temporalio/helm-charts repo is your starting point, but you can and adjust it to fit your infrastructure needs.
+
+The consideration to this approachs it that the configuration can easily become very complex if you try to scale services or run many Workflows concurrently.
 
 ## Render
 
