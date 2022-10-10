@@ -16,7 +16,7 @@ A single Namespace is still multi-tenant.
 
 Namespaces are created on the Temporal Cluster, and provide a range of controls to achieve isolation on Workflow Executions.
 
-- Namespaces are a mechanism for resource isolation. Heavy traffic from one Namespace will not impact other Namespaces running on the same cluster.
+- Namespaces are a mechanism for resource isolation. Heavy traffic from one Namespace will not impact other Namespaces running on the same Cluster.
   For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
 - If no other Namespace is specified, the Temporal Cluster uses the Namespace "default" for all Temporal SDKs and tctl.
   See the [Registration](#registration) section for details.
@@ -33,7 +33,7 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
 Registering a Namespace creates the Namespace on the Temporal Cluster.
 When you register your Namespace, you must also set the [Retention Period](/concepts/what-is-a-retention-period) for the Namespace.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/docs-src/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
 
 On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
