@@ -3459,8 +3459,6 @@ Ensure that you wait for this registration to complete before starting the Workf
 
 To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
 
-You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
-
 </TabItem>
 <TabItem value="php">
 
@@ -3478,3 +3476,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
