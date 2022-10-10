@@ -499,11 +499,7 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="python">
 
-To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
-
-```python
-await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
-```
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -2281,7 +2277,7 @@ temporalClient, err := client.Dial(client.Options{})
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
 ```
 
-Following are the parameters of the `CompleteActivity` function:
+The following are the parameters of the `CompleteActivity` function:
 
 - `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
   the Activity.
@@ -2372,6 +2368,30 @@ To fail the Activity, you would do the following:
 ```php
 // Fail the Activity.
 $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
+```
+
+</TabItem>
+<TabItem value="python">
+
+To mark an Activity as completing asynchoronus, do the following.
+
+```python
+# Capture token for later completion
+captured_token = activity.info().task_token
+activity.raise_complete_async()
+```
+
+To update an Activity outside the Activity, given a Client you would do the following.
+
+```python
+handle = my_client.get_async_activity_handle(task_token=captured_token)
+```
+
+
+Then, on that handle, you can call a `heartbeat`, `complete`, `fail`, or `report_cancellation` to update the Activity.
+
+```python
+await handle.complete(f"{input.getting}")
 ```
 
 </TabItem>
@@ -3378,3 +3398,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+

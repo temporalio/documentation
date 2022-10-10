@@ -96,7 +96,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-send-a-signal-from-a-client-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -441,6 +441,10 @@
         {
           "lang": "php",
           "id": "php/how-to-set-asynchronous-activity-completion-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-asynchronous-activity-completion-in-python"
         },
         {
           "lang": "typescript",
