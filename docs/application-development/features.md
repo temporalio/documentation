@@ -73,8 +73,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@SignalMethod
-   void mySignal(String signalName);
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -332,9 +332,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -499,7 +499,11 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
+
+```python
+await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -906,7 +910,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+
+<!--SNIPSTART typescript-define-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1049,9 +1056,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1162,32 +1169,10 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
-
-```typescript
-import * as wf from "@temporalio/workflow";
-
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
-
-export async function unblockOrCancel(): Promise<void> {
-  let isBlocked = true;
-  wf.setHandler(unblockSignal, () => void (isBlocked = false));
-  wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
-  try {
-    await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
-  } catch (err) {
-    if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
-    }
-    throw err;
-  }
-}
-```
+<!--SNIPSTART typescript-handle-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1273,7 +1258,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+
+<!--SNIPSTART typescript-send-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2744,17 +2732,17 @@ Set [Parent Close Policy](/workflows#parent-close-policy) on an instance of `Chi
 - Default: None.
 
 ```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
 ```
 
 In this example, we are:
@@ -3105,6 +3093,198 @@ const handle = await client.start(scheduledWorkflow, {
   cronSchedule: "* * * * *", // start every minute
 });
 ```
+
+</TabItem>
+</Tabs>
+
+## Side Effects
+
+Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+
+A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+
+Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+
+An Activity or a Local Activity may also be used instead of a Side effect, as its result is also persisted in Workflow Execution History.
+
+:::note
+
+You shouldn’t modify the Workflow state inside a Side Effect function, because it is not reexecuted during Replay. Side Effect function should be used to return a value.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+
+Pass it an instance of `context.Context` and the function to execute.
+
+The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
+
+Use the `Get` method on the Future to retrieve the result of the Side Effect.
+
+**Correct implementation**
+
+The following example demonstrates the correct way to use `SideEffect`:
+
+```go
+encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
+ return rand.Intn(100)
+})
+
+var random int
+encodedRandom.Get(&random)
+// ...
+}
+```
+
+**Incorrect implementation**
+
+The following example demonstrates how NOT to use `SideEffect`:
+
+```go
+// Warning: This is an incorrect example.
+// This code is nondeterministic.
+var random int
+workflow.SideEffect(func(ctx workflow.Context) interface{} {
+      random = rand.Intn(100)
+      return nil
+})
+// random will always be 0 in replay, so this code is nondeterministic.
+```
+
+On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
+
+</TabItem>
+<TabItem value="java">
+
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+
+```java
+  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+  if random < 50 {
+         ....
+  } else {
+         ....
+  }
+```
+
+Here's another example that uses `sideEffect()`.
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.sideEffect( int.class, () -> {
+        Random random = new SecureRandom();
+        return random.nextInt();
+    });
+
+    String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
+
+    if(randomInt % 2 == 0) {
+        // ...
+    } else {
+        // ...
+    }
+}
+```
+
+Java also provides a deterministic method to generate random numbers or random UUIDs.
+
+To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.newRandom().nextInt();
+    // ...
+}
+```
+
+To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    String randomUUID = Workflow.randomUUID().toString();
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="typescript">
+
+Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
+### Mutable Side Effects
+
+Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
+
+- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
+  - If the values are equal, then it returns the value without recording a new Marker Event
+  - If the values aren't equal, then it records the new value with the same ID on the History.
+
+:::note
+
+During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Workflow History; whereas Mutable Side Effects only records a new Marker on the Workflow History if the value for the Side Effect ID changes or is set the first time.
+
+During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
+
+```go
+if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
+    panic("can't decode number:" + err.Error())
+  }
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
