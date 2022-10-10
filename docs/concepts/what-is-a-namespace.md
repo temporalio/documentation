@@ -48,7 +48,7 @@ On self-hosted Temporal Clusters, you can register your Namespaces in the follow
   - If deploying through Docker Compose or using the [auto-setup image](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) in a custom Docker Compose application, the Namespace "default" is created, through the auto-setup script.
   - If deploying through the [Temporal Helm charts](https://github.com/temporalio/helm-charts), you can create the "default" Namespace by using tctl; for example, `tctl --namespace default namespace register`.
 
-- Use the `tctl namespace register` command with the `--retention` modfiier to register your Namespaces, one by one, and set the Retention Period on each.
+- Use the `tctl namespace register` command with the `--retention` modfiier to register your Namespaces, one at a time, and set the Retention Period on each.
 
   - [How to register a new Namespace using tctl](/tctl/namespace/register)
 
@@ -71,7 +71,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
   - With tctl: [`tctl namespace update`](/tctl/namespace/update)
   - Use the [`UpdateNamespace` API]9(/application-development/features#namespaces) to update configuration on a Namespace.
 
-- Get Namespace details for a registered Namespace on your Temporal Cluster:
+- Get details for a registered Namespace on your Temporal Cluster:
 
   - With tctl: [`tctl namespace describe`](/tctl/namespace/describe)
   - Use the [`DescribeNamespace` API](/application-development/features#namespaces) to return information and configuration details for a registered Namespace.
