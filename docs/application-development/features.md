@@ -3406,7 +3406,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use `Register` API with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
 
 ```go
     client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
@@ -3421,12 +3423,14 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Go](/application-development/foundations/#connect-to-a-cluster) for details.
+See [how to set Namespace in a Client in Go](/application-development/foundations#connect-to-a-cluster) for details.
 
-Note that Namespace registration using this API takes up to 15 seconds to complete.
+Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
 
-You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
+
+To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
 
 </TabItem>
 <TabItem value="java">
