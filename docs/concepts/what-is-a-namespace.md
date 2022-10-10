@@ -33,7 +33,7 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
 Registering a Namespace creates the Namespace on the Temporal Cluster.
 When you register your Namespace, you must also set the [Retention Period](/concepts/what-is-a-retention-period) for the Namespace.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/docs-src/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
 
 On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
