@@ -4,7 +4,7 @@ title: How to upsert Search Attributes in PHP
 sidebar_label: Upsert Search Attributes
 ---
 
-Upsert Search Attributes within a Workflow with `Workflow::upsertSearchAttributes()`.
+To upsert Search Attributes within a Workflow, use `Workflow::upsertSearchAttributes()`.
 
 ```php
 class GreetingWorkflow implements GreetingWorkflowInterface
