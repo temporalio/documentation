@@ -11,6 +11,6 @@ date: 2022-05-23T00:00:00Z
 
 - The sidebar on the left now represents the main navigation for Temporal documentation.
 
-- The Temporal Application developer guide is **new** and represents the next generation of application development documentation. Let us know what you think!
+- The Temporal Application Developer's Guide is **new** and represents the next generation of application development documentation. Let us know what you think!
 
 - Older, “legacy” SDK pages are still available, but our focus moving forward is on the [Application development guide](/application-development).

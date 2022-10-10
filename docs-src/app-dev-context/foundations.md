@@ -1,13 +1,13 @@
 ---
 id: foundations
 title: How to build a basic Temporal Application
-description: The Foundations section of the Temporal Application developer guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: The Foundations section of the Temporal Application Developer's Guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application—that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 sidebar_label: Foundations
 tags:
   - guide-context
 ---
 
-The Foundations section of the Temporal Application developer guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/concepts/what-is-a-workflow-execution) that executes an [Activity](/concepts/what-is-an-activity-execution).
+The Foundations section of the Temporal Application Developer's Guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/concepts/what-is-a-workflow-execution) that executes an [Activity](/concepts/what-is-an-activity-execution).
 
 :::info WORK IN PROGRESS
 
