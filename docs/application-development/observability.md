@@ -102,22 +102,15 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Set a Prometheus endpoint before any other Temporal code.
+Metrics in Python are configured globally, therefore you should set a Prometheus endpoint before any other Temporal code.
 
-The following example exposes a Promethus endpoint on port `9000`.
+The following example exposes a Prometheus endpoint on port `9000`.
 
 ```python
 from temporalio.bridge.telemetry import init_telemetry, TelemetryConfig, PrometheusMetricsConfig
 
 init_telemetry(TelemetryConfig(prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")))
 ```
-
-:::note
-
-Metrics are configured globally.
-
-:::
-
 <!-- https://github.com/temporalio/sdk-python/issues/125 -->
 
 </TabItem>
@@ -766,3 +759,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+
