@@ -2,7 +2,7 @@
 id: how-to-set-a-custom-logger-in-python
 title: How to set a custom Logger in Python
 sidebar_label: Custom Logger
-description: Set a Custom Logger in Python
+description: Use the built-in Logging facility for Python.
 tags:
   - python
   - how-to
