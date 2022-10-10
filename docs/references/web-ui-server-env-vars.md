@@ -36,7 +36,7 @@ docker run \
 ```
 
 The environmental variables are defined as follows.
-For more information on setting up a server environment, see [mTLS configuration guide](/docs/typescript/security)
+For more information on setting up a server environment, see [mTLS configuration guide](/typescript/security)
 
 ## `TEMPORAL_ADDRESS`
 
