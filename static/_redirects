@@ -233,3 +233,5 @@
 /operation/how-to-tune-workers        /application-development/worker-performance
 
 /cadence-to-temporal        /kb/cadence-to-temporal
+
+/kb/install-temporal-cluster-for-development        /kb/all-the-ways-to-run-a-cluster
