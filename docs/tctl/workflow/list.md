@@ -228,7 +228,7 @@ Alias: `-q`
 **Example**
 
 ```bashbash
-tctl workflow list --query "WorflowId=<your-workflow-id>"
+tctl workflow list --query "WorkflowId=<your-workflow-id>"
 ```
 
 More examples:
