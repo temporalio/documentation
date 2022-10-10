@@ -23,7 +23,7 @@ Although it does currently default to one History Shard, we plan to make this se
 In theory, performance at this point is limited to your machine's processing capabilities, SQLite capacity, and SQLite read/write speeds.
 
 One drawback is that Temporalite does not yet support [Advanced Visibility](/visibility/#advanced-visibility), or other Cluster features such as Archival.
-However, there is work in progress to bring Advanced Visibility to SQLite as an "out-of-the-box" feature.
+However, work is in progress to bring Advanced Visibility to SQLite as a built-in feature.
 
 Temporalite also requires that you have Go 1.18 or later installed.
 
@@ -50,10 +50,10 @@ The `temporalio/docker-compose` repo comes loaded with a variety of configuratio
 It also enables you to try [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), emit metrics, and even play with the [Archival](/clusters/#archival) feature.
 The Docker images in this repo are produced using the Temporal Server [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
 This script defaults to creating images that run all of the Temporal Server services in a single process.
-However you can use this script as a starting point for producing your own images.
+You can use this script as a starting point for producing your own images.
 
 Running your Cluster in Docker is convenient and enables you to play with features.
-However, on your local machine, it usually does not offer the same performace in terms of processing Workflow Executions per second as Temporalite.
+However, on your local machine, it usually does not offer the same performance as Temporalite in terms of Workflow Executions per second.
 Granted, you would notice this limitation only if you run hundreds of Workflows concurrently.
 
 The following commands start and run a Temporal Cluster in Docker using the default configuration (docker-compose.yml):
@@ -117,7 +117,7 @@ This approach is often used for ephemeral purposes, such as learning and demos.
 
 The template in the temporalio/helm-charts repo is your starting point, but you can and adjust it to fit your infrastructure needs.
 
-The consideration to this approachs it that the configuration can easily become very complex if you try to scale services or run many Workflows concurrently.
+Keep in mind that the configuration can become very complex if you try to scale services or run many Workflows concurrently.
 
 ## Render
 
