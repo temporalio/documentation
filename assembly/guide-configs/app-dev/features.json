@@ -187,7 +187,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-define-a-query-in-typescript"
         }
       ]
     },
@@ -241,7 +241,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-send-a-query-to-a-workflow-in-typescript"
         }
       ]
     },
@@ -529,6 +529,35 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/timers"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-timers-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-set-timers-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "php/how-to-set-timers-in-php"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-timers-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-timers-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/cron-jobs"
     },
     {
@@ -553,6 +582,64 @@
         {
           "lang": "typescript",
           "id": "typescript/how-to-set-a-cron-job-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/side-effects"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-execute-a-side-effect-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-use-a-side-effect-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "na"
+        },
+        {
+          "lang": "typescript",
+          "id": "na"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/mutable-side-effects"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-mutable-side-effects-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
         }
       ]
     },

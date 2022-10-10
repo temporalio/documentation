@@ -13,7 +13,7 @@ tags:
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {yourWorkflow, joinSignal} from "./workflows";
+import {joinSignal, yourWorkflow} from "./workflows";
 
 const client = new WorkflowClient();
 

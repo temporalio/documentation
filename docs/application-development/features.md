@@ -28,12 +28,12 @@ In this section you can find the following:
 - [How to develop Signals](#signals)
 - [How to develop Queries](#queries)
 - [How to start a Child Workflow Execution](#child-workflows)
-- [How to start a Temporal Cron Job](#cron-jobs)
+- [How to start a Temporal Cron Job](#temporal-cron-jobs)
 - [How to use Continue-As-New](#continue-as-new)
-- [How to set Workflow timeouts & retries](#workflow-timeouts--retries)
-- [How to set Activity timeouts & retries](#activity-timeouts--retries)
+- [How to set Workflow timeouts & retries](#workflow-timeouts)
+- [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
-- [How to Asynchronously complete an Activity](#async-activity-completion)
+- [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 
 ## Signals
 
@@ -750,7 +750,7 @@ async def main():
 
 ```typescript
 import {WorkflowClient} from "@temporalio/client";
-import {yourWorkflow, joinSignal} from "./workflows";
+import {joinSignal, yourWorkflow} from "./workflows";
 
 const client = new WorkflowClient();
 
@@ -906,7 +906,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+
+<!--SNIPSTART typescript-define-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1162,32 +1165,10 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
-
-```typescript
-import * as wf from "@temporalio/workflow";
-
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
-
-export async function unblockOrCancel(): Promise<void> {
-  let isBlocked = true;
-  wf.setHandler(unblockSignal, () => void (isBlocked = false));
-  wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
-  try {
-    await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
-  } catch (err) {
-    if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
-    }
-    throw err;
-  }
-}
-```
+<!--SNIPSTART typescript-handle-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1273,7 +1254,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+
+<!--SNIPSTART typescript-send-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2059,7 +2043,7 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
   }
 }
 
-//...
+// ...
 
 // workflow code calling activity
 const {example} = proxyActivities<typeof activities>({
@@ -2888,6 +2872,86 @@ Content is currently unavailable.
 </TabItem>
 </Tabs>
 
+## Timers
+
+A Workflow can set a durable timer for a fixed time period.
+In some SDKs, the function is called `sleep()`, and in others, it's called `timer()`.
+
+A Workflow can sleep for months.
+Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
+
+Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To set a Timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.
+
+```go
+timer := workflow.NewTimer(timerCtx, duration)
+```
+
+To set a sleep duration in Go, use the [`sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing.
+A zero or negative sleep duration causes the function to return immediately.
+
+```go
+sleep = workflow.Sleep(ctx, 10*time.Second)
+```
+
+For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
+
+</TabItem>
+<TabItem value="java">
+
+To set a Timer in Java, use [`sleep()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep) and pass the number of seconds you want to wait before continuing.
+
+```java
+sleep(5);
+```
+
+</TabItem>
+<TabItem value="php">
+
+To set a Timer in PHP, use `Workflow::timer()` and pass the number of seconds you want to wait before continuing.
+
+The following example yields a sleep method for 5 minutes.
+
+```php
+yield Workflow::timer(300); // sleep for 5 minutes
+```
+
+You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.
+
+</TabItem>
+<TabItem value="python">
+
+To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
+
+```python
+await asyncio.sleep(5)
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+To set a Timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how long you want to wait before continuing (using an [ms-formatted string](https://www.npmjs.com/package/ms) or number of milliseconds).
+
+```typescript
+import {sleep} from "@temporalio/workflow";
+
+export async function sleepWorkflow(): Promise<void> {
+  await sleep("2 months");
+  console.log("done sleeping");
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Temporal Cron Jobs
 
 A [Temporal Cron Job](/workflows#temporal-cron-job) is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
@@ -2998,6 +3062,198 @@ const handle = await client.start(scheduledWorkflow, {
   cronSchedule: "* * * * *", // start every minute
 });
 ```
+
+</TabItem>
+</Tabs>
+
+## Side Effects
+
+Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+
+A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+
+Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+
+An Activity or a Local Activity may also be used instead of a Side effect, as its result is also persisted in Workflow Execution History.
+
+:::note
+
+You shouldn’t modify the Workflow state inside a Side Effect function, because it is not reexecuted during Replay. Side Effect function should be used to return a value.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+
+Pass it an instance of `context.Context` and the function to execute.
+
+The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
+
+Use the `Get` method on the Future to retrieve the result of the Side Effect.
+
+**Correct implementation**
+
+The following example demonstrates the correct way to use `SideEffect`:
+
+```go
+encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
+ return rand.Intn(100)
+})
+
+var random int
+encodedRandom.Get(&random)
+// ...
+}
+```
+
+**Incorrect implementation**
+
+The following example demonstrates how NOT to use `SideEffect`:
+
+```go
+// Warning: This is an incorrect example.
+// This code is nondeterministic.
+var random int
+workflow.SideEffect(func(ctx workflow.Context) interface{} {
+      random = rand.Intn(100)
+      return nil
+})
+// random will always be 0 in replay, so this code is nondeterministic.
+```
+
+On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
+
+</TabItem>
+<TabItem value="java">
+
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+
+```java
+  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+  if random < 50 {
+         ....
+  } else {
+         ....
+  }
+```
+
+Here's another example that uses `sideEffect()`.
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.sideEffect( int.class, () -> {
+        Random random = new SecureRandom();
+        return random.nextInt();
+    });
+
+    String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
+
+    if(randomInt % 2 == 0) {
+        // ...
+    } else {
+        // ...
+    }
+}
+```
+
+Java also provides a deterministic method to generate random numbers or random UUIDs.
+
+To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.newRandom().nextInt();
+    // ...
+}
+```
+
+To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    String randomUUID = Workflow.randomUUID().toString();
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="typescript">
+
+Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
+### Mutable Side Effects
+
+Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
+
+- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
+  - If the values are equal, then it returns the value without recording a new Marker Event
+  - If the values aren't equal, then it records the new value with the same ID on the History.
+
+:::note
+
+During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Workflow History; whereas Mutable Side Effects only records a new Marker on the Workflow History if the value for the Side Effect ID changes or is set the first time.
+
+During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
+
+```go
+if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
+    panic("can't decode number:" + err.Error())
+  }
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>

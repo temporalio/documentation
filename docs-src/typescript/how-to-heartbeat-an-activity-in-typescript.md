@@ -23,7 +23,7 @@ export async function example(sleepIntervalMs = 1000): Promise<void> {
   }
 }
 
-//...
+// ...
 
 // workflow code calling activity
 const {example} = proxyActivities<typeof activities>({

@@ -13,6 +13,13 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 
 :::
 
+:::tip
+
+By default, each account has a quota of 10 Namespaces.
+If you want to increase this limit, open a support ticket.
+
+:::
+
 <!--- What information do I need to create a Namespace in Temporal Cloud? --->
 
 ### Information needed to create a Namespace
@@ -20,7 +27,7 @@ The user who creates a [Namespace](/namespaces) is automatically granted [Namesp
 To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/#cloud-namespace) and region
-- [Retention period](/clusters/#retention-period) for [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
+- [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace
 - [Permissions](/cloud/#namespace-level-permissions) for each user
 

@@ -31,7 +31,7 @@ Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/wo
 The following example creates a new logger that will log all messages with a level `WARN` and higher.
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import {DefaultLogger, Runtime} from "@temporalio/worker";
 
 // Creating a new logger that will log all messages with level WARN and higher.
 const logger = new DefaultLogger("WARN", ({level, message}) => {
