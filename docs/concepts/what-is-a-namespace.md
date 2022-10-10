@@ -33,10 +33,14 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
 Registering a Namespace creates the Namespace on the Temporal Cluster.
 When you register your Namespace, you must also set the [Retention Period](/concepts/what-is-a-retention-period) for the Namespace.
 
-All SDKs require a Namespace on the Cluster for their Client calls. If not set using Client options, the Workflow Client API looks for the `default` Namespace. If there is no default Namespace registered with your Temporal Cluster, all calls will throw errors.
-You must register your Namespace with the Temporal Cluster before setting it in your Client.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
 
-You can register your Namespaces in the following ways:
+On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+All SDKs require a Namespace on the Temporal Cluster (or Temporal Cloud) for their Client calls. If not set using Client options, the Workflow Client API looks for the `default` Namespace. If there is no default Namespace registered with your Temporal Cluster (or Temporal Cloud), all calls will throw errors.
+You must register your Namespace with the Temporal Cluster (or Temporal Cloud) before setting it in your Client.
+
+On self-hosted Temporal Clusters, you can register your Namespaces in the following ways:
 
 - In your Cluster setup, create your Namespaces, including the default, in your setup script.
   For example:
@@ -53,6 +57,31 @@ You can register your Namespaces in the following ways:
   - [How to register a new Namespace using SDK](/application-development/features#namespaces)
 
 Note that registering a Namespace takes up to 15 seconds to complete. Ensure that you are waiting for this process to complete before making calls to the Namespace.
+
+### Manage
+
+Use a custom [Authorizer](/concepts/what-is-an-authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+- Update information and configuration for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace update`](/tctl/namespace/update)
+  - Use the [`UpdateNamespace` API]9(/application-development/features#namespaces) to update configuration on a Namespace.
+
+- Get Namespace details for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace describe`](/tctl/namespace/describe)
+  - Use the [`DescribeNamespace` API](/application-development/features#namespaces) to return information and configuration details for a registered Namespace.
+
+- Get details for all registered Namespaces on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace list`](/tctl/namespace/list)
+  - Use the [`ListNamespace` API](/application-development/features#namespaces) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+
+- Deprecate a Namespace: The [`DeprecateNamespace` API](/application-development/features#namespaces) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
 
 ### Setting
 

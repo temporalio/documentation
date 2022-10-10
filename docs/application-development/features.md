@@ -3388,14 +3388,11 @@ A [Namespace](/namespaces#) is a unit of isolation within the Temporal Platform.
 You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
 Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 
-Use the tctl command-line tool to [register Namespaces](/tctl/namespace/register).
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
 
-You can also register your Namespaces programmatically with the `RegisterNamespace` API.
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
-The `RegisterNamespace` and `UpdateNamespace` APIs send a gRPC request to the Frontend Service to create or update a Namespace.
-Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create or update Namespaces.
-
-Note that it takes up to 10 seconds for the Namespace to become available for use once the registration is done.
+Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
 
@@ -3480,3 +3477,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
