@@ -16,4 +16,4 @@ After that, Child Workflow Executions may be abandoned using the default _Abando
 
 To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
 
-Then call a `Get()` method, or equivalent, on that future, which is what waits until the Child Workflow Execution has spawned.
+Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
