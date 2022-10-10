@@ -4,7 +4,7 @@ title: How to connect to a Cluster in PHP
 sidebar_label: Connect to a Cluster
 ---
 
-Create an instance of the `$workflowClient` class and use the `create()` method connect to a Temporal Client to the Temporal Cluster.
+Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Cluster.
 
 Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
 
