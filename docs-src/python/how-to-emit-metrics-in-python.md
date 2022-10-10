@@ -18,4 +18,5 @@ from temporalio.bridge.telemetry import init_telemetry, TelemetryConfig, Prometh
 
 init_telemetry(TelemetryConfig(prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")))
 ```
+
 <!-- https://github.com/temporalio/sdk-python/issues/125 -->
