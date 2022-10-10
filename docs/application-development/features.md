@@ -2387,7 +2387,6 @@ To update an Activity outside the Activity, given a Client you would do the foll
 handle = my_client.get_async_activity_handle(task_token=captured_token)
 ```
 
-
 Then, on that handle, you can call a `heartbeat`, `complete`, `fail`, or `report_cancellation` to update the Activity.
 
 ```python
@@ -3398,4 +3397,3 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
-
