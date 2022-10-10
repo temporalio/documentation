@@ -24,7 +24,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Developer guide",
+      label: "Dev guide",
       collapsible: true,
       collapsed: true,
       link: {
