@@ -4,7 +4,7 @@ title: How to set Custom Search Attributes to a Workflow Execution in PHP
 sidebar_label: Custom Search Attributes
 ---
 
-Use `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when your start a Workflow.
+Use the `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when you start a Workflow.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
