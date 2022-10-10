@@ -100,6 +100,27 @@ For details on configuring a Prometheus scrape endpoint with Micrometer, see <ht
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Set a Prometheus endpoint before any other Temporal code.
+
+The following example exposes a Promethus endpoint on port `9000`.
+
+```python
+from temporalio.bridge.telemetry import init_telemetry, TelemetryConfig, PrometheusMetricsConfig
+
+init_telemetry(TelemetryConfig(prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")))
+```
+
+:::note
+
+Metrics are configured globally.
+
+:::
+
+<!-- https://github.com/temporalio/sdk-python/issues/125 -->
+
+</TabItem>
 <TabItem value="typescript">
 
 Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install). The common options are:
