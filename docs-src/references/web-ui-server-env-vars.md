@@ -39,8 +39,6 @@ docker run \
 
 Environmental variables are fields that are set to configure a server. The setup process involves the configuration of several components, including mTLS, authentication, and more.
 
-<!-- For more information on setting up a server environment, see [mTLS configuration guide](/typescript/security) -->
-
 To view a full list of the environmental variables, refer to the [configuration template](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
 
 The environmental variables needed to configure the WebUI server environment are explained below.
@@ -62,32 +60,34 @@ The port used by the Temporal WebUI Server and the HTTP API.
 Defining this variable allows the Server and API to communicate effectively.
 
 This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
+`TEMPORAL_UI_ENABLED` requires a valid port number.
 
 ## `TEMPORAL_AUTH_ENABLED`
 
 Enables or disables Temporal authentication and authorization methods.
 
-//story
-//relations
-//vars needed
-//use case
+When enabled, the Temporal Server will use the provider information in the [UI configuration file](/references/ui-configuration#auth) to verify the identity of users.
+
+All auth-related environmental variables depend on `TEMPORAL_AUTH_ENABLED`.
+Disabling the variable will retain given values.
+
+All auth-related variables must be defined when this is enabled.
 
 ## `TEMPORAL_AUTH_PROVIDER_URL`
 
-//def
-The URL for the Temporal Auth Provider.
-Authentication/authorization OIDC provider URL.
+The URL for Temporal's [authentication and authorization OIDC provider](/docs-src/references/ui-configuration#auth).
 
-//story
-//relations
-//vars needed
-//use case
+The Temporal Server can be set up to use your preferred authentication and authorization methods.
+
+This variable is required for configuring auth and its related variables.
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
 The client ID for Temporal authentication and authorization methods.
 
 //story
+When auth is configured, the Temporal Server will be checked often to confirm its validity.
+
 //relations
 //vars needed
 //use case
@@ -103,7 +103,7 @@ The client secret used for authentication and authorization.
 
 ## `TEMPORAL_AUTH_CALLBACK_URL`
 
-The callback URL used by authentication or authorization methods.
+The callback URL used by Temporal for authentication and authorization.
 
 //story
 //relations
@@ -158,18 +158,17 @@ This variable is required for `TEMPORAL_TLS_CERT`.
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
-Enables or disables Transport Layer Security (TLS) host verification.
+Enables or disables [Transport Layer Security (TLS) host verification](/references/ui-configuration#tls).
 
-//story
-//relations
-//vars needed
-//use case
+When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
+
+This variable is needed when configuring TLS and its associated variables.
 
 ## `TEMPORAL_TLS_SERVER_NAME`
 
-The server on which to operate Transport Layer Security (TLS) protocols.
+The server on which to operate [Transport Layer Security (TLS) protocols](/references/ui-configuration#tls).
 
-//story
-//relations
-//vars needed
-//use case
+TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself.
+Because of this, TLS operates a go-between server.
+
+This variable is needed to configure TLS and its related environmental variables.
