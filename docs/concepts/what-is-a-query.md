@@ -11,7 +11,8 @@ tags:
 
 A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 The state of a running Workflow Execution is constantly changing.
-Queries are available to expose the internal Workflow Execution state to the external world and are only available for running or completed Executions if the Worker is up and listening on the Task Queue.
+You can use Queries to expose the internal Workflow Execution state to the external world.
+Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
 - [How to send a Query using tctl](/tctl/workflow/query)
 - [How to send and handle Queries with an SDK](/application-development/features#queries)
@@ -43,6 +44,6 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 
 :::note
 
-Stack Trace Queries are only available for running Workflow Executions.
+Stack Trace Queries are available only for running Workflow Executions.
 
 :::
