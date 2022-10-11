@@ -34,6 +34,7 @@ In this section you can find the following:
 - [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
+- [How to register Namespaces](#namespaces)
 
 ## Signals
 
@@ -499,7 +500,11 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
+
+```python
+await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -2387,6 +2392,10 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
 After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/workflows#parent-close-policy) set in the Child Workflow Options.
 
+To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
+
+Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -2429,9 +2438,9 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
 
-If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not spawn.
 
 To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
 Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
@@ -2639,9 +2648,31 @@ $childResult = yield Workflow::executeChildWorkflow(
 ```
 
 </TabItem>
+<TabItem value="python">
+
+To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function. `execute_child_workflow()` starts the Child Workflow and waits for completion.
+
+```python
+await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+```
+
+Alternatively, use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle. This is useful if you want to do something after it has only started, or to get the workflow/run ID, or to be able to signal it while running. To wait for completion, simply `await` the handle. `execute_child_workflow()` is a helper function for `start_child_workflow()` + `await handle`.
+
+```python
+await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.childworkflowhandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+
+To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
+
+By default, a child is scheduled on the same Task Queue as the parent.
+
+<!--SNIPSTART typescript-child-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -3290,6 +3321,11 @@ Content is currently unavailable.
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 **Using in Activity code**
@@ -3371,6 +3407,104 @@ async function yourWorkflow() {
   await sendNotificationEmail(envVars.apiKey);
 }
 ```
+
+</TabItem>
+</Tabs>
+
+## Namespaces
+
+A [Namespace](/namespaces#) is a unit of isolation within the Temporal Platform.
+
+You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
+Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
+
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+
+```go
+    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+            //...
+        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+            Namespace: your-namespace-name,
+            WorkflowExecutionRetentionPeriod: &retention,
+        })
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Go](/application-development/foundations#connect-to-a-cluster) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
+
+To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
+
+</TabItem>
+<TabItem value="java">
+
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+```java
+//...
+import com.google.protobuf.util.Durations;
+import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
+//...
+public static void createNamespace(String name) {
+    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
+            .setNamespace("your-custom-namespace")
+            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
+            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
+            .build();
+    service.blockingStub().registerNamespace(req);
+}
+//...
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
