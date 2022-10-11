@@ -49,17 +49,20 @@ Explanations and use cases are also provided for clarity.
 ## `TEMPORAL_ADDRESS`
 
 // def
-Temporal frontend address.
+The frontend address for the Temporal Server.
 
 // story
+
 // relations
+This variable is required for the other environmental variables to be configured.
 // vars needed
 // use case: kinda need it in general
 
 ## `TEMPORAL_UI_PORT`
 
 //def
-port to serve HTTP API and UI.
+The port used to serve HTTP API and the Temporal WebUI Server.
+
 //story
 //relations
 //vars needed
@@ -68,7 +71,7 @@ port to serve HTTP API and UI.
 ## `TEMPORAL_AUTH_ENABLED`
 
 // def
-enable or disable authentication/authorization.
+Enables or disables Temporal authentication and authorization methods.
 
 //story
 //relations
@@ -78,6 +81,7 @@ enable or disable authentication/authorization.
 ## `TEMPORAL_AUTH_PROVIDER_URL`
 
 //def
+The URL for the Temporal Auth Provider.
 Authentication/authorization OIDC provider URL.
 
 //story
@@ -88,7 +92,7 @@ Authentication/authorization OIDC provider URL.
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
 // def
-authentication/authorization client ID.
+The client ID for Temporal authentication and authorization methods.
 
 //story
 //relations
@@ -98,7 +102,7 @@ authentication/authorization client ID.
 ## `TEMPORAL_AUTH_CLIENT_SECRET`
 
 // def
-authentication/authorization client secret.
+The client secret used for authentication and authorization.
 
 //story
 //relations
@@ -108,7 +112,8 @@ authentication/authorization client secret.
 ## `TEMPORAL_AUTH_CALLBACK_URL`
 
 //def
-authentication/authorization callback URL.
+The callback URL used by authentication or authorization methods.
+
 //story
 //relations
 //vars needed
@@ -116,26 +121,27 @@ authentication/authorization callback URL.
 
 ## `TEMPORAL_UI_ENABLED`
 
-//def
-enable or disable serve UI.
-//story
-//relations
-//vars needed
-//use case
+Enables or disables the [browser UI](/references/ui-configuration#enableui) for the Temporal Server.
+
+Enabling the browser UI allows the Server to be accessed from your web browser.
+If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
+
+This variable needs to be set to 'true' in order to set `TEMPORAL_OPENAPI_ENABLED`.
 
 ## `TEMPORAL_OPENAPI_ENABLED`
 
-// def
-enable or disable serve open API UI.
-//story
-//relations
-//vars needed
-//use case
+Enables or disables OpenAPI features for the Temporal Web UI.
+
+This can be set initially with the [enableOpenAPI](/references/ui-configuration#enableopenapi) UI configuration.
+The documentation can be found at `/openapi/` on your Temporal Server.
+
+This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 ## `TEMPORAL_TLS_CA`
 
 //def
-TLS Certificate Authority path.
+The path for the Transport Layer Security (TLS) Certificate Authority file.
+
 //story
 //relations
 //vars needed
@@ -144,7 +150,8 @@ TLS Certificate Authority path.
 ## `TEMPORAL_TLS_CERT`
 
 //def
-TLS certificate path.
+The path for the Transport Layer Security (TLS) Certificate.
+
 //story
 //relations
 //vars needed
@@ -153,7 +160,8 @@ TLS certificate path.
 ## `TEMPORAL_TLS_KEY`
 
 //def
-TLS key path.
+Path for the TLS key file.
+
 //story
 //relations
 //vars needed
@@ -162,7 +170,8 @@ TLS key path.
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
 //def
-enable or disable TLS host verification.
+Enables or disables Transport Layer Security (TLS) host verification.
+
 //story
 //relations
 //vars needed
@@ -171,7 +180,8 @@ enable or disable TLS host verification.
 ## `TEMPORAL_TLS_SERVER_NAME`
 
 //def
-TLS server name.
+The server on which to operate Transport Layer Security (TLS) protocols.
+
 //story
 //relations
 //vars needed
