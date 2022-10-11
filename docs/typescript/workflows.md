@@ -81,7 +81,7 @@ Please see the [Temporal Client docs](/typescript/clients) or the [API Reference
 The `@temporalio/workflow` package exports all the useful primitives that you can use in Workflows. See the [API reference](https://typescript.temporal.io/api/namespaces/workflow) for the full list, but the main ones are:
 
 | APIs                         | Purpose                                                                                                                                                                                                                                                                                                                                                                                                   |
-|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `proxyActivities`            | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                  |
 | `proxyLocalActivities`       | Make idempotent side effects (like making a HTTP request) with Activities ([see Activities doc](/typescript/activities))                                                                                                                                                                                                                                                                                  |
 | `defineSignal`/`defineQuery` | [Signal and Query](#signals-and-queries) Workflows while they are running                                                                                                                                                                                                                                                                                                                                 |
@@ -1166,7 +1166,6 @@ export async function CronScheduleWorkflow(
 
 // shared
 function genNextTimes<T extends string | Date>(
-  
   number = 5,
   getNextTimes: () => T,
 ): T[] {
