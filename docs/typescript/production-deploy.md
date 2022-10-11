@@ -108,7 +108,7 @@ RUN npm install --only=production \
 CMD ["build/worker.js"]
 ```
 
-For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:16-bullseye-slim`) or `distroless/nodejs` Docker images (like `grc.io/distroless/nodejs:16`) with the below caveats.
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:16-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:16`) with the below caveats.
 
 ### Using `node:slim` images
 
@@ -153,7 +153,7 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM grc.io/distroless/nodejs:16
+FROM gcr.io/distroless/nodejs:16
 
 COPY --from=builder /app /app
 WORKDIR /app
