@@ -96,7 +96,7 @@
         },
         {
           "lang": "python",
-          "id": "none"
+          "id": "python/how-to-send-a-signal-from-a-client-in-python"
         },
         {
           "lang": "typescript",
@@ -468,8 +468,12 @@
           "id": "php/how-to-spawn-a-child-workflow-execution-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-spawn-a-child-workflow-execution-in-python"
+        },
+        {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-spawn-a-child-workflow-execution-in-typescript"
         }
       ]
     },
