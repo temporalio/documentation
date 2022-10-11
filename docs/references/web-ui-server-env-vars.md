@@ -9,12 +9,14 @@ tags:
 ---
 
 Docker containers can be configured for use in a production setting.
-This is necessary for setting up a Web UI server for your application.
+This is necessary for setting up a Web UI server.
 
 Use `docker run` as the image name needed to configure the Web UI environmental variables.
 `docker run` requires at least 1 argument.
 
 `docker run [options] <image> <command> [args]`
+
+The Web UI server can be configured with any number of environmental variables.
 
 ```
 docker run \
@@ -35,24 +37,142 @@ docker run \
     temporalio/ui:<tag>
 ```
 
-The environmental variables are defined as follows.
-For more information on setting up a server environment, see [mTLS configuration guide](/typescript/security)
+Environmental variables are fields that are set to configure a server. The setup process involves the configuration of several components, including mTLS, authentication, and more.
+
+<!-- For more information on setting up a server environment, see [mTLS configuration guide](/typescript/security) -->
 
 To view a full list of the environmental variables, refer to the [configuration template](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
 
-The environmental variables needed for this setup are defined as follows:
+The environmental variables needed to configure the WebUI server environment are explained below.
+Explanations and use cases are also provided for clarity.
 
-- `TEMPORAL_ADDRESS` : Temporal frontend address.
-- `TEMPORAL_UI_PORT` : port to serve HTTP API and UI.
-- `TEMPORAL_AUTH_ENABLED` : enable or disable authentication/authorization.
-- `TEMPORAL_AUTH_PROVIDER_URL` : Authentication/authorization OIDC provider URL.
-- `TEMPORAL_AUTH_CLIENT_ID` : authentication/authorization client ID.
-- `TEMPORAL_AUTH_CLIENT_SECRET` : authentication/authorization client secret.
-- `TEMPORAL_AUTH_CALLBACK_URL` : authentication/authorization callback URL.
-- `TEMPORAL_UI_ENABLED` : enable or disable serve UI.
-- `TEMPORAL_OPENAPI_ENABLED` : enable or disable serve open API UI.
-- `TEMPORAL_TLS_CA` : TLS Certificate Authority path.
-- `TEMPORAL_TLS_CERT` : TLS certificate path.
-- `TEMPORAL_TLS_KEY` : TLS key path.
-- `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` : enable or disable TLS host verification.
-- `TEMPORAL_TLS_SERVER_NAME` : TLS server name.
+## `TEMPORAL_ADDRESS`
+
+// def
+Temporal frontend address.
+
+// story
+// relations
+// vars needed
+// use case: kinda need it in general
+
+## `TEMPORAL_UI_PORT`
+
+//def
+port to serve HTTP API and UI.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_AUTH_ENABLED`
+
+// def
+enable or disable authentication/authorization.
+
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_AUTH_PROVIDER_URL`
+
+//def
+Authentication/authorization OIDC provider URL.
+
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_AUTH_CLIENT_ID`
+
+// def
+authentication/authorization client ID.
+
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_AUTH_CLIENT_SECRET`
+
+// def
+authentication/authorization client secret.
+
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_AUTH_CALLBACK_URL`
+
+//def
+authentication/authorization callback URL.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_UI_ENABLED`
+
+//def
+enable or disable serve UI.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_OPENAPI_ENABLED`
+
+// def
+enable or disable serve open API UI.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_TLS_CA`
+
+//def
+TLS Certificate Authority path.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_TLS_CERT`
+
+//def
+TLS certificate path.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_TLS_KEY`
+
+//def
+TLS key path.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
+
+//def
+enable or disable TLS host verification.
+//story
+//relations
+//vars needed
+//use case
+
+## `TEMPORAL_TLS_SERVER_NAME`
+
+//def
+TLS server name.
+//story
+//relations
+//vars needed
+//use case
