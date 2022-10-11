@@ -39,3 +39,20 @@ The environmental variables are defined as follows.
 For more information on setting up a server environment, see [mTLS configuration guide](/typescript/security)
 
 To view a full list of the environmental variables, refer to the [configuration template](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
+
+The environmental variables needed for this setup are defined as follows:
+
+- `TEMPORAL_ADDRESS` : Temporal frontend address.
+- `TEMPORAL_UI_PORT` : port to serve HTTP API and UI.
+- `TEMPORAL_AUTH_ENABLED` : enable or disable authentication/authorization.
+- `TEMPORAL_AUTH_PROVIDER_URL` : Authentication/authorization OIDC provider URL.
+- `TEMPORAL_AUTH_CLIENT_ID` : authentication/authorization client ID.
+- `TEMPORAL_AUTH_CLIENT_SECRET` : authentication/authorization client secret.
+- `TEMPORAL_AUTH_CALLBACK_URL` : authentication/authorization callback URL.
+- `TEMPORAL_UI_ENABLED` : enable or disable serve UI.
+- `TEMPORAL_OPENAPI_ENABLED` : enable or disable serve open API UI.
+- `TEMPORAL_TLS_CA` : TLS Certificate Authority path.
+- `TEMPORAL_TLS_CERT` : TLS certificate path.
+- `TEMPORAL_TLS_KEY` : TLS key path.
+- `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION` : enable or disable TLS host verification.
+- `TEMPORAL_TLS_SERVER_NAME` : TLS server name.
