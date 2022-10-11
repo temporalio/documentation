@@ -499,7 +499,11 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
+
+```python
+await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -2387,6 +2391,10 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
 After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/workflows#parent-close-policy) set in the Child Workflow Options.
 
+To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
+
+Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -2429,9 +2437,9 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
 
-If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not spawn.
 
 To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
 Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
@@ -2639,9 +2647,31 @@ $childResult = yield Workflow::executeChildWorkflow(
 ```
 
 </TabItem>
+<TabItem value="python">
+
+To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function. `execute_child_workflow()` starts the Child Workflow and waits for completion.
+
+```python
+await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+```
+
+Alternatively, use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle. This is useful if you want to do something after it has only started, or to get the workflow/run ID, or to be able to signal it while running. To wait for completion, simply `await` the handle. `execute_child_workflow()` is a helper function for `start_child_workflow()` + `await handle`.
+
+```python
+await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.childworkflowhandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+
+To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
+
+By default, a child is scheduled on the same Task Queue as the parent.
+
+<!--SNIPSTART typescript-child-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
