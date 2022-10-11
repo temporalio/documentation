@@ -306,7 +306,7 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions)
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
 );
 ```
 
@@ -349,7 +349,7 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // Throws WorkflowFailedError
 );
 ```
 
