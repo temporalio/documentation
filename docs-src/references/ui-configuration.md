@@ -14,7 +14,7 @@ An example development.yaml file can be found in the [temporalio/ui-server repo]
 
 ## enableUi
 
-Enables the browser UI.
+Enables the [browser UI](/references/web-ui-server-env-vars#temporaluienabled).
 If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
@@ -23,7 +23,7 @@ enableUi: true
 
 ## enableOpenApi
 
-Enables the UI Server's Open API reference documentation at `/openapi/`.
+Enables the [UI Server's Open API](/references/web-ui-server-env-vars#temporalopenapienabled) reference documentation at `/openapi/`.
 For example, if you are currently viewing the Web UI at `http://localhost:8080`, the page is available at [localhost:8080/openapi/](http://localhost:8080/openapi/).
 
 ```yaml

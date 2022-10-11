@@ -48,29 +48,23 @@ Explanations and use cases are also provided for clarity.
 
 ## `TEMPORAL_ADDRESS`
 
-// def
 The frontend address for the Temporal Server.
 
-// story
+`TEMPORAL_ADDRESS` allows the UI Server to [refresh as needed](/references/ui-configuration#refreshinterval) and [find the latest updates](/references/ui-configuration#notifyonnewversion) for the Temporal Server.
 
-// relations
-This variable is required for the other environmental variables to be configured.
-// vars needed
-// use case: kinda need it in general
+This variable is required for the configuration of other environmental variables.
+`TEMPORAL_ADDRESS` is also needed when setting up [Cross-Origin Resource Sharing](/references/ui-configuration#cors).
 
 ## `TEMPORAL_UI_PORT`
 
-//def
-The port used to serve HTTP API and the Temporal WebUI Server.
+The port used by the Temporal WebUI Server and the HTTP API.
 
-//story
-//relations
-//vars needed
-//use case
+Defining this variable allows the Server and API to communicate effectively.
+
+This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
 
 ## `TEMPORAL_AUTH_ENABLED`
 
-// def
 Enables or disables Temporal authentication and authorization methods.
 
 //story
@@ -91,7 +85,6 @@ Authentication/authorization OIDC provider URL.
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
-// def
 The client ID for Temporal authentication and authorization methods.
 
 //story
@@ -101,7 +94,6 @@ The client ID for Temporal authentication and authorization methods.
 
 ## `TEMPORAL_AUTH_CLIENT_SECRET`
 
-// def
 The client secret used for authentication and authorization.
 
 //story
@@ -111,7 +103,6 @@ The client secret used for authentication and authorization.
 
 ## `TEMPORAL_AUTH_CALLBACK_URL`
 
-//def
 The callback URL used by authentication or authorization methods.
 
 //story
@@ -139,37 +130,34 @@ This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 ## `TEMPORAL_TLS_CA`
 
-//def
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
-//story
-//relations
-//vars needed
-//use case
+In order to [configure TLS for your server](/references/ui-configuration#tls), you'll need a CA certificate issued by a trusted Certificate Authority.
+Set this variable to properly locate and use the file.
+
+`TEMPORAL_TLS_CA` is required for TLS configuration.
 
 ## `TEMPORAL_TLS_CERT`
 
-//def
 The path for the Transport Layer Security (TLS) Certificate.
 
-//story
-//relations
-//vars needed
-//use case
+In order to [configure TLS for your server](/references/ui-configuration#tls), you'll need a self-signed certificate.
+Set the path to allow the environment to locate and use the certificate.
+
+`TEMPORAL_TLS_CERT` is required for TLS configuration.
 
 ## `TEMPORAL_TLS_KEY`
 
-//def
-Path for the TLS key file.
+The path for the Transport Layer Security (TLS) [key file](/references/ui-configuration#tls).
 
-//story
-//relations
-//vars needed
-//use case
+A key file is used to create private and public keys.
+These keys are used to create certificates.
+
+A key file is needed to generate "key pairs" for encryption and signing.
+This variable is required for `TEMPORAL_TLS_CERT`.
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
-//def
 Enables or disables Transport Layer Security (TLS) host verification.
 
 //story
@@ -179,7 +167,6 @@ Enables or disables Transport Layer Security (TLS) host verification.
 
 ## `TEMPORAL_TLS_SERVER_NAME`
 
-//def
 The server on which to operate Transport Layer Security (TLS) protocols.
 
 //story
