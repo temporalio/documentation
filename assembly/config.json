@@ -14,7 +14,8 @@
     "docs-src/php",
     "docs-src/typescript",
     "docs-src/references",
-    "docs-src/tctl"
+    "docs-src/tctl-v1",
+    "docs-src/tctl-v2"
   ],
   "content_write_dir": "docs",
   "secure_config_dir": "assembly/secure",

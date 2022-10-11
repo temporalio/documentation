@@ -35,7 +35,7 @@ Elasticsearch takes on the Visibility request load, relieving potential performa
 
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](#advanced-visibility) List API.
 
-- [How to use a List Filter using tctl](/tctl/workflow#list)
+- [How to use a List Filter using tctl](/tctl-v1/workflow#list)
 
 The following is an example List Filter:
 
@@ -232,7 +232,7 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl/cluster#get-search-attributes)
+- [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 

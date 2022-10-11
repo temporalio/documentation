@@ -1,0 +1,33 @@
+{
+  "file_name": "batch.md",
+  "file_dir": "tctl-v2",
+  "id": "batch",
+  "title": "tctl v2.0.0-beta batch command reference",
+  "sidebar_label": "batch",
+  "description": "How to use the tctl v2.0.0-beta batch command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v2/batch/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/batch/start"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/batch/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/batch/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/batch/terminate"
+    }
+  ]
+}

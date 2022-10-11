@@ -5,7 +5,7 @@ sidebar_label: Run a dev Cluster
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
-The following sections list various methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
+The following sections list various methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl-v1) commands to test and develop applications.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.

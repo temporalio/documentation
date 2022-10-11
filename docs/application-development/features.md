@@ -913,6 +913,17 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+import {defineQuery} from "@temporalio/workflow";
+
+export const getValueQuery = defineQuery<number | undefined, [string]>(
+  "getValue"
+);
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1172,6 +1183,18 @@ await handle.query("some query")
 Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
 
 <!--SNIPSTART typescript-handle-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+export async function trackState(): Promise<void> {
+  const state = new Map<string, number>();
+  setHandler(setValueSignal, (key, value) => void state.set(key, value));
+  setHandler(getValueQuery, (key) => state.get(key));
+  await CancellationScope.current().cancelRequested;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1261,6 +1284,21 @@ Content is currently unavailable.
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
+
+[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
+
+```ts
+import {WorkflowClient} from "@temporalio/client";
+import {getValueQuery} from "./workflows";
+
+async function run(): Promise<void> {
+  const client = new WorkflowClient();
+  const handle = client.getHandle("state-id-0");
+  const meaning = await handle.query(getValueQuery, "meaning-of-life");
+  console.log({meaning});
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1407,12 +1445,45 @@ Available timeouts are:
 - [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowExecutionTimeout: "1 day",
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-run-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowRunTimeout: "1 minute",
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-task-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowTaskTimeout: "1 minute",
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1526,6 +1597,19 @@ handle = await client.execute_workflow(
 Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+const handle = await client.start(example, {
+  taskQueue,
+  workflowId,
+  retry: {
+    maximumAttempts: 3,
+  },
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2360,11 +2444,54 @@ There are two parts to implementing an asynchronously completed Activity:
 The following example demonstrates the first part:
 
 <!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+
+[app/src/AsyncActivityCompletion/GreetingActivity.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/GreetingActivity.php)
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    private LoggerInterface $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger();
+    }
+    /**
+     * Demonstrates how to implement an Activity asynchronously.
+     * When {@link Activity::doNotCompleteOnReturn()} is called,
+     * the Activity implementation function that returns doesn't complete the Activity.
+     */
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        // In real life this request can be executed anywhere. By a separate service for example.
+        $this->logger->info(sprintf('GreetingActivity token: %s', base64_encode(Activity::getInfo()->taskToken)));
+        // Send the taskToken to the external service that will complete the Activity.
+        // Return from the Activity a function indicating that Temporal should wait
+        // for an async completion message.
+        Activity::doNotCompleteOnReturn();
+        // When doNotCompleteOnReturn() is invoked the return value is ignored.
+        return 'ignored';
+    }
+}
+```
+
 <!--SNIPEND-->
 
 The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
 
 <!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+
+[app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/CompleteCommand.php)
+
+```php
+        $client = $this->workflowClient->newActivityCompletionClient();
+        // Complete the Activity.
+        $client->completeByToken(
+            base64_decode($input->getArgument('token')),
+            $input->getArgument('message')
+        );
+```
+
 <!--SNIPEND-->
 
 To fail the Activity, you would do the following:

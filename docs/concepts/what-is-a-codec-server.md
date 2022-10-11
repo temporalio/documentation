@@ -7,7 +7,7 @@ tags:
   - term
 ---
 
-A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl) or the [Web UI](/web-ui).
+A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl-v1) or the [Web UI](/web-ui).
 
 - [How to set up a Codec Server](/clusters/how-to-set-up-codec-server/)
 
@@ -23,7 +23,7 @@ These measures can further secure your data.
 Suppose that you want to view Workflow History.
 This information needs to be decoded before it can be viewed.
 
-You can use [tctl workflow showid](/tctl/workflow#show) to view a Workflow Execution Event History.
+You can use [tctl workflow showid](/tctl-v1/workflow#show) to view a Workflow Execution Event History.
 
 ```bash
 tctl workflow showid <workflowID>

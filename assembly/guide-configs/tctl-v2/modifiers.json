@@ -1,0 +1,281 @@
+{
+  "file_name": "modifiers.md",
+  "file_dir": "tctl-v2",
+  "id": "modifiers",
+  "title": "tctl v2.0.0-beta command modifiers reference",
+  "sidebar_label": "modifiers",
+  "description": "How to use the tctl v2.0.0-beta command modifiers",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v2/modifiers/active-cluster"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/activity-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/archived"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/batch-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/clusters"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/cron"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/description"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/detail"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/dry-run"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/event-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/exclude-file"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/execution-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/fields"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/follow"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/global-namespace"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/history-archival-state"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/history-uri"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/identity"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/input-file"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/input-parallelism"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/input"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/job-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/limit"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/max-field-length"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/memo-file"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/memo-key"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/memo"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/name"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/namespace-data"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/namespace"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/no-pager"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/non-deterministic"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/output-filename"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/output"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/owner-email"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/pager"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/pagesize"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/query-reject-condition"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/query-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/query"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/raw"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/reason"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/reset-bad-binary-checksum"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/reset-points-only"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/reset-reapply-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/reset-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/result"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/retention"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/rps"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/run-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/run-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/search-attribute-key"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/search-attribute-value"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/signal-name"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/skip-base-is-not-current"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/skip-current-open"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/task-queue-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/task-queue"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/task-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/time-format"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/visibility-archival-state"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/visibility-uri"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/workflow-id-reuse-policy"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/workflow-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/workflow-task-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/modifiers/yes-mod"
+    }
+  ]
+}

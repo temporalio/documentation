@@ -1,0 +1,37 @@
+{
+  "file_name": "config.md",
+  "file_dir": "tctl-v2",
+  "id": "config",
+  "title": "tctl v2.0.0-beta config command reference",
+  "sidebar_label": "config",
+  "description": "How to use the tctl v2.0.0-beta config command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v2/config/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/config/current-env"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/config/get"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/config/set"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/config/show-env"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v2/config/use-env"
+    }
+  ]
+}

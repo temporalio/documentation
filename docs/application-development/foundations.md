@@ -36,7 +36,7 @@ In this section you can find the following:
 
 ## Run a dev Cluster
 
-The following sections list various methods of deploying your [Temporal Clusters](/clusters#) locally, so that you can use and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
+The following sections list various methods of deploying your [Temporal Clusters](/clusters#) locally, so that you can use and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl-v1) commands to test and develop applications.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
@@ -470,6 +470,43 @@ For more information, see the following:
 The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
 
 <!--SNIPSTART php-hello-client {"enable_source_link": true}-->
+
+[app/src/SimpleActivity/ExecuteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/SimpleActivity/ExecuteCommand.php)
+
+```php
+class ExecuteCommand extends Command
+{
+    protected const NAME = 'simple-activity';
+    protected const DESCRIPTION = 'Execute SimpleActivity\GreetingWorkflow';
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $workflow = $this->workflowClient->newWorkflowStub(
+            GreetingWorkflowInterface::class,
+            WorkflowOptions::new()->withWorkflowExecutionTimeout(CarbonInterval::minute())
+        );
+
+        $output->writeln("Starting <comment>GreetingWorkflow</comment>... ");
+
+        // Start a workflow execution. Usually this is done from another program.
+        // Uses task queue from the GreetingWorkflow @WorkflowMethod annotation.
+        $run = $this->workflowClient->start($workflow, 'Antony');
+
+        $output->writeln(
+            sprintf(
+                'Started: WorkflowID=<fg=magenta>%s</fg=magenta>',
+                $run->getExecution()->getID(),
+            )
+        );
+
+        // getResult waits for workflow to complete
+        $output->writeln(sprintf("Result:\n<info>%s</info>", $run->getResult()));
+
+        return self::SUCCESS;
+    }
+}
+```
+
 <!--SNIPEND-->
 
 The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
@@ -1039,6 +1076,15 @@ In TypeScript, the Workflow Type is the Workflow function name and there isn't a
 In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
 <!--SNIPSTART typescript-workflow-type -->
+
+[snippets/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/workflows.ts)
+
+```ts
+export async function helloWorld(): Promise<string> {
+  return "👋 Hello World!";
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1406,6 +1452,15 @@ These require special primitives for heartbeating and cancellation. The `shared_
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
 <!--SNIPSTART typescript-activity-fn -->
+
+[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
+
+```ts
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1531,6 +1586,15 @@ async def your_activity(params: YourParams) -> None:
 This Activity takes a single `name` parameter of type `string`.
 
 <!--SNIPSTART typescript-activity-fn -->
+
+[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
+
+```ts
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1628,10 +1692,18 @@ In TypeScript, the return value is always a Promise.
 
 In the following example, `Promise<string>` is the return value.
 
-```
+````
 <!--SNIPSTART typescript-activity-fn -->
+[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
+```ts
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
+````
+
 <!--SNIPEND-->
-```
+
+````
 
 </TabItem>
 </Tabs>
@@ -1662,7 +1734,7 @@ registerOptions := activity.RegisterOptions{
 }
 w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
-```
+````
 
 </TabItem>
 <TabItem value="java">
@@ -1729,6 +1801,26 @@ You can customize the name of the Activity when you register it with the Worker.
 In the following example, the Activity Name is `activityFoo`.
 
 <!--SNIPSTART typescript-custom-activity-type -->
+
+[snippets/src/worker-activity-type-custom.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/worker-activity-type-custom.ts)
+
+```ts
+import {Worker} from "@temporalio/worker";
+import {greet} from "./activities";
+
+async function run() {
+  const worker = await Worker.create({
+    workflowsPath: require.resolve("./workflows"),
+    taskQueue: "snippets",
+    activities: {
+      activityFoo: greet,
+    },
+  });
+
+  await worker.run();
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2529,6 +2621,35 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+
+```ts
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
+
+async function run() {
+  // Step 1: Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve("./workflows"),
+    activities,
+    taskQueue: "hello-world",
+  });
+  // Worker connects to localhost by default and uses console.error for logging.
+  // Customize the Worker by passing more options to create():
+  // https://typescript.temporal.io/api/classes/worker.Worker
+  // If you need to configure server connection parameters, see docs:
+  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+
+  // Step 2: Start accepting tasks on the `hello-world` queue
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
@@ -2756,6 +2877,24 @@ worker = Worker(
 In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
 
 <!--SNIPSTART typescript-worker-create -->
+
+[snippets/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/worker.ts)
+
+```ts
+import {Worker} from "@temporalio/worker";
+import * as activities from "./activities";
+
+async function run() {
+  const worker = await Worker.create({
+    workflowsPath: require.resolve("./workflows"),
+    taskQueue: "snippets",
+    activities,
+  });
+
+  await worker.run();
+}
+```
+
 <!--SNIPEND-->
 
 In this snippet, the Worker bundles the Workflow code at runtime.
@@ -2763,11 +2902,54 @@ In this snippet, the Worker bundles the Workflow code at runtime.
 In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
 
 <!--SNIPSTART typescript-bundle-workflow -->
+
+[production/src/scripts/build-workflow-bundle.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/scripts/build-workflow-bundle.ts)
+
+```ts
+import {bundleWorkflowCode} from "@temporalio/worker";
+import {writeFile} from "fs/promises";
+import path from "path";
+
+async function bundle() {
+  const {code} = await bundleWorkflowCode({
+    workflowsPath: require.resolve("../workflows"),
+  });
+  const codePath = path.join(__dirname, "../../workflow-bundle.js");
+
+  await writeFile(codePath, code);
+  console.log(`Bundle written to ${codePath}`);
+}
+```
+
 <!--SNIPEND-->
 
 Then the bundle can be passed to the Worker:
 
 <!--SNIPSTART typescript-production-worker-->
+
+[production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/worker.ts)
+
+```ts
+const workflowOption = () =>
+  process.env.NODE_ENV === "production"
+    ? {
+        workflowBundle: {
+          codePath: require.resolve("../workflow-bundle.js"),
+        },
+      }
+    : {workflowsPath: require.resolve("./workflows")};
+
+async function run() {
+  const worker = await Worker.create({
+    ...workflowOption(),
+    activities,
+    taskQueue: "production-sample",
+  });
+
+  await worker.run();
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>

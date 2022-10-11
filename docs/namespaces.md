@@ -12,10 +12,10 @@ This guide provides a comprehensive overview of Namespaces.
 
 A Namespace is a unit of isolation within the Temporal Platform.
 
-- [How to list Namespaces in a Cluster using tctl](/tctl/namespace#list)
-- [How to register a new Namespace using tctl](/tctl/namespace#register)
+- [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
+- [How to register a new Namespace using tctl](/tctl-v1/namespace#register)
 - [How to set the Namespace for a Temporal Client](/application-development/foundations#set-namespace)
-- [How to view (describe) Namespace metadata and details using tctl](/tctl/namespace#describe)
+- [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)
 
 A single Namespace is still multi-tenant.
 You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
@@ -31,14 +31,14 @@ Or you could use them to ensure Workflow Executions between different teams neve
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl).
+- **Namespace Configuration**: Various configuration options like the retention period and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1).
 
 ## Global Namespace
 
 A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
 
-- [How to register a Global Namespace](/tctl/namespace#register)
-- [How to change the active Cluster for a Global Namespace](/tctl/namespace#update)
+- [How to register a Global Namespace](/tctl-v1/namespace#register)
+- [How to change the active Cluster for a Global Namespace](/tctl-v1/namespace#update)
 
 The Global Namespace feature enables Workflow Executions to progress through another Cluster in the event of a failover.
 

@@ -1,0 +1,49 @@
+{
+  "file_name": "schedule.md",
+  "file_dir": "tctl-v1",
+  "id": "schedule",
+  "title": "tctl 1.16 schedule command reference",
+  "sidebar_label": "schedule",
+  "description": "How to use the tctl 1.16 schedule command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/schedule/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/backfill"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/create"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/delete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/toggle"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/trigger"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/schedule/update"
+    }
+  ]
+}
