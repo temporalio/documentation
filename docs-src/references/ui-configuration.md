@@ -12,6 +12,8 @@ The Temporal Web UI Server uses a configuration file for many of the UI's settin
 
 An example development.yaml file can be found in the [temporalio/ui-server repo](https://github.com/temporalio/ui-server/blob/main/config/development.yaml).
 
+Multiple configuration files can be created for configuring specific areas of the UI, such as Auth or TLS.
+
 ## enableUi
 
 Enables the [browser UI](/references/web-ui-server-env-vars#temporaluienabled).

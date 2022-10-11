@@ -16,7 +16,8 @@ Use `docker run` as the image name needed to configure the Web UI environmental 
 
 `docker run [options] <image> <command> [args]`
 
-The Web UI server can be configured with any number of environmental variables.
+The Web UI Server is set up using specific environmental variables.
+These variables need to be passed when running the image.
 
 ```
 docker run \
@@ -85,30 +86,28 @@ This variable is required for configuring auth and its related variables.
 
 The client ID for Temporal authentication and authorization methods.
 
-//story
-When auth is configured, the Temporal Server will be checked often to confirm its validity.
+Authentication and authorization need to identify the correct client.
+Providing a Client ID ensures that auth methods will run smoothly.
 
-//relations
-//vars needed
-//use case
+This variable is needed to [configure auth](/references/ui-configuration#auth).
+Other auth variables must be defined along with `TEMPORAL_AUTH_CLIENT_ID`.
 
 ## `TEMPORAL_AUTH_CLIENT_SECRET`
 
 The client secret used for authentication and authorization.
 
-//story
-//relations
-//vars needed
-//use case
+Client Secrets are used by the oAuth Client for authentication.
+
+This variable is needed to configure auth.
+Define all auth-related variables when using this variable.
 
 ## `TEMPORAL_AUTH_CALLBACK_URL`
 
 The callback URL used by Temporal for authentication and authorization.
 
-//story
-//relations
-//vars needed
-//use case
+Callback URLs are invoked by the API after it's finished communicating with the Temporal Server.
+
+This variable should be defined when [configuring auth](/references/ui-configuration#auth).
 
 ## `TEMPORAL_UI_ENABLED`
 
