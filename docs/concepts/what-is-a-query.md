@@ -14,7 +14,7 @@ The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
 - [How to send a Query using tctl](/tctl/workflow/query)
-- [How to send and handle Queries with an SDK](/application-development/features#queries)
+- [How to send and handle Queries with an SDK](/dev-guide/features#queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.

@@ -29,14 +29,14 @@ module.exports = {
       collapsed: true,
       link: {
         type: "doc",
-        id: "application-development/index",
+        id: "dev-guide/index",
       },
       items: [
-        "application-development/foundations",
-        "application-development/features",
-        "application-development/observability",
-        "application-development/testing",
-        "application-development/worker-performance",
+        "dev-guide/foundations",
+        "dev-guide/features",
+        "dev-guide/observability",
+        "dev-guide/testing",
+        "dev-guide/worker-performance",
       ],
     },
     {

@@ -12,4 +12,4 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 **Implementation guide:**
 
-- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
+- [How to develop a Worker Program](/dev-guide/foundations#run-worker-processes)

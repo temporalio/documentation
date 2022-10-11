@@ -6,7 +6,7 @@ sidebar_label: Activities
 
 :::info Try the Application development guide
 
-The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+The majority of this information has moved into the [Application development guide](/dev-guide/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 

@@ -9,12 +9,12 @@
 /devtools/tctl        /tctl
 /devtools/introduction        /
 /devtools/web-ui        /web-ui
-/sdks-introduction         /application-development
-/other-sdks        /application-development
+/sdks-introduction         /dev-guide
+/other-sdks        /dev-guide
 /get-started         /
 /references/glossary        /glossary
-/application-development-guide        /application-development
-/samples-library        /application-development/foundations#code-samples
+/dev-guide-guide        /dev-guide
+/samples-library        /dev-guide/foundations#code-samples
 /change-log        /changelog
 # Blog case studies
 /blog/airbyte-case-study/        https://temporal.io/case-studies/airbyte-case-study
@@ -43,8 +43,8 @@
 /concepts/signals         /signals
 /concepts/queries         /workflows#queries
 /concepts/task-queues         /tasks
-/concepts/what-is-a-retry-policy/#visualizing-retry-policies        /application-development/features#activity-retry-simulator
-/retry-policies/#visualizing-retry-policies        /application-development/features#activity-retry-simulator
+/concepts/what-is-a-retry-policy/#visualizing-retry-policies        /dev-guide/features#activity-retry-simulator
+/retry-policies/#visualizing-retry-policies        /dev-guide/features#activity-retry-simulator
 /temporal-explained/introduction        /temporal
 /temporal-explained/workflows        /workflows
 /temporal-explained/activities        /activities
@@ -98,37 +98,37 @@
 #
 /go/getting-started        /go
 /go/introduction        /go
-/go-activities        /application-development/foundations#develop-activities
-/go/activities        /application-development/foundations#develop-activities
-/go/how-to-develop-an-activity-in-go        /application-development/foundations#develop-activities
-/go/how-to-spawn-an-activity-execution-in-go        /application-development/foundations#activity-execution
-/go/how-to-get-the-result-of-an-activity-execution-in-go        /application-development/foundations#get-activity-results
-/go/how-to-heartbeat-an-activity-in-go        /application-development/features#activity-heartbeats
-/go/child-workflows        /application-development/features#child-workflows
-/go/how-to-spawn-a-child-workflow-execution-in-go        /application-development/features#child-workflows
+/go-activities        /dev-guide/foundations#develop-activities
+/go/activities        /dev-guide/foundations#develop-activities
+/go/how-to-develop-an-activity-in-go        /dev-guide/foundations#develop-activities
+/go/how-to-spawn-an-activity-execution-in-go        /dev-guide/foundations#activity-execution
+/go/how-to-get-the-result-of-an-activity-execution-in-go        /dev-guide/foundations#get-activity-results
+/go/how-to-heartbeat-an-activity-in-go        /dev-guide/features#activity-heartbeats
+/go/child-workflows        /dev-guide/features#child-workflows
+/go/how-to-spawn-a-child-workflow-execution-in-go        /dev-guide/features#child-workflows
 /go-continue-as-new        /go/how-to-continue-as-new-in-go
 /go/continue-as-new        /go/how-to-continue-as-new-in-go
-/go-create-workflows         /application-development/foundations#develop-workflows
-/go/create-workflows         /application-development/foundations#develop-workflows
-/go/workflows        /application-development/foundations#develop-workflows
-/go/how-to-develop-a-workflow-in-go        /application-development/foundations#develop-workflows
-/go/how-to-spawn-a-workflow-execution-in-go        /application-development/foundations#start-workflow-execution
-/go/how-to-get-the-result-of-a-workflow-execution-in-go        /application-development/foundations#get-workflow-results
-/go/distributed-cron         /application-development/features#temporal-cron-jobs
+/go-create-workflows         /dev-guide/foundations#develop-workflows
+/go/create-workflows         /dev-guide/foundations#develop-workflows
+/go/workflows        /dev-guide/foundations#develop-workflows
+/go/how-to-develop-a-workflow-in-go        /dev-guide/foundations#develop-workflows
+/go/how-to-spawn-a-workflow-execution-in-go        /dev-guide/foundations#start-workflow-execution
+/go/how-to-get-the-result-of-a-workflow-execution-in-go        /dev-guide/foundations#get-workflow-results
+/go/distributed-cron         /dev-guide/features#temporal-cron-jobs
 /go-error-handling         /go/error-handling
 /go-hello-world        https://learn.temporal.io/getting_started/go/hello_world_in_go/
-/go/queries        /application-development/features#queries
-/go/retries        /application-development/features#activity-timeouts
+/go/queries        /dev-guide/features#queries
+/go/retries        /dev-guide/features#activity-timeouts
 /go-run-your-first-app         https://learn.temporal.io
 /go-sdk-video-tutorial         https://learn.temporal.io
 /go-search-apis        /go/search-apis
 /go-selectors        /go/selectors
 /go/sessions         /go/how-to-create-a-worker-session-in-go
 /go/side-effects         /go/how-to-execute-a-side-effect-in-go
-/go/signals        /application-development/features#signals
-/go/how-to-use-signals-in-go        /application-development/features#signals
-/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /application-development/features#signals
-/go/how-to-handle-a-signal-in-a-workflow-in-go       /application-development/features#signals
+/go/signals        /dev-guide/features#signals
+/go/how-to-use-signals-in-go        /dev-guide/features#signals
+/go/how-to-send-a-signal-to-a-workflow-execution-in-go        /dev-guide/features#signals
+/go/how-to-handle-a-signal-in-a-workflow-in-go       /dev-guide/features#signals
 /go-sync-vs-async-start        /go/sync-vs-async-start
 /go/sync-vs-async-start        /go/workflows/#how-to-start-a-workflow
 /go/task-queues        /concepts/what-is-a-task-queue
@@ -137,10 +137,10 @@
 /go-tutorial-prerequisites         /go/tutorial-prerequisites
 /go-versioning         /go/versioning
 /go-workflows        /go/workflows
-/go/workers        /application-development/foundations#run-worker-processes
-/go/how-to-develop-a-worker-program-in-go        /application-development/foundations#run-worker-processes
-/go/how-to-develop-a-worker-in-go        /application-development/foundations#run-worker-processes
-/go-execute-activity         /application-development-guide#activity-execution
+/go/workers        /dev-guide/foundations#run-worker-processes
+/go/how-to-develop-a-worker-program-in-go        /dev-guide/foundations#run-worker-processes
+/go/how-to-develop-a-worker-in-go        /dev-guide/foundations#run-worker-processes
+/go-execute-activity         /dev-guide-guide#activity-execution
 /go-activity-async-completion        /go/activities#asynchronous-activity-completion
 /go/how-to-set-startworkflowoptions-in-go*        /go/startworkflowoptions-reference:splat
 /go/how-to-set-activityoptions-in-go*        /go/activityoptions-reference:splat
@@ -194,8 +194,8 @@
 /php-signals         /php/signals
 /php-sync-vs-async-start         /php/workflows/#starting-workflows
 /php-task-queues         /php/task-queues
-/content/how-to-develop-a-worker-program-in-php        /application-development/foundations#run-worker-processes
-/php/how-to-develop-a-worker-program-in-php        /application-development/foundations#run-worker-processes
+/content/how-to-develop-a-worker-program-in-php        /dev-guide/foundations#run-worker-processes
+/php/how-to-develop-a-worker-program-in-php        /dev-guide/foundations#run-worker-processes
 #
 # Server pages redirects
 #
@@ -230,8 +230,10 @@
 /server/workflow-search        /visibility
 
 /content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl   /tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl
-/operation/how-to-tune-workers        /application-development/worker-performance
+/operation/how-to-tune-workers        /dev-guide/worker-performance
 
 /cadence-to-temporal        /kb/cadence-to-temporal
 
 /kb/install-temporal-cluster-for-development        /kb/all-the-ways-to-run-a-cluster
+
+/dev-guide        /dev-guide

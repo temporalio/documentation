@@ -95,7 +95,7 @@ Temporal's previous iteration was Cadence, which shares a lot of the same design
 
 ## External content
 
-_Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
+_Note: Each of [our SDK docs](/dev-guide) have a Hello World and Run Your First App tutorial!_
 
 - Architecture
   - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)

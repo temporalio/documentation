@@ -30,7 +30,7 @@ The Event is added to the Workflow Execution's Event History.
 
 An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/tasks#activity-task-execution).
 
-- [How to develop an Activity Definition](/application-development/foundations#develop-activities)
+- [How to develop an Activity Definition](/dev-guide/foundations#develop-activities)
 
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/tasks#activity-task-execution).
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
@@ -72,7 +72,7 @@ Activity Types are scoped through Task Queues.
 
 An Activity Execution is the full chain of [Activity Task Executions](/tasks#activity-task-execution).
 
-- [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
+- [How to spawn an Activity Execution](/dev-guide/foundations#activity-execution)
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
@@ -191,7 +191,7 @@ This timeout can be used to control the overall duration of an Activity Executio
 An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster.
 Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.
 
-- [How to Heartbeat an Activity](/application-development/features#activity-heartbeats)
+- [How to Heartbeat an Activity](/dev-guide/features#activity-heartbeats)
 
 Activity Heartbeats work in conjunction with a [Heartbeat Timeout](#heartbeat-timeout).
 
@@ -260,7 +260,7 @@ And the following scenarios are not suitable for Heartbeating:
 
 A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-heartbeat).
 
-- [How to set a Heartbeat Timeout](/application-development/features#heartbeat-timeout)
+- [How to set a Heartbeat Timeout](/dev-guide/features#heartbeat-timeout)
 
 ![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
 
@@ -271,7 +271,7 @@ If this timeout is reached, the Activity Task fails and a retry occurs if a [Ret
 Asynchronous Activity Completion is a feature that enables an Activity Function to return without causing the Activity Execution to complete.
 The Temporal Client can then be used to both Heartbeat Activity Execution progress and eventually provide a result.
 
-- [How to complete an Activity Asynchronously](/application-development/features#asynchronous-activity-completion)
+- [How to complete an Activity Asynchronously](/dev-guide/features#asynchronous-activity-completion)
 
 #### When to use Async Completion
 

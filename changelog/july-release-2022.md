@@ -12,13 +12,13 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 :::
 
-- Python examples are now available in much of the [Foundations section](/application-development/foundations) of the Application Development guide.
+- Python examples are now available in much of the [Foundations section](/dev-guide/foundations) of the Application Development guide.
 
-- We added an [Observability section](/application-development/observability) to the Application Development guide.
+- We added an [Observability section](/dev-guide/observability) to the Application Development guide.
 
 :::info Reminder
 
-The [Application development guide](/application-development) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the [older docs for SDKs](/sdks).
+The [Application development guide](/dev-guide) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the [older docs for SDKs](/sdks).
 
 :::
 

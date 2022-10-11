@@ -95,12 +95,12 @@ There are four places where the name of the Task Queue can be set by the develop
 
 1. A Task Queue must be set when spawning a Workflow Execution:
 
-- [How to start a Workflow Execution using an SDK](/application-development/foundations#set-task-queue)
+- [How to start a Workflow Execution using an SDK](/dev-guide/foundations#set-task-queue)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
+- [How to develop a Worker Program](/dev-guide/foundations#run-worker-processes)
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -112,14 +112,14 @@ However, the failure of the Task will not cause the associated Workflow Executio
 This is optional.
 An Activity Execution inherits the Task Queue name from its Workflow Execution if one is not provided.
 
-- [How to start an Activity Execution](/application-development/foundations#activity-execution)
+- [How to start an Activity Execution](/dev-guide/foundations#activity-execution)
 
 4. A Task Queue name can be provided when spawning a Child Workflow Execution:
 
 This is optional.
 A Child Workflow Execution inherits the Task Queue name from its Parent Workflow Execution if one is not provided.
 
-- [How to start a Child Workflow Execution](/application-development/features#child-workflows)
+- [How to start a Child Workflow Execution](/dev-guide/features#child-workflows)
 
 ## Sticky Execution
 

@@ -28,4 +28,4 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New](/application-development/features#continue-as-new)
+- [How to Continue-As-New](/dev-guide/features#continue-as-new)

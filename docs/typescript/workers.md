@@ -38,7 +38,7 @@ If you are experiencing issues, you can check the status of Workers and the Task
 
 ### How to develop a Worker
 
-See the [How to develop a Worker](/application-development/foundations?lang=typescript#run-worker-processes) in the Application development guide.
+See the [How to develop a Worker](/dev-guide/foundations?lang=typescript#run-worker-processes) in the Application development guide.
 
 <details>
 <summary>

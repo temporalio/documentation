@@ -2,7 +2,7 @@
 id: foundations
 title: Application development - Foundations
 sidebar_label: Foundations
-description: The Foundations section of the Temporal Application Developer's Guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: The Foundations section of the Temporal Application developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Application Developer's Guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-execution) that executes an [Activity](/activities#activity-execution).
+The Foundations section of the Temporal Application developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-execution) that executes an [Activity](/activities#activity-execution).
 
 :::info WORK IN PROGRESS
 
@@ -2298,7 +2298,7 @@ The [Worker Process](/workers#worker-process) is where Workflow Functions and Ac
 A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
-For more information, see the [Worker tuning guide](/application-development/worker-performance).
+For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
@@ -2402,7 +2402,7 @@ A Worker can be registered with just Workflows, just Activities, or both.
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)
 
 </TabItem>
 <TabItem value="php">
@@ -2596,7 +2596,7 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)
 
 </TabItem>
 </Tabs>
@@ -2845,7 +2845,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/application-development/features#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+See [`SignalwithStart`](/dev-guide/features#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 

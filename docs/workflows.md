@@ -20,7 +20,7 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [How to develop a Workflow Definition](/application-development/foundations#develop-workflows)
+- [How to develop a Workflow Definition](/dev-guide/foundations#develop-workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -138,7 +138,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/temporal#temporal-application).
 
-- [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using an SDK](/dev-guide/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
@@ -311,7 +311,7 @@ The new Workflow Execution has the same Workflow Id, but a different Run Id, and
 
 In the case of [Temporal Cron Jobs](#temporal-cron-job), Continue-As-New is actually used internally for the same effect.
 
-- [How to Continue-As-New](/application-development/features#continue-as-new)
+- [How to Continue-As-New](/dev-guide/features#continue-as-new)
 
 ### Run Id
 
@@ -328,7 +328,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- [How to set a Workflow Id](/application-development/foundations#workflow-id)
+- [How to set a Workflow Id](/dev-guide/foundations#workflow-id)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 
@@ -406,7 +406,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 A Signal is an asynchronous request to a [Workflow Execution](#workflow-execution).
 
-- [How to develop, send, and handle Signals in code](/application-development/features#signals)
+- [How to develop, send, and handle Signals in code](/dev-guide/features#signals)
 - [How to send a Signal using tctl](/tctl/workflow/signal)
 
 A Signal delivers data to a running Workflow Execution.
@@ -433,7 +433,7 @@ The state of a running Workflow Execution is constantly changing.
 Queries are available to expose the internal Workflow Execution state to the external world.
 
 - [How to send a Query using tctl](/tctl/workflow/query)
-- [How to send and handle Queries with an SDK](/application-development/features#queries)
+- [How to send and handle Queries with an SDK](/dev-guide/features#queries)
 
 Queries are sent from a Temporal Client to a Workflow Execution.
 The API call is synchronous.
@@ -464,7 +464,7 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 
 A Child Workflow Execution is a [Workflow Execution](#workflow-execution) that is spawned from within another Workflow.
 
-- [How to start a Child Workflow Execution](/application-development/features#child-workflows)
+- [How to start a Child Workflow Execution](/dev-guide/features#child-workflows)
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
@@ -511,7 +511,7 @@ For example, a Workflow that manages host upgrades could spawn a Child Workflow 
 
 A Parent Close Policy determines what happens to a [Child Workflow Execution](#child-workflow) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
-- [How to set a Parent Close Policy](/application-development/features#parent-close-policy)
+- [How to set a Parent Close Policy](/dev-guide/features#parent-close-policy)
 
 There are three possible values:
 

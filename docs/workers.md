@@ -22,7 +22,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 
 **Implementation guide:**
 
-- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
+- [How to develop a Worker Program](/dev-guide/foundations#run-worker-processes)
 
 ## Worker Entity
 
@@ -42,7 +42,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)
 
 ## Worker Process
 

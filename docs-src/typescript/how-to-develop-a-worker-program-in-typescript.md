@@ -81,4 +81,4 @@ This is a selected subset of options you are likely to use. Even more advanced o
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)

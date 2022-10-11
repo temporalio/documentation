@@ -33,7 +33,7 @@
   },
   "includes": [
     "docs-src/**/*.{md}",
-    "docs/application-development/*.md",
+    "docs/dev-guide/*.md",
     "docs/typescript/**/*.md",
     "docs/typescript/*.md",
     "docs/cloud/**/*.md",

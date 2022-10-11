@@ -69,11 +69,11 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [Get started with the Go SDK](/application-development/foundations/?lang=go#add-your-sdk)
-- [Get started with the Java SDK](/application-development/foundations/?lang=java#add-your-sdk)
-- [Get started with the PHP SDK](/application-development/foundations/?lang=php)
-- [Get started with the Python SDK](/application-development/foundations/?lang=python#add-your-sdk)
-- [How to use the TypeScript SDK](/application-development/foundations/?lang=typescript#add-your-sdk)
+- [Get started with the Go SDK](/dev-guide/foundations/?lang=go#add-your-sdk)
+- [Get started with the Java SDK](/dev-guide/foundations/?lang=java#add-your-sdk)
+- [Get started with the PHP SDK](/dev-guide/foundations/?lang=php)
+- [Get started with the Python SDK](/dev-guide/foundations/?lang=python#add-your-sdk)
+- [How to use the TypeScript SDK](/dev-guide/foundations/?lang=typescript#add-your-sdk)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
@@ -92,7 +92,7 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 
 ### Third-party SDKs
 
-The following third-party SDKs exist but are not supported in the [Application development guide](/application-development):
+The following third-party SDKs exist but are not supported in the [Application development guide](/dev-guide):
 
 - [Clojure](https://github.com/manetu/temporal-clojure-sdk) - from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)

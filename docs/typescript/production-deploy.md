@@ -50,7 +50,7 @@ For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript
 
 ## Pre-build code
 
-This information has been moved to [Register Types](/application-development/foundations/#register-types) section in the application developer guide.
+This information has been moved to [Register Types](/dev-guide/foundations/#register-types) section in the application developer guide.
 
 ## Logging
 
@@ -71,7 +71,7 @@ To set up tracing of Workflows and Activities, use our [opentelemetry-intercepto
 
 ### Monitoring
 
-Here is the [full list of SDK metrics](/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/application-development/worker-performance) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
+Here is the [full list of SDK metrics](/references/sdk-metrics/). Some of them are used in the [Worker Tuning Guide](/dev-guide/worker-performance) to determine how to change your deployment configuration. The guide also assumes you track the host-level metrics that are important for measuring your application's load (for many applications, this is just CPU, but some applications may run into other bottlenecks—like with Activities that use a lot of memory, or open a lot of sockets). How you track host-level metrics depends on where you deploy your Workers.
 
 ## Performance tuning
 
@@ -83,7 +83,7 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
   - `maxCachedWorkflows` to limit Workflow cache size and trade memory for CPU (biggest lever for Worker performance)
   - `maxConcurrentActivityTaskExecutions` and other options for tuning concurrency
   - `stickyQueueScheduleToStartTimeout` to determine how quickly Temporal stops trying to send work to Workers that are no longer present, via [Sticky Queues](/concepts/what-is-a-sticky-execution)
-  - See [Worker Tuning Guide](/application-development/worker-performance)
+  - See [Worker Tuning Guide](/dev-guide/worker-performance)
 - [Activity Timeouts and Retries](/typescript/activities#activity-timeouts) as you gain an understanding of Temporal and the services you rely on, you will likely want to adjust the timeouts and Retry Policy to reflect your desired behavior.
   - Note that there are separate [Timeouts and Retry Policy](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout) at the Workflow level, but we do not encourage their usage unless you know what you are doing.
 - _to be completed as we get more user feedback_

@@ -91,5 +91,5 @@ To join Temporal Cloud, a user must click **Accept Invite** in the message.
 Connecting your [Temporal Clients](/temporal#temporal-client) and [Worker Processes](/workers#worker-process) to Temporal Cloud is similar to connecting them to your own [Temporal Cluster](/clusters).
 The primary difference is the requirement to provide client certificates and private keys.
 
-- [Connect a Temporal Client](/application-development/foundations#connect-to-a-cluster)
-- [Connect a Worker Process](/application-development/foundations#run-worker-processes)
+- [Connect a Temporal Client](/dev-guide/foundations#connect-to-a-cluster)
+- [Connect a Worker Process](/dev-guide/foundations#run-worker-processes)

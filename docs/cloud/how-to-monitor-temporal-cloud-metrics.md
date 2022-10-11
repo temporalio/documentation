@@ -7,7 +7,7 @@ tags:
   - how-to
 ---
 
-Beyond the [metrics](/application-development/observability#metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
+Beyond the [metrics](/dev-guide/observability#metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.
 You can use your own observability tool to query an endpoint and review Namespace metrics.
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.

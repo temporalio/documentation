@@ -24,4 +24,4 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)

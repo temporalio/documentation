@@ -81,7 +81,7 @@ With that said, here are some guidelines to some common bottlenecks:
   If you need more instances of each service, spin them up separately with different command line arguments. You can learn more cross referencing [our Helm chart](https://github.com/temporalio/helm-charts) with our [Server Configuration reference](/references/configuration/).
 - See [Platform limits](/kb/temporal-platform-limits-sheet) for other limits you will want to keep in mind when doing system design, including event history length.
 
-Please see the dedicated docs on [Tuning and Scaling Workers](/application-development/worker-performance).
+Please see the dedicated docs on [Tuning and Scaling Workers](/dev-guide/worker-performance).
 
 ## FAQs
 

@@ -11,7 +11,7 @@ tags:
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/concepts/what-is-a-temporal-application).
 
-- [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
+- [How to start a Workflow Execution using an SDK](/dev-guide/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl/workflow/start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.

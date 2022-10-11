@@ -42,4 +42,4 @@ A Worker can be registered with just Workflows, just Activities, or both.
 
 **Operation guides:**
 
-- [How to tune Workers](/application-development/worker-performance)
+- [How to tune Workers](/dev-guide/worker-performance)

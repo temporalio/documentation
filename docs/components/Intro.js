@@ -166,37 +166,37 @@ function CliSVG() {
 
 const supportedTech = [
   {
-    link: " /application-development?lang=go",
+    link: " /dev-guide?lang=go",
     image: "/img/golang.svg",
     alt: "Go lang logo",
     class: "w-10 h-8",
   },
   {
-    link: " /application-development?lang=java",
+    link: " /dev-guide?lang=java",
     image: "/img/java.svg",
     alt: "Java logo",
     class: "w-7 h-7",
   },
   {
-    link: " /application-development?lang=php",
+    link: " /dev-guide?lang=php",
     image: "/img/php.svg",
     alt: "php logo",
     class: "w-10",
   },
   {
-    link: " /application-development?lang=python",
+    link: " /dev-guide?lang=python",
     image: "/img/python.svg",
     alt: "Python logo",
     class: "w-7 h-7",
   },
   {
-    link: " /application-development?lang=typescript",
+    link: " /dev-guide?lang=typescript",
     image: "/img/typescript.svg",
     alt: "TypeScript logo",
     class: "w-7 h-7",
   },
   {
-    link: " /application-development?lang=js",
+    link: " /dev-guide?lang=js",
     image: "/img/javascript.svg",
     alt: "JavaScript logo",
     class: "w-7 h-7",
@@ -254,22 +254,22 @@ const appDevGuideLinks = {
   listOne: [
     {
       book: true,
-      path: "/application-development/foundations",
+      path: "/dev-guide/foundations",
       name: "Foundations",
     },
     {
       book: true,
-      path: "/application-development/features",
+      path: "/dev-guide/features",
       name: "Features",
     },
     {
       book: true,
-      path: "/application-development/observability",
+      path: "/dev-guide/observability",
       name: "Observability",
     },
     {
       book: true,
-      path: "/application-development/worker-performance",
+      path: "/dev-guide/worker-performance",
       name: "Worker Performance",
     },
   ],
@@ -486,7 +486,7 @@ function Explained() {
       </div>
       <div className="landing-card-section">
         <div className="badge-header">
-          <a className="header-link" href="/application-development">
+          <a className="header-link" href="/dev-guide">
             <h2 className="h2-landing">Application development guide</h2>
           </a>
           <div className="badge-purple">New</div>
@@ -510,7 +510,7 @@ function Explained() {
           Application development by language.{" "}
           <span className="bold">
             Most of this information is now included in the{" "}
-            <a className="nowrap" href="/application-development">
+            <a className="nowrap" href="/dev-guide">
               application development guide
             </a>
             .
@@ -834,7 +834,7 @@ function Operation() {
       <ul className="flex list-disc flex-col space-y-2 pl-4">
         <li className="">
           <a
-            href="/application-development/worker-performance"
+            href="/dev-guide/worker-performance"
             className="font-normal hover:underline"
           >
             Tune Workers

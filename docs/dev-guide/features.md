@@ -2,7 +2,7 @@
 id: features
 title: Application development - Features
 sidebar_label: Features
-description: The Features section of the Temporal Application Developer's Guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+description: The Features section of the Temporal Application developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Features section of the Temporal Application Developer's Guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+The Features section of the Temporal Application developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
 
@@ -248,7 +248,7 @@ In the example above, the Workflow code uses `workflow.GetSignalChannel` to open
 We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
 The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
-Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Before completing the Workflow or using [Continue-As-New](/dev-guide/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
 
 </TabItem>
@@ -2585,7 +2585,7 @@ Related reads:
 
 - [How to set a Child Workflow Options in Java](/java/how-to-set-child-workflow-options-in-java)
 
-- [How to develop a Workflow Definition in Java](/application-development/foundations#develop-workflows)
+- [How to develop a Workflow Definition in Java](/dev-guide/foundations#develop-workflows)
 
 - Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
