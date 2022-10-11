@@ -430,7 +430,8 @@ If multiple deliveries of a Signal would be a problem for your Workflow, add ide
 
 A Query is a synchronous operation that is used to get the state of a [Workflow Execution](#workflow-execution).
 The state of a running Workflow Execution is constantly changing.
-Queries are available to expose the internal Workflow Execution state to the external world and are only available for running or completed Executions if the Worker is up and listening on the Task Queue.
+You can use Queries to expose the internal Workflow Execution state to the external world.
+Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.
 
 - [How to send a Query using tctl](/tctl/workflow/query)
 - [How to send and handle Queries with an SDK](/application-development/features#queries)
@@ -462,7 +463,7 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 
 :::note
 
-Stack Trace Queries are only available for running Workflow Executions.
+Stack Trace Queries are available only for running Workflow Executions.
 
 :::
 
@@ -829,3 +830,4 @@ If you're using Standard Visibility, they are visible, though there's no need to
 Native support for Schedules in language SDKs is coming soon.
 For now, `tctl` and the web UI are the main interfaces to Schedules.
 For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
+
