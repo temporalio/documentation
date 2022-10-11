@@ -88,7 +88,7 @@ The `assembly` directory is dedicated to the documentation site's Assembly Workf
 In the directory are the defined Workflows, Activities, Worker, guide configurations, and an application configuration file.
 
 Each JSON configuration file in [assembly/guide-configs](assembly/guide-configs) represents a user-facing narrative that pieces together the Information Nodes.
-The Docs full assembly Workflow uses these configuration files to generate the guides, such as [Concepts](https://docs.temporal.io/temporal/#) and [Application development](https://docs.temporal.io/dev-guide-guide).
+The Docs full assembly Workflow uses these configuration files to generate the guides, such as [Concepts](https://docs.temporal.io/temporal/#) and [Application development](https://docs.temporal.io/dev-guide).
 
 The Assembly Workflow can be run using a local Cluster (such as [Temporalite](https://docs.temporal.io/dev-guide/foundations#temporalite)) or [Temporal Cloud](https://docs.temporal.io/cloud/).
 

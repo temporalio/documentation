@@ -13,7 +13,7 @@
 /other-sdks        /dev-guide
 /get-started         /
 /references/glossary        /glossary
-/dev-guide-guide        /dev-guide
+/dev-guide        /dev-guide
 /samples-library        /dev-guide/foundations#code-samples
 /change-log        /changelog
 # Blog case studies
@@ -140,7 +140,7 @@
 /go/workers        /dev-guide/foundations#run-worker-processes
 /go/how-to-develop-a-worker-program-in-go        /dev-guide/foundations#run-worker-processes
 /go/how-to-develop-a-worker-in-go        /dev-guide/foundations#run-worker-processes
-/go-execute-activity         /dev-guide-guide#activity-execution
+/go-execute-activity         /dev-guide#activity-execution
 /go-activity-async-completion        /go/activities#asynchronous-activity-completion
 /go/how-to-set-startworkflowoptions-in-go*        /go/startworkflowoptions-reference:splat
 /go/how-to-set-activityoptions-in-go*        /go/activityoptions-reference:splat
