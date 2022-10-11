@@ -93,3 +93,4 @@ The primary difference is the requirement to provide client certificates and pri
 
 - [Connect a Temporal Client](/dev-guide/foundations#connect-to-a-cluster)
 - [Connect a Worker Process](/dev-guide/foundations#run-worker-processes)
+
