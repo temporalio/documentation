@@ -2897,7 +2897,10 @@ workflow.continue_as_new("your-workflow-name")
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
+
+<!--SNIPSTART typescript-continue-as-new-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
