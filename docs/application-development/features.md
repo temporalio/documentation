@@ -3441,7 +3441,7 @@ You can also [register Namespaces using the tctl command-line tool](/tctl/namesp
     client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
             //...
         err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-            Name: your-namespace-name,
+            Namespace: your-namespace-name,
             WorkflowExecutionRetentionPeriod: &retention,
         })
 ```
@@ -3466,6 +3466,7 @@ Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/
 
 ```java
 //...
+import com.google.protobuf.util.Durations;
 import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
 //...
 public static void createNamespace(String name) {
@@ -3507,3 +3508,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+

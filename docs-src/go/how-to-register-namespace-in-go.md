@@ -17,7 +17,7 @@ You can also [register Namespaces using the tctl command-line tool](/tctl/namesp
     client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
             //...
         err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-            Name: your-namespace-name,
+            Namespace: your-namespace-name,
             WorkflowExecutionRetentionPeriod: &retention,
         })
 ```

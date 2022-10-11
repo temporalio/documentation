@@ -291,7 +291,7 @@ On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you 
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
 If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl/namespace/register/#--retention) command, it defaults to 3 days.
-If you don't set the Retention Period value when using the [`RegisterNamespaceRequest](/application-development/features/#namespaces) API, it returns an error.
+If you don't set the Retention Period value when using the [`RegisterNamespaceRequest`](/application-development/features/#namespaces) API, it returns an error.
 
 ## Archival
 
@@ -861,3 +861,4 @@ If an `Authorizer` is not set in the server options, Temporal uses the `nopAutho
 ```go
 a := authorization.NewDefaultAuthorizer()
 ```
+

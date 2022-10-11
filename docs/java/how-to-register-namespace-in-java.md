@@ -13,6 +13,7 @@ Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/
 
 ```java
 //...
+import com.google.protobuf.util.Durations;
 import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
 //...
 public static void createNamespace(String name) {
