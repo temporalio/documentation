@@ -26,7 +26,8 @@ enableUi: true
 
 ## enableOpenApi
 
-Enables the [UI Server's Open API](/references/web-ui-server-env-vars#temporalopenapienabled) reference documentation at `/openapi/`.
+Enables the UI Server's Open API reference documentation at `/openapi/`.
+This configuration can be set dynamically with the [TEMPORAL_OPEN_API_ENABLED](/references/web-ui-server-env-vars#temporalopenapienabled) environment variable.
 For example, if you are currently viewing the Web UI at `http://localhost:8080`, the page is available at [localhost:8080/openapi/](http://localhost:8080/openapi/).
 
 ```yaml
