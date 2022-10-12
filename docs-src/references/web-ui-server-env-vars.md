@@ -1,15 +1,15 @@
 ---
 id: web-ui-server-env-vars
-title: Docker environmental variables for Web UI
-sidebar_label: Docker environmental variables
-description: How to set Docker environmental variables for Temporal Web UI.
+title: Temporal Web UI environmental variables
+sidebar_label: Web UI environmental variables
+description: How to set  environmental variables for Temporal Web UI.
 tags:
   - docker
   - webui
 ---
 
-Docker containers can be configured for use in a production setting.
-This is necessary for setting up a Web UI server.
+Environmental variables are fields that are set to configure a server.
+This allows the user to configure the server in any environment, such as a Docker container.
 
 Use `docker run` as the image name needed to configure the Web UI environmental variables.
 `docker run` requires at least 1 argument.
@@ -38,12 +38,11 @@ docker run \
     temporalio/ui:<tag>
 ```
 
-Environmental variables are fields that are set to configure a server. The setup process involves the configuration of several components, including mTLS, authentication, and more.
+The setup process involves the configuration of several components, including mTLS, authentication, and more.
 
 To view a full list of the environmental variables, refer to the [configuration template](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
 
 The environmental variables needed to configure the WebUI server environment are explained below.
-Explanations and use cases are also provided for clarity.
 
 ## `TEMPORAL_ADDRESS`
 
