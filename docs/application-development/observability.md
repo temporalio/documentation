@@ -588,7 +588,21 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Use `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when your start a Workflow.
+
+```php
+$workflow = $this->workflowClient->newWorkflowStub(
+    GreetingWorkflowInterface::class,
+    WorkflowOptions::new()
+        ->withWorkflowExecutionTimeout(CarbonInterval::minute())
+        ->withSearchAttributes(
+            [
+                'CustomKeywordField' => 'value',
+                'CustomIntField' => 123,
+            ]
+        )
+);
+```
 
 </TabItem>
 <TabItem value="python">
@@ -669,7 +683,24 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Upsert Search Attributes within a Workflow with `Workflow::upsertSearchAttributes()`.
+
+```php
+class GreetingWorkflow implements GreetingWorkflowInterface
+{
+    public function getGreeting(string $name)
+    {
+        Workflow::upsertSearchAttributes(
+            [
+                'CustomKeywordField' => 'attr1-value',
+                'CustomIntField' => 123,
+            ]
+        );
+
+        // ...
+    }
+}
+```
 
 </TabItem>
 <TabItem value="python">
