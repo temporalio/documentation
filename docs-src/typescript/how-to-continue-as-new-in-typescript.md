@@ -2,7 +2,7 @@
 id: how-to-continue-as-new-in-typescript
 title: How to Continue-As-New in TypeScript
 sidebar_label: Continue-As-New
-description: To Continue-As-New use `continueAsNew`.
+description: To Continue-As-New, use `continueAsNew`.
 tags:
   - developer-guide
   - sdk
