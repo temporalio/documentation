@@ -16,7 +16,8 @@ Multiple configuration files can be created for configuring specific areas of th
 
 ## enableUi
 
-Enables the [browser UI](/references/web-ui-server-env-vars#temporaluienabled).
+Enables the browser UI.
+This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-server-env-vars#temporaluienabled) environment variable.
 If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
