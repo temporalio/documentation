@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Metrics in Python are configured globally, therefore you should set a Prometheus endpoint before any other Temporal code.
+Metrics in Python are configured globally; therefore, you should set a Prometheus endpoint before any other Temporal code.
 
 The following example exposes a Prometheus endpoint on port `9000`.
 
