@@ -76,7 +76,9 @@ All auth-related variables must be defined when this is enabled.
 
 ## `TEMPORAL_AUTH_PROVIDER_URL`
 
-The URL for Temporal's [authentication and authorization OIDC provider](/references/ui-configuration#auth).
+The URL for Temporal's authentication and authorization OIDC provider.
+
+This can be set as in the UI server configuration with [auth](/references/ui-configuration#auth).
 
 The Temporal Server can be set up to use your preferred authentication and authorization methods.
 
