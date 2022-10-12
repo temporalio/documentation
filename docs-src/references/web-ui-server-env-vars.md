@@ -47,6 +47,7 @@ The environmental variables needed to configure the WebUI server environment are
 ## `TEMPORAL_ADDRESS`
 
 The frontend address for the Temporal Server.
+This environmental variable can be set [in the base configuration file](/docs-src/references/ui-configuration#) using `temporalGrpcAddress`.
 
 `TEMPORAL_ADDRESS` allows the UI Server to [refresh as needed](/references/ui-configuration#refreshinterval) and [find the latest updates](/references/ui-configuration#notifyonnewversion) for the Temporal Server.
 
