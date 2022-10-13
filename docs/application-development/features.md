@@ -34,6 +34,7 @@ In this section you can find the following:
 - [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
+- [How to register Namespaces](#namespaces)
 
 ## Signals
 
@@ -2917,7 +2918,10 @@ workflow.continue_as_new("your-workflow-name")
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
+
+<!--SNIPSTART typescript-continue-as-new-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -3340,6 +3344,11 @@ Content is currently unavailable.
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 **Using in Activity code**
@@ -3421,6 +3430,104 @@ async function yourWorkflow() {
   await sendNotificationEmail(envVars.apiKey);
 }
 ```
+
+</TabItem>
+</Tabs>
+
+## Namespaces
+
+A [Namespace](/namespaces#) is a unit of isolation within the Temporal Platform.
+
+You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
+Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
+
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+
+```go
+    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+            //...
+        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+            Namespace: your-namespace-name,
+            WorkflowExecutionRetentionPeriod: &retention,
+        })
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Go](/application-development/foundations#connect-to-a-cluster) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
+
+To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
+
+</TabItem>
+<TabItem value="java">
+
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+```java
+//...
+import com.google.protobuf.util.Durations;
+import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
+//...
+public static void createNamespace(String name) {
+    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
+            .setNamespace("your-custom-namespace")
+            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
+            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
+            .build();
+    service.blockingStub().registerNamespace(req);
+}
+//...
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
