@@ -1,8 +1,8 @@
 ---
 id: testing
-title: Application development - Testing
+title: Developer's guide- Testing
 sidebar_label: Testing
-description: The Testing section of the Temporal Application Developer's Guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
+description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 toc_max_heading_level: 4
 ---
 
