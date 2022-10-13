@@ -6,6 +6,7 @@ description: How to set  environmental variables for Temporal Web UI.
 tags:
   - docker
   - webui
+  - ui server
 ---
 
 Environmental variables are fields that are set to configure a server.
@@ -90,7 +91,9 @@ This variable is required for configuring auth and its related variables.
 
 ## `TEMPORAL_AUTH_ISSUER_URL`
 
-//
+//def
+//story
+//relations
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
@@ -139,19 +142,22 @@ This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 ## `TEMPORAL_DEFAULT_NAMESPACE`
 
-//
+The default Namespace that the Web UI loads data for.
+
+//story
+//relations
 
 ## `TEMPORAL_FEEDBACK_URL`
 
-//
+//def
+//story
+//relations
 
 ## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
 
 //
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
-
-//
 
 ## `TEMPORAL_TLS_CA`
 
@@ -212,11 +218,11 @@ This variable is needed to configure TLS and its related environmental variables
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-//
+The endpoint for the Codec Server, if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
-//
+The access token needed to transport data through the Codec Server.
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
