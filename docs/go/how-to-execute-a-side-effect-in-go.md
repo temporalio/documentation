@@ -8,7 +8,7 @@ tags:
   - go
 ---
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) API from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
@@ -16,7 +16,7 @@ The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`]
 
 Use the `Get` method on the Future to retrieve the result of the Side Effect.
 
-#### Correct implementation
+**Correct implementation**
 
 The following example demonstrates the correct way to use `SideEffect`:
 
@@ -31,7 +31,7 @@ encodedRandom.Get(&random)
 }
 ```
 
-#### Incorrect implementation
+**Incorrect implementation**
 
 The following example demonstrates how NOT to use `SideEffect`:
 
