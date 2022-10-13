@@ -1,6 +1,6 @@
 ---
 id: features
-title: Developer's guide- Features
+title: Developer's Guide- Features
 sidebar_label: Features
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
