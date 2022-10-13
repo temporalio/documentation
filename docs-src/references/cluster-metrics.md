@@ -26,7 +26,6 @@ These metrics are emitted with `type`, `operation`, and `namespace` tags, which 
 - Use the `operation` tag in your query to get request rates, error rates, or latencies per operation.
 - Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go#L108) to get details for the specific service.
 
-
 All common tags that you can add in your query are defined in the [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) file.
 
 For example, to see service requests by operation on the Frontend Service, use the following:
