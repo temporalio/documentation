@@ -40,7 +40,7 @@ docker run \
 
 The setup process involves the configuration of several components, including mTLS, authentication, and more.
 
-To view a full list of the environmental variables, refer to the [configuration template](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
+The environmental variables for the entire configuration template can be found [here](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
 
 The environmental variables needed to configure the WebUI server environment are explained below.
 
@@ -63,6 +63,10 @@ Defining this variable allows the Server and API to communicate effectively.
 This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
 `TEMPORAL_UI_ENABLED` requires a valid port number.
 
+## `TEMPORAL_PUBLIC_PATH`
+
+//
+
 ## `TEMPORAL_AUTH_ENABLED`
 
 Enables or disables Temporal authentication and authorization methods.
@@ -83,6 +87,10 @@ This can be set as in the UI server configuration with [auth](/references/ui-con
 The Temporal Server can be set up to use your preferred authentication and authorization methods.
 
 This variable is required for configuring auth and its related variables.
+
+## `TEMPORAL_AUTH_ISSUER_URL`
+
+//
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
@@ -129,6 +137,22 @@ The documentation can be found at `/openapi/` on your Temporal Server.
 
 This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
+## `TEMPORAL_DEFAULT_NAMESPACE`
+
+//
+
+## `TEMPORAL_FEEDBACK_URL`
+
+//
+
+## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
+
+//
+
+## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
+
+//
+
 ## `TEMPORAL_TLS_CA`
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
@@ -157,6 +181,18 @@ These keys are used to create certificates.
 A key file is needed to generate "key pairs" for encryption and signing.
 This variable is required for `TEMPORAL_TLS_CERT`.
 
+## `TEMPORAL_TLS_CA_DATA`
+
+//
+
+## `TEMPORAL_TLS_CERT_DATA`
+
+//
+
+## `TEMPORAL_TLS_KEY_DATA`
+
+//
+
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
 Enables or disables [Transport Layer Security (TLS) host verification](/references/ui-configuration#tls).
@@ -173,3 +209,15 @@ TLS allows the current server to transmit encrypted files to other URLs without 
 Because of this, TLS operates a go-between server.
 
 This variable is needed to configure TLS and its related environmental variables.
+
+## `TEMPORAL_CODEC_ENDPOINT`
+
+//
+
+## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
+
+//
+
+## `TEMPORAL_FORWARD_HEADERS`
+
+//
