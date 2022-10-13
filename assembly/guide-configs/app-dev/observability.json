@@ -33,6 +33,10 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-emit-metrics-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-emit-metrics-typescript"
         }
