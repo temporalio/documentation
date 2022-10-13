@@ -3,7 +3,7 @@ id: sdks
 title: Temporal SDKs
 ---
 
-:::info TRY THE APP DEV GUIDE
+:::info TRY THE DEV GUIDE
 
 The [Developer's guide](/application-development) is new and is the focus moving forward.
 

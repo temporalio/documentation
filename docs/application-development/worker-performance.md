@@ -1,6 +1,6 @@
 ---
 id: worker-performance
-title: Developer's guide- Worker performance
+title: Developer's Guide - Worker performance
 description: Guide into Workers Tuning
 sidebar_label: Worker performance
 tags:
