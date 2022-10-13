@@ -100,6 +100,21 @@ For details on configuring a Prometheus scrape endpoint with Micrometer, see <ht
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Metrics in Python are configured globally; therefore, you should set a Prometheus endpoint before any other Temporal code.
+
+The following example exposes a Prometheus endpoint on port `9000`.
+
+```python
+from temporalio.bridge.telemetry import init_telemetry, TelemetryConfig, PrometheusMetricsConfig
+
+init_telemetry(TelemetryConfig(prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")))
+```
+
+<!-- https://github.com/temporalio/sdk-python/issues/125 -->
+
+</TabItem>
 <TabItem value="typescript">
 
 Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install). The common options are:
@@ -588,7 +603,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Use `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when your start a Workflow.
+Use the `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when you start a Workflow.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -683,7 +698,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Upsert Search Attributes within a Workflow with `Workflow::upsertSearchAttributes()`.
+To upsert Search Attributes within a Workflow, use `Workflow::upsertSearchAttributes()`.
 
 ```php
 class GreetingWorkflow implements GreetingWorkflowInterface
