@@ -2,7 +2,7 @@
 id: how-to-set-asynchronous-activity-completion-in-python
 title: How to set an Asynchronous Activity Completion in Python
 sidebar_label: Set an Asynchronous Activity Completion
-description: Set an Asynchronous Activity Completion
+description: To set the completion status of an asynchronous Activity, get the handle of the Activity and call the appropriate method of `AsyncActivityHandle`.
 tags:
   - python
   - how-to
@@ -16,13 +16,13 @@ captured_token = activity.info().task_token
 activity.raise_complete_async()
 ```
 
-To update an Activity outside the Activity, given a Client you would do the following.
+To update an Activity outside the Activity, use [AsyncActivityHandle](https://python.temporal.io/temporalio.client.AsyncActivityHandle.html) to get the handle of the Activity.
 
 ```python
 handle = my_client.get_async_activity_handle(task_token=captured_token)
 ```
 
-Then, on that handle, you can call a `heartbeat`, `complete`, `fail`, or `report_cancellation` to update the Activity.
+Then, on that handle, you can call the `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
 
 ```python
 await handle.complete(f"{input.getting}")
