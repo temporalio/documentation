@@ -588,7 +588,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Use `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when your start a Workflow.
+Use the `WorkflowOptions::withSearchAttributes()` method to provide Search Attributes when you start a Workflow.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -683,7 +683,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-Upsert Search Attributes within a Workflow with `Workflow::upsertSearchAttributes()`.
+To upsert Search Attributes within a Workflow, use `Workflow::upsertSearchAttributes()`.
 
 ```php
 class GreetingWorkflow implements GreetingWorkflowInterface
