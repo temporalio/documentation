@@ -33,6 +33,10 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-emit-metrics-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-emit-metrics-typescript"
         }
@@ -163,7 +167,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-php"
         },
         {
           "lang": "python",
@@ -192,7 +196,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-php"
         },
         {
           "lang": "python",
