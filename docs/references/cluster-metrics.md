@@ -157,9 +157,9 @@ Some of the most important ones are the following:
 Emitted on every persistence request.
 Examples:
 
-- Prometheus query for getting total number of persistence requests by operation for the History Service:
+- Prometheus query for getting the total number of persistence requests by operation for the History Service:
   `sum by (operation) (rate(persistence_requests{service="$service",service_name="history"}[1m]))`
-- Prometheus query for getting total number of persistence requests by operation for the Matching Service:
+- Prometheus query for getting the total number of persistence requests by operation for the Matching Service:
   `sum by (operation) (rate(persistence_requests{cluster="$cluster",service_name="matching"}[5m]))`
 
 ### `persistence_errors`
