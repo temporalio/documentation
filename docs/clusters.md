@@ -25,7 +25,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](#tem
 A Temporal Cluster's only required dependency for basic operation is a database.
 Multiple types of databases are supported.
 
-![Persistence](/diagrams/temporal-database.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-database.svg" alt="Persistence" /></div></div>
 
 The database stores the following types of data:
 
@@ -174,7 +174,7 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-![Frontend Service](/diagrams/temporal-frontend-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" /></div></div>
 
 Types of inbound calls include the following:
 
@@ -201,7 +201,7 @@ Ports are configurable in the Cluster configuration.
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using [History Shards](#history-shard).
 
-![History Service](/diagrams/temporal-history-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-history-service.svg" alt="History Service" /></div></div>
 
 The total number of History Services can be between 1 and the total number of History Shards.
 An individual History Service can support a large number of History Shards.
@@ -250,7 +250,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/tasks#task-queue) for Task dispatching.
 
-![Matching Service](/diagrams/temporal-matching-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" /></div></div>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -266,7 +266,7 @@ Ports are configurable in the Cluster configuration.
 
 The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-![Worker Service](/diagrams/temporal-worker-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
 
 It talks to the Frontend Service.
 
