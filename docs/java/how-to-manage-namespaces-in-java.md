@@ -69,12 +69,12 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 - Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
   Example:
 
-```java
-import io.temporal.api.workflowservice.v1.*;
-//...
-DeprecateNamespaceRequest deprecateNamespace = DeprecateNamespaceRequest.newBuilder()
-                .setNamespace("your-namespace-name") //specify the namespace that you want to deprecate
-                .build();
-        DeprecateNamespaceResponse response = namespaceservice.blockingStub().deprecateNamespace(deprecateNamespace);
-//...
-```
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  DeprecateNamespaceRequest deprecateNamespace = DeprecateNamespaceRequest.newBuilder()
+                  .setNamespace("your-namespace-name") //specify the namespace that you want to deprecate
+                  .build();
+          DeprecateNamespaceResponse response = namespaceservice.blockingStub().deprecateNamespace(deprecateNamespace);
+  //...
+  ```
