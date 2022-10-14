@@ -2,7 +2,7 @@
 id: how-to-manage-namespaces-in-java
 title: How to manage Namespaces in Java
 sidebar_label: Manage Namespaces
-description:
+description: Manage your registered Namespaces on self-hosted Temporal Clusters using tctl (recommended) or programmatically using the APIs for updating, listing, and ddeprecating your Namespaces.
 tags:
   - developer-guide
   - java
