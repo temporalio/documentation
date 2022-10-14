@@ -92,6 +92,7 @@ This variable is required for configuring auth and its related variables.
 ## `TEMPORAL_AUTH_ISSUER_URL`
 
 //def
+The URL for the authentication or authorization issuer.
 //story
 //relations
 
@@ -150,12 +151,16 @@ The default Namespace that the Web UI loads data for.
 ## `TEMPORAL_FEEDBACK_URL`
 
 //def
+The URL used to direct users ...
 //story
 //relations
 
 ## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
 
-//
+//def
+Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
+/s/tory
+//relations
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
 
