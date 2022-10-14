@@ -52,13 +52,13 @@ Alias: `--ct`
 
 ### `--data_converter_plugin`
 
-Specify the name of the executable for a headers provider plugin.
+Specify the name of the executable for a custom Data Converter plugin.
 
 Alias: `--dcp`
 
 ### `--headers_provider_plugin`
 
-Specify the name of the executable for a custom Data Converter plugin.
+Specify the name of the executable for a headers provider plugin.
 
 Alias: `--hpp`
 
