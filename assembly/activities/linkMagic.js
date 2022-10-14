@@ -106,10 +106,7 @@ sidebar_label: ${node.label}\n`;
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
-  // const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
   const docsLinkRegex = /\/[a-zA-Z0-9-_]+[a-zA-Z0-9-_#/]*/gm;
-  // /!\[([a-zA-Z0-9-_#.&\s]+)\]\(([a-zA-Z0-9-_/.]+)\)/gm
-  // /!\[([a-zA-Z0-9-_#.&\s]+)\]\(([a-zA-Z0-9-_/.]+)\)/gm
   const docsImageRegex =
     "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
   const lines = raw_content.toString().split("\n");
@@ -120,7 +117,6 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     const image = imageRegex.exec(line);
     let matchLinks = true;
     if (image !== null) {
-      console.log(JSON.stringify(image));
       line = centeredImage(image);
       matchLinks = false;
     }
