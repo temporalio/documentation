@@ -71,7 +71,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 
   - With tctl: [`tctl namespace update`](/tctl/namespace/update)
-  - Use the [`UpdateNamespace` API]9(/application-development/features#namespaces) to update configuration on a Namespace.
+  - Use the [`UpdateNamespace` API](/application-development/features#namespaces) to update configuration on a Namespace.
 
 - Get details for a registered Namespace on your Temporal Cluster:
 
@@ -116,3 +116,4 @@ Worker Processes on the standby Clusters are idle until a failover occurs and th
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
+

@@ -6,7 +6,6 @@ description: Use the `NamespaceClient` interface with the `Register` APIs to reg
 tags:
   - developer-guide
   - go
-  - workers
 ---
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/concepts/what-is-a-namespace) and set the [Retention Period](/concepts/what-is-a-retention-period) for the Workflow Execution Event History for the Namespace.
