@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
 <!--SNIPEND-->
