@@ -134,7 +134,7 @@ const result = await client.execute(example /*...*/); // Alternative API for sta
 The [Workflow Handle APIs](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) let you externally control your Workflow:
 
 | Handle API            | Description                                                                                                                               |
-|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `client`              | Readonly accessor to the underlying Workflow Client.                                                                                      |
 | `workflowId`          | The `workflowId` of the current Workflow.                                                                                                 |
 | `firstExecutionRunId` | The `runId` of the initial run of the bound Workflow (available on handles created with `start`).                                         |
