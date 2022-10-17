@@ -1,6 +1,6 @@
 ---
 id: features
-title: Developer's Guide - Features
+title: Developer's guide - Features
 sidebar_label: Features
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
@@ -225,29 +225,19 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
-Get a new [`Selector`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Selector) and pass it the Signal Channel and a callback function to handle the payload.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
   // ...
   var signal MySignal
   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
-  selector := workflow.NewSelector(ctx)
-  selector.AddReceive(signalChan, func(channel workflow.ReceiveChannel, more bool) {
-      channel.Receive(ctx, &signal)
-      // ...
-  })
-  selector.Select(ctx)
-  if len(signal.Message) > 0 && signal.Message != "SOME_VALUE" {
-      return errors.New("signal")
+   // ...
   }
   // ...
 }
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
-The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
@@ -3513,3 +3503,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
