@@ -74,8 +74,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@SignalMethod
-   void mySignal(String signalName);
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -333,9 +333,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -1057,9 +1057,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1170,7 +1170,9 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
 <!--SNIPEND-->
@@ -1259,7 +1261,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
 <!--SNIPEND-->
@@ -1403,9 +1405,9 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
-- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
-- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
 <!--SNIPEND-->
@@ -1524,7 +1526,7 @@ handle = await client.execute_workflow(
 </TabItem>
 <TabItem value="typescript">
 
-Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
 <!--SNIPEND-->
@@ -1675,9 +1677,9 @@ When you call `proxyActivities` in a Workflow Function, you can set a range of `
 
 Available timeouts are:
 
-- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
-- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#starttoclosetimeout)
+- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletostarttimeout)
 
 ```typescript
 // Sample of typical options you can set
@@ -2665,7 +2667,7 @@ await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child
 </TabItem>
 <TabItem value="typescript">
 
-To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.childworkflowhandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 
 To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
 
@@ -2732,17 +2734,17 @@ Set [Parent Close Policy](/workflows#parent-close-policy) on an instance of `Chi
 - Default: None.
 
 ```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
 ```
 
 In this example, we are:
