@@ -9,8 +9,8 @@ tags:
   - ui server
 ---
 
-Environmental variables are fields that are set to configure a server.
-This allows the user to configure the server in any environment, such as a Docker container.
+Environmental variables are fields that are set to configure a Temporal Cluster.
+This allows the user to configure the Cluster in any environment, such as a Docker container.
 
 Use `docker run` as the image name needed to configure the Web UI environmental variables.
 `docker run` requires at least 1 argument.
@@ -47,10 +47,10 @@ The environmental variables needed to configure the WebUI server environment are
 
 ## `TEMPORAL_ADDRESS`
 
-The frontend address for the Temporal Server.
+The frontend address for the Temporal Cluster.
 This environmental variable can be set [in the base configuration file](/docs-src/references/ui-configuration#) using `temporalGrpcAddress`.
 
-`TEMPORAL_ADDRESS` allows the UI Server to [refresh as needed](/references/ui-configuration#refreshinterval) and [find the latest updates](/references/ui-configuration#notifyonnewversion) for the Temporal Server.
+`TEMPORAL_ADDRESS` allows the UI Server to [refresh as needed](/references/ui-configuration#refreshinterval) and [find the latest updates](/references/ui-configuration#notifyonnewversion) for the Temporal Cluster.
 
 This variable is required for the configuration of other environmental variables.
 `TEMPORAL_ADDRESS` is also needed when setting up [Cross-Origin Resource Sharing](/references/ui-configuration#cors).
@@ -59,7 +59,7 @@ This variable is required for the configuration of other environmental variables
 
 The port used by the Temporal WebUI Server and the HTTP API.
 
-Defining this variable allows the Server and API to communicate effectively.
+Defining this variable allows the Cluster and API to communicate effectively.
 
 This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
 `TEMPORAL_UI_ENABLED` requires a valid port number.
@@ -72,7 +72,7 @@ This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related sett
 
 Enables or disables Temporal authentication and authorization methods.
 
-When enabled, the Temporal Server will use the provider information in the [UI configuration file](/references/ui-configuration#auth) to verify the identity of users.
+When enabled, the Temporal Cluster will use the provider information in the [UI configuration file](/references/ui-configuration#auth) to verify the identity of users.
 
 All auth-related environmental variables depend on `TEMPORAL_AUTH_ENABLED`.
 Disabling the variable will retain given values.
@@ -85,15 +85,15 @@ The URL for Temporal's authentication and authorization OIDC provider.
 
 This can be set as in the UI server configuration with [auth](/references/ui-configuration#auth).
 
-The Temporal Server can be set up to use your preferred authentication and authorization methods.
+The Temporal Cluster can be set up to use your preferred authentication and authorization methods.
 
 This variable is required for configuring auth and its related variables.
 
 ## `TEMPORAL_AUTH_ISSUER_URL`
 
-//def
 The URL for the authentication or authorization issuer.
 //story
+
 //relations
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
@@ -119,13 +119,13 @@ Define all auth-related variables when using this variable.
 
 The callback URL used by Temporal for authentication and authorization.
 
-Callback URLs are invoked by the API after it's finished communicating with the Temporal Server.
+Callback URLs are invoked by the API after it's finished communicating with the Temporal Cluster.
 
 This variable should be defined when [configuring auth](/references/ui-configuration#auth).
 
 ## `TEMPORAL_UI_ENABLED`
 
-Enables or disables the [browser UI](/references/ui-configuration#enableui) for the Temporal Server.
+Enables or disables the [browser UI](/references/ui-configuration#enableui) for the Temporal Cluster.
 
 Enabling the browser UI allows the Server to be accessed from your web browser.
 If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
@@ -137,7 +137,7 @@ This variable needs to be set to 'true' in order to set `TEMPORAL_OPENAPI_ENABLE
 Enables or disables OpenAPI features for the Temporal Web UI.
 
 This can be set initially with the [enableOpenAPI](/references/ui-configuration#enableopenapi) UI configuration.
-The documentation can be found at `/openapi/` on your Temporal Server.
+The documentation can be found at `/openapi/` on your Temporal Cluster.
 
 This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
@@ -194,15 +194,24 @@ This variable is required for `TEMPORAL_TLS_CERT`.
 
 ## `TEMPORAL_TLS_CA_DATA`
 
-//
+The data obtained from `TEMPORAL_TLS_CA`.
+
+//story
+//relations
 
 ## `TEMPORAL_TLS_CERT_DATA`
 
-//
+The data obtained from `TEMPORAL_TLS_CERT_DATA`.
+
+//story
+//relations
 
 ## `TEMPORAL_TLS_KEY_DATA`
 
-//
+The data obtained from `TEMPORAL_TLS_KEY_DATA`.
+
+//story
+//relations
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
@@ -225,9 +234,15 @@ This variable is needed to configure TLS and its related environmental variables
 
 The endpoint for the Codec Server, if configured.
 
+//story
+//relations
+
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
 The access token needed to transport data through the Codec Server.
+
+//story
+//relations
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
