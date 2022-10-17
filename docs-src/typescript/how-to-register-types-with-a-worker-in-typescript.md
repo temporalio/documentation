@@ -9,7 +9,7 @@ tags:
   - workers
 ---
 
-In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
+In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
 <!--SNIPSTART typescript-worker-create -->
 <!--SNIPEND-->

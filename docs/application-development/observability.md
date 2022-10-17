@@ -117,7 +117,7 @@ init_telemetry(TelemetryConfig(prometheus_metrics=PrometheusMetricsConfig(bind_a
 </TabItem>
 <TabItem value="typescript">
 
-Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.runtime/#install). The common options are:
+Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.Runtime/#install). The common options are:
 
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
@@ -359,7 +359,7 @@ Implement and inject the Sink function into a Worker
 <!--SNIPSTART typescript-logger-sink-worker-->
 <!--SNIPEND-->
 
-- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#sinks)
+- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
 - You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` boolean option.
 
 **Proxy and call a Sink function from a Workflow**
@@ -369,7 +369,7 @@ Implement and inject the Sink function into a Worker
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
 
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that contains useful metadata.
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
 - **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 - **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 
@@ -433,6 +433,11 @@ Content is currently unavailable.
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Use the built-in [Logging facility for Python](https://docs.python.org/3/library/logging.html) to set a custom logger.
+
+</TabItem>
 <TabItem value="typescript">
 
 **Logging in Workers and Clients**
@@ -442,7 +447,7 @@ The following [log levels](https://typescript.temporal.io/api/namespaces/worker#
 
 **Customizing the default logger**
 
-Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
+Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
 
 ```ts
 import {DefaultLogger, Runtime} from "@temporalio/worker";

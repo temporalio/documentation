@@ -2753,7 +2753,7 @@ worker = Worker(
 </TabItem>
 <TabItem value="typescript">
 
-In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
+In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
 <!--SNIPSTART typescript-worker-create -->
 <!--SNIPEND-->
@@ -3711,7 +3711,7 @@ Using a Workflow Handle isn't necessary with `client.execute()`.
 
 Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
 
-If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.workflowfailederror/) that reflects the reason. For that reason, it is recommended to catch that error.
+If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError/) that reflects the reason. For that reason, it is recommended to catch that error.
 
 ```typescript
 const handle = client.getHandle(workflowId);
