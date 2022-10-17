@@ -15,6 +15,10 @@ Setting environment variables for repeated parameters can shorten tctl commands.
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
+### TEMPORAL_CLI_AUTH
+
+Specify the authorization header to be set for a gRPC request.
+
 ### TEMPORAL_CLI_AUTHORIZATION_TOKEN
 
 Specify a token to be used by the HTTP Basic Authorization plugin.
