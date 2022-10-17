@@ -157,9 +157,8 @@ The URL used to direct users ...
 
 ## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
 
-//def
 Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
-/s/tory
+//story
 //relations
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
@@ -242,8 +241,13 @@ The endpoint for the Codec Server, if configured.
 The access token needed to transport data through the Codec Server.
 
 //story
-//relations
+
+Make sure that `TEMPORAL_CODEC_ENDPOINT` is defined to use this variable.
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
-//
+The headers needed to forward payloads through the Codec Server.
+
+//story
+
+This variable requires a valid `TEMPORAL_CODEC_ENDPOINT` and `TEMPORAL_CODEC_PASS_ACCESS_TOKEN` to work properly.
