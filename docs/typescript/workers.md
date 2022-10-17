@@ -86,7 +86,7 @@ const worker = await Worker.create({
 
 ### How to shut down a Worker and track its state
 
-Workers shut down if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. In development, we shut down Workers with `Ctrl-C` (`SIGINT`) or [`nodemon`](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, we usually want to give Workers a [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#shutdowngracetime) long enough for them to finish any in-progress Activities. As soon as they receive a shutdown signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached. Any Activities that are still running at that time will stop running, and will be rescheduled by Temporal Server when an [Activity timeout](/typescript/activities#activity-timeouts) occurs.
+Workers shut down if they receive any of these [`shutdownSignals`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#shutdownsignals): `['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGUSR2']`. In development, we shut down Workers with `Ctrl-C` (`SIGINT`) or [`nodemon`](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, we usually want to give Workers a [`shutdownGraceTime`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#shutdowngracetime) long enough for them to finish any in-progress Activities. As soon as they receive a shutdown signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached. Any Activities that are still running at that time will stop running, and will be rescheduled by Temporal Server when an [Activity timeout](/typescript/activities#activity-timeouts) occurs.
 
 We may want to programmatically shut down Workers (with `worker.shutdown()`) in integration tests or when automating a fleet of Workers.
 
@@ -110,7 +110,7 @@ If you need even more visibility into internal Worker state, [see the API refere
 
 In development, the TypeScript SDK usually handles all of the communication between the Worker and the Temporal Server behind the scenes.
 
-In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) [`NativeConnection`](https://typescript.temporal.io/api/classes/worker.nativeconnection/), and configure the Core [`Runtime`](https://typescript.temporal.io/api/classes/worker.runtime/#install) with [RuntimeOptions](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions):
+In production settings, you can configure the `address` and `namespace` the Worker speaks to via [the Rust Core SDK](https://github.com/temporalio/sdk-core) [`NativeConnection`](https://typescript.temporal.io/api/classes/worker.NativeConnection/), and configure the Core [`Runtime`](https://typescript.temporal.io/api/classes/worker.Runtime/#install) with [RuntimeOptions](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions):
 
 ```js
 import {
@@ -178,7 +178,7 @@ const result = await client.execute(yourWorkflow, {
 <details>
 <summary>
 
-When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.worker#create).
+When creating a Worker, you **must** pass the `taskQueue` option to the [`Worker.create()` function](https://typescript.temporal.io/api/classes/worker.Worker#create).
 
 </summary>
 
