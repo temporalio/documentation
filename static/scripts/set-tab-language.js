@@ -21,7 +21,7 @@
     window.localStorage.setItem("docusaurus.tab.site-lang", "typescript");
   }
 
-  // for app dev guide
+  // for DEV GUIDE
   if (typeof entries.lang === "string") {
     const lang = entries.lang.toLowerCase();
     const validSiteLangs = [

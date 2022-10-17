@@ -6,9 +6,9 @@ tags:
   - php
 ---
 
-:::info Try the Application development guide
+:::info Try the Developer's guide
 
-The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+The majority of this information has moved into the [Developer's guide](/application-development/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 
