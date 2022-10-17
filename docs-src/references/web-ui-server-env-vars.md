@@ -196,14 +196,16 @@ This variable is required for `TEMPORAL_TLS_CERT`.
 The data obtained from `TEMPORAL_TLS_CA`.
 
 //story
-//relations
+
+This variable requires a valid `TEMPORAL_TLS_CA`.
 
 ## `TEMPORAL_TLS_CERT_DATA`
 
 The data obtained from `TEMPORAL_TLS_CERT_DATA`.
 
 //story
-//relations
+
+`TEMPORAL_TLS_CERT` must be defined to obtain a value for this variable.
 
 ## `TEMPORAL_TLS_KEY_DATA`
 
