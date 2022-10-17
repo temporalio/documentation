@@ -507,7 +507,7 @@ function Explained() {
           <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
-          Developer's guideby language.{" "}
+          Developer's guide by language.{" "}
           <span className="bold">
             Most of this information is now included in the{" "}
             <a className="nowrap" href="/application-development">

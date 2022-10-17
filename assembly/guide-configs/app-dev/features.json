@@ -2,7 +2,7 @@
   "file_name": "features.md",
   "file_dir": "application-development",
   "id": "features",
-  "title": "Developer's Guide - Features",
+  "title": "Developer's guide - Features",
   "sidebar_label": "Features",
   "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
   "use_description": false,
