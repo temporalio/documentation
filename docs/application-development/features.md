@@ -74,8 +74,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@SignalMethod
-   void mySignal(String signalName);
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -333,9 +333,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -1053,9 +1053,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1167,6 +1167,8 @@ await handle.query("some query")
 <TabItem value="typescript">
 
 Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
 <!--SNIPEND-->
@@ -2374,7 +2376,7 @@ $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity f
 </TabItem>
 <TabItem value="python">
 
-To mark an Activity as completing asynchoronus, do the following.
+To mark an Activity as completing asynchoronus, do the following inside the Activity.
 
 ```python
 # Capture token for later completion
@@ -2382,16 +2384,16 @@ captured_token = activity.info().task_token
 activity.raise_complete_async()
 ```
 
-To update an Activity outside the Activity, use [AsyncActivityHandle](https://python.temporal.io/temporalio.client.AsyncActivityHandle.html) to get the handle of the Activity.
+To update an Activity outside the Activity, use the [get_async_activity_handle()](https://python.temporal.io/temporalio.client.Client.html#get_async_activity_handle) method to get the handle of the Activity.
 
 ```python
 handle = my_client.get_async_activity_handle(task_token=captured_token)
 ```
 
-Then, on that handle, you can call the `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
+Then, on that handle, you can call the results of the Activity, `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
 
 ```python
-await handle.complete(f"{input.getting}")
+await handle.complete("Completion value.")
 ```
 
 </TabItem>
@@ -2751,17 +2753,17 @@ Set [Parent Close Policy](/workflows#parent-close-policy) on an instance of `Chi
 - Default: None.
 
 ```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
 ```
 
 In this example, we are:
@@ -3530,3 +3532,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
