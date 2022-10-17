@@ -23,14 +23,14 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 :::
 -->
 
-![The Temporal System](/diagrams/temporal-system-simple.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" /></div></div>
 
 ## Temporal Platform
 
 The Temporal Platform consists of a [Temporal Cluster](/clusters#) and [Worker Processes](/workers#worker-process).
 Together these components create a runtime for Workflow Executions.
 
-![The Temporal Platform (runtime)](/diagrams/temporal-platform-simple.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
 
 The Temporal Cluster is open source and can be operated by you.
 The Temporal Cloud is a set of Clusters operated by us.
