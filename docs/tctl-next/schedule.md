@@ -1,8 +1,8 @@
 ---
 id: schedule
-title: tctl v2.0.0-beta schedule command reference
+title: tctl version-next schedule command reference
 sidebar_label: schedule
-description: How to use the tctl v2.0.0-beta schedule command
+description: How to use the tctl version-next schedule command
 toc_max_heading_level: 4
 ---
 

@@ -42,7 +42,7 @@ Global modifiers are provided after `tctl` in the command structure but before t
 For example:
 
 ```
-tctl --address <value> workflow start --task-queue <value> ...
+tctl --address <value> workflow start --task_queue <value> ...
 ```
 
 You can supply the values for many of these modifiers by setting [environment variables](#environment-variables) instead of including the modifiers in each tctl command.
@@ -52,18 +52,30 @@ You can supply the values for many of these modifiers by setting [environment va
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
-### `--context-timeout`
+Alias: `--ad`
+
+### `--auto_confirm`
+
+Automatically confirm all prompts.
+
+### `--context_timeout`
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
 
-### `--data-converter-plugin`
+Alias: `--ct`
+
+### `--data_converter_plugin`
 
 Specify the name of the executable for a custom Data Converter plugin.
 
-### `--headers-provider-plugin`
+Alias: `--dcp`
+
+### `--headers_provider_plugin`
 
 Specify the name of the executable for a headers provider plugin.
+
+Alias: `--hpp`
 
 ### `--help`
 
@@ -77,27 +89,27 @@ Specify a Namespace.
 By using this modifier, you don't need to specify a `--namespace` modifier for a sub-command.
 The default Namespace is `default`.
 
-Alias: `-n`
+Alias: `--ns`
 
-### `--tls-ca-path`
+### `--tls_ca_path`
 
 Specify the path to a server Certificate Authority (CA) certificate file.
 
-### `--tls-cert-path`
+### `--tls_cert_path`
 
 Specify the path to a public X.509 certificate file for mutual TLS authentication.
-If you use this modifier, you must also use the `--tls-key-path` modifier.
+If you use this modifier, you must also use the `--tls_key_path` modifier.
 
-### `--tls-disable-host-verification`
+### `--tls_disable_host_verification`
 
 Disable verification of the server certificate (and thus host verification).
 
-### `--tls-key-path`
+### `--tls_key_path`
 
 Specify the path to a private key file for mutual TLS authentication.
-If you use this modifier, you must also use the `--tls-cert-path` modifier.
+If you use this modifier, you must also use the `--tls_cert_path` modifier.
 
-### `--tls-server-name`
+### `--tls_server_name`
 
 Specify an override for the name of the target server that is used for TLS host verification.
 The name must be one of the DNS names listed in the server TLS certificate.
@@ -109,7 +121,7 @@ Display the version of tctl in the CLI.
 
 Alias: `-v`
 
-### `--codec-endpoint`
+### `--codec_endpoint`
 
 The URL and port number for a Codec Server.
 

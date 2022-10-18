@@ -13,12 +13,16 @@ Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequest
 A new command task will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
-See also [`tctl workflow terminate`](/tctl-next/workflow#terminate).
+The use of the [`--query` modifier](/tctl-next/modifiers#--query) (`tctl workflow cancel --query`) automatically starts a [batch job](/tctl-next/batch) that cancels Workflow Executions according to the List Filter provided.
 
-`tctl workflow cancel <modifiers>`
+`tctl workflow cancel --query <value> <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
-- [--run-id](/tctl-next/modifiers#--run-id)
-- [--workflow-id](/tctl-next/modifiers#--workflow-id)
+- [--namespace](/tctl-next/modifiers#--namespace)
+- [--query](/tctl-next/modifiers#--query)
+- [--reason](/tctl-next/modifiers#--reason)
+- [--yes](/tctl-next/modifiers#--yes)
+
+See also [`tctl workflow terminate`](/tctl-next/workflow#terminate).
