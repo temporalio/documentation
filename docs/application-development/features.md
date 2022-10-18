@@ -1,8 +1,8 @@
 ---
 id: features
-title: Application development - Features
+title: Developer's Guide - Features
 sidebar_label: Features
-description: The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
 
@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -1170,7 +1170,9 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
@@ -1261,7 +1263,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
 <!--SNIPEND-->
@@ -1405,9 +1407,9 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
-- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
-- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
 <!--SNIPEND-->
@@ -1526,7 +1528,7 @@ handle = await client.execute_workflow(
 </TabItem>
 <TabItem value="typescript">
 
-Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
 <!--SNIPEND-->
@@ -1677,9 +1679,9 @@ When you call `proxyActivities` in a Workflow Function, you can set a range of `
 
 Available timeouts are:
 
-- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
-- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#starttoclosetimeout)
+- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletostarttimeout)
 
 ```typescript
 // Sample of typical options you can set
@@ -2667,7 +2669,7 @@ await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child
 </TabItem>
 <TabItem value="typescript">
 
-To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.childworkflowhandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 
 To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
 

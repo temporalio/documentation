@@ -1,8 +1,8 @@
 ---
 id: foundations
-title: Application development - Foundations
+title: Developer's Guide - Foundations
 sidebar_label: Foundations
-description: The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
+description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-execution) that executes an [Activity](/activities#activity-execution).
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-execution) that executes an [Activity](/activities#activity-execution).
 
 :::info WORK IN PROGRESS
 
@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -2753,7 +2753,7 @@ worker = Worker(
 </TabItem>
 <TabItem value="typescript">
 
-In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath):
+In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
 <!--SNIPSTART typescript-worker-create -->
 <!--SNIPEND-->
@@ -3711,7 +3711,7 @@ Using a Workflow Handle isn't necessary with `client.execute()`.
 
 Workflows that prematurely end will throw a `WorkflowFailedError` if you call `result()`.
 
-If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.workflowfailederror/) that reflects the reason. For that reason, it is recommended to catch that error.
+If you call `result()` on a Workflow that prematurely ended for some reason, it throws a [`WorkflowFailedError` error](https://typescript.temporal.io/api/classes/client.WorkflowFailedError/) that reflects the reason. For that reason, it is recommended to catch that error.
 
 ```typescript
 const handle = client.getHandle(workflowId);

@@ -13,9 +13,9 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
-- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
-- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
 <!--SNIPEND-->

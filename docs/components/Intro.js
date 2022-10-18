@@ -494,7 +494,7 @@ function Explained() {
       <div className="landing-card-section">
         <div className="badge-header">
           <a className="header-link" href="/application-development">
-            <h2 className="h2-landing">Application development guide</h2>
+            <h2 className="h2-landing">Developer's guide</h2>
           </a>
           <div className="badge-purple">New</div>
         </div>
@@ -514,11 +514,11 @@ function Explained() {
           <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
-          Application development by language.{" "}
+          Developer's guide by language.{" "}
           <span className="bold">
             Most of this information is now included in the{" "}
             <a className="nowrap" href="/application-development">
-              application development guide
+              Developer's guide
             </a>
             .
           </span>
