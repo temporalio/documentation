@@ -1,8 +1,5 @@
 
 
-#
-# General redirects
-#
 { "source": "/docs/*", "destination": "/:splat" },
 { "source": "/reference/*", "destination": "/references/:splat" },
 { "source": "/system-tools/*", "destination": "/devtools/:splat" },
@@ -16,7 +13,7 @@
 { "source": "/application-development-guide", "destination": "/application-development" },
 { "source": "/samples-library", "destination": "/application-development/foundations#code-samples" },
 { "source": "/change-log", "destination": "/changelog" },
-# Blog case studies
+
 { "source": "/blog/airbyte-case-study/", "destination": "https://temporal.io/case-studies/airbyte-case-study" },
 { "source": "/blog/zebra-medical-case-study/", "destination": "https://temporal.io/case-studies/zebra-medical-case-study" },
 { "source": "/blog/how-datadog-ensures-database-reliability-with-temporal", "destination": "https://temporal.io/case-studies/how-datadog-ensures-database-reliability-with-temporal" },
@@ -24,18 +21,15 @@
 { "source": "/blog/descript-case-study/", "destination": "https://temporal.io/case-studies/descript-case-study" },
 { "source": "/blog/reliable-crypto-transactions-at-coinbase", "destination": "https://temporal.io/case-studies/reliable-crypto-transactions-at-coinbase" },
 { "source": "/blog/temporal-a-central-brain-for-box", "destination": "https://temporal.io/case-studies/temporal-a-central-brain-for-box" },
-# Blog tutorials
+
 { "source": "/blog/tags/go-ecommerce-tutorial", "destination": "https://learn.temporal.io/tutorials/go/ecommerce/" },
 { "source": "/blog/build-an-ecommerce-app-with-temporal-part-1/", "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-1" },
 { "source": "/blog/build-an-ecommerce-app-with-temporal-part-2-reminder-emails", "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-2-reminder-emails" },
 { "source": "/blog/build-an-ecommerce-app-with-temporal-part-3-testing", "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-3-testing" },
 { "source": "/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api", "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-4-rest-api" },
-# Blog { "source": "catch", "destination": "all" },
+
 { "source": "/blog/*", "destination": "https://temporal.io/blog/:splat" },       
 
-#
-# Concept pages redirects
-#
 { "source": "/temporal-explained", "destination": "/temporal" },
 { "source": "/concepts/introduction", "destination": "/temporal" },
 { "source": "/concepts/workflows", "destination": "/workflows" },
@@ -53,20 +47,14 @@
 { "source": "/temporal-explained/timeouts-and-retries", "destination": "/retry-policies" },
 { "source": "/temporal-explained/visibility", "destination": "/visibility" },
 
-# CONTENT        CONCEPTS
+
 { "source": "/content/what-is-*", "destination": "/concepts/what-is-:splat" },
 
-#
-# TS pages redirects
-#
 { "source": "/node/*", "destination": "/typescript/:splat" },
 { "source": "/typescript/getting-started", "destination": "/typescript/introduction#getting-started" },
 { "source": "/typescript", "destination": "/typescript/introduction" },
 { "source": "/content/how-to-develop-a-worker-program-in-typescript", "destination": "/typescript/how-to-develop-a-worker-program-in-typescript" },
 
-#
-# Tutorial redirects
-#
 { "source": "/go/run-your-first-app-tutorial", "destination": "https://learn.temporal.io/getting_started/go/first_program_in_go/" },
 { "source": "/java/run-your-first-app-tutorial", "destination": "https://learn.temporal.io/getting_started/java/first_program_in_java/" },
 { "source": "/go/hello-world-tutorial", "destination": "https://learn.temporal.io/getting_started/go/hello_world_in_go/" },
@@ -93,9 +81,6 @@
 { "source": "/learning-paths/background-checks/api-reference", "destination": "https://learn.temporal.io/examples/go/background-checks/api-reference" },
 { "source": "/learning-paths/background-checks/cli-reference", "destination": "https://learn.temporal.io/examples/go/background-checks/cli-reference" },
 
-#
-# Go pages redirects
-#
 { "source": "/go/getting-started", "destination": "/go" },
 { "source": "/go/introduction", "destination": "/go" },
 { "source": "/go-activities", "destination": "/application-development/foundations#develop-activities" },
@@ -145,9 +130,6 @@
 { "source": "/go/how-to-set-startworkflowoptions-in-go*", "destination": "/go/startworkflowoptions-reference:splat" },
 { "source": "/go/how-to-set-activityoptions-in-go*", "destination": "/go/activityoptions-reference:splat" },
 
-#
-# Java pages redirects
-#
 { "source": "/java/introduction", "destination": "/java" },
 { "source": "/java-activities", "destination": "/java/activities" },
 { "source": "/java-distributed-cron", "destination": "/java/distributed-cron" },
@@ -171,9 +153,6 @@
 { "source": "/content/how-to-provide-an-authorization-token-in-java", "destination": "/java/how-to-provide-an-authorization-token-in-java" },
 { "source": "/content/how-to-develop-a-worker-program-in-java", "destination": "/java/how-to-develop-a-worker-program-in-java" },
 
-#
-# PHP pages redirects
-#
 { "source": "/php", "destination": "/php/introduction" },
 { "source": "/php-sdk-overview", "destination": "/php/introduction" },
 { "source": "/php-sdk-introduction", "destination": "/php/introduction" },
@@ -196,9 +175,7 @@
 { "source": "/php-task-queues", "destination": "/php/task-queues" },
 { "source": "/content/how-to-develop-a-worker-program-in-php", "destination": "/application-development/foundations#run-worker-processes" },
 { "source": "/php/how-to-develop-a-worker-program-in-php", "destination": "/application-development/foundations#run-worker-processes" },
-#
-# Server pages redirects
-#
+
 { "source": "/server", "destination": "/clusters/" },
 { "source": "/server/configuration", "destination": "/references/configuration" },
 { "source": "/server-archive-data", "destination": "/concepts/what-is-archival" },
