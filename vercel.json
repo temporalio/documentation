@@ -582,7 +582,7 @@
 
     {
       "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
-      "destination": "/tctl/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
+      "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
     },
     {
       "source": "/operation/how-to-tune-workers",
