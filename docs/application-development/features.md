@@ -1194,6 +1194,8 @@ Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.Workf
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+
 <!--SNIPSTART typescript-handle-query -->
 <!--SNIPEND-->
 
@@ -3460,7 +3462,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
-You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+You can also [register Namespaces using the tctl command-line tool](/tctl-v1/namespace#register).
 
 ```go
     client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
@@ -3482,7 +3484,7 @@ Ensure that you wait for this registration to complete before starting the Workf
 
 To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
 
-To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
+To update your Namespace using tctl, use the [tctl namespace update](/tctl-v1/namespace#update) command.
 
 </TabItem>
 <TabItem value="java">

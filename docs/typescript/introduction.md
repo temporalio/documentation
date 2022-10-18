@@ -32,7 +32,7 @@ When you click on that link above and log in (there is a generous free tier), Gi
 
 - Pane 1: Temporal Cluster
   - Left: [Temporal Server](https://github.com/temporalio/docker-compose) - always running
-  - Right: [Temporal Web](/web-ui) and [Temporal `tctl` CLI](/tctl)
+  - Right: [Temporal Web](/web-ui) and [Temporal `tctl` CLI](/tctl-v1)
 - Pane 2: Hello World
   - Left: [Temporal Worker](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/worker.ts) - running and hot reloading
   - Right: [Temporal Client](https://github.com/temporalio/samples-typescript/blob/main/hello-world/src/client.ts) - run `npm run workflow`
