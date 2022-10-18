@@ -201,8 +201,6 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
-
-
 ### Mock Activities
 
 When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
@@ -1008,4 +1006,3 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
-
