@@ -565,7 +565,6 @@
       "source": "/content/how-to-quickly-install-the-temporal-server",
       "destination": "/clusters/quick-install"
     },
-
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
       "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
@@ -574,12 +573,10 @@
       "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
       "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
     },
-
     {"source": "/server-security", "destination": "/server/security"},
     {"source": "/server-versions-and-dependencies", "destination": "/clusters"},
-    {"source": "/clusters", "destination": "/clusters"},
-    {"source": "/server/workflow-search", "destination": "/visibility"},
 
+    {"source": "/server/workflow-search", "destination": "/visibility"},
     {
       "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
       "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
@@ -588,7 +585,6 @@
       "source": "/operation/how-to-tune-workers",
       "destination": "/application-development/worker-performance"
     },
-
     {
       "source": "/cadence-to-temporal",
       "destination": "/kb/cadence-to-temporal"
