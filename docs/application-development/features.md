@@ -236,7 +236,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
       return errors.New("signal")
   }
   // ...
-  // ...
 }
 ```
 
@@ -3506,4 +3505,3 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
-
