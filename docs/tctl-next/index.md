@@ -52,26 +52,18 @@ You can supply the values for many of these modifiers by setting [environment va
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
-Alias: `--ad`
-
 ### `--context-timeout`
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
 
-Alias: `--ct`
-
 ### `--data-converter-plugin`
 
 Specify the name of the executable for a custom Data Converter plugin.
 
-Alias: `--dcp`
-
 ### `--headers-provider-plugin`
 
 Specify the name of the executable for a headers provider plugin.
-
-Alias: `--hpp`
 
 ### `--help`
 
@@ -85,7 +77,7 @@ Specify a Namespace.
 By using this modifier, you don't need to specify a `--namespace` modifier for a sub-command.
 The default Namespace is `default`.
 
-Alias: `--ns`
+Alias: `-n`
 
 ### `--tls-ca-path`
 
