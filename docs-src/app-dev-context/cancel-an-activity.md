@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-If an Activity is supposed to react to Cancellation, you can test whether it reacts correctly by canceling it.
+If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
