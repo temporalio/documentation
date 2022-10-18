@@ -11,7 +11,6 @@ Some long-running Workflows can persist for months or even years. Implementing t
 
 For example, if you have a Workflow sleep for a day, or have an Activity failue with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
 
-
 :::note
 
 Skipping time is not relevant to unit testing Workflow code, because in that case you’re mocking functions that take time like sleep and Activity calls.

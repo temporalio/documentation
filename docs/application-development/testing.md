@@ -201,8 +201,6 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
-
-
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -343,7 +341,6 @@ const worker = await Worker.create({
 Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than the Workflow's specified amount.
 
 For example, if you have a Workflow sleep for a day, or have an Activity failue with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
-
 
 :::note
 
@@ -1011,4 +1008,3 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
-
