@@ -26,7 +26,7 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the [Retention Period](/concepts/what-is-a-retention-period) and the [Archival](/concepts/what-is-archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl/namespace).
+- **Namespace Configuration**: Various configuration options like the [Retention Period](/concepts/what-is-a-retention-period) and the [Archival](/concepts/what-is-archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
 
 ### Registration
 
@@ -50,7 +50,7 @@ On self-hosted Temporal Clusters, you can register your Namespaces in the follow
 
 - Use the `tctl namespace register` command with the `--retention` modfiier to register your Namespaces, one at a time, and set the Retention Period on each.
 
-  - [How to register a new Namespace using tctl](/tctl/namespace/register)
+  - [How to register a new Namespace using tctl](/tctl-v1/namespace#register)
 
 - In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
 
@@ -68,17 +68,17 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace update`](/tctl/namespace/update)
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
   - Use the [`UpdateNamespace` API]9(/application-development/features#namespaces) to update configuration on a Namespace.
 
 - Get details for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace describe`](/tctl/namespace/describe)
+  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
   - Use the [`DescribeNamespace` API](/application-development/features#namespaces) to return information and configuration details for a registered Namespace.
 
 - Get details for all registered Namespaces on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace list`](/tctl/namespace/list)
+  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
   - Use the [`ListNamespace` API](/application-development/features#namespaces) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
 
 - Deprecate a Namespace: The [`DeprecateNamespace` API](/application-development/features#namespaces) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
@@ -89,5 +89,5 @@ Set Namespaces in your SDK Client to isolate your Workflow Executions to the Nam
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the "default" Namespace. This means, you must have a default Namespace called "default" registered with your Temporal Cluster. See [Registration](#Registration) for details.
 
 - [How to set the Namespace for a Temporal Client](/application-development/foundations#set-namespace)
-- [How to list Namespaces in a Cluster using tctl](/tctl/namespace/list)
-- [How to view (describe) Namespace metadata and details using tctl](/tctl/namespace/describe)
+- [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
+- [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)

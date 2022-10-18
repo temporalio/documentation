@@ -18,7 +18,7 @@ Types of inbound calls include the following:
 - External events
 - Worker polls
 - [Visibility](/concepts/what-is-visibility) requests
-- [tctl](/tctl) (the Temporal CLI) operations
+- [tctl](/tctl-v1) (the Temporal CLI) operations
 - Calls from a remote Cluster related to [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
