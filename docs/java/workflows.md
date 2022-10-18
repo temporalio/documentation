@@ -59,7 +59,7 @@ public interface FileProcessingWorkflow {
 ```
 
 The `@WorkflowMethod` annotation has a `name` parameter, for example: `@WorkflowMethod(name = "YourWorkflowType")`.
-It can be used to denote the Workflow type. If not set, the Workflow type defaults to the short name of the Workflow interface,
+It can be used to denote the Workflow Type. If not set, the Workflow Type defaults to the short name of the Workflow interface,
 in the example above being `FileProcessingWorkflow`.
 Methods annotated with `@WorkflowMethod` can have any number of parameters.
 We recommend passing a single parameter that contains all the input fields.
@@ -160,7 +160,7 @@ java.lang.IllegalStateException: BaseWorkflow workflow type is already registere
 A Workflow implementation implements a Workflow interface. Each time a new Workflow execution is started,
 a new instance of the Workflow implementation object is created.
 Then, one of the methods
-(depending on which Workflow type has been started) annotated with `@WorkflowMethod` can be invoked.
+(depending on which Workflow Type has been started) annotated with `@WorkflowMethod` can be invoked.
 As soon as this method returns, the Workflow execution is considered as completed.
 
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow's execution.
@@ -226,7 +226,7 @@ readlist={[
 ### Java Child Workflow API
 
 `Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
-It takes a child Workflow type and optional child Workflow options as arguments. Workflow options can be used
+It takes a child Workflow Type and optional child Workflow options as arguments. Workflow options can be used
 to set timeout, retry options, and task queue settings for example.
 Note that by default a child Workflow inherits the Workflow options of its parent. You can however overwrite these
 by passing in custom Workflow options when creating the child Workflow stub.
@@ -421,7 +421,7 @@ If you are continuing execution of the same workflow that is currently running y
 Workflow.continueAsNew(input1, ...);
 ```
 
-It is also possible to continue execution as a completely different Workflow type.
+It is also possible to continue execution as a completely different Workflow Type.
 In a Workflow class called `YourWorkflow` for example, we can create a Workflow Stub with a different type and
 call its Workflow method to continue execution as that type:
 
@@ -442,7 +442,7 @@ MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.cl
 continueAsNew.greet(input);
 ```
 
-This allows you to continue workflow execution as a new Workflow run with a different Workflow type,
+This allows you to continue workflow execution as a new Workflow run with a different Workflow Type,
 and on a different Task Queue.
 
 Another way to deal with the execution history size limits is to use Child Workflows, however

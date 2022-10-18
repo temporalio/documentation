@@ -1,6 +1,6 @@
 ---
 id: features
-title: Developer's Guide - Features
+title: Developer's guide - Features
 sidebar_label: Features
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
@@ -142,7 +142,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -621,7 +621,7 @@ class MyWorkflow:
 
 :::note
 
-The Workflow type given is only for type annotations and not for validation.
+The Workflow Type passed is only for type annotations and not for validation.
 
 :::
 
@@ -883,7 +883,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -2858,7 +2858,7 @@ To continue execution of the same Workflow that is currently running, use:
 Workflow.continueAsNew(input1, ...);
 ```
 
-To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
+To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
 For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
 
 ```java
@@ -3533,3 +3533,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+

@@ -22,6 +22,6 @@ class MyWorkflow:
 
 :::note
 
-The Workflow type given is only for type annotations and not for validation.
+The Workflow Type passed is only for type annotations and not for validation.
 
 :::

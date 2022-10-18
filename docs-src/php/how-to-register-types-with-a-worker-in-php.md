@@ -2,7 +2,7 @@
 id: how-to-register-types-with-a-worker-in-php
 title: How to register types with a Worker in PHP
 sidebar_label: Register Types
-description: Use `registerWorkflowTypes()` to register Workflow type and `registerActivity()` to register Activity implementation with Workers.
+description: Use `registerWorkflowTypes()` to register Workflow Type and `registerActivity()` to register Activity implementation with Workers.
 tags:
   - developer-guide
   - php
