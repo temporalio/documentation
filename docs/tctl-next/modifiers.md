@@ -11,6 +11,10 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+Modifiers change the behavior of the command.
+
+## --active-cluster
+
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/namespaces#).
 This value changes for Global Namespaces when a failover occurs.
 
@@ -438,6 +442,6 @@ The default value is 10.
 
 Alias: `--wtt`
 
-## --yes-mod
+## --yes
 
-Disable the confirmation prompt by automatically approving the prompt.
+Automatically confirm all prompts.
