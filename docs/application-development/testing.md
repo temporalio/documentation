@@ -85,7 +85,7 @@ assert.equal(result, 42);
 
 ### Listen to Heartbeats
 
-When an Activity sends Heartbeats, you want to be able to see them in your test code to assert they’re correct.
+When an Activity sends a Heartbeat, you'll want to be able to see them in your test code, so that you can verify that they're correct.
 
 <Tabs
 defaultValue="go"
@@ -142,7 +142,7 @@ await env.run(activityFoo);
 
 ### Cancel an Activity
 
-If an Activity is supposed to react to Cancellation, you can test whether it reacts correctly by canceling it.
+If an Activity is supposed to react to a Cancelation, you can test whether it reacts correctly by canceling it.
 
 <Tabs
 defaultValue="go"
@@ -201,9 +201,13 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
-When unit testing Workflows, you can mock the Activity invocation. When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
+Mock the Activity invocation when unit testing your Workflows.
+
+When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
 <Tabs
 defaultValue="go"
@@ -336,9 +340,10 @@ const worker = await Worker.create({
 
 ### Skip Time
 
-Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than months. For example, you might have a Workflow sleep for a day or have Activity failures with a long retry interval. When testing this code, you don't need to test whether the sleep functions, as you can trust Temporal executes that functionality correctly.
+Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than the Workflow's specified amount.
 
-Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
+For example, if you have a Workflow sleep for a day, or have an Activity failue with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
+
 
 :::note
 
@@ -682,7 +687,7 @@ Workflow implementation
 
 ### Workflow context
 
-In order for a function or method to be run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox/isolate in the case of TS and Python), it needs to be run by the Worker as if it were a Workflow.
+In order for a function or method to run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox in the case of TypeScript or Python), it needs to be run by the Worker as if it were a Workflow.
 
 :::note
 
@@ -841,7 +846,7 @@ await worker.runUntil(
 
 ## Test Frameworks
 
-Some SDKs have support for or examples with popular test frameworks/runners/libraries.
+Some SDKs have support for or examples with popular test frameworks, runners, or libraries.
 
 <Tabs
 defaultValue="go"
@@ -1006,3 +1011,4 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
+
