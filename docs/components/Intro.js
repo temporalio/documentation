@@ -387,8 +387,8 @@ const devTools = {
     },
     {
       cli: true,
-      path: "/tctl-v2",
-      name: `tctl v2.0.0-beta`,
+      path: "/tctl-next",
+      name: `tctl next`,
     },
   ],
   listTwo: [
