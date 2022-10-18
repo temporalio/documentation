@@ -9,10 +9,10 @@ tags:
   - typescript
 ---
 
-[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event that you can use to listen for heartbeats emitted by the Activity.
+[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event that you can use to listen for Heartbeats emitted by the Activity.
 
-When an Activity is run by a Worker, heartbeats are throttled to avoid overloading the server.
-`MockActivityEnvironment`, on the other hand, does not throttle heartbeats.
+When an Activity is run by a Worker, Heartbeats are throttled to avoid overloading the server.
+`MockActivityEnvironment`, however, does not throttle Heartbeats.
 
 ```ts
 import {MockActivityEnvironment} from "@temporalio/testing";

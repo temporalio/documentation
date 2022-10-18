@@ -37,7 +37,7 @@ Therefore, the terms Activity Function and Activity Method refer to the source o
 
 Activity Definitions are named and referenced in code by their [Activity Type](#activity-type).
 
-![Activity Definition](/diagrams/activity-definition.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Activity Definition</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-definition.svg" alt="Activity Definition" /></div></div>
 
 #### Constraints
 
@@ -74,7 +74,7 @@ An Activity Execution is the full chain of [Activity Task Executions](/tasks#act
 
 - [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
 
-![Activity Execution](/diagrams/activity-execution.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-execution.svg" alt="Activity Execution" /></div></div>
 
 An Activity Execution has no time limit.
 Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
@@ -113,7 +113,7 @@ In other words, it's a limit for how long an Activity Task can be enqueued.
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
-![Schedule-To-Start Timeout period](/diagrams/schedule-to-start-timeout.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Start Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-start-timeout.svg" alt="Schedule-To-Start Timeout period" /></div></div>
 
 "Schedule" in Schedule-To-Start and Schedule-To-Close have different frequency guarantees.
 
@@ -123,7 +123,7 @@ Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_
 
 A [Retry Policy](/retry-policies#) attached to an Activity Execution retries an Activity Task.
 
-![Start-To-Close Timeout period with retries](/diagrams/schedule-to-start-timeout-with-retry.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-start-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
 
 This timeout has two primary use cases:
 
@@ -152,14 +152,14 @@ For long running Activity Executions, we recommend also using [Activity Heartbea
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
-![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/start-to-close-timeout.svg" alt="Start-To-Close Timeout period" /></div></div>
 
 A [Retry Policy](/retry-policies#) attached to an Activity Execution retries an Activity Task Execution.
 Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
-![Start-To-Close Timeout period with retries](/diagrams/start-to-close-timeout-with-retry.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/start-to-close-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
 
 If this timeout is reached, the following actions occur:
 
@@ -174,11 +174,11 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 
 - [How to set a Schedule-To-Close Timeout](/go/how-to-set-a-schedule-to-close-timeout-in-go)
 
-![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-close-timeout.svg" alt="Schedule-To-Close Timeout period" /></div></div>
 
 Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
-![Schedule-To-Close Timeout period with a retry](/diagrams/schedule-to-close-timeout-with-retry.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period with a retry</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-close-timeout-with-retry.svg" alt="Schedule-To-Close Timeout period with a retry" /></div></div>
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
@@ -262,7 +262,7 @@ A Heartbeat Timeout is the maximum time between [Activity Heartbeats](#activity-
 
 - [How to set a Heartbeat Timeout](/application-development/features#heartbeat-timeout)
 
-![Heartbeat Timeout periods](/diagrams/heartbeat-timeout.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Heartbeat Timeout periods</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/heartbeat-timeout.svg" alt="Heartbeat Timeout periods" /></div></div>
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a [Retry Policy](/retry-policies#) dictates it.
 
@@ -313,4 +313,3 @@ Consider using Local Activities for functions that are the following:
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
-

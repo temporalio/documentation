@@ -25,7 +25,7 @@ Use the test server for both end-to-end and integration tests with Workers, as t
 
 ## Test Activities
 
-Activities can be tested with a mock Activity environment, which provides a way to mock Activity context, listen to heartbeats, and cancel the Activity. This allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
+An Activity can be tested with a mock Activity environment, which provides a way to mock Activity context, listen to Heartbeats, and cancel the Activity. This allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
 ### Run an Activity
 
@@ -85,7 +85,7 @@ assert.equal(result, 42);
 
 ### Listen to Heartbeats
 
-When an Activity sends Heartbeats, you want to be able to see them in your test code in order to assert they’re correct.
+When an Activity sends Heartbeats, you want to be able to see them in your test code to assert they’re correct.
 
 <Tabs
 defaultValue="go"
@@ -114,10 +114,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event that you can use to listen for heartbeats emitted by the Activity.
+[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event that you can use to listen for Heartbeats emitted by the Activity.
 
-When an Activity is run by a Worker, heartbeats are throttled to avoid overloading the server.
-`MockActivityEnvironment`, on the other hand, does not throttle heartbeats.
+When an Activity is run by a Worker, Heartbeats are throttled to avoid overloading the server.
+`MockActivityEnvironment`, however, does not throttle Heartbeats.
 
 ```ts
 import {MockActivityEnvironment} from "@temporalio/testing";
@@ -171,7 +171,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method which cancels the Activity Context:
+[`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment) exposes a [`.cancel()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#cancel) method that cancels the Activity Context.
 
 ```ts
 import {MockActivityEnvironment} from "@temporalio/testing";
@@ -200,8 +200,6 @@ await assert.rejects(env.run(activityFoo), (err) => {
 </Tabs>
 
 ## Test Workflows
-
-
 
 ### Mock Activities
 
@@ -344,11 +342,11 @@ Instead, test the logic that happens after the sleep by skipping forward time an
 
 :::note
 
-Skipping time is not relevant to unit testing Workflow code, since in that case you’re mocking functions that take time like sleep and Activity calls.
+Skipping time is not relevant to unit testing Workflow code, because in that case you’re mocking functions that take time like sleep and Activity calls.
 
 :::
 
-The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of the test server: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the test server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
+The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of `TestWorkflowEnvironment`: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the test server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
 #### Setting up
 
@@ -476,7 +474,7 @@ This test uses the test connection to create a Worker, runs the Worker until the
 
 #### Automatic method
 
-Learn to Time Skip automatically in the SDK of your choice.  Start a test server process that automatically skips time as needed. For example, in the time skipping mode, timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
+Learn to Time Skip automatically in the SDK of your choice. Start a test server process that automatically skips time as needed. For example, in the time skipping mode, timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
 <Tabs
 defaultValue="go"
@@ -1008,4 +1006,3 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 
 </TabItem>
 </Tabs>
-

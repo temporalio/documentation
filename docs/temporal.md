@@ -23,7 +23,7 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 :::
 -->
 
-![The Temporal System](/diagrams/temporal-system-simple.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" /></div></div>
 
 ## Temporal Platform
 
@@ -109,4 +109,3 @@ The most common operations that a Temporal Client enables you to perform are the
 - Query a Workflow Execution.
 - Signal a Workflow Execution.
 - Start a Workflow Execution.
-

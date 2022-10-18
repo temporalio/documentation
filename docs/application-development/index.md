@@ -111,6 +111,7 @@ The application development guide is broken down into five sections:
    - [Visibility](/application-development/observability#visibility)
 
 4. [**Testing**](/application-development/testing):
+
    - [Test Activities](/application-development/testing#test-activities)
    - [Test Workflows](/application-development/testing#test-workflows)
    - [Test Frameworks](/application-development/testing#test-frameworks)

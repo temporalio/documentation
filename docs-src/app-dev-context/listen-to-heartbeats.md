@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-When an Activity sends Heartbeats, you want to be able to see them in your test code in order to assert they’re correct.
+When an Activity sends Heartbeats, you want to be able to see them in your test code to assert they’re correct.

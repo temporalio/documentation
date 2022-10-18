@@ -41,7 +41,7 @@ assert.equal(result, 4);
 `MockActivityEnvironment` is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event which you can use to listen for heartbeats emitted by the Activity.
 
 > NOTE: When run by a `Worker`, heartbeats are throttled to avoid overloading the server.
-> `MockActivityEnvironment` on the other hand does not apply any throttling.
+> `MockActivityEnvironment`, however, does not apply any throttling.
 
 It also exposes a `cancel` method which cancels the Activity Context.
 

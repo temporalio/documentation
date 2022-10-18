@@ -46,7 +46,7 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 ## Worker Process
 
-![Component diagram of a Worker Process and the Temporal Server](/diagrams/worker-and-server-component.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Component diagram of a Worker Process and the Temporal Server</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/worker-and-server-component.svg" alt="Component diagram of a Worker Process and the Temporal Server" /></div></div>
 
 A Worker Process is responsible for polling a [Task Queue](/tasks#task-queue), dequeueing a [Task](/tasks#), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters#) with the results.
 
@@ -85,4 +85,3 @@ Worker Processes executing Activity Tasks must have access to any resources need
 
 The Temporal Cluster itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
-

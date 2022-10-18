@@ -592,4 +592,3 @@ tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_addr
 tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
 tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
 ```
-
