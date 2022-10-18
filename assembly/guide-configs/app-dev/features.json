@@ -124,6 +124,10 @@
           "id": "php/how-to-send-a-signal-from-a-workflow-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-send-a-signal-from-a-workflow-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-send-a-signal-from-a-workflow-in-typescript"
         }
