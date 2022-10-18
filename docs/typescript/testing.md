@@ -22,7 +22,7 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 
 ### Running an activity in Context
 
-[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
+[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
 import { Context } from '@temporalio/activity';
@@ -75,7 +75,7 @@ Workflows can be tested with [`TestWorkflowEnvironment`](https://typescript.temp
 
 A typical test suite would set up a single instance of the test environment to be reused in all tests (e.g. in a [Mocha](https://mochajs.org/) `before()` hook or a [Jest](https://jestjs.io/) `beforeAll` hook).
 
-When creating an environment, [`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) will automatically start a test server that you can access with [`workflowClient`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#workflowclient) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
+When creating an environment, [`TestWorkflowEnvironment.create`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#create) will automatically start a test server that you can access with [`client`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#client) and [`nativeConnection`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#nativeconnection).
 
 ### Example setup
 
@@ -109,7 +109,7 @@ Since the `TestWorkflowEnvironment` is meant for testing Workflows, you'd typica
 
 ```ts
 test('httpWorkflow with mock activity', async () => {
-  const { workflowClient, nativeConnection } = testEnv;
+  const { client, nativeConnection } = testEnv;
 
   // Implement only the relevant activities for this workflow
   const mockActivities: Partial<typeof Activities> = {
@@ -122,7 +122,7 @@ test('httpWorkflow with mock activity', async () => {
     activities: mockActivities,
   });
   const result = await worker.runUntil(
-    await workflowClient.execute(httpWorkflow, {
+    await client.workflow.execute(httpWorkflow, {
       workflowId: uuid4(),
       taskQueue: 'test',
     })
@@ -134,7 +134,7 @@ test('httpWorkflow with mock activity', async () => {
 ### Time skipping in Workflows
 
 The built-in test server automatically "skips" (fast forwards) time when no Activities are executing.
-The test server starts in "normal" time, using the `TestWorkflowEnvironment.workflowClient` `execute` or `result`
+The test server starts in "normal" time, using the `TestWorkflowEnvironment.client.workflow` `execute` or `result`
 methods switch the test server to "skipped" time mode until the Workflow completes.
 If a Workflow sleeps for days, running it in the test environment will cause it to complete almost immediately.
 
@@ -159,7 +159,7 @@ test('sleep completes almost immediately', async () => {
   });
   // Does not wait an entire day
   await worker.runUntil(
-    testEnv.workflowClient.execute(sleeperWorkflow, {
+    testEnv.client.workflow.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
     })
@@ -197,12 +197,10 @@ export async function sleeperWorkflow() {
 
 ```ts
 test('advancing time using `testEnv.sleep()`', async () => {
-  const client = testEnv.workflowClient;
-
   // Important: `start()` starts the test server in "normal" mode,
   // not skipped time mode. If you don't advance time using `testEnv.sleep()`,
   // then `sleeperWorkflow()` will run for days.
-  handle = await client.start(sleeperWorkflow, {
+  handle = await testEnv.client.workflow.start(sleeperWorkflow, {
     taskQueue,
     workflowId: uuidv4(),
   });
@@ -227,7 +225,7 @@ test('advancing time using `testEnv.sleep()`', async () => {
 ### Time skipping in Activities
 
 When an Activity is executing time switches back to "normal",
-[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep)
+[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#sleep)
 can be used outside of Workflow code to skip time.
 
 <details>
@@ -263,7 +261,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
     activities,
   });
   await worker.runUntil(
-    testEnv.workflowClient.execute(processOrderWorkflow, {
+    testEnv.client.workflow.execute(processOrderWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
       args: [
@@ -280,7 +278,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
 
 ### Test arbitrary functions in Workflow context
 
-In case you need to test a function in your Workflow code that's not exported in [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath), export it in a different path and register it with the Worker.
+In case you need to test a function in your Workflow code that's not exported in [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath), export it in a different path and register it with the Worker.
 
 `workflows/file-with-workflow-function-to-test.ts`
 
@@ -308,7 +306,7 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions)
+  testEnv.client.workflow.execute(functionToTest, workflowOptions)
 );
 ```
 
@@ -351,7 +349,7 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
 );
 ```
 

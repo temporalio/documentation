@@ -1,8 +1,8 @@
 ---
 id: features
-title: Application development - Features
+title: Developer's guide - Features
 sidebar_label: Features
-description: The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
 
@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -34,6 +34,7 @@ In this section you can find the following:
 - [How to set Activity timeouts & retries](#activity-timeouts)
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
+- [How to register Namespaces](#namespaces)
 
 ## Signals
 
@@ -499,7 +500,11 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
+
+```python
+await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -906,7 +911,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+
+<!--SNIPSTART typescript-define-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1162,32 +1170,12 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Query Handlers can return values inside a Workflow in TypeScript.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
-```typescript
-import * as wf from "@temporalio/workflow";
-
-export const unblockSignal = wf.defineSignal("unblock");
-export const isBlockedQuery = wf.defineQuery<boolean>("isBlocked");
-
-export async function unblockOrCancel(): Promise<void> {
-  let isBlocked = true;
-  wf.setHandler(unblockSignal, () => void (isBlocked = false));
-  wf.setHandler(isBlockedQuery, () => isBlocked);
-  console.log("Blocked");
-  try {
-    await wf.condition(() => !isBlocked);
-    console.log("Unblocked");
-  } catch (err) {
-    if (err instanceof wf.CancelledFailure) {
-      console.log("Cancelled");
-    }
-    throw err;
-  }
-}
-```
+<!--SNIPSTART typescript-handle-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1273,7 +1261,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
+
+<!--SNIPSTART typescript-send-query -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -1414,9 +1405,9 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
-- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
-- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
 <!--SNIPEND-->
@@ -1535,7 +1526,7 @@ handle = await client.execute_workflow(
 </TabItem>
 <TabItem value="typescript">
 
-Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
 <!--SNIPEND-->
@@ -1686,9 +1677,9 @@ When you call `proxyActivities` in a Workflow Function, you can set a range of `
 
 Available timeouts are:
 
-- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
-- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#starttoclosetimeout)
+- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletostarttimeout)
 
 ```typescript
 // Sample of typical options you can set
@@ -2403,6 +2394,10 @@ When using a Child Workflow API, Child Workflow related Events ([StartChildWorkf
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
 After that, Child Workflow Executions may be abandoned using the default _Abandon_ [Parent Close Policy](/workflows#parent-close-policy) set in the Child Workflow Options.
 
+To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
+
+Then get the value of an object that acts as a proxy for a result that is initially unknown, which is what waits until the Child Workflow Execution has spawned.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
@@ -2445,9 +2440,9 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 ```
 
 To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the "ChildWorkflowExecutionStarted" event to appear in its event history before it completes.
+Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
 
-If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution will not spawn.
+If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not spawn.
 
 To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
 Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
@@ -2655,9 +2650,31 @@ $childResult = yield Workflow::executeChildWorkflow(
 ```
 
 </TabItem>
+<TabItem value="python">
+
+To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function. `execute_child_workflow()` starts the Child Workflow and waits for completion.
+
+```python
+await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+```
+
+Alternatively, use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle. This is useful if you want to do something after it has only started, or to get the workflow/run ID, or to be able to signal it while running. To wait for completion, simply `await` the handle. `execute_child_workflow()` is a helper function for `start_child_workflow()` + `await handle`.
+
+```python
+await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+
+To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
+
+By default, a child is scheduled on the same Task Queue as the parent.
+
+<!--SNIPSTART typescript-child-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2883,7 +2900,10 @@ workflow.continue_as_new("your-workflow-name")
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To cause a Workflow Execution to [Continue-As-New](/workflows#continue-as-new), the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
+
+<!--SNIPSTART typescript-continue-as-new-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -3082,6 +3102,198 @@ const handle = await client.start(scheduledWorkflow, {
 </TabItem>
 </Tabs>
 
+## Side Effects
+
+Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+
+A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+
+Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+
+An Activity or a Local Activity may also be used instead of a Side effect, as its result is also persisted in Workflow Execution History.
+
+:::note
+
+You shouldn’t modify the Workflow state inside a Side Effect function, because it is not reexecuted during Replay. Side Effect function should be used to return a value.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+
+Pass it an instance of `context.Context` and the function to execute.
+
+The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
+
+Use the `Get` method on the Future to retrieve the result of the Side Effect.
+
+**Correct implementation**
+
+The following example demonstrates the correct way to use `SideEffect`:
+
+```go
+encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
+ return rand.Intn(100)
+})
+
+var random int
+encodedRandom.Get(&random)
+// ...
+}
+```
+
+**Incorrect implementation**
+
+The following example demonstrates how NOT to use `SideEffect`:
+
+```go
+// Warning: This is an incorrect example.
+// This code is nondeterministic.
+var random int
+workflow.SideEffect(func(ctx workflow.Context) interface{} {
+      random = rand.Intn(100)
+      return nil
+})
+// random will always be 0 in replay, so this code is nondeterministic.
+```
+
+On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
+
+</TabItem>
+<TabItem value="java">
+
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+
+```java
+  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+  if random < 50 {
+         ....
+  } else {
+         ....
+  }
+```
+
+Here's another example that uses `sideEffect()`.
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.sideEffect( int.class, () -> {
+        Random random = new SecureRandom();
+        return random.nextInt();
+    });
+
+    String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
+
+    if(randomInt % 2 == 0) {
+        // ...
+    } else {
+        // ...
+    }
+}
+```
+
+Java also provides a deterministic method to generate random numbers or random UUIDs.
+
+To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    int randomInt = Workflow.newRandom().nextInt();
+    // ...
+}
+```
+
+To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+
+```java
+// implementation of the @WorkflowMethod
+public void execute() {
+    String randomUUID = Workflow.randomUUID().toString();
+    // ...
+}
+```
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="typescript">
+
+Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
+### Mutable Side Effects
+
+Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
+
+- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
+  - If the values are equal, then it returns the value without recording a new Marker Event
+  - If the values aren't equal, then it records the new value with the same ID on the History.
+
+:::note
+
+During a Workflow Execution, every new Side Effect call results in a new Marker recorded on the Workflow History; whereas Mutable Side Effects only records a new Marker on the Workflow History if the value for the Side Effect ID changes or is set the first time.
+
+During a Replay, Mutable Side Effects will not execute the function again. Instead, it returns the exact same value that was returned during the Workflow Execution.
+
+:::
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
+
+```go
+if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
+    panic("can't decode number:" + err.Error())
+  }
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
+</Tabs>
+
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
@@ -3110,6 +3322,11 @@ Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
 
 Content is currently unavailable.
 
@@ -3198,3 +3415,102 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+
+## Namespaces
+
+A [Namespace](/namespaces#) is a unit of isolation within the Temporal Platform.
+
+You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
+Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
+
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+
+```go
+    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+            //...
+        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+            Namespace: your-namespace-name,
+            WorkflowExecutionRetentionPeriod: &retention,
+        })
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Go](/application-development/foundations#connect-to-a-cluster) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
+
+To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
+
+</TabItem>
+<TabItem value="java">
+
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
+
+```java
+//...
+import com.google.protobuf.util.Durations;
+import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
+//...
+public static void createNamespace(String name) {
+    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
+            .setNamespace("your-custom-namespace")
+            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
+            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
+            .build();
+    service.blockingStub().registerNamespace(req);
+}
+//...
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
+</Tabs>
+

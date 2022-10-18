@@ -1,0 +1,187 @@
+---
+id: cluster-metrics
+title: Temporal Cluster metrics reference
+description: The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
+sidebar_label: Cluster metrics
+tags:
+ - reference
+---
+
+<!-- This file is generated. Do not edit it directly. -->
+
+A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
+All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
+
+For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration#global).
+
+The [dashboards repository](https://github.com/temporalio/dashboards) contains community-driven Grafana dashboard templates that can be used as a starting point for monitoring the Temporal Cluster and SDK metrics.
+You can use these templates as references to build your own dashboards.
+For any metrics that are missing in the dashboards, use [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) as a reference.
+
+Note that, apart from these metrics emitted by the Cluster, you should also monitor infrastructure-specific metrics like CPU, memory, and network for all hosts that are running Temporal Cluster services.
+
+## Common metrics
+
+Temporal emits metrics for each gRPC service request.
+These metrics are emitted with `type`, `operation`, and `namespace` tags, which provide visibility into Service usage and show the request rates across Services, Namespaces, and Operations.
+
+- Use the `operation` tag in your query to get request rates, error rates, or latencies per operation.
+- Use the `service_name` tag with the [service role tag values](https://github.com/temporalio/temporal/blob/bba148cf1e1642fd39fa0174423b183d5fc62d95/common/metrics/defs.go#L108) to get details for the specific service.
+
+All common tags that you can add in your query are defined in the [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) file.
+
+For example, to see service requests by operation on the Frontend Service, use the following:
+
+`sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))`
+
+Note: All metrics queries in this topic are [Prometheus queries](https://prometheus.io/docs/prometheus/latest/querying/basics/).
+
+The following list describes some metrics you can get started with.
+
+### `service_requests`
+
+Shows service requests received per Task Queue.
+Example: Service requests by operation
+`sum(rate(service_requests{operation=\"AddWorkflowTask\"}[2m]))`
+
+### `service_latency`
+
+Shows latencies for all Client request operations.
+Usually these are the starting point to investigate which operation is experiencing high-latency issues.
+Example: P95 service latency by operation for the Frontend Service
+`histogram_quantile(0.95, sum(rate(service_latency_bucket{service_name="frontend"}[5m])) by (operation, le))`
+
+### `service_error_with_type`
+
+(Available only in v1.17.0+) Identifies errors encountered by the service.
+Example: Service errors by type for the Frontend Service
+`sum(rate(service_errors_with_type{service_name="frontend"}[5m])) by (error_type)`
+
+### `client_errors`
+
+An indicator for connection issues between different Server roles.
+Example: Client errors
+`sum(rate(client_errors{service_name="frontend",service_role="history"}[5m]))`
+
+In addition to these, you can define some service-specific metrics to get performance details for each service.
+Start with the following list, and use [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go) to define additional metrics as required.
+
+## Matching Service metrics
+
+### `poll_success`
+
+Shows for Tasks that are successfully matched to a poller.
+Example: `sum(rate(poll_success{}[5m]))`
+
+### `poll_timeouts`
+
+Shows when no Tasks are available for the poller within the poll timeout.
+Example: `sum(rate(poll_timeouts{}[5m]))`
+
+### `asyncmatch_latency`
+
+Measures the time from creation to delivery for async matched Tasks.
+The larger this latency, the longer Tasks are sitting in the queue waiting for your Workers to pick them up.
+Example: `histogram_quantile(0.95, sum(rate(asyncmatch_latency_bucket{service_name=~"matching"}[5m])) by (operation, le))`
+
+### `no_poller_tasks`
+
+Emitted whenever a task is added to a task queue that has no poller, and is a counter metric.
+This is usually an indicator that either the Worker or the starter programs are using the wrong Task Queue.
+Use `no_poller_tasks_per_tl` to get data per Task Queue.
+
+## History Service metrics
+
+A History Task is an internal Task in Temporal that is created as part of a transaction to update Workflow state and is processed by the Temporal History service.
+It is critical to ensure that the History Task processing system is healthy.
+The following key metrics can be used to monitor the History Service health:
+
+### `task_requests`
+
+Emitted on every Task process request.
+Example: `sum(rate(task_requests{service="$service",operation=~"TransferActive.*"}[1m]))`
+
+### `task_errors`
+
+Emitted on every Task process error.
+Example: `sum(rate(task_errors{operation=~"TransferActive.*"}[1m]))`
+
+### `task_attempt`
+
+Number of attempts on each Task Execution.
+A Task is retried forever, and each retry increases the attempt count.
+Example: `histogram_quantile($percentile, sum(rate(task_attempt_bucket{service="$service",operation=~"TransferActive.*"}[1m])) by (operation, le))`
+
+### `task_latency_processing`
+
+Shows the processing latency per attempt.
+Example: `histogram_quantile($percentile, sum(rate(task_latency_processing_bucket{operation=~"TransferActive.*",service="$service", service_name="history"}[1m])) by (operation, le))`
+
+### `task_latency`
+
+Measures the in-memory latency across multiple attempts.
+
+### `task_latency_queue`
+
+Measures the duration, end-to-end, from when the Task should be executed (from the time it was fired) to when the Task is done.
+
+### `task_latency_load`
+
+(Available only in v1.18.0+) Measures the duration from Task generation to Task loading (Task schedule to start latency for persistence queue).
+
+### `task_latency_schedule`
+
+(Available only in v1.18.0+) Measures the duration from Task submission (to the Task scheduler) to processing (Task schedule to start latency for in-memory queue).
+
+### `queue_latency_schedule`
+
+(Available only in v1.18.0+) Measures the time to schedule 100 Tasks in one Task channel in the host-level Task scheduler.
+If fewer than 100 Tasks are in the Task channel for 30 seconds, the latency is scaled to 100 Tasks upon emission.
+Note: This is still an experimental metric and is subject to change.
+
+### `task_latency_userlatency`
+
+Shows the latency introduced because of Workflow logic.
+For example, if you have one Workflow scheduling many Activities or Child Workflows at the same time, it can cause a per-Workflow lock contention.
+The wait period for the per-Workflow lock is counted as `userlatency`.
+
+The `operation` tag contains details about Task type and Active versus Standby statuses, and can be used to get request rates, error rates, or latencies per operation, which can help identify issues caused by database problems.
+
+## Persistence metrics
+
+Temporal Server emits metrics for every persistence database read and write.
+Some of the most important ones are the following:
+
+### `persistence_requests`
+
+Emitted on every persistence request.
+Examples:
+
+- Prometheus query for getting the total number of persistence requests by operation for the History Service:
+  `sum by (operation) (rate(persistence_requests{service="$service",service_name="history"}[1m]))`
+- Prometheus query for getting the total number of persistence requests by operation for the Matching Service:
+  `sum by (operation) (rate(persistence_requests{cluster="$cluster",service_name="matching"}[5m]))`
+
+### `persistence_errors`
+
+Shows all persistence errors.
+This metric is a good indicator for connection issues between Temporal Cluster and the persistence store.
+Example:
+
+- Prometheus query for getting all persistence errors by service (history)
+  `sum (rate(persistence_errors{service="$service",service_name="history"}[1m]))`
+
+### `persistence_error_with_type`
+
+Shows all errors related to the persistence store with type, and contain an `error_type` tag.
+
+- Prometheus query for getting persistence errors with type by (history) and by error type:
+  `sum(rate(persistence_error_with_type{service="$service",service_name="history"}[1m])) by (error_type)`
+
+### `persistence_latency`
+
+Shows the latency on persistence operations.
+Example:
+
+- Prometheus query for getting latency by percentile:
+  `histogram_quantile($percentile, sum(rate(persistence_latency_bucket{service="$service" service_name="history"}[1m])) by (operation, le))`

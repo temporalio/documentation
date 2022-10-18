@@ -566,7 +566,7 @@ You can check the valid ISO string formats on [MDN's Date docs](https://develope
 
 :::caution Preventing Confusion: Workflow sleep vs Activity sleep
 
-There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/typescript/activities).
+There is an unrelated [`sleep` utility function](https://typescript.temporal.io/api/classes/activity.Context/#sleep) available in **Activity Context** that is not durable, but is cancellation aware. See [the Activities docs for details](/typescript/activities).
 
 :::
 
@@ -788,7 +788,7 @@ export class UpdatableTimer implements PromiseLike<void> {
 
 ### Triggers
 
-[Triggers](https://typescript.temporal.io/api/classes/workflow.trigger) are a Promise-like concept in the TypeScript SDK.
+[Triggers](https://typescript.temporal.io/api/classes/workflow.Trigger) are a Promise-like concept in the TypeScript SDK.
 
 Triggers, like the [`condition()`](#condition) return value and other Promises, can be awaited and expose a `then` method.
 Unlike Promises, they export `resolve` or `reject` methods, so you can programmatically control them.

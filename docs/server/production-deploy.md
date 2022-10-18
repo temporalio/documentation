@@ -4,17 +4,9 @@ title: Temporal Server self-hosted production deployment
 sidebar_label: Production deployment
 ---
 
-## Overview
+:::note
 
-While a lot of effort has been made to easily run and test the Temporal Server in a development environment (see the [Quick install guide](/clusters/quick-install)), there is far less of an established framework for deploying Temporal to a live (production) environment.
-That is because the setup of the Server depends very much on your intended use-case and the hosting infrastructure.
-
-This page is dedicated to providing a "first principles" approach to self-hosting the Temporal Server.
-As a reminder, experts are accessible via the [Community forum](https://community.temporal.io/) and [Slack](https://temporal.io/slack) should you have any questions.
-
-:::info
-
-If you are interested in a fully managed service hosting Temporal Server, please [register your interest in Temporal Cloud](https://temporal.io/cloud). We have a waitlist for early Design Partners.
+The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment-guide).
 
 :::
 
@@ -57,6 +49,10 @@ docker run
 Each release also ships a `Server with Auto Setup` Docker image that includes [an `auto-setup.sh` script](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database. You should familiarize yourself with [what auto-setup does](https://temporal.io/blog/auto-setup), as you will likely be replacing every part of the script to customize for your own infrastructure and tooling choices.
 
 Though **neither are blessed for production use**, you can consult our [Docker-Compose repo](https://github.com/temporalio/docker-compose) or [Helm Charts](https://github.com/temporalio/helm-charts) for more hints on configuration options.
+
+The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment-guide).
+
+:::
 
 ## Minimum Requirements
 

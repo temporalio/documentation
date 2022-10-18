@@ -1,8 +1,8 @@
 ---
 id: index
-title: Temporal Application development guide
-description: The Temporal Application development guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
-sidebar_label: Application development
+title: Temporal Developer's guide
+description: The Temporal Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+sidebar_label: Developer guide
 ---
 
 :::info WORK IN PROGRESS
@@ -11,7 +11,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -78,7 +78,7 @@ TypeScript / JavaScript is currently selected!
 
 ## Guide structure
 
-The application development guide is broken down into five sections:
+The Developer's guide is broken down into four sections:
 
 1. [**Foundations**](/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
