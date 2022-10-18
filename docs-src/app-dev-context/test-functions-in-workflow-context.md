@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-In order for a function or method to be run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox/isolate in the case of TS and Python), it needs to be run by the Worker as if it were a Workflow.
+In order for a function or method to run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox in the case of TypeScript or Python), it needs to be run by the Worker as if it were a Workflow.
 
 :::note
 

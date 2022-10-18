@@ -7,9 +7,10 @@ tags:
   - guide-context
 ---
 
-Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than months. For example, you might have a Workflow sleep for a day or have Activity failures with a long retry interval. When testing this code, you don't need to test whether the sleep functions, as you can trust Temporal executes that functionality correctly.
+Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than the Workflow's specified amount.
 
-Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
+For example, if you have a Workflow sleep for a day, or have an Activity failue with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
+
 
 :::note
 
