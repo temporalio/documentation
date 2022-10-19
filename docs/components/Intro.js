@@ -382,9 +382,16 @@ const devTools = {
   listOne: [
     {
       cli: true,
-      path: "/tctl",
-      name: "tctl",
+      path: "/tctl-v1",
+      name: "tctl v1.16",
     },
+    {
+      cli: true,
+      path: "/tctl-next",
+      name: `tctl next`,
+    },
+  ],
+  listTwo: [
     {
       cli: true,
       path: "/web-ui",
@@ -762,7 +769,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/tctl")}
+            to={useBaseUrl("/tctl-v1")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"

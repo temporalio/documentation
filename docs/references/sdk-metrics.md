@@ -3,6 +3,8 @@ id: sdk-metrics
 title: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 sidebar_label: SDK metrics
+tags:
+  - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -118,7 +120,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 ### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
-A [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
+A [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout) can be set when an Activity Execution is spawned.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
@@ -174,7 +176,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 ### local_activity_total
 
-Total number of [Local Activity Executions](/concepts/what-is-a-local-activity).
+Total number of [Local Activity Executions](/activities#local-activity).
 
 - Type: Counter
 - Available in: Go, PHP, Java

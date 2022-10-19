@@ -1,0 +1,33 @@
+{
+  "file_name": "namespace.md",
+  "file_dir": "tctl-v1",
+  "id": "namespace",
+  "title": "tctl v1.16 namespace command reference",
+  "sidebar_label": "namespace",
+  "description": "How to use the tctl v1.16 namespace command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/namespace/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/namespace/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/namespace/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/namespace/register"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/namespace/update"
+    }
+  ]
+}

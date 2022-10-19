@@ -598,6 +598,26 @@ $workflow->setValue(true);
 ```
 
 </TabItem>
+<TabItem value="python">
+
+Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for) to get a typed Workflow handle to an existing Workflow by its identifier. Use [`get_external_workflow_handle`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle) when you don't know the type of the other Workflow.
+
+```python
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async run(self) -> None:
+        handle = workflow.get_external_workflow_handle_for(OtherWorkflow.run, "other-workflow-id")
+        await handle.signal(OtherWorkflow.other_signal, "other signal arg")
+```
+
+:::note
+
+The Workflow type given is only for type annotations and not for validation.
+
+:::
+
+</TabItem>
 <TabItem value="typescript">
 
 [`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
@@ -3432,7 +3452,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
-You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+You can also [register Namespaces using the tctl command-line tool](/tctl-v1/namespace#register).
 
 ```go
     client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
@@ -3454,7 +3474,7 @@ Ensure that you wait for this registration to complete before starting the Workf
 
 To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
 
-To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
+To update your Namespace using tctl, use the [tctl namespace update](/tctl-v1/namespace#update) command.
 
 </TabItem>
 <TabItem value="java">
