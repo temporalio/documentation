@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-Pass a memo.
+Pass a memo in a format key=value
+
 A memo is information in JSON format that can be shown when the Workflow is listed.
-For multiple memos, concatenate them and use spaces as separators.
-The order must match the order of keys in `--memo-key`.
+For multiple memos, pass each in a separate `--memo`

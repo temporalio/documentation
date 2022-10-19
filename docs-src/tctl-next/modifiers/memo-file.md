@@ -7,6 +7,5 @@ tags:
   - tctl
 ---
 
-Pass information for a memo from a JSON file.
-For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
-The order must match the order of keys in `--memo-key`.
+Pass a memo from a file, where each line follows the format key=value.
+Use valid JSON formats for value
