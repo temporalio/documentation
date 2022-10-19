@@ -1,6 +1,6 @@
 ---
 id: features
-title: Developer's Guide - Features
+title: Developer's guide - Features
 sidebar_label: Features
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
@@ -1191,8 +1191,6 @@ await handle.query("some query")
 <TabItem value="typescript">
 
 Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
-
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 

@@ -14,10 +14,14 @@ No more command tasks will be scheduled.
 
 See also [`tctl workflow cancel`](/tctl-next/workflow#cancel).
 
-`tctl workflow terminate <modifiers>`
+The use of the [`--query` modifier](/tctl-next/modifiers#--query) (`tctl workflow terminate --query ...`) automatically starts a [batch job](/tctl-next/batch) that Terminates Workflow Executions according to the List Filter provided.
 
-The following modifiers control the behavior of the command.
+`tctl workflow terminate --query <value> <modifiers>`
 
+The following modifiers are supported and control the behavior of the command.
+Always include required modifiers when executing this command.
+
+- [--namespace](/tctl-next/modifiers#--namespace)
+- [--query](/tctl-next/modifiers#--query)
 - [--reason](/tctl-next/modifiers#--reason)
-- [--run-id](/tctl-next/modifiers#--run-id)
-- [--workflow-id](/tctl-next/modifiers#--workflow-id)
+- [--yes](/tctl-next/modifiers#--yes)

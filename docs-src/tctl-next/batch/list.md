@@ -17,4 +17,9 @@ The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--namespace](/tctl-next/modifiers#--namespace)
-- [--pagesize](/tctl-next/modifiers#--pagesize)
+- [--fields](/tctl-next/modifiers#--fields)
+- [--limit](/tctl-next/modifiers#--limit)
+- [--output](/tctl-next/modifiers#--output)
+- [--no-pager](/tctl-next/modifiers#--no-pager)
+- [--pager](/tctl-next/modifiers#--pager)
+- [--time-format](/tctl-next/modifiers#--time-format)
