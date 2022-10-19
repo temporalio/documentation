@@ -11,6 +11,10 @@
   "sections": [
     {
       "type": "p",
+      "id": "tctl-next/modifiers/index"
+    },
+    {
+      "type": "h2",
       "id": "tctl-next/modifiers/active-cluster"
     },
     {
@@ -275,7 +279,7 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/yes-mod"
+      "id": "tctl-next/modifiers/yes"
     }
   ]
 }
