@@ -1,0 +1,25 @@
+{
+  "file_name": "taskqueue.md",
+  "file_dir": "tctl-v1",
+  "id": "taskqueue",
+  "title": "tctl v1.16 task-queue command reference",
+  "sidebar_label": "taskqueue",
+  "description": "How to use the tctl v1.16 task-queue command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/taskqueue/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/taskqueue/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/taskqueue/list-partition"
+    }
+  ]
+}

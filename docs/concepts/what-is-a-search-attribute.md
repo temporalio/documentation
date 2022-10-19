@@ -73,7 +73,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/admin/cluster/add-search-attributes).
+Custom Search Attributes can be [added to a Temporal Cluster by using `tctl search-attribute create`.
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
@@ -124,7 +124,7 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl/cluster/get-search-attributes)
+- [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 

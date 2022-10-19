@@ -3,6 +3,8 @@ id: sdk-metrics
 title: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 sidebar_label: SDK metrics
+tags:
+  - reference
 ---
 
 > For Cluster metrics, see [Cluster ▶️ Production deployment ▶️ Scaling and Metrics](/server/production-deployment/#scaling-and-metrics).
