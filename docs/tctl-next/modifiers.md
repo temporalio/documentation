@@ -1,8 +1,8 @@
 ---
 id: modifiers
-title: tctl v2.0.0-beta command modifiers reference
+title: tctl version-next command modifiers reference
 sidebar_label: modifiers
-description: How to use the tctl v2.0.0-beta command modifiers
+description: How to use the tctl version-next command modifiers
 toc_max_heading_level: 4
 ---
 
@@ -10,6 +10,10 @@ toc_max_heading_level: 4
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+Modifiers change the behavior of the command.
+
+## --active-cluster
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/namespaces#).
 This value changes for Global Namespaces when a failover occurs.
@@ -438,6 +442,6 @@ The default value is 10.
 
 Alias: `--wtt`
 
-## --yes-mod
+## --yes
 
-Disable the confirmation prompt by automatically approving the prompt.
+Use the --yes modifier to automatically confirm all prompts.

@@ -1,8 +1,8 @@
 ---
 id: alias
-title: tctl v2.0.0-beta alias command reference
+title: tctl version-next alias command reference
 sidebar_label: alias
-description: How to use the tctl v2.0.0-beta alias command
+description: How to use the tctl version-next alias command
 toc_max_heading_level: 4
 ---
 
