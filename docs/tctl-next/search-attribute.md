@@ -82,7 +82,7 @@ Example output:
 
 The `tctl search-attribute remove` command removes a Search Attribute.
 
-The following modifiers are supported and control the behavior of the command.
+The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--name](/tctl-next/modifiers#--name)

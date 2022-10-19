@@ -24,11 +24,13 @@ Workflow, show Workflow History, and Signal Workflow).
 ### Available commands
 
 - [`tctl activity`](/tctl-next/activity/)
-- [`tctl alias](/tctl-next/alias)
+- [`tctl alias`](/tctl-next/alias)
 - [`tctl batch`](/tctl-next/batch/)
 - [`tctl cluster`](/tctl-next/cluster/)
 - [`tctl data-converter`](/tctl-next/data-converter/)
 - [`tctl namespace`](/tctl-next/namespace/)
+- [`tctl schedule`](/tctl-next/schedule)
+- [`tctl search-attribute](/tctl-next/search-attribute)
 - [`tctl task-queue`](/tctl-next/task-queue/)
 - [`tctl workflow`](/tctl-next/workflow/)
 

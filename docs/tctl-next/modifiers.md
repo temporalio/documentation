@@ -444,4 +444,4 @@ Alias: `--wtt`
 
 ## --yes
 
-Automatically confirm all prompts.
+Use the --yes modifier to automatically confirm all prompts.
