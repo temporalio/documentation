@@ -597,40 +597,44 @@
       "destination": "/kb/all-the-ways-to-run-a-cluster"
     },
     {
-      "source": "tctl/workflow/:path*",
-      "destination": "tctl-v1/workflow#:path*"
+      "source": "/tctl",
+      "destination": "/tctl-v1"
     },
     {
-      "source": "tctl/activity/:path*",
-      "destination": "tctl-v1/activity#:path*"
+      "source": "/tctl/workflow/:path*",
+      "destination": "/tctl-v1/workflow#:path*"
     },
     {
-      "source": "tctl/admin/:path*",
-      "destination": "tctl-v1/admin#:path*"
+      "source": "/tctl/activity/:path*",
+      "destination": "/tctl-v1/activity#:path*"
     },
     {
-      "source": "tctl/batch/:path*",
-      "destination": "tctl-v1/batch#:path*"
+      "source": "/tctl/admin/:path*",
+      "destination": "/tctl-v1/admin#:path*"
     },
     {
-      "source": "tctl/cluster/:path*",
-      "destination": "tctl-v1/cluster#:path*"
+      "source": "/tctl/batch/:path*",
+      "destination": "/tctl-v1/batch#:path*"
     },
     {
-      "source": "tctl/dataconverter/:path*",
-      "destination": "tctl-v1/dataconverter#:path*"
+      "source": "/tctl/cluster/:path*",
+      "destination": "/tctl-v1/cluster#:path*"
     },
     {
-      "source": "tctl/namespace/:path*",
-      "destination": "tctl-v1/namespace#:path*"
+      "source": "/tctl/dataconverter/:path*",
+      "destination": "/tctl-v1/dataconverter#:path*"
     },
     {
-      "source": "tctl/schedule/:path*",
-      "destination": "tctl-v1/schedule#:path*"
+      "source": "/tctl/namespace/:path*",
+      "destination": "/tctl-v1/namespace#:path*"
     },
     {
-      "source": "tctl/taskqueue/:path*",
-      "destination": "tctl-v1/taskqueue#:path*"
+      "source": "/tctl/schedule/:path*",
+      "destination": "/tctl-v1/schedule#:path*"
+    },
+    {
+      "source": "/tctl/taskqueue/:path*",
+      "destination": "/tctl-v1/taskqueue#:path*"
     }
   ]
 }
