@@ -565,7 +565,6 @@
       "source": "/content/how-to-quickly-install-the-temporal-server",
       "destination": "/clusters/quick-install"
     },
-
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
       "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
@@ -574,12 +573,9 @@
       "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
       "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
     },
-
     {"source": "/server-security", "destination": "/server/security"},
     {"source": "/server-versions-and-dependencies", "destination": "/clusters"},
-    {"source": "/clusters", "destination": "/clusters"},
     {"source": "/server/workflow-search", "destination": "/visibility"},
-
     {
       "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
       "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
@@ -588,15 +584,57 @@
       "source": "/operation/how-to-tune-workers",
       "destination": "/application-development/worker-performance"
     },
-
     {
       "source": "/cadence-to-temporal",
       "destination": "/kb/cadence-to-temporal"
     },
-
     {
       "source": "/kb/install-temporal-cluster-for-development",
       "destination": "/kb/all-the-ways-to-run-a-cluster"
+    },
+    {
+      "source": "/kb/install-temporal-cluster-for-development",
+      "destination": "/kb/all-the-ways-to-run-a-cluster"
+    },
+    {
+      "source": "/tctl",
+      "destination": "/tctl-v1"
+    },
+    {
+      "source": "/tctl/workflow/:path*",
+      "destination": "/tctl-v1/workflow#:path*"
+    },
+    {
+      "source": "/tctl/activity/:path*",
+      "destination": "/tctl-v1/activity#:path*"
+    },
+    {
+      "source": "/tctl/admin/:path*",
+      "destination": "/tctl-v1/admin#:path*"
+    },
+    {
+      "source": "/tctl/batch/:path*",
+      "destination": "/tctl-v1/batch#:path*"
+    },
+    {
+      "source": "/tctl/cluster/:path*",
+      "destination": "/tctl-v1/cluster#:path*"
+    },
+    {
+      "source": "/tctl/dataconverter/:path*",
+      "destination": "/tctl-v1/dataconverter#:path*"
+    },
+    {
+      "source": "/tctl/namespace/:path*",
+      "destination": "/tctl-v1/namespace#:path*"
+    },
+    {
+      "source": "/tctl/schedule/:path*",
+      "destination": "/tctl-v1/schedule#:path*"
+    },
+    {
+      "source": "/tctl/taskqueue/:path*",
+      "destination": "/tctl-v1/taskqueue#:path*"
     }
   ]
 }

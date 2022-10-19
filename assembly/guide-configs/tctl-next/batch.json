@@ -2,9 +2,9 @@
   "file_name": "batch.md",
   "file_dir": "tctl-next",
   "id": "batch",
-  "title": "tctl v2.0.0-beta batch command reference",
+  "title": "tctl version-next batch command reference",
   "sidebar_label": "batch",
-  "description": "How to use the tctl v2.0.0-beta batch command",
+  "description": "How to use the tctl version-next batch command",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
@@ -12,10 +12,6 @@
     {
       "type": "p",
       "id": "tctl-next/batch/index"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/batch/start"
     },
     {
       "type": "h2",

@@ -1,8 +1,8 @@
 ---
 id: modifiers
-title: tctl v2.0.0-beta command modifiers reference
+title: tctl version-next command modifiers reference
 sidebar_label: modifiers
-description: How to use the tctl v2.0.0-beta command modifiers
+description: How to use the tctl version-next command modifiers
 toc_max_heading_level: 4
 ---
 

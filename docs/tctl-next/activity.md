@@ -1,8 +1,8 @@
 ---
 id: activity
-title: tctl v2.0.0-beta activity command reference
+title: tctl version-next activity command reference
 sidebar_label: activity
-description: How to use the tctl v2.0.0-beta activity command
+description: How to use the tctl version-next activity command
 toc_max_heading_level: 4
 ---
 

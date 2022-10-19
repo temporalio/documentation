@@ -1,8 +1,8 @@
 ---
 id: task-queue
-title: tctl v2.0.0-beta task-queue command reference
+title: tctl version-next task-queue command reference
 sidebar_label: task-queue
-description: How to use the tctl v2.0.0-beta task-queue command
+description: How to use the tctl version-next task-queue command
 toc_max_heading_level: 4
 ---
 

@@ -1,8 +1,8 @@
 ---
 id: data-converter
-title: tctl v2.0.0-beta data-converter command reference
+title: tctl version-next data-converter command reference
 sidebar_label: data-converter
-description: How to use the tctl v2.0.0-beta data-converter command
+description: How to use the tctl version-next data-converter command
 toc_max_heading_level: 4
 ---
 
