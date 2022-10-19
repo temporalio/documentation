@@ -66,7 +66,7 @@ This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related sett
 
 ## `TEMPORAL_PUBLIC_PATH`
 
-//
+The location in the Web UI Server where everything is stored.
 
 ## `TEMPORAL_AUTH_ENABLED`
 
@@ -92,9 +92,6 @@ This variable is required for configuring auth and its related variables.
 ## `TEMPORAL_AUTH_ISSUER_URL`
 
 The URL for the authentication or authorization issuer.
-//story
-
-//relations
 
 ## `TEMPORAL_AUTH_CLIENT_ID`
 
@@ -145,21 +142,15 @@ This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 The default Namespace that the Web UI loads data for.
 
-//story
-//relations
-
 ## `TEMPORAL_FEEDBACK_URL`
 
-//def
-The URL used to direct users ...
-//story
-//relations
+The URL that users are directed to when they click the Feedback button in the UI.
+
+If not specified, this variable defaults to the UI's GitHub Issue page.
 
 ## `TEMPORAL_NOTIFY_ON_NEW_VERSION`
 
 Enables or disables notifications that appear in the UI whenever a newer version of the Temporal Cluster is available.
-//story
-//relations
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
 
@@ -195,15 +186,11 @@ This variable is required for `TEMPORAL_TLS_CERT`.
 
 The data obtained from `TEMPORAL_TLS_CA`.
 
-//story
-
 This variable requires a valid `TEMPORAL_TLS_CA`.
 
 ## `TEMPORAL_TLS_CERT_DATA`
 
 The data obtained from `TEMPORAL_TLS_CERT_DATA`.
-
-//story
 
 `TEMPORAL_TLS_CERT` must be defined to obtain a value for this variable.
 
@@ -211,8 +198,7 @@ The data obtained from `TEMPORAL_TLS_CERT_DATA`.
 
 The data obtained from `TEMPORAL_TLS_KEY_DATA`.
 
-//story
-//relations
+`TEMPORAL_TLS_KEY` must be defined to use this variable.
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
@@ -242,14 +228,10 @@ The endpoint for the Codec Server, if configured.
 
 The access token needed to transport data through the Codec Server.
 
-//story
-
 Make sure that `TEMPORAL_CODEC_ENDPOINT` is defined to use this variable.
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
 The headers needed to forward payloads through the Codec Server.
-
-//story
 
 This variable requires a valid `TEMPORAL_CODEC_ENDPOINT` and `TEMPORAL_CODEC_PASS_ACCESS_TOKEN` to work properly.
