@@ -54,6 +54,22 @@ Currently, only [tls](#tls) configuration values are propagated during a refresh
 refreshInterval: 1m
 ```
 
+## temporalGrpcAddress
+
+The frontend adddress for the Temporal Cluster.
+
+```yaml
+temporalGrpcAddress: default
+```
+
+## port
+
+The port used by the Temporal Web UI Server and any APIs.
+
+```yaml
+port: 8080
+```
+
 ## defaultNamespace
 
 The default Namespace that the UI loads data for.
