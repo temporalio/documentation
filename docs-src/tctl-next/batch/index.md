@@ -2,30 +2,21 @@
 id: index
 title: tctl batch
 sidebar_label: batch
-description: A tctl batch command enables you to affect multiple existing Workflow Executions with a single command.
+description: How to run a tctl batch command. A tctl batch command enables you to affect multiple existing Workflow Executions with a single command.
 tags:
   - tctl
 ---
 
-**How to run a tctl batch command.**
-
-A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/concepts/what-is-a-workflow-execution) with a single command.
+A "batch" command enables you to affect multiple existing [Workflow Executions](/concepts/what-is-a-workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
-Use [tctl batch start](/tctl-next/batch#start) to start a batch job.
+In tctl version-next you can run the typical Signal Workflow, Terminate Workflow, and Cancel Workflow batch jobs using the `tctl workflow signal`, `tctl workflow terminate`, and `tctl workflow cancel` commands respectively.
+The batch command is automatically started when the [`--query` modifier](/tctl-next/modifiers#--query) is provided with those commands.
 
-When starting a batch job, you must provide a [List Filter](/concepts/what-is-a-list-filter) and the type of batch job that should occur.
-Batch jobs run in the background and affect Workflow Executions one at a time.
+In tctl version-next, the `tctl batch` commands are used solely to view the status of and terminate the batch jobs.
 
-The List Filter identifies the set of Workflow Executions to be affected by the batch job.
-The `tctl batch start` command shows you how many Workflow Executions will be affected by the batch job and asks you to confirm before proceeding.
-
-The batch type determines what other parameters you must provide and what is being affected.
-There are three types of batch jobs:
-
-- Signal: Send a Signal to the set of Workflow Executions that the List Filter specifies.
-- Cancel: Cancel the set of Workflow Executions that the List Filter specifies.
-- Terminate: Terminate the set of Workflow Executions that the List Filter specifies.
+The `--query` modifier supports a [List Filter](/concepts/what-is-a-list-filter).
+The List Filter identifies the set of Workflow Executions to be affected by the command.
 
 A successfully started batch job returns a Job ID.
 You can use this Job ID in the `tctl batch describe` command, which describes the progress of a specific batch job.
@@ -37,5 +28,7 @@ Terminating a batch job does not roll back the operations already performed by t
 
 - [`tctl batch describe`](/tctl-next/batch#describe)
 - [`tctl batch list`](/tctl-next/batch#list)
-- [`tctl batch start`](/tctl-next/batch#start)
 - [`tctl batch terminate`](/tctl-next/batch#terminate)
+- [`tctl workflow signal --query ...`](/tctl-next/workflow/signal)
+- [`tctl workflow terminate --query ...`](/tctl-next/workflow/terminate)
+- [`tctl workflow cancel --query ...`](/tctl-next/workflow/cancel)

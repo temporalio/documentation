@@ -2,9 +2,9 @@
   "file_name": "cluster.md",
   "file_dir": "tctl-next",
   "id": "cluster",
-  "title": "tctl v2.0.0-beta cluster command reference",
+  "title": "tctl version-next cluster command reference",
   "sidebar_label": "cluster",
-  "description": "How to use the tctl v2.0.0-beta cluster command",
+  "description": "How to use the tctl version-next cluster command",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
@@ -15,11 +15,15 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/cluster/get-search-attributes"
+      "id": "tctl-next/cluster/describe"
     },
     {
       "type": "h2",
       "id": "tctl-next/cluster/health"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/cluster/system"
     }
   ]
 }

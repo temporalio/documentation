@@ -1,8 +1,8 @@
 ---
 id: namespace
-title: tctl v2.0.0-beta namespace command reference
+title: tctl version-next namespace command reference
 sidebar_label: namespace
-description: How to use the tctl v2.0.0-beta namespace command
+description: How to use the tctl version-next namespace command
 toc_max_heading_level: 4
 ---
 

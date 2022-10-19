@@ -1,8 +1,8 @@
 ---
 id: config
-title: tctl v2.0.0-beta config command reference
+title: tctl version-next config command reference
 sidebar_label: config
-description: How to use the tctl v2.0.0-beta config command
+description: How to use the tctl version-next config command
 toc_max_heading_level: 4
 ---
 
