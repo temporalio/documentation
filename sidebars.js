@@ -228,6 +228,7 @@ module.exports = {
         "tctl-next/data-converter",
         "tctl-next/namespace",
         "tctl-next/schedule",
+        "tctl-next/search-attribute",
         "tctl-next/task-queue",
         "tctl-next/workflow",
         "tctl-next/modifiers",

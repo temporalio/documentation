@@ -1,0 +1,29 @@
+{
+  "file_name": "search-attribute.md",
+  "file_dir": "tctl-next",
+  "id": "search-attribute",
+  "title": "tctl version-next search-attribute command reference",
+  "sidebar_label": "search-attribute",
+  "description": "How to use the tctl version-next search-attribute command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/search-attribute/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/search-attribute/create"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/search-attribute/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/search-attribute/remove"
+    }
+  ]
+}
