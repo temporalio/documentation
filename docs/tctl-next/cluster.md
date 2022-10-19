@@ -35,7 +35,7 @@ The command has no modifiers.
 
 ## system
 
-The `tctl cluster system` Show information about the system capabilities.
+The `tctl cluster system` command shows information about the system capabilities.
 
 `tctl cluster system`
 

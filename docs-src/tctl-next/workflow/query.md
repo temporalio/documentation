@@ -28,8 +28,6 @@ Query result as JSON:
 4
 ```
 
-## Modifiers
-
 Queries are written as follows:
 
 `tctl workflow query --workflow-id [modifiers]`
