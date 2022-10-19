@@ -1,7 +1,11 @@
 ---
 id: server-options
 title: Temporal Server options
+description: You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.
 sidebar_label: Start options
+tags:
+  - reference
+  - web-ui
 ---
 
 You can run the [Temporal Server](/concepts/what-is-the-temporal-server) as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.

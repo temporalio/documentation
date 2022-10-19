@@ -4,7 +4,7 @@ title: Temporal Server security
 sidebar_label: Security
 ---
 
-:::info Work in progres
+:::info Work in progress
 
 This guide is a work in progress. Some sections may be incomplete. Information may change at any time.
 
