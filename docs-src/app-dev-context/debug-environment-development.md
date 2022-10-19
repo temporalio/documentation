@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl/).
+In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).

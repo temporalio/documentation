@@ -14,9 +14,8 @@ TypeScript has sample tests with [Jest](https://jestjs.io/) and [Mocha](https://
 **Jest**
 
 - Minimum Jest version: `27.0.0`
-- # [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
-- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.t
-  est.ts)
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
 - [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (Must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.)
 
 **Mocha**

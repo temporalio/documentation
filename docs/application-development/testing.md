@@ -25,7 +25,7 @@ Use the test server for both end-to-end and integration tests with Workers, as t
 
 ## Test Activities
 
-An Activity can be tested with a mock Activity environment, which provides a way to mock Activity context, listen to Heartbeats, and cancel the Activity. This allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
+An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. This allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
 ### Run an Activity
 
@@ -60,7 +60,7 @@ Content is currently unavailable.
 
 First, create a [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment). The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
 
-Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context):
+Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
 
 ```ts
 import {MockActivityEnvironment} from "@temporalio/testing";
@@ -340,11 +340,11 @@ const worker = await Worker.create({
 
 Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than the Workflow's specified amount.
 
-For example, if you have a Workflow sleep for a day, or have an Activity failue with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
+For example, if you have a Workflow sleep for a day, or have an Activity failure with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
 
 :::note
 
-Skipping time is not relevant to unit testing Workflow code, because in that case you’re mocking functions that take time like sleep and Activity calls.
+Skipping time is not relevant to unit testing Workflow code, because in that case you’re mocking functions that take time, like sleep and Activity calls.
 
 :::
 
@@ -688,7 +688,7 @@ In order for a function or method to run in the Workflow context (where it’s p
 
 :::note
 
-This section is applicable in Python and TypeScript. In Python we only allow testing of Workflows and not generic Workflow-related code.
+This section is applicable in Python and TypeScript. In Python, we only allow testing of Workflows and not generic Workflow-related code.
 
 :::
 
@@ -699,17 +699,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="python">
@@ -779,17 +779,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="python">
@@ -877,9 +877,8 @@ TypeScript has sample tests with [Jest](https://jestjs.io/) and [Mocha](https://
 **Jest**
 
 - Minimum Jest version: `27.0.0`
-- # [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
-- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.t
-  est.ts)
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
 - [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (Must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.)
 
 **Mocha**

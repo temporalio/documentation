@@ -11,6 +11,6 @@ In order for a function or method to run in the Workflow context (where it’s p
 
 :::note
 
-This section is applicable in Python and TypeScript. In Python we only allow testing of Workflows and not generic Workflow-related code.
+This section is applicable in Python and TypeScript. In Python, we only allow testing of Workflows and not generic Workflow-related code.
 
 :::

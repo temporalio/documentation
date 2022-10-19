@@ -11,7 +11,7 @@ tags:
 
 First, create a [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment). The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
 
-Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context):
+Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
 
 ```ts
 import {MockActivityEnvironment} from "@temporalio/testing";

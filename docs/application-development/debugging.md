@@ -2,7 +2,7 @@
 id: debugging
 title: Application development - debugging
 sidebar_label: Debugging
-description: The Debugging section of the Temporal Application development guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
+description: The Debugging section of the Temporal Developer's guide covers the many ways to debug of your application.
 toc_max_heading_level: 4
 ---
 
@@ -12,14 +12,14 @@ toc_max_heading_level: 4
 
 ### Debug in a development environment
 
-In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl/).
+In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
 
 ### Debug in a development production
 
 You can debug production Workflows using:
 
 - [Web UI](/web-ui)
-- [`tctl`](/tctl/)
+- [`tctl`](/tctl-v1)
 - [Replay](#replay)
 - [Tracing](/application-development/observability#tracing)
 - [Logging](/application-development/observability#logging)
