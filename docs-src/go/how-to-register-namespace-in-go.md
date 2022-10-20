@@ -14,12 +14,12 @@ Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#Namesp
 You can also [register Namespaces using the tctl command-line tool](/tctl-v1/namespace/register).
 
 ```go
-    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-            //...
-        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-            Namespace: your-namespace-name,
-            WorkflowExecutionRetentionPeriod: &retention,
-        })
+client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+        //...
+    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+        Namespace: your-namespace-name,
+        WorkflowExecutionRetentionPeriod: &retention,
+    })
 ```
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
