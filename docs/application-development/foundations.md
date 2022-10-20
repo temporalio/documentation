@@ -2638,7 +2638,7 @@ w.registerWorkflow(WorkflowC)
 </TabItem>
 <TabItem value="java">
 
-Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+Use `worker.registerWorkflowImplementationTypes` to register Workflow Type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
 
 For Workflows, the Workflow Type is registered with a Worker.
 A Workflow Type can be registered only once per Worker entity.
@@ -2680,7 +2680,7 @@ The following example shows how to register the `DynamicWorkflow` and `DynamicAc
     // Start all the Workers that are in this process.
     factory.start();
 
-    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker. */
+    /* Create the Workflow stub. Note that the Workflow Type is not explicitly registered with the Worker. */
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
@@ -2928,7 +2928,7 @@ The following example shows how to call the Dynamic Workflow implementation in t
     // worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
 
     /* Create the Workflow stub to call the dynamic Workflow.
-    * Note that the Workflow type is not explicitly registered with the Worker.*/
+    * Note that the Workflow Type is not explicitly registered with the Worker.*/
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
