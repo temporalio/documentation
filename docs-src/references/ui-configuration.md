@@ -37,7 +37,7 @@ enableOpenApi: true
 ## cors
 
 The name of the `cors` field stands for Cross-Origin Resource Sharing.
-Use this field to provide a [list of domains](/references/web-ui-server-env-vars#temporaladdress) that are authorized to access the UI Server APIs.
+Use this field to provide a list of domains that are authorized to access the UI Server APIs.
 
 ```yaml
 cors:
@@ -57,6 +57,8 @@ refreshInterval: 1m
 ## temporalGrpcAddress
 
 The frontend adddress for the Temporal Cluster.
+
+The default address is localhost (127.0.0.1).
 
 ```yaml
 temporalGrpcAddress: default

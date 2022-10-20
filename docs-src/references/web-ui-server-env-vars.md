@@ -144,7 +144,9 @@ Enables or disables notifications that appear in the UI whenever a newer version
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
 
-The amount of tim
+Determines how often the UI Server reads the configuration file for new values.
+
+This variable is needed to refresh TLS-related values.
 
 ## `TEMPORAL_TLS_CA`
 
