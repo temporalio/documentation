@@ -42,9 +42,7 @@ docker run \
 The [Frontend Service](/concepts/what-is-the-frontend-service) address for the Temporal Cluster.
 This environmental variable can be set [in the base configuration file](/docs-src/references/ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
-`TEMPORAL_ADDRESS` allows the UI Server to [refresh as needed](/references/ui-configuration#refreshinterval) and [find the latest updates](/references/ui-configuration#notifyonnewversion) for the Temporal Cluster.
-
-This variable is required for the configuration of other environmental variables.
+This variable is required for setting other environmental variables.
 `TEMPORAL_ADDRESS` is also needed when setting up [Cross-Origin Resource Sharing](/references/ui-configuration#cors).
 
 ## `TEMPORAL_UI_PORT`
@@ -146,6 +144,8 @@ Enables or disables notifications that appear in the UI whenever a newer version
 
 ## `TEMPORAL_CONFIG_REFRESH_INTERVAL`
 
+The amount of tim
+
 ## `TEMPORAL_TLS_CA`
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
@@ -211,10 +211,7 @@ This variable is needed to configure TLS and its related environmental variables
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the Codec Server, if configured.
-
-//story
-//relations
+The endpoint for the [Codec Server](/docs/concepts/what-is-a-codec-server), if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
