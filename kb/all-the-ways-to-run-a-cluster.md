@@ -3,7 +3,7 @@ slug: all-the-ways-to-run-a-cluster
 title: All the ways to run a Temporal Cluster
 tags:
   - kb-article
-date: 2022-10-08T00:00:00Z
+date: 2022-20-08T00:00:00Z
 ---
 
 There are many ways to run a [Temporal Cluster](/clusters) on your own.
