@@ -10,7 +10,7 @@ tags:
 ---
 
 Environmental variables are fields that are set to configure a Temporal Cluster.
-This allows the user to configure the Cluster in any environment, such as a [Docker container]().
+This allows the user to configure the Cluster in any environment, such as a [Docker container](/docs/).
 
 The Web UI Server is set up using specific environmental variables.
 These variables need to be passed when running the image.
