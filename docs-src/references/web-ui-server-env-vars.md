@@ -10,17 +10,15 @@ tags:
 ---
 
 Environmental variables are fields that are set to configure a Temporal Cluster.
-This allows the user to configure the Cluster in any environment, such as a Docker container.
-
-Use `docker run` as the image name needed to configure the Web UI environmental variables.
-`docker run` requires at least 1 argument.
-
-`docker run [options] <image> <command> [args]`
+This allows the user to configure the Cluster in any environment, such as a [Docker container]().
 
 The Web UI Server is set up using specific environmental variables.
 These variables need to be passed when running the image.
 
-```
+The setup process involves the configuration of several components, including mTLS, authentication, and more.
+The UI server environmental variables are defined in the [configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml) and described in more detail below.
+
+<!-- ```
 docker run \
     -e TEMPORAL_ADDRESS=127.0.0.1:7233 \
     -e TEMPORAL_UI_PORT=8080 \
@@ -37,18 +35,12 @@ docker run \
     -e TEMPORAL_TLS_ENABLE_HOST_VERIFICATION=true \
     -e TEMPORAL_TLS_SERVER_NAME=tls-server \
     temporalio/ui:<tag>
-```
-
-The setup process involves the configuration of several components, including mTLS, authentication, and more.
-
-The environmental variables for the entire configuration template can be found [here](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml).
-
-The environmental variables needed to configure the WebUI server environment are explained below.
+``` -->
 
 ## `TEMPORAL_ADDRESS`
 
 The [Frontend Service](/concepts/what-is-the-frontend-service) address for the Temporal Cluster.
-This environmental variable can be set [in the base configuration file](/docs-src/references/ui-configuration#) using `temporalGrpcAddress`.
+This environmental variable can be set [in the base configuration file](/docs-src/references/ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
 `TEMPORAL_ADDRESS` allows the UI Server to [refresh as needed](/references/ui-configuration#refreshinterval) and [find the latest updates](/references/ui-configuration#notifyonnewversion) for the Temporal Cluster.
 
