@@ -43,7 +43,7 @@ export class ActivityLogInterceptor
 
   async scheduleActivity(
     input: ActivityInput,
-    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>
   ): Promise<unknown> {
     console.log('Starting activity', { activityType: input.activityType });
     try {
@@ -79,7 +79,7 @@ export class DumbWorkflowAuthInterceptor
 {
   public async execute(
     input: WorkflowInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
   ): Promise<unknown> {
     const authHeader = input.headers.auth;
     const { user, password } = authHeader

@@ -12,7 +12,7 @@ Use the [`address`](https://typescript.temporal.io/api/interfaces/client.Connect
 
 ```typescript
 const connection = await Connection.connect({
-  address: 'foo.bar.tmprl.cloud',
+  address: "foo.bar.tmprl.cloud",
   // ...
 });
 ```
