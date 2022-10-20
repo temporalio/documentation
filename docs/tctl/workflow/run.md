@@ -108,7 +108,7 @@ There are three allowed values:
 
 - [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
 - [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**RejectDuplicate:**] (/concepts/what-is-a-workflow-id-reuse-policy)
+- [**RejectDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 
