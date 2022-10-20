@@ -17,6 +17,7 @@ To run a Workflow, the user must specify the following:
 - Task queue name (`--tq`)
 - Workflow Type (`--wt`)
 
+
 ```bash
 tctl workflow run --tq your-task-queue-name --wt YourWorkflowDefinitionName
 ```
