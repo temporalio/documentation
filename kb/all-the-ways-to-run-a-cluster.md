@@ -30,8 +30,9 @@ Temporalite also requires that you have Go 1.18 or later installed.
 To build and start Temporalite, run the following commands:
 
 ```bash
-go install github.com/temporalio/temporalite/cmd/temporalite@latest
-temporalite start --namespace default
+git clone https://github.com/temporalio/temporalite.git
+cd temporalite
+go build ./cmd/temporalite
 ```
 
 For macOS users, if you receive the error `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db: no such file or directory`, create the `temporalite/db` directories in your `Application Support` library and run the `start` command again.
