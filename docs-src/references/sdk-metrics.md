@@ -119,10 +119,13 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
 A [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
+This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
+the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled
+from the queue.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### activity_task_error
 

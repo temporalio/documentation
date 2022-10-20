@@ -9,8 +9,8 @@ module.exports = {
   tagline: "Build invincible applications",
   url: "https://docs.temporal.io",
   baseUrl: "/",
-  onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
