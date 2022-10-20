@@ -1,0 +1,29 @@
+{
+  "file_name": "index.md",
+  "file_dir": "tctl-next",
+  "id": "index",
+  "title": "tctl next-version command reference",
+  "sidebar_label": "index",
+  "description": "How to use Temporal's tctl next-version developer tool",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-tctl-next"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/how-to-install-tctl"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/global-modifiers"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/environment-variables"
+    }
+  ]
+}

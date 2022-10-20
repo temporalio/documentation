@@ -6,13 +6,16 @@
     "docs/clusters",
     "docs-src/concept-context",
     "docs/concepts",
+    "docs-src/concepts",
     "docs/go",
     "docs-src/go",
     "docs/java",
     "docs-src/python",
     "docs-src/php",
     "docs-src/typescript",
-    "docs-src/references"
+    "docs-src/references",
+    "docs-src/tctl-v1",
+    "docs-src/tctl-next"
   ],
   "content_write_dir": "docs",
   "secure_config_dir": "assembly/secure",

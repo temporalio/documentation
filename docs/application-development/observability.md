@@ -508,7 +508,7 @@ You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
 
 The steps to using custom Search Attributes are:
 
-- Create a new Search Attribute in your Cluster [using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI.
+- Create a new Search Attribute in your Cluster using `tctl search-attribute create` or the Cloud UI.
 - Set the value of the Search Attribute for a Workflow Execution:
   - On the Client by including it as an option when starting the Execution.
   - In the Workflow by calling `UpsertSearchAttributes`.
@@ -516,7 +516,7 @@ The steps to using custom Search Attributes are:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
 - Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
-  - [In `tctl`](/tctl/workflow/list/#--query).
+  - [In `tctl`](/tctl-v1/workflow#list).
   - In code by calling `ListWorkflowExecutions`.
 
 Here is how to query Workflow Executions:
@@ -561,7 +561,7 @@ where `query` is a [List Filter](/concepts/what-is-a-list-filter/).
 
 ### Custom Search Attributes
 
-After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
 <Tabs
 defaultValue="go"
