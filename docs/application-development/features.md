@@ -142,7 +142,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -613,7 +613,7 @@ class MyWorkflow:
 
 :::note
 
-The Workflow type given is only for type annotations and not for validation.
+The Workflow Type passed is only for type annotations and not for validation.
 
 :::
 
@@ -875,7 +875,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -2850,7 +2850,7 @@ To continue execution of the same Workflow that is currently running, use:
 Workflow.continueAsNew(input1, ...);
 ```
 
-To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
+To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
 For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
 
 ```java
@@ -3455,12 +3455,12 @@ Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#Namesp
 You can also <a class="tdlp" href="/tctl-v1/namespace#register">register Namespaces using the tctl command-line tool<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a href="/tctl-v1/namespace#register">Learn more</a></p></div></a>.
 
 ```go
-    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-            //...
-        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-            Namespace: your-namespace-name,
-            WorkflowExecutionRetentionPeriod: &retention,
-        })
+client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+        //...
+    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+        Namespace: your-namespace-name,
+        WorkflowExecutionRetentionPeriod: &retention,
+    })
 ```
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
