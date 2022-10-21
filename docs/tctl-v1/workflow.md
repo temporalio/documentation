@@ -1282,7 +1282,7 @@ The command is entered in the following format:
 To run a Workflow, the user must specify the following:
 
 - Task queue name (`--tq`)
-- Workflow type (`--wt`)
+- Workflow Type (`--wt`)
 
 ```bash
 tctl workflow run --tq your-task-queue-name --wt YourWorkflowDefinitionName
@@ -1374,7 +1374,7 @@ There are three allowed values:
 
 - [**AllowDuplicateFailedOnly:**](/workflows#workflow-id-reuse-policy)
 - [**AllowDuplicate:**](/workflows#workflow-id-reuse-policy)
-- [**RejectDuplicate:**] (/workflows#workflow-id-reuse-policy)
+- [**RejectDuplicate:**](/workflows#workflow-id-reuse-policy)
 
 **Examples**
 

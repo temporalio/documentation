@@ -1271,6 +1271,15 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+To send a Query to a Workflow Execution from Client code, use the query() method on the Workflow handle.
+
+```python
+await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
@@ -2316,7 +2325,68 @@ client.CompleteActivity(context.Background(), taskToken, nil, err)
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To complete an Activity asynchronously, set the [`ActivityCompletionClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html) interface to the `complete()` method.
+
+```java
+    @Override
+    public String composeGreeting(String greeting, String name) {
+
+      // Get the activity execution context
+      ActivityExecutionContext context = Activity.getExecutionContext();
+
+      // Set a correlation token that can be used to complete the activity asynchronously
+      byte[] taskToken = context.getTaskToken();
+
+      /**
+       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
+       * activity. In real-life applications this could be any service. The composeGreetingAsync
+       * method is the one that will actually complete workflow action execution.
+       */
+      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
+      context.doNotCompleteOnReturn();
+
+      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
+      // ignored.
+      return "ignored";
+    }
+
+    // Method that will complete action execution using the defined ActivityCompletionClient
+    private void composeGreetingAsync(byte[] taskToken, String greeting, String name) {
+      String result = greeting + " " + name + "!";
+
+      // Complete our workflow activity using ActivityCompletionClient
+      completionClient.complete(taskToken, result);
+    }
+  }
+```
+
+Alternatively, set the [`doNotCompleteOnReturn()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()>) method during an Activity Execution.
+
+```java
+    @Override
+    public String composeGreeting(String greeting, String name) {
+
+      // Get the activity execution context
+      ActivityExecutionContext context = Activity.getExecutionContext();
+
+      // Set a correlation token that can be used to complete the activity asynchronously
+      byte[] taskToken = context.getTaskToken();
+
+      /**
+       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
+       * activity. In real-life applications this could be any service. The composeGreetingAsync
+       * method is the one that will actually complete workflow action execution.
+       */
+      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
+      context.doNotCompleteOnReturn();
+
+      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
+      // ignored.
+      return "ignored";
+    }
+```
+
+When this method is called during an Activity Execution, the Activity Execution does not complete when it's method returns.
 
 </TabItem>
 <TabItem value="php">
@@ -2390,9 +2460,35 @@ $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity f
 ```
 
 </TabItem>
+<TabItem value="python">
+
+To cancel an asynchronous Activity, call the [`cancel`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) task object.
+
+```python
+async def main():
+    # Create a "cancel_me" Task
+    task = asyncio.create_task(cancel_me())
+
+    # Wait for 1 second
+    await asyncio.sleep(1)
+
+    task.cancel()
+```
+
+:::note
+
+An Activity must Heartbeat to receive cancellation.
+`asyncio.CancelledError` will be raised.
+
+:::
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Set the [`AsyncCompletionClient`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient) class to the [`complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete) method, to asynchronous complete an Activity with a Task Token.
+
+<!--SNIPSTART typescript-activity-complete-async -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2802,9 +2898,21 @@ In the snippet above we:
 We need `yield` here to ensure that a Child Workflow Execution starts before the parent closes.
 
 </TabItem>
+<TabItem value="python">
+
+Create an instance of the [`ParentClosePolicy`](https://python.temporal.io/temporalio.workflow.ParentClosePolicy.html) class and specify a constant to determine how a Child Workflow should be handled when the Parent closes.
+
+```python
+await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id", parent_close_policy=ParentClosePolicy.TERMINATE)
+```
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) property to specify how the Child reacts to a Parent Workflow reaching a `Closed` state.
+
+<!--SNIPSTART typescript-child-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

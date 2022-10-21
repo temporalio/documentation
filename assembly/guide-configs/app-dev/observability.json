@@ -55,11 +55,15 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-configure-tracing-in-java"
         },
         {
           "lang": "php",
           "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-configure-tracing-in-python"
         },
         {
           "lang": "typescript",
@@ -80,7 +84,7 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-log-from-a-workflow-in-java"
         },
         {
           "lang": "php",
@@ -109,7 +113,7 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-set-a-custom-logger-in-java"
         },
         {
           "lang": "php",
@@ -167,7 +171,7 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-java"
         },
         {
           "lang": "php",
@@ -196,7 +200,7 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-java"
         },
         {
           "lang": "php",
@@ -225,7 +229,7 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-remove-search-attributes-from-a-workflow-in-java"
         },
         {
           "lang": "php",

@@ -244,6 +244,10 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-send-a-query-to-a-workflow-execution-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-send-a-query-to-a-workflow-in-typescript"
         }
@@ -440,15 +444,19 @@
         },
         {
           "lang": "java",
-          "id": "none"
+          "id": "java/how-to-asynchronously-complete-an-activity-in-java"
         },
         {
           "lang": "php",
           "id": "php/how-to-set-asynchronous-activity-completion-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-asynchronously-complete-an-activity-in-python"
+        },
+        {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-asynchronously-complete-an-activity-in-typescript"
         }
       ]
     },
@@ -501,8 +509,12 @@
           "id": "php/how-to-set-a-parent-close-policy-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-set-a-parent-close-policy-in-python"
+        },
+        {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-set-a-parent-close-policy-in-typescript"
         }
       ]
     },
