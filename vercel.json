@@ -388,12 +388,12 @@
       "destination": "/go/activities#asynchronous-activity-completion"
     },
     {
-      "source": "/go/how-to-set-startworkflowoptions-in-go:path*",
-      "destination": "/go/startworkflowoptions-reference:path*"
+      "source": "/go/how-to-set-startworkflowoptions-in-go",
+      "destination": "/go/startworkflowoptions-reference"
     },
     {
-      "source": "/go/how-to-set-activityoptions-in-go:path*",
-      "destination": "/go/activityoptions-reference:path*"
+      "source": "/go/how-to-set-activityoptions-in-go",
+      "destination": "/go/activityoptions-reference"
     },
 
     {"source": "/java/introduction", "destination": "/java"},
