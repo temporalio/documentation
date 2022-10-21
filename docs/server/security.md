@@ -4,7 +4,7 @@ title: Temporal Server security
 sidebar_label: Security
 ---
 
-:::info Work in progres
+:::info Work in progress
 
 This guide is a work in progress. Some sections may be incomplete. Information may change at any time.
 
@@ -87,7 +87,7 @@ Information regarding [`Authorizer`](/clusters#authorizer) and [`ClaimMapper`](/
 Temporal offers two plugin interfaces for implementing API call authorization:
 
 - [`ClaimMapper`](/clusters#claim-mapper)
-- [`Authorizer`](/clusters#authorizer)
+- [`Authorizer`](/clusters#authorizer-plugin)
 
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.

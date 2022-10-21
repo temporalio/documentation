@@ -1,0 +1,29 @@
+{
+  "file_name": "index.md",
+  "file_dir": "tctl-v1",
+  "id": "index",
+  "title": "tctl v1.16 command reference",
+  "sidebar_label": "index",
+  "description": "How to use Temporal's tctl v1.16 developer tool",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-tctl-v1"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/how-to-install-tctl"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/global-modifiers"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/environment-variables"
+    }
+  ]
+}

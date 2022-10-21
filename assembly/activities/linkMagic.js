@@ -15,6 +15,7 @@ export async function linkMagic(config) {
     updatedGuides.push(guideCfg);
   }
   matchedGuides.cfgs = updatedGuides;
+  console.log("writing matcheded guides again...");
   await fs.writeJSON(matchedGuidesPath, matchedGuides);
   await linkMagicReferences(config, matchedGuides.full_index);
   return;
@@ -50,6 +51,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
 }
 
 async function linkMagicReferences(config, link_index) {
+  console.log("link magic on references...");
   const sourceNodesPath = path.join(
     config.root_dir,
     config.temp_write_dir,
@@ -61,6 +63,7 @@ async function linkMagicReferences(config, link_index) {
     if (node.tags !== undefined) {
       tagloop: for (const tag of node.tags) {
         if (tag == "reference") {
+          console.log(node.id);
           node.markdown_content = await parseAndReplace(
             node.markdown_content,
             link_index,
@@ -78,8 +81,10 @@ async function linkMagicReferences(config, link_index) {
         config.content_write_dir,
         `${node.id}.md`
       );
+      console.log(refWritePath);
       await fs.writeFile(refWritePath, refString);
     }
+    isReference = false;
   }
   return;
 }
@@ -106,20 +111,30 @@ sidebar_label: ${node.label}\n`;
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
-  // const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
   const docsLinkRegex = /\/[a-zA-Z0-9-_]+[a-zA-Z0-9-_#/]*/gm;
+  const docsImageRegex =
+    "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
   const lines = raw_content.toString().split("\n");
   let new_lines = [];
   let line_count = 0;
   for (let line of lines) {
-    const line_links = line.match(docsLinkRegex);
-    if (line_links !== null) {
-      for (const match of line_links) {
-        const link = link_index.find((item) => {
-          return `/${item.node_id}` === match;
-        });
-        if (link !== undefined) {
-          line = await replaceLinks(line, match, link, current_guide_id);
+    const imageRegex = RegExp(docsImageRegex, "gm");
+    const image = imageRegex.exec(line);
+    let matchLinks = true;
+    if (image !== null) {
+      line = centeredImage(image);
+      matchLinks = false;
+    }
+    if (matchLinks) {
+      const lineLinks = line.match(docsLinkRegex);
+      if (lineLinks !== null) {
+        for (const match of lineLinks) {
+          const link = link_index.find((item) => {
+            return `/${item.node_id}` === match;
+          });
+          if (link !== undefined) {
+            line = await replaceLinks(line, match, link, current_guide_id);
+          }
         }
       }
     }
@@ -129,9 +144,14 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
       new_lines.push(line);
     }
     line_count++;
+    matchLinks = true;
   }
   raw_content = new_lines.join("\n");
   return raw_content;
+}
+
+function centeredImage(image) {
+  return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="tdi" src="${image[2]}" alt="${image[1]}" /></div></div>`;
 }
 
 async function replaceLinks(line, replaceable, link, current_guide_id) {

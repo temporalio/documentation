@@ -1,0 +1,25 @@
+{
+  "file_name": "activity.md",
+  "file_dir": "tctl-v1",
+  "id": "activity",
+  "title": "tctl v1.16 activity command reference",
+  "sidebar_label": "activity",
+  "description": "How to use the tctl v1.16 activity command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/activity/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/activity/complete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/activity/fail"
+    }
+  ]
+}

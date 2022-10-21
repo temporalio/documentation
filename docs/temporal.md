@@ -30,7 +30,7 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 The Temporal Platform consists of a [Temporal Cluster](/clusters#) and [Worker Processes](/workers#worker-process).
 Together these components create a runtime for Workflow Executions.
 
-![The Temporal Platform (runtime)](/diagrams/temporal-platform-simple.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
 
 The Temporal Cluster is open source and can be operated by you.
 The Temporal Cloud is a set of Clusters operated by us.
@@ -84,7 +84,7 @@ Temporal offers methods of authenticating and authorizing client API calls withi
 
 ### SDKs in development
 
-The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the application development guide:
+The following SDKs are in alpha/pre-alpha development stages, but are not yet supported in the Developer's guide:
 
 - [.NET](https://github.com/temporalio/sdk-dotnet)
 - [Rust](https://github.com/temporalio/sdk-core)
@@ -92,7 +92,7 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 
 ### Third-party SDKs
 
-The following third-party SDKs exist but are not supported in the [Application development guide](/application-development):
+The following third-party SDKs exist but are not supported in the [Developer's guide](/application-development):
 
 - [Clojure](https://github.com/manetu/temporal-clojure-sdk) - from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)

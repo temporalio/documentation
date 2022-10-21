@@ -1,0 +1,25 @@
+{
+  "file_name": "activity.md",
+  "file_dir": "tctl-next",
+  "id": "activity",
+  "title": "tctl version-next activity command reference",
+  "sidebar_label": "activity",
+  "description": "How to use the tctl version-next activity command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/activity/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/activity/complete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/activity/fail"
+    }
+  ]
+}

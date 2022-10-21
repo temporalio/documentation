@@ -49,4 +49,4 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.

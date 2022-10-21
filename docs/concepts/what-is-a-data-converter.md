@@ -55,8 +55,8 @@ Applications can create their own custom Data Converters to alter the format (fo
 To use a custom Data Converter, provide it in the following contexts:
 
 - The Client and Worker in the SDKs you use.
-- Temporal Web via [`tctl data-converter web`](/tctl/dataconverter/web) (for displaying decoded data in the Web UI).
-- `tctl` via [`--data-converter-plugin`](/tctl/#--data-converter-plugin) (for displaying decoded headers in `tctl` output).
+- Temporal Web via [`tctl data-converter web`](/tctl-v1/dataconverter#web) (for displaying decoded data in the Web UI).
+- `tctl` via [`--data-converter-plugin`](/tctl-next/modifiers#--data-converter-plugin) (for displaying decoded headers in `tctl` output).
 
 Custom Data Converters are not applied to all data:
 

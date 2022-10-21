@@ -1,0 +1,49 @@
+{
+  "file_name": "schedule.md",
+  "file_dir": "tctl-next",
+  "id": "schedule",
+  "title": "tctl version-next schedule command reference",
+  "sidebar_label": "schedule",
+  "description": "How to use the tctl version-next schedule command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/schedule/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/backfill"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/create"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/delete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/toggle"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/trigger"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/schedule/update"
+    }
+  ]
+}
