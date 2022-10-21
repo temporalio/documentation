@@ -61,8 +61,8 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
     ```java
     import io.temporal.api.workflowservice.v1.*;
     //...
-    ListNamespacesRequest listNamespaces = ListNamespacesRequest.newBuilder().build(); //lists all namespaces in the active cluster
-        ListNamespacesResponse listNamespacesResponse = namespaceservice.blockingStub().listNamespaces(listNamespaces);
+    ListNamespacesRequest listNamespaces = ListNamespacesRequest.newBuilder().build();
+        ListNamespacesResponse listNamespacesResponse = namespaceservice.blockingStub().listNamespaces(listNamespaces); //lists 1-100 namespaces (1 page) in the active cluster. To list all, set the page size or loop until NextPageToken is nil.
     //...
     ```
 
@@ -77,4 +77,18 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
                   .build();
           DeprecateNamespaceResponse response = namespaceservice.blockingStub().deprecateNamespace(deprecateNamespace);
   //...
+  ```
+
+- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
+
+  Example:
+
+  ```java
+  DeleteNamespaceResponse res =
+    OperatorServiceStubs.newServiceStubs(OperatorServiceStubsOptions.newBuilder()
+            .setChannel(service.getRawChannel())
+            .validateAndBuildWithDefaults())
+        .blockingStub()
+        .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("default").build());
+  System.out.println("***** res: " + res.getDeletedNamespace());
   ```
