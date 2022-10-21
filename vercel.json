@@ -111,8 +111,8 @@
     {"source": "/temporal-explained/visibility", "destination": "/visibility"},
 
     {
-      "source": "/content/what-is-:path*",
-      "destination": "/concepts/what-is-:path*"
+      "source": "/content/:path(what-is-.*)",
+      "destination": "/concepts/:path"
     },
 
     {"source": "/node/:path*", "destination": "/typescript/:path*"},
