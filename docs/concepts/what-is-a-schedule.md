@@ -11,7 +11,7 @@ tags:
 A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
-- [How to enable Schedules](#how-to-enable-schedules)
+- [How to enable Schedules](#limitations)
 - [How to operate Schedules using tctl](/tctl-v1/schedule#)
 
 A Schedule has an identity and is independent of a Workflow Execution.
