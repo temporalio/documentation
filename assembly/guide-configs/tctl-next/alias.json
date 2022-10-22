@@ -1,0 +1,17 @@
+{
+  "file_name": "alias.md",
+  "file_dir": "tctl-next",
+  "id": "alias",
+  "title": "tctl version-next alias command reference",
+  "sidebar_label": "alias",
+  "description": "How to use the tctl version-next alias command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/alias/index"
+    }
+  ]
+}

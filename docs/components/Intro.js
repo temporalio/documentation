@@ -382,9 +382,16 @@ const devTools = {
   listOne: [
     {
       cli: true,
-      path: "/tctl",
-      name: "tctl",
+      path: "/tctl-v1",
+      name: "tctl v1.16",
     },
+    {
+      cli: true,
+      path: "/tctl-next",
+      name: `tctl next`,
+    },
+  ],
+  listTwo: [
     {
       cli: true,
       path: "/web-ui",
@@ -487,7 +494,7 @@ function Explained() {
       <div className="landing-card-section">
         <div className="badge-header">
           <a className="header-link" href="/application-development">
-            <h2 className="h2-landing">Application development guide</h2>
+            <h2 className="h2-landing">Developer's guide</h2>
           </a>
           <div className="badge-purple">New</div>
         </div>
@@ -507,11 +514,11 @@ function Explained() {
           <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
-          Application development by language.{" "}
+          Developer's guide by language.{" "}
           <span className="bold">
             Most of this information is now included in the{" "}
             <a className="nowrap" href="/application-development">
-              application development guide
+              Developer's guide
             </a>
             .
           </span>
@@ -762,7 +769,7 @@ function Tools() {
         <li className="">
           <Link
             className="flex items-center space-x-3 hover:underline"
-            to={useBaseUrl("/tctl")}
+            to={useBaseUrl("/tctl-v1")}
           >
             <svg
               className="h-8 w-8 transition hover:scale-110 code-logo"

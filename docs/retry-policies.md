@@ -20,7 +20,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 - [How to set a custom Retry Policy for an Activity](/application-development/features#activity-retry-policy)
 - [How to set a Retry Policy for a Workflow](/application-development/features#workflow-retry-policy)
 
-<!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
+<div class="tdiw"><div class="tditw"><p class="tdit">Diagram that shows the retry interval and its formula</p></div><div class="tdiiw"><img class="tdi" src="/img/retry-interval-diagram.png" alt="Diagram that shows the retry interval and its formula" /></div></div>
 
 ## Default behavior
 

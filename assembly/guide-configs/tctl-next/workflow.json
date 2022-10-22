@@ -1,0 +1,77 @@
+{
+  "file_name": "workflow.md",
+  "file_dir": "tctl-next",
+  "id": "workflow",
+  "title": "tctl version-next workflow command reference",
+  "sidebar_label": "workflow",
+  "description": "How to use the tctl version-next workflow command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/workflow/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/cancel"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/count"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/delete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/execute"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/query"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/reset"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/reset-batch"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/scan"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/show"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/signal"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/stack"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/start"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/workflow/terminate"
+    }
+  ]
+}

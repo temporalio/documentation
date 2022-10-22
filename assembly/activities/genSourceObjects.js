@@ -54,7 +54,21 @@ function makeId(filePath, fileId) {
   let nodeId = "";
   const dir = path.dirname(filePath);
   const dirParts = dir.split("/");
-  const baseDir = dirParts.pop();
+  let pop = true;
+  let baseDir = "";
+  while (pop) {
+    let item = dirParts.pop();
+    if (item != "docs" && item != "docs-src") {
+      if (baseDir == "") {
+        baseDir = item;
+      } else {
+        baseDir = path.join(item, baseDir);
+      }
+    } else {
+      pop = false;
+    }
+  }
+
   if (fileId === undefined) {
     console.log(
       `The file located at ${filePath} is missing an id... using filename...`

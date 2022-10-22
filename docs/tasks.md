@@ -68,7 +68,7 @@ It is possible to have a Task that stays in a Task Queue for a period of time, i
 
 There are two types of Task Queues, Activity Task Queues and Workflow Task Queues.
 
-![Task Queue component](/diagrams/task-queue.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Task Queue component</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/task-queue.svg" alt="Task Queue component" /></div></div>
 
 Task Queues are very lightweight components.
 Task Queues do not require explicit registration but instead are created on demand when a Workflow Execution or Activity spawns or when a Worker Process subscribes to it.
@@ -96,7 +96,7 @@ There are four places where the name of the Task Queue can be set by the develop
 1. A Task Queue must be set when spawning a Workflow Execution:
 
 - [How to start a Workflow Execution using an SDK](/application-development/foundations#set-task-queue)
-- [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
+- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 

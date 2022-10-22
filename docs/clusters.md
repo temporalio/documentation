@@ -25,7 +25,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](#tem
 A Temporal Cluster's only required dependency for basic operation is a database.
 Multiple types of databases are supported.
 
-![Persistence](/diagrams/temporal-database.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-database.svg" alt="Persistence" /></div></div>
 
 The database stores the following types of data:
 
@@ -174,7 +174,7 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-![Frontend Service](/diagrams/temporal-frontend-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" /></div></div>
 
 Types of inbound calls include the following:
 
@@ -182,7 +182,7 @@ Types of inbound calls include the following:
 - External events
 - Worker polls
 - [Visibility](/visibility#) requests
-- [tctl](/tctl) (the Temporal CLI) operations
+- [tctl](/tctl-v1) (the Temporal CLI) operations
 - Calls from a remote Cluster related to [Multi-Cluster Replication](#multi-cluster-replication)
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
@@ -201,7 +201,7 @@ Ports are configurable in the Cluster configuration.
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using [History Shards](#history-shard).
 
-![History Service](/diagrams/temporal-history-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-history-service.svg" alt="History Service" /></div></div>
 
 The total number of History Services can be between 1 and the total number of History Shards.
 An individual History Service can support a large number of History Shards.
@@ -250,7 +250,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing [Task Queues](/tasks#task-queue) for Task dispatching.
 
-![Matching Service](/diagrams/temporal-matching-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" /></div></div>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -266,7 +266,7 @@ Ports are configurable in the Cluster configuration.
 
 The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-![Worker Service](/diagrams/temporal-worker-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
 
 It talks to the Frontend Service.
 
@@ -278,7 +278,7 @@ Ports are configurable in the Cluster configuration.
 
 Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
-- [How to set the Retention Period for a Namespace](/tctl/namespace/register/#--retention)
+- [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
 - [How to set the Retention Period for a Namespace using an SDK](/application-development/features/#namespaces)
 
 A Retention Period applies to all closed Workflow Executions within a [Namespace](/namespaces#) and is set when the Namespace is registered.
@@ -290,7 +290,7 @@ On Temporal Cluster version 1.18 and later, the maximum Retention Period value f
 On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
 
-If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl/namespace/register/#--retention) command, it defaults to 3 days.
+If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the [`RegisterNamespaceRequest`](/application-development/features/#namespaces) API, it returns an error.
 
 ## Archival

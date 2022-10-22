@@ -1,8 +1,8 @@
 ---
 id: features
-title: Application development - Features
+title: Developer's guide - Features
 sidebar_label: Features
-description: The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
 
@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
 :::info WORK IN PROGRESS
 
@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -142,7 +142,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -225,19 +225,13 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
-Get a new [`Selector`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Selector) and pass it the Signal Channel and a callback function to handle the payload.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
   // ...
   var signal MySignal
   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
-  selector := workflow.NewSelector(ctx)
-  selector.AddReceive(signalChan, func(channel workflow.ReceiveChannel, more bool) {
-      channel.Receive(ctx, &signal)
-      // ...
-  })
-  selector.Select(ctx)
+  signalChan.Receive(ctx, &signal)
   if len(signal.Message) > 0 && signal.Message != "SOME_VALUE" {
       return errors.New("signal")
   }
@@ -246,8 +240,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
-The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
@@ -500,11 +492,7 @@ See [Handle Signals](#handle-signal) for details on how to handle Signals in a W
 </TabItem>
 <TabItem value="python">
 
-To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
-
-```python
-await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
-```
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -604,6 +592,26 @@ Signals to a running Workflow.
 $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
 $workflow->setValue(true);
 ```
+
+</TabItem>
+<TabItem value="python">
+
+Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for) to get a typed Workflow handle to an existing Workflow by its identifier. Use [`get_external_workflow_handle`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle) when you don't know the type of the other Workflow.
+
+```python
+@workflow.defn
+class MyWorkflow:
+    @workflow.run
+    async run(self) -> None:
+        handle = workflow.get_external_workflow_handle_for(OtherWorkflow.run, "other-workflow-id")
+        await handle.signal(OtherWorkflow.other_signal, "other signal arg")
+```
+
+:::note
+
+The Workflow Type passed is only for type annotations and not for validation.
+
+:::
 
 </TabItem>
 <TabItem value="typescript">
@@ -863,7 +871,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -1170,7 +1178,11 @@ await handle.query("some query")
 </TabItem>
 <TabItem value="typescript">
 
-Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/#handlequery) to handle Queries inside a Workflow.
+Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
+
+You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
@@ -1261,7 +1273,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.workflowhandle/#query) to query a running or completed Workflow.
+Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
 <!--SNIPEND-->
@@ -1405,9 +1417,9 @@ Create an instance of `WorkflowOptions` from the Client and set your Workflow Ti
 
 Available timeouts are:
 
-- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowexecutiontimeout)
-- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowruntimeout)
-- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#workflowtasktimeout)
+- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowexecutiontimeout)
+- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout)
+- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
 <!--SNIPEND-->
@@ -1526,7 +1538,7 @@ handle = await client.execute_workflow(
 </TabItem>
 <TabItem value="typescript">
 
-Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
 <!--SNIPEND-->
@@ -1677,9 +1689,9 @@ When you call `proxyActivities` in a Workflow Function, you can set a range of `
 
 Available timeouts are:
 
-- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#starttoclosetimeout)
-- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.activityoptions/#scheduletostarttimeout)
+- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletoclosetimeout)
+- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#starttoclosetimeout)
+- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletostarttimeout)
 
 ```typescript
 // Sample of typical options you can set
@@ -2284,7 +2296,7 @@ temporalClient, err := client.Dial(client.Options{})
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
 ```
 
-Following are the parameters of the `CompleteActivity` function:
+The following are the parameters of the `CompleteActivity` function:
 
 - `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
   the Activity.
@@ -2375,6 +2387,29 @@ To fail the Activity, you would do the following:
 ```php
 // Fail the Activity.
 $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
+```
+
+</TabItem>
+<TabItem value="python">
+
+To mark an Activity as completing asynchoronus, do the following inside the Activity.
+
+```python
+# Capture token for later completion
+captured_token = activity.info().task_token
+activity.raise_complete_async()
+```
+
+To update an Activity outside the Activity, use the [get_async_activity_handle()](https://python.temporal.io/temporalio.client.Client.html#get_async_activity_handle) method to get the handle of the Activity.
+
+```python
+handle = my_client.get_async_activity_handle(task_token=captured_token)
+```
+
+Then, on that handle, you can call the results of the Activity, `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
+
+```python
+await handle.complete("Completion value.")
 ```
 
 </TabItem>
@@ -2667,7 +2702,7 @@ await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child
 </TabItem>
 <TabItem value="typescript">
 
-To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.childworkflowhandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
 
 To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
 
@@ -2838,7 +2873,7 @@ To continue execution of the same Workflow that is currently running, use:
 Workflow.continueAsNew(input1, ...);
 ```
 
-To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
+To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
 For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
 
 ```java
@@ -3444,15 +3479,15 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a [Namespace](/namespaces#) and set the [Retention Period](/clusters#retention-period) for the Workflow Execution Event History for the Namespace.
 
-You can also [register Namespaces using the tctl command-line tool](/tctl/namespace/register).
+You can also [register Namespaces using the tctl command-line tool](/tctl-v1/namespace#register).
 
 ```go
-    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-            //...
-        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-            Namespace: your-namespace-name,
-            WorkflowExecutionRetentionPeriod: &retention,
-        })
+client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+        //...
+    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+        Namespace: your-namespace-name,
+        WorkflowExecutionRetentionPeriod: &retention,
+    })
 ```
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
@@ -3466,7 +3501,7 @@ Ensure that you wait for this registration to complete before starting the Workf
 
 To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
 
-To update your Namespace using tctl, use the [tctl namespace update](/tctl/namespace/update) command.
+To update your Namespace using tctl, use the [tctl namespace update](/tctl-v1/namespace#update) command.
 
 </TabItem>
 <TabItem value="java">
