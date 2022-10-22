@@ -1,22 +1,21 @@
 ---
-id: web-ui-server-env-vars
+id: web-ui-environment-variables
 title: Temporal Web UI environmental variables
-sidebar_label: Web UI environmental variables
 description: How to set  environmental variables for Temporal Web UI.
+sidebar_label: Web UI env var
 tags:
   - docker
   - webui
   - ui server
+  - reference
 ---
 
-Environmental variables are fields that are set to configure a Temporal Cluster.
-This allows the user to configure the Cluster in any environment, such as a [Docker container](/docs/).
+<!-- This file is generated. Do not edit it directly. -->
 
-The Web UI Server is set up using specific environmental variables.
-These variables need to be passed when running the image.
+You can use environment variables to dynamically alter the configuration of your Temporal Web UI.
 
-The setup process involves the configuration of several components, including mTLS, authentication, and more.
-The UI server environmental variables are defined in the [configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml) and described in more detail below.
+These can be used in many environments such as Docker.
+For example:
 
 <!-- ```
 docker run \
@@ -37,13 +36,15 @@ docker run \
     temporalio/ui:<tag>
 ``` -->
 
+The environment variables are defined in the [UI server configuration template file](https://github.com/temporalio/ui-server/blob/main/docker/config_template.yaml) and described in more detail below.
+
 ## `TEMPORAL_ADDRESS`
 
-The [Frontend Service](/concepts/what-is-the-frontend-service) address for the Temporal Cluster.
-This environmental variable can be set [in the base configuration file](/docs-src/references/ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
+The [Frontend Service](/clusters#frontend-service) address for the Temporal Cluster.
+This environmental variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
 This variable is required for setting other environmental variables.
-`TEMPORAL_ADDRESS` is also needed when setting up [Cross-Origin Resource Sharing](/references/ui-configuration#cors).
+`TEMPORAL_ADDRESS` is also needed when setting up [Cross-Origin Resource Sharing](/references/web-ui-configuration#cors).
 
 ## `TEMPORAL_UI_PORT`
 
@@ -62,7 +63,7 @@ The location in the Web UI Server where everything is stored.
 
 Enables or disables Temporal authentication and authorization methods.
 
-When enabled, the Temporal Cluster will use the provider information in the [UI configuration file](/references/ui-configuration#auth) to verify the identity of users.
+When enabled, the Temporal Cluster will use the provider information in the [UI configuration file](/references/web-ui-configuration#auth) to verify the identity of users.
 
 All auth-related environmental variables depend on `TEMPORAL_AUTH_ENABLED`.
 Disabling the variable will retain given values.
@@ -73,7 +74,7 @@ All auth-related variables must be defined when this is enabled.
 
 The URL for Temporal's authentication and authorization OIDC provider.
 
-This can be set as in the UI server configuration with [auth](/references/ui-configuration#auth).
+This can be set as in the UI server configuration with [auth](/references/web-ui-configuration#auth).
 
 The Temporal Cluster can be set up to use your preferred authentication and authorization methods.
 
@@ -90,7 +91,7 @@ The client ID for Temporal authentication and authorization methods.
 Authentication and authorization need to identify the correct client.
 Providing a Client ID ensures that auth methods will run smoothly.
 
-This variable is needed to [configure auth](/references/ui-configuration#auth).
+This variable is needed to [configure auth](/references/web-ui-configuration#auth).
 Other auth variables must be defined along with `TEMPORAL_AUTH_CLIENT_ID`.
 
 ## `TEMPORAL_AUTH_CLIENT_SECRET`
@@ -108,11 +109,11 @@ The callback URL used by Temporal for authentication and authorization.
 
 Callback URLs are invoked by the API after it's finished communicating with the Temporal Cluster.
 
-This variable should be defined when [configuring auth](/references/ui-configuration#auth).
+This variable should be defined when [configuring auth](/references/web-ui-configuration#auth).
 
 ## `TEMPORAL_UI_ENABLED`
 
-Enables or disables the [browser UI](/references/ui-configuration#enableui) for the Temporal Cluster.
+Enables or disables the [browser UI](/references/web-ui-configuration#enableui) for the Temporal Cluster.
 
 Enabling the browser UI allows the Server to be accessed from your web browser.
 If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
@@ -123,14 +124,14 @@ This variable needs to be set to 'true' in order to set `TEMPORAL_OPENAPI_ENABLE
 
 Enables or disables OpenAPI features for the Temporal Web UI.
 
-This can be set initially with the [enableOpenAPI](/references/ui-configuration#enableopenapi) UI configuration.
+This can be set initially with the [enableOpenAPI](/references/web-ui-configuration#enableopenapi) UI configuration.
 The documentation can be found at `/openapi/` on your Temporal Cluster.
 
 This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 ## `TEMPORAL_DEFAULT_NAMESPACE`
 
-The default [Namespace](/concepts/what-is-a-namespace) that the Web UI loads data for.
+The default [Namespace](/namespaces#) that the Web UI loads data for.
 
 ## `TEMPORAL_FEEDBACK_URL`
 
@@ -152,7 +153,7 @@ This variable is needed to refresh TLS-related values.
 
 The path for the Transport Layer Security (TLS) Certificate Authority file.
 
-In order to [configure TLS for your server](/references/ui-configuration#tls), you'll need a CA certificate issued by a trusted Certificate Authority.
+In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a CA certificate issued by a trusted Certificate Authority.
 Set this variable to properly locate and use the file.
 
 `TEMPORAL_TLS_CA` is required for TLS configuration.
@@ -161,14 +162,14 @@ Set this variable to properly locate and use the file.
 
 The path for the Transport Layer Security (TLS) Certificate.
 
-In order to [configure TLS for your server](/references/ui-configuration#tls), you'll need a self-signed certificate.
+In order to [configure TLS for your server](/references/web-ui-configuration#tls), you'll need a self-signed certificate.
 Set the path to allow the environment to locate and use the certificate.
 
 `TEMPORAL_TLS_CERT` is required for TLS configuration.
 
 ## `TEMPORAL_TLS_KEY`
 
-The path for the Transport Layer Security (TLS) [key file](/references/ui-configuration#tls).
+The path for the Transport Layer Security (TLS) [key file](/references/web-ui-configuration#tls).
 
 A key file is used to create private and public keys.
 These keys are used to create certificates.
@@ -196,7 +197,7 @@ The data obtained from `TEMPORAL_TLS_KEY_DATA`.
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
-Enables or disables [Transport Layer Security (TLS) host verification](/references/ui-configuration#tls).
+Enables or disables [Transport Layer Security (TLS) host verification](/references/web-ui-configuration#tls).
 
 When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
 
@@ -204,7 +205,7 @@ This variable is needed when configuring TLS and its associated variables.
 
 ## `TEMPORAL_TLS_SERVER_NAME`
 
-The server on which to operate [Transport Layer Security (TLS) protocols](/references/ui-configuration#tls).
+The server on which to operate [Transport Layer Security (TLS) protocols](/references/web-ui-configuration#tls).
 
 TLS allows the current server to transmit encrypted files to other URLs without having to reveal itself.
 Because of this, TLS operates a go-between server.
@@ -213,7 +214,7 @@ This variable is needed to configure TLS and its related environmental variables
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the [Codec Server](/docs/concepts/what-is-a-codec-server), if configured.
+The endpoint for the [Codec Server](/concepts/what-is-a-codec-server), if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 

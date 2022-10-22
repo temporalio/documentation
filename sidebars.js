@@ -250,8 +250,8 @@ module.exports = {
         "references/commands",
         "references/events",
         "references/configuration",
-        "references/web-ui-server-env-vars",
-        "references/ui-configuration",
+        "references/web-ui-configuration",
+        "references/web-ui-environment-variables",
         "references/server-options",
         {
           type: "link",
