@@ -14,7 +14,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace update`](/tctl/namespace/update)
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
     Example
   - Use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to update configuration on a Namespace.
     Example
@@ -37,7 +37,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Get details for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace describe`](/tctl/namespace/describe)
+  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
   - Use the [`DescribeNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for a registered Namespace.
     Example
 
@@ -54,7 +54,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Get details for all registered Namespaces on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace list`](/tctl/namespace/list)
+  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
   - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
     Example
 

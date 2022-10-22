@@ -68,7 +68,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 
-  - With tctl: [`tctl namespace update`](/tctl/namespace/update)
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
   - Use the [`UpdateNamespace` API](/application-development/features#namespaces) to update configuration on a Namespace.
 
 - Get details for a registered Namespace on your Temporal Cluster:
