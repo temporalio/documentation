@@ -36,7 +36,7 @@ temporalClient, err := client.Dial(client.Options{})
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
 ```
 
-Following are the parameters of the `CompleteActivity` function:
+The following are the parameters of the `CompleteActivity` function:
 
 - `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
   the Activity.
