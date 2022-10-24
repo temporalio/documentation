@@ -213,7 +213,7 @@ The endpoint for the [Codec Server](/concepts/what-is-a-codec-server), if config
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
-The access token needed to transport data through the Codec Server.
+Whether to attach JWT access token as ‘authorization’ header in requests with the Codec Server.
 
 Make sure that `TEMPORAL_CODEC_ENDPOINT` is defined to use this variable.
 
