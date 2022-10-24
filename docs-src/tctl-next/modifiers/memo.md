@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-Pass a memo in a format key=value
+Pass a memo in the format `key=value`.
 
 A memo is information in JSON format that can be shown when the Workflow is listed.
-For multiple memos, pass each in a separate `--memo`
+For multiple memos, pass each in a separate `--memo` modifier.

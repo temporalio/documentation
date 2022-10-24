@@ -7,5 +7,5 @@ tags:
   - tctl
 ---
 
-Pass a memo from a file, where each line follows the format key=value.
-Use valid JSON formats for value
+Pass a memo from a file, where each line follows the format `key=value`.
+Use valid JSON formats for values.
