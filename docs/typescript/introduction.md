@@ -183,7 +183,7 @@ For long form/FAQs, please search and ask on [the Temporal community forum](http
 
 ## TS SDK Intro Workshop
 
-We held a 2-hour introduction workshop explaining every core concept from scratch: [Complete Intro to Temporal Workshop - TypeScript SDK][https://www.youtube.com/watch?v=cehsmv8of_4]
+We held a 2-hour introduction workshop explaining every core concept from scratch: [Complete Intro to Temporal Workshop - TypeScript SDK](https://www.youtube.com/watch?v=cehsmv8of_4).
 
 Timestamps:
 
