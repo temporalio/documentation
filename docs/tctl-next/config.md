@@ -64,4 +64,3 @@ The `tctl config use-env` command switches the environment that tctl is operatin
 `tctl config use-env [options] env_name`
 
 There are no modifiers for this command.
-
