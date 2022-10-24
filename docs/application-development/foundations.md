@@ -1411,7 +1411,7 @@ Activities are _just functions_. The following is an Activity that accepts a str
 </TabItem>
 </Tabs>
 
-### Activity Parameters
+### Activity parameters
 
 There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
