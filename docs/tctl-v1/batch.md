@@ -215,4 +215,3 @@ Alias: `--re`
 ```bash
 tctl batch terminate --job_id <id> --reason <string>
 ```
-

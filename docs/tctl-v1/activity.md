@@ -155,4 +155,3 @@ Specify the identity of the operator when using tctl to fail an [Activity Execut
 ```bash
 tctl activity complete --identity <value>
 ```
-
