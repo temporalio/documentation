@@ -102,7 +102,7 @@ Define all auth-related variables when using this variable.
 
 The callback URL used by Temporal for authentication and authorization.
 
-Callback URLs are invoked by the API after it's finished communicating with the Temporal Cluster.
+Callback URLs are invoked by IDP after user has finished authenticating in IDP.
 
 This variable should be defined when [configuring auth](/references/web-ui-configuration#auth).
 
