@@ -1,6 +1,6 @@
 ---
 slug: october-release-2022
-title: October 23 2022
+title: October 24 2022
 date: 2022-10-24T00:00:00Z
 ---
 
