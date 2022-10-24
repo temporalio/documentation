@@ -1411,7 +1411,7 @@ Activities are _just functions_. The following is an Activity that accepts a str
 </TabItem>
 </Tabs>
 
-### Activity Parameters
+### Activity parameters
 
 There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a> may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
