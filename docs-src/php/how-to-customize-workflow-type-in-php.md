@@ -1,21 +1,21 @@
 ---
 id: how-to-customize-workflow-type-in-php
-title: How to customize Workflow types in PHP
-sidebar_label: Customize Workflow types
-description: Customize Workflow types.
+title: How to customize a Workflow Type in PHP
+sidebar_label: Custom Workflow Type
+description: How to customize a Workflow Type in PHP
 tags:
   - developer-guide
   - sdk
   - php
 ---
 
-To customize a Workflow type, use the Workflow method annotations to specify the name of Workflow.
+To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
 
 ```php
 #[WorkflowMethod(name)]
 ```
 
-If a Workflow type is not specified, then Workflow type defaults to the interface name, `FileProcessingWorkflow`.
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `FileProcessingWorkflow` in this case.
 
 ```php
 #[WorkflowInterface]
