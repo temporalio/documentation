@@ -2,6 +2,7 @@
 id: index
 title: tctl activity
 description: How to operate Activity Executions using tctl.
+sidebar_label: activity
 tags:
   - tctl
 ---
