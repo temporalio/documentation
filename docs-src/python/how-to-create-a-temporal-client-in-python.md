@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Server at a given address and Namespace.
+Use [`connect()`](https://python.temporal.io/temporalio.client.Client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.Client.html) class to create and connect to a Temporal Server at a given address and Namespace.
 
 Specify the `target_host` parameter as a string.
 
