@@ -25,7 +25,6 @@ You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Si
 
 Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
 
-
 ```python
 @workflow.signal(dynamic=True)
 def signal_dynamic(self, name: str, *args: Any) -> None:
