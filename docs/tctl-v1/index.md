@@ -55,11 +55,11 @@ You can install [tctl](/tctl-v1) in the following ways.
 
 To see help for [tctl](/tctl-v1) commands, enter the following commands.
 
-| Command             | Description                                                              |
-| ------------------- | ------------------------------------------------------------------------ |
-| `tctl -h`           | Display help for top-level commands and global options                   |
-| `tctl namespace -h` | Display help for [Namespace](/namespaces#) operations   |
-| `tctl workflow -h`  | Display help for [Workflow](/workflows#) operations     |
+| Command             | Description                                                 |
+| ------------------- | ----------------------------------------------------------- |
+| `tctl -h`           | Display help for top-level commands and global options      |
+| `tctl namespace -h` | Display help for [Namespace](/namespaces#) operations       |
+| `tctl workflow -h`  | Display help for [Workflow](/workflows#) operations         |
 | `tctl taskqueue -h` | Display help for [Task Queue](/tasks#task-queue) operations |
 
 ## Global modifiers
@@ -200,4 +200,3 @@ Setting this variable also enables host verification.
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
-
