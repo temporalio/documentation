@@ -42,7 +42,6 @@ The [Frontend Service](/concepts/what-is-a-frontend-service) address for the Tem
 This environmental variable can be set [in the base configuration file](/references/web-ui-configuration#temporalgrpcaddress) using `temporalGrpcAddress`.
 
 This variable is required for setting other environmental variables.
-`TEMPORAL_ADDRESS` is also needed when setting up [Cross-Origin Resource Sharing](/references/web-ui-configuration#cors).
 
 ## `TEMPORAL_UI_PORT`
 
