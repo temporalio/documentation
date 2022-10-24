@@ -40,3 +40,4 @@ The `tctl cluster system` command shows information about the system capabilitie
 `tctl cluster system`
 
 The command has no modifiers.
+

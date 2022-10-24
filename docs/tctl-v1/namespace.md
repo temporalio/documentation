@@ -403,3 +403,4 @@ Alias `--vuri`
 ```bash
 tctl namespace update --visibility_uri <uri>
 ```
+

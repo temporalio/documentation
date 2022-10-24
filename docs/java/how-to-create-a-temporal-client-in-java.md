@@ -10,7 +10,7 @@ tags:
 
 To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with `@WorkflowMethod`).
 
-To start a Workflow Execution, your Temporal Server must be running, and your front-end service must be accepting gRPC calls.
+To start a Workflow Execution, your Temporal Server must be running, and your [Frontend Service](/concepts/clusters#frontend-service) must be accepting gRPC calls.
 
 To establish a connection with the front-end service, use `WorkflowServiceStubs`.
 
