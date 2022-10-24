@@ -8,5 +8,3 @@ tags:
 ---
 
 Serialize an Event to a file.
-
-Alias: `--of`

@@ -9,5 +9,3 @@ tags:
 
 Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
-
-Alias `--vas`

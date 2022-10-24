@@ -15,11 +15,11 @@ This documentation reflects the "next" version of Temporal's tctl command line t
 Currently it is known as [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux), but the name may change in the future.
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
-It can perform [Namespace](/namespaces#) operations (such as register, update, and describe) and [Workflow](/workflows#) operations (such as start
+It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a> operations (such as start
 Workflow, show Workflow History, and Signal Workflow).
 
-- [How to install tctl](#install)
-- [Environment variables for tctl](#environment-variables)
+- <a class="tdlp" href="#install">How to install tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to install tctl</p><p class="tdlppd">You can install tctl in four ways, described in this topic.</p><p class="tdlplm"><a href="#install">Learn more</a></p></div></a>
+- <a class="tdlp" href="#environment-variables">Environment variables for tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a href="#environment-variables">Learn more</a></p></div></a>
 
 ### Available commands
 
@@ -44,48 +44,48 @@ Global modifiers are provided after `tctl` in the command structure but before t
 For example:
 
 ```
-tctl --address <value> workflow start --task_queue <value> ...
+tctl --address <value> workflow start --task-queue <value> ...
 ```
 
-You can supply the values for many of these modifiers by setting [environment variables](#environment-variables) instead of including the modifiers in each tctl command.
+You can supply the values for many of these modifiers by setting <a class="tdlp" href="#environment-variables">environment variables<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a href="#environment-variables">Learn more</a></p></div></a> instead of including the modifiers in each tctl command.
 
-### `--address`
+### --address
 
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
 Alias: `--ad`
 
-### `--auto_confirm`
+### --auto-confirm
 
 Automatically confirm all prompts.
 
-### `--context_timeout`
+### --context-timeout
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
 
 Alias: `--ct`
 
-### `--data_converter_plugin`
+### --data-converter-plugin
 
 Specify the name of the executable for a custom Data Converter plugin.
 
 Alias: `--dcp`
 
-### `--headers_provider_plugin`
+### --headers-provider-plugin
 
 Specify the name of the executable for a headers provider plugin.
 
 Alias: `--hpp`
 
-### `--help`
+### --help
 
 Display help for tctl in the CLI.
 
 Alias: `-h`
 
-### `--namespace`
+### --namespace
 
 Specify a Namespace.
 By using this modifier, you don't need to specify a `--namespace` modifier for a sub-command.
@@ -93,37 +93,37 @@ The default Namespace is `default`.
 
 Alias: `--ns`
 
-### `--tls_ca_path`
+### --tls-ca-path
 
 Specify the path to a server Certificate Authority (CA) certificate file.
 
-### `--tls_cert_path`
+### --tls-cert-path
 
 Specify the path to a public X.509 certificate file for mutual TLS authentication.
-If you use this modifier, you must also use the `--tls_key_path` modifier.
+If you use this modifier, you must also use the `--tls-key-path` modifier.
 
-### `--tls_disable_host_verification`
+### --tls-disable-host-verification
 
 Disable verification of the server certificate (and thus host verification).
 
-### `--tls_key_path`
+### --tls-key-path
 
 Specify the path to a private key file for mutual TLS authentication.
-If you use this modifier, you must also use the `--tls_cert_path` modifier.
+If you use this modifier, you must also use the `--tls-cert-path` modifier.
 
-### `--tls_server_name`
+### --tls-server-name
 
 Specify an override for the name of the target server that is used for TLS host verification.
 The name must be one of the DNS names listed in the server TLS certificate.
 Specifying this modifier also enables host verification.
 
-### `--version`
+### --version
 
 Display the version of tctl in the CLI.
 
 Alias: `-v`
 
-### `--codec_endpoint`
+### --codec-endpoint
 
 The URL and port number for a Codec Server.
 
