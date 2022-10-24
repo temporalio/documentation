@@ -3616,10 +3616,10 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
     Example
 
     ```go
-      client, err := client.NewNamespaceClient(client.Options{})
-      //...
-      client.Describe(context.Background(), "default")
-      //...
+        client, err := client.NewNamespaceClient(client.Options{})
+        //...
+        client.Describe(context.Background(), "default")
+        //...
     ```
 
 - Get details for all registered Namespaces on your Temporal Cluster:
@@ -3630,25 +3630,17 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
     ```go
         namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active cluster. You can set a large PageSize or loop until NextPageToken is nil
-          //PageSize:        0,
-          //NextPageToken:   nil,
-          //NamespaceFilter: nil,
-
-    })
+            //PageSize:        0,
+            //NextPageToken:   nil,
+            //NamespaceFilter: nil,
+      })
     ```
-
-- Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
-  Example:
-
-```go
-
-```
 
 - Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
   Example:
 
 ```go
-
+    client.OperatorService().DeleteNamespace(ctx, &operatorservice.DeleteNamespaceRequest{...
 ```
 
 </TabItem>
@@ -3756,3 +3748,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
