@@ -1308,33 +1308,6 @@ interface FileProcessingActivities
 }
 ```
 
-**How to customize an Activity type**
-
-We recommend to use a single value type argument for Activity methods.
-In this way, adding new arguments as fields to the value type is a backward-compatible change.
-
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
-
-You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
-(The default prefix is empty.)
-
-```php
-#[YourActivityInterface("file_activities.")]
-interface FileProcessingActivities
-{
-    public function upload(string $bucketName, string $localName, string $targetName);
-
-    #[ActivityMethod("transcode_file")]
-    public function download(string $bucketName, string $remoteName);
-
-    public function processFile(): string;
-
-    public function deleteLocalFile(string $fileName);
-}
-```
-
-The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activites that are used in the Workflow.
-
 </TabItem>
 <TabItem value="python">
 
@@ -1710,7 +1683,30 @@ The Activity type for the method annotated with `@ActivityMethod` is set to `A_a
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+We recommend using a single value type argument for Activity methods.
+In this way, adding new arguments as fields to the value type is a backward-compatible change.
+
+An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+
+You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
+(The default prefix is empty.)
+
+```php
+#[YourActivityInterface("file_activities.")]
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName);
+
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName);
+
+    public function processFile(): string;
+
+    public function deleteLocalFile(string $fileName);
+}
+```
+
+The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 </TabItem>
 <TabItem value="undefined">
