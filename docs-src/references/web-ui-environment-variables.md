@@ -126,7 +126,7 @@ This variable requires `TEMPORAL_UI_ENABLED` to be set to 'true'.
 
 ## `TEMPORAL_DEFAULT_NAMESPACE`
 
-The default [Namespace](/concepts/what-is-a-namespace) that the Web UI loads data for.
+The default [Namespace](/concepts/what-is-a-namespace) that the Web UI opens first
 
 ## `TEMPORAL_FEEDBACK_URL`
 
