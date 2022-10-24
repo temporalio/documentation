@@ -9,5 +9,3 @@ tags:
 
 Specify the URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
-
-Alias `--huri`

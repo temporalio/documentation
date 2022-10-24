@@ -10,5 +10,3 @@ tags:
 **This is an experimental feature.**
 
 List archived Workflow Executions.
-
-Alias: `-a`

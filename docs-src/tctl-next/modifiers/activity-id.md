@@ -8,5 +8,3 @@ tags:
 ---
 
 Specify the [Activity Id](/concepts/what-is-an-activity-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to execute a command on.
-
-Alias: `--aid`
