@@ -111,7 +111,7 @@ Specify the identity of the operator when using tctl to fail an [Activity Execut
 ## --id-reuse-policy
 
 Specify a [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflows#workflow-execution).
+Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Executions](/workflows#workflow-execution).
 
 Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
 
@@ -158,15 +158,15 @@ The default value is 500.
 
 ## --memo
 
-Pass a memo in a format key=value
+Pass a memo in the format `key=value`.
 
 A memo is information in JSON format that can be shown when the Workflow is listed.
-For multiple memos, pass each in a separate `--memo`
+For multiple memos, pass each in a separate `--memo` modifier.
 
 ## --memo-file
 
-Pass a memo from a file, where each line follows the format key=value.
-Use valid JSON formats for value
+Pass a memo from a file, where each line follows the format `key=value`.
+Use valid JSON formats for values.
 
 ## --name
 
@@ -291,8 +291,8 @@ Alias: `--rt`
 
 ## --search-attribute
 
-Pass a [Search Attribute](/visibility#search-attribute) in a format key=value.
-For multiple values, pass each in a separate `--search-attribute`
+Pass a [Search Attribute](/visibility#search-attribute) in the format `key=value`.
+For multiple values, pass each in a separate `--search-attribute` modifier.
 
 To list valid keys, use the `tctl search-attribute list` command.
 
