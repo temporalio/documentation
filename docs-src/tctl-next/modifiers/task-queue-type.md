@@ -10,5 +10,3 @@ tags:
 Specify the type of a [Task Queue](/concepts/what-is-a-task-queue).
 The type can be `workflow` or `activity`.
 The default is `workflow`.
-
-Alias: `--tqt`
