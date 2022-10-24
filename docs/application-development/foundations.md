@@ -410,7 +410,11 @@ To start a Workflow Execution, your Temporal Server must be running, and your fr
 To establish a connection with the front-end service, use `WorkflowServiceStubs`.
 
 ```java
+import io.temporal.serviceclient.*;
+import io.temporal.client.*;
+//...
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+//...
 ```
 
 You can provide `WorkflowServiceStubsOptions` to override the default values for the gRPC calls.
@@ -420,11 +424,14 @@ For example, the default front-end service gRPC address is set to `127.0.0.1:723
 If your server is running on a different host or port from the default, you can set it as shown in the following example.
 
 ```java
+import io.temporal.serviceclient.*;
+import io.temporal.client.*;
+//...
 WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
-
+//...
 ```
 
 After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
@@ -434,12 +441,15 @@ Create an instance of a `WorkflowClient` for the Workflow service stub, and use 
 The following example shows how to create a `WorkflowClient` instance called "client" for the `WorkflowServiceStubs` "service" that we created in the previous example, and set `Namespace` option for the `WorkflowClient`.
 
 ```java
+import io.temporal.serviceclient.*;
+import io.temporal.client.*;
+//...
 WorkflowClient client = WorkflowClient.newInstance(
                 service,
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
                     .build());
-
+//...
 ```
 
 For more information, see [WorkflowClientOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html).
@@ -453,11 +463,17 @@ To initialize a Workflow in the Client, create a `WorkflowStub`, and start the W
 Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
 
 ```java
+import io.temporal.serviceclient.*;
+import io.temporal.client.*;
+//...
+
 WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
  // Create a Workflow stub.
  YourWorkflow workflow = workflowClient.newWorkflowStub(YourWorkflow.class);
  // Start Workflow asynchronously and call its "yourWFMethod" Workflow method
  WorkflowClient.start(workflow::yourWFMethod);
+
+//...
 ```
 
 For more information, see the following:
