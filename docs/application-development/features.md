@@ -163,7 +163,6 @@ You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Si
 
 Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
 
-For example:
 
 ```python
 @workflow.signal(dynamic=True)
@@ -890,7 +889,6 @@ The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#quer
 
 You can use `@workflow.query(dynamic=True)`, which means all other unhandled Query's fall through to this.
 
-For example:
 
 ```python
 @workflow.query(dynamic=True)
@@ -1179,8 +1177,6 @@ await handle.query("some query")
 <TabItem value="typescript">
 
 Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
-
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
@@ -3546,3 +3542,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+

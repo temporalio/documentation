@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-Workflows in Python are defined as classes.
+In the Temporal Python SDK programming model, Workflows are defined as classes.
 
-Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to register a Workflow class.
+Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
 
 Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 

@@ -23,7 +23,6 @@ The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#quer
 
 You can use `@workflow.query(dynamic=True)`, which means all other unhandled Query's fall through to this.
 
-For example:
 
 ```python
 @workflow.query(dynamic=True)

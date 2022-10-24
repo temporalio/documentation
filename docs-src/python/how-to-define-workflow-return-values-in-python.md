@@ -9,26 +9,20 @@ tags:
   - python
 ---
 
-A Workflow Execution can return the results of a Workflow.
+To return a value of the Workflow, use `return` to return an object.
 
-To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
-
-```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
-
-result = await handle.result()
-```
-
-`execute_workflow()` is a helper function for `start_workflow()` and `handle.result()`.
+The following example returns an `int` and `str` parameter.
 
 ```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+@dataclass
+class YourResult:
+    your_int_param: int
+    your_str_param: str
+
+
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, params: YourResult) -> None:
+      return YourResult
 ```
