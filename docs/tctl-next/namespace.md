@@ -134,4 +134,3 @@ Always include required modifiers when executing this command.
 - [--retention](/tctl-next/modifiers#--retention)
 - [--visibility-archival-state](/tctl-next/modifiers#--visibility-archival-state)
 - [--visibility-uri](/tctl-next/modifiers#--visibility-uri)
-
