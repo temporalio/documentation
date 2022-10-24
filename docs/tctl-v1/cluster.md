@@ -64,3 +64,4 @@ The `tctl cluster health` command checks the health of the [Frontend Service](/c
 `tctl cluster health`
 
 The command has no modifiers.
+
