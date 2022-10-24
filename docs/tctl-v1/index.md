@@ -62,7 +62,6 @@ To see help for [tctl](/tctl-v1) commands, enter the following commands.
 | `tctl workflow -h`  | Display help for <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a> operations |
 | `tctl taskqueue -h` | Display help for <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a> operations                                          |
 
-
 ## Global modifiers
 
 You can supply the values for many of these modifiers by setting <a class="tdlp" href="#environment-variables">environment variables<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a href="#environment-variables">Learn more</a></p></div></a> instead of including the modifiers in a tctl command.
@@ -201,4 +200,3 @@ Setting this variable also enables host verification.
 
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
-

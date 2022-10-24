@@ -461,7 +461,6 @@ With the Client defined, you can start interacting with the Temporal Frontend Se
 
 See [Starting Workflow Executions](/application-development/foundations#start-workflow-execution) on how to start Workflow Executions from the Client.
 
-
 </TabItem>
 <TabItem value="php">
 
@@ -3730,4 +3729,3 @@ try {
 
 </TabItem>
 </Tabs>
-

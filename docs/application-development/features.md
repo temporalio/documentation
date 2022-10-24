@@ -3453,7 +3453,6 @@ A <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/i
 
 Namespaces are created on the Temporal Cluster, and provide a range of controls to achieve isolation on Workflow Executions.
 
-
 You must [register a Namespace](#register-namespace) with the Temporal Cluster before setting it in the Temporal Client.
 Once registered, you can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 
@@ -3749,4 +3748,3 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
-

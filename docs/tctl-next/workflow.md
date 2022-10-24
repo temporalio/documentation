@@ -377,4 +377,3 @@ Always include required modifiers when executing this command.
 - [--query](/tctl-next/modifiers#--query)
 - [--reason](/tctl-next/modifiers#--reason)
 - [--yes](/tctl-next/modifiers#--yes)
-
