@@ -32,7 +32,7 @@ If your server is running on a different host or port from the default, you can 
 import io.temporal.serviceclient.*;
 import io.temporal.client.*;
 //...
-WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
@@ -64,23 +64,4 @@ The recommended way is to create them once and reuse where possible.
 
 With the Client defined, you can start interacting with the Temporal Frontend Service.
 
-To initialize a Workflow in the Client, create a `WorkflowStub`, and start the Workflow Execution with `WorkflowClient.start()`.
-Starting Workflows or sending Signals or Queries to Workflows from within a Client must be done using `WorkflowStubs`.
-
-```java
-import io.temporal.serviceclient.*;
-import io.temporal.client.*;
-//...
-
-WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptions);
- // Create a Workflow stub.
- YourWorkflow workflow = workflowClient.newWorkflowStub(YourWorkflow.class);
- // Start Workflow asynchronously and call its "yourWFMethod" Workflow method
- WorkflowClient.start(workflow::yourWFMethod);
-
-//...
-```
-
-For more information, see the following:
-
-- [How to spawn a Workflow Execution in Java](/java/how-to-spawn-a-workflow-execution-in-java)
+See [Starting Workflow Executions](/application-development/foundations#start-workflow-execution) on how to start Workflow Executions from the Client.
