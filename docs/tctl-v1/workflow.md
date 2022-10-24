@@ -2364,4 +2364,3 @@ Alias: `--re`
 ```bash
 tctl workflow terminate --reason <string>
 ```
-

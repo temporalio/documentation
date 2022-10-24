@@ -4,7 +4,7 @@ title: Temporal Cluster configuration reference
 description: Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.
 sidebar_label: Cluster configuration
 tags:
- - reference
+  - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->

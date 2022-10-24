@@ -48,4 +48,3 @@ Always include required modifiers when executing this command.
 - [--reason](/tctl-next/modifiers#--reason)
 - [--run-id](/tctl-next/modifiers#--run-id)
 - [--workflow-id](/tctl-next/modifiers#--workflow-id)
-
