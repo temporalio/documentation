@@ -15,11 +15,11 @@ To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the
 #[WorkflowMethod(name)]
 ```
 
-If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `FileProcessingWorkflow` in this case.
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
 
 ```php
 #[WorkflowInterface]
-interface FileProcessingWorkflow
+interface YourWorkflowDefinitionInterface
 {
     #[WorkflowMethod]
     public function processFile(Argument $args);

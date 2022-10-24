@@ -1014,17 +1014,17 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 </TabItem>
 <TabItem value="php">
 
-To customize a Workflow type, use the Workflow method annotations to specify the name of Workflow.
+To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
 
 ```php
 #[WorkflowMethod(name)]
 ```
 
-If a Workflow type is not specified, then Workflow type defaults to the interface name, `FileProcessingWorkflow`.
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
 
 ```php
 #[WorkflowInterface]
-interface FileProcessingWorkflow
+interface YourWorkflowDefinitionInterface
 {
     #[WorkflowMethod]
     public function processFile(Argument $args);
@@ -3747,3 +3747,4 @@ try {
 
 </TabItem>
 </Tabs>
+
