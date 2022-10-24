@@ -1014,7 +1014,22 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+To customize a Workflow type, use the Workflow method annotations to specify the name of Workflow.
+
+```php
+#[WorkflowMethod(name)]
+```
+
+If a Workflow type is not specified, then Workflow type defaults to the interface name, `FileProcessingWorkflow`.
+
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -3732,3 +3747,4 @@ try {
 
 </TabItem>
 </Tabs>
+

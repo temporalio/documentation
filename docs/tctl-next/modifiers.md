@@ -445,3 +445,4 @@ Alias: `--wtt`
 ## --yes
 
 Use the --yes modifier to automatically confirm all prompts.
+

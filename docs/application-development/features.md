@@ -1182,8 +1182,6 @@ Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.Workf
 
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
-
 <!--SNIPSTART typescript-handle-query -->
 <!--SNIPEND-->
 
@@ -3546,3 +3544,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
