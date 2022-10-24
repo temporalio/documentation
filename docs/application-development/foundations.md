@@ -1628,9 +1628,10 @@ In TypeScript, the return value is always a Promise.
 
 In the following example, `Promise<string>` is the return value.
 
-```
-<!--SNIPSTART typescript-activity-fn -->
-<!--SNIPEND-->
+```typescript
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
 ```
 
 </TabItem>
