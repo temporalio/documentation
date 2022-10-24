@@ -47,7 +47,6 @@ This variable is required for setting other environmental variables.
 
 The port used by the Temporal WebUI Server and the HTTP API.
 
-Defining this variable allows the Cluster and API to communicate effectively.
 
 This variable is needed for `TEMPORAL_OPENAPI_ENABLED` and all auth-related settings to work properly.
 `TEMPORAL_UI_ENABLED` requires a valid port number.
