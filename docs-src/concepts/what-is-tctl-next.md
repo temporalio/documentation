@@ -12,7 +12,9 @@ This documentation reflects the "next" version of Temporal's tctl command line t
 Currently it is known as [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux), but the name may change in the future.
 
 :::note
+
 If you are using `tctl` version 1.16.12, you must update to version 1.16.3 before using `tctl` v2.0.0-beta.1.
+
 :::
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
