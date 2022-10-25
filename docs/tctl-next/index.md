@@ -14,6 +14,12 @@ import TabItem from '@theme/TabItem';
 This documentation reflects the "next" version of Temporal's tctl command line tool.
 Currently it is known as [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux), but the name may change in the future.
 
+:::note
+
+If you are using `tctl` version 1.16.12 or older, you must update to at least version 1.16.3 before you can switch to `tctl` v2.0.0-beta.1.
+
+:::
+
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
 It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a> operations (such as start
 Workflow, show Workflow History, and Signal Workflow).
