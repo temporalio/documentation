@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl namespace` commands enable [Namespace](/namespaces#) operations.
+The `tctl namespace` commands enable <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> operations.
 
 Alias: `n`
 
@@ -22,7 +22,7 @@ Alias: `n`
 
 ## delete
 
-The `tctl namespace delete` command deletes a [Namespace](/namespaces#).
+The `tctl namespace delete` command deletes a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 
 `tctl namespace delete`
 
@@ -76,7 +76,7 @@ Clusters: dc1, dc2
 
 Alias: `l`
 
-The `tctl namespace list` command lists all [Namespaces](/namespaces#).
+The `tctl namespace list` command lists all <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 
 `tctl namespace list`
 
@@ -84,7 +84,7 @@ The command has no modifiers.
 
 ## register
 
-The `tctl namespace register` command registers a [Namespace](/namespaces#).
+The `tctl namespace register` command registers a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 
 `tctl namespace register`
 
@@ -114,7 +114,7 @@ Always include required modifiers when executing this command.
 
 ## update
 
-The `tctl namespace update` command updates a [Namespace](/namespaces#).
+The `tctl namespace update` command updates a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 
 `tctl namespace update`
 
