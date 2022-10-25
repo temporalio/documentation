@@ -10,5 +10,3 @@ tags:
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`

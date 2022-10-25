@@ -8,5 +8,3 @@ tags:
 ---
 
 Disables the interactive pager.
-
-Alias: `-P`
