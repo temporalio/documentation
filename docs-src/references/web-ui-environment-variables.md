@@ -58,7 +58,7 @@ The location in the Web UI Server where everything is stored.
 
 Enables or disables Web UI authentication and authorization methods.
 
-When enabled, the Temporal Cluster will use the provider information in the [UI configuration file](/references/web-ui-configuration#auth) to verify the identity of users.
+When enabled, the Web UI will use the provider information in the [UI configuration file](/references/web-ui-configuration#auth) to verify the identity of users.
 
 All auth-related environmental variables depend on `TEMPORAL_AUTH_ENABLED`.
 Disabling the variable will retain given values.
