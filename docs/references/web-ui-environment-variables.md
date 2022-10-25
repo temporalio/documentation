@@ -4,10 +4,10 @@ title: Temporal Web UI environmental variables
 description: How to set  environmental variables for Temporal Web UI.
 sidebar_label: Web UI env var
 tags:
- - docker
- - webui
- - ui server
- - reference
+  - docker
+  - webui
+  - ui server
+  - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
