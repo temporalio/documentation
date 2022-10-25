@@ -99,8 +99,6 @@ Enables or disables the [browser UI](/references/web-ui-configuration#enableui) 
 Enabling the browser UI allows the Server to be accessed from your web browser.
 If disabled, the server cannot be viewed on the web, but the UI server APIs remain available for use.
 
-This variable needs to be set to 'true' in order to set `TEMPORAL_OPENAPI_ENABLED`.
-
 ## `TEMPORAL_OPENAPI_ENABLED`
 
 Enables or disables OpenAPI features for the Temporal Web UI.
@@ -151,23 +149,27 @@ Together, these keys are used to create certificates.
 
 ## `TEMPORAL_TLS_CA_DATA`
 
-The data obtained from `TEMPORAL_TLS_CA`.
+Stores the data for a TLS CA file.
+
+This variable can be used instead of providing a path for `TEMPORAL_TLS_CA`.
 
 ## `TEMPORAL_TLS_CERT_DATA`
 
-The data obtained from `TEMPORAL_TLS_CERT_DATA`.
+Stores the data for a TLS cert file.
+
+This variable can be used instead of providing a path for `TEMPORAL_TLS_CERT`.
 
 ## `TEMPORAL_TLS_KEY_DATA`
 
-The data obtained from `TEMPORAL_TLS_KEY_DATA`.
+Stores the data for a TLS key file.
+
+This variable can be used instead of providing a path for `TEMPORAL_TLS_KEY`.
 
 ## `TEMPORAL_TLS_ENABLE_HOST_VERIFICATION`
 
 Enables or disables [Transport Layer Security (TLS) host verification](/references/web-ui-configuration#tls).
 
 When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
-
-This variable is needed when configuring TLS and its associated variables.
 
 ## `TEMPORAL_TLS_SERVER_NAME`
 
@@ -182,9 +184,7 @@ The endpoint for the [Codec Server](/concepts/what-is-a-codec-server), if config
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 
-Whether to attach JWT access token as ‘authorization’ header in requests with the Codec Server.
-
-Make sure that `TEMPORAL_CODEC_ENDPOINT` is defined to use this variable.
+Whether to send a JWT access token as ‘authorization’ header in requests with the Codec Server.
 
 ## `TEMPORAL_FORWARD_HEADERS`
 
