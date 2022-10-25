@@ -78,13 +78,13 @@ TypeScript / JavaScript is currently selected!
 
 ## Guide structure
 
-The Developer's guide is broken down into four sections:
+The Developer's guide is divided into four sections:
 
 1. [**Foundations**](/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
    - [Run a development Cluster](/application-development/foundations#run-a-dev-cluster)
    - [Add an SDK to your project](/application-development/foundations#add-your-sdk)
-   - [How to create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
+   - [Create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
    - [Develop a basic Workflow Definition](/application-development/foundations#develop-workflows)
    - [Develop a basic Activity Definition](/application-development/foundations#develop-activities)
    - [Call to execute an Activity](/application-development/foundations#activity-execution)

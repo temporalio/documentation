@@ -15,7 +15,7 @@ A Child Workflow Execution is a [Workflow Execution](/concepts/what-is-a-workflo
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
-![Parent & Child Workflow Execution entity relationship](/diagrams/parent-child-workflow-execution-relationship.svg)
+![Parent and Child Workflow Execution entity relationship](/diagrams/parent-child-workflow-execution-relationship.svg)
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
@@ -25,7 +25,7 @@ When a Parent Workflow Execution reaches a Closed status, the Cluster propagates
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
-![Parent & Child Workflow Execution entity relationship with Continue As New](/diagrams/parent-child-workflow-execution-with-continue-as-new.svg)
+![Parent and Child Workflow Execution entity relationship with Continue As New](/diagrams/parent-child-workflow-execution-with-continue-as-new.svg)
 
 ### When to use Child Workflows
 

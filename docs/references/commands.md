@@ -4,7 +4,7 @@ title: Commands reference
 description: A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.
 sidebar_label: Commands
 tags:
-  - reference
+ - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
