@@ -481,9 +481,9 @@ Then we print some information and start the Workflow.
 </TabItem>
 <TabItem value="python">
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
+Use the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
 
-Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
+Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.TLSConfig.html) for connecting to a Temporal Cluster.
 
 ```python
 client = await Client.connect(
@@ -911,7 +911,7 @@ interface FileProcessingWorkflow {
 
 A Workflow Execution can return the results of a Workflow.
 
-To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
 handle = await client.start_workflow(
@@ -1014,7 +1014,22 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
+
+```php
+#[WorkflowMethod(name)]
+```
+
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
+
+```php
+#[WorkflowInterface]
+interface YourWorkflowDefinitionInterface
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -1308,33 +1323,6 @@ interface FileProcessingActivities
 }
 ```
 
-**How to customize an Activity type**
-
-We recommend to use a single value type argument for Activity methods.
-In this way, adding new arguments as fields to the value type is a backward-compatible change.
-
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
-
-You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
-(The default prefix is empty.)
-
-```php
-#[YourActivityInterface("file_activities.")]
-interface FileProcessingActivities
-{
-    public function upload(string $bucketName, string $localName, string $targetName);
-
-    #[ActivityMethod("transcode_file")]
-    public function download(string $bucketName, string $remoteName);
-
-    public function processFile(): string;
-
-    public function deleteLocalFile(string $fileName);
-}
-```
-
-The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activites that are used in the Workflow.
-
 </TabItem>
 <TabItem value="python">
 
@@ -1378,7 +1366,7 @@ An Activity must Heartbeat to receive cancellation.
 
 ##### [Synchronous Activities](#synchronous-activities)
 
-The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.WorkerConfig.html#activity_executor) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
 
 Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
 
@@ -1394,7 +1382,7 @@ Besides `activity_executor`, no other additional Worker parameters are required 
 
 If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) that is not `concurrent.futures.ThreadPoolExecutor`, then the synchronous activities are considered multiprocess/other activities.
 
-These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.sharedstatemanager). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.sharedstatemanager#create_from_multiprocessing).
+These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.SharedStateManager.html). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.SharedStateManager.html#create_from_multiprocessing).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1411,7 +1399,7 @@ Activities are _just functions_. The following is an Activity that accepts a str
 </TabItem>
 </Tabs>
 
-### Activity Parameters
+### Activity parameters
 
 There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a> may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
@@ -1628,9 +1616,10 @@ In TypeScript, the return value is always a Promise.
 
 In the following example, `Promise<string>` is the return value.
 
-```
-<!--SNIPSTART typescript-activity-fn -->
-<!--SNIPEND-->
+```typescript
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
 ```
 
 </TabItem>
@@ -1709,7 +1698,27 @@ The Activity type for the method annotated with `@ActivityMethod` is set to `A_a
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+
+You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
+(The default prefix is empty.)
+
+```php
+#[YourActivityInterface("file_activities.")]
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName);
+
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName);
+
+    public function processFile(): string;
+
+    public function deleteLocalFile(string $fileName);
+}
+```
+
+The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 </TabItem>
 <TabItem value="undefined">
@@ -2248,7 +2257,7 @@ $greetingActivity = Workflow::newActivityStub(
 </TabItem>
 <TabItem value="python">
 
-Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.ActivityHandle.html). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
@@ -2486,7 +2495,7 @@ temporal:
 </TabItem>
 <TabItem value="python">
 
-To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.worker#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
+To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.Worker.html#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
 
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 
@@ -2638,7 +2647,7 @@ w.registerWorkflow(WorkflowC)
 </TabItem>
 <TabItem value="java">
 
-Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+Use `worker.registerWorkflowImplementationTypes` to register Workflow Type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
 
 For Workflows, the Workflow Type is registered with a Worker.
 A Workflow Type can be registered only once per Worker entity.
@@ -2680,7 +2689,7 @@ The following example shows how to register the `DynamicWorkflow` and `DynamicAc
     // Start all the Workers that are in this process.
     factory.start();
 
-    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker. */
+    /* Create the Workflow stub. Note that the Workflow Type is not explicitly registered with the Worker. */
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
@@ -2928,7 +2937,7 @@ The following example shows how to call the Dynamic Workflow implementation in t
     // worker.registerWorkflowImplementationTypes(DynamicGreetingWorkflowImpl.class);
 
     /* Create the Workflow stub to call the dynamic Workflow.
-    * Note that the Workflow type is not explicitly registered with the Worker.*/
+    * Note that the Workflow Type is not explicitly registered with the Worker.*/
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);
@@ -3043,7 +3052,7 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 </TabItem>
 <TabItem value="python">
 
-To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods in the Client.
+To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
 The following code example starts a Workflow and returns its handle.
 
@@ -3249,7 +3258,7 @@ If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Chi
 </TabItem>
 <TabItem value="python">
 
-To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
 ```python
 result = await client.execute_workflow(
@@ -3421,7 +3430,7 @@ public const WORKFLOW_ID = Your-Workflow-Id
 </TabItem>
 <TabItem value="python">
 
-To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
@@ -3664,7 +3673,7 @@ var_dump($run->getResult());
 </TabItem>
 <TabItem value="python">
 
-Use [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle) to return a Workflow handle.
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) to return a Workflow handle.
 Then use the [`result`](https://python.temporal.io/temporalio.client.workflowhandle#result) method to await on the result of the Workflow.
 
 ```python
@@ -3677,7 +3686,7 @@ result = await handle.result()
 print(f"Result: {result}")
 ```
 
-To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety.
+To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) for type safety.
 
 Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.

@@ -8,5 +8,3 @@ tags:
 ---
 
 Specify the name of a [Signal](/concepts/what-is-a-signal).
-
-Alias: `-n`

@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.workflowhandle#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
 ```python
 await handle.query("some query")

@@ -989,7 +989,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To replay a Workflow Execution, use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.replayer#replay_workflow) method and pass a Workflow History as an argument.
+To replay a Workflow Execution, use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) method and pass a Workflow History as an argument.
 
 In the following example, `history_json_str` references the Workflow History as a JSON string.
 

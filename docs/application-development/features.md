@@ -142,7 +142,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -225,19 +225,13 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
-Get a new [`Selector`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Selector) and pass it the Signal Channel and a callback function to handle the payload.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
   // ...
   var signal MySignal
   signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
-  selector := workflow.NewSelector(ctx)
-  selector.AddReceive(signalChan, func(channel workflow.ReceiveChannel, more bool) {
-      channel.Receive(ctx, &signal)
-      // ...
-  })
-  selector.Select(ctx)
+  signalChan.Receive(ctx, &signal)
   if len(signal.Message) > 0 && signal.Message != "SOME_VALUE" {
       return errors.New("signal")
   }
@@ -246,8 +240,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 ```
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-We then use a [`workflow.Selector`](/go/selectors) and the `AddReceive()` to wait on a Signal from this channel.
-The `more` bool in the callback function indicates that channel is not closed and more deliveries are possible.
 
 Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
@@ -500,11 +492,7 @@ See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><im
 </TabItem>
 <TabItem value="python">
 
-To send a Signal to a Workflow Execution from Client code, use the [`signal()`](https://python.temporal.io/temporalio.workflow.html#signal) method on the Workflow handle.
-
-```python
-await my_workflow_handle.signal(MyWorkflow.my_signal, "my signal arg")
-```
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -621,7 +609,7 @@ class MyWorkflow:
 
 :::note
 
-The Workflow type given is only for type annotations and not for validation.
+The Workflow Type passed is only for type annotations and not for validation.
 
 :::
 
@@ -753,7 +741,7 @@ $run = $workflowClient->startWithSignal(
 </TabItem>
 <TabItem value="python">
 
-To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
 
 ```python
 async def main():
@@ -883,7 +871,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 </TabItem>
 <TabItem value="python">
@@ -1181,7 +1169,7 @@ var_dump($workflow->getCurrentState());
 </TabItem>
 <TabItem value="python">
 
-To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.workflowhandle#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
 ```python
 await handle.query("some query")
@@ -1382,7 +1370,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="python">
 
-Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 Available timeouts are:
 
@@ -1519,7 +1507,7 @@ For more detailed information about `RetryOptions` object see [retries](/php/ret
 </TabItem>
 <TabItem value="python">
 
-Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
 handle = await client.start_workflow(
@@ -1840,7 +1828,7 @@ For an executable code sample, see [ActivityRetry sample](https://github.com/tem
 </TabItem>
 <TabItem value="python">
 
-To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.retrypolicy) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
+To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
 The following example sets the maximum interval to 2 seconds.
 
@@ -2215,7 +2203,7 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="python">
 
-[`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.startactivityinput#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
+[`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.StartActivityInput.html#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
 
 ```python
 workflow.start_activity(
@@ -2304,7 +2292,7 @@ temporalClient, err := client.Dial(client.Options{})
 temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
 ```
 
-Following are the parameters of the `CompleteActivity` function:
+The following are the parameters of the `CompleteActivity` function:
 
 - `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
   the Activity.
@@ -2395,6 +2383,29 @@ To fail the Activity, you would do the following:
 ```php
 // Fail the Activity.
 $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
+```
+
+</TabItem>
+<TabItem value="python">
+
+To mark an Activity as completing asynchoronus, do the following inside the Activity.
+
+```python
+# Capture token for later completion
+captured_token = activity.info().task_token
+activity.raise_complete_async()
+```
+
+To update an Activity outside the Activity, use the [get_async_activity_handle()](https://python.temporal.io/temporalio.client.Client.html#get_async_activity_handle) method to get the handle of the Activity.
+
+```python
+handle = my_client.get_async_activity_handle(task_token=captured_token)
+```
+
+Then, on that handle, you can call the results of the Activity, `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
+
+```python
+await handle.complete("Completion value.")
 ```
 
 </TabItem>
@@ -2858,7 +2869,7 @@ To continue execution of the same Workflow that is currently running, use:
 Workflow.continueAsNew(input1, ...);
 ```
 
-To continue execution of a currently running Workflow as a completely different Workflow type, use `Workflow.newContinueAsNewStub()`.
+To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
 For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
 
 ```java
@@ -3096,7 +3107,7 @@ For more information, see the [PHP samples](https://github.com/temporalio/sample
 </TabItem>
 <TabItem value="python">
 
-You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods:
+You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods:
 
 ```python
 await client.start_workflow(
@@ -3463,12 +3474,12 @@ Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#Namesp
 You can also <a class="tdlp" href="/tctl-v1/namespace#register">register Namespaces using the tctl command-line tool<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a href="/tctl-v1/namespace#register">Learn more</a></p></div></a>.
 
 ```go
-    client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-            //...
-        err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-            Namespace: your-namespace-name,
-            WorkflowExecutionRetentionPeriod: &retention,
-        })
+client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+        //...
+    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+        Namespace: your-namespace-name,
+        WorkflowExecutionRetentionPeriod: &retention,
+    })
 ```
 
 The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
