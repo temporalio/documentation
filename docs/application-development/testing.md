@@ -21,11 +21,12 @@ In the context of Temporal, you can create these types of automated tests:
 
 We generally recommend writing the majority of your tests as integration tests.
 
-Use the test server for both end-to-end and integration tests with Workers, as the test server supports skipping time.
+Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
 ## Test Activities
 
-An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. This allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
+An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
+This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
 ### Run an Activity
 
@@ -58,9 +59,10 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-First, create a [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment). The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
+First, create a [`MockActivityEnvironment`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment).
+The constructor accepts an optional partial Activity [`Info`](https://typescript.temporal.io/api/classes/activity.Info) object in case any info fields are needed for the test.
 
-Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
+Then use [`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) to run a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
 import {MockActivityEnvironment} from "@temporalio/testing";
@@ -73,8 +75,8 @@ async function activityFoo(a: number, b: number): Promise<number> {
   return a + b + Context.current().info.attempt;
 }
 
-// Creating a new MockActivityEnvironment with the attempt set to 2. Then it is running the activityFoo
-// function with the parameters 5 and 35. Then it is asserting that the result is 42.
+// Create a MockActivityEnvironment with attempt set to 2. Run the activityFoo
+// function with parameters 5 and 35. Assert that the result is 42.
 const env = new MockActivityEnvironment({attempt: 2});
 const result = await env.run(activityFoo, 5, 35);
 assert.equal(result, 42);
@@ -85,7 +87,7 @@ assert.equal(result, 42);
 
 ### Listen to Heartbeats
 
-When an Activity sends a Heartbeat, you'll want to be able to see them in your test code, so that you can verify that they're correct.
+When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
 <Tabs
 defaultValue="go"
@@ -142,7 +144,7 @@ await env.run(activityFoo);
 
 ### Cancel an Activity
 
-If an Activity is supposed to react to a Cancelation, you can test whether it reacts correctly by canceling it.
+If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
 <Tabs
 defaultValue="go"
@@ -226,7 +228,7 @@ Content is currently unavailable.
 
 **RoadRunner config**
 
-To mock an Activity in PHP, use [RoarRunner Key-Value storage](https://github.com/spiral/roadrunner-kv) and add the following lines to your `tests/.rr.test.yaml` file.
+To mock an Activity in PHP, use [RoadRunner Key-Value storage](https://github.com/spiral/roadrunner-kv) and add the following lines to your `tests/.rr.test.yaml` file.
 
 ```yaml
 # tests/.rr.test.yaml
@@ -237,8 +239,8 @@ kv:
       interval: 10
 ```
 
-Notice, that if you want to have ability to mock activities you should use `WorkerFactory` from `Temporal\Testing` namespace
-in your PHP worker:
+If you want to be able to mock Activities, use `WorkerFactory` from the `Temporal\Testing` Namespace
+in your PHP Worker:
 
 ```php
 // worker.test.php
@@ -252,9 +254,9 @@ $worker->registerActivity(MyActivity::class);
 $factory->run();
 ```
 
-Then, in your tests to mock an Activity use `ActivityMocker` class.
+Then, in your tests to mock an Activity, use the`ActivityMocker` class.
 
-Assume we have the following activity:
+Assume we have the following Activity:
 
 ```php
 #[ActivityInterface(prefix: "SimpleActivity.")]
@@ -264,7 +266,7 @@ interface SimpleActivityInterface
     public function doSomething(string $input): string;
 ```
 
-To mock it in the test you can do this:
+To mock it in the test, you can do this:
 
 ```php
 final class SimpleWorkflowTestCase extends TestCase
@@ -296,13 +298,13 @@ final class SimpleWorkflowTestCase extends TestCase
 }
 ```
 
-In the test case above we:
+In the preceding test case, we do the following:
 
-1. Instantiate instance of `ActivityMocker` class in `setUp()` method of the test.
-2. Don't forget to clear the cache after each test in `tearDown()`.
-3. Mock an activity call to return a string `world`.
+1. Instantiate `ActivityMocker` in the `setUp()` method of the test.
+2. Clear the cache after each test in `tearDown()`.
+3. Mock an Activity call to return a string `world`.
 
-To mock a failure use `expectFailure()` method:
+To mock a failure, use the `expectFailure()` method:
 
 ```php
 $this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('something went wrong'));
@@ -336,11 +338,13 @@ const worker = await Worker.create({
 </TabItem>
 </Tabs>
 
-### Skip Time
+### Skip time
 
-Some long-running Workflows can persist for months or even years. Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds, rather than the Workflow's specified amount.
+Some long-running Workflows can persist for months or even years.
+Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
 
-For example, if you have a Workflow sleep for a day, or have an Activity failure with a long retry interval, you don't need to wait the entire length of the sleep period to test if the sleep function works. Instead, test the logic that happens after the sleep by skipping forward time and complete your tests in a timely manner.
+For example, if you have a Workflow sleep for a day, or have an Activity failure with a long retry interval, you don't need to wait the entire length of the sleep period to test whether the sleep function works.
+Instead, test the logic that happens after the sleep by skipping forward in time and complete your tests in a timely manner.
 
 :::note
 
@@ -348,11 +352,14 @@ Skipping time is not relevant to unit testing Workflow code, because in that cas
 
 :::
 
-The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time. Time is a global property of an instance of `TestWorkflowEnvironment`: if you skip time (either automatically or manually), it applies to all currently running tests. If you need different time behaviors for different tests, then run your tests in a series or with a separate instance of the test server. For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
+The test framework included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
+Time is a global property of an instance of `TestWorkflowEnvironment`: skipping time (either automatically or manually) applies to all currently running tests.
+If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
+For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
 #### Setting up
 
-Learn to set up the time skipping test framework in the SDK of your choice.
+Learn to set up the time-skipping test framework in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
@@ -371,7 +378,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="php">
 
-1. Create `bootstrap.php` in `tests` folder with the following contents:
+1. In the `tests` folder, create `bootstrap.php` with the following contents:
 
 ```php
 declare(strict_types=1);
@@ -385,8 +392,7 @@ $environment->start();
 register_shutdown_function(fn () => $environment->stop());
 ```
 
-If you don't want to run temporal test server with all of your tests you can set, for example,
-add condition to start it only if `RUN_TEMPORAL_TEST_SERVER` environment variable is present:
+If you don't want to run the test server with all of your tests, you can add a condition to start a test only if the `RUN_TEMPORAL_TEST_SERVER` environment variable is present:
 
 ```php
 if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
@@ -396,7 +402,7 @@ if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
 }
 ```
 
-2. Add environment variable and `bootstrap.php` to your `phpunit.xml`:
+2. Add `bootstrap.php` and the `TEMPORAL_ADDRESS` environment variable to `phpunit.xml`:
 
 ```xml
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -409,7 +415,7 @@ if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
 </phpunit>
 ```
 
-3. Add test server executable to `.gitignore`:
+3. Add the test server executable to `.gitignore`:
 
 ```gitignore
 temporal-test-server
@@ -429,7 +435,8 @@ npm install @temporalio/testing
 
 The `@temporalio/testing` package downloads the test server and exports [`TestWorkflowEnvironment`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment), which you use to connect the Client and Worker to the test server and interact with the test server.
 
-[`TestWorkflowEnvironment.createTimeSkipping`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#createtimeskipping) starts the test server. A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
+[`TestWorkflowEnvironment.createTimeSkipping`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment#createtimeskipping) starts the test server.
+A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
 
 ```typescript
 import {TestWorkflowEnvironment} from "@temporalio/testing";
@@ -469,14 +476,17 @@ test('workflowFoo', async () => {
 });
 ```
 
-This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result. The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
+This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result.
+The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
 
 </TabItem>
 </Tabs>
 
 #### Automatic method
 
-Learn to Time Skip automatically in the SDK of your choice. Start a test server process that automatically skips time as needed. For example, in the time skipping mode, timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
+You can skip time automatically in the SDK of your choice.
+Start a test server process that skips time as needed.
+For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
 <Tabs
 defaultValue="go"
@@ -509,7 +519,9 @@ Use the [`from_client`](https://python.temporal.io/temporalio.testing.workflowen
 </TabItem>
 <TabItem value="typescript">
 
-The test server starts in "normal" time. When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the test server is switched to "skipped" time mode until the Workflow completes. In "skipped" mode, timers (`sleep()`s and `condition()` timeouts) are fast-forwarded except when Activities are running.
+The test server starts in "normal" time.
+When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the test server switches to "skipped" time mode until the Workflow completes.
+In "skipped" mode, timers (`sleep()` calls and `condition()` timeouts) are fast-forwarded except when Activities are running.
 
 `workflows.ts`
 
@@ -547,7 +559,7 @@ test("sleep completes almost immediately", async () => {
 
 #### Manual method
 
-Learn to Time Skip manually in the SDK of your choice.
+Learn to skip time manually in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
@@ -576,8 +588,8 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-You can also call `testEnv.sleep()` from your test code to advance the test server's time.
-This is useful for testing intermediate state, or for testing indefinitely long-running Workflows.
+You can call `testEnv.sleep()` from your test code to advance the test server's time.
+This is useful for testing intermediate states or indefinitely long-running Workflows.
 However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by starting the Workflow with `.start()` instead of `.execute()` (and not calling `.result()`).
 
 `workflow.ts`
@@ -629,9 +641,9 @@ test("sleeperWorkflow counts days correctly", async () => {
 </TabItem>
 </Tabs>
 
-#### Skip Activities
+#### Skip time in Activities
 
-Learn to Time Skip Activities in the SDK of your choice.
+Learn to skip time in Activities in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
@@ -662,9 +674,10 @@ Content is currently unavailable.
 
 Call [`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep) from the mock Activity.
 
-In the following test, `processOrderWorkflow` sends a notification to the user after one day. The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days’)`, during which the Workflow will send the email (by calling the `sendNotificationEmail` Activity).
+In the following test, `processOrderWorkflow` sends a notification to the user after one day.
+The `processOrder` mocked Activity calls `testEnv.sleep(‘2 days’)`, during which the Workflow sends email (by calling the `sendNotificationEmail` Activity).
 
-Then, once the Workflow completes, we assert that `sendNotificationEmail` was called.
+Then, after the Workflow completes, we assert that `sendNotificationEmail` was called.
 
 <details>
 <summary>
@@ -684,11 +697,12 @@ Workflow implementation
 
 ### Workflow context
 
-In order for a function or method to run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox in the case of TypeScript or Python), it needs to be run by the Worker as if it were a Workflow.
+For a function or method to run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox in the case of TypeScript or Python), it needs to be run by the Worker as if it were a Workflow.
 
 :::note
 
-This section is applicable in Python and TypeScript. In Python, we only allow testing of Workflows and not generic Workflow-related code.
+This section is applicable in Python and TypeScript.
+In Python, we allow testing of Workflows only and not generic Workflow-related code.
 
 :::
 
@@ -719,7 +733,8 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in [WorkerOptions.workflowsPath](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#workflowspath). Then execute it as if it were a Workflow:
+To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in [WorkerOptions.workflowsPath](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#workflowspath).
+Then execute the function as if it were a Workflow:
 
 `workflows/file-with-workflow-function-to-test.ts`
 
@@ -749,7 +764,7 @@ const result = await worker.runUntil(
 assert.equal(result, 42);
 ```
 
-If the `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
+If `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
 
 ```ts
 import {sleep} from "@temporalio/workflow";
@@ -801,9 +816,10 @@ For information about assert statements in Python, see [`assert`](https://docs.p
 
 The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
 
-By default, failed `assert` statements throw `AssertionError`s which cause [Workflow Tasks](/tasks#workflow-task) to fail and be indefinitely retried.
+By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a href="/tasks#workflow-task">Learn more</a></p></div></a> to fail and be indefinitely retried.
 
-To prevent this, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`. These interceptors catch `AssertionError`s and turn them into `ApplicationFailure`s that fail the entire Workflow Execution (not just the Workflow Task).
+To prevent this behavior, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`.
+These interceptors catch an `AssertionError` and turn it into an `ApplicationFailure` that fails the entire Workflow Execution (not just the Workflow Task).
 
 `workflows/file-with-workflow-function-to-test.ts`
 
@@ -843,7 +859,7 @@ await worker.runUntil(
 
 ## Test Frameworks
 
-Some SDKs have support for or examples with popular test frameworks, runners, or libraries.
+Some SDKs have support or examples for popular test frameworks, runners, or libraries.
 
 <Tabs
 defaultValue="go"
@@ -872,14 +888,13 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-TypeScript has sample tests with [Jest](https://jestjs.io/) and [Mocha](https://mochajs.org/).
+TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://mochajs.org/).
 
 **Jest**
 
 - Minimum Jest version: `27.0.0`
 - [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
-- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
-- [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (Must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string). `testEnvironment: 'jsdom'` is not supported.)
+- [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string); `testEnvironment: 'jsdom'` is not supported)
 
 **Mocha**
 
@@ -1003,7 +1018,7 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 <!--SNIPSTART typescript-history-replay-->
 <!--SNIPEND-->
 
-`runReplayHistory` will throw a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/) if the Workflow code isn’t compatible with the History.
+If the Workflow code isn’t compatible with the Event History, `runReplayHistory` throws a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/).
 
 </TabItem>
 </Tabs>
