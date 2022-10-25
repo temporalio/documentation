@@ -78,13 +78,13 @@ TypeScript / JavaScript is currently selected!
 
 ## Guide structure
 
-The Developer's guide is broken down into four sections:
+The Developer's guide is divided into four sections:
 
 1. [**Foundations**](/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
    - [Run a development Cluster](/application-development/foundations#run-a-dev-cluster)
    - [Add an SDK to your project](/application-development/foundations#add-your-sdk)
-   - [How to create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
+   - [Create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
    - [Develop a basic Workflow Definition](/application-development/foundations#develop-workflows)
    - [Develop a basic Activity Definition](/application-development/foundations#develop-activities)
    - [Call to execute an Activity](/application-development/foundations#activity-execution)
@@ -95,8 +95,8 @@ The Developer's guide is broken down into four sections:
 
    - [Signals](/application-development/features#signals)
    - [Queries](/application-development/features#queries)
-   - [Workflow timeouts & retries](/application-development/features#workflow-timeouts)
-   - [Activity timeouts & retries](/application-development/features#activity-timeouts)
+   - [Workflow timeouts and retries](/application-development/features#workflow-timeouts)
+   - [Activity timeouts and retries](/application-development/features#activity-timeouts)
    - [Activity Heartbeats](/application-development/features#activity-heartbeats)
    - [Async Activity Completion](/application-development/features#asynchronous-activity-completion)
    - [Child Workflows](/application-development/features#child-workflows)
@@ -110,14 +110,7 @@ The Developer's guide is broken down into four sections:
    - [Logging](/application-development/observability#logging)
    - [Visibility](/application-development/observability#visibility)
 
-4. [**Testing**](/application-development/testing):
-
-   - [Test Activities](/application-development/testing#test-activities)
-   - [Test Workflows](/application-development/testing#test-workflows)
-   - [Test Frameworks](/application-development/testing#test-frameworks)
-   - [Replays](/application-development/testing#replay)
-
-5. [**Worker performance**](/application-development/worker-performance)
+4. [**Worker performance**](/application-development/worker-performance)
 
    - [Metrics](/application-development/worker-performance#metrics)
    - [Configuration](/application-development/worker-performance#configuration)
