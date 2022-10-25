@@ -2,7 +2,7 @@
 id: how-to-asynchronously-complete-an-activity-in-python
 title: How to asynchronously complete an Activity in Python
 sidebar_label: Asynchronous Activity Completion
-description: Enables the Activity Function to return without the Activity Execution completing.
+description: To enable an Activity Function to return without the Activity Execution completing, call the `cancel` task object.
 tags:
   - how-to
   - python

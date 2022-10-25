@@ -2,15 +2,16 @@
 id: how-to-configure-tracing-in-java
 title: How to configure tracing in Java
 sidebar_label: Configure tracing
-description: Configure tracing
+description: To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
 tags:
   - java
   - how-to
 ---
 
-To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor. You can register the interceptors on both the Temporal Client side and on the Worker side.
+To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
+You can register the interceptors on both the Temporal Client side and the Worker side.
 
-The following code samples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
 
 ```java
 WorkflowClientOptions.newBuilder()
@@ -27,7 +28,7 @@ WorkflowClientOptions.newBuilder()
     WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
 
-The following code samples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
 
 ```java
 WorkerFactoryOptions.newBuilder()

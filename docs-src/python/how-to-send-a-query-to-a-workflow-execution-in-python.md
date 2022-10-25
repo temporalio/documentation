@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-To send a Query to a Workflow Execution from Client code, use the query() method on the Workflow handle.
+To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
 
 ```python
 await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")

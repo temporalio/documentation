@@ -18,10 +18,10 @@ To set a custom Search Attribute, call the [`setSearchAttributes()`](<https://ww
             .build();
 ```
 
-Where `generateSearchAttributes()` is a `Map<String, ?>` from the search attribute as a key to a value of one of the following types.
+`generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
 
 - `String`
-- `long`
+- `Long`
 - `Integer`
 - `Boolean`
 - `Double`

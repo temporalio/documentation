@@ -1,8 +1,8 @@
 ---
 id: how-to-asynchronously-complete-an-activity-in-java
-title: How to asynchronous complete an Activity in Java
-sidebar_label: Asynchronous complete an Activity
-description: Asynchronous complete an Activity in Java.
+title: How to asynchronously complete an Activity in Java
+sidebar_label: Asynchronously complete an Activity
+description: To asynchronously complete an Activity in Java, set the `ActivityCompletionClient` interface to the `complete()` method.
 tags:
   - java
   - how-to
@@ -69,4 +69,4 @@ Alternatively, set the [`doNotCompleteOnReturn()`](<https://www.javadoc.io/doc/i
     }
 ```
 
-When this method is called during an Activity Execution, the Activity Execution does not complete when it's method returns.
+When this method is called during an Activity Execution, the Activity Execution does not complete when its method returns.
