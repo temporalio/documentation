@@ -20,4 +20,4 @@ In the context of Temporal, you can create these types of automated tests:
 
 We generally recommend writing the majority of your tests as integration tests.
 
-Use the test server for both end-to-end and integration tests with Workers, as the test server supports skipping time.
+Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.

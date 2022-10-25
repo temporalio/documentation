@@ -1,6 +1,6 @@
 ---
 id: how-to-use-assert-typescript
-title: How to Assert a Workflow in TypeScript
+title: How to assert a Workflow in TypeScript
 sidebar_label: Assert a Workflow
 tags:
   - developer-guide
@@ -9,9 +9,10 @@ tags:
 
 The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
 
-By default, failed `assert` statements throw `AssertionError`s which cause [Workflow Tasks](/concepts/what-is-a-workflow-task) to fail and be indefinitely retried.
+By default, a failed `assert` statement throws `AssertionError`, which causes a [Workflow Task](/concepts/what-is-a-workflow-task) to fail and be indefinitely retried.
 
-To prevent this, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`. These interceptors catch `AssertionError`s and turn them into `ApplicationFailure`s that fail the entire Workflow Execution (not just the Workflow Task).
+To prevent this behavior, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`.
+These interceptors catch an `AssertionError` and turn it into an `ApplicationFailure` that fails the entire Workflow Execution (not just the Workflow Task).
 
 `workflows/file-with-workflow-function-to-test.ts`
 

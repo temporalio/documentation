@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-Some SDKs have support for or examples with popular test frameworks, runners, or libraries.
+Some SDKs have support or examples for popular test frameworks, runners, or libraries.

@@ -1,8 +1,8 @@
 ---
 id: how-to-test-cancel-an-activity-in-typescript
-title: How to test if an Activity reacts to a Cancellation in TypeScript
+title: How to test whether an Activity reacts to a Cancellation in TypeScript
 sidebar_label: Configure tracing
-description: Configure tracing
+description: Call `MockActivityEnvironment.cancel()` to cancel an Activity Context.
 tags:
   - developer-guide
   - sdk

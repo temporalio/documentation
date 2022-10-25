@@ -7,4 +7,5 @@ tags:
   - guide-context
 ---
 
-An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity. This allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
+An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
+This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.

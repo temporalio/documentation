@@ -1,6 +1,6 @@
 ---
 id: how-to-use-assert-python
-title: How to Assert a Workflow in Python
+title: How to assert a Workflow in Python
 sidebar_label: Assert a Workflow
 tags:
   - developer-guide

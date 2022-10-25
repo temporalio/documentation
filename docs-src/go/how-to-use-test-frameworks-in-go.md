@@ -8,6 +8,6 @@ tags:
   - go
 ---
 
-To use the test frame in Go, import the following packages use the [samples-go repo](https://github.com/temporalio/samples-go/), and run `go test ./helloworld` to run these sample tests.
+To use the test framework in Go, import the following packages, use the [samples-go repo](https://github.com/temporalio/samples-go/), and run `go test ./helloworld` to run these sample tests.
 
 [helloworld/helloworld_test.go](https://github.com/temporalio/samples-go/blob/main/helloworld/helloworld_test.go)

@@ -1,15 +1,16 @@
 ---
 id: how-to-test-functions-in-workflow-context-in-typescript
-title: How to Test functions in Workflow context TypeScript
+title: How to test functions in the Workflow context in TypeScript
 sidebar_label: Test functions in Workflow context
-description: Test functions in Workflow context
+description: To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in `WorkerOptions.workflowsPath`.
 tags:
   - developer-guide
   - sdk
   - typescript
 ---
 
-To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in [WorkerOptions.workflowsPath](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#workflowspath). Then execute it as if it were a Workflow:
+To test a function in your Workflow code that isn’t a Workflow, put the file it’s exported from in [WorkerOptions.workflowsPath](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#workflowspath).
+Then execute the function as if it were a Workflow:
 
 `workflows/file-with-workflow-function-to-test.ts`
 
@@ -39,7 +40,7 @@ const result = await worker.runUntil(
 assert.equal(result, 42);
 ```
 
-If the `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
+If `functionToTest` starts a Child Workflow, that Workflow must be exported from the same file (so that the Worker knows about it):
 
 ```ts
 import {sleep} from "@temporalio/workflow";

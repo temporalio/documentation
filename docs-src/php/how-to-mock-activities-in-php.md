@@ -11,7 +11,7 @@ tags:
 
 **RoadRunner config**
 
-To mock an Activity in PHP, use [RoarRunner Key-Value storage](https://github.com/spiral/roadrunner-kv) and add the following lines to your `tests/.rr.test.yaml` file.
+To mock an Activity in PHP, use [RoadRunner Key-Value storage](https://github.com/spiral/roadrunner-kv) and add the following lines to your `tests/.rr.test.yaml` file.
 
 ```yaml
 # tests/.rr.test.yaml
@@ -22,8 +22,8 @@ kv:
       interval: 10
 ```
 
-Notice, that if you want to have ability to mock activities you should use `WorkerFactory` from `Temporal\Testing` namespace
-in your PHP worker:
+If you want to be able to mock Activities, use `WorkerFactory` from the `Temporal\Testing` Namespace
+in your PHP Worker:
 
 ```php
 // worker.test.php
@@ -37,9 +37,9 @@ $worker->registerActivity(MyActivity::class);
 $factory->run();
 ```
 
-Then, in your tests to mock an Activity use `ActivityMocker` class.
+Then, in your tests to mock an Activity, use the`ActivityMocker` class.
 
-Assume we have the following activity:
+Assume we have the following Activity:
 
 ```php
 #[ActivityInterface(prefix: "SimpleActivity.")]
@@ -49,7 +49,7 @@ interface SimpleActivityInterface
     public function doSomething(string $input): string;
 ```
 
-To mock it in the test you can do this:
+To mock it in the test, you can do this:
 
 ```php
 final class SimpleWorkflowTestCase extends TestCase
@@ -81,13 +81,13 @@ final class SimpleWorkflowTestCase extends TestCase
 }
 ```
 
-In the test case above we:
+In the preceding test case, we do the following:
 
-1. Instantiate instance of `ActivityMocker` class in `setUp()` method of the test.
-2. Don't forget to clear the cache after each test in `tearDown()`.
-3. Mock an activity call to return a string `world`.
+1. Instantiate `ActivityMocker` in the `setUp()` method of the test.
+2. Clear the cache after each test in `tearDown()`.
+3. Mock an Activity call to return a string `world`.
 
-To mock a failure use `expectFailure()` method:
+To mock a failure, use the `expectFailure()` method:
 
 ```php
 $this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('something went wrong'));

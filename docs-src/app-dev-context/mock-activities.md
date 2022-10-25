@@ -1,7 +1,7 @@
 ---
 id: mock-activities
 title: How to mock Activities
-description: you can mock the Activity invocation.
+description: Mock an Activity by providing mock Activity implementations to the Worker.
 sidebar_label: Mock Activities
 tags:
   - guide-context

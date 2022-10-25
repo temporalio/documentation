@@ -19,4 +19,4 @@ Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes
 <!--SNIPSTART typescript-history-replay-->
 <!--SNIPEND-->
 
-`runReplayHistory` will throw a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/) if the Workflow code isn’t compatible with the History.
+If the Workflow code isn’t compatible with the Event History, `runReplayHistory` throws a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/).

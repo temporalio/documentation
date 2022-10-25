@@ -1,16 +1,16 @@
 ---
 id: how-to-skip-time-skip-manually-in-typescript
-title: How to Skip Time manually in TypeScript
-sidebar_label: Skip Time manually
-description: Skip Time manually
+title: How to skip time manually in TypeScript
+sidebar_label: Skip time manually
+description: Call `testEnv.sleep()` from your test code to advance the test server's time.
 tags:
   - developer-guide
   - sdk
   - typescript
 ---
 
-You can also call `testEnv.sleep()` from your test code to advance the test server's time.
-This is useful for testing intermediate state, or for testing indefinitely long-running Workflows.
+You can call `testEnv.sleep()` from your test code to advance the test server's time.
+This is useful for testing intermediate states or indefinitely long-running Workflows.
 However, to use `testEnv.sleep()`, you need to avoid automatic time skipping by starting the Workflow with `.start()` instead of `.execute()` (and not calling `.result()`).
 
 `workflow.ts`
