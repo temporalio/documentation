@@ -635,6 +635,10 @@
     {
       "source": "/tctl/taskqueue/:path*",
       "destination": "/tctl-v1/taskqueue#:path*"
+    },
+    {
+      "source": "/references/ui-configuration",
+      "destination": "/references/web-ui-configuration"
     }
   ]
 }
