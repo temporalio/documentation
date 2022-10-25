@@ -2,7 +2,7 @@
 id: how-to-configure-tracing-in-typescript
 title: How to configure tracing in TypeScript
 sidebar_label: Configure tracing
-description: Configure tracing
+description: Call `MockActivityEnvironment.cancel()` to cancel an Activity Context.
 tags:
   - developer-guide
   - sdk

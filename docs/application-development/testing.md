@@ -203,6 +203,8 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -1022,3 +1024,4 @@ If the Workflow code isn’t compatible with the Event History, `runReplayHistor
 
 </TabItem>
 </Tabs>
+
