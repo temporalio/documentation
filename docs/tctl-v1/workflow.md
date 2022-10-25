@@ -31,7 +31,7 @@ Alias: `w`
 - <a class="tdlp" href="#show">`tctl workflow show`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow show</p><p class="tdlppd">How to show Workflow History using tctl.</p><p class="tdlplm"><a href="#show">Learn more</a></p></div></a>
 - <a class="tdlp" href="#showid">`tctl workflow showid`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow showid</p><p class="tdlppd">How to show Workflow History for a specified Workflow Id and optional Run Id using tctl.</p><p class="tdlplm"><a href="#showid">Learn more</a></p></div></a>
 - <a class="tdlp" href="#signal">`tctl workflow signal`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow signal</p><p class="tdlppd">How to Signal a Workflow Execution using tctl.</p><p class="tdlplm"><a href="#signal">Learn more</a></p></div></a>
-- <a class="tdlp" href="#stack">`tctl workflow stack`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow stack</p><p class="tdlppd">How to query Workflow Executions with \_\_stack_trace using tctl.</p><p class="tdlplm"><a href="#stack">Learn more</a></p></div></a>
+- <a class="tdlp" href="#stack">`tctl workflow stack`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow stack</p><p class="tdlppd">How to query Workflow Executions with __stack_trace using tctl.</p><p class="tdlplm"><a href="#stack">Learn more</a></p></div></a>
 - <a class="tdlp" href="#start">`tctl workflow start`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow start</p><p class="tdlppd">How to start a new Workflow Execution using tctl.</p><p class="tdlplm"><a href="#start">Learn more</a></p></div></a>
 - <a class="tdlp" href="#terminate">`tctl workflow terminate`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a href="#terminate">Learn more</a></p></div></a>
 
@@ -2364,3 +2364,4 @@ Alias: `--re`
 ```bash
 tctl workflow terminate --reason <string>
 ```
+

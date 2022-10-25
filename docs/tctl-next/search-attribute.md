@@ -87,3 +87,4 @@ Always include required modifiers when executing this command.
 
 - <a class="tdlp" href="/tctl-next/modifiers#--name">--name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl name modifier</p><p class="tdlppd">definition for the --name modifier</p><p class="tdlplm"><a href="/tctl-next/modifiers#--name">Learn more</a></p></div></a>
 - <a class="tdlp" href="/tctl-next/modifiers#--yes">--yes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl yes modifier</p><p class="tdlppd">How to use the tctl-next --yes modifier.</p><p class="tdlplm"><a href="/tctl-next/modifiers#--yes">Learn more</a></p></div></a>
+
