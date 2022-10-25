@@ -13,7 +13,7 @@ Currently it is known as [tctl v2.0.0-beta](https://github.com/temporalio/tctl#t
 
 :::note
 
-If you are using `tctl` version 1.16.12, you must update to version 1.16.3 before using `tctl` v2.0.0-beta.1.
+If you are using `tctl` version 1.16.12 or older, you must update to at least version 1.16.3 before you can switch to `tctl` v2.0.0-beta.1.
 
 :::
 
