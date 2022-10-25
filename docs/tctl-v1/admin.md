@@ -1154,4 +1154,3 @@ Default: 0
 Alias: `--of value`
 
 The file where the output is sent to.
-
