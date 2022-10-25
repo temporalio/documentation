@@ -17,4 +17,3 @@ The following modifier changes the behavior of this command.
 
 `--show`
 Shows a list of commands, or help for a given command.
-
