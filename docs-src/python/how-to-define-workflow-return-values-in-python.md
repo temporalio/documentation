@@ -11,7 +11,7 @@ tags:
 
 A Workflow Execution can return the results of a Workflow.
 
-To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
 handle = await client.start_workflow(

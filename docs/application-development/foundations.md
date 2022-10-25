@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/temporal#temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/workflows#workflow-execution) that executes an [Activity](/activities#activity-execution).
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Application</p><p class="tdlppd">A Temporal Application is a set of Workflow Executions.</p><p class="tdlplm"><a href="/temporal#temporal-application">Learn more</a></p></div></a>—that is, all the relevant steps to start a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> that executes an <a class="tdlp" href="/activities#activity-execution">Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
 
 :::info WORK IN PROGRESS
 
@@ -36,7 +36,7 @@ In this section you can find the following:
 
 ## Run a dev Cluster
 
-The following sections list various methods of deploying your [Temporal Clusters](/clusters#) locally, so that you can use and interact with the [Temporal Client](/temporal#temporal-client) APIs and [tctl](/tctl-v1) commands to test and develop applications.
+The following sections list various methods of deploying your <a class="tdlp" href="/clusters#">Temporal Clusters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> locally, so that you can use and interact with the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> APIs and [tctl](/tctl-v1) commands to test and develop applications.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
@@ -115,14 +115,14 @@ When it is running, you can customize the application samples.
 
 ## Add your SDK
 
-A [Temporal SDK](/temporal#temporal-sdk) provides a framework for [Temporal Application](/temporal#temporal-application) development.
+A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal SDK?</p><p class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</p><p class="tdlplm"><a href="/temporal#temporal-sdk">Learn more</a></p></div></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Application</p><p class="tdlppd">A Temporal Application is a set of Workflow Executions.</p><p class="tdlplm"><a href="/temporal#temporal-application">Learn more</a></p></div></a> development.
 
 An SDK provides you with the following:
 
-- A [Temporal Client](/temporal#temporal-client) to communicate with a [Temporal Cluster](/clusters#).
-- APIs to develop [Workflows](/workflows#).
-- APIs to create and manage [Worker Processes](/workers#).
-- APIs to author [Activities](/activities#activity-definition).
+- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
+- APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a>.
+- APIs to create and manage <a class="tdlp" href="/workers#">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a href="/workers#">Learn more</a></p></div></a>.
+- APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -332,7 +332,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 ## Connect to a Cluster
 
-A [Temporal Client](/temporal#temporal-client) enables you to communicate with the [Temporal Cluster](/clusters#).
+A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -348,13 +348,13 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Cluster locally (such as [Temporalite](/clusters/quick-install#temporalite)), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/clusters/quick-install#docker-compose) serve (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as <a class="tdlp" href="#temporalite">Temporalite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</p><p class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</p><p class="tdlplm"><a href="#temporalite">Learn more</a></p></div></a>), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and <a class="tdlp" href="#docker-compose">Docker Compose<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</p><p class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</p><p class="tdlplm"><a href="#docker-compose">Learn more</a></p></div></a> serve (`127.0.0.1:7233`).
 
 When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
 
 - An address and port number.
-- A [Namespace](/namespaces#) Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
+- A <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
 - mTLS CA certificate.
 - mTLS private key.
 
@@ -462,7 +462,7 @@ WorkflowClient workflowClient =  WorkflowClient.newInstance(service, clientOptio
 
 For more information, see the following:
 
-- [How to spawn a Workflow Execution in Java](#start-workflow-execution)
+- <a class="tdlp" href="#start-workflow-execution">How to spawn a Workflow Execution in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to spawn a Workflow Execution in Java</p><p class="tdlppd">Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.</p><p class="tdlplm"><a href="#start-workflow-execution">Learn more</a></p></div></a>
 
 </TabItem>
 <TabItem value="php">
@@ -481,9 +481,9 @@ Then we print some information and start the Workflow.
 </TabItem>
 <TabItem value="python">
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
+Use [`connect()`](https://python.temporal.io/temporalio.client.Client.html#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.Client.html) class to create and connect to a Temporal Client to the Temporal Cluster.
 
-Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
+Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.TLSConfig.html) for connecting to a Temporal Cluster.
 
 ```python
 client = await Client.connect(
@@ -556,7 +556,7 @@ run().catch((err) => {
 
 ## Develop Workflows
 
-Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a [Workflow Definition](/workflows#workflow-definition).
+Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#workflow-definition">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -565,7 +565,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, a [Workflow Definition](/workflows#workflow-definition) is an exportable function.
+In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#workflow-definition">Learn more</a></p></div></a> is an exportable function.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context) error {
@@ -911,7 +911,7 @@ interface FileProcessingWorkflow {
 
 A Workflow Execution can return the results of a Workflow.
 
-To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods.
+To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
 handle = await client.start_workflow(
@@ -1185,7 +1185,7 @@ Content is currently unavailable.
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 Activities are normal function/method executions that can interact with the world.
-For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/activities#activity-definition).
+For the Workflow to be able to execute the Activity, we must define the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -1239,7 +1239,7 @@ Because this is such a common need, the rest of this guide shows Activities writ
 </TabItem>
 <TabItem value="java">
 
-An [Activity Definition](/activities#) is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+An <a class="tdlp" href="/activities#">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity?</p><p class="tdlppd">In day-to-day conversations, the term "Activity" frequently denotes either an Activity Type, an Activity Definition, or an Activity Execution.</p><p class="tdlplm"><a href="/activities#">Learn more</a></p></div></a> is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
 To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
@@ -1393,7 +1393,7 @@ An Activity must Heartbeat to receive cancellation.
 
 ##### [Synchronous Activities](#synchronous-activities)
 
-The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.WorkerConfig.html#activity_executor) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
 
 Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
 
@@ -1409,7 +1409,7 @@ Besides `activity_executor`, no other additional Worker parameters are required 
 
 If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) that is not `concurrent.futures.ThreadPoolExecutor`, then the synchronous activities are considered multiprocess/other activities.
 
-These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.sharedstatemanager). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.sharedstatemanager#create_from_multiprocessing).
+These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.SharedStateManager.html). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.SharedStateManager.html#create_from_multiprocessing).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1426,16 +1426,16 @@ Activities are _just functions_. The following is an Activity that accepts a str
 </TabItem>
 </Tabs>
 
-### Activity Parameters
+### Activity parameters
 
-There is no explicit limit to the total number of parameters that an [Activity Definition](/activities#activity-definition) may support.
+There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a> may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
 
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the [Workflow Execution Event History](/workflows#event-history) and large Event Histories can affect Worker performance.
-This is because the entire Event History could be transferred to a Worker Process with a [Workflow Task](/tasks#workflow-task).
+Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#event-history">Learn more</a></p></div></a> and large Event Histories can affect Worker performance.
+This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a href="/tasks#workflow-task">Learn more</a></p></div></a>.
 
 <!--TODO link to gRPC limit section when available -->
 
@@ -1555,7 +1555,7 @@ This Activity takes a single `name` parameter of type `string`.
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a [Workflow Execution Event History](/workflows#event-history).
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#event-history">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -1751,9 +1751,9 @@ In the following example, the Activity Name is `activityFoo`.
 
 ## Activity Execution
 
-Calls to spawn [Activity Executions](/activities#activity-execution) are written within a [Workflow Definition](/workflows#workflow-definition).
+Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#workflow-definition">Learn more</a></p></div></a>.
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
-This results in the set of three [Activity Task](/tasks#activity-task) related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="/tasks#activity-task">Learn more</a></p></div></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Therefore, the Activity implementation code must be _stateless_.
@@ -1772,7 +1772,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn an [Activity Execution](/activities#activity-execution), use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) API call inside your Workflow Definition.
+To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) API call inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
 
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
@@ -1819,17 +1819,17 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either [`setStartToCloseTimeout`](/activities#start-to-close-timeout) or [`ScheduleToCloseTimeout`](/activities#schedule-to-close-timeout) are required) must be set for the Activity.
+- Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout">`setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout">`ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a> are required) must be set for the Activity.
   For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
-  See [Worker Program](#run-worker-processes)
+  See <a class="tdlp" href="#run-worker-processes">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Worker Program in Java</p><p class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</p><p class="tdlplm"><a href="#run-worker-processes">Learn more</a></p></div></a>
 - Activity code must be thread-safe.
 
 Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an [`ActivityTaskScheduled` Event](/concepts/what-is-an-event#activitytaskscheduled).
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an <a class="tdlp" href="/workflows#activitytaskscheduled">`ActivityTaskScheduled` Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#activitytaskscheduled">Learn more</a></p></div></a>.
 
 Activities can be invoked synchronously or asynchronously.
 
@@ -1998,7 +1998,7 @@ public class FileProcessingActivitiesImpl implements FileProcessingActivities {
 }
 ```
 
-For details on getting the results of an Activity Execution, see [Activity Execution Result](#get-activity-results).
+For details on getting the results of an Activity Execution, see <a class="tdlp" href="#get-activity-results">Activity Execution Result<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to get the result of an Activity Execution</p><p class="tdlppd">To get the results of an asynchronously invoked Activity method, use the `Promise` `get` method to block until the Activity method result is available.</p><p class="tdlplm"><a href="#get-activity-results">Learn more</a></p></div></a>.
 
 </TabItem>
 <TabItem value="php">
@@ -2109,12 +2109,12 @@ This imports the individual Activities and declares the type alias for each Acti
 ### Required timeout
 
 Activity Execution semantics rely on several parameters.
-The only required value that needs to be set is either a [Schedule-To-Close Timeout](/activities#start-to-close-timeout) or a [Start-To-Close Timeout](/activities#start-to-close-timeout).
+The only required value that needs to be set is either a <a class="tdlp" href="/activities#start-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a>.
 These values are set in the Activity Options.
 
 ### Get Activity results
 
-The call to spawn an [Activity Execution](/activities#activity-execution) generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
+The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
 <Tabs
@@ -2263,7 +2263,7 @@ $greetingActivity = Workflow::newActivityStub(
 </TabItem>
 <TabItem value="python">
 
-Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.activityhandle). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
+Use [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) to start an Activity and return its handle, [`ActivityHandle`](https://python.temporal.io/temporalio.workflow.ActivityHandle.html). Use [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) to return the results.
 
 You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
@@ -2304,13 +2304,13 @@ The `proxyActivities()` returns an object that calls the Activities in the funct
 
 ## Run Worker Processes
 
-The [Worker Process](/workers#worker-process) is where Workflow Functions and Activity Functions are executed.
+The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a href="/workers#worker-process">Learn more</a></p></div></a> is where Workflow Functions and Activity Functions are executed.
 
-- Each [Worker Entity](/workers#worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
-- Each Worker Entity must also associate itself with exactly one [Task Queue](/tasks#task-queue).
+- Each <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Entity?</p><p class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</p><p class="tdlplm"><a href="/workers#worker-entity">Learn more</a></p></div></a> in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>.
 - Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
-A [Worker Entity](/workers#worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Entity?</p><p class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</p><p class="tdlplm"><a href="/workers#worker-entity">Learn more</a></p></div></a> is the component within a Worker Process that listens to a specific Task Queue.
 
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/application-development/worker-performance).
@@ -2501,7 +2501,7 @@ temporal:
 </TabItem>
 <TabItem value="python">
 
-To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.worker#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
+To develop a Worker, use the [`Worker()`](https://python.temporal.io/temporalio.worker.Worker.html#__init__) constructor and add your Client, Task Queue, Workflows, and Activities as arguments.
 
 The following code example creates a Worker that polls for tasks from the Task Queue and executes the Workflow.
 
@@ -2634,7 +2634,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](#develop-activities) best practices, you might have an Activity struct that has multiple methods and fields.
+Per <a class="tdlp" href="#develop-activities">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop an Activity Definition in Go</p><p class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.</p><p class="tdlplm"><a href="#develop-activities">Learn more</a></p></div></a> best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
@@ -2790,7 +2790,7 @@ Then the bundle can be passed to the Worker:
 
 ## Start Workflow Execution
 
-[Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
+<a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
 In the examples below, all Workflow Executions are started using a Temporal Client.
 To spawn Workflow Executions from within another Workflow Execution, use either the [Child Workflow](#child-workflows) or External Workflow APIs.
@@ -2807,7 +2807,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a [Workflow Execution](/workflows#workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+To spawn a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a>, use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
 The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
 The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
@@ -2860,7 +2860,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See [`SignalwithStart`](/application-development/features#signal-with-start) to start a Workflow Execution to receive a Signal from within another Workflow.
+See <a class="tdlp" href="/application-development/features#signal-with-start">`SignalwithStart`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to send a Signal-with-Start in Java</p><p class="tdlppd">To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.</p><p class="tdlplm"><a href="/application-development/features#signal-with-start">Learn more</a></p></div></a> to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -2875,7 +2875,7 @@ You can use a typed or untyped `WorkflowStub` in the client code.
 - An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
   Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
   When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see [Temporal Client](#connect-to-a-cluster).
+  For details, see <a class="tdlp" href="#connect-to-a-cluster">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Temporal Client in Java</p><p class="tdlppd">To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).</p><p class="tdlplm"><a href="#connect-to-a-cluster">Learn more</a></p></div></a>.
 
 A Workflow Execution can be started either synchronously or asynchronously.
 
@@ -2956,7 +2956,7 @@ To check what type is running when your Dynamic Workflow `execute` method runs, 
 String type = Workflow.getInfo().getWorkflowType();
 ```
 
-See [Workflow Execution Result](#get-workflow-results) for details on how to get the results of the Workflow Execution.
+See <a class="tdlp" href="#get-workflow-results">Workflow Execution Result<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to get the result of a Workflow Execution in Java</p><p class="tdlppd">A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure). An asynchronous Workflow Execution immediately returns a value to the caller.</p><p class="tdlplm"><a href="#get-workflow-results">Learn more</a></p></div></a> for details on how to get the results of the Workflow Execution.
 
 **Using `ExternalWorkflowStub`**
 
@@ -3058,7 +3058,7 @@ You can start a Workflow Execution on a regular schedule with [the CronSchedule 
 </TabItem>
 <TabItem value="python">
 
-To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) asynchronous methods in the Client.
+To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
 The following code example starts a Workflow and returns its handle.
 
@@ -3114,7 +3114,7 @@ Workflow Execution run in a separate V8 isolate context in order to provide a [d
 
 ### Set Task Queue
 
-In most SDKs, the only Workflow Option that must be set is the name of the [Task Queue](/tasks#task-queue).
+In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>.
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
@@ -3264,7 +3264,7 @@ If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Chi
 </TabItem>
 <TabItem value="python">
 
-To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
 ```python
 result = await client.execute_workflow(
@@ -3354,7 +3354,7 @@ Optionally, in Workflow code, when calling an Activity, you can specify the Task
 
 ### Workflow Id
 
-Although it is not required, we recommend providing your own [Workflow Id](/workflows#workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
 <Tabs
 defaultValue="go"
@@ -3436,7 +3436,7 @@ public const WORKFLOW_ID = Your-Workflow-Id
 </TabItem>
 <TabItem value="python">
 
-To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.client#execute_workflow) methods.
+To set a Workflow Id in Python, specify the `id` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
@@ -3542,7 +3542,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 **Get last completion result**
 
-In the case of a [Temporal Cron Job](/workflows#temporal-cron-job), you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+In the case of a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#temporal-cron-job">Learn more</a></p></div></a>, you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
 To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
@@ -3679,7 +3679,7 @@ var_dump($run->getResult());
 </TabItem>
 <TabItem value="python">
 
-Use [`start_workflow()`](https://python.temporal.io/temporalio.client.client#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle) to return a Workflow handle.
+Use [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) to return a Workflow handle.
 Then use the [`result`](https://python.temporal.io/temporalio.client.workflowhandle#result) method to await on the result of the Workflow.
 
 ```python
@@ -3692,7 +3692,7 @@ result = await handle.result()
 print(f"Result: {result}")
 ```
 
-To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.client#get_workflow_handle_for) for type safety.
+To get a handle for an existing Workflow by its Id, you can use [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle), or use [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) for type safety.
 
 Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.

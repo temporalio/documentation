@@ -8,5 +8,3 @@ tags:
 ---
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
-
-Alias: `-n`
