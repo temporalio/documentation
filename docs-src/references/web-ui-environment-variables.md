@@ -67,7 +67,7 @@ All auth-related variables must be defined when this is enabled.
 
 ## `TEMPORAL_AUTH_PROVIDER_URL`
 
-The URL for Temporal's authentication and authorization OIDC provider.
+The .well-known IDP discovery URL for authentication and authorization.
 
 This can be set as in the UI server configuration with [auth](/references/web-ui-configuration#auth).
 
