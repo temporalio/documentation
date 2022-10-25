@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-Use the [`address`](https://typescript.temporal.io/api/interfaces/client.connectionoptions/#address) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client).
+Use the [`address`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions/#address) connection option from the [`Client`](https://typescript.temporal.io/api/namespaces/client).
 
 ```typescript
 const connection = await Connection.connect({

@@ -1,0 +1,37 @@
+{
+  "file_name": "config.md",
+  "file_dir": "tctl-next",
+  "id": "config",
+  "title": "tctl version-next config command reference",
+  "sidebar_label": "config",
+  "description": "How to use the tctl version-next config command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/config/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/config/current-env"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/config/get"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/config/set"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/config/show-env"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/config/use-env"
+    }
+  ]
+}

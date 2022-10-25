@@ -679,3 +679,72 @@ h1 {
 .nowrap {
   white-space: nowrap;
 }
+
+.tdiw {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+}
+
+.tditw {
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.tdit {
+  font-size: 1.1em;
+  color: #141414;
+}
+
+.tdiiw {
+  margin: 0 auto;
+  padding: 15px;
+  text-align: center;
+  overflow: none;
+}
+
+.tdi {
+  max-width: 800px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.tdlpiw {
+  margin-left: 2px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+a.tdlp .tdlpc {
+  display: none;
+  padding: 7px 15px;
+  margin-top: -125px;
+  margin-left: -120px;
+  max-width: 365px;
+}
+
+a.tdlp:hover .tdlpc {
+  display: inline;
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  color: #141414;
+  z-index: 5;
+}
+
+.tdlppt {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.tdlppd {
+  font-size: 0.8em;
+}

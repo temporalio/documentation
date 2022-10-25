@@ -22,7 +22,7 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 
 ### Running an activity in Context
 
-[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
+[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
 import { Context } from '@temporalio/activity';
@@ -225,7 +225,7 @@ test('advancing time using `testEnv.sleep()`', async () => {
 ### Time skipping in Activities
 
 When an Activity is executing time switches back to "normal",
-[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep)
+[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#sleep)
 can be used outside of Workflow code to skip time.
 
 <details>
@@ -278,7 +278,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
 
 ### Test arbitrary functions in Workflow context
 
-In case you need to test a function in your Workflow code that's not exported in [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath), export it in a different path and register it with the Worker.
+In case you need to test a function in your Workflow code that's not exported in [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath), export it in a different path and register it with the Worker.
 
 `workflows/file-with-workflow-function-to-test.ts`
 

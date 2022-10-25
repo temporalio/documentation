@@ -24,7 +24,7 @@ The reason we only offer a default logger is to minimize Worker dependencies and
 
 **Customizing the default logger**
 
-Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface.
+Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface.
 
 **Set Default logger level**
 
