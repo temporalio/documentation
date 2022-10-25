@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.client) class to connect a Client with mTLS.
+Use the `tls_config` parameter from the [`Client`](https://python.temporal.io/temporalio.client.Client.html) class to connect a Client with mTLS.
 
 The following example connects your Client to your address. The `tls_config` options uses variables that reference the certificate and private key.
 

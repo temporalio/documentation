@@ -8,5 +8,3 @@ tags:
 ---
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
-
-Alias: `--t`

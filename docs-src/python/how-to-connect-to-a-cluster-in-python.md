@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
+Use [`connect()`](https://python.temporal.io/temporalio.client.Client.html#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.Client.html) class to create and connect to a Temporal Client to the Temporal Cluster.
 
-Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.tlsconfig) for connecting to a Temporal Cluster.
+Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.TLSConfig.html) for connecting to a Temporal Cluster.
 
 ```python
 client = await Client.connect(

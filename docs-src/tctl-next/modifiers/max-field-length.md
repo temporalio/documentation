@@ -9,5 +9,3 @@ tags:
 
 Specify the maximum length for each attribute field.
 The default value is 500.
-
-Alias: `--maxl`
