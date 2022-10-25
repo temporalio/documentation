@@ -9,9 +9,6 @@ tags:
   - php
 ---
 
-We recommend using a single value type argument for Activity methods.
-In this way, adding new arguments as fields to the value type is a backward-compatible change.
-
 An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
 
 You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
