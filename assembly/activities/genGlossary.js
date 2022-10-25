@@ -86,7 +86,11 @@ async function findSlug(fullIndex, nodeId) {
   for (const link of fullIndex) {
     if (link.node_id == nodeId) {
       if (link.file_dir != "/") {
-        return `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
+        if (link.guide_id.includes("index")) {
+          return `/${link.file_dir}#${link.local_ref}`;
+        } else {
+          return `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
+        }
       } else {
         return `/${link.guide_id}#${link.local_ref}`;
       }
