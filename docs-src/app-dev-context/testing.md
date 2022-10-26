@@ -1,7 +1,7 @@
 ---
 id: testing
 title: Testing
-description: The testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
+description: The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
 sidebar_label: Testing
 tags:
   - guide-context
