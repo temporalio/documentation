@@ -8,4 +8,4 @@ tags:
   - typescript
 ---
 
-The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
+The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
