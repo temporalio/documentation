@@ -62,6 +62,10 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-configure-tracing-in-typescript"
         }
@@ -146,6 +150,10 @@
         },
         {
           "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
           "id": "none"
         },
         {

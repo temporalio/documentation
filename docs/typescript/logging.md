@@ -1,7 +1,7 @@
 ---
 id: logging
 title: Logging and Sinks in TypeScript SDK
-sidebar_label: Logging & Sinks
+sidebar_label: Logging and Sinks
 description: Workflow Sinks allow you to export information from the Workflow back to the Node.js environment, often used for logging, metrics, tracing.
 ---
 
@@ -190,7 +190,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
         new W3CBaggagePropagator(),
         new JaegerPropagator(),
       ],
-    })
+    }),
   );
   ```
 

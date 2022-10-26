@@ -10,12 +10,56 @@ The information in this page is being dispersed into [Knowledge base articles](/
 
 :::
 
+## Temporal Server
+
+Temporal Server is a Go application which you can [import](/references/server-options) or run as a binary (we offer [builds with every release](https://github.com/temporalio/temporal/releases)).
+
+If you are running only the Go binary, Go is not required.
+
+But if you are building Temporal or running it from source, [Go v1.16+ is required](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
+
+While Temporal can be run as a single Go binary, we recommend that production deployments of Temporal Server should deploy each of the 4 internal services separately (if you are using Kubernetes, one service per pod) so they can be scaled independently in the future.
+
+See below for a refresher on the 4 internal services:
+
+<details>
+<summary>
+Temporal Cluster Architecture
+</summary>
+
+import WhatIsCluster from "../concepts/what-is-a-temporal-cluster.md"
+
+<WhatIsCluster />
+
+</details>
+
+In practice, this means you will run each container with a flag specifying each service, e.g.
+
+```bash
+docker run
+    # persistence/schema setup flags omitted
+    -e SERVICES=history \                      -- Spinup one or more of: history, matching, worker, frontend
+    -e LOG_LEVEL=debug,info \                           -- Logging level
+    -e DYNAMIC_CONFIG_FILE_PATH=config/foo.yaml         -- Dynamic config file to be watched
+    temporalio/server:<tag>
+```
+
+[See the Docker source file](https://github.com/temporalio/temporal/tree/master/docker) for more details.
+
+Each release also ships a `Server with Auto Setup` Docker image that includes [an `auto-setup.sh` script](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) we recommend using for initial schema setup of each supported database. You should familiarize yourself with [what auto-setup does](https://temporal.io/blog/auto-setup), as you will likely be replacing every part of the script to customize for your own infrastructure and tooling choices.
+
+Though **neither are blessed for production use**, you can consult our [Docker-Compose repo](https://github.com/temporalio/docker-compose) or [Helm Charts](https://github.com/temporalio/helm-charts) for more hints on configuration options.
+
+The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment-guide).
+
+:::
+
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
 - Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
-- Each language SDK also has minimum version requirements. See the [versions & dependencies page](/clusters/) for precise versions we support together with these features.
+- Each language SDK also has minimum version requirements. See the [versions and dependencies page](/clusters/) for precise versions we support together with these features.
 
 Kubernetes is not required for Temporal, but it is a popular deployment platform anyway.
 We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) you can use as a reference, but you are responsible for customizing it to your needs.
@@ -72,7 +116,7 @@ Please request any additional information in [our forum](https://community.tempo
 
 Temporal is highly scalable due to its event sourced design.
 We have load tested up to 200 million concurrent Workflow Executions.
-Every shard is low contention by design and it is very difficult to oversubscribe to a Task Queue in the same cluster.
+Every shard is low contention by design, and it is very difficult to oversubscribe to a Task Queue in the same cluster.
 With that said, here are some guidelines to some common bottlenecks:
 
 - **Database**. The vast majority of the time the database will be the bottleneck. **We highly recommend setting alerts on `schedule_to_start_latency`** to look out for this. Also check if your database connection is getting saturated.
@@ -91,7 +135,7 @@ Temporal does not yet support returning the number of tasks in a task queue.
 The main technical hurdle is that each task can have its own `ScheduleToStart` timeout, so just counting how many tasks were added and consumed is not enough.
 
 This is why we recommend tracking `schedule_to_start_latency` for determining if the task queue has a backlog (aka your Workflow and Activity Workers are under-provisioned for a given Task Queue).
-We do plan to add features that give more visibility into the task queue state in future.
+We do plan to add features that give more visibility into the task queue state in the future.
 
 ### FAQ: High Availability cluster configuration
 
@@ -112,7 +156,7 @@ clusterMetadata:
 
 ### FAQ: Multiple deployments on a single cluster
 
-You may sometimes want to have multiple parallel deployments on the same cluster, eg:
+You may sometimes want to have multiple parallel deployments on the same cluster, for example:
 
 - when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share common infrastructure.
 - when you need a new deployment to change `numHistoryShards`.
@@ -156,7 +200,7 @@ Temporal Web's tracing capabilities mainly track activity execution within a Tem
 
 :::warning
 
-This document is still being written and we would welcome your questions and contributions.
+This document is still being written, and we would welcome your questions and contributions.
 
 Please search for these topics in our forum or ask on Slack.
 
@@ -172,7 +216,7 @@ _Please request elaboration on any of these_.
 - Implementing a DSL which is actually just a generic schema based language
 - Polling in activities instead of using signals
 - Blocking on incredibly long RPC requests and not using heartbeats
-- Failing/retrying workflows without a very very specific business reason
+- Failing/retrying workflows without a specific business reason
 
 ### Temporal Best practices
 

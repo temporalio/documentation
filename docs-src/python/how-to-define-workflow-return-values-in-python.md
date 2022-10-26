@@ -11,7 +11,7 @@ tags:
 
 To return a value of the Workflow, use `return` to return an object.
 
-The following example returns an `int` and `str` parameter.
+To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
 @dataclass

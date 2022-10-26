@@ -8,5 +8,3 @@ tags:
 ---
 
 Follows the progress of a Workflow Execution.
-
-Alias: `-f`

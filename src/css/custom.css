@@ -714,3 +714,37 @@ h1 {
   padding: 0;
   margin: 0 auto;
 }
+
+.tdlpiw {
+  margin-left: 2px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+a.tdlp .tdlpc {
+  display: none;
+  padding: 7px 15px;
+  margin-top: -125px;
+  margin-left: -120px;
+  max-width: 365px;
+}
+
+a.tdlp:hover .tdlpc {
+  display: inline;
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  color: #141414;
+  z-index: 5;
+}
+
+.tdlppt {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.tdlppd {
+  font-size: 0.8em;
+}
