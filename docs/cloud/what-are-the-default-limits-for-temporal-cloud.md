@@ -14,22 +14,22 @@ Some of these limits are configurable.
 
 ## Account default limits
 
-|                                      | Default                | Maximum (self-serve) | Maximum (system)                     |
-| ------------------------------------ | ---------------------- | -------------------- | ------------------------------------ |
-| Namespaces                           | 10                     | 10                   | 1,000                                |
-| Prometheus endpoint Retention Period | 1 month                |                      | 1 month                              |
+|                                      | Default | Maximum (self-serve) | Maximum (system) |
+| ------------------------------------ | ------- | -------------------- | ---------------- |
+| Namespaces                           | 10      | 10                   | 1,000            |
+| Prometheus endpoint Retention Period | 1 month |                      | 1 month          |
 
 <!--- What are the default limits for Namespaces in Temporal Cloud? --->
 
 ## Namespace default limits
 
-|                          | Default                                                | Maximum (self-serve) | Maximum (system)                     |
-| ------------------------ | ------------------------------------------------------ | -------------------- | ------------------------------------ |
-| Actions per second       | 100                                                    | 100                  | Contact us                            |
-| Certificates             | 32-KB payload or 16 certificates, whichever is smaller |                      | 32-KB payload or 16 certificates     |
-| Concurrent Task pollers  | 2,000                                                  | 100,000              | 100,000                              |
-| Custom Search Attributes | 20; max of 5 for text                                  |                      | 20; max of 5 for text                |
-| Retention Period         | 7 days                                                 | 90 days              | 90 days                              |
+|                          | Default                                                | Maximum (self-serve) | Maximum (system)                 |
+| ------------------------ | ------------------------------------------------------ | -------------------- | -------------------------------- |
+| Actions per second       | 100                                                    | 100                  | Contact us                       |
+| Certificates             | 32-KB payload or 16 certificates, whichever is smaller |                      | 32-KB payload or 16 certificates |
+| Concurrent Task pollers  | 2,000                                                  | 100,000              | 100,000                          |
+| Custom Search Attributes | 20; max of 5 for text                                  |                      | 20; max of 5 for text            |
+| Retention Period         | 7 days                                                 | 90 days              | 90 days                          |
 
 <!--- How to change the default limits for Temporal Cloud --->
 
