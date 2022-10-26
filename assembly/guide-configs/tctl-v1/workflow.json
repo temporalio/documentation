@@ -1,0 +1,97 @@
+{
+  "file_name": "workflow.md",
+  "file_dir": "tctl-v1",
+  "id": "workflow",
+  "title": "tctl v1.16 workflow command reference",
+  "sidebar_label": "workflow",
+  "description": "How to use the tctl v1.16 workflow command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/workflow/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/cancel"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/count"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/describeid"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/listall"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/listarchived"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/observe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/observeid"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/query"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/reset"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/reset-batch"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/run"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/scan"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/show"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/showid"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/signal"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/stack"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/start"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/workflow/terminate"
+    }
+  ]
+}

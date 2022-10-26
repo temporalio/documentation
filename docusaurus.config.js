@@ -9,8 +9,8 @@ module.exports = {
   tagline: "Build invincible applications",
   url: "https://docs.temporal.io",
   baseUrl: "/",
-  onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
@@ -206,11 +206,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
-          exclude: [
-            "**/app-dev-context/**",
-            "**/concept-context/**",
-            "**/cloud-context/**",
-          ], // do not render context content
+          exclude: [], // do not render context content
           editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.

@@ -12,7 +12,7 @@ A Temporal Workflow Execution is a durable, reliable, and scalable function exec
 It is the main unit of execution of a [Temporal Application](/concepts/what-is-a-temporal-application).
 
 - [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
-- [How to start a Workflow Execution using tctl](/tctl/workflow/start)
+- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/concepts/what-is-a-signal) and the environment through [Activities](/concepts/what-is-an-activity).
@@ -38,7 +38,7 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
 
-### Commands & awaitables
+### Commands and awaitables
 
 A Workflow Execution does two things:
 

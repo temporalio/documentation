@@ -26,7 +26,7 @@ In TypeScript, the default Data Converter supports:
 
 ## Custom Data Converter
 
-> API doc: [DataConverter](https://typescript.temporal.io/api/interfaces/worker.dataconverter/)
+> API doc: [DataConverter](https://typescript.temporal.io/api/interfaces/worker.DataConverter/)
 
 To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JSON#Data_types) like `BigInt`s or `Date`s, provide a custom Data Converter to the Client and Worker:
 
@@ -73,7 +73,7 @@ Some example implementations are in the SDK itself:
 
 There's also a sample project that creates an EJSON custom `PayloadConverter`: [samples-typescript/ejson](https://github.com/temporalio/samples-typescript/tree/main/ejson)
 
-It implements `PayloadConverterWithEncoding` instead of `PayloadConverter` so that it could be used with [`CompositePayloadConverter`](https://typescript.temporal.io/api/classes/common.compositepayloadconverter/):
+It implements `PayloadConverterWithEncoding` instead of `PayloadConverter` so that it could be used with [`CompositePayloadConverter`](https://typescript.temporal.io/api/classes/common.CompositePayloadConverter/):
 
 <!--SNIPSTART typescript-ejson-converter-impl -->
 <!--SNIPEND-->
@@ -124,7 +124,7 @@ To serialize values as [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol
   pbjs -t static-module protos/*.proto | pbts -o protos/root.d.ts -
   ```
 
-- Create a [`DefaultPayloadConverterWithProtobufs`](https://typescript.temporal.io/api/classes/protobufs.defaultpayloadconverterwithprotobufs/):
+- Create a [`DefaultPayloadConverterWithProtobufs`](https://typescript.temporal.io/api/classes/protobufs.DefaultPayloadConverterWithProtobufs/):
 
 <!--SNIPSTART typescript-protobuf-converter -->
 <!--SNIPEND-->
@@ -154,7 +154,7 @@ export const payloadConverter = new CompositePayloadConverter(
   new UndefinedPayloadConverter(),
   new BinaryPayloadConverter(),
   new ProtobufBinaryPayloadConverter(root),
-  new JsonPayloadConverter()
+  new JsonPayloadConverter(),
 );
 ```
 

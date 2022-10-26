@@ -13,10 +13,10 @@ The TypeScript SDK comes with an optional interceptor package that adds tracing 
 
 ## Interceptor types
 
-- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.workflowinboundcallsinterceptor/) - Intercept Workflow inbound calls like execution, signals, and queries.
-- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.workflowoutboundcallsinterceptor/) - Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
-- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.activityinboundcallsinterceptor) - Intercept inbound calls to an Activity (for example, `execute`).
-- [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.workflowclientcallsinterceptor/) - Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.workflowhandle) like starting or signaling a Workflow.
+- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/) - Intercept Workflow inbound calls like execution, signals, and queries.
+- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/) - Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
+- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) - Intercept inbound calls to an Activity (for example, `execute`).
+- [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptor/) - Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
 
 ## How interceptors work
 
@@ -43,7 +43,7 @@ export class ActivityLogInterceptor
 
   async scheduleActivity(
     input: ActivityInput,
-    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
   ): Promise<unknown> {
     console.log('Starting activity', { activityType: input.activityType });
     try {
@@ -79,7 +79,7 @@ export class DumbWorkflowAuthInterceptor
 {
   public async execute(
     input: WorkflowInput,
-    next: Next<WorkflowInboundCallsInterceptor, 'execute'>
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
   ): Promise<unknown> {
     const authHeader = input.headers.auth;
     const { user, password } = authHeader
@@ -101,13 +101,13 @@ Please contact us if you need to discuss this further.
 
 ### Activity and client interceptors registration
 
-- Activity interceptors are registered on Worker creation by passing an array of [`ActivityInboundCallsInterceptor` factory functions](https://typescript.temporal.io/api/interfaces/worker.activityinboundcallsinterceptorfactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions#interceptors).
+- Activity interceptors are registered on Worker creation by passing an array of [`ActivityInboundCallsInterceptor` factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
-- Client interceptors are registered on `WorkflowClient` construction by passing an array of [`WorkflowClientCallsInterceptor` factory functions](https://typescript.temporal.io/api/interfaces/client.workflowclientcallsinterceptorfactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.workflowclientoptions#interceptors).
+- Client interceptors are registered on `WorkflowClient` construction by passing an array of [`WorkflowClientCallsInterceptor` factory functions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptorFactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#interceptors).
 
 ### Workflow interceptors registration
 
-Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate. To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions#interceptors).
+Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate. To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
 At the time of construction, the Workflow Context is already initialized for the current Workflow.
 Use [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) to add Workflow specific information in the interceptor.

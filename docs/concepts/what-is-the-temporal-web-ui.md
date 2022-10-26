@@ -20,7 +20,7 @@ The Temporal Web UI is a GUI that provides users with Workflow Execution state a
 It ships with every [docker-compose](/application-development/foundations#docker-compose) update and is available with [Temporal Cloud](/cloud).
 
 You can configure the Temporal Web UI to work in your own environment.
-See the [UI configuration reference](/references/ui-configuration).
+See the [UI configuration reference](/references/web-ui-configuration).
 
 Web UI open source repos:
 
@@ -44,7 +44,7 @@ Users can list Workflow Executions by any of the following:
 - [Workflow ID](/concepts/what-is-a-workflow-id)
 - [Workflow Type](/concepts/what-is-a-workflow-type)
 - Status
-- Date & Time—users can set their preferred date & time format as one of the following:
+- Date and Time—users can set their preferred date and time format as one of the following:
   - UTC
   - Local
   - Relative

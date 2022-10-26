@@ -10,5 +10,6 @@
       "addWords": true,
       "scope": "workspace"
     }
-  }
+  },
+  "docwriter.style": "Auto-detect"
 }

@@ -2,9 +2,9 @@
   "file_name": "foundations.md",
   "id": "foundations",
   "file_dir": "application-development",
-  "title": "Application development - Foundations",
+  "title": "Developer's guide - Foundations",
   "sidebar_label": "Foundations",
-  "description": "The Foundations section of the Temporal Application development guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+  "description": "The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
@@ -121,7 +121,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-create-a-temporal-client-in-php"
+          "id": "php/how-to-connect-to-a-cluster-php"
         },
         {
           "lang": "python",
@@ -237,7 +237,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-customize-workflow-type-in-php"
         },
         {
           "lang": "python",
@@ -382,7 +382,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-customize-activity-type-in-php"
         },
         {
           "python": "Python",

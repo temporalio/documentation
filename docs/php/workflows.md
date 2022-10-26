@@ -7,9 +7,9 @@ description: The core abstraction of the Temporal solution is a fault-oblivious 
 
 import RelatedReadList from '../components/RelatedReadList.js'
 
-:::info Try the Application development guide
+:::info Try the Developer's guide
 
-The majority of this information has moved into the [Application development guide](/application-development/?lang=php).
+The majority of this information has moved into the [Developer's guide](/application-development/?lang=php).
 
 However, if you can't find what you are looking for there, we recommend checking this doc set as well.
 
@@ -92,7 +92,7 @@ interface FileProcessingWorkflow
 Note that name parameter of Workflow method annotations can be used to specify name of Workflow, signal and query types.
 If name is not specified the short name of the Workflow interface is used.
 
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow type defaults to `"FileProcessingWorkflow"`.
+In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
 
 ## Workflow Interface Inheritance
 
@@ -165,7 +165,7 @@ interface Workflow1 extends BaseWorkflow {}
 interface Workflow2 extends BaseWorkflow {}
 ```
 
-An attempt to register implementations of Workflow1 and Workflow2 are going to fail as they are going to use the same Workflow type.
+An attempt to register implementations of Workflow1 and Workflow2 are going to fail as they are going to use the same Workflow Type.
 The type is defined by the type of the class which is annotated with `#[WorkflowInterface]`.
 In this case `BaseWorkflow`.
 The solution is to remove `#[WorkflowInterface]` annotation from BaseWorkflow.
@@ -190,7 +190,7 @@ Implementations of Workflow1 and Workflow2 can registered with the same worker a
 
 A Workflow implementation implements a Workflow interface.
 Each time a new Workflow execution is started, a new instance of the Workflow implementation object is created.
-Then, one of the methods (depending on which Workflow type has been started) annotated with `#[WorkflowMethod]` is invoked.
+Then, one of the methods (depending on which Workflow Type has been started) annotated with `#[WorkflowMethod]` is invoked.
 As soon as this method returns, the Workflow execution is closed.
 While Workflow execution is open, it can receive calls to signal and query methods.
 No additional calls to Workflow methods are allowed.

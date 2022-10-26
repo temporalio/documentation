@@ -6,6 +6,7 @@ description: Workflow Clients are embedded in your application code, and connect
 ---
 
 <!-- prettier-ignore -->
+
 import * as WhatIsATemporalCronJob from '../concepts/what-is-a-temporal-cron-job.md'
 
 **`@temporalio/client`** [![NPM](https://img.shields.io/npm/v/@temporalio/client)](https://www.npmjs.com/package/@temporalio/client) [API reference](https://typescript.temporal.io/api/namespaces/client) | [GitHub](https://github.com/temporalio/sdk-typescript/tree/main/packages/client)
@@ -36,7 +37,7 @@ The rest of this document explains each step in detail with practical usage tips
 
 ## Create a new Workflow Client
 
-Create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.workflowclient) with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection):
+Create a [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection):
 
 ```ts
 import { Connection, WorkflowClient } from '@temporalio/client';
@@ -231,7 +232,7 @@ const handle = await client.start(scheduledWorkflow, {
 });
 ```
 
-For more information, see the Typescript SDK [`workflowOptions` source code](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#cronschedule).
+For more information, see the Typescript SDK [`workflowOptions` source code](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#cronschedule).
 
 ## Note: Child Workflows and External Workflows
 

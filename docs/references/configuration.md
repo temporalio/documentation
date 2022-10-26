@@ -1,8 +1,10 @@
 ---
 id: configuration
 title: Temporal Cluster configuration reference
-description: undefined
+description: Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.
 sidebar_label: Cluster configuration
+tags:
+ - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -304,7 +306,7 @@ The `log` section is optional and contains the following possible values:
 
 ## clusterMetadata
 
-`clusterMetadata` contains the local cluster information. The information is used in [Multi-Cluster Replication](/concepts/what-is-multi-cluster-replication).
+`clusterMetadata` contains the local cluster information. The information is used in <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Multi-Cluster Replication?</p><p class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</p><p class="tdlplm"><a href="/clusters#multi-cluster-replication">Learn more</a></p></div></a>.
 
 An example `clusterMetadata` section:
 

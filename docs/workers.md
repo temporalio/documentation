@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Workers.
 
-In day-to-day conversations, the term Worker is used to denote either a [Worker Program](#worker-program), a [Worker Process](#worker-process), or a [Worker Entity](#worker-entity).
+In day-to-day conversations, the term Worker is used to denote either a <a class="tdlp" href="#worker-program">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Program?</p><p class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</p><p class="tdlplm"><a href="#worker-program">Learn more</a></p></div></a>, a <a class="tdlp" href="#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a href="#worker-process">Learn more</a></p></div></a>, or a <a class="tdlp" href="#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Entity?</p><p class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</p><p class="tdlplm"><a href="#worker-entity">Learn more</a></p></div></a>.
 Temporal documentation aims to be explicit and differentiate between them.
 
 ## Worker Program
@@ -46,9 +46,9 @@ Therefore, a single Worker can handle millions of open Workflow Executions, assu
 
 ## Worker Process
 
-![Component diagram of a Worker Process and the Temporal Server](/diagrams/worker-and-server-component.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Component diagram of a Worker Process and the Temporal Server</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/worker-and-server-component.svg" alt="Component diagram of a Worker Process and the Temporal Server" /></div></div>
 
-A Worker Process is responsible for polling a [Task Queue](/tasks#task-queue), dequeueing a [Task](/tasks#), executing your code in response to a Task, and responding to the [Temporal Cluster](/clusters#) with the results.
+A Worker Process is responsible for polling a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>, dequeueing a <a class="tdlp" href="/tasks#">Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task?</p><p class="tdlppd">A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.</p><p class="tdlplm"><a href="/tasks#">Learn more</a></p></div></a>, executing your code in response to a Task, and responding to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> with the results.
 
 More formally, a Worker Process is any process that implements the Task Queue Protocol and the Task Execution Protocol.
 
@@ -58,8 +58,8 @@ More formally, a Worker Process is any process that implements the Task Queue Pr
   An Activity Worker Process can listen on an arbitrary number of Activity Task Queues and can execute an arbitrary number of Activity Tasks.
 
 **Worker Processes are external to a Temporal Cluster.**
-Temporal Application developers are responsible for developing [Worker Programs](#worker-program) and operating Worker Processes.
-Said another way, the [Temporal Cluster](/clusters#) (including the Temporal Cloud) doesn't execute any of your code (Workflow & Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
+Temporal Application developers are responsible for developing <a class="tdlp" href="#worker-program">Worker Programs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Program?</p><p class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</p><p class="tdlplm"><a href="#worker-program">Learn more</a></p></div></a> and operating Worker Processes.
+Said another way, the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> (including the Temporal Cloud) doesn't execute any of your code (Workflow and Activity Definitions) on Temporal Cluster machines. The Cluster is solely responsible for orchestrating state transitions and providing Tasks to the next available Worker Entity.
 
 While data transferred in Event Histories is [secured by mTLS](/server/security/#encryption-of-network-traffic), by default, it is still readable at rest in the Temporal Cluster.
 
@@ -85,3 +85,4 @@ Worker Processes executing Activity Tasks must have access to any resources need
 
 The Temporal Cluster itself has [internal workers](https://temporal.io/blog/workflow-engine-principles/#system-workflows-1910) for system Workflow Executions.
 However, these internal workers are not visible to the developer.
+

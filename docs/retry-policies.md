@@ -13,14 +13,14 @@ import TabItem from '@theme/TabItem';
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/tasks#activity-task-execution).
-(Retry Policies do not apply to [Workflow Task Executions](/tasks#workflow-task-execution), which always retry indefinitely.)
+A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> or an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+(Retry Policies do not apply to <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.</p><p class="tdlplm"><a href="/tasks#workflow-task-execution">Learn more</a></p></div></a>, which always retry indefinitely.)
 
 - [Activity retry simulator](/application-development/features#activity-retry-simulator)
 - [How to set a custom Retry Policy for an Activity](/application-development/features#activity-retry-policy)
 - [How to set a Retry Policy for a Workflow](/application-development/features#workflow-retry-policy)
 
-<!-- ![Diagram that shows the retry interval and its formula](/img/retry-interval-diagram.png) -->
+<div class="tdiw"><div class="tditw"><p class="tdit">Diagram that shows the retry interval and its formula</p></div><div class="tdiiw"><img class="tdi" src="/img/retry-interval-diagram.png" alt="Diagram that shows the retry interval and its formula" /></div></div>
 
 ## Default behavior
 
@@ -28,14 +28,14 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution**: When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Cluster places a new [Activity Task](/tasks#activity-task) into its respective [Activity Task Queue](/tasks#task-queue), which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Cluster places a new <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="/tasks#activity-task">Learn more</a></p></div></a> into its respective <a class="tdlp" href="/tasks#task-queue">Activity Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>, which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 
 To use a custom Retry Policy, provide it as an options parameter when starting a Workflow Execution or Activity Execution.
 Only certain scenarios merit starting a Workflow Execution with a custom Retry Policy, such as the following:
 
-- A [Temporal Cron Job](/workflows#temporal-cron-job) or some other stateless, always-running Workflow Execution that can benefit from retries.
+- A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#temporal-cron-job">Learn more</a></p></div></a> or some other stateless, always-running Workflow Execution that can benefit from retries.
 - A file-processing or media-encoding Workflow Execution that downloads files to a host.
 
 ## Properties
@@ -101,12 +101,13 @@ The wait time before a retry is the _retry interval_. A retry interval is the sm
 
 There are some subtle nuances to how Events are recorded to an Event History when a Retry Policy comes into play.
 
-- For an Activity Execution, the [ActivityTaskStarted](/concepts/what-is-an-event#activitytaskstarted) Event will not show up in the Workflow Execution Event History until the Activity Execution has completed or failed (having exhausted all retries).
+- For an Activity Execution, the <a class="tdlp" href="/workflows#activitytaskstarted">ActivityTaskStarted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#activitytaskstarted">Learn more</a></p></div></a> Event will not show up in the Workflow Execution Event History until the Activity Execution has completed or failed (having exhausted all retries).
   This is to avoid filling the Event History with noise.
   Use the Describe API to get a pending Activity Execution's attempt count.
 
-- For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will [Continue-As-New](/workflows#continue-as-new) and the associated Event is written to the Event History.
-  The [WorkflowExecutionContinuedAsNew](/concepts/what-is-an-event#workflowexecutioncontinuedasnew) Event will have an "initiator" field that will specify the Retry Policy as the value and the new Run Id for the next retry attempt.
+- For a Workflow Execution with a Retry Policy, if the Workflow Execution fails, the Workflow Execution will <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="/workflows#continue-as-new">Learn more</a></p></div></a> and the associated Event is written to the Event History.
+  The <a class="tdlp" href="/workflows#workflowexecutioncontinuedasnew">WorkflowExecutionContinuedAsNew<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#workflowexecutioncontinuedasnew">Learn more</a></p></div></a> Event will have an "initiator" field that will specify the Retry Policy as the value and the new Run Id for the next retry attempt.
   The new Workflow Execution is created immediately.
   But the first Workflow Task won't be scheduled until the backoff duration is exhausted.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.
+

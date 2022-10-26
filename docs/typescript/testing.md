@@ -22,7 +22,7 @@ The constructor accepts an optional partial Activity [`Info`](https://typescript
 
 ### Running an activity in Context
 
-[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.context).
+[`MockActivityEnvironment.run()`](https://typescript.temporal.io/api/classes/testing.MockActivityEnvironment#run) runs a function in an Activity [Context](https://typescript.temporal.io/api/classes/activity.Context).
 
 ```ts
 import { Context } from '@temporalio/activity';
@@ -31,7 +31,7 @@ import { MockActivityEnvironment } from '@temporalio/testing';
 const env = new MockActivityEnvironment({ attempt: 2 });
 const result = await env.run(
   async (x) => x + Context.current().info.attempt,
-  2
+  2,
 );
 assert.equal(result, 4);
 ```
@@ -41,7 +41,7 @@ assert.equal(result, 4);
 `MockActivityEnvironment` is an [`EventEmitter`](https://nodejs.org/api/events.html#class-eventemitter) that emits a `heartbeat` event which you can use to listen for heartbeats emitted by the Activity.
 
 > NOTE: When run by a `Worker`, heartbeats are throttled to avoid overloading the server.
-> `MockActivityEnvironment` on the other hand does not apply any throttling.
+> `MockActivityEnvironment`, however, does not apply any throttling.
 
 It also exposes a `cancel` method which cancels the Activity Context.
 
@@ -65,7 +65,7 @@ await assert.rejects(
     }),
   (err) => {
     assert.ok(err instanceof CancelledFailure);
-  }
+  },
 );
 ```
 
@@ -125,7 +125,7 @@ test('httpWorkflow with mock activity', async () => {
     await client.workflow.execute(httpWorkflow, {
       workflowId: uuid4(),
       taskQueue: 'test',
-    })
+    }),
   );
   assert.strictEqual(result, 'The answer is 99');
 });
@@ -162,7 +162,7 @@ test('sleep completes almost immediately', async () => {
     testEnv.client.workflow.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
-    })
+    }),
   );
 });
 ```
@@ -225,7 +225,7 @@ test('advancing time using `testEnv.sleep()`', async () => {
 ### Time skipping in Activities
 
 When an Activity is executing time switches back to "normal",
-[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.testworkflowenvironment/#sleep)
+[`TestWorkflowEnvironment.sleep`](https://typescript.temporal.io/api/classes/testing.TestWorkflowEnvironment/#sleep)
 can be used outside of Workflow code to skip time.
 
 <details>
@@ -246,7 +246,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
   // createActivities defintion omitted for brevity
   const activities: ReturnType<typeof createActivities> = {
     async processOrder() {
-      // Test server switches to "normal" time while an activity is executing.
+      // test server switches to "normal" time while an activity is executing.
       // Call `sleep` to skip time by "2 days".
       await testEnv.sleep('2 days');
     },
@@ -270,7 +270,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
           sendDelayedEmailTimeoutMS: ms('1 day'),
         },
       ],
-    })
+    }),
   );
   assert.strictEqual(emailSent, true);
 });
@@ -278,7 +278,7 @@ test('countdownWorkflow sends reminder email if processing does not complete in 
 
 ### Test arbitrary functions in Workflow context
 
-In case you need to test a function in your Workflow code that's not exported in [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#workflowspath), export it in a different path and register it with the Worker.
+In case you need to test a function in your Workflow code that's not exported in [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath), export it in a different path and register it with the Worker.
 
 `workflows/file-with-workflow-function-to-test.ts`
 
@@ -301,12 +301,12 @@ const worker = await Worker.create({
   ...someOtherOptions,
   connection: testEnv.nativeConnection,
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions)
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
 );
 ```
 
@@ -344,12 +344,12 @@ const worker = await Worker.create({
     workflowModules: workflowInterceptorModules,
   },
   workflowsPath: require.resolve(
-    './workflows/file-with-workflow-function-to-test'
+    './workflows/file-with-workflow-function-to-test',
   ),
 });
 
 await worker.runUntil(
-  testEnv.client.workflow.execute(functionToTest, workflowOptions) // Throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // Throws WorkflowFailedError
 );
 ```
 

@@ -1,8 +1,8 @@
 ---
 id: index
-title: Temporal Application development guide
-description: The Temporal Application development guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
-sidebar_label: Application development
+title: Temporal Developer's guide
+description: The Temporal Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+sidebar_label: Developer guide
 ---
 
 :::info WORK IN PROGRESS
@@ -11,7 +11,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Application development guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
 
 :::
 
@@ -78,13 +78,13 @@ TypeScript / JavaScript is currently selected!
 
 ## Guide structure
 
-The application development guide is broken down into four sections:
+The Developer's guide is divided into four sections:
 
 1. [**Foundations**](/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
    - [Run a development Cluster](/application-development/foundations#run-a-dev-cluster)
    - [Add an SDK to your project](/application-development/foundations#add-your-sdk)
-   - [How to create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
+   - [Create a Temporal Client](/application-development/foundations#connect-to-a-cluster)
    - [Develop a basic Workflow Definition](/application-development/foundations#develop-workflows)
    - [Develop a basic Activity Definition](/application-development/foundations#develop-activities)
    - [Call to execute an Activity](/application-development/foundations#activity-execution)
@@ -95,8 +95,8 @@ The application development guide is broken down into four sections:
 
    - [Signals](/application-development/features#signals)
    - [Queries](/application-development/features#queries)
-   - [Workflow timeouts & retries](/application-development/features#workflow-timeouts)
-   - [Activity timeouts & retries](/application-development/features#activity-timeouts)
+   - [Workflow timeouts and retries](/application-development/features#workflow-timeouts)
+   - [Activity timeouts and retries](/application-development/features#activity-timeouts)
    - [Activity Heartbeats](/application-development/features#activity-heartbeats)
    - [Async Activity Completion](/application-development/features#asynchronous-activity-completion)
    - [Child Workflows](/application-development/features#child-workflows)

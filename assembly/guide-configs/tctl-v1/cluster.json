@@ -1,0 +1,25 @@
+{
+  "file_name": "cluster.md",
+  "file_dir": "tctl-v1",
+  "id": "cluster",
+  "title": "tctl v1.16 cluster command reference",
+  "sidebar_label": "cluster",
+  "description": "How to use the tctl v1.16 cluster command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/cluster/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/cluster/get-search-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/cluster/health"
+    }
+  ]
+}
