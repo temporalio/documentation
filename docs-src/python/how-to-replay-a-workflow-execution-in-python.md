@@ -12,16 +12,16 @@ tags:
 To replay Workflow Executions, use the
 [`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows)
 or
-[`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) 
+[`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow)
 methods, passing multiple or one Workflow Histories as arguments.
 
 In the following example, histories are downloaded from the server, and then replayed:
+
 ```python
 histories = # TODO: Use list workflows API once it's ready
 replayer = Replayer(workflows=[YourWorkflowA, YourWorkflowB])
 await replayer.replay_workflows(histories)
 ```
-
 
 In the next example, a single history is loaded from a JSON string:
 

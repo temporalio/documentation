@@ -13,12 +13,12 @@ Use the [WorkflowReplayer](https://www.javadoc.io/doc/io.temporal/temporal-testi
 class in the `temporal-testing` package to replay Workflow Histories.
 
 In the following example, histories are downloaded from the server, and then replayed:
+
 ```java
 # TODO: Use list workflows API once it's ready
 WorkflowReplayer.replayWorkflowExecutions(
     histories, true, WorkflowA.class, WorkflowB.class, WorkflowC.class);
 ```
-
 
 In the next example, a single history is loaded from a JSON file on disk:
 

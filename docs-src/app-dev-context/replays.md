@@ -7,7 +7,6 @@ tags:
   - guide-context
 ---
 
-
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its history.
 
