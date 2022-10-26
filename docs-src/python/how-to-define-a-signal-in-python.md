@@ -23,7 +23,7 @@ The [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#sig
 
 You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
 
-Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
+Your method parameters must be `self`, a string Signal name, and a `*args` variable argument parameter.
 
 ```python
 @workflow.signal(dynamic=True)
