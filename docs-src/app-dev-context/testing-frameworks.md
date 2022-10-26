@@ -1,8 +1,8 @@
 ---
 id: testing-frameworks
-title: Testing Frameworks
+title: Test frameworks
 description: Testing provides a framework to facilitate Workflow and integration testing.
-sidebar_label: Test Frameworks
+sidebar_label: Test frameworks
 tags:
   - guide-context
 ---
