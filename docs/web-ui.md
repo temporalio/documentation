@@ -44,7 +44,7 @@ Users can list Workflow Executions by any of the following:
 - <a class="tdlp" href="/workflows#workflow-id">Workflow ID<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a>
 - <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a href="/workflows#workflow-type">Learn more</a></p></div></a>
 - Status
-- Date & Time—users can set their preferred date & time format as one of the following:
+- Date and Time—users can set their preferred date and time format as one of the following:
   - UTC
   - Local
   - Relative

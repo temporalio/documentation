@@ -163,8 +163,6 @@ You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Si
 
 Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
 
-For example:
-
 ```python
 @workflow.signal(dynamic=True)
 def signal_dynamic(self, name: str, *args: Any) -> None:
@@ -889,8 +887,6 @@ The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#quer
 **Dynamic Queries**
 
 You can use `@workflow.query(dynamic=True)`, which means all other unhandled Query's fall through to this.
-
-For example:
 
 ```python
 @workflow.query(dynamic=True)
