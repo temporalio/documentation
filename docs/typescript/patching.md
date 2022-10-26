@@ -126,7 +126,7 @@ This is our desired end state, `v2`.
 
 Instead we must deploy `v2` (below) and use the [`patched`](https://typescript.temporal.io/api/namespaces/workflow#patched) function to check which version of the code should be executed.
 
-Patching is a three step process:
+Patching is a three-step process:
 
 1. Patch in new code with `patched` and run it alongside old code
 2. Remove old code and `deprecatePatch`

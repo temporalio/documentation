@@ -16,7 +16,7 @@ A secured Temporal server has its network communication encrypted and has authen
 Without these, your server could be accessed by unwanted entities.
 
 What is documented on this page are the built-in opt-in security measures that come with Temporal.
-However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside of a VPC environment.
+However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside a VPC environment.
 
 ## Server Samples
 
@@ -67,7 +67,7 @@ To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-
 This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the appropriate server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
-More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/main/tls) and you can reach out to us for further guidance.
+More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/main/tls), and you can reach out to us for further guidance.
 
 ### Client connections
 

@@ -268,7 +268,7 @@ The Temporal Python SDK API reference is published on [python.temporal.io](https
 </TabItem>
 <TabItem value="typescript">
 
-The Temporal TypeScript SDK API reference is published on [typescript.temporal.io](https://typescript.temporal.io).
+The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
 
 </TabItem>
 </Tabs>
@@ -479,7 +479,7 @@ Then we print some information and start the Workflow.
 </TabItem>
 <TabItem value="python">
 
-Use [`connect()`](https://python.temporal.io/temporalio.client.Client.html#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.Client.html) class to create and connect to a Temporal Client to the Temporal Cluster.
+Use the [`connect()`](https://python.temporal.io/temporalio.client.client#connect) method on the [`Client`](https://python.temporal.io/temporalio.client.client) class to create and connect to a Temporal Client to the Temporal Cluster.
 
 Specify the `target_host` parameter as a string and provide the [`tls` configuration](https://python.temporal.io/temporalio.service.TLSConfig.html) for connecting to a Temporal Cluster.
 
@@ -1014,7 +1014,22 @@ When you set the Workflow Type this way, the value of the `name` parameter does 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
+
+```php
+#[WorkflowMethod(name)]
+```
+
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
+
+```php
+#[WorkflowInterface]
+interface YourWorkflowDefinitionInterface
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 </TabItem>
 <TabItem value="python">
@@ -1307,33 +1322,6 @@ interface FileProcessingActivities
     public function deleteLocalFile(string $fileName): void;
 }
 ```
-
-**How to customize an Activity type**
-
-We recommend to use a single value type argument for Activity methods.
-In this way, adding new arguments as fields to the value type is a backward-compatible change.
-
-An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
-
-You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
-(The default prefix is empty.)
-
-```php
-#[YourActivityInterface("file_activities.")]
-interface FileProcessingActivities
-{
-    public function upload(string $bucketName, string $localName, string $targetName);
-
-    #[ActivityMethod("transcode_file")]
-    public function download(string $bucketName, string $remoteName);
-
-    public function processFile(): string;
-
-    public function deleteLocalFile(string $fileName);
-}
-```
-
-The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activites that are used in the Workflow.
 
 </TabItem>
 <TabItem value="python">
@@ -1628,9 +1616,10 @@ In TypeScript, the return value is always a Promise.
 
 In the following example, `Promise<string>` is the return value.
 
-```
-<!--SNIPSTART typescript-activity-fn -->
-<!--SNIPEND-->
+```typescript
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
 ```
 
 </TabItem>
@@ -1709,7 +1698,27 @@ The Activity type for the method annotated with `@ActivityMethod` is set to `A_a
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
+
+You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
+(The default prefix is empty.)
+
+```php
+#[YourActivityInterface("file_activities.")]
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName);
+
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName);
+
+    public function processFile(): string;
+
+    public function deleteLocalFile(string $fileName);
+}
+```
+
+The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 </TabItem>
 <TabItem value="undefined">
