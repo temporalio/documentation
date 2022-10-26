@@ -58,9 +58,9 @@ refreshInterval: 1m
 
 ## temporalGrpcAddress
 
-The frontend adddress for the Temporal Cluster.
+The frontend address for the Temporal Cluster.
 
-The default address is localhost (127.0.0.1).
+The default address is localhost (127.0.0.1:7233).
 
 ```yaml
 temporalGrpcAddress: default
