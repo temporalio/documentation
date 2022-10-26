@@ -16,30 +16,30 @@ In "skipped" mode, timers (`sleep()` calls and `condition()` timeouts) are fast-
 `workflows.ts`
 
 ```ts
-import {sleep} from "@temporalio/workflow";
+import { sleep } from '@temporalio/workflow';
 
 export async function sleeperWorkflow() {
-  await sleep("1 day");
+  await sleep('1 day');
 }
 ```
 
 `test.ts`
 
 ```ts
-import {sleeperWorkflow} from "./workflows";
+import { sleeperWorkflow } from './workflows';
 
-test("sleep completes almost immediately", async () => {
+test('sleep completes almost immediately', async () => {
   const worker = await Worker.create({
     connection: testEnv.nativeConnection,
-    taskQueue: "test",
-    workflowsPath: require.resolve("./workflows"),
+    taskQueue: 'test',
+    workflowsPath: require.resolve('./workflows'),
   });
   // Does not wait an entire day
   await worker.runUntil(
     testEnv.workflowClient.execute(sleeperWorkflow, {
       workflowId: uuid(),
-      taskQueue: "test",
-    })
+      taskQueue: 'test',
+    }),
   );
 });
 ```

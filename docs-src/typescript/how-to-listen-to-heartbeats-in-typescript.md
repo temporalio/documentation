@@ -15,9 +15,9 @@ When an Activity is run by a Worker, Heartbeats are throttled to avoid overloadi
 `MockActivityEnvironment`, however, does not throttle Heartbeats.
 
 ```ts
-import {MockActivityEnvironment} from "@temporalio/testing";
-import {Context} from "@temporalio/activity";
-import assert from "assert";
+import { Context } from '@temporalio/activity';
+import { MockActivityEnvironment } from '@temporalio/testing';
+import assert from 'assert';
 
 async function activityFoo(): Promise<void> {
   Context.current().heartbeat(6);
@@ -25,7 +25,7 @@ async function activityFoo(): Promise<void> {
 
 const env = new MockActivityEnvironment();
 
-env.on("heartbeat", (d: unknown) => {
+env.on('heartbeat', (d: unknown) => {
   assert(d === 6);
 });
 
