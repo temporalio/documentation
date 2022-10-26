@@ -74,8 +74,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
- @SignalMethod
-    void mySignal(String signalName);
+@SignalMethod
+   void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -325,9 +325,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-      Workflow.registerListener(
-        (DynamicSignalHandler)
-            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+Workflow.registerListener(
+  (DynamicSignalHandler)
+      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -1065,9 +1065,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-      Workflow.registerListener(
-        (DynamicQueryHandler)
-            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+Workflow.registerListener(
+  (DynamicQueryHandler)
+      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1324,9 +1324,9 @@ Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/te
 
 Available timeouts are:
 
-- [setWorkflowExecutionTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration)>)
-- [setWorkflowRunTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration)>)
-- [setWorkflowTaskTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration)>)
+- [setWorkflowExecutionTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration))
+- [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
+- [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
 
 ```java
 //create Workflow stub for YourWorkflowInterface
@@ -2765,17 +2765,17 @@ Set <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<sp
 - Default: None.
 
 ```java
-   public void parentWorkflow() {
-       ChildWorkflowOptions options =
-          ChildWorkflowOptions.newBuilder()
-              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-              .build();
-       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-       Async.procedure(child::<workflowMethod>, <args>...);
-       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-       // Wait for child to start
-       childExecution.get()
-  }
+ public void parentWorkflow() {
+     ChildWorkflowOptions options =
+        ChildWorkflowOptions.newBuilder()
+            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+            .build();
+     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+     Async.procedure(child::<workflowMethod>, <args>...);
+     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+     // Wait for child to start
+     childExecution.get()
+}
 ```
 
 In this example, we are:
@@ -3199,15 +3199,15 @@ On replay the provided function is not executed, the random number will always b
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the nondeterministic code.
 
 ```java
-  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
-  if random < 50 {
-         ....
-  } else {
-         ....
-  }
+int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+if random < 50 {
+       ....
+} else {
+       ....
+}
 ```
 
 Here's another example that uses `sideEffect()`.
@@ -3232,7 +3232,7 @@ public void execute() {
 
 Java also provides a deterministic method to generate random numbers or random UUIDs.
 
-To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+To generate random numbers in a deterministic method, use [`newRandom()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom())
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3242,7 +3242,7 @@ public void execute() {
 }
 ```
 
-To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()).
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3544,4 +3544,3 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
-
