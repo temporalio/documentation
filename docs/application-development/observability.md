@@ -68,7 +68,7 @@ For more information, see the [Go sample for metrics](https://github.com/tempora
 </TabItem>
 <TabItem value="java">
 
-To emit metrics with the Java SDK, use [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
+To emit metrics with the Java SDK, use the[`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
 [Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
 
 The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
@@ -92,7 +92,7 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 ```
 
 For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
-For details on configuring a Prometheus scrape endpoint with Micrometer, see <https://micrometer.io/docs/registry/prometheus#_configuring>.
+For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.
 
 </TabItem>
 <TabItem value="php">
@@ -176,6 +176,11 @@ Content is currently unavailable.
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
@@ -215,7 +220,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   );
   ```
 
-Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the README.
+Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
 
 </TabItem>
 </Tabs>
@@ -537,6 +542,11 @@ Content is currently unavailable.
 
 </TabItem>
 <TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
 
 Content is currently unavailable.
 
