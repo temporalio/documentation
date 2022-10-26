@@ -10,7 +10,7 @@ tags:
   - reference
 ---
 
-The following terms are used in [Temporal Platform](/concepts/what-is-the-temporal-platform) documentation.`;
+The following terms are used in [Temporal Platform](/temporal) documentation.`;
 
 export async function genGlossary(config) {
   console.log(`generating the glossary...`);
@@ -21,7 +21,7 @@ export async function genGlossary(config) {
   );
   let sourceNodes = await fs.readJSON(sourceNodesFilePath);
 
-  let terms = await getTerms(sourceNodes);
+  let terms = await getTerms(config, sourceNodes);
   terms = await sortTerms(terms);
   const glossStr = await genGlossString(terms);
 
@@ -34,15 +34,22 @@ export async function genGlossary(config) {
   return;
 }
 
-async function getTerms(sourceNodes) {
+async function getTerms(config, sourceNodes) {
   const terms = [];
+  const matchedGuidesFilePath = path.join(
+    config.root_dir,
+    config.temp_write_dir,
+    config.guide_configs_with_attached_nodes_file_name
+  );
+  let matchedGuides = await fs.readJSON(matchedGuidesFilePath);
   for (const node of sourceNodes) {
     if (node.tags !== undefined) {
       tagloop: for (const tag of node.tags) {
         if (tag == "term") {
+          const slug = await findSlug(matchedGuides.full_index, node.id);
           const term = {
             label: node.label,
-            markdown_link: `[${node.label}](/${node.id})`,
+            markdown_link: `[${node.label}](${slug})`,
           };
           terms.push(term);
           break tagloop;
@@ -73,4 +80,21 @@ async function sortTerms(terms) {
   }
   terms.sort(compare);
   return terms;
+}
+
+async function findSlug(fullIndex, nodeId) {
+  for (const link of fullIndex) {
+    if (link.node_id == nodeId) {
+      if (link.file_dir != "/") {
+        if (link.guide_id.includes("index")) {
+          return `/${link.file_dir}#${link.local_ref}`;
+        } else {
+          return `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
+        }
+      } else {
+        return `/${link.guide_id}#${link.local_ref}`;
+      }
+    }
+  }
+  return `/${nodeId}`;
 }

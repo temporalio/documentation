@@ -25,7 +25,7 @@ Sinks are written as objects with methods. Similar to Activities, they are decla
 
 <details>
   <summary>Comparing Sinks, Activities and Interceptors</summary>
-  
+
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
 
@@ -51,7 +51,7 @@ Implement and inject the Sink function into a Worker
 <!--SNIPSTART typescript-logger-sink-worker-->
 <!--SNIPEND-->
 
-- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#sinks)
+- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
 - You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` boolean option.
 
 **Proxy and call a Sink function from a Workflow**
@@ -61,7 +61,7 @@ Implement and inject the Sink function into a Worker
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
 
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that contains useful metadata.
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
 - **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 - **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 

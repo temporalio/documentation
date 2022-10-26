@@ -12,7 +12,7 @@ tags:
 
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
 
-- [How to use a List Filter using tctl](/tctl/workflow/list/#--query)
+- [How to use a List Filter using tctl](/tctl-v1/workflow#list)
 
 The following is an example List Filter:
 

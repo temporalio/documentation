@@ -25,17 +25,17 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 ## Advanced Visibility
 
-Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like [List Filter](#list-filter).
+Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a href="#list-filter">Learn more</a></p></div></a>.
 
-To use Advanced Visibility, your Temporal Cluster must be [integrated with Elasticsearch](/cluster-deployment-guide#elasticsearch).
+To use Advanced Visibility, your Temporal Cluster must be <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrated with Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</p><p class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</p><p class="tdlplm"><a href="/cluster-deployment-guide#elasticsearch">Learn more</a></p></div></a>.
 We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 Elasticsearch takes on the Visibility request load, relieving potential performance issues.
 
 ## List Filter
 
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](#advanced-visibility) List API.
+A List Filter is the SQL-like string that is provided as the parameter to an <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a href="#advanced-visibility">Learn more</a></p></div></a> List API.
 
-- [How to use a List Filter using tctl](/tctl/workflow/list/#--query)
+- [How to use a List Filter using tctl](/tctl-v1/workflow#list)
 
 The following is an example List Filter:
 
@@ -45,7 +45,7 @@ WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" an
 
 [More example List Filters](#example-list-filters)
 
-A List Filter contains [Search Attribute](#search-attribute) names, Search Attribute values, and Operators.
+A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a href="#search-attribute">Learn more</a></p></div></a> names, Search Attribute values, and Operators.
 
 - The following operators are supported in List Filters:
 
@@ -118,12 +118,12 @@ order by CustomIntField asc
 
 ## Search Attribute
 
-A Search Attribute is an indexed field used in a [List Filter](#list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a href="#list-filter">Learn more</a></p></div></a> to filter a list of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> that have the Search Attribute in their metadata.
 
-If a [Temporal Cluster](/clusters#) does not have [Elasticsearch integrated](/cluster-deployment-guide#elasticsearch), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
-However, you won't be able to use [Advanced Visibility](#advanced-visibility) List APIs and List Filters to find and list the Workflow Execution.
+If a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> does not have <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Elasticsearch integrated<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</p><p class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</p><p class="tdlplm"><a href="/cluster-deployment-guide#elasticsearch">Learn more</a></p></div></a>, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
+However, you won't be able to use <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a href="#advanced-visibility">Learn more</a></p></div></a> List APIs and List Filters to find and list the Workflow Execution.
 
-When using [Continue-As-New](/workflows#continue-as-new) or a [Temporal Cron Job](/workflows#temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
+When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="/workflows#continue-as-new">Learn more</a></p></div></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#temporal-cron-job">Learn more</a></p></div></a>, Search Attributes are carried over to the new Workflow Run by default.
 
 #### Search Attributes maximums
 
@@ -181,7 +181,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster only by using `tctl`](/tctl/admin/cluster/add-search-attributes).
+Custom Search Attributes can be [added to a Temporal Cluster by using `tctl search-attribute create`.
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
@@ -232,11 +232,11 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl/cluster/get-search-attributes)
+- [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
 
 #### Search Attributes as Workflow Execution metadata
 
-To actually have results from the use of a [List Filter](#list-filter), Search Attributes must be added to a Workflow Execution as metadata.
+To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a href="#list-filter">Learn more</a></p></div></a>, Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)

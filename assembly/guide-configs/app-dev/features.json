@@ -2,9 +2,9 @@
   "file_name": "features.md",
   "file_dir": "application-development",
   "id": "features",
-  "title": "Application development - Features",
+  "title": "Developer's guide - Features",
   "sidebar_label": "Features",
-  "description": "The Features section of the Temporal Application development guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
+  "description": "The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
@@ -124,6 +124,10 @@
           "id": "php/how-to-send-a-signal-from-a-workflow-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-send-a-signal-from-a-workflow-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-send-a-signal-from-a-workflow-in-typescript"
         }
@@ -187,7 +191,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-define-a-query-in-typescript"
         }
       ]
     },
@@ -241,7 +245,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-send-a-query-to-a-workflow-in-typescript"
         }
       ]
     },
@@ -443,6 +447,10 @@
           "id": "php/how-to-set-asynchronous-activity-completion-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-set-asynchronous-activity-completion-in-python"
+        },
+        {
           "lang": "typescript",
           "id": "none"
         }
@@ -468,8 +476,12 @@
           "id": "php/how-to-spawn-a-child-workflow-execution-in-php"
         },
         {
+          "lang": "python",
+          "id": "python/how-to-spawn-a-child-workflow-execution-in-python"
+        },
+        {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-spawn-a-child-workflow-execution-in-typescript"
         }
       ]
     },
@@ -523,7 +535,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-continue-as-new-in-typescript"
         }
       ]
     },
@@ -587,6 +599,64 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/side-effects"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-execute-a-side-effect-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-use-a-side-effect-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "na"
+        },
+        {
+          "lang": "typescript",
+          "id": "na"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/mutable-side-effects"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-set-mutable-side-effects-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/environment-variables"
     },
     {
@@ -605,8 +675,41 @@
           "id": "none"
         },
         {
+          "lang": "python",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-use-environment-variables-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/namespaces"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-register-namespace-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-register-namespace-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
         }
       ]
     }

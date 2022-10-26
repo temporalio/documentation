@@ -1,0 +1,265 @@
+{
+  "file_name": "modifiers.md",
+  "file_dir": "tctl-next",
+  "id": "modifiers",
+  "title": "tctl version-next command modifiers reference",
+  "sidebar_label": "modifiers",
+  "description": "How to use the tctl version-next command modifiers",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/modifiers/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/active-cluster"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/activity-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/archived"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/cluster"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/cron"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/data"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/description"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/detail"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/dry-run"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/email"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/event-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/exclude-file"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/execution-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/fields"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/follow"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/global"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/history-archival-state"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/history-uri"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/identity"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/id-reuse-policy"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/input-file"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/input-parallelism"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/input"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/job-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/limit"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/max-field-length"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/memo"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/memo-file"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/name"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/namespace"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/no-pager"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/non-deterministic"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/output-filename"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/output"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/pager"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/pagesize"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/query"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/raw"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reason"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reject-condition"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reset-bad-binary-checksum"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reset-points-only"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reset-reapply-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reset-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/result"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/retention"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/rps"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/run-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/run-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/search-attribute"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/name"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/skip-base-is-not-current"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/skip-current-open"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/task-queue-type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/task-queue"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/task-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/time-format"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/type"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/visibility-archival-state"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/visibility-uri"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/workflow-id"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/yes"
+    }
+  ]
+}

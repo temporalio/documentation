@@ -39,6 +39,8 @@ async function generateLinkIndex(guideConfig) {
               guide_id: guideConfig.id,
               local_ref: "",
               node_id: section.node.id,
+              node_title: section.node.title,
+              node_description: section.node.description,
             });
             noAnchor = false;
           } else {
@@ -50,6 +52,8 @@ async function generateLinkIndex(guideConfig) {
                 guide_id: guideConfig.id,
                 local_ref: localRef(previousSection.node.label),
                 node_id: section.node.id,
+                node_title: section.node.title,
+                node_description: section.node.description,
               });
             }
             noAnchor = false;
@@ -58,12 +62,14 @@ async function generateLinkIndex(guideConfig) {
         case "langtabs":
           if (i == 0 || lookBack == 0) {
             for (const langtab of section.langtabs) {
-              if (langtab.id != "none") {
+              if (langtab.id != "none" && langtab.id != "na") {
                 linkIndex.push({
                   file_dir: guideConfig.file_dir,
                   guide_id: guideConfig.id,
                   local_ref: "",
                   node_id: langtab.node.id,
+                  node_title: langtab.node.title,
+                  node_description: langtab.node.description,
                 });
               }
             }
@@ -72,13 +78,15 @@ async function generateLinkIndex(guideConfig) {
             const previousSection = guideConfig.sections[i - lookBack];
             if (previousSection.type == "h1" || "h2" || "h3" || "h4") {
               for (const langtab of section.langtabs) {
-                if (langtab.id != "none") {
+                if (langtab.id != "none" && langtab.id != "na") {
                   // console.log(localRef(previousSection.node.label));
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,
                     guide_id: guideConfig.id,
                     local_ref: localRef(previousSection.node.label),
                     node_id: langtab.node.id,
+                    node_title: langtab.node.title,
+                    node_description: langtab.node.description,
                   });
                 }
               }
@@ -93,6 +101,8 @@ async function generateLinkIndex(guideConfig) {
             guide_id: guideConfig.id,
             local_ref: localRef(section.node.label),
             node_id: section.node.id,
+            node_title: section.node.title,
+            node_description: section.node.description,
           });
           noAnchor = false;
       }

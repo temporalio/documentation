@@ -3,10 +3,14 @@ id: sdk-metrics
 title: SDK metrics
 description: The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.
 sidebar_label: SDK metrics
+tags:
+  - reference
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
 
+> For Cluster metrics, see [Cluster ▶️ Production deployment ▶️ Scaling and Metrics](/server/production-deployment/#scaling-and-metrics).
+> For Cloud metrics, see [Temporal Cloud ▶️ Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics).
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
@@ -116,11 +120,14 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 ### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
-A [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout) can be set when an Activity Execution is spawned.
+A <a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Start Timeout?</p><p class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</p><p class="tdlplm"><a href="/activities#schedule-to-start-timeout">Learn more</a></p></div></a> can be set when an Activity Execution is spawned.
+This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
+the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled
+from the queue.
 
 - Type: Histogram
 - Available in: TypeScript, Go, PHP, Java
-- Tags: `activity_type`, `namespace`, `task_queue`
+- Tags: `namespace`, `task_queue`
 
 ### activity_task_error
 
@@ -172,7 +179,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 ### local_activity_total
 
-Total number of [Local Activity Executions](/concepts/what-is-a-local-activity).
+Total number of <a class="tdlp" href="/activities#local-activity">Local Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Local Activity?</p><p class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</p><p class="tdlplm"><a href="/activities#local-activity">Learn more</a></p></div></a>.
 
 - Type: Counter
 - Available in: Go, PHP, Java

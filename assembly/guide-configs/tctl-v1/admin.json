@@ -1,0 +1,157 @@
+{
+  "file_name": "admin.md",
+  "file_dir": "tctl-v1",
+  "id": "admin",
+  "title": "tctl v1.16 admin command reference",
+  "sidebar_label": "admin",
+  "description": "How to use the tctl v1.16 admin command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/admin/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/cluster/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/add-search-attributes"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/describe"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/get-search-attributes"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/list"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/remove-remote-cluster"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/remove-search-attributes"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/cluster/upsert-remote-cluster"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/db/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/db/clean"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/db/scan"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/decode/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/decode/base64"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/decode/proto"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/dlq/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/dlq/merge"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/dlq/purge"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/dlq/read"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/history_host/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/history_host/describe"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/history_host/get_shardid"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/membership/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/membership/list_db"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/membership/list_gossip"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/shard/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/shard/close_shard"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/shard/describe_task"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/shard/describe"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/shard/list_tasks"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/shard/remove_task"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/workflow/index"
+    },
+    {
+      "type": "h3",
+      "id": "tctl-v1/admin/workflow/delete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/workflow/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/workflow/refresh_tasks"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/admin/workflow/show"
+    }
+  ]
+}

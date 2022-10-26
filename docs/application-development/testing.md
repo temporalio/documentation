@@ -1,8 +1,8 @@
 ---
 id: testing
-title: Application development - Testing
+title: Developer's guide - Testing
 sidebar_label: Testing
-description: The Testing section of the Temporal Application development guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
+description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
 toc_max_heading_level: 4
 ---
 
@@ -26,7 +26,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [worker.WorflowReplayer](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowReplayer) to replay an existing Workflow Execution from its Event History to replicate errors.
+Use the [worker.WorkflowReplayer](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowReplayer) to replay an existing Workflow Execution from its Event History to replicate errors.
 
 For example, the following code retrieves the Event History of a Workflow:
 
@@ -93,7 +93,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To replay a Workflow Execution, use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.replayer#replay_workflow) method and pass a Workflow History as an argument.
+To replay a Workflow Execution, use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) method and pass a Workflow History as an argument.
 
 In the following example, `history_json_str` references the Workflow History as a JSON string.
 
@@ -107,7 +107,7 @@ If the Workflow History is non-deterministic, `run_replayer()` raises an error.
 
 :::note
 
-If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tctl](/tctl), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
+If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tctl](/tctl-v1), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
 
 :::
 

@@ -26,7 +26,7 @@ async function run() {
         },
       },
     });
-    const data = await fs.readJSON("./secure/uniqueId.json");
+    const data = await fs.readJSON("./secure/cloud-connection.json");
     const worker = await Worker.create({
       connection,
       namespace: "docs-assembly.a2dd6",

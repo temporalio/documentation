@@ -24,14 +24,14 @@ The reason we only offer a default logger is to minimize Worker dependencies and
 
 **Customizing the default logger**
 
-Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface.
+Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface.
 
 **Set Default logger level**
 
 The following example creates a new logger that will log all messages with a level `WARN` and higher.
 
 ```ts
-import {Runtime, DefaultLogger} from "@temporalio/worker";
+import {DefaultLogger, Runtime} from "@temporalio/worker";
 
 // Creating a new logger that will log all messages with level WARN and higher.
 const logger = new DefaultLogger("WARN", ({level, message}) => {

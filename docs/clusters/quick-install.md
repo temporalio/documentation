@@ -5,7 +5,7 @@ sidebar_label: Run a dev Cluster
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
-The following sections list various methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl) commands to test and develop applications.
+The following sections list various methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl-v1) commands to test and develop applications.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
@@ -26,9 +26,11 @@ Temporalite requires Go 1.18 or later.
 
 The following steps start and run a Temporal Cluster.
 
-1. Build from source by using `go install`.
+1. Build from source.
    ```bash
-   go install github.com/temporalio/temporalite/cmd/temporalite@latest
+   git clone https://github.com/temporalio/temporalite.git
+   cd temporalite
+   go build ./cmd/temporalite
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
@@ -36,7 +38,7 @@ The following steps start and run a Temporal Cluster.
    ```
    Replace `default` with your [Namespace Name](/cloud/#temporal-cloud-namespace-name).
 
-**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/namespaces/default/workflows).
+**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
 
 <!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
 
@@ -65,7 +67,7 @@ The following steps start and run a Temporal Cluster using the default configura
    docker-compose up
    ```
 
-**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/namespaces/default/workflows).
+**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/).
 
 To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
 

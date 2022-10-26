@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.workflowoptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.workflowoptions) of the Client interface.
+Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
 <!--SNIPEND-->

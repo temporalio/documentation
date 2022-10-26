@@ -1,6 +1,12 @@
 import fs from "fs-extra";
 import path from "path";
 
+const docsLinkRegex =
+  "\\[([a-zA-Z0-9-_#.&`\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
+const linkRegex = RegExp(docsLinkRegex, "gm");
+const docsImageRegex = "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
+const imageRegex = RegExp(docsImageRegex, "gm");
+
 export async function linkMagic(config) {
   console.log("replacing links in guide content...");
   const matchedGuidesPath = path.join(
@@ -15,6 +21,7 @@ export async function linkMagic(config) {
     updatedGuides.push(guideCfg);
   }
   matchedGuides.cfgs = updatedGuides;
+  console.log("writing matcheded guides again...");
   await fs.writeJSON(matchedGuidesPath, matchedGuides);
   await linkMagicReferences(config, matchedGuides.full_index);
   return;
@@ -26,7 +33,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
     if (section.type == "langtabs") {
       const updatedLangTabs = [];
       for (let langtab of section.langtabs) {
-        if (langtab.id != "none") {
+        if (langtab.id != "none" && langtab.id != "na") {
           langtab.node.markdown_content = await parseAndReplace(
             langtab.node.markdown_content,
             fullIndex,
@@ -50,6 +57,7 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
 }
 
 async function linkMagicReferences(config, link_index) {
+  console.log("link magic on references...");
   const sourceNodesPath = path.join(
     config.root_dir,
     config.temp_write_dir,
@@ -80,6 +88,7 @@ async function linkMagicReferences(config, link_index) {
       );
       await fs.writeFile(refWritePath, refString);
     }
+    isReference = false;
   }
   return;
 }
@@ -106,20 +115,30 @@ sidebar_label: ${node.label}\n`;
 }
 
 async function parseAndReplace(raw_content, link_index, current_guide_id) {
-  // const docsLinkRegex = /\/docs\/[a-zA-Z0-9-_]*\/[a-zA-Z0-9-_]*/gm;
-  const docsLinkRegex = /\/[a-zA-Z0-9-_]+[a-zA-Z0-9-_#/]*/gm;
   const lines = raw_content.toString().split("\n");
   let new_lines = [];
   let line_count = 0;
   for (let line of lines) {
-    const line_links = line.match(docsLinkRegex);
-    if (line_links !== null) {
-      for (const match of line_links) {
-        const link = link_index.find((item) => {
-          return `/${item.node_id}` === match;
-        });
-        if (link !== undefined) {
-          line = await replaceLinks(line, match, link, current_guide_id);
+    const image = imageRegex.exec(line);
+    let matchLinks = true;
+    if (image !== null) {
+      line = centeredImage(image);
+      matchLinks = false;
+    }
+    if (matchLinks) {
+      const linkMatches = [];
+      let lineLinks;
+      while ((lineLinks = linkRegex.exec(line)) !== null) {
+        linkMatches.push(lineLinks);
+      }
+      if (linkMatches.length > 0) {
+        for (const match of linkMatches) {
+          const link = link_index.find((item) => {
+            return `/${item.node_id}` === match[2];
+          });
+          if (link !== undefined) {
+            line = await replaceLinks(line, match, link, current_guide_id);
+          }
         }
       }
     }
@@ -129,22 +148,47 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
       new_lines.push(line);
     }
     line_count++;
+    matchLinks = true;
   }
   raw_content = new_lines.join("\n");
   return raw_content;
 }
 
-async function replaceLinks(line, replaceable, link, current_guide_id) {
-  let new_path = "";
+function centeredImage(image) {
+  return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="tdi" src="${image[2]}" alt="${image[1]}" /></div></div>`;
+}
+
+function linkPreview(newPath, linkText, nodeTitle, description) {
+  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">${nodeTitle}</p><p class="tdlppd">${description}</p><p class="tdlplm"><a href="${newPath}">Learn more</a></p></div></a>`;
+}
+
+async function replaceLinks(line, match, link, current_guide_id) {
+  let newPath;
+  let localRef;
+  let replaceable = match[0];
+  // define what needs to be replaced
+  if (match[3] === undefined) {
+    localRef = `#${link.local_ref}`;
+  } else {
+    localRef = match[3];
+  }
+  // define the new path
   if (link.guide_id != current_guide_id) {
     if (link.file_dir != "/") {
-      new_path = `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;
+      newPath = `/${link.file_dir}/${link.guide_id}${localRef}`;
     } else {
-      new_path = `/${link.guide_id}#${link.local_ref}`;
+      newPath = `/${link.guide_id}${localRef}`;
     }
   } else {
-    new_path = `#${link.local_ref}`;
+    newPath = `${localRef}`;
   }
-  line = line.replaceAll(replaceable, new_path);
+  // convert to link preview
+  const html = linkPreview(
+    newPath,
+    match[1],
+    link.node_title,
+    link.node_description
+  );
+  line = line.replaceAll(replaceable, html);
   return line;
 }

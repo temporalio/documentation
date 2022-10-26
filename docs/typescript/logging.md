@@ -51,7 +51,7 @@ Sinks are written as objects with methods. Similar to Activities, they are decla
 
 <details>
   <summary>Comparing Sinks, Activities and Interceptors</summary>
-  
+
 Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
 However, they differ from Activities in important ways:
 
@@ -77,7 +77,7 @@ Implementing Sinks is a two-step process.
 <!--SNIPSTART typescript-logger-sink-worker-->
 <!--SNIPEND-->
 
-- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.workeroptions/#sinks)
+- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
 - You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` boolean option.
 
 #### Proxy and call a Sink function from a Workflow
@@ -87,7 +87,7 @@ Implementing Sinks is a two-step process.
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
 
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.workflowinfo/) that contains useful metadata.
+- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
 - **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 - **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 
@@ -107,12 +107,12 @@ The reason we only offer a default logger is to minimize Worker dependencies and
 
 ### Customizing the default logger
 
-Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.defaultlogger/) that implements the basic interface:
+Temporal ships a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
 
 #### Example: Set up the DefaultLogger to only log messages with level WARN and higher
 
 ```ts
-import { Runtime, DefaultLogger } from '@temporalio/worker';
+import { DefaultLogger, Runtime } from '@temporalio/worker';
 
 const logger = new DefaultLogger('WARN', ({ level, message }) => {
   console.log(`Custom logger: ${level} — ${message}`);
@@ -178,8 +178,8 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
   import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
-    W3CTraceContextPropagator,
     W3CBaggagePropagator,
+    W3CTraceContextPropagator,
   } from '@opentelemetry/core';
   import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 

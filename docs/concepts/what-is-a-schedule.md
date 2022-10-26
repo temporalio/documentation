@@ -11,10 +11,10 @@ tags:
 A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.
 Schedules provide a more flexible and user-friendly approach than [Temporal Cron Jobs](/concepts/what-is-a-temporal-cron-job).
 
-- [How to enable Schedules](#how-to-enable-schedules)
-- [How to operate Schedules using tctl](/tctl/schedule/)
+- [How to enable Schedules](#limitations)
+- [How to operate Schedules using tctl](/tctl-v1/schedule#)
 
-A Schedule has identity, and is independent of a Workflow Execution.
+A Schedule has an identity and is independent of a Workflow Execution.
 This differs from a Temporal Cron Job, which relies on a cron schedule as a property of the Workflow Execution.
 
 ### Action
@@ -25,20 +25,23 @@ Workflow Executions started by a Schedule have the following additional properti
 
 - The Action's timestamp is appended to the Workflow Id.
 - The `TemporalScheduledStartTime` [Search Attribute](/concepts/what-is-a-search-attribute) is added to the Workflow Execution.
-  The Action's timestamp is the value.
+  The value is the Action's timestamp.
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
-  The Schedule Id is the value.
+  The value is the Schedule Id.
 
 ### Spec
 
-There are two ways to express a Schedule Spec:
+The Schedule Spec describes when the Action is taken.
+There are two kinds of Schedule Spec:
 
-- A simple interval, like "every 30 minutes" (measured from the Unix epoch, and optionally including a phase offset).
+- A simple interval, like "every 30 minutes" (aligned to start at the Unix epoch, and optionally including a phase offset).
 - A calendar-based expression, similar to the "cron expressions" supported by lots of software, including the older Temporal Cron feature.
 
-Calendar expressions are given as separate named fields.
+These two kinds have multiple representations, depending on the interface or SDK you're using, but they all support the same features.
 
-For example, in tctl they can be provided as JSON:
+In tctl, for example, an interval is specified as a string like `45m` to mean every 45 minutes, or `6h/5h` to mean every 6 hours but at the start of the fifth hour within each period.
+
+In tctl, a calendar expression can be specified as either a traditional cron string with five (or six or seven) positional fields, or as JSON with named fields:
 
 ```json
 {
@@ -49,7 +52,7 @@ For example, in tctl they can be provided as JSON:
 }
 ```
 
-The following calendar fields are available:
+The following calendar JSON fields are available:
 
 - `year`
 - `month`
@@ -58,11 +61,18 @@ The following calendar fields are available:
 - `hour`
 - `minute`
 - `second`
+- `comment`
 
-Each field may contain a comma-separated list of ranges (or `*`), and each range may include a skip value following a slash.
+Each field can contain a comma-separated list of ranges (or the `*` wildcard), and each range can include a slash followed by a skip value.
+The `hour`, `minute`, and `second` fields default to `0` while the others default to `*`, so you can describe many useful specs with only a few fields.
 
 For `month`, names of months may be used instead of integers (case-insensitive, abbreviations permitted).
 For `dayOfWeek`, day-of-week names may be used.
+
+The `comment` field is optional and can be used to include a free-form description of the intent of the calendar spec, useful for complicated specs.
+
+No matter which form you supply, calendar and interval specs are converted to canonical representations.
+What you see when you "describe" or "list" a Schedule might not look exactly like what you entered, but it has the same meaning.
 
 Other Spec features:
 
@@ -89,7 +99,7 @@ For more operational control, embed the contents of the time zone database file 
 
 A Schedule can be Paused.
 When a Schedule is Paused, the Spec has no effect.
-However, you can still force manual actions by using the [tctl schedule trigger](/tctl/schedule/trigger) command.
+However, you can still force manual actions by using the [tctl schedule trigger](/tctl-v1/schedule#trigger) command.
 
 To assist communication among developers and operators, a “notes” field can be updated on pause or resume to store an explanation for the current state.
 
@@ -167,31 +177,18 @@ Failures and timeouts do not affect the last completion result.
 
 A Workflow started by a Schedule can obtain the details of the failure of the most recent run that ended at the time when the Workflow in question was started. Unlike last completion result, a _successful_ run _does_ reset the last failure.
 
-### How to enable Schedules
+### Limitations
 
 :::info Experimental
 
-The Scheduled Workflows feature is available in Temporal Server version 1.17.
-However the feature is in an experimental stage and is disabled by default.
+The Scheduled Workflows feature is available in Temporal Server version 1.18.
 
 Internally, a Schedule is implemented as a Workflow.
-These implementation Workflow Executions are visible to you as you navigate the Web UI and use tctl, though you should not interact with it directly.
-
-In later versions the implementation Workflows will cease to be visible by default.
+If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
+If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
 
 :::
 
-**Requirements**
-
-- Temporal Server version 1.17 or later.
-- [Advanced Visibility](/concepts/what-is-advanced-visibility) optional.
-- The following dynamic config values:
-
-```yaml
-frontend.enableSchedules:
-  - value: true
-worker.enableScheduler:
-  - value: true
-```
-
-If you're familiar with Dynamic Config, you can also constrain these settings per Namespace as needed for your installation.
+Native support for Schedules in language SDKs is coming soon.
+For now, `tctl` and the web UI are the main interfaces to Schedules.
+For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.

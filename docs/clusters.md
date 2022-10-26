@@ -13,9 +13,9 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Clusters.
 
-A Temporal Cluster is the group of services, known as the [Temporal Server](#temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is the Temporal Server?</p><p class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</p><p class="tdlplm"><a href="#temporal-server">Learn more</a></p></div></a>, combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/application-development/foundations#run-a-dev-cluster)
+- <a class="tdlp" href="/application-development/foundations#run-a-dev-cluster">How to quickly install a Temporal Cluster for testing and development<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</p><p class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</p><p class="tdlplm"><a href="/application-development/foundations#run-a-dev-cluster">Learn more</a></p></div></a>
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -25,7 +25,7 @@ A Temporal Cluster is the group of services, known as the [Temporal Server](#tem
 A Temporal Cluster's only required dependency for basic operation is a database.
 Multiple types of databases are supported.
 
-![Persistence](/diagrams/temporal-database.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-database.svg" alt="Persistence" /></div></div>
 
 The database stores the following types of data:
 
@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/visibility#advanced-visibility).
+An Elasticsearch database can be added to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a href="/visibility#advanced-visibility">Learn more</a></p></div></a>.
 
 #### Dependency versions
 
@@ -69,8 +69,8 @@ Any software that can pull metrics that supports the same format could be used, 
 
 ### Visibility
 
-Temporal has built-in [Visibility](/visibility#) features.
-To enhance this feature, Temporal supports an [integration with Elasticsearch](/cluster-deployment-guide#elasticsearch).
+Temporal has built-in <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Visibility?</p><p class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</p><p class="tdlplm"><a href="/visibility#">Learn more</a></p></div></a> features.
+To enhance this feature, Temporal supports an <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integration with Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</p><p class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</p><p class="tdlplm"><a href="/cluster-deployment-guide#elasticsearch">Learn more</a></p></div></a>.
 
 - Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
@@ -126,8 +126,8 @@ When implemented, the `frontend` invokes the plugin before executing the request
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-- [`ClaimMapper`](#claim-mapper)
-- [`Authorizer`](#authorizer-plugin)
+- <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a ClaimMapper Plugin?</p><p class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</p><p class="tdlplm"><a href="#claim-mapper">Learn more</a></p></div></a>
+- <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a href="#authorizer-plugin">Learn more</a></p></div></a>
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the frontend invokes the implementation of the plugins before running the requested operation.
@@ -169,21 +169,21 @@ We offer maintenance support of **major** versions for at least 12 months after 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
 (For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
 
-#### Frontend Service
+### Frontend Service
 
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-![Frontend Service](/diagrams/temporal-frontend-service.svg)
+<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" /></div></div>
 
 Types of inbound calls include the following:
 
-- Domain CRUD
+- <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> CRUD
 - External events
 - Worker polls
-- Visibility requests
-- Admin operations via [tctl](/tctl) (the Temporal CLI)
-- Calls from a remote Cluster related to [Multi-Cluster Replication](#multi-cluster-replication)
+- <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Visibility?</p><p class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</p><p class="tdlplm"><a href="/visibility#">Learn more</a></p></div></a> requests
+- [tctl](/tctl-v1) (the Temporal CLI) operations
+- Calls from a remote Cluster related to <a class="tdlp" href="#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Multi-Cluster Replication?</p><p class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</p><p class="tdlplm"><a href="#multi-cluster-replication">Learn more</a></p></div></a>
 
 Every inbound request related to a Workflow Execution must have a Workflow Id, which is hashed for routing purposes.
 The Frontend Service has access to the hash rings that maintain service membership information, including how many nodes (instances of each service) are in the Cluster.
@@ -195,34 +195,62 @@ The Frontend Service talks to the Matching Service, History Service, Worker Serv
 - It uses the grpcPort 7233 to host the service handler.
 - It uses port 6933 for membership-related communication.
 
-#### History Service
+Ports are configurable in the Cluster configuration.
 
-The History Service tracks the state of Workflow Executions.
+### History Service
 
-![History Service](/diagrams/temporal-history-service.svg)
+The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using <a class="tdlp" href="#history-shard">History Shards<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a History Shard?</p><p class="tdlppd">A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.</p><p class="tdlplm"><a href="#history-shard">Learn more</a></p></div></a>.
 
-The History Service scales horizontally via individual shards, configured during the Cluster's creation.
-The number of shards remains static for the life of the Cluster (so you should plan to scale and over-provision).
+<div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-history-service.svg" alt="History Service" /></div></div>
 
-Each shard maintains data (routing identifiers, mutable state) and queues.
-A History shard maintains four types of queues:
+The total number of History Services can be between 1 and the total number of History Shards.
+An individual History Service can support a large number of History Shards.
+Temporal recommends starting at a ratio of 1 History Service for every 500 History Shards.
 
-- Transfer queue: transfers internal tasks to the Matching Service.
-  Whenever a new Workflow Task needs to be scheduled, the History Service transactionally dispatches it to the Matching Service.
-- Timer queues: durably persists Timers.
-- Replicator queue: asynchronously replicates Workflow Executions from active Clusters to other passive Clusters (experimental Multi-Cluster feature).
-- Visibility queue: pushes data to the visibility index (Elasticsearch).
+Although the total number of History Shards remains static for the life of the Cluster, the number of History Services can change.
 
 The History Service talks to the Matching Service and the database.
 
 - It uses grpcPort 7234 to host the service handler.
 - It uses port 6934 for membership-related communication.
 
-#### Matching Service
+Ports are configurable in the Cluster configuration.
 
-The Matching Service is responsible for hosting Task Queues for Task dispatching.
+#### History Shard
 
-![Matching Service](/diagrams/temporal-matching-service.svg)
+A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.
+
+Each History Shard maps to a single persistence partition.
+A History Shard assumes that only be one concurrent operation can be within a partition at a time.
+In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Cluster.
+This means that the number of History Shards in a Temporal Cluster plays a significant role in the performance of your Temporal Application.
+
+Before integrating a database, the total number of History Shards for the Temporal Cluster must be chosen and set in the Cluster's configuration (see [persistence](/references/configuration#persistence)).
+After the Shard count is configured and the database integrated, the total number of History Shards for the Cluster cannot be changed.
+
+In theory, a Temporal Cluster can operate with an unlimited number of History Shards, but each History Shard adds compute overhead to the Cluster.
+Temporal Clusters have operated successfully using anywhere from 1 to 128K History Shards, with each Shard responsible for tens of thousands of Workflow Executions.
+One Shard is useful only in small scale setups designed for testing, while 128k Shards is useful only in very large scale production environments.
+The correct number of History Shards for any given Cluster depends entirely on the Temporal Application that it is supporting and the type of database.
+
+A History Shard is represented as a hashed integer.
+Each Workflow Execution is automatically assigned to a History Shard.
+The assignment algorithm hashes Workflow Execution metadata such as Workflow Id and Namespace and uses that value to match a History Shard.
+
+Each History Shard maintains the Workflow Execution Event History, Workflow Execution mutable state, and the following internal Task Queues:
+
+- Internal Transfer Task Queue: Transfers internal tasks to the Matching Service.
+  Whenever a new Workflow Task needs to be scheduled, the History Service's Transfer Task Queue Processor transactionally dispatches it to the Matching Service.
+- Internal Timer Task Queue: Durably persists Timers.
+- Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
+  (Relies on the experimental Multi-Cluster feature.)
+- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a href="/visibility#advanced-visibility">Learn more</a></p></div></a> index.
+
+### Matching Service
+
+The Matching Service is responsible for hosting user-facing <a class="tdlp" href="/tasks#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a> for Task dispatching.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" /></div></div>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -232,35 +260,45 @@ It talks to the Frontend Service, History Service, and the database.
 - It uses grpcPort 7235 to host the service handler.
 - It uses port 6935 for membership related communication.
 
-#### Worker Service
+Ports are configurable in the Cluster configuration.
 
-The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
+### Worker Service
 
-![Worker Service](/diagrams/temporal-worker-service.svg)
+The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
 
 It talks to the Frontend Service.
 
 - It uses port 6939 for membership-related communication.
 
+Ports are configurable in the Cluster configuration.
+
 ### Retention Period
 
-A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.
+Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
-- [How to set the Retention Period for the Namespace](/tctl/namespace/register/#--retention)
+- [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
+- [How to set the Retention Period for a Namespace using an SDK](/application-development/features/#namespaces)
 
-A Retention Period applies to a single [Namespace](/namespaces#) and is set when the Namespace is registered.
+A Retention Period applies to all closed Workflow Executions within a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> and is set when the Namespace is registered.
 
-If the Retention Period isn't set, it defaults to 2 days.
+The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
+mutable
 The minimum Retention Period is 1 day.
-The maximum Retention Period is 30 days.
+On Temporal Cluster version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
+On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
 Setting the Retention Period to 0 results in the error _A valid retention period is not set on request_.
+
+If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
+If you don't set the Retention Period value when using the [`RegisterNamespaceRequest`](/application-development/features/#namespaces) API, it returns an error.
 
 ## Archival
 
-Archival is a feature that automatically backs up [Event Histories](/workflows#event-history) and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up <a class="tdlp" href="/workflows#event-history">Event Histories<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#event-history">Learn more</a></p></div></a> and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- [How to create a custom Archiver](/cluster-deployment-guide#custom-archiver)
-- [How to set up Archival](/cluster-deployment-guide#set-up-archival)
+- <a class="tdlp" href="/cluster-deployment-guide#custom-archiver">How to create a custom Archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a custom Archiver</p><p class="tdlppd">todo</p><p class="tdlplm"><a href="/cluster-deployment-guide#custom-archiver">Learn more</a></p></div></a>
+- <a class="tdlp" href="/cluster-deployment-guide#set-up-archival">How to set up Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set up Archival</p><p class="tdlppd">This guide covers Temporal's archiving capabilities and how to set up the Archival feature.</p><p class="tdlplm"><a href="/cluster-deployment-guide#set-up-archival">Learn more</a></p></div></a>
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
@@ -281,7 +319,7 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per [Global Namespace](/namespaces#global-namespace).
+This feature must be enabled through a Dynamic Config flag per <a class="tdlp" href="/namespaces#global-namespace">Global Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Global Namespace?</p><p class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</p><p class="tdlplm"><a href="/namespaces#global-namespace">Learn more</a></p></div></a>.
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
