@@ -2356,7 +2356,7 @@ To complete an Activity asynchronously, set the [`ActivityCompletionClient`](htt
   }
 ```
 
-Alternatively, set the [`doNotCompleteOnReturn()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()>) method during an Activity Execution.
+Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) method during an Activity Execution.
 
 ```java
     @Override
