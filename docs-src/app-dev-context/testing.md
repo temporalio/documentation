@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-The testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
+The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.
 
 In the context of Temporal, you can create these types of automated tests:
 
