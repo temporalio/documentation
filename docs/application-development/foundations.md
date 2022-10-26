@@ -465,16 +465,51 @@ For more information, see the following:
 </TabItem>
 <TabItem value="php">
 
-The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
+Create an instance of the `$workflowClient` class and use the `create()` method connect to a Temporal Client to the Temporal Cluster.
 
-<!--SNIPSTART php-hello-client {"enable_source_link": true}-->
-<!--SNIPEND-->
+Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
 
-The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
-Use an instance of `WorkflowClientInterface` to create, retrieve, or start a Workflow.
-Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execution Timeout of one minute.
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowOptions;
+# . . .
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         'certs/ca.cert',
+         'certs/client.key',
+         'certs/client.pem',
+         'tls-sample',
+     ),
+ );
+```
 
-Then we print some information and start the Workflow.
+To provide the Client Options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+
+```yml
+temporal:
+  # . . .
+  tls:
+    key: "certs/client.key"
+    cert: "certs/client.pem"
+    root_ca: "certs/ca.cert"
+    client_auth_type: require_and_verify_client_cert
+    server_name: "tls-sample"
+```
+
+Then update your application and use the SSL connection for `ServiceClient`.
+
+```php
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         getenv('TEMPORAL_SERVER_ROOT_CA_CERT_PATH'),
+         getenv('TEMPORAL_CLIENT_KEY_PATH'),
+         getenv('TEMPORAL_CLIENT_CERT_PATH'),
+         getenv('TEMPORAL_SERVER_NAME_OVERRIDE')
+     ),
+ );
+```
 
 </TabItem>
 <TabItem value="python">
