@@ -19,7 +19,7 @@ The `@temporalio/testing` package downloads the test server and exports [`TestWo
 A typical test suite should set up a single instance of the test environment to be reused in all tests (for example, in a [Jest](https://jestjs.io/) `beforeAll` hook or a [Mocha](https://mochajs.org/) `before()` hook).
 
 ```typescript
-import {TestWorkflowEnvironment} from "@temporalio/testing";
+import { TestWorkflowEnvironment } from '@temporalio/testing';
 
 let testEnv: TestWorkflowEnvironment;
 

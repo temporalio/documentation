@@ -324,6 +324,16 @@ Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
 
+:::caution
+
+Don't rely on storing the current Run Id or using it for any logical choices.
+A Workflow Retry changes the Run Id.
+Because the current Run Id, is mutable, relying on it might produce non-determinism issues,
+
+For more information, see the [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82) file.
+
+:::
+
 ### Workflow Id
 
 A Workflow Id is a customizable, application-level identifier for a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="#workflow-execution">Learn more</a></p></div></a> that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
