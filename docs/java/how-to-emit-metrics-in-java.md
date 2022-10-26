@@ -8,7 +8,7 @@ tags:
   - java
 ---
 
-To emit metrics with the Java SDK, use [`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
+To emit metrics with the Java SDK, use the[`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
 [Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
 
 The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
@@ -32,4 +32,4 @@ The following example shows how to use `MicrometerClientStatsReporter` to define
 ```
 
 For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
-For details on configuring a Prometheus scrape endpoint with Micrometer, see <https://micrometer.io/docs/registry/prometheus#_configuring>.
+For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.

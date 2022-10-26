@@ -38,7 +38,7 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
 
-### Commands & awaitables
+### Commands and awaitables
 
 A Workflow Execution does two things:
 

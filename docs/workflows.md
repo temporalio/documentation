@@ -165,7 +165,7 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="#continue-as-new">Learn more</a></p></div></a> in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a href="/workers#worker-process">Learn more</a></p></div></a>.
 
-### Commands & awaitables
+### Commands and awaitables
 
 A Workflow Execution does two things:
 
@@ -324,6 +324,16 @@ Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
 
+:::caution
+
+Don't rely on storing the current Run Id or using it for any logical choices.
+A Workflow Retry changes the Run Id.
+Because the current Run Id, is mutable, relying on it might produce non-determinism issues,
+
+For more information, see the [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82) file.
+
+:::
+
 ### Workflow Id
 
 A Workflow Id is a customizable, application-level identifier for a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="#workflow-execution">Learn more</a></p></div></a> that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
@@ -475,7 +485,7 @@ A Child Workflow Execution is a <a class="tdlp" href="#workflow-execution">Workf
 
 A Workflow Execution can be both a Parent and a Child Workflow Execution because any Workflow can spawn another Workflow.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Parent & Child Workflow Execution entity relationship</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/parent-child-workflow-execution-relationship.svg" alt="Parent & Child Workflow Execution entity relationship" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Parent and Child Workflow Execution entity relationship</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/parent-child-workflow-execution-relationship.svg" alt="Parent and Child Workflow Execution entity relationship" /></div></div>
 
 A Parent Workflow Execution must await on the Child Workflow Execution to spawn.
 The Parent can optionally await on the result of the Child Workflow Execution.
@@ -485,7 +495,7 @@ When a Parent Workflow Execution reaches a Closed status, the Cluster propagates
 
 If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Execution's perspective the entire chain of Runs is treated as a single execution.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Parent & Child Workflow Execution entity relationship with Continue As New</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg" alt="Parent & Child Workflow Execution entity relationship with Continue As New" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Parent and Child Workflow Execution entity relationship with Continue As New</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/parent-child-workflow-execution-with-continue-as-new.svg" alt="Parent and Child Workflow Execution entity relationship with Continue As New" /></div></div>
 
 ### When to use Child Workflows
 
@@ -497,7 +507,7 @@ On one hand, because Child Workflow Executions have their own Event Histories, t
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
 But a Parent Workflow Execution can spawn 1,000 Child Workflow Executions that each spawn 1,000 Activity Executions to achieve a total of 1,000,000 Activity Executions.
 
-On the other hand, because a Parent Workflow Execution Event History contains <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="#event">Learn more</a></p></div></a> that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
+However, because a Parent Workflow Execution Event History contains <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="#event">Learn more</a></p></div></a> that correspond to the status of the Child Workflow Execution, a single Parent should not spawn more than 1,000 Child Workflow Executions.
 
 In general, however, Child Workflow Executions result in more overall Events recorded in Event Histories than Activities.
 Because each entry in an Event History is a _cost_ in terms of compute resources, this could become a factor in very large workloads.
