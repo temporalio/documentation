@@ -1,6 +1,6 @@
 ---
 id: skip-time-set-up
-title: Set up Time Skip
+title: Set up time skipping
 description: The test server included in most SDKs is an in-memory implementation of Temporal Server that supports skipping time.
 sidebar_label: Setting up
 tags:
