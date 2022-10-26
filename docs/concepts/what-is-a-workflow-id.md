@@ -18,6 +18,6 @@ A [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy) can b
 The Temporal Platform guarantees uniqueness of the Workflow Id within a [Namespace](/concepts/what-is-a-namespace) based on the Workflow Id Reuse Policy.
 
 It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
-An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
+An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Worklfow Execution already started` error.
 
 A Workflow Execution can be uniquely identified across all Namespaces by its [Namespace](/concepts/what-is-a-namespace), Workflow Id, and [Run Id](/concepts/what-is-a-run-id).

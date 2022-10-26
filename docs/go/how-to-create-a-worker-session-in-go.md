@@ -10,7 +10,7 @@ tags:
 
 First, [enable Sessions on the Worker via the Worker Options](/go/how-to-set-workeroptions-in-go#enablesessionworker).
 
-Next, use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) API to create a Context object that can be passed to calls to spawn Activity Executions.
+Next, use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) function to create a Context object that can be passed to calls to spawn Activity Executions.
 
 Pass an instance of `workflow.Context` and [`SessionOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SessionOptions) to the `CreateSession` API call and get a Session Context which contains metadata information of the Session.
 

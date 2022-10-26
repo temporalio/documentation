@@ -129,7 +129,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 
 - A single Workflow Type can be instantiated as multiple Workflow Executions.
 - A Workflow Type is scoped by a Task Queue.
-  It is acceptable to have the same Workflow Type name map to different Workflow definitions if they are using completely different Workers.
+  It is acceptable to have the same Workflow Type name map to different Workflow Definitions if they are using completely different Workers.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Type cardinality with Workflow Definitions and Workflow Executions</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/workflow-type-cardinality.svg" alt="Workflow Type cardinality with Workflow Definitions and Workflow Executions" /></div></div>
 
@@ -328,7 +328,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 Don't rely on storing the current Run Id or using it for any logical choices.
 A Workflow Retry changes the Run Id.
-Because the current Run Id, is mutable, relying on it might produce non-determinism issues,
+Because the current Run Id is mutable, relying on it might produce non-determinism issues,
 
 For more information, see the [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82) file.
 
@@ -346,7 +346,7 @@ A <a class="tdlp" href="#workflow-id-reuse-policy">Workflow Id Reuse Policy<span
 The Temporal Platform guarantees uniqueness of the Workflow Id within a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> based on the Workflow Id Reuse Policy.
 
 It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
-An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
+An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Worklfow Execution already started` error.
 
 A Workflow Execution can be uniquely identified across all Namespaces by its <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>, Workflow Id, and <a class="tdlp" href="#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a href="#run-id">Learn more</a></p></div></a>.
 
@@ -355,7 +355,7 @@ A Workflow Execution can be uniquely identified across all Namespaces by its <a 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
 It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution.
-An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
+An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Worklfow Execution already started` error.
 
 A Workflow Id Reuse Policy has three possible values:
 
@@ -840,3 +840,4 @@ If you're using Standard Visibility, they are visible, though there's no need to
 Native support for Schedules in language SDKs is coming soon.
 For now, `tctl` and the web UI are the main interfaces to Schedules.
 For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
+

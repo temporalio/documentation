@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Application</p><p class="tdlppd">A Temporal Application is a set of Workflow Executions.</p><p class="tdlplm"><a href="/temporal#temporal-application">Learn more</a></p></div></a>—that is, all the relevant steps to start a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> that executes an <a class="tdlp" href="/activities#activity-execution">Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Application</p><p class="tdlppd">A Temporal Application is a set of Workflow Executions.</p><p class="tdlplm"><a href="/temporal#temporal-application">Learn more</a></p></div></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
 :::info WORK IN PROGRESS
 
@@ -34,9 +34,11 @@ In this section you can find the following:
 - [How to run a Worker Process](#run-worker-processes)
 - [How to start a Workflow Execution](#start-workflow-execution)
 
-## Run a dev Cluster
+## Run a development Cluster
 
-The following sections list various methods of deploying your <a class="tdlp" href="/clusters#">Temporal Clusters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> locally, so that you can use and interact with the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> APIs and [tctl](/tctl-v1) commands to test and develop applications.
+Temporal has various methods of working with <a class="tdlp" href="/clusters#">Temporal Clusters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> in a local environment. These containers are called Temporal development Clusters and are used to interact with the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> APIs and [tctl](/tctl-v1) commands to test and develop applications.
+
+The following sections list methods for deploying your Temporal development Clusters.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
@@ -67,7 +69,7 @@ The following steps start and run a Temporal Cluster.
    ```bash
    temporalite start --namespace default
    ```
-   Replace `default` with your [Namespace Name](/cloud/#temporal-cloud-namespace-name).
+   Replace `default` with your [Namespace Name](/namespaces).
 
 **Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
 
@@ -104,7 +106,7 @@ To try other configurations (different dependencies and databases), or to try a 
 
 ### Gitpod
 
-You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
+Run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
 
 One-click deployments are available for the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo and the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo.
 
@@ -113,7 +115,7 @@ A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker
 A one-click deployment can take up to a full minute to get fully up and running.
 When it is running, you can customize the application samples.
 
-## Add your SDK
+## Install a Temporal SDK
 
 A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal SDK?</p><p class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</p><p class="tdlplm"><a href="/temporal#temporal-sdk">Learn more</a></p></div></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Application</p><p class="tdlppd">A Temporal Application is a set of Workflow Executions.</p><p class="tdlplm"><a href="/temporal#temporal-application">Learn more</a></p></div></a> development.
 
@@ -237,7 +239,7 @@ The TypeScript SDK is designed with TypeScript-first developer experience in min
 </TabItem>
 </Tabs>
 
-#### API reference
+### API reference
 
 Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
 
@@ -273,7 +275,7 @@ The Temporal TypeScript SDK API reference is published to [typescript.temporal.i
 </TabItem>
 </Tabs>
 
-#### Code samples
+### Code samples
 
 You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
@@ -325,7 +327,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 **Where can I find video demos?**
 
-[Temporal Go TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
+[Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
 </TabItem>
 </Tabs>
@@ -369,13 +371,13 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) function available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
 If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
 
 Set a custom Namespace name in the Namespace field on an instance of the Client Options.
 
-Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API to connect a Client with mTLS.
+Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) function to connect a Client with mTLS.
 
 ```go
 import (
@@ -507,11 +509,11 @@ Declaring the `WorkflowClient()` creates a new connection to the Temporal servic
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
 However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
 
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) function available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
 
 Use a new `WorkflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
 
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) function to connect a Client with mTLS.
 
 ```typescript
 import fs from "fs-extra";
@@ -577,7 +579,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 </TabItem>
 <TabItem value="java">
 
-In the Temporal Java SDK programming model, a Workflow definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
+In the Temporal Java SDK programming model, a Workflow Definition comprises a Workflow interface annotated with `@WorkflowInterface` and a Workflow implementation that implements the Workflow interface.
 
 The Workflow interface is a Java interface and is annotated with `@WorkflowInterface`.
 Each Workflow interface must have only one method annotated with `@WorkflowMethod`.
@@ -695,7 +697,7 @@ export async function example(
 ### Workflow parameters
 
 Temporal Workflows may have any number of custom parameters.
-However, it is strongly recommended that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+However, we stronglyrecommended that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
 
 <Tabs
@@ -1143,7 +1145,7 @@ Always do the following in the Workflow implementation code:
 - Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
 - Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
   might break already open Workflows.
-- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow execution path.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Worklfow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 
 Workflow method arguments and return values are serializable to a byte array using the provided [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html) interface.
@@ -1766,7 +1768,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) API call inside your Workflow Definition.
+To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>, use the [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) function call inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
 
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
@@ -2215,7 +2217,7 @@ When the download is complete, the download service potentially can complete the
 
 Calling (via `yield`) a method on this interface invokes an Activity that implements this method.
 An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
-Even if Activity execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+Even if Activity Execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
 It doesn't matter what happens to the processes that host the Workflow.
 The business logic code just sees a single method call.
 
@@ -3023,7 +3025,7 @@ $result = $accountTransfer->transfer(
 
 **Asynchronous start**
 
-An asynchronous start initiates a Workflow execution and immediately returns to the caller without waiting for a result.
+An asynchronous start initiates a Worklfow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
 To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
@@ -3538,7 +3540,7 @@ Then call the `Get()` method on the instance of `WorkflowRun` that is returned, 
 
 In the case of a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#temporal-cron-job">Learn more</a></p></div></a>, you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
 
-To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
+To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) function, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
 
 ```go
 type CronResult struct {

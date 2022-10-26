@@ -54,7 +54,7 @@ type HeaderReader interface {
 
 ### Context Propagators
 
-You can propagate additional context through Workflow execution by using a context propagator.
+You can propagate additional context through Worklfow Execution by using a context propagator.
 A context propagator needs to implement the `ContextPropagator` interface that includes the following four methods:
 
 ```go

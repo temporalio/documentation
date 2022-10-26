@@ -47,7 +47,7 @@
       ]
     },
     {
-      "type": "h4",
+      "type": "h3",
       "id": "app-dev-context/api-reference"
     },
     {
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "type": "h4",
+      "type": "h3",
       "id": "app-dev-context/code-samples"
     },
     {

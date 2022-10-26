@@ -15,8 +15,8 @@ Used to set all child Workflow specific options
 | Namespace                | Set the namespace of the Child Workflow Execution                                 | string                 |
 | WorkflowID               | Set the Id of the Child Workflow to be scheduled                                  | string                 |
 | TaskQueue                | Set Task Queue that the child Workflow needs to be scheduled on                   | string                 |
-| WorkflowExecutionTimeout | Set the end to end timeout for the child Workflow execution including retries     | time.Duration          |
-| WorkflowRunTimeout       | Set the timeout for a single run of the child Workflow execution                  | time.Duration          |
+| WorkflowExecutionTimeout | Set the end to end timeout for the child Worklfow Execution including retries     | time.Duration          |
+| WorkflowRunTimeout       | Set the timeout for a single run of the child Worklfow Execution                  | time.Duration          |
 | WorkflowTaskTimeout      | Set the maximum execution time of a single Workflow Task                          | time.Duration          |
 | WaitForCancellation      | Set to wait for canceled child Workflow to be ended                               | bool                   |
 | WorkflowIDReusePolicy    | Set if server allow reuse of Workflow Id                                          | WorkflowIdReusePolicy  |
