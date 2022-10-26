@@ -328,7 +328,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 Don't rely on storing the current Run Id or using it for any logical choices.
 A Workflow Retry changes the Run Id.
-Because the current Run Id, is mutable, relying on it might produce non-determinism issues,
+Because the current Run Id is mutable, relying on it might produce non-determinism issues,
 
 For more information, see the [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82) file.
 
@@ -840,3 +840,4 @@ If you're using Standard Visibility, they are visible, though there's no need to
 Native support for Schedules in language SDKs is coming soon.
 For now, `tctl` and the web UI are the main interfaces to Schedules.
 For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
+

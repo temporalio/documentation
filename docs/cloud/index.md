@@ -12,10 +12,9 @@ toc_max_heading_level: 4
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
-:::note Join the Temporal Cloud waitlist
+:::note Sign up for Temporal Cloud
 
-Access to Temporal Cloud is currently by invitation only.
-You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
+To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 
 :::
 
@@ -76,3 +75,4 @@ For a Namespace, a user can have one of the following permissions:
 - **Namespace Admin:** Can create and edit Namespaces; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
+
