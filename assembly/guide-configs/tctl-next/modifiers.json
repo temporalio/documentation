@@ -27,15 +27,15 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/batch-type"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/modifiers/clusters"
+      "id": "tctl-next/modifiers/cluster"
     },
     {
       "type": "h2",
       "id": "tctl-next/modifiers/cron"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/data"
     },
     {
       "type": "h2",
@@ -48,6 +48,10 @@
     {
       "type": "h2",
       "id": "tctl-next/modifiers/dry-run"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/email"
     },
     {
       "type": "h2",
@@ -71,7 +75,7 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/global-namespace"
+      "id": "tctl-next/modifiers/global"
     },
     {
       "type": "h2",
@@ -84,6 +88,10 @@
     {
       "type": "h2",
       "id": "tctl-next/modifiers/identity"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/id-reuse-policy"
     },
     {
       "type": "h2",
@@ -111,23 +119,15 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/memo-file"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/modifiers/memo-key"
-    },
-    {
-      "type": "h2",
       "id": "tctl-next/modifiers/memo"
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/name"
+      "id": "tctl-next/modifiers/memo-file"
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/namespace-data"
+      "id": "tctl-next/modifiers/name"
     },
     {
       "type": "h2",
@@ -151,23 +151,11 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/owner-email"
-    },
-    {
-      "type": "h2",
       "id": "tctl-next/modifiers/pager"
     },
     {
       "type": "h2",
       "id": "tctl-next/modifiers/pagesize"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/modifiers/query-reject-condition"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/modifiers/query-type"
     },
     {
       "type": "h2",
@@ -180,6 +168,10 @@
     {
       "type": "h2",
       "id": "tctl-next/modifiers/reason"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/modifiers/reject-condition"
     },
     {
       "type": "h2",
@@ -219,15 +211,11 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/search-attribute-key"
+      "id": "tctl-next/modifiers/search-attribute"
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/search-attribute-value"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/modifiers/signal-name"
+      "id": "tctl-next/modifiers/name"
     },
     {
       "type": "h2",
@@ -267,15 +255,7 @@
     },
     {
       "type": "h2",
-      "id": "tctl-next/modifiers/workflow-id-reuse-policy"
-    },
-    {
-      "type": "h2",
       "id": "tctl-next/modifiers/workflow-id"
-    },
-    {
-      "type": "h2",
-      "id": "tctl-next/modifiers/workflow-task-timeout"
     },
     {
       "type": "h2",

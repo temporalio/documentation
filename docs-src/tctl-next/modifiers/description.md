@@ -8,5 +8,3 @@ tags:
 ---
 
 Specify a description when registering a [Namespace](/concepts/what-is-a-namespace).
-
-Alias `--d`

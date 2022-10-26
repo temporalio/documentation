@@ -1,0 +1,25 @@
+{
+  "file_name": "debugging.md",
+  "id": "debugging",
+  "file_dir": "application-development",
+  "title": "Application development - debugging",
+  "sidebar_label": "Debugging",
+  "description": "The Debugging section of the Temporal Application development guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "app-dev-context/debugging"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/debug-environment-development"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/debug-environment-production"
+    }
+  ]
+}
