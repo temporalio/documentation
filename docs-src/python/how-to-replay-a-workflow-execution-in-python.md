@@ -9,17 +9,30 @@ tags:
   - python
 ---
 
-To replay a Workflow Execution, use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) method and pass a Workflow History as an argument.
+To replay Workflow Executions, use the
+[`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows)
+or
+[`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) 
+methods, passing multiple or one Workflow Histories as arguments.
 
-In the following example, `history_json_str` references the Workflow History as a JSON string.
-
+In the following example, histories are downloaded from the server, and then replayed:
 ```python
-async def run_replayer(history_json_str: str):
-    replayer = Replayer(workflows=[YourWorkflow])
-    await replayer.replay_workflow(history_json_str)
+histories = # TODO: Use list workflows API once it's ready
+replayer = Replayer(workflows=[YourWorkflowA, YourWorkflowB])
+await replayer.replay_workflows(histories)
 ```
 
-If the Workflow History is non-deterministic, `run_replayer()` raises an error.
+
+In the next example, a single history is loaded from a JSON string:
+
+```python
+replayer = Replayer(workflows=[YourWorkflow])
+await replayer.replay_workflow(WorkflowHistory.from_json(history_json_str))
+```
+
+In both examples if Workflow History is non-deterministic, an error will be thrown. You can choose
+to wait until all histories have been replayed with `replay_workflows` by setting the `fail_fast`
+option to `false`.
 
 :::note
 

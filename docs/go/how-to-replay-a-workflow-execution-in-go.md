@@ -61,3 +61,6 @@ func ReplayWorkflow(ctx context.Context, client client.Client, id, runID string)
 The code above will cause the Worker to re-execute the Workflow's Workflow Function using the original Event History.
 If a noticeably different code path was followed or some code caused a deadlock, it will be returned in the error code.
 Replaying a Workflow Execution locally is a good way to see exactly what code path was taken for given input and events.
+
+You can replay many histories by registering all the needed workflow implementation, and then
+calling `ReplayWorkflowHistory` repeatedly.
