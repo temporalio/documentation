@@ -2,7 +2,7 @@
 id: how-to-mock-activities-in-php
 title: How to mock Activities in PHP
 sidebar_label: Mock Activities
-description: Mock Activities
+description: To mock an Activity in PHP, follow the instructions in this article.
 tags:
   - developer-guide
   - sdk
