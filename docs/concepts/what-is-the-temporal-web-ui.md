@@ -44,7 +44,7 @@ Users can list Workflow Executions by any of the following:
 - [Workflow ID](/concepts/what-is-a-workflow-id)
 - [Workflow Type](/concepts/what-is-a-workflow-type)
 - Status
-- Date & Time—users can set their preferred date & time format as one of the following:
+- Date and Time—users can set their preferred date and time format as one of the following:
   - UTC
   - Local
   - Relative
