@@ -669,7 +669,7 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 </TabItem>
 <TabItem value="php">
 
-In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
 ```php
 use Temporal\Workflow\YourWorkflowInterface;
@@ -687,9 +687,9 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="python">
 
-Workflows in Python are defined as classes.
+In the Temporal Python SDK programming model, Workflows are defined as classes.
 
-Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to register a Workflow class.
+Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
 
 Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
@@ -706,7 +706,7 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
+In the Temporal TypeScript SDK programming model, Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
 A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
@@ -819,9 +819,8 @@ interface FileProcessingWorkflow {
 <TabItem value="python">
 
 Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`.
-These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
+These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
-For example:
 
 ```python
 @dataclass
@@ -944,28 +943,22 @@ interface FileProcessingWorkflow {
 </TabItem>
 <TabItem value="python">
 
-A Workflow Execution can return the results of a Workflow.
+To return a value of the Workflow, use `return` to return an object.
 
 To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+@dataclass
+class YourResult:
+    your_int_param: int
+    your_str_param: str
 
-result = await handle.result()
-```
 
-`execute_workflow()` is a helper function for `start_workflow()` and `handle.result()`.
-
-```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, params: YourResult) -> None:
+      return YourResult
 ```
 
 </TabItem>
@@ -1534,7 +1527,6 @@ The default implementation uses a JSON serializer, but an alternative implementa
 Activity parameters are the function parameters of the function decorated with `@activity.defn`.
 These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
-For example:
 
 ```python
 @dataclass
