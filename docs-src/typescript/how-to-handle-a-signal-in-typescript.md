@@ -12,12 +12,12 @@ tags:
 [`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
 
 ```ts
-import {setHandler} from "@temporalio/workflow";
+import { setHandler } from '@temporalio/workflow';
 
 export async function yourWorkflow() {
   const groups = new Map<string, Set<string>>();
 
-  setHandler(joinSignal, ({userId, groupId}: JoinInput) => {
+  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
     const group = groups.get(groupId);
     if (group) {
       group.add(userId);
