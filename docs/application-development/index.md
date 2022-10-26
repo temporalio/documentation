@@ -95,8 +95,8 @@ The Developer's guide is divided into four sections:
 
    - [Signals](/application-development/features#signals)
    - [Queries](/application-development/features#queries)
-   - [Workflow timeouts & retries](/application-development/features#workflow-timeouts)
-   - [Activity timeouts & retries](/application-development/features#activity-timeouts)
+   - [Workflow timeouts and retries](/application-development/features#workflow-timeouts)
+   - [Activity timeouts and retries](/application-development/features#activity-timeouts)
    - [Activity Heartbeats](/application-development/features#activity-heartbeats)
    - [Async Activity Completion](/application-development/features#asynchronous-activity-completion)
    - [Child Workflows](/application-development/features#child-workflows)

@@ -20,31 +20,31 @@ The command has no modifiers.
 Example output:
 
 ```text
-             Name               Type
-  BatcherNamespace            Keyword
-  BatcherUser                 Keyword
-  BinaryChecksums             Keyword
-  CloseTime                   Datetime
-  CustomBoolField             Bool
-  CustomDatetimeField         Datetime
-  CustomDoubleField           Double
-  CustomIntField              Int
-  CustomKeywordField          Keyword
-  CustomStringField           Text
-  CustomTextField             Text
-  ExecutionDuration           Int
-  ExecutionStatus             Keyword
-  ExecutionTime               Datetime
-  HistoryLength               Int
-  RunId                       Keyword
-  StartTime                   Datetime
-  StateTransitionCount        Int
-  TaskQueue                   Keyword
-  TemporalChangeVersion       Keyword
-  TemporalNamespaceDivision   Keyword
-  TemporalSchedulePaused      Bool
-  TemporalScheduledById       Keyword
-  TemporalScheduledStartTime  Datetime
-  WorkflowId                  Keyword
-  WorkflowType                Keyword
+           Name               Type
+BatcherNamespace            Keyword
+BatcherUser                 Keyword
+BinaryChecksums             Keyword
+CloseTime                   Datetime
+CustomBoolField             Bool
+CustomDatetimeField         Datetime
+CustomDoubleField           Double
+CustomIntField              Int
+CustomKeywordField          Keyword
+CustomStringField           Text
+CustomTextField             Text
+ExecutionDuration           Int
+ExecutionStatus             Keyword
+ExecutionTime               Datetime
+HistoryLength               Int
+RunId                       Keyword
+StartTime                   Datetime
+StateTransitionCount        Int
+TaskQueue                   Keyword
+TemporalChangeVersion       Keyword
+TemporalNamespaceDivision   Keyword
+TemporalSchedulePaused      Bool
+TemporalScheduledById       Keyword
+TemporalScheduledStartTime  Datetime
+WorkflowId                  Keyword
+WorkflowType                Keyword
 ```
