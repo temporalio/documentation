@@ -2,7 +2,7 @@
 id: how-to-configure-tracing-in-typescript
 title: How to configure tracing in TypeScript
 sidebar_label: Configure tracing
-description: Configure tracing
+description: Call `MockActivityEnvironment.cancel()` to cancel an Activity Context.
 tags:
   - developer-guide
   - sdk
@@ -27,13 +27,13 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
 - At the top level of your Workflow code, add the following lines:
 
   ```js
-  import {propagation} from "@opentelemetry/api";
+  import { propagation } from '@opentelemetry/api';
   import {
     CompositePropagator,
     W3CBaggagePropagator,
     W3CTraceContextPropagator,
-  } from "@opentelemetry/core";
-  import {JaegerPropagator} from "@opentelemetry/propagator-jaeger";
+  } from '@opentelemetry/core';
+  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
 
   propagation.setGlobalPropagator(
     new CompositePropagator({
@@ -42,8 +42,8 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
         new W3CBaggagePropagator(),
         new JaegerPropagator(),
       ],
-    })
+    }),
   );
   ```
 
-Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the README.
+Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.

@@ -1,6 +1,6 @@
 ---
 id: how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-typescript
-title: How to upsert custom Search Attributes to Workflow during Execution
+title: How to upsert custom Search Attributes to Workflow during Execution in TypeScript
 sidebar_label: How to upsert custom Search Attributes to Workflow during Execution
 tags:
   - developer-guide

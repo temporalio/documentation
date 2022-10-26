@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-After you've created custom Search Attributes in your Cluster ([using `tctl`](/tctl/admin/cluster/add-search-attributes) or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
+After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.

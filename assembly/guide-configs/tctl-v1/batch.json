@@ -1,0 +1,33 @@
+{
+  "file_name": "batch.md",
+  "file_dir": "tctl-v1",
+  "id": "batch",
+  "title": "tctl v1.16 batch command reference",
+  "sidebar_label": "batch",
+  "description": "How to use the tctl v1.16 batch command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-v1/batch/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/batch/start"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/batch/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/batch/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-v1/batch/terminate"
+    }
+  ]
+}

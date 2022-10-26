@@ -2,14 +2,14 @@
 id: how-to-register-types-with-a-worker-in-java
 title: How to register types with a Worker in Java
 sidebar_label: Register Types
-description: Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+description: Use `worker.registerWorkflowImplementationTypes` to register Workflow Type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
 tags:
   - developer-guide
   - java
   - workers
 ---
 
-Use `worker.registerWorkflowImplementationTypes` to register Workflow type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
+Use `worker.registerWorkflowImplementationTypes` to register Workflow Type and `worker.registerActivitiesImplementations` to register Activity implementation with Workers.
 
 For Workflows, the Workflow Type is registered with a Worker.
 A Workflow Type can be registered only once per Worker entity.
@@ -51,7 +51,7 @@ The following example shows how to register the `DynamicWorkflow` and `DynamicAc
     // Start all the Workers that are in this process.
     factory.start();
 
-    /* Create the Workflow stub. Note that the Workflow type is not explicitly registered with the Worker. */
+    /* Create the Workflow stub. Note that the Workflow Type is not explicitly registered with the Worker. */
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder().setTaskQueue(TASK_QUEUE).setWorkflowId(WORKFLOW_ID).build();
     WorkflowStub workflow = client.newUntypedWorkflowStub("DynamicWF", workflowOptions);

@@ -13,19 +13,19 @@ import TabItem from '@theme/TabItem';
 
 Temporal Task Queues and Worker Processes are tightly coupled components.
 
-A Task is the context that a Worker needs to progress with a specific [Workflow Execution](/workflows#workflow-execution) or [Activity Execution](/activities#activity-execution).
+A Task is the context that a Worker needs to progress with a specific <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
 
 There are two types of Tasks:
 
-- [Activity Task](#activity-task)
-- [Workflow Task](#workflow-task)
+- <a class="tdlp" href="#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="#activity-task">Learn more</a></p></div></a>
+- <a class="tdlp" href="#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a href="#workflow-task">Learn more</a></p></div></a>
 
 ## Workflow Task
 
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 - Every time a new external event that might affect a Workflow state is recorded, a Workflow Task that contains the event is added to a Task Queue and then picked up by a Workflow Worker.
-- After the new event is handled, the Workflow Task is completed with a list of [Commands](/workflows#command).
+- After the new event is handled, the Workflow Task is completed with a list of <a class="tdlp" href="/workflows#command">Commands<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Command?</p><p class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</p><p class="tdlplm"><a href="/workflows#command">Learn more</a></p></div></a>.
 - Handling of a Workflow Task is usually very fast and is not related to the duration of operations that the Workflow invokes.
 
 ## Workflow Task Execution
@@ -34,14 +34,14 @@ A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it 
 
 ## Activity Task
 
-An Activity Task contains the context needed to proceed with an [Activity Task Execution](#activity-task-execution).
+An Activity Task contains the context needed to proceed with an <a class="tdlp" href="#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="#activity-task-execution">Learn more</a></p></div></a>.
 Activity Tasks largely represent the Activity Task Scheduled Event, which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
 ## Activity Task Execution
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](#activity-task) and executes the [Activity Definition](/activities#activity-definition) (also known as the Activity Function).
+An Activity Task Execution is when the Worker uses the Context provided from the <a class="tdlp" href="#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="#activity-task">Learn more</a></p></div></a> and executes the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a> (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
@@ -61,7 +61,7 @@ Once an Activity Task finishes execution, the Worker responds to the Cluster wit
 
 ## Task Queue
 
-A Task Queue is a lightweight, dynamically allocated queue that one or more [Worker Entities](/workers#worker-entity) poll for [Tasks](#).
+A Task Queue is a lightweight, dynamically allocated queue that one or more <a class="tdlp" href="/workers#worker-entity">Worker Entities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Entity?</p><p class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</p><p class="tdlplm"><a href="/workers#worker-entity">Learn more</a></p></div></a> poll for <a class="tdlp" href="#">Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task?</p><p class="tdlppd">A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.</p><p class="tdlplm"><a href="#">Learn more</a></p></div></a>.
 
 Task Queues do not have any ordering guarantees.
 It is possible to have a Task that stays in a Task Queue for a period of time, if there is a backlog that wasn't drained for that time.
@@ -80,7 +80,7 @@ This implementation offers several benefits:
 
 - A Worker Process polls for a message only when it has spare capacity, avoiding overloading itself.
 - In effect, Task Queues enable load balancing across many Worker Processes.
-- Task Queues enable what we call [Task Routing](#task-routing), which is the routing of specific Tasks to specific Worker Processes or even a specific process.
+- Task Queues enable what we call <a class="tdlp" href="#task-routing">Task Routing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Task Routing?</p><p class="tdlppd">Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.</p><p class="tdlplm"><a href="#task-routing">Learn more</a></p></div></a>, which is the routing of specific Tasks to specific Worker Processes or even a specific process.
 - Task Queues support server-side throttling, which enables you to limit the Task dispatching rate to the pool of Worker Processes while still supporting Task dispatching at higher rates when spikes happen.
 - When all Worker Processes are down, messages simply persist in a Task Queue, waiting for the Worker Processes to recover.
 - Worker Processes do not need to advertise themselves through DNS or any other network discovery mechanism.
@@ -96,7 +96,7 @@ There are four places where the name of the Task Queue can be set by the develop
 1. A Task Queue must be set when spawning a Workflow Execution:
 
 - [How to start a Workflow Execution using an SDK](/application-development/foundations#set-task-queue)
-- [How to start a Workflow Execution using tctl](/tctl/workflow/start#--taskqueue)
+- [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 

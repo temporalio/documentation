@@ -5,7 +5,7 @@ sidebar_label: Codec Server
 description: Implementation of a remote encryption/decryption server.
 ---
 
-The [Codec Server Go sample](https://github.com/temporalio/samples-go/tree/main/codec-server) is an example that shows how to decode a Payload that has been encoded so the Payload can be displayed by [tctl](/tctl) and the [Web UI](/web-ui).
+The [Codec Server Go sample](https://github.com/temporalio/samples-go/tree/main/codec-server) is an example that shows how to decode a Payload that has been encoded so the Payload can be displayed by [tctl](/tctl-v1) and the [Web UI](/web-ui).
 
 A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding.
 
@@ -35,7 +35,7 @@ codec:
     endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
 ```
 
-The [codec endpoint](/references/ui-configuration#codec) can be specified in the configuration file.
+The [codec endpoint](/references/web-ui-configuration#codec) can be specified in the configuration file.
 It can also be changed during runtime.
 
 Select the button with an up-down arrow in the left area of the screen.

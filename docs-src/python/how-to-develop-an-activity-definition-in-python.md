@@ -49,7 +49,7 @@ An Activity must Heartbeat to receive cancellation.
 
 ##### [Synchronous Activities](#synchronous-activities)
 
-The [`activity_executor`](https://python.temporal.io/temporalio.worker.workerconfig#activity_exector) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
+The [`activity_executor`](https://python.temporal.io/temporalio.worker.WorkerConfig.html#activity_executor) Worker parameter must be set with a [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) instance to use for executing the Activities.
 
 Cancellation for synchronous Activities is done in the background and the Activity must choose to listen for it and react appropriately.
 
@@ -65,4 +65,4 @@ Besides `activity_executor`, no other additional Worker parameters are required 
 
 If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Executor) that is not `concurrent.futures.ThreadPoolExecutor`, then the synchronous activities are considered multiprocess/other activities.
 
-These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.sharedstatemanager). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.sharedstatemanager#create_from_multiprocessing).
+These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.SharedStateManager.html). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.SharedStateManager.html#create_from_multiprocessing).
