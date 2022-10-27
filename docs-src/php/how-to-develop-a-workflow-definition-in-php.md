@@ -4,7 +4,7 @@ title: Develop a Workflow Definition in PHP
 sidebar_label: Workflow Definition
 ---
 
-In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
 ```php
 use Temporal\Workflow\YourWorkflowInterface;

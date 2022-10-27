@@ -158,14 +158,14 @@ Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your proj
 <dependency>
   <groupId>io.temporal</groupId>
   <artifactId>temporal-sdk</artifactId>
-  <version>1.11.0</version>
+  <version>1.17.0</version>
 </dependency>
 ```
 
 **[Gradle Groovy DSL](https://gradle.org/)**:
 
 ```groovy
-implementation 'io.temporal:temporal-sdk:1.11.0'
+implementation 'io.temporal:temporal-sdk:1.17.0'
 ```
 
 **Other**:
@@ -465,16 +465,51 @@ For more information, see the following:
 </TabItem>
 <TabItem value="php">
 
-The following example represents a console command that starts a Workflow, prints its IDs, and then waits for its result:
+Create an instance of the `$workflowClient` class and use the `create()` method connect to a Temporal Client to the Temporal Cluster.
 
-<!--SNIPSTART php-hello-client {"enable_source_link": true}-->
-<!--SNIPEND-->
+Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
 
-The `WorkflowClientInterface` in the snippet is an entry point to get access to Workflow.
-Use an instance of `WorkflowClientInterface` to create, retrieve, or start a Workflow.
-Here we create an instance of `GreetingWorkflowInterface` with a Workflow Execution Timeout of one minute.
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowOptions;
+# . . .
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         'certs/ca.cert',
+         'certs/client.key',
+         'certs/client.pem',
+         'tls-sample',
+     ),
+ );
+```
 
-Then we print some information and start the Workflow.
+To provide the Client Options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+
+```yml
+temporal:
+  # . . .
+  tls:
+    key: "certs/client.key"
+    cert: "certs/client.pem"
+    root_ca: "certs/ca.cert"
+    client_auth_type: require_and_verify_client_cert
+    server_name: "tls-sample"
+```
+
+Then update your application and use the SSL connection for `ServiceClient`.
+
+```php
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         getenv('TEMPORAL_SERVER_ROOT_CA_CERT_PATH'),
+         getenv('TEMPORAL_CLIENT_KEY_PATH'),
+         getenv('TEMPORAL_CLIENT_CERT_PATH'),
+         getenv('TEMPORAL_SERVER_NAME_OVERRIDE')
+     ),
+ );
+```
 
 </TabItem>
 <TabItem value="python">
@@ -634,7 +669,7 @@ public class MyDynamicWorkflow implements DynamicWorkflow {
 </TabItem>
 <TabItem value="php">
 
-In PHP, a Workflow is a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
+In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
 ```php
 use Temporal\Workflow\YourWorkflowInterface;
@@ -652,9 +687,9 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="python">
 
-Workflows in Python are defined as classes.
+In the Temporal Python SDK programming model, Workflows are defined as classes.
 
-Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to register a Workflow class.
+Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
 
 Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
 
@@ -671,7 +706,7 @@ class YourWorkflow:
 </TabItem>
 <TabItem value="typescript">
 
-Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
+In the Temporal TypeScript SDK programming model, Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
 A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
@@ -784,9 +819,8 @@ interface FileProcessingWorkflow {
 <TabItem value="python">
 
 Workflow parameters are the method parameters of the singular method decorated with `@workflow.run`.
-These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
+These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
-For example:
 
 ```python
 @dataclass
@@ -880,7 +914,7 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 </TabItem>
 <TabItem value="java">
 
-Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicWorkflow` can return type Object.
 Ensure that your Client can handle an Object type return or is able to convert the Object type response.
@@ -909,28 +943,22 @@ interface FileProcessingWorkflow {
 </TabItem>
 <TabItem value="python">
 
-A Workflow Execution can return the results of a Workflow.
+To return a value of the Workflow, use `return` to return an object.
 
 To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+@dataclass
+class YourResult:
+    your_int_param: int
+    your_str_param: str
 
-result = await handle.result()
-```
 
-`execute_workflow()` is a helper function for `start_workflow()` and `handle.result()`.
-
-```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, params: YourResult) -> None:
+      return YourResult
 ```
 
 </TabItem>
@@ -1499,7 +1527,6 @@ The default implementation uses a JSON serializer, but an alternative implementa
 Activity parameters are the function parameters of the function decorated with `@activity.defn`.
 These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
-For example:
 
 ```python
 @dataclass
@@ -1559,7 +1586,7 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 </TabItem>
 <TabItem value="java">
 
-Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.

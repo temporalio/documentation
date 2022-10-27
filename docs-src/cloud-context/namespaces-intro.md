@@ -7,12 +7,7 @@ tags:
   - guide-context
 ---
 
-:::note Join the Temporal Cloud waitlist
-
-Access to Temporal Cloud is currently by invitation only.
-You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
-
-:::
+A Namespace is a unit of isolation within the Temporal Platform.
 
 - [Create a Namespace](#create-a-namespace)
 - [Access a Namespace](#access-a-namespace)

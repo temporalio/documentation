@@ -8,7 +8,7 @@ tags:
   - java
 ---
 
-Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicWorkflow` can return type Object.
 Ensure that your Client can handle an Object type return or is able to convert the Object type response.
