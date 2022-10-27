@@ -520,10 +520,6 @@
       "source": "/server-configuration",
       "destination": "/references/configuration"
     },
-    {
-      "source": "/references/configuration",
-      "destination": "/references/configuration"
-    },
     {"source": "/server-introduction", "destination": "/clusters"},
     {"source": "/server/introduction", "destination": "/clusters"},
     {"source": "/server-namespaces", "destination": "/namespaces"},
