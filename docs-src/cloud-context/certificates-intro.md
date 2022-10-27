@@ -7,13 +7,6 @@ tags:
   - guide-context
 ---
 
-:::note Join the Temporal Cloud waitlist
-
-Access to Temporal Cloud is currently by invitation only.
-You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
-
-:::
-
 Access to [Temporal Cloud](https://temporal.io/cloud) is secured with the mutual Transport Layer Security (mTLS) protocol.
 This protocol requires a CA certificate from you.
 
