@@ -31,7 +31,7 @@ Alias: `w`
 - <a class="tdlp" href="#show">`tctl workflow show`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow show</p><p class="tdlppd">How to show Workflow History using tctl.</p><p class="tdlplm"><a href="#show">Learn more</a></p></div></a>
 - <a class="tdlp" href="#showid">`tctl workflow showid`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow showid</p><p class="tdlppd">How to show Workflow History for a specified Workflow Id and optional Run Id using tctl.</p><p class="tdlplm"><a href="#showid">Learn more</a></p></div></a>
 - <a class="tdlp" href="#signal">`tctl workflow signal`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow signal</p><p class="tdlppd">How to Signal a Workflow Execution using tctl.</p><p class="tdlplm"><a href="#signal">Learn more</a></p></div></a>
-- <a class="tdlp" href="#stack">`tctl workflow stack`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow stack</p><p class="tdlppd">How to query Workflow Executions with \_\_stack_trace using tctl.</p><p class="tdlplm"><a href="#stack">Learn more</a></p></div></a>
+- <a class="tdlp" href="#stack">`tctl workflow stack`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow stack</p><p class="tdlppd">How to query Workflow Executions with __stack_trace using tctl.</p><p class="tdlplm"><a href="#stack">Learn more</a></p></div></a>
 - <a class="tdlp" href="#start">`tctl workflow start`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow start</p><p class="tdlppd">How to start a new Workflow Execution using tctl.</p><p class="tdlplm"><a href="#start">Learn more</a></p></div></a>
 - <a class="tdlp" href="#terminate">`tctl workflow terminate`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a href="#terminate">Learn more</a></p></div></a>
 
@@ -1758,26 +1758,26 @@ tctl workflow showid <workflow_id>
 Example output:
 
 ```bashtext
-  1  WorkflowExecutionStarted    {WorkflowType:{Name:HelloWorld}, ParentInitiatedEventId:0,
-                                  TaskQueue:{Name:HelloWorldTaskQueue, Kind:Normal},
-                                  Input:[Temporal], WorkflowExecutionTimeout:1h0m0s,
-                                  WorkflowRunTimeout:1h0m0s, WorkflowTaskTimeout:10s,
-                                  Initiator:Unspecified, LastCompletionResult:[],
-                                  OriginalExecutionRunId:f0c04163-833f-490b-99a9-ee48b6199213,
-                                  Identity:tctl@z0mb1e,
-                                  FirstExecutionRunId:f0c04163-833f-490b-99a9-ee48b6199213,
-                                  Attempt:1, WorkflowExecutionExpirationTime:2020-10-13
-                                  21:41:06.349 +0000 UTC, FirstWorkflowTaskBackoff:0s}
-  2  WorkflowTaskScheduled       {TaskQueue:{Name:HelloWorldTaskQueue,
-                                  Kind:Normal},
-                                  StartToCloseTimeout:10s, Attempt:1}
-  3  WorkflowTaskStarted         {ScheduledEventId:2, Identity:15079@z0mb1e,
-                                  RequestId:731f7b41-5ae4-42e4-9695-ecd857d571f1}
-  4  WorkflowTaskCompleted       {ScheduledEventId:2,
-                                  StartedEventId:3,
-                                  Identity:15079@z0mb1e}
-  5  WorkflowExecutionCompleted  {Result:[],
-                                  WorkflowTaskCompletedEventId:4}
+1  WorkflowExecutionStarted    {WorkflowType:{Name:HelloWorld}, ParentInitiatedEventId:0,
+                                TaskQueue:{Name:HelloWorldTaskQueue, Kind:Normal},
+                                Input:[Temporal], WorkflowExecutionTimeout:1h0m0s,
+                                WorkflowRunTimeout:1h0m0s, WorkflowTaskTimeout:10s,
+                                Initiator:Unspecified, LastCompletionResult:[],
+                                OriginalExecutionRunId:f0c04163-833f-490b-99a9-ee48b6199213,
+                                Identity:tctl@z0mb1e,
+                                FirstExecutionRunId:f0c04163-833f-490b-99a9-ee48b6199213,
+                                Attempt:1, WorkflowExecutionExpirationTime:2020-10-13
+                                21:41:06.349 +0000 UTC, FirstWorkflowTaskBackoff:0s}
+2  WorkflowTaskScheduled       {TaskQueue:{Name:HelloWorldTaskQueue,
+                                Kind:Normal},
+                                StartToCloseTimeout:10s, Attempt:1}
+3  WorkflowTaskStarted         {ScheduledEventId:2, Identity:15079@z0mb1e,
+                                RequestId:731f7b41-5ae4-42e4-9695-ecd857d571f1}
+4  WorkflowTaskCompleted       {ScheduledEventId:2,
+                                StartedEventId:3,
+                                Identity:15079@z0mb1e}
+5  WorkflowExecutionCompleted  {Result:[],
+                                WorkflowTaskCompletedEventId:4}
 ```
 
 The following modifiers control the behavior of the command.
@@ -2364,3 +2364,4 @@ Alias: `--re`
 ```bash
 tctl workflow terminate --reason <string>
 ```
+

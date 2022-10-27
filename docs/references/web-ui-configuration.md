@@ -4,8 +4,8 @@ title: Temporal Web UI configuration reference
 description: The Temporal Web UI Server uses a configuration file for many of the UI's settings.
 sidebar_label: Web UI configuration
 tags:
-  - reference
-  - web-ui
+ - reference
+ - web-ui
 ---
 
 <!-- This file is generated. Do not edit it directly. -->
@@ -58,7 +58,7 @@ refreshInterval: 1m
 
 ## temporalGrpcAddress
 
-The frontend address for the Temporal Cluster.
+The frontend adddress for the Temporal Cluster.
 
 The default address is localhost (127.0.0.1:7233).
 
