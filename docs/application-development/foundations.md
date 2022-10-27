@@ -158,14 +158,14 @@ Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your proj
 <dependency>
   <groupId>io.temporal</groupId>
   <artifactId>temporal-sdk</artifactId>
-  <version>1.11.0</version>
+  <version>1.17.0</version>
 </dependency>
 ```
 
 **[Gradle Groovy DSL](https://gradle.org/)**:
 
 ```groovy
-implementation 'io.temporal:temporal-sdk:1.11.0'
+implementation 'io.temporal:temporal-sdk:1.17.0'
 ```
 
 **Other**:
@@ -916,7 +916,7 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 </TabItem>
 <TabItem value="java">
 
-Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+Workflow method arguments and return values must be serializable and deserializable using the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicWorkflow` can return type Object.
 Ensure that your Client can handle an Object type return or is able to convert the Object type response.
@@ -1588,7 +1588,7 @@ func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param Y
 </TabItem>
 <TabItem value="java">
 
-Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/converter/DataConverter.html).
+Activity return values must be serializable and deserializable by the provided [`DataConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/converter/DataConverter.html).
 
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
