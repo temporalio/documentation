@@ -121,7 +121,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-create-a-temporal-client-in-php"
+          "id": "php/how-to-connect-to-a-cluster-php"
         },
         {
           "lang": "python",
@@ -237,7 +237,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-customize-workflow-type-in-php"
         },
         {
           "lang": "python",
@@ -382,7 +382,7 @@
         },
         {
           "lang": "php",
-          "id": "none"
+          "id": "php/how-to-customize-activity-type-in-php"
         },
         {
           "python": "Python",

@@ -12,10 +12,9 @@ toc_max_heading_level: 4
 
 Temporal Cloud is offered in units of isolation known as [Namespaces](/namespaces). You can provision and use one or more Cloud Namespaces. A typical use case is to use separate Namespaces as development, testing, integration, staging, and production environments for an application.
 
-:::note Join the Temporal Cloud waitlist
+:::note Sign up for Temporal Cloud
 
-Access to Temporal Cloud is currently by invitation only.
-You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
+To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 
 :::
 
@@ -60,9 +59,9 @@ Each Namespace Name must conform to the following rules:
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
-1. A [Namespace Name](#temporal-cloud-namespace-name)
+1. A <a class="tdlp" href="#temporal-cloud-namespace-name">Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Cloud Namespace Name?</p><p class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</p><p class="tdlplm"><a href="#temporal-cloud-namespace-name">Learn more</a></p></div></a>
 1. A period (.)
-1. The [Account Id](#temporal-cloud-account-id) to which the Namespace belongs
+1. The <a class="tdlp" href="#temporal-cloud-account-id">Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cloud Account Id?</p><p class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</p><p class="tdlplm"><a href="#temporal-cloud-account-id">Learn more</a></p></div></a> to which the Namespace belongs
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
