@@ -465,7 +465,7 @@ For more information, see the following:
 </TabItem>
 <TabItem value="php">
 
-Create an instance of the `$workflowClient` class and use the `create()` method connect to a Temporal Client to the Temporal Cluster.
+Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Cluster.
 
 Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
 
@@ -484,7 +484,7 @@ $workflowClient = Temporal\Client\WorkflowClient::create(
  );
 ```
 
-To provide the Client Options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
+To provide the client options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
 
 ```yml
 temporal:
@@ -691,7 +691,9 @@ In the Temporal Python SDK programming model, Workflows are defined as classes.
 
 Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
 
-Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
+Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked.
+This must be set on one asynchronous method defined on the same class as `@workflow.defn`.
+Run methods have positional parameters.
 
 ```python
 @workflow.defn
@@ -1525,7 +1527,7 @@ The default implementation uses a JSON serializer, but an alternative implementa
 <TabItem value="python">
 
 Activity parameters are the function parameters of the function decorated with `@activity.defn`.
-These can be any data type Temporal can convert, including ['dataclasses'](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
+These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 
 ```python
