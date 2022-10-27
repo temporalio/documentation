@@ -161,7 +161,7 @@ The [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#sig
 
 You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
 
-Your method parameters must be `self`, a string signal name, and a `*args` variable argument parameter.
+Your method parameters must be `self`, a string Signal name, and a `*args` variable argument parameter.
 
 ```python
 @workflow.signal(dynamic=True)
@@ -886,7 +886,7 @@ The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#quer
 
 **Dynamic Queries**
 
-You can use `@workflow.query(dynamic=True)`, which means all other unhandled Query's fall through to this.
+You can use `@workflow.query(dynamic=True)`, which means all other unhandled Queries fall through to this.
 
 ```python
 @workflow.query(dynamic=True)
@@ -2845,7 +2845,7 @@ func SimpleWorkflow(ctx workflow.Context, value string) error {
 }
 ```
 
-To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not nil.
+To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not empty (i.e. `""`).
 
 **Notes**
 
