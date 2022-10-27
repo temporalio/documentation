@@ -14,14 +14,14 @@ Create a [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk
 The following fields are available:
 
 | Option                                                  | Required             | Type                                                                                                                 |
-| ------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| ------------------------------------------------------- | -------------------- |----------------------------------------------------------------------------------------------------------------------|
 | [`WorkflowId`](#id)                                     | No (but recommended) | String                                                                                                               |
 | [`TaskQueue`](#taskqueue)                               | **Yes**              | String                                                                                                               |
 | [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No                   | `Duration`                                                                                                           |
 | [`WorkflowRunTimeout`](#workflowruntimeout)             | No                   | `Duration`                                                                                                           |
 | [`WorkflowTaskTimeout`](#workflowtasktimeout)           | No                   | `Duration`                                                                                                           |
 | [`WorkflowIdReusePolicy`](#workflowidreusepolicy)       | No                   | `WorkflowIdReusePolicy`                                                                                              |
-| [`RetryOptions`](#retryoptions)                         | No                   | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.11.0/io/temporal/common/RetryOptions.html) |
+| [`RetryOptions`](#retryoptions)                         | No                   | [`RetryOptions`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.17.0/io/temporal/common/RetryOptions.html) |
 | [`CronSchedule`](#cronschedule)                         | No                   | String                                                                                                               |
 | [`Memo`](#memo)                                         | No                   | string                                                                                                               |
 | [`SearchAttributes`](#searchattributes)                 | No                   | Map<String, Object>                                                                                                  |
