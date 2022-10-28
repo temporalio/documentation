@@ -9,7 +9,7 @@ tags:
   - typescript
 ---
 
-Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
+In the Temporal TypeScript SDK programming model, Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
 The following code snippet uses `proxyActivities` to schedule a `greet` Activity in the system to say hello.
 
 A Workflow Definition can have multiple parameters; however, we recommend using a single object parameter.
@@ -19,8 +19,10 @@ type ExampleArgs = {
   name: string;
 };
 
-export async function example(args: ExampleArgs): Promise<{greeting: string}> {
+export async function example(
+  args: ExampleArgs,
+): Promise<{ greeting: string }> {
   const greeting = await greet(args.name);
-  return {greeting};
+  return { greeting };
 }
 ```

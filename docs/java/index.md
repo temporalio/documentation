@@ -18,14 +18,14 @@ Add the [Temporal Java SDK](https://github.com/temporalio/sdk-java) to your proj
 <dependency>
   <groupId>io.temporal</groupId>
   <artifactId>temporal-sdk</artifactId>
-  <version>1.11.0</version>
+  <version>1.17.0</version>
 </dependency>
 ```
 
 **[Gradle Groovy DSL](https://gradle.org/)**:
 
 ```groovy
-implementation 'io.temporal:temporal-sdk:1.11.0'
+implementation 'io.temporal:temporal-sdk:1.17.0'
 ```
 
 **Other**:

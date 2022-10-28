@@ -12,11 +12,11 @@ tags:
 Implement only the relevant Activities for the Workflow being tested.
 
 ```ts
-import type * as activities from "./activities";
+import type * as activities from './activities';
 
 // Creating a mock object of the activities.
 const mockActivities: Partial<typeof activities> = {
-  makeHTTPRequest: async () => "99",
+  makeHTTPRequest: async () => '99',
 };
 
 // Creating a worker with the mocked activities.

@@ -1,4 +1,5 @@
 {
+  "trailingSlash": false,
   "github": {
     "silent": true
   },
@@ -517,10 +518,6 @@
     },
     {
       "source": "/server-configuration",
-      "destination": "/references/configuration"
-    },
-    {
-      "source": "/references/configuration",
       "destination": "/references/configuration"
     },
     {"source": "/server-introduction", "destination": "/clusters"},
