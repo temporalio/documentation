@@ -1,6 +1,6 @@
 ---
 id: debugging
-title: Application development - debugging
+title: Developer's guide - Debugging
 sidebar_label: Debugging
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 toc_max_heading_level: 4
