@@ -11,8 +11,6 @@ tags:
 
 Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
-
-
 ```python
 async def run(self, name: str) -> str:
     return await workflow.execute_child_workflow(
