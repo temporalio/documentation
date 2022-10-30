@@ -76,7 +76,7 @@ const { greet } = proxyActivities<typeof activities>({
 });
 ```
 
-We explain the Timeouts and Retries below. You can also specify `namespace`, `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
+We explain the Timeouts and Retries below. You can also specify `taskQueue`, `cancellationType`, and `activityId`, but most users will not need these.
 
 ### Activity Timeouts
 

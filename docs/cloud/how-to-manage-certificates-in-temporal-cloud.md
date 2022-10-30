@@ -154,7 +154,15 @@ The following values are not valid:
 
 ### Manage certificate filters using Temporal Cloud UI
 
-This functionality is in development.
+To add or remove a certificate filter, follow these steps:
+
+1. On the left side of the window, click **Namespaces**.
+1. On the **Namespaces** page, click the name of the Namespace to manage.
+1. On the right side of the page for the selected Namespace, click **Edit**.
+1. On the **Edit** page, click **Certificate Filters**.
+   - To add a certificate filter, click **Add a Certificate Filter** and enter values in one or more fields.
+   - To remove a certificate filter, click the **×** in the upper-right corner of the filter details.
+1. To cancel your changes, click **Back to Namespace**. To save your changes, click **Save**.
 
 <!--- How to manage certificate filters in Temporal Cloud using tcld --->
 

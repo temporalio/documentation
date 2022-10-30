@@ -25,7 +25,7 @@ as a dependency to your project:
 <dependency>
     <groupId>io.temporal</groupId>
     <artifactId>temporal-testing</artifactId>
-    <version>1.11.0</version>
+    <version>1.17.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -33,7 +33,7 @@ as a dependency to your project:
 **[Gradle Groovy DSL](https://gradle.org/)**:
 
 ```groovy
-testImplementation ("io.temporal:temporal-testing:1.11.0")
+testImplementation ("io.temporal:temporal-testing:1.17.0")
 ```
 
 Make sure to set the version that matches your dependency version of the [Temporal Java SDK](https://github.com/temporalio/sdk-java).
