@@ -168,9 +168,10 @@ Tracing functionality utilizes generic context propagation provided by the Clien
 </TabItem>
 <TabItem value="java">
 
-To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor. You can register the interceptors on both the Temporal Client side and on the Worker side.
+To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
+You can register the interceptors on both the Temporal Client side and the Worker side.
 
-The following code samples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
 
 ```java
 WorkflowClientOptions.newBuilder()
@@ -187,7 +188,7 @@ WorkflowClientOptions clientOptions =
 WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
 
-The following code samples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
 
 ```java
 WorkerFactoryOptions.newBuilder()
@@ -215,16 +216,17 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To configure tracing in python, install the ``opentelemetry` dependencies.
+To configure tracing in Python, install the `opentelemetry` dependencies.
 
 ```bash
-# This command installs the `opentelemtry` dependencies.
+# This command installs the `opentelemetry` dependencies.
 pip install temporalio[opentelemetry]
 ```
 
 Then the [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.temporal.io/temporalio.contrib.opentelemetry.TracingInterceptor.html) class can be set as an interceptor as an argument of [`Client.connect()`](https://python.temporal.io/temporalio.client.Client.html#connect).
 
-When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker. Spans are created and serialized through the server to give one trace for a Workflow Execution.
+When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
+Spans are created and serialized through the server to give one trace for a Workflow Execution.
 
 </TabItem>
 <TabItem value="typescript">
@@ -322,7 +324,7 @@ workflow.WithActivityOptions(ctx, ao)
 </TabItem>
 <TabItem value="java">
 
-Use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method to get a standard `slf4j` logger in your Workflow code.
+To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
 
 ```java
 private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
@@ -674,10 +676,10 @@ WorkflowOptions workflowOptions =
         .build();
 ```
 
-Where `generateSearchAttributes()` is a `Map<String, ?>` from the search attribute as a key to a value of one of the following types.
+`generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
 
 - `String`
-- `long`
+- `Long`
 - `Integer`
 - `Boolean`
 - `Double`

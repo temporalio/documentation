@@ -1269,7 +1269,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To send a Query to a Workflow Execution from Client code, use the query() method on the Workflow handle.
+To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
 
 ```python
 await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
@@ -2382,7 +2382,7 @@ Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io
     }
 ```
 
-When this method is called during an Activity Execution, the Activity Execution does not complete when it's method returns.
+When this method is called during an Activity Execution, the Activity Execution does not complete when its method returns.
 
 </TabItem>
 <TabItem value="php">
@@ -2481,7 +2481,7 @@ await handle.complete("Completion value.")
 </TabItem>
 <TabItem value="typescript">
 
-Set the [`AsyncCompletionClient`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient) class to the [`complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete) method, to asynchronous complete an Activity with a Task Token.
+To asynchronously complete an Activity with a Task Token, set the [`AsyncCompletionClient`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient) class to the [`complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete) method.
 
 <!--SNIPSTART typescript-activity-complete-async -->
 <!--SNIPEND-->
@@ -2905,7 +2905,7 @@ await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-chi
 </TabItem>
 <TabItem value="typescript">
 
-Use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) property to specify how the Child reacts to a Parent Workflow reaching a `Closed` state.
+To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) property.
 
 <!--SNIPSTART typescript-child-workflow -->
 <!--SNIPEND-->
