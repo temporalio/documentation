@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-Alias: `desc`
+Alias: `d`
 
 The `tctl task-queue describe` command describes the poller information of a [Task Queue](/concepts/what-is-a-task-queue).
 

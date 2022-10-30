@@ -20,7 +20,7 @@ Alias: `tq`
 
 ## describe
 
-Alias: `desc`
+Alias: `d`
 
 The `tctl task-queue describe` command describes the poller information of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>.
 
@@ -42,6 +42,8 @@ The following modifiers are supported and control the behavior of the command.
 - [--time-format](/tctl-next/modifiers#--time-format)
 
 ## list-partition
+
+Alias: `lp`
 
 The `tctl task-queue list-partition` command lists the partitions of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a> and the hostname for the partitions.
 

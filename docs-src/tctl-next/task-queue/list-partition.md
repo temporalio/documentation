@@ -7,6 +7,8 @@ tags:
   - tctl
 ---
 
+Alias: `lp`
+
 The `tctl task-queue list-partition` command lists the partitions of a [Task Queue](/concepts/what-is-a-task-queue) and the hostname for the partitions.
 
 `tctl task-queue list-partition --task-queue <value>`
