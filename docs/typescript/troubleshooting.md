@@ -88,7 +88,7 @@ const config = fs.readFileSync('config.json', 'utf8');
 
 :::
 
-This is invalid because reading from the filesystem is a non-deterministic operation: the file may change from the time of the original Worklfow Execution to when the Workflow is replayed.
+This is invalid because reading from the filesystem is a non-deterministic operation: the file may change from the time of the original Workflow Execution to when the Workflow is replayed.
 
 You'll typically see an error in this form in the Webpack output:
 

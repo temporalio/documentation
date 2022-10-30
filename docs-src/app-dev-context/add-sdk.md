@@ -1,6 +1,6 @@
 ---
 id: add-sdk
-title: How to install a Temporal SDK to your project
+title: How to install a Temporal SDK
 description: A Temporal SDK provides a framework for Temporal Application development.
 sidebar_label: Install a Temporal SDK
 tags:

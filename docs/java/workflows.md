@@ -29,7 +29,7 @@ The Workflow Interface is a Java interface which is annotated with the `@Workflo
 
 Workflow interface methods must have one of the following annotations:
 
-- **@WorkflowMethod** denotes the starting point of Workflow execution. Worklfow Execution completes when this methods returns.
+- **@WorkflowMethod** denotes the starting point of Workflow execution. Workflow Execution completes when this methods returns.
 - **@SignalMethod** indicates that this method is a signal handler method and that it can react to external signals. It can have parameters which can contain the signal payload. It does not return a value, so it must have a `void` return type.
 - **@QueryMethod** indicates that this method can be used to query the Workflow's state at any time during its execution.
   It can have parameters which can be used to filter a subset of the Workflow's state that it returns. Since it does return a value it must have a non `void` return type.
@@ -157,11 +157,11 @@ java.lang.IllegalStateException: BaseWorkflow workflow type is already registere
 
 ## Implementing Workflows
 
-A Workflow implementation implements a Workflow interface. Each time a new Worklfow Execution is started,
+A Workflow implementation implements a Workflow interface. Each time a new Workflow Execution is started,
 a new instance of the Workflow implementation object is created.
 Then, one of the methods
 (depending on which Workflow Type has been started) annotated with `@WorkflowMethod` can be invoked.
-As soon as this method returns, the Worklfow Execution is considered as completed.
+As soon as this method returns, the Workflow Execution is considered as completed.
 
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow's execution.
 
@@ -200,7 +200,7 @@ They shouldn't use any constructs that rely on system time.
   - Use `WorkflowQueue` instead of `BlockingQueue`.
 - Use `Workflow.getVersion` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
   might break already running Workflows.
-- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Worklfow Execution path.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 
 ### Workflow Method Arguments
@@ -364,7 +364,7 @@ and then call a Workflow method (annotated with the `@WorkflowMethod` annotation
 
 ### Asynchronous start
 
-An asynchronous start initiates a Worklfow Execution and immediately returns to the caller.
+An asynchronous start initiates a Workflow Execution and immediately returns to the caller.
 This is the most common way to start Workflows in a live environment.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->

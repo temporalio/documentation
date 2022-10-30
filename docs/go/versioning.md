@@ -35,9 +35,9 @@ func YourWorkflow(ctx workflow.Context, data string) (string, error) {
 ```
 
 Now let's say we have replaced ActivityA with ActivityC, and deployed the updated code. If there
-is an existing Worklfow Execution that was started by the original version of the Workflow code, where
+is an existing Workflow Execution that was started by the original version of the Workflow code, where
 ActivityA had already completed and the result was recorded to history, the new version of the Workflow
-code will pick up that Worklfow Execution and try to resume from there. However, the Workflow will fail
+code will pick up that Workflow Execution and try to resume from there. However, the Workflow will fail
 because the new code expects a result for ActivityC from the history data, but instead it gets the
 result for ActivityA. This causes the Workflow to fail on the non-deterministic error.
 
@@ -62,7 +62,7 @@ return result2, err
 
 When `workflow.GetVersion()` is run for the new Workflow execution, it records a marker in the Workflow
 history so that all future calls to `GetVersion` for this change Id--`Step 1` in the example--on this
-Worklfow Execution will always return the given version number, which is `1` in the example.
+Workflow Execution will always return the given version number, which is `1` in the example.
 
 If you make an additional change, such as replacing ActivityC with ActivityD, you need to
 add some additional code:
@@ -95,7 +95,7 @@ if v == 1 {
 ```
 
 You'll note that `minSupported` has changed from `DefaultVersion` to `1`. If an older version of the
-Worklfow Execution history is replayed on this code, it will fail because the minimum expected version
+Workflow Execution history is replayed on this code, it will fail because the minimum expected version
 is 1. After you are sure that all of the Workflow executions for version 1 have completed, then you
 can remove 1 so that your code would look like the following:
 
@@ -106,7 +106,7 @@ err = workflow.ExecuteActivity(ctx, ActivityD, data).Get(ctx, &result1)
 
 Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
 
-1. This ensures that if there is a Worklfow Execution still running for an older version, it will
+1. This ensures that if there is a Workflow Execution still running for an older version, it will
    fail here and not proceed.
 2. If you need to make additional changes for `Step1`, such as changing ActivityD to ActivityE, you
    only need to update `maxVersion` from 2 to 3 and branch from there.

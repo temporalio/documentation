@@ -57,7 +57,7 @@ $result = $accountTransfer->transfer(
 
 **Asynchronous start**
 
-An asynchronous start initiates a Worklfow Execution and immediately returns to the caller without waiting for a result.
+An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
 To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`

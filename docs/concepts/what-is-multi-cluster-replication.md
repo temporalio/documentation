@@ -21,7 +21,7 @@ When the feature is enabled, Tasks are sent to the Parent Task Queue partition t
 All Visibility APIs can be used against active and standby Clusters.
 This enables [Temporal Web](https://github.com/temporalio/temporal-web) to work seamlessly for Global Namespaces.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
-However, they might see a lag due to replication delay when querying the Worklfow Execution state from a standby Cluster.
+However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
 #### Namespace Versions
 
@@ -345,7 +345,7 @@ Due to the nature of Multi-cluster Replication (for example, Workflow Execution 
 | --------- || ------------- |          | ------------- |
 ```
 
-Since Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
+Because Run 2 appears in Cluster B first, Run 1 cannot be replicated as "runnable" due to the rule `at most one Run open` (see above), thus the "zombie" Workflow Execution state is introduced.
 A "zombie" state is one in which a Workflow Execution which cannot be actively mutated by a Cluster (assuming the corresponding Namespace is active in this Cluster). A zombie Workflow Execution can only be changed by a replication Task.
 
 Run 1 will be replicated similar to Run 2, except when Run 1's execution will become a "zombie" before Run 1 reaches completion.

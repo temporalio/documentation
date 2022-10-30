@@ -189,10 +189,10 @@ Implementations of Workflow1 and Workflow2 can registered with the same worker a
 ## Implementing Workflows
 
 A Workflow implementation implements a Workflow interface.
-Each time a new Worklfow Execution is started, a new instance of the Workflow implementation object is created.
+Each time a new Workflow Execution is started, a new instance of the Workflow implementation object is created.
 Then, one of the methods (depending on which Workflow Type has been started) annotated with `#[WorkflowMethod]` is invoked.
-As soon as this method returns, the Worklfow Execution is closed.
-While Worklfow Execution is open, it can receive calls to signal and query methods.
+As soon as this method returns, the Workflow Execution is closed.
+While Workflow Execution is open, it can receive calls to signal and query methods.
 No additional calls to Workflow methods are allowed.
 The Workflow object is stateful, so query and signal methods can communicate with the other parts of the Workflow through Workflow object fields.
 
@@ -216,7 +216,7 @@ Always do the following in the Workflow implementation code:
 - Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
 - Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
   might break already open Workflows.
-- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Worklfow Execution path.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 
 Workflow method arguments and return values are serializable to a byte array using the provided [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html) interface.
@@ -312,7 +312,7 @@ $result = $accountTransfer->transfer(
 
 ### Asynchronous start
 
-An asynchronous start initiates a Worklfow Execution and immediately returns to the caller without waiting for a result.
+An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
 To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
