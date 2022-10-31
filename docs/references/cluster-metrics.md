@@ -5,6 +5,7 @@ description: The Temporal Cluster emits a range of metrics to help operators get
 sidebar_label: Cluster metrics
 tags:
  - reference
+ - server metrics
 ---
 
 <!-- This file is generated. Do not edit it directly. -->

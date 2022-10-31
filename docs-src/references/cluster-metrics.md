@@ -5,6 +5,7 @@ description: The Temporal Cluster emits a range of metrics to help operators get
 sidebar_label: Cluster metrics
 tags:
   - reference
+  - server metrics
 ---
 
 A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
