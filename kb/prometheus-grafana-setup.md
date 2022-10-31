@@ -63,7 +63,7 @@ services:
      - temporal-network
    ports:
      - 7233:7233
-     - 8000:8000
+     - 8000:8000 #and add your port
    volumes:
      - ./dynamicconfig:/etc/temporal/config/dynamicconfig
 #...
