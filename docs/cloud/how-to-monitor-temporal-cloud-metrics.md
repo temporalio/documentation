@@ -27,7 +27,8 @@ To view and manage third-party integration settings, your user account must have
 To assign a certificate and generate your metrics endpoint, follow these steps:
 
 1. In Temporal Cloud UI, click **Settings**.
-1. On the **Settings** page in the **Observability** card, click **Configure Observability**.
+1. On the **Settings** page, click **Integrations**.
+1. In the **Observability** card, click **Configure Observability**.
    (If observability is already configured, the **Edit** link appears instead.)
 1. In **Certificates**, paste a base64-encoded CA certificate PEM block.
 1. Click **Generate endpoint**.
