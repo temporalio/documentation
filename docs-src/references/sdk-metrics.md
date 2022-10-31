@@ -282,7 +282,6 @@ A Workflow Execution has been forced from the cache intentionally.
 - Available in: Go, PHP, Java
 - Tags: `namespace`, `task_queue`
 
-
 ### task_latency_load
 
 Measures the duration from task generation to task loading (task schedule to start latency for persistence queue).
