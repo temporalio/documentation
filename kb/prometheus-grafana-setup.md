@@ -21,13 +21,14 @@ In this article, we discuss setting up Prometheus and Grafana to view metrics da
 Each section describes the steps to setting up Prometheus and Grafana, and an example on how you can do this in your local docker-compose Temporal Cluster setup and with the Java SDK.
 If you’re following through with implementing the examples, ensure that you have your local docker-compose setup, added your SDK, and have a sample application to work with (you can clone the SDK samples repositories to get started with).
 
-- See [Run a dev Cluster](/application-development/foundations#run-a-dev-cluster) for details on how to set up your local Temporal docker-compose.
+- See [Run a dev Cluster](/application-development/foundations#docker-compose) for details on how to set up your local Temporal docker-compose.
 - See [Add your SDK](/application-development/foundations#add-your-sdk) for details on how to add your SDK and get started with samples.
 - Create your own sample from the workshops or tutorials, or [clone an existing sample/or example](/application-development/foundations?lang=java#code-samples).
 
 ## Prometheus setup and configuration
 
-The Temporal Cluster and SDKs emit all metrics by default. You must enable Prometheus on your Cluster to collect these metrics.
+The Temporal Cluster and SDKs emit all metrics by default.
+However, you must enable Prometheus in your application code (using the Temporal SDKs) and your Cluster configuration to collect the metrics emitted from your SDK and Cluster.
 
 ### Cluster Metrics setup
 
@@ -116,18 +117,21 @@ import com.uber.m3.util.ImmutableMap;
                  .build());
 
   //Create a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
-  WorkflowClient greetClient = WorkflowClient.newInstance(service,
+  WorkflowClient yourClient = WorkflowClient.newInstance(service,
          WorkflowClientOptions.newBuilder().build());
 
   //...
 ```
 
-You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions. For more examples on how this is set across SDKs, see the metrics samples:
+You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions.
+To use this example, add this example code with the Prometheus endpoint on port 8077 in your Worker program, and use `yourClient` to start your Workers. Similarly, in your starter code, add this example code and set the Prometheus endpoint to port 8078, create a `WorkflowServiceStub` with the metric scope, and create a Workflow Client to start Workflow Exeutions.
+
+For more examples on how this is set across SDKs, see the metrics samples:
 
 - [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
-In your Workers, you can set specific WorkerOptions for performance tuning, as described in the Worker Performance Guide.
+In your Workers, you can set specific WorkerOptions for performance tuning, as described in the [Worker Performance Guide](/application-development/worker-performance).
 With the scrape endpoints set, define your Prometheus scrape configuration and targets to receive the metrics data from the Temporal Cluster and Temporal SDKs.
 
 ### Prometheus configuration
@@ -154,11 +158,13 @@ services:
 #...
 ```
 
-In this example, we use the Prometheus docker image and the default ports for the container, and set the path to a Prometheus configuration file for the docker container. For other ways to set your Prometheus configuration, see the [Prometheus Configuration documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
+In this example, we use a Prometheus docker image for v2.37.0 and the default ports for the container, and set the path to a Prometheus configuration file for the docker container. For this example, create a Prometheus config.yml file at ./deployment/prometheus in your docker-compose Temporal Cluster project.
 
-Configure your Prometheus setup to scrape metrics data from the Temporal Cluster and SDK Client target endpoints.
+For other ways to set your Prometheus configuration, see the [Prometheus Configuration documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
-For example, in your local docker-compose Temporal Cluster, you can create a Prometheus configuration file (in this example, at ./deployment/prometheus/config.yml) to scrape metrics from targets set on the docker-compose Temporal Cluster, and SDK Clients from the previous examples:
+Add your Prometheus setup configuration to scrape metrics data from the Temporal Cluster and SDK Client target endpoints.
+
+For example, open the config.yml file at ./deployment/prometheus/config.yml and add the following configuration to scrape metrics from targets set on the docker-compose Temporal Cluster and SDK Clients from the previous examples:
 
 ```
 global:
@@ -182,8 +188,8 @@ scrape_configs:
          group: 'sdk-metrics'
 ```
 
-In this example, we have created a YAML configuration file setting Prometheus to scrape at 10 seconds interval, and listen for Cluster metrics on `host.docker.internal:8000` and SDK metrics on two targets `host.docker.internal:8077` and `host.docker.internal:8078`.
-The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK, and can be used to create Workers and make Client API calls to start Workflow Executions, send Signals, Queries etc. See the [SDK Metrics](#sdkmetricssetup) section for details.
+In this example, we have created a YAML configuration file setting up Prometheus to scrape at 10 seconds interval, and to listen for Cluster metrics on `host.docker.internal:8000` and SDK metrics on two targets `host.docker.internal:8077` and `host.docker.internal:8078`.
+The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK, and can be used to create Workers and make Client API calls to start Workflow Executions, send Signals, Queries etc. See the [SDK Metrics](#sdk-metrics-setup) section for details.
 You can set up as many targets as required.
 
 See [Prometheus configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) for more information.
