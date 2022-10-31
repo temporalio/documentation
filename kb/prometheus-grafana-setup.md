@@ -199,7 +199,7 @@ To check whether you’re receiving your metrics data, start your local docker-c
 - http://localhost:8000/metrics - this is the port you’re exposing your Cluster metrics on. You should see all the Cluster metrics emitted when you start up your local docker-compose Temporal Cluster.
 - http://localhost:8077/metrics - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
 - http://localhost:8078/metrics - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
-- http://localhost:9090/ - this is the port for Prometheus detail; Go to Status > Targets to check the statuses of all your Prometheus target endpoints.
+- http://localhost:9090/ - this is the port set for Prometheus detail; Go to Status > Targets to check the statuses of all your Prometheus target endpoints.
 
 ## Grafana configuration
 
