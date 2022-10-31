@@ -238,7 +238,8 @@ datasources:
 In this example, Grafana is set to pull metrics from Prometheus at the port 9090, as defined in the Prometheus configuration.
 After you update this configuration, restart your local docker-compose Temporal Cluster, and go to [localhost:8085](http://localhost:8085) to access Grafana.
 
-Set up your dashboards in Grafana, using either the UI or configure your dashboards in your Grafana deployment on the server, as done in this example. Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with.
+Set up your dashboards in Grafana, using either the UI or configure your dashboards in your Grafana deployment on the server, as done in this [example](https://github.com/tsurdilo/my-temporal-dockercompose/tree/main/deployment/grafana/dashboards). 
+Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with.
 
 When you create a new dashboard, add your Prometheus query to call specific metrics.
 The [Temporal Cluster Metrics reference](/references/cluster-metrics) describes a few metrics and queries you can get started with.
