@@ -171,7 +171,7 @@ Enables or disables [Transport Layer Security (TLS) host verification](/referenc
 
 When enabled, TLS checks the Host Server to ensure that files are being sent to and from the correct URL.
 
-aqwssddsxc## `TEMPORAL_TLS_SERVER_NAME`
+## `TEMPORAL_TLS_SERVER_NAME`
 
 The server on which to operate [Transport Layer Security (TLS) protocols](/references/web-ui-configuration#tls).
 
