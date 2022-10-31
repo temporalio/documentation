@@ -220,7 +220,7 @@ In this example, we have set up Grafana without authorizations; this is not a go
 
 Set Prometheus as your datasource for Grafana at the source path defined in the configuration. You can do this either on the UI or in your Grafana deployment configuration.
 
-In the example above, the data sources are defined in the deployment configuration at ./deployment/grafana/provisioning/datasource, for example, as:
+In the example above, the data sources are defined in the Grafana deployment configuration in a configuration YAML file at ./deployment/grafana/provisioning/datasource, for example, as:
 
 ```
 apiVersion: 1
