@@ -138,7 +138,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
 
 ```bash
-go get -u go.temporal.io/sdk@latest
+go get go.temporal.io/sdk
 ```
 
 Or clone the Go SDK repo to your preferred location:
