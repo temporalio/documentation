@@ -28,12 +28,14 @@ This can happen if the provided timeouts are too short to allow requests to comp
 When the connection age was delayed, the rate of 502s received plummeted.
 
 Check your configuration to make sure that timeouts are long enough to allow requests to be completed.
-Be sure to check for hot spotting and connection growth.
+If timeouts keep expiring, increase the value and add a check for network growth.
 
-### Registration / scheduling
+### Server overload
 
-[](https://community.temporal.io/t/context-deadline-exceeded-issue/5310)
-[](https://community.temporal.io/t/context-deadline-exceeded-issue/5310/16)
+`DeadlineExceeded` may occur if the Temporal Server cannot complete requests on time.
+Querying a Workflow Execution that fails to return a response can also cause a timeout.
+
+<!-- [](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) -->
 
 ### Troubleshooting
 
