@@ -81,6 +81,10 @@ WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 ```
 
 ```sql
+WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
+```
+
+```sql
 WorkflowId = '<workflow-id>' order by StartTime desc
 ```
 

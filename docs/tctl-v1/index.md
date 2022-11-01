@@ -11,7 +11,11 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This documentation reflects tctl version 1.16
+:::note
+
+This documentation reflects tctl version 1.17
+
+:::
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
 It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a> operations (such as start
@@ -26,9 +30,9 @@ Workflow, show Workflow History, and Signal Workflow).
 - [`tctl admin`](/tctl-v1/admin/)
 - [`tctl batch`](/tctl-v1/batch/)
 - [`tctl cluster`](/tctl-v1/cluster/)
-- [`tctl data-converter`](/tctl-v1/dataconverter/)
+- [`tctl dataconverter`](/tctl-v1/dataconverter/)
 - [`tctl namespace`](/tctl-v1/namespace/)
-- [`tctl task-queue`](/tctl-v1/taskqueue/)
+- [`tctl taskqueue`](/tctl-v1/taskqueue/)
 - [`tctl workflow`](/tctl-v1/workflow/)
 
 ## Install
