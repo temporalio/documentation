@@ -27,19 +27,17 @@ We've highlighted some users' encounters below, along with the steps they took t
 ### Connection issues
 
 Network interruptions can cause a `DeadlineExceeded` error.
-Several users [have reported such problems](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) while setting up mTLS on their servers.
 
 - first case:
   [One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
 - second case:
-  [Another user]() ran into this error while setting up mTLS.
+  [Another user](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) ran into this error while setting up mTLS.
 - third case:
+  A similar case was seen when [another user](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229) tried configuring mTLS.
 
 Check your configuration files for missing environmental variables.
 Make sure that the frontend and internode certificates are clearly defined.
 Add any missing values before deploying the server again.
-
-<!-- [](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229) -->
 
 ### Short timeouts
 
