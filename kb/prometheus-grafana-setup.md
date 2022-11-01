@@ -197,16 +197,16 @@ For more details on how to configure Prometheus, refer the [Prometheus documenta
 
 To check whether you’re receiving your metrics data, start your local docker-compose Temporal Cluster (with the configuration provided in the examples here) and check:
 
-- http://localhost:8000/metrics - this is the port you’re exposing your Cluster metrics on. You should see all the Cluster metrics emitted when you start up your local docker-compose Temporal Cluster.
-- http://localhost:8077/metrics - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
-- http://localhost:8078/metrics - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
-- http://localhost:9090/ - this is the port set for Prometheus detail; Go to Status > Targets to check the statuses of all your Prometheus target endpoints.
+- [localhost:8000/metrics](http://localhost:8000/metrics) - this is the port you’re exposing your Cluster metrics on. You should see all the Cluster metrics emitted when you start up your local docker-compose Temporal Cluster.
+- [localhost:8077/metrics](http://localhost:8077/metrics) - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
+- [localhost:8078/metrics](http://localhost:8078/metrics) - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
+- [localhost:9090/](http://localhost:9090/) - this is the port set for Prometheus detail; Go to Status > Targets to check the statuses of all your Prometheus target endpoints.
 
 ## Grafana configuration
 
-With Prometheus set up, you can configure Grafana to use Prometheus as a datasource.
+With Prometheus set up, add and configure Grafana to use Prometheus as a datasource.
 
-For example, in the modified local docker-compose Temporal Cluster setup described in the previous section, you can create a separate container with port 8085 for Grafana.
+For example, in the modified local docker-compose Temporal Cluster setup described in the previous section, create a separate container with port 8085 for Grafana.
 
 ```
 version: "3.5"
@@ -230,7 +230,8 @@ services:
 #...
 ```
 
-In this example, we have set up Grafana to start without authorizations; this is not a good practice and is not recommended. See the [Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/) for details on how to customize your Grafana setup.
+Note that in this example, we have set up Grafana to start without authorizations; this is not a good practice and is not recommended. 
+For more information on how to custimize your Grafana setup, see the [Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/).
 
 Set Prometheus as your datasource for Grafana at the source path defined in the configuration. You can do this either on the UI or in your Grafana deployment configuration.
 
@@ -256,7 +257,7 @@ After you update this configuration, restart your local docker-compose Temporal 
 
 Set up your dashboards in Grafana, using either the UI or configure your dashboards in your Grafana deployment on the Cluster, as done in this [example](https://github.com/tsurdilo/my-temporal-dockercompose/tree/main/deployment/grafana/dashboards).
 
-When you create a new dashboard, add your Prometheus query to call specific metrics.
+In your Grafana dashboard, add your Prometheus query to call specific metrics.
 The [Temporal Cluster Metrics reference](/references/cluster-metrics) describes a few metrics and queries that you can get started with.
 
 For example, to create a dashboard in your local Grafana UI at [localhost:8085](http://localhost:8085):
@@ -264,7 +265,7 @@ For example, to create a dashboard in your local Grafana UI at [localhost:8085](
 1. Go to Create > Dashboard, and add an empty panel.
 2. On the Panel configuration page, in the Query tab, select "Temporal Prometheus" as the datasource.
 3. In the Metrics field, copy any of the queries listed in the [Temporal Cluster Metrics reference](/references/cluster-metrics);
-   For example, add `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))` to see all the Fronted Service requests on your local docker-compose Temporal Cluster.
+   For example, add `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))` to see all the Frontend Service requests on your local docker-compose Temporal Cluster.
 4. You should see the graph show metrics data for the Frontend Service from the docker-compose Temporal Cluster.
 5. When you start your Workflows (after setting up your SDK Metrics), you will see your SDK metrics in the graph as well.
 6. Optional: In the Legend field, add "{{operation}}" to clean the legend on the graph to show operations.
@@ -274,4 +275,4 @@ For more details on configuring Grafana dashboards, see the [Grafana Dashboards 
 
 Once you have your dashboard set up, you can start experimenting with different samples provided in the Temporal samples repositories.
 
-Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with. You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster. See the
+Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with. You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster. 
