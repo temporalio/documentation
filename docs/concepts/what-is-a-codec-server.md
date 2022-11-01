@@ -2,19 +2,18 @@
 id: what-is-a-codec-server
 title: What is a Codec Server?
 sidebar_label: Codec Server
-description: Explanation and implementation of a remote encryption/decryption server.
+description: A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.
 tags:
   - term
 ---
 
-A Codec Server is a feature that can perform additional levels of encoding and decoding on Payloads that are handled by [tctl](/tctl-v1) or the [Web UI](/web-ui).
+A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [Web UI](/web-ui) through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codecs).
 
 - [How to set up a Codec Server](/clusters/how-to-set-up-codec-server/)
 
-The Web UI and tctl both use a default [Data Converter](/concepts/what-is-a-data-converter), which is capable of serialization only.
-
-Codec Servers can encrypt, compress, and change the format of a Payload object.
-These measures can further secure your data.
+By default, tctl and the Web UI use the [Default Data Converter](/concepts/what-is-a-data-converter#default-data-converter) without a [Payload Codec](/concepts/what-is-a-data-converter#payload-codecs).
+If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed). 
+In order to convert the data to its original format, you can [configure the Web UI/tctl](/clusters/how-to-set-up-codec-server/) to use a Codec Server that uses your Payload Codec.
 
 ![](/img/tctl-diagram-codec-server.svg)
 
@@ -29,11 +28,9 @@ You can use [tctl workflow showid](/tctl-v1/workflow#show) to view a Workflow Ex
 tctl workflow showid <workflowID>
 ```
 
-With a Codec Server, the Payload is decoded before being deserialized by tctl's default Data Converter. The default Data Converter sends the Payload to a given endpoint, and receives a decoded Payload if the API returns a successful result.
+With a Codec Server, Payloads that are part of the Event History will be sent to `http://localhost:8888/decode` to be decoded before being deserialized by the Default Data Converter and displayed in your terminal. 
 
-The Data Converter passes this result back to the command line, which prints the decoded result.
-
-## Use case - Web UI
+## Use case: Web UI
 
 Workflow Execution Event History is available in the Web UI.
 Payload information for each Event is captured within Event 'input' and 'result' fields.

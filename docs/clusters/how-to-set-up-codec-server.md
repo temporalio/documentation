@@ -2,46 +2,58 @@
 id: how-to-set-up-codec-server
 title: How to set up a Codec Server
 sidebar_label: Codec Server
-description: Implementation of a remote encryption/decryption server.
+description: Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.
 ---
 
-The [Codec Server Go sample](https://github.com/temporalio/samples-go/tree/main/codec-server) is an example that shows how to decode a Payload that has been encoded so the Payload can be displayed by [tctl](/tctl-v1) and the [Web UI](/web-ui).
+To use a [Codec Server](/concepts/what-is-a-codec-server), first run it with your Payload Codec and then configure [tctl](/tctl-v1) and the [Web UI](/web-ui) to use it.
 
-A codec HTTP protocol specifies two endpoints to handle Payload encoding and decoding.
+## Run the server
 
-Implementations must do the following:
+A Codec Server is an HTTP server that implements two endpoints:
 
-- Send and receive Payloads protobuf as JSON.
-- Check only the final part of the incoming URL to determine whether the request is for /encode or /decode.
+- `POST /encode`
+- `POST /decode`
 
-:::note
-A Temporal Cluster should already be in operation before starting the Codec Server.
-:::
+Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of Payloads.
+The endpoints run the Payloads through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codecs) before returning them.
 
-## tctl
+Sample Codec Servers:
 
-[Start up the Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server).
+- [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
+- [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
+- [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 
-Configure the codec endpoint:
+
+## Configure tctl
+
+Once the Codec Server is started, for example on `http://localhost:8888`, provide it to tctl using the `--codec_endpoint` global option:
 
 ```bash
-tctl --codec_endpoint 'http://localhost:{PORT}/{namespace}' workflow show --wid codecserver_workflowID
+tctl --codec_endpoint 'http://localhost:8888' workflow show --wid workflow-id-123
 ```
 
-## Web UI
+## Configure the Web UI
 
-```yaml
-codec:
-    endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
-```
+Once the Codec Server is started, there are two ways to provide it to the Web UI:
 
-The [codec endpoint](/references/web-ui-configuration#codec) can be specified in the configuration file.
-It can also be changed during runtime.
+### In the UI
 
-Select the button with an up-down arrow in the left area of the screen.
+![Data Encoder icon](/static/img/docs/data-encoder-button.png)
+
+Select the icon with an up-down arrow on the bottom left of the screen.
 This action displays the codec endpoint dialog.
 
 Enter the URL and port number for your codec endpoint.
 Exit the dialog, go back to the previous page, and refresh the page.
 
 The button should now be light blue, and your Payloads should be displayed in a readable format.
+
+### In the config file
+
+The codec endpoint can be specified in the [configuration file](/references/web-ui-configuration#codec):
+
+```yaml
+codec:
+    endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
+```
+
