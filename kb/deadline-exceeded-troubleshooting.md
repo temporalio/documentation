@@ -16,13 +16,21 @@ Together, the errors can indicate several different conditions, such as:
 - Timeouts
 - Server overload
 
-Temporal is aware that this error is vague, especially with how many cases it covers.
-Should any problems persist after troubleshooting below, contact Temporal.
+<!-- Temporal is aware that this error is vague, especially with how many cases it covers.
+Should any problems persist after troubleshooting below, contact Temporal. -->
+
+We've highlighted some users' encounters below.
+
+<!-- Refer to the end for general troubleshooting. -->
 
 ### Connection issues
 
 Network interruptions can cause a `DeadlineExceeded` error.
 [Several users](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) [have reported such problems](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) while setting up mTLS on their servers.
+
+- first case:
+- second case:
+- third case:
 
 Check your configuration files for missing environmental variables.
 Make sure that the frontend and internode certificates are clearly defined.
@@ -38,6 +46,8 @@ This can happen if the provided timeouts are too short to allow requests to comp
 [In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
 When the connection age was delayed, the rate of 502s received plummeted.
 
+- more summary here
+
 Check your configuration to make sure that timeouts are long enough to allow requests to be completed.
 If timeouts keep expiring, increase the value and add a check for network growth.
 
@@ -45,6 +55,9 @@ If timeouts keep expiring, increase the value and add a check for network growth
 
 `DeadlineExceeded` may occur if the Temporal Server cannot complete requests on time.
 Querying a Workflow Execution that fails to return a response can also cause a timeout.
+
+- situation here
+- summary here
 
 If the timeout occurs on a Query, check your Worker logs to identify any issues with query handling.
 Otherwise, check your server metrics for unexpected latency.
