@@ -11,6 +11,9 @@ This error occurs when a request hasn't been replied to before its timeout.
 
 This error is caused by several different conditions, and can be a symptom of other issues occurring on the network.
 
+Temporal is aware that this error is vague, especially with how many cases it covers.
+Should any problems persist after troubleshooting below, contact Temporal.
+
 ### Connection issues
 
 Network interruptions
@@ -35,17 +38,7 @@ If timeouts keep expiring, increase the value and add a check for network growth
 `DeadlineExceeded` may occur if the Temporal Server cannot complete requests on time.
 Querying a Workflow Execution that fails to return a response can also cause a timeout.
 
-<!-- [](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) -->
-
-### Troubleshooting
-
-<!-- [](https://github.com/temporalio/legacy-documentation-sdks/blob/60153986bed3f4588005471271d552e5417d674e/docs/typescript/troubleshooting.md) -->
-
-Verify that the connection from your Worker to the Server is working.
-Check your server metrics for unusually high latency.
-
 If the timeout occurs on a Query, check your Worker logs to identify any issues with query handling.
+Otherwise, check your server metrics for unexpected latency.
 
-### Conclusion
-
-Temporal is aware that this error is vague, especially with how many cases it covers.
+<!-- [](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) -->
