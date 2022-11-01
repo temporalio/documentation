@@ -15,16 +15,12 @@ Modifiers change the behavior of the command.
 
 ## --active-cluster
 
-Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/namespaces#).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 This value changes for Global Namespaces when a failover occurs.
-
-Alias: `--ac`
 
 ## --activity-id
 
-Specify the [Activity Id](/activities#activity-id) of an [Activity Execution](/activities#activity-execution) to execute a command on.
-
-Alias: `--aid`
+Specify the <a class="tdlp" href="/activities#activity-id">Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Id?</p><p class="tdlppd">A unique identifier for an Activity Execution.</p><p class="tdlplm"><a href="/activities#activity-id">Learn more</a></p></div></a> of an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a> to execute a command on.
 
 ## --archived
 
@@ -32,44 +28,40 @@ Alias: `--aid`
 
 List archived Workflow Executions.
 
-Alias: `-a`
-
-## --batch-type
-
-Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
-
-Alias: `--bt`
-
-## --clusters
+## --cluster
 
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/namespaces#).
 
-The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
+The flag contains a single name of a Cluster to which the Namespace can fail over. For multiple Clusters pass each in a separate `--cluster` option.
 Make sure to include to the currently active Cluster.
 This is a read-only setting and cannot be changed.
 
-This modifier is valid only when the `--global-namespace` modifier is set to true.
-
-Alias `--cl`
+This modifier is valid only when the `--global` modifier is set to true.
 
 ## --cron
 
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job#cron-schedules).
+Specify a <a class="tdlp" href="/workflows#cron-schedules">Cron Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#cron-schedules">Learn more</a></p></div></a>.
+
+## --data
+
+Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
 ## --description
 
-Specify a description when registering a [Namespace](/namespaces#).
-
-Alias `--d`
+Specify a description when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 
 ## --detail
 
-Specify details of the reason for failing an [Activity Execution](/activities#activity-execution).
+Specify details of the reason for failing an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
 
 ## --dry-run
 
-Simulate a reset without resetting any [Workflow Executions](/workflows#workflow-execution).
+Simulate a reset without resetting any <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 Output is logged to `stdout`.
+
+## --email
+
+Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> owner.
 
 ## --event-id
 
@@ -78,16 +70,14 @@ Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTas
 
 ## --exclude-file
 
-Provide an input file that specifies [Workflow Executions](/workflows#workflow-execution) to exclude from resetting.
+Provide an input file that specifies <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> to exclude from resetting.
 
-Each line contains one [Workflow Id](/workflows#workflow-id).
+Each line contains one <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
 ## --execution-modifier
 
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
+Specify the <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a> of the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> in seconds.
 The default value is 0.
-
-Alias: `--et`
 
 ## --fields
 
@@ -98,41 +88,46 @@ Set to 'long' to automatically print more of the main fields.
 
 Follows the progress of a Workflow Execution.
 
-Alias: `-f`
+## --global
 
-## --global-namespace
-
-Specifies whether a [Namespace](/namespaces#) is a [Global Namespace](/namespaces#global-namespace).
+Specifies whether a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> is a <a class="tdlp" href="/namespaces#global-namespace">Global Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Global Namespace?</p><p class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</p><p class="tdlplm"><a href="/namespaces#global-namespace">Learn more</a></p></div></a>.
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
 This is a read-only setting and cannot be changed.
 
-Alias `--gn`
-
 ## --history-archival-state
 
-Set the state of [Archival](/clusters#archival).
+Set the state of <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
-
-Alias `--has`
 
 ## --history-uri
 
-Specify the URI for [Archival](/clusters#archival).
+Specify the URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
-
-Alias `--huri`
 
 ## --identity
 
-Specify the identity of the operator when using tctl to fail an [Activity Execution](/activities#activity-execution).
+Specify the identity of the operator when using tctl to fail an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
+
+## --id-reuse-policy
+
+Specify a <a class="tdlp" href="/workflows#workflow-id-reuse-policy">Workflow Id Reuse Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id Reuse Policy?</p><p class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</p><p class="tdlplm"><a href="/workflows#workflow-id-reuse-policy">Learn more</a></p></div></a>.
+Configure if the same <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a> is allowed for use in new <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+
+Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
+
+**Examples**
+
+```bash
+tctl workflow <command> --id-reuse-policy AllowDuplicate
+tctl workflow <command> --id-reuse-policy AllowDuplicateFailedOnly
+tctl workflow <command> --id-reuse-policy RejectDuplicate
+```
 
 ## --input-file
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 ## --input-parallelism
 
@@ -146,15 +141,11 @@ Pass input for the Workflow.
 Input must be in JSON format.
 For multiple JSON objects, pass each in a separate `--input` option. Use `null` for null values.
 
-Alias: `-i`
-
 ## --job-id
 
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`
 
 ## --limit
 
@@ -165,73 +156,43 @@ Sets the number of items to print.
 Specify the maximum length for each attribute field.
 The default value is 500.
 
-Alias: `--maxl`
+## --memo
+
+Pass a memo in the format `key=value`.
+
+A memo is information in JSON format that can be shown when the Workflow is listed.
+For multiple memos, pass each in a separate `--memo` modifier.
 
 ## --memo-file
 
-Pass information for a memo from a JSON file.
-For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
-The order must match the order of keys in `--memo-key`.
-
-## --memo-key
-
-Pass a key for a memo.
-For multiple keys, concatenate them and use spaces as separators.
-
-## --memo
-
-Pass a memo.
-A memo is information in JSON format that can be shown when the Workflow is listed.
-For multiple memos, concatenate them and use spaces as separators.
-The order must match the order of keys in `--memo-key`.
+Pass a memo from a file, where each line follows the format `key=value`.
+Use valid JSON formats for values.
 
 ## --name
 
-Specify the name of a [Signal](/workflows#signal).
-
-Alias: `-n`
-
-## --namespace-data
-
-Specify data for a [Namespace](/namespaces#) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
-
-Alias `--nd`
+Specify the name of a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#signal">Learn more</a></p></div></a>.
 
 ## --namespace
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
-Alias: `-n`
-
 ## --no-pager
 
 Disables the interactive pager.
 
-Alias: `-P`
-
 ## --non-deterministic
 
-Indicate that a [Workflow Execution](/workflows#workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a nondeterministic error.
+Indicate that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> should be reset only if its last event is `WorkflowTaskFailed` with a nondeterministic error.
 
 ## --output-filename
 
 Serialize an Event to a file.
 
-Alias: `--of`
-
-## --modifier
+## --output
 
 Specifies the format for printed output.
 
-Alias: `-o`
-
 Values: table, json, card
-
-## --owner-email
-
-Specify the email address of the [Namespace](/namespaces#) owner.
-
-Alias `--oe`
 
 ## --pager
 
@@ -245,30 +206,15 @@ Specify the maximum number of batch jobs to list on a page. The default value is
 
 Alias: `--ps`
 
-## --query-reject-condition
-
-Reject Queries based on Workflow state.
-Valid values are `not-open` and `not-completed-cleanly`.
-
-Alias: `--qrc`
-
-## --query-modifier
-
-Specify the type of Query to run.
-
-Alias: `--qt`
-
 ## --query
 
 _Required modifier_
 
-The `--query` flag is supported only when [Advanced Visibility](/visibility#advanced-visibility) is configured with the Cluster.
+The `--query` flag is supported only when <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a href="/visibility#advanced-visibility">Learn more</a></p></div></a> is configured with the Cluster.
 
-Specify an SQL-like query of [Search Attributes](/visibility#search-attribute).
+Specify an SQL-like query of <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a href="/visibility#search-attribute">Learn more</a></p></div></a>.
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest-time`, `latest-time`, `workflow-id`, and `workflow-type`.
-
-Alias: `-q`
 
 ## --raw
 
@@ -276,9 +222,14 @@ Print properties exactly as they are stored.
 
 ## --reason
 
-Specify a reason for terminating the [Workflow Execution](/workflows#workflow-execution).
+Specify a reason for terminating the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
 Alias: `-r`
+
+## --reject-condition
+
+Reject Queries based on Workflow state.
+Valid values are `not-open` and `not-completed-cleanly`.
 
 ## --reset-bad-binary-checksum
 
@@ -312,13 +263,13 @@ Specify the event type to which you want to reset.
 
 ## --result
 
-Specify the result of an [Activity Execution](/activities#activity-execution) when using tctl to complete the Activity Execution.
+Specify the result of an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a> when using tctl to complete the Activity Execution.
 
 ## --retention
 
-Set the [Retention Period](/clusters#retention-period) for the [Namespace](/namespaces#).
+Set the [Retention Period](/clusters#retention-period) for the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a>.
 
-The Retention Period applies to Closed [Workflow Executions](/workflows#workflow-execution).
+The Retention Period applies to Closed <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
 Alias `--rd`
 
@@ -328,7 +279,7 @@ Specify RPS of processing. The default value is 50.
 
 ## --run-id
 
-Show the History of a [Workflow Execution](/workflows#workflow-execution) by specifying a [Run Id](/workflows#run-id).
+Show the History of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> by specifying a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#run-id">Learn more</a></p></div></a>.
 
 Alias: `--rid`
 
@@ -338,55 +289,39 @@ Single Workflow Run timeout, in seconds.
 
 Alias: `--rt`
 
-## --search-attribute-key
+## --search-attribute
 
-Specify a [Search Attribute](/visibility#search-attribute) key.
-For multiple keys, concatenate them and use pipes (`|`) as separators.
+Pass a [Search Attribute](/visibility#search-attribute) in the format `key=value`.
+For multiple values, pass each in a separate `--search-attribute` modifier.
 
-To list valid keys, use the `tctl cluster get-search-attribute` command.
+To list valid keys, use the `tctl search-attribute list` command.
 
-## --search-attribute-value
+## --name
 
-Specify a [Search Attribute](/visibility#search-attribute) value.
-For multiple values, concatenate them and use pipes (`|`) as separators.
-If a value is an array, use JSON format, such as `["a","b"]`, `[1,2]`, `["true","false"]`, or `["2022-06-07T17:16:34-08:00","2022-06-07T18:16:34-08:00"]`.
-
-To list valid keys and value types, use the `tctl cluster get-search-attribute` command.
-
-## --signal-name
-
-Specify the name of a [Signal](/workflows#signal). This modifier is required when `--batch-type` is `signal`.
-
-Alias: `--sn`
+Specify the name of a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#signal">Learn more</a></p></div></a>.
 
 ## --skip-base-is-not-current
 
-Indicate that a [Workflow Execution](/workflows#workflow-execution) should be skipped if the base Run is not the current Run.
+Indicate that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> should be skipped if the base Run is not the current Run.
 
 ## --skip-current-open
 
-Indicate that a [Workflow Execution](/workflows#workflow-execution) should be skipped if the current Run is open for the same [Workflow Id](/workflows#workflow-id) as the base Run.
+Indicate that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> should be skipped if the current Run is open for the same <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a> as the base Run.
 
 ## --task-queue-type
 
-Specify the type of a [Task Queue](/tasks#task-queue).
+Specify the type of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>.
 The type can be `workflow` or `activity`.
 The default is `workflow`.
 
-Alias: `--tqt`
-
 ## --task-queue
 
-Specify a [Task Queue](/tasks#task-queue).
-
-Alias: `--t`
+Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a>.
 
 ## --task-timeout
 
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
+Specify the Start-To-Close Timeout of the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a href="/tasks#workflow-task">Learn more</a></p></div></a> in seconds.
 The default value is 10.
-
-Alias: `--tt`
 
 ## --time-format
 
@@ -396,52 +331,24 @@ Values: relative, iso, raw
 
 ## --type
 
-Specify the name of a [Workflow Type](/workflows#workflow-type).
-
-Alias: `-t`
+Specify the name of a <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a href="/workflows#workflow-type">Learn more</a></p></div></a>.
+Specity the type of Query to send.
 
 ## --visibility-archival-state
 
-Set the visibility state for [Archival](/clusters#archival).
+Set the visibility state for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
-
-Alias `--vas`
 
 ## --visibility-uri
 
-Specify the visibility URI for [Archival](/clusters#archival).
+Specify the visibility URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
-
-Alias `--vuri`
-
-## --workflow-id-reuse-policy
-
-Specify a [Workflow Id Reuse Policy](/workflows#workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/workflows#workflow-id) is allowed for use in new [Workflow Execution](/workflows#workflow-execution).
-
-Values: `AllowDuplicate`, `AllowDuplicateFailedOnly`, `RejectDuplicate`
-
-**Examples**
-
-```bash
-tctl workflow <command> --workflow-id-reuse-policy AllowDuplicate
-tctl workflow <command> --workflow-id-reuse-policy AllowDuplicateFailedOnly
-tctl workflow <command> --workflow-id-reuse-policy RejectDuplicate
-```
 
 ## --workflow-id
 
-Show the History of a [Workflow Execution](/workflows#workflow-execution) by specifying a [Workflow Id](/workflows#workflow-id).
-
-Alias: `--wid`
-
-## --workflow-task-timeout
-
-Specify the [Start-To-Close Timeout](/activities#start-to-close-timeout) of the [Workflow Task](/tasks#workflow-task) in seconds.
-The default value is 10.
-
-Alias: `--wtt`
+Show the History of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> by specifying a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
 ## --yes
 
 Use the --yes modifier to automatically confirm all prompts.
+

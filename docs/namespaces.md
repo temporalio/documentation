@@ -24,16 +24,16 @@ Namespaces are created on the Temporal Cluster, and provide a range of controls 
   See the [Registration](#registration) section for details.
 - Namespaces created on self-hosted Temporal Clusters are case-sensitive. For example, `foo` and `Foo` are two different Namespaces.
   On Temporal Cloud, Namespaces are case-insensitive, and we recommend using lowercase for Namespace names to avoid potential issues.
-- **Membership**: [Task Queue](/tasks#task-queue) names and [Workflow Ids](/workflows#workflow-id) must all correspond to a specific Namespace.
+- **Membership**: <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a href="/tasks#task-queue">Learn more</a></p></div></a> names and <a class="tdlp" href="/workflows#workflow-id">Workflow Ids<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a> must all correspond to a specific Namespace.
   For example, when a Workflow Execution is spawned, it does so within a specific Namespace.
 - **Uniqueness**: Temporal guarantees a unique Workflow Id within a Namespace.
   Workflow Executions may have the same Workflow Id if they are in different Namespaces.
-- **Namespace Configuration**: Various configuration options like the [Retention Period](/clusters#retention-period) and the [Archival](/clusters#archival) destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
+- **Namespace Configuration**: Various configuration options like the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a href="/clusters#retention-period">Learn more</a></p></div></a> and the <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a> destination are configured per Namespace through a special CRUD API or through [`tctl`](/tctl-v1/namespace).
 
 ### Registration
 
 Registering a Namespace creates the Namespace on the Temporal Cluster.
-When you register your Namespace, you must also set the [Retention Period](/clusters#retention-period) for the Namespace.
+When you register your Namespace, you must also set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a href="/clusters#retention-period">Learn more</a></p></div></a> for the Namespace.
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
 
@@ -62,7 +62,7 @@ Note that registering a Namespace takes up to 15 seconds to complete. Ensure tha
 
 ### Manage Namespaces
 
-Use a custom [Authorizer](/clusters#authorizer-plugin) on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+Use a custom <a class="tdlp" href="/clusters#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a href="/clusters#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
 
@@ -96,7 +96,7 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 
 ## Global Namespace
 
-A Global Namespace is a [Namespace](#) that exists across Clusters when [Multi-Cluster Replication](/clusters#multi-cluster-replication) is set up.
+A Global Namespace is a <a class="tdlp" href="#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="#">Learn more</a></p></div></a> that exists across Clusters when <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Multi-Cluster Replication?</p><p class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</p><p class="tdlplm"><a href="/clusters#multi-cluster-replication">Learn more</a></p></div></a> is set up.
 
 - [How to register a Global Namespace](/tctl-v1/namespace#register)
 - [How to change the active Cluster for a Global Namespace](/tctl-v1/namespace#update)
@@ -110,9 +110,10 @@ For a failover to be successful, Worker Processes must be polling for Tasks for 
 A Global Namespace has a failover version.
 Because a failover can be triggered from any Cluster, the failover version prevents certain conflicts from occurring if a failover is mistakenly triggered simultaneously on two Clusters.
 
-Only the active Cluster dispatches [Tasks](/tasks#); however, certain conflicts are possible.
+Only the active Cluster dispatches <a class="tdlp" href="/tasks#">Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task?</p><p class="tdlppd">A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.</p><p class="tdlplm"><a href="/tasks#">Learn more</a></p></div></a>; however, certain conflicts are possible.
 Unlike regular Namespaces, which provide at-most-once semantics for an Activity Execution, Global Namespaces can support only at-least-once semantics (see [Conflict resolution](/concepts/what-is-multi-cluster-replication/#conflict-resolution)).
 Worker Processes on the standby Clusters are idle until a failover occurs and their Cluster becomes active.
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
+

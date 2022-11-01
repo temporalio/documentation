@@ -1,4 +1,5 @@
 {
+  "trailingSlash": false,
   "github": {
     "silent": true
   },
@@ -519,10 +520,6 @@
       "source": "/server-configuration",
       "destination": "/references/configuration"
     },
-    {
-      "source": "/references/configuration",
-      "destination": "/references/configuration"
-    },
     {"source": "/server-introduction", "destination": "/clusters"},
     {"source": "/server/introduction", "destination": "/clusters"},
     {"source": "/server-namespaces", "destination": "/namespaces"},
@@ -635,6 +632,10 @@
     {
       "source": "/tctl/taskqueue/:path*",
       "destination": "/tctl-v1/taskqueue#:path*"
+    },
+    {
+      "source": "/references/ui-configuration",
+      "destination": "/references/web-ui-configuration"
     }
   ]
 }

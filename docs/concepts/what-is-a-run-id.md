@@ -16,3 +16,18 @@ For example, a Temporal Cron Job is a chain of Workflow Executions that all have
 Each Workflow Execution within the chain is considered a _Run_.
 
 A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow Id with other Workflow Executions.
+
+:::caution
+
+Don't rely on storing the current Run Id or using it for any logical choices.
+A Workflow Retry changes the Run Id.
+Because the current Run Id is mutable, relying on it might produce non-determinism issues.
+
+:::
+
+**Learn more**
+
+For more information, see the following links.
+
+- [`message.proto`](https://github.com/temporalio/api/blob/master/temporal/api/history/v1/message.proto#L75-L82)
+- [Non-determinism issues for Run Ids](/kb/non-determinism-issues-for-run-ids)

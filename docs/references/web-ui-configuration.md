@@ -1,20 +1,25 @@
 ---
-id: ui-configuration
+id: web-ui-configuration
 title: Temporal Web UI configuration reference
-sidebar_label: UI configuration
 description: The Temporal Web UI Server uses a configuration file for many of the UI's settings.
+sidebar_label: Web UI configuration
 tags:
-  - reference
-  - web-ui
+ - reference
+ - web-ui
 ---
+
+<!-- This file is generated. Do not edit it directly. -->
 
 The Temporal Web UI Server uses a configuration file for many of the UI's settings.
 
 An example development.yaml file can be found in the [temporalio/ui-server repo](https://github.com/temporalio/ui-server/blob/main/config/development.yaml).
 
+Multiple configuration files can be created for configuring specific areas of the UI, such as Auth or TLS.
+
 ## enableUi
 
 Enables the browser UI.
+This configuration can be set dynamically with the [TEMPORAL_UI_ENABLED](/references/web-ui-environment-variables#temporaluienabled) environment variable.
 If disabled—that is, set to `false`—the UI server APIs remain available.
 
 ```yaml
@@ -24,6 +29,7 @@ enableUi: true
 ## enableOpenApi
 
 Enables the UI Server's Open API reference documentation at `/openapi/`.
+This configuration can be set dynamically with the [TEMPORAL_OPEN_API_ENABLED](/references/web-ui-environment-variables#temporalopenapienabled) environment variable.
 For example, if you are currently viewing the Web UI at `http://localhost:8080`, the page is available at [localhost:8080/openapi/](http://localhost:8080/openapi/).
 
 ```yaml
@@ -48,6 +54,24 @@ Currently, only [tls](#tls) configuration values are propagated during a refresh
 
 ```yaml
 refreshInterval: 1m
+```
+
+## temporalGrpcAddress
+
+The frontend adddress for the Temporal Cluster.
+
+The default address is localhost (127.0.0.1:7233).
+
+```yaml
+temporalGrpcAddress: default
+```
+
+## port
+
+The port used by the Temporal Web UI Server and any APIs.
+
+```yaml
+port: 8080
 ```
 
 ## defaultNamespace

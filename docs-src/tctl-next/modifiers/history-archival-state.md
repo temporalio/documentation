@@ -9,5 +9,3 @@ tags:
 
 Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
-
-Alias `--has`

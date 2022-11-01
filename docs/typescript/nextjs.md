@@ -136,7 +136,7 @@ export async function OneClickBuy(id: string): Promise<string> {
 }
 ```
 
-Workflow code is bundled and run inside a [deterministic v8 isolate](/typescript/determinism) so we can persist and replay every state change.
+Workflow code is bundled and run inside a [deterministic v8 isolate](/typescript/determinism), so we can persist and replay every state change.
 This is why Workflow code must be separate from Activity code, and why we have to `proxyActivities` instead of directly importing them.
 Workflows also have access to a special set of [Workflow APIs](/typescript/workflows#workflow-apis) which we recommend exploring next.
 

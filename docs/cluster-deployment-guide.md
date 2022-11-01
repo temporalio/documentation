@@ -22,7 +22,7 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Elasticsearch
 
-[Advanced Visibility](/visibility#advanced-visibility) features depend on an integration with Elasticsearch.
+<a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a href="/visibility#advanced-visibility">Learn more</a></p></div></a> features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
@@ -112,11 +112,11 @@ Run the following command to create search attributes: `tctl search-attribute cr
 
 ## Archival
 
-[Archival](/clusters#archival) is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
+<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a> is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
 ### Set up Archival
 
-[Archival](/clusters#archival) consists of the following elements:
+<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a> consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -135,7 +135,7 @@ Temporal directly supports several providers:
 - **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
 - **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
 - **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
-- **Custom**: If you want to use a provider that is not currently supported, you can [create your own archiver](#custom-archiver) to support it.
+- **Custom**: If you want to use a provider that is not currently supported, you can <a class="tdlp" href="#custom-archiver">create your own archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a custom Archiver</p><p class="tdlppd">todo</p><p class="tdlplm"><a href="#custom-archiver">Learn more</a></p></div></a> to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
@@ -225,8 +225,8 @@ Then register a new Namespace with Archival enabled.
 
 :::note
 
-If the retention period isn't set, it defaults to 2 days.
-The minimum retention period is 1 day.
+If the retention period isn't set, it defaults to two days.
+The minimum retention period is one day.
 The maximum retention period is 30 days.
 
 Setting the retention period to 0 results in the error _A valid retention period is not set on request_.
@@ -247,7 +247,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### Custom Archiver
 
-To archive data with a given provider, using the [Archival](/clusters#archival) feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a href="/clusters#archival">Learn more</a></p></div></a> feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 
@@ -352,7 +352,7 @@ As for now, try to make your syntax similar to the one used by our advanced list
 
 ## Upgrade Server
 
-If a newer version of the [Temporal Server](/clusters#temporal-server) is available, a notification appears in the Temporal Web UI.
+If a newer version of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is the Temporal Server?</p><p class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</p><p class="tdlplm"><a href="/clusters#temporal-server">Learn more</a></p></div></a> is available, a notification appears in the Temporal Web UI.
 
 :::info
 
@@ -478,7 +478,7 @@ We recommend preparing a staging Cluster and then do the following to verify the
 
 ## Set up Multi-Cluster Replication
 
-The [Multi-Cluster Replication](/clusters#multi-cluster-replication) feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Multi-Cluster Replication?</p><p class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</p><p class="tdlplm"><a href="/clusters#multi-cluster-replication">Learn more</a></p></div></a> feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
@@ -576,3 +576,4 @@ tctl -address 127.0.0.1:8233 admin cluster upsert-remote-cluster --frontend_addr
 tctl -address 127.0.0.1:7233 admin cluster remove-remote-cluster --cluster "clusterB"
 tctl -address 127.0.0.1:8233 admin cluster remove-remote-cluster --cluster "clusterA"
 ```
+
