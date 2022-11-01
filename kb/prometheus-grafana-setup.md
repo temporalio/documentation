@@ -6,7 +6,7 @@ tags:
 date: 2022-10-31T00:00:00Z
 ---
 
-The Temporal Cluster and SDKs emit metrics that can be used to monitor performance and troubleshoot issues. To collect and aggregate these metrics, you can use one of the following:
+The Temporal Cluster and SDKs emit metrics that can be used to monitor performance and troubleshoot issues. To collect and aggregate these metrics, you can use one of the following tools:
 
 - Prometheus
 - StatsD
@@ -16,7 +16,7 @@ Once you have enabled your monitoring tool, you can relay these metrics to any m
 
 <!-- truncate -->
 
-In this article, we discuss setting up Prometheus and Grafana to view metrics data on Temporal Cluster, Temporal Client, and Temporal Worker performance.
+This article discusses setting up Prometheus and Grafana to view metrics data on Temporal Cluster, Temporal Client, and Temporal Worker performance.
 
 Each section describes the steps to setting up Prometheus and Grafana, and an example on how you can do this in your local docker-compose Temporal Cluster setup and with the Java SDK.
 If you’re following through with implementing the examples, ensure that you have your local docker-compose set up, added your SDK, and have a sample application to work with (you can clone the SDK samples repositories to get started with).
@@ -124,8 +124,8 @@ import com.uber.m3.util.ImmutableMap;
 ```
 
 You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions.
-To use this example, add this example code with the Prometheus endpoint on port 8077 in your Worker program, and use `yourClient` to start your Workers. 
-Similarly, in your starter code, add this example code and set the Prometheus endpoint to port 8078,  create a Workflow Client (as described in the code example), and use it to start your Workflow Execution. 
+To use this example, add this example code with the Prometheus endpoint on port 8077 in your Worker program, and use `yourClient` to start your Workers.
+Similarly, in your starter code, add this example code and set the Prometheus endpoint to port 8078, create a Workflow Client (as described in the code example), and use it to start your Workflow Execution.
 
 For more examples on how this is set across SDKs, see the metrics samples:
 
@@ -230,7 +230,7 @@ services:
 #...
 ```
 
-Note that in this example, we have set up Grafana to start without authorizations; this is not a good practice and is not recommended. 
+Note that in this example, we have set up Grafana to start without authorizations; this is not a good practice and is not recommended.
 For more information on how to custimize your Grafana setup, see the [Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/).
 
 Set Prometheus as your datasource for Grafana at the source path defined in the configuration. You can do this either on the UI or in your Grafana deployment configuration.
@@ -275,5 +275,5 @@ For more details on configuring Grafana dashboards, see the [Grafana Dashboards 
 
 Once you have your dashboard set up, you can start experimenting with different samples provided in the Temporal samples repositories.
 
-Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with. You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster. 
+Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with. You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster.
 Note that if you are following the examples provided here, and importing a dashboard from the community-driven dashboards repository, check and update the datasource for each panel to "Temporal Prometheus" (which is the name we defined for the Prometheus data source in the [Grafana configuration](#grafana-configuration) section.
