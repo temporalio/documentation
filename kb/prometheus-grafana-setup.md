@@ -124,7 +124,8 @@ import com.uber.m3.util.ImmutableMap;
 ```
 
 You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions.
-To use this example, add this example code with the Prometheus endpoint on port 8077 in your Worker program, and use `yourClient` to start your Workers. Similarly, in your starter code, add this example code and set the Prometheus endpoint to port 8078, create a `WorkflowServiceStub` with the metric scope, and create a Workflow Client to start Workflow Exeutions.
+To use this example, add this example code with the Prometheus endpoint on port 8077 in your Worker program, and use `yourClient` to start your Workers. 
+Similarly, in your starter code, add this example code and set the Prometheus endpoint to port 8078,  create a Workflow Client and use it to start your Workflow Execution. 
 
 For more examples on how this is set across SDKs, see the metrics samples:
 
