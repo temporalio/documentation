@@ -10,7 +10,7 @@ tags:
 
 :::note
 
-This documentation reflects tctl version 1.16
+This documentation reflects tctl version 1.17
 
 :::
 
