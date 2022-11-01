@@ -69,7 +69,6 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [sticky_cache_miss](#sticky_cache_miss)                                                 | Worker         | Counter     | TypeScript, Go, PHP, Java |
 | [sticky_cache_size](#sticky_cache_size)                                                 | Worker         | Gauge       | TypeScript, Go, PHP, Java |
 | [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Worker         | Counter     | Go, PHP, Java             |
-| [task_latency_load](#task_latency_load)                                                 | Worker         |             |                           |
 | [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go, PHP                   |
 | [worker_start](#worker_start)                                                           | Worker         | Counter     | TypeScript, Go, PHP, Java |
 | [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, PHP, Java             |
