@@ -47,7 +47,7 @@ For more flexible usecases, you may want a dynamic Signal, such as a generated i
 - actually make the Signal name dynamic by inlining the Signal definition per handler.
 
 ```typescript
-import * as wf from "@temporalio/workflow";
+import * as wf from '@temporalio/workflow';
 
 wf.setHandler(`genericSignal`, (payload) => {
   switch (payload.taskId) {
@@ -58,7 +58,7 @@ wf.setHandler(`genericSignal`, (payload) => {
       // do task B things
       break;
     default:
-      throw new Error("Unexpected task.");
+      throw new Error('Unexpected task.');
   }
 });
 
@@ -98,13 +98,13 @@ Sending Signals requires a Workflow handle from a Temporal Client.
 The following code is from inside the Client code.
 
 ```typescript
-import {count, increment} from "./workflow";
+import { count, increment } from './workflow';
 
 // init client code omitted - see Client docs
 const handle = client.getHandle(workflowId);
 
 // these three are equivalent
 await handle.signal(increment, 1);
-await handle.signal<[number]>("increment", 1);
+await handle.signal<[number]>('increment', 1);
 await client.getHandle(workflowId).signal(increment, 1);
 ```
