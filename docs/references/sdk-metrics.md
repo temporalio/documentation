@@ -283,14 +283,6 @@ A Workflow Execution has been forced from the cache intentionally.
 - Available in: Go, PHP, Java
 - Tags: `namespace`, `task_queue`
 
-### task_latency_load
-
-Measures the duration from task generation to task loading (task schedule to start latency for persistence queue).
-
-- Type:
-- Available in:
-- Tags:
-
 ### unregistered_activity_invocation
 
 A request to spawn an Activity Execution is not registered with the Worker.
