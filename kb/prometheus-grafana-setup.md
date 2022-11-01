@@ -30,7 +30,7 @@ If you’re following through with implementing the examples, ensure that you ha
 The Temporal Cluster and SDKs emit all metrics by default.
 However, you must enable Prometheus in your application code (using the Temporal SDKs) and your Cluster configuration to collect the metrics emitted from your SDK and Cluster.
 
-### Cluster Metrics setup
+### Cluster metrics setup
 
 To enable Prometheus to receive metrics data, set listen addresses in the Server configuration for Prometheus to scrap from.
 
