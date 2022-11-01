@@ -328,7 +328,7 @@ A Run Id uniquely identifies a Workflow Execution even if it shares a Workflow I
 
 Don't rely on storing the current Run Id or using it for any logical choices.
 A Workflow Retry changes the Run Id.
-Because the current Run Id is mutable, relying on it might produce non-determinism issues,
+Because the current Run Id is mutable, relying on it might produce non-determinism issues.
 
 :::
 
