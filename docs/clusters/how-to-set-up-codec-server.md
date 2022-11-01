@@ -38,7 +38,7 @@ Once the Codec Server is started, there are two ways to provide it to the Web UI
 
 ### In the UI
 
-![Data Encoder icon](/static/img/docs/data-encoder-button.png)
+![Data Encoder icon](/img/docs/data-encoder-button.png)
 
 Select the icon with an up-down arrow on the bottom left of the screen.
 This action displays the codec endpoint dialog.
