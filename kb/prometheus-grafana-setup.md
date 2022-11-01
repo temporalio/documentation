@@ -19,7 +19,7 @@ Once you have enabled your monitoring tool, you can relay these metrics to any m
 In this article, we discuss setting up Prometheus and Grafana to view metrics data on Temporal Cluster, Temporal Client, and Temporal Worker performance.
 
 Each section describes the steps to setting up Prometheus and Grafana, and an example on how you can do this in your local docker-compose Temporal Cluster setup and with the Java SDK.
-If you’re following through with implementing the examples, ensure that you have your local docker-compose setup, added your SDK, and have a sample application to work with (you can clone the SDK samples repositories to get started with).
+If you’re following through with implementing the examples, ensure that you have your local docker-compose set up, added your SDK, and have a sample application to work with (you can clone the SDK samples repositories to get started with).
 
 - See [Run a dev Cluster](/application-development/foundations#docker-compose) for details on how to set up your local Temporal docker-compose.
 - See [Add your SDK](/application-development/foundations#add-your-sdk) for details on how to add your SDK and get started with samples.
