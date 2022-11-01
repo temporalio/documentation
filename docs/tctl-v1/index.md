@@ -42,7 +42,7 @@ Workflow, show Workflow History, and Signal Workflow).
 You can install [tctl](/tctl-v1) in the following ways.
 
 - Install locally by using [Homebrew](https://brew.sh/): `brew install tctl`
-- Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
+- Run locally together with Temporal Server in [Docker Compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
   - To invoke [tctl](/tctl-v1) as though it is installed locally (such as `tctl namespace describe`), set an alias: `alias tctl="docker exec temporal-admin-tools tctl"`
 - Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) Docker image:
   - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.14.0`

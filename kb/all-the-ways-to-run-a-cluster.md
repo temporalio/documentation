@@ -45,7 +45,7 @@ Local Temporal Clients and Workers can connect to Temporalite at 127.0.0.1:7233 
 
 You can easily run a Temporal Cluster in [Docker](https://docs.docker.com/engine/install) containers using [Docker Compose](https://docs.docker.com/compose/install).
 
-If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker-compose up` command from its root.
+If you have Docker and Docker Compose installed, all you need to do is clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repo and run the `docker compose up` command from its root.
 
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
 It also enables you to try [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), emit metrics, and even play with the [Archival](/clusters/#archival) feature.
@@ -62,7 +62,7 @@ The following commands start and run a Temporal Cluster in Docker using the defa
 ```bash
 git clone https://github.com/temporalio/docker-compose.git
 cd docker-compose
-docker-compose up
+docker compose up
 ```
 
 Local [Temporal Clients](/temporal/#temporal-client) and [Workers](/workers) can connect to the Cluster running in Docker at 127.0.0.1:7233 (default connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8080.
@@ -123,7 +123,7 @@ Keep in mind that the configuration can become very complex if you try to scale 
 ## Render
 
 Our [temporalio/docker-compose](https://github.com/temporalio/docker-compose) experience has been translated to Render's Blueprint format for an alternative cloud connection.
-[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our docker-compose to Render by using the Auto-Setup Docker image.
+[temporal-render-simple](https://github.com/temporalio/temporal-render-simple) translates our Docker Compose to Render by using the Auto-Setup Docker image.
 
 The benefit to this approach is a one-click deployment.
 
