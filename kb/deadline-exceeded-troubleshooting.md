@@ -15,6 +15,7 @@ Together, the errors can indicate several different conditions, such as:
 - Connection issues
 - Timeouts
 - Server overload
+- Query handling issues
 
 <!-- Temporal is aware that this error is vague, especially with how many cases it covers.
 Should any problems persist after troubleshooting below, contact Temporal. -->
@@ -46,7 +47,11 @@ Add any missing values before deploying the server again.
 This can happen if the provided timeouts are too short to allow requests to complete.
 
 [In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
-When the connection age was delayed, the rate of 502s received plummeted.
+
+- more about issue
+
+- more about solution
+  When the connection age was delayed, the rate of 502s received plummeted.
 
 - more summary here
 
@@ -60,6 +65,8 @@ Querying a Workflow Execution that fails to return a response can also cause a t
 
 - situation here
 - summary here
+
+### Query handling issues
 
 If the timeout occurs on a Query, check your Worker logs to identify any issues with query handling.
 Otherwise, check your server metrics for unexpected latency.
