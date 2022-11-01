@@ -12,7 +12,7 @@ A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [We
 - [How to set up a Codec Server](/clusters/how-to-set-up-codec-server/)
 
 By default, tctl and the Web UI use the [Default Data Converter](/concepts/what-is-a-data-converter#default-data-converter) without a [Payload Codec](/concepts/what-is-a-data-converter#payload-codecs).
-If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed). 
+If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed).
 In order to convert the data to its original format, you can [configure the Web UI/tctl](/clusters/how-to-set-up-codec-server/) to use a Codec Server that uses your Payload Codec.
 
 ![](/img/tctl-diagram-codec-server.svg)
@@ -28,7 +28,7 @@ You can use [tctl workflow showid](/tctl-v1/workflow#show) to view a Workflow Ex
 tctl workflow showid <workflowID>
 ```
 
-With a Codec Server, Payloads that are part of the Event History will be sent to `http://localhost:8888/decode` to be decoded before being deserialized by the Default Data Converter and displayed in your terminal. 
+With a Codec Server, Payloads that are part of the Event History will be sent to `http://localhost:8888/decode` to be decoded before being deserialized by the Default Data Converter and displayed in your terminal.
 
 ## Use case: Web UI
 
