@@ -193,7 +193,7 @@ In this example, we have created a YAML configuration file setting up Prometheus
 The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK, and can be used to create Workers and make Client API calls to start Workflow Executions, send Signals, Queries etc. See the [SDK Metrics](#sdk-metrics-setup) section for details.
 You can set up as many targets as required.
 
-See [Prometheus configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/) for more information.
+For more details on how to configure Prometheus, refer the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
 To check whether you’re receiving your metrics data, start your local docker-compose Temporal Cluster (with the configuration provided in the examples here) and check:
 
