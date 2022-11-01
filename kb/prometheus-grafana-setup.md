@@ -70,7 +70,7 @@ services:
 #...
 ```
 
-Depending on how you deploy your Temporal Cluster, you can set different ports for each Temporal Service, as done in this example where each Temporal Service is deployed as a separate container.
+Depending on how you deploy your Temporal Cluster, you can set different ports for each Temporal Service, as done in [this example](https://github.com/tsurdilo/my-temporal-dockercompose.git) where each Temporal Service is deployed as a separate container.
 
 ### SDK metrics setup
 
