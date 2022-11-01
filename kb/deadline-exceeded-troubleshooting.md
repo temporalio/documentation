@@ -47,30 +47,28 @@ Add any missing values before deploying the server again.
 
 ### Short timeouts
 
+<!-- TODO: Add snippets. -->
+
 `DeadlineExceeded` may be thrown if connections are closed too soon.
-This can happen if the provided timeouts are too short to allow requests to complete.
-
 [In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
+This behavior is expected, but can be detrimental if there isn't enough time to complete requests.
 
-- more about issue
+The user proceeded to change the values of their timeout variables.
+Once the values were higher than the server instance lifespan, the user saw a decrease in 502 errors on the client side.
 
-- more about solution
-  When the connection age was delayed, the rate of 502s received plummeted.
-
-- more summary here
-
-Check your configuration to make sure that timeouts are long enough to allow requests to be completed.
-If timeouts keep expiring, increase the value and add a check for network growth.
+If you need to increase the connection age, be sure to add a check for hot spotting.
 
 ### Server overload
 
-`DeadlineExceeded` may occur if the Temporal Server cannot complete requests on time.
-Querying a Workflow Execution that fails to return a response can also cause a timeout.
+Unusually high latency can prevent requests from completing on time.
 
 - situation here
 - summary here
 
 ### Query handling issues
+
+`DeadlineExceeded` may occur if the Temporal Server cannot complete requests on time.
+Querying a Workflow Execution that fails to return a response can also cause a timeout.
 
 If the timeout occurs on a Query, check your Worker logs to identify any issues with query handling.
 Otherwise, check your server metrics for unexpected latency.
