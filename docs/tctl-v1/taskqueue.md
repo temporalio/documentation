@@ -2,7 +2,7 @@
 id: taskqueue
 title: tctl v1.16 taskqueue command reference
 sidebar_label: taskqueue
-description: How to use the tctl v1.16 task-queue command
+description: How to use the tctl v1.16 taskqueue command
 toc_max_heading_level: 4
 ---
 
@@ -77,3 +77,4 @@ Alias: `--tq`
 ```bash
 tctl taskqueue list-partition --taskqueue <value>
 ```
+
