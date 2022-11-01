@@ -28,12 +28,18 @@ We've highlighted some users' encounters below, along with the steps they took t
 
 Network interruptions can cause a `DeadlineExceeded` error.
 
-- first case:
-  [One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
-- second case:
-  [Another user](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) ran into this error while setting up mTLS.
-- third case:
-  A similar case was seen when [another user](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229) tried configuring mTLS.
+<!-- TODO: add images and snippets. May make user cases their own subheadings. -->
+
+[One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
+The Temporal Worker failed to connect to the frontend service, and appeared to be blocking Workflow Execution.
+Looking deeper into the problem revealed that HTTP requests were being fulfilled, but weren't registered at any point in their progress on Temporal Web.
+
+[Another user](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) ran into the same error while setting up mTLS.
+Like before, the frontend could not be reached by the system's Workers.
+The user found that their `internode.server` certificate was invalid, and that they were missing a DNS name in their environmental configuration.
+
+A similar case was seen when [this user](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229) tried configuring mTLS in a Docker container and Openshift pod.
+The environment couldn't find the user's `FRONTEND_DNS_NAME` and couldn't connect with Temporal.
 
 Check your configuration files for missing environmental variables.
 Make sure that the frontend and internode certificates are clearly defined.
