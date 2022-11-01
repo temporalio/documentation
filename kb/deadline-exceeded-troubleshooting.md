@@ -3,7 +3,7 @@ slug: deadline-exceeded-troubleshooting
 title: DeadlineExceeded error troubleshooting
 tags:
   - kb-article
-date: 2022-10-31T00:00:00Z
+date: 2022-11-01T00:00:00Z
 ---
 
 `DeadlineExceeded` is a Context error that originates in `gRPC`.
@@ -16,11 +16,14 @@ Should any problems persist after troubleshooting below, contact Temporal.
 
 ### Connection issues
 
-Network interruptions
+Network interruptions can cause a `DeadlineExceeded` error.
+[Several users](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) [have reported such problems](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) while [setting up mTLS]() on their servers.
 
-[](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249)
-[](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124)
-[](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229)
+Check your configuration files for missing environmental variables.
+Make sure that the frontend and internode certificates are clearly defined.
+Add any missing values before deploying the server again.
+
+<!-- [](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229) -->
 
 ### Short timeouts
 
