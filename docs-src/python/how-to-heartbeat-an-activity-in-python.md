@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) function.
+To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
 
 ```python
 @activity.defn

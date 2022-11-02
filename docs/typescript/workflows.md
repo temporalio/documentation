@@ -56,7 +56,7 @@ export async function example(
 
 ### Workflow Limitations
 
-Workflow code must be [deterministic](/typescript/determinism), and the TypeScript SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/typescript/workflows#sleep) function instead).
+Workflow code must be [deterministic](/typescript/determinism), and the TypeScript SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/typescript/workflows#sleep) API instead).
 However, there are other important limitations:
 
 - No Node built-ins like `process` or the `path` and `fs` modules
@@ -502,7 +502,7 @@ See the [Workflow Client](/typescript/clients/#workflow-options) docs for more n
   For more information, see [Cancellation Scopes](/typescript/cancellation-scopes).
 
 The Workflow's V8 isolate environment completely replaces the JavaScript [`setTimeout`](https://typescript.temporal.io/api/namespaces/workflow/#timers) global, including inside libraries that you use, to provide a complete JavaScript runtime.
-We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
+We recommend using our [`sleep(timeout)`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) API instead, because it is a cancellation-aware Promise wrapper for `setTimeout`.
 
 <details>
 <summary>
