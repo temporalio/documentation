@@ -15,12 +15,18 @@ or
 [`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow)
 methods, passing multiple or one Workflow Histories as arguments.
 
-In the following example, histories are downloaded from the server, and then replayed:
-
+In the following example (which requires advanced visibility to be enabled), histories are
+downloaded from the server, then replayed, creating a dict which maps their run id to whether or not
+they failed with a nondeterminism error:
 ```python
-histories = # TODO: Use list workflows API once it's ready
-replayer = Replayer(workflows=[YourWorkflowA, YourWorkflowB])
-await replayer.replay_workflows(histories)
+workflows = client.list_workflows(f"TaskQueue=foo")
+histories = workflows.map_histories()
+async with Replayer(workflows=[YourWorkflowA, YourWorkflowB])) as result_iter:
+    run_ids_to_did_fail_nondeterministically = {
+        r.history.run_id: isinstance(r.replay_failure, workflow.NondeterminismError)
+        async for r in result_iter
+    }
+
 ```
 
 In the next example, a single history is loaded from a JSON string:
