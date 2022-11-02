@@ -15,7 +15,7 @@ The `tctl data-converter` command enables custom [Data Converter](/concepts/what
 
 Alias: `dc`
 
-- [`tctl data-converter web`](/tctl-next/data-converter#web)
+- [tctl data-converter web](/tctl-next/data-converter#web)
 
 ## web
 
