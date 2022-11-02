@@ -16,5 +16,5 @@ The `tctl admin db` command runs administrator-level operations on a given datab
 
 ### Commands
 
-- [`tctl admin db scan`](/tctl-v1/admin/db/scan)
-- [`tctl admin db clean`](/tctl-v1/admin/db/clean)
+- [tctl admin db scan](/tctl-v1/admin/db/scan)
+- [tctl admin db clean](/tctl-v1/admin/db/clean)

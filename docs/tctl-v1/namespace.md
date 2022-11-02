@@ -15,10 +15,10 @@ The `tctl namespace` commands enable <a class="tdlp" href="/namespaces#">Namespa
 
 Alias: `n`
 
-- <a class="tdlp" href="#describe">`tctl namespace describe`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace describe</p><p class="tdlppd">How to describe a Namespace using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#list">`tctl namespace list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace list</p><p class="tdlppd">How to list all Namespaces using tctl.</p><p class="tdlplm"><a href="#list">Learn more</a></p></div></a>
-- <a class="tdlp" href="#register">`tctl namespace register`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a href="#register">Learn more</a></p></div></a>
-- <a class="tdlp" href="#update">`tctl namespace update`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace update</p><p class="tdlppd">How to update a Namespace using tctl.</p><p class="tdlplm"><a href="#update">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">tctl namespace describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace describe</p><p class="tdlppd">How to describe a Namespace using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list">tctl namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace list</p><p class="tdlppd">How to list all Namespaces using tctl.</p><p class="tdlplm"><a href="#list">Learn more</a></p></div></a>
+- <a class="tdlp" href="#register">tctl namespace register<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a href="#register">Learn more</a></p></div></a>
+- <a class="tdlp" href="#update">tctl namespace update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace update</p><p class="tdlppd">How to update a Namespace using tctl.</p><p class="tdlplm"><a href="#update">Learn more</a></p></div></a>
 
 ## describe
 
