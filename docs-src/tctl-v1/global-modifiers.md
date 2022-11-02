@@ -1,6 +1,6 @@
 ---
 id: global-modifiers
-title: tctl v1.16 global modifiers
+title: tctl v1.17 global modifiers
 sidebar_label: Global modifiers
 description: Global modifiers are provided before command modifiers.
 tags:
