@@ -2477,7 +2477,7 @@ await handle.complete("Completion value.")
 </TabItem>
 <TabItem value="typescript">
 
-To asynchronously complete an Activity with a Task Token, set the [`AsyncCompletionClient`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient) class to the [`complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete) method.
+To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
 <!--SNIPSTART typescript-activity-complete-async -->
 <!--SNIPEND-->
@@ -2892,16 +2892,28 @@ We need `yield` here to ensure that a Child Workflow Execution starts before the
 </TabItem>
 <TabItem value="python">
 
-Create an instance of the [`ParentClosePolicy`](https://python.temporal.io/temporalio.workflow.ParentClosePolicy.html) class and specify a constant to determine how a Child Workflow should be handled when the Parent closes.
+Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
 
 ```python
-await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id", parent_close_policy=ParentClosePolicy.TERMINATE)
+async def run(self, name: str) -> str:
+    return await workflow.execute_child_workflow(
+        ComposeGreeting.run,
+        ComposeGreetingInput("Hello", name),
+        id="hello-child-workflow-workflow-child-id",
+        parent_close_policy=TERMINATE,
+    )
 ```
+
+:::note
+
+`execute_child_workflow()` is a shortcut function for `temporalio.workflow.start_child_workflow()` plus `handle.result()`.
+
+:::
 
 </TabItem>
 <TabItem value="typescript">
 
-To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) property.
+To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
 
 <!--SNIPSTART typescript-child-workflow -->
 <!--SNIPEND-->
