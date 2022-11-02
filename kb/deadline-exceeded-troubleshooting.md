@@ -6,28 +6,30 @@ tags:
 date: 2022-11-01T00:00:00Z
 ---
 
-`DeadlineExceeded` is a Context error that originates in `gRPC`.
-This error occurs when a request cannot be completed in time.
-
-`DeadlineExceeded` often occurs alongside other errors.
+`DeadlineExceeded` is a Context error that occurs when a request cannot be completed in time.
 Downed services, querying errors, and unusually high latencies can all throw this error.
-However, Cloud users cannot access all of the history logs needed for troubleshooting.
-
-<!-- Temporal is aware that this error is vague, especially with how many cases it covers.
-Should any problems persist after troubleshooting below, contact Temporal. -->
 
 Below, we address the three primary areas where `DeadlineExceeded` applies for our users.
 We've highlighted some users' encounters below, along with the steps they took to resolve their issues.
 
 If you're still unable to find the cause of your timeouts, please visit the community forum, community Slack, or file a support ticket if you are using Temporal Cloud.
+Cloud users cannot access the logs mentioned below.
 
 ### Downed services
+
+- summary
+- user cases
+- solutions
 
 [One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
 The Temporal Worker failed to connect to the frontend service, and appeared to be blocking Workflow Execution.
 Looking deeper into the problem revealed that HTTP requests were being fulfilled, but weren't registered at any point in their progress on Temporal Web.
 
 ### Workflow logic issues
+
+- summary
+- user cases
+- solution
 
 `DeadlineExceeded` may be thrown if connections are closed too soon.
 [In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
@@ -50,6 +52,10 @@ Try to resolve the problem with the solutions below.
 - Add any missing values before deploying the server again.
 
 ### High latencies
+
+- summary
+- use case
+- solution
 
 Unusually high latency can prevent requests from completing on time.
 This can affect many areas of the Server at once.
