@@ -9,7 +9,7 @@ tags:
   - how-to
 ---
 
-To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) property.
+To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
 
 <!--SNIPSTART typescript-child-workflow -->
 <!--SNIPEND-->
