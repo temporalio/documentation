@@ -9,6 +9,6 @@ tags:
 
 The `tctl search-attribute` command enables [Search Attribute](/concepts/what-is-a-search-attribute) operations.
 
-- [`tctl search-attribute create`](/tctl-next/search-attribute/create)
-- [`tctl search-attribute list`](/tctl-next/search-attribute/list)
-- [`tctl search-attribute remove`](/tctl-next/search-attribute/remove)
+- [tctl search-attribute create](/tctl-next/search-attribute/create)
+- [tctl search-attribute list](/tctl-next/search-attribute/list)
+- [tctl search-attribute remove](/tctl-next/search-attribute/remove)

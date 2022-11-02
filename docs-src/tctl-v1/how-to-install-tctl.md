@@ -8,7 +8,7 @@ tags:
   - tctl
 ---
 
-> The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+> The Temporal tctl documentation covers version 1.17 of the Temporal CLI.
 
 You can install [tctl](/tctl-v1) in the following ways.
 
