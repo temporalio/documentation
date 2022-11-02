@@ -191,7 +191,7 @@ module.exports = {
     "server/security",
     {
       type: "category",
-      label: "tctl v1.16",
+      label: "tctl v1.17",
       collapsible: true,
       collapsed: true,
       link: {
