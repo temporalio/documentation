@@ -61,7 +61,7 @@ Run Temporal Server (requires [Docker](https://docs.docker.com/engine/install) a
 ```bash
 git clone https://github.com/temporalio/docker-compose.git temporal
 cd temporal
-docker-compose up
+docker compose up
 ```
 
 If you want to run Temporal without Docker, [Temporalite](https://github.com/temporalio/temporalite) is a distribution of Temporal that runs as a single process with zero runtime dependencies.
