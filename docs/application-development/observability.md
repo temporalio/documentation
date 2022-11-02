@@ -107,9 +107,17 @@ Metrics in Python are configured globally; therefore, you should set a Prometheu
 The following example exposes a Prometheus endpoint on port `9000`.
 
 ```python
-from temporalio.bridge.telemetry import init_telemetry, TelemetryConfig, PrometheusMetricsConfig
+from temporalio.bridge.telemetry import (
+    init_telemetry,
+    TelemetryConfig,
+    PrometheusMetricsConfig,
+)
 
-init_telemetry(TelemetryConfig(prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")))
+init_telemetry(
+    TelemetryConfig(
+        prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")
+    )
+)
 ```
 
 <!-- https://github.com/temporalio/sdk-python/issues/125 -->
@@ -168,7 +176,45 @@ Tracing functionality utilizes generic context propagation provided by the Clien
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
+You can register the interceptors on both the Temporal Client side and the Worker side.
+
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
+
+```java
+WorkflowClientOptions.newBuilder()
+   //...
+   .setInterceptors(new OpenTracingClientInterceptor())
+   .build();
+```
+
+```java
+WorkflowClientOptions clientOptions =
+    WorkflowClientOptions.newBuilder()
+        .setInterceptors(new OpenTracingClientInterceptor(JaegerUtils.getJaegerOptions(type)))
+        .build();
+WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
+```
+
+The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
+
+```java
+WorkerFactoryOptions.newBuilder()
+   //...
+   .setWorkerInterceptors(new OpenTracingWorkerInterceptor())
+   .build();
+```
+
+```java
+WorkerFactoryOptions factoryOptions =
+    WorkerFactoryOptions.newBuilder()
+        .setWorkerInterceptors(
+            new OpenTracingWorkerInterceptor(JaegerUtils.getJaegerOptions(type)))
+        .build();
+WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
+```
+
+For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
 
 </TabItem>
 <TabItem value="php">
@@ -178,7 +224,17 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To configure tracing in Python, install the `opentelemetry` dependencies.
+
+```bash
+# This command installs the `opentelemetry` dependencies.
+pip install temporalio[opentelemetry]
+```
+
+Then the [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.temporal.io/temporalio.contrib.opentelemetry.TracingInterceptor.html) class can be set as an interceptor as an argument of [`Client.connect()`](https://python.temporal.io/temporalio.client.Client.html#connect).
+
+When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
+Spans are created and serialized through the server to give one trace for a Workflow Execution.
 
 </TabItem>
 <TabItem value="typescript">
@@ -276,7 +332,13 @@ workflow.WithActivityOptions(ctx, ao)
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
+
+```java
+private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
+```
+
+Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
 
 </TabItem>
 <TabItem value="php">
@@ -430,7 +492,7 @@ func main() {
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To set a custom logger, supply your own logging implementation and configuration details the same way you would in any other Java application.
 
 </TabItem>
 <TabItem value="php">
@@ -613,7 +675,23 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
+
+```java
+WorkflowOptions workflowOptions =
+    WorkflowOptions.newBuilder()
+        .setSearchAttributes(generateSearchAttributes())
+        .build();
+```
+
+`generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
+
+- `String`
+- `Long`
+- `Integer`
+- `Boolean`
+- `Double`
+- `OffsetDateTime`
 
 </TabItem>
 <TabItem value="php">
@@ -708,7 +786,29 @@ map[string]interface{}{
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
+
+```java
+ Map<String, Object> attr1 = new HashMap<>();
+     attr1.put("CustomIntField", 1);
+     attr1.put("CustomBoolField", true);
+     Workflow.upsertSearchAttributes(attr1);
+
+     Map<String, Object> attr2 = new HashMap<>();
+     attr2.put("CustomIntField", Lists.newArrayList(1, 2));
+     attr2.put("CustomKeywordField", "Seattle");
+     Workflow.upsertSearchAttributes(attr2);
+```
+
+The results of `upsertSearchAttributes()` output the following search attributes.
+
+```json
+{
+    "CustomIntField": 1, 2,
+    "CustomBoolField": true,
+    "CustomKeywordField": "Seattle",
+  }
+```
 
 </TabItem>
 <TabItem value="php">
@@ -774,7 +874,7 @@ Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To remove a Search Attribute, call the `upsertSearchAttributes()` method and set it to an empty map.
 
 </TabItem>
 <TabItem value="php">

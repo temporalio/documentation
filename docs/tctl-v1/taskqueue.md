@@ -1,8 +1,8 @@
 ---
 id: taskqueue
-title: tctl v1.16 task-queue command reference
+title: tctl v1.17 taskqueue command reference
 sidebar_label: taskqueue
-description: How to use the tctl v1.16 task-queue command
+description: How to use the tctl v1.17 taskqueue command
 toc_max_heading_level: 4
 ---
 
