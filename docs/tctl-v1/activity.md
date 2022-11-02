@@ -1,8 +1,8 @@
 ---
 id: activity
-title: tctl v1.16 activity command reference
+title: tctl v1.17 activity command reference
 sidebar_label: activity
-description: How to use the tctl v1.16 activity command
+description: How to use the tctl v1.17 activity command
 toc_max_heading_level: 4
 ---
 
@@ -155,4 +155,3 @@ Specify the identity of the operator when using tctl to fail an <a class="tdlp" 
 ```bash
 tctl activity complete --identity <value>
 ```
-
