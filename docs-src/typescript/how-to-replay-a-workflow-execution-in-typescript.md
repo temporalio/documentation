@@ -15,6 +15,7 @@ to replay multiple or one Workflow Histories.
 
 In the following example (which requires advanced visibility to be enabled), histories are
 downloaded from the server and then replayed by passing in a client and a set of executions:
+
 ```ts
 const executions = client.workflow.list({ query: 'TaskQueue=foo` });
 await Worker.runReplayHistories(
