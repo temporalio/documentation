@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-To asynchronously complete an Activity with a Task Token, set the [`AsyncCompletionClient`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient) class to the [`complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete) method.
+To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
 <!--SNIPSTART typescript-activity-complete-async -->
 <!--SNIPEND-->
