@@ -11,5 +11,5 @@ The `tctl task-queue` commands enable [Task Queue](/concepts/what-is-a-task-queu
 
 Alias: `tq`
 
-- [`tctl task-queue describe`](/tctl-next/task-queue#describe)
-- [`tctl task-queue list-partition`](/tctl-next/task-queue#list-partition)
+- [tctl task-queue describe](/tctl-next/task-queue#describe)
+- [tctl task-queue list-partition](/tctl-next/task-queue#list-partition)

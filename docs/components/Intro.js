@@ -383,7 +383,7 @@ const devTools = {
     {
       cli: true,
       path: "/tctl-v1",
-      name: "tctl v1.16",
+      name: "tctl v1.17",
     },
     {
       cli: true,
