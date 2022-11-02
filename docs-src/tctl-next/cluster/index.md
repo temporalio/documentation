@@ -9,6 +9,6 @@ tags:
 
 The `tctl cluster` command enables [Temporal Cluster](/concepts/what-is-a-temporal-cluster) operations.
 
-- [`tctl cluster health`](/tctl-next/cluster/health)
-- [`tctl cluster describe`](/tctl-next/cluster/describe)
-- [`tctl cluster system`](/tctl-next/cluster/system)
+- [tctl cluster health](/tctl-next/cluster/health)
+- [tctl cluster describe](/tctl-next/cluster/describe)
+- [tctl cluster system](/tctl-next/cluster/system)

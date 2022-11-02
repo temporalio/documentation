@@ -35,7 +35,7 @@ Terminating a batch job does not roll back the operations already performed by t
 
 ### tctl batch commands
 
-- [`tctl batch describe`](/tctl-v1/batch/describe)
-- [`tctl batch list`](/tctl-v1/batch/list)
-- [`tctl batch start`](/tctl-v1/batch/start)
-- [`tctl batch terminate`](/tctl-v1/batch/terminate)
+- [tctl batch describe](/tctl-v1/batch/describe)
+- [tctl batch list](/tctl-v1/batch/list)
+- [tctl batch start](/tctl-v1/batch/start)
+- [tctl batch terminate](/tctl-v1/batch/terminate)
