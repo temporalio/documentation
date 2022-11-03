@@ -8,7 +8,7 @@ date: 2022-11-01T00:00:00Z
 
 `DeadlineExceeded` is a Context error thrown when requests are not completed on time.
 
-Many requests are sent and received in a Temporal system.
+Many requests are sent and received with and within the Temporal Platform.
 These requests can be made between services, between client and server, and between the entire system and a network.
 This extensive coverage, along with the error's brief message, makes it confusing to figure out where the error could come from.
 
