@@ -86,7 +86,7 @@ Each certificate must belong to a chain up to the root CA certificate.
 Temporal uses the root CA certificate as the trusted authority for access to your Namespaces.
 
 1. Ensure that your certificates meet the [certificate requirements](#certificate-requirements).
-1. [Add client CA certificates to a Cloud Namespace](/cloud/tcld/namespace/accepted-client-ca/add).
+1. <a class="tdlp" href="/cloud/tcld/namespace#add">Add client CA certificates to a Cloud Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace accepted-client-ca add</p><p class="tdlppd">How to add client CA certificates to a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="/cloud/tcld/namespace#add">Learn more</a></p></div></a>.
 
 ### Option 2: Use the same root certificate for all Namespaces but create a separate certificate filter for each Namespace
 
@@ -170,7 +170,7 @@ To add or remove a certificate filter, follow these steps:
 
 To set or clear certificate filters, use the following [tcld](/cloud/tcld) commands:
 
-- [tcld namespace certificate-filters import](/cloud/tcld/namespace/certificate-filters/import)
-- [tcld namespace certificate-filters clear](/cloud/tcld/namespace/certificate-filters/clear)
+- <a class="tdlp" href="/cloud/tcld/namespace#import">tcld namespace certificate-filters import<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters import</p><p class="tdlppd">How to set certificate filters for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="/cloud/tcld/namespace#import">Learn more</a></p></div></a>
+- <a class="tdlp" href="/cloud/tcld/namespace#clear">tcld namespace certificate-filters clear<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters clear</p><p class="tdlppd">How to clear all certificate filters from a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="/cloud/tcld/namespace#clear">Learn more</a></p></div></a>
 
-To view the current certificate filters, use the [tcld namespace certificate-filters export](/cloud/tcld/namespace/certificate-filters/export) command.
+To view the current certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#export">tcld namespace certificate-filters export<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters export</p><p class="tdlppd">How to export certificate filters from a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="/cloud/tcld/namespace#export">Learn more</a></p></div></a> command.

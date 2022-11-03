@@ -50,7 +50,7 @@ async function generateLinkIndex(guideConfig) {
               linkIndex.push({
                 file_dir: guideConfig.file_dir,
                 guide_id: guideConfig.id,
-                local_ref: localRef(previousSection.node.label),
+                local_ref: localRef(section.node.id, previousSection.node.label),
                 node_id: section.node.id,
                 node_title: section.node.title,
                 node_description: section.node.description,
@@ -83,7 +83,7 @@ async function generateLinkIndex(guideConfig) {
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,
                     guide_id: guideConfig.id,
-                    local_ref: localRef(previousSection.node.label),
+                    local_ref: localRef(langtab.node.id, previousSection.node.label),
                     node_id: langtab.node.id,
                     node_title: langtab.node.title,
                     node_description: langtab.node.description,
@@ -99,7 +99,7 @@ async function generateLinkIndex(guideConfig) {
           linkIndex.push({
             file_dir: guideConfig.file_dir,
             guide_id: guideConfig.id,
-            local_ref: localRef(section.node.label),
+            local_ref: localRef(section.node.id, section.node.label),
             node_id: section.node.id,
             node_title: section.node.title,
             node_description: section.node.description,
@@ -111,8 +111,12 @@ async function generateLinkIndex(guideConfig) {
     i++;
   }
   return linkIndex;
-  function localRef(a_string) {
-    a_string = a_string.toLowerCase();
+  function localRef(id, a_string) {
+    try {  
+      a_string = a_string.toLowerCase();   
+    } catch (e) {
+      throw new Error(`There is missing sidebar metadata in ${id}`); 
+    }
     a_string = a_string.replaceAll(" ", "-");
     return a_string;
   }
