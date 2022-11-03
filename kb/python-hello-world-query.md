@@ -56,28 +56,19 @@ class GreetingWorkflow:
         await asyncio.sleep(2)
         self._greeting = f"Goodbye, {name}!"
 
-        # It's ok to end the workflow here. Queries work even after workflow
-        # completion.
-
     @workflow.query
     def greeting(self) -> str:
         return self._greeting
 
 
 async def main():
-    # Start client
     client = await Client.connect("localhost:7233")
-
-    # Run a worker for the workflow
     async with Worker(
         client,
         task_queue="hello-query-task-queue",
         workflows=[GreetingWorkflow],
     ):
 
-        # While the worker is running, use the client to start the workflow.
-        # Note, in many production setups, the client would be in a completely
-        # separate process from the worker.
         handle = await client.start_workflow(
             GreetingWorkflow.run,
             "World",
@@ -85,12 +76,9 @@ async def main():
             task_queue="hello-query-task-queue",
         )
 
-        # Immediately query
         result = await handle.query(GreetingWorkflow.greeting)
         print(f"First greeting result: {result}")
 
-        # Wait a few of seconds then query again. This works even if the
-        # workflow has already completed.
         await asyncio.sleep(3)
         result = await handle.query(GreetingWorkflow.greeting)
         print(f"Second greeting result: {result}")

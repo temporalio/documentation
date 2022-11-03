@@ -113,7 +113,7 @@ go build ./cmd/temporalite
 ./temporalite start --namespace default
 ```
 
-**Results**: Go to [http://127.0.0.1:8233/](http://127.0.0.1:8233/namespaces/default/workflows) to see the Temporal Web UI. Your Workflows will populate here as they run.
+**Results**: Go to [http://127.0.0.1:8233/](http://127.0.0.1:8233/) to see the Temporal Web UI. Your Workflows will populate here as they run.
 
 ### Python SDK
 
@@ -148,16 +148,16 @@ from temporalio.worker import Worker
 These import statements tell the application which libraries we are using.
 
 The first line, contains an import for `activity` and `workflow`.
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](https://docs.temporal.io/tasks#activity-task-execution), whereas A Workflow Definition is the code that defines the constraints of a Workflow Execution.
+An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution), whereas A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
 The next line contains an import for a `Client`.
 
-A Temporal Client provides a set of APIs to communicate with a [Temporal Cluster.](https://docs.temporal.io/clusters)
+A Temporal Client provides a set of APIs to communicate with a [Temporal Cluster](/clusters).
 The last line of the import statement is for a `Worker`.
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-A Worker Process is responsible for polling a [Task Queue, dequeueing a](https://docs.temporal.io/tasks#task-queue) [Task, executing your code in response to a Task, and responding to the](https://docs.temporal.io/tasks) [Temporal Cluster with the results](https://docs.temporal.io/clusters).
+A Worker Process is responsible for polling a [Task Queue](/concepts/what-is-a-task-queue), dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Cluster with the results.
 
 ### Import Python’s standard libraries
 
@@ -242,8 +242,6 @@ async def main():
 
 The Worker Program defines the `client`, `task_queue`, `workflows`, and `activities`.
 
-A Worker Process is responsible for polling a [Task Queue, dequeueing a](https://docs.temporal.io/tasks#task-queue) [Task, executing your code in response to a Task, and responding to the](https://docs.temporal.io/tasks) [Temporal Cluster with the results.](https://docs.temporal.io/clusters)
-
 A Worker Entity listens and polls on a single Task Queue. A Worker Entity contains both a Workflow Worker and an Activity Worker so that it may make progress of either a Workflow Execution or an Activity Execution.
 
 ```python
@@ -291,7 +289,7 @@ You have successfully returned the results of the Workflow, by connecting to a C
 Result: Hello, World!
 ```
 
-Go to [http://127.0.0.1:8233/](http://127.0.0.1:8233/namespaces/default/workflows) to see the results of the Workflow.
+Go to [http://127.0.0.1:8233/](http://127.0.0.1:8233/) to see the results of the Workflow.
 
 Here, you’ll see the Workflow ID as `hello-activity-workflow-id`, the Type as `GreetingWorkflow`, and the start and end time.
 
