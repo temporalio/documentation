@@ -6,14 +6,37 @@ tags:
 date: 2022-11-01T00:00:00Z
 ---
 
-`DeadlineExceeded` is a Context error that occurs when a request cannot be completed in time.
-Downed services, querying errors, and unusually high latencies can all throw this error.
+`DeadlineExceeded` is a Context error thrown when requests are not completed on time.
 
-Below, we address the three primary areas where `DeadlineExceeded` applies for our users.
-We've highlighted some users' encounters below, along with the steps they took to resolve their issues.
+Many requests are sent and received in a Temporal system.
+These requests can be made between services, between client and server, and between the entire system and a network.
+This extensive coverage, along with the error's brief message, makes it confusing to figure out where the error could come from.
+
+Based on what users have seen, we can deduce that the three most common problem areas lie in downed services, faulty Workflow logic, and unusually high latencies.
+
+Therefore, the best route for troubleshooting lies in checking on the 3 L's:
+
+- Logs
+- Logic
+- Latency
 
 If you're still unable to find the cause of your timeouts, please visit the community forum, community Slack, or file a support ticket if you are using Temporal Cloud.
-Cloud users cannot access the logs mentioned below.
+
+:::note
+
+Cloud users cannot access some of the logs needed to diagnose the source of the error.
+If you're using Temporal Cloud, you must file a service ticket when this error occurs.
+
+:::
+
+### Logs
+
+History logs help to determine if any services have gone down.
+If you receive this error accompanied by any mention of a Temporal Service, refer to your logs to determine the problem area.
+
+### Logic
+
+### Latency
 
 ### Downed services
 
