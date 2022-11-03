@@ -14,7 +14,7 @@ This extensive coverage, along with the error's brief message, makes it confusin
 
 Based on what users have seen, we can deduce that the three most common problem areas lie in downed services, faulty Workflow logic, and unusually high latencies.
 
-Therefore, the best route for troubleshooting lies in checking on the 3 L's:
+Therefore, the best route for troubleshooting is to check the 3 L's of system functionality.
 
 - Logs
 - Logic
@@ -41,8 +41,14 @@ The Temporal Worker failed to connect to the frontend service.
 
 Looking deeper into the problem revealed that HTTP requests were being fulfilled, but weren't registered at any point in their progress on Temporal Web.
 
+[Other](https://community.temporal.io/t/temporal-cluster-always-seems-to-be-out-of-resources-but-always-seems-healthy/4938)[users](https://community.temporal.io/t/solved-context-deadline-exceeded-not-enough-hosts-to-serve-requests-errors/4328) was unable to get enough hosts to serve their requests.
+Upon reviewing their logs, they were able to correct their production environments to resolve the problem.
+
 If the problem is a downed service, review the logs and redeploy the server instance.
-If the problem persists, there might be a problem with your Workflow logic, which is explained below.
+If needed, run `tctl cluster health` and other environment-related commands to check on server health.
+
+If the problem persists, there might be a problem with your Workflow logic.
+Proceed to the next section to find out if your issue is code-related.
 
 ### Logic
 
@@ -71,9 +77,10 @@ Unusually high latency can prevent requests from completing on time.
 This can affect many areas of the Server at once.
 
 As [this user](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) noted, `DeadlineExceeded` was returned while scheduling the Workflow.
-The history logs indicated possible database issues, but their metrics revealed latency issues across the Server.
+[Similarly, this user](https://community.temporal.io/t/history-server-context-deadline-exceed-errors-every-hour/6090/3) had a recurring issue on their history server.
+The history logs for both indicated possible database issues, but their metrics revealed latency issues across the Server.
 
-After seeing the Workflow fail consistently, a new SQL instance was deployed and restarted.
+After seeing the Workflow fail consistently, a new SQL instance was deployed and restarted on both setups.
 The workflow executed without another issue.
 
 If you experience widespread occurrences of the `DeadlineExceeded` error, make sure your server metrics are enabled.
