@@ -28,7 +28,9 @@ You can use [tctl workflow showid](/tctl-v1/workflow#show) to view a Workflow Ex
 tctl workflow showid <workflowID>
 ```
 
-With a Codec Server, Payloads that are part of the Event History will be sent to `http://localhost:8888/decode` to be decoded before being deserialized by the Default Data Converter and displayed in your terminal.
+With a Codec Server, Payloads that are part of the Event History will be sent to the Codec Server to be decoded before being deserialized by the Default Data Converter and displayed in your terminal.
+
+- [How to configure tctl with a Codec Server](/clusters/how-to-set-up-codec-server#configure-tctl)
 
 ## Use case: Web UI
 
@@ -37,4 +39,5 @@ Payload information for each Event is captured within Event 'input' and 'result'
 Without a Codec Server, this information remains encoded.
 
 Passing these Payloads through a Codec Server returns decoded results to the Web UI.
-Make sure to [enter a valid URL and port](/clusters/how-to-set-up-codec-server#web-ui) for the codec endpoint when configuring the Codec Server.
+
+- [How to configure the Web UI with a Codec Server](/clusters/how-to-set-up-codec-server#configure-the-web-ui)
