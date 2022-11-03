@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-To manage certificates for Temporal Cloud Namespaces, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca/) commands.
+To manage certificates for Temporal Cloud Namespaces, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca/index) commands.

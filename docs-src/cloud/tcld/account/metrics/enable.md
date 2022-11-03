@@ -11,7 +11,7 @@ The `tcld account metrics enable` command enables the metrics endpoint for the T
 
 :::info
 
-The end-entity for the metrics endpoint _must_ be configured before the endpoint can be enabled. See the [tcld account metrics accepted-client-ca](/cloud/tcld/account/metrics/accepted-client-ca) commands.
+The end-entity for the metrics endpoint _must_ be configured before the endpoint can be enabled. See the [tcld account metrics accepted-client-ca](/cloud/tcld/account/metrics/accepted-client-ca/index) commands.
 
 :::
 

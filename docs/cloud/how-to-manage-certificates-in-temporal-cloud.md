@@ -94,7 +94,7 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 ## Manage certificates
 
-To manage certificates for Temporal Cloud Namespaces, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca/) commands.
+To manage certificates for Temporal Cloud Namespaces, use the <a class="tdlp" href="/cloud/tcld/namespace#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace accepted-client-ca</p><p class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="/cloud/tcld/namespace#accepted-client-ca">Learn more</a></p></div></a> commands.
 
 ## Manage certificate filters
 

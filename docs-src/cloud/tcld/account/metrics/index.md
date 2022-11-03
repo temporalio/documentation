@@ -13,4 +13,4 @@ Alias: `m`
 
 - [tcld account metrics enable](/cloud/tcld/account/metrics/enable)
 - [tcld account metrics disable](/cloud/tcld/account/metrics/disable)
-- [tcld account metrics accepted-client-ca](/cloud/tcld/account/metrics/accepted-client-ca)
+- [tcld account metrics accepted-client-ca](/cloud/tcld/account/metrics/accepted-client-ca/index)

@@ -12,4 +12,4 @@ The `tcld account` commands manage accounts in Temporal Cloud.
 Alias: `a`
 
 - [tcld account get](/cloud/tcld/account/get)
-- [tcld account metrics](/cloud/tcld/account/metrics)
+- [tcld account metrics](/cloud/tcld/account/metrics/index)

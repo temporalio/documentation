@@ -17,9 +17,9 @@ Alias: `n`
 
 - <a class="tdlp" href="#list">tcld namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace list</p><p class="tdlppd">How to list all Namespaces in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#list">Learn more</a></p></div></a>
 - <a class="tdlp" href="#get">tcld namespace get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace get</p><p class="tdlppd">How to get information about a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#get">Learn more</a></p></div></a>
-- [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca)
-- [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters)
-- [tcld namespace search-attributes](/cloud/tcld/namespace/search-attributes)
+- <a class="tdlp" href="#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace accepted-client-ca</p><p class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#accepted-client-ca">Learn more</a></p></div></a>
+- <a class="tdlp" href="#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters</p><p class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#certificate-filters">Learn more</a></p></div></a>
+- <a class="tdlp" href="#search-attributes">tcld namespace search-attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace search-attributes</p><p class="tdlppd">How to manage Search Attributes of a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#search-attributes">Learn more</a></p></div></a>
 
 ## get
 
