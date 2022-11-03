@@ -13,7 +13,7 @@ Welcome to a Hello World tutorial on Temporal with the Python SDK.
 This is the first of a few Hello World tutorials with Python that focus on Temporal specific concepts.
 
 - [Activity Retry](/kb/python-hello-world-activity-retry)
-- [Query](/kb/python-hell-world-query)
+- [Query](/kb/python-hello-world-query)
 
 By the end of this page, you should be able to connect to a Client and execute an Activity from a Workflow.
 

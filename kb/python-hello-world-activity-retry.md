@@ -139,6 +139,6 @@ Select the Workflow ID to see more information. The **Recent Events** page displ
 ## References
 
 - Try out the [Hello World](kb/python-hello-world-activity) application.
-- Learn how to [Query a Workflow](/kb/python-hell-world-query).
+- Learn how to [Query a Workflow](/kb/python-hello-world-query).
 - Read about through the [Temporal Dev guide](/application-development/foundations).
 - To see the complete example and more information, see Temporal’s [Python Hello Samples](https://github.com/temporalio/samples-python/tree/main/hello).
