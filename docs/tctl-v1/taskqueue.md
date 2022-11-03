@@ -1,8 +1,8 @@
 ---
 id: taskqueue
-title: tctl v1.16 task-queue command reference
+title: tctl v1.17 taskqueue command reference
 sidebar_label: taskqueue
-description: How to use the tctl v1.16 task-queue command
+description: How to use the tctl v1.17 taskqueue command
 toc_max_heading_level: 4
 ---
 
@@ -15,8 +15,8 @@ The `tctl taskqueue` command enables <a class="tdlp" href="/tasks#task-queue">Ta
 
 Alias: `tq`
 
-- <a class="tdlp" href="#describe">`tctl taskqueue describe`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl taskqueue describe</p><p class="tdlppd">How to describe the poller information of a Task Queue using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#list-partition">`tctl taskqueue list-partition`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl taskqueue list-partition</p><p class="tdlppd">How to list Task Queue partitions and the hostname for partitions using tctl.</p><p class="tdlplm"><a href="#list-partition">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">tctl taskqueue describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl taskqueue describe</p><p class="tdlppd">How to describe the poller information of a Task Queue using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list-partition">tctl taskqueue list-partition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl taskqueue list-partition</p><p class="tdlppd">How to list Task Queue partitions and the hostname for partitions using tctl.</p><p class="tdlplm"><a href="#list-partition">Learn more</a></p></div></a>
 
 ## describe
 

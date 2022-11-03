@@ -189,8 +189,8 @@ The `tctl admin db` command runs administrator-level operations on a given datab
 
 ### Commands
 
-- <a class="tdlp" href="#scan">`tctl admin db scan`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db scan</p><p class="tdlppd">Scanning for corrupted executions in a database</p><p class="tdlplm"><a href="#scan">Learn more</a></p></div></a>
-- <a class="tdlp" href="#clean">`tctl admin db clean`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db clean</p><p class="tdlppd">How to clean up corrupted Workflows using tctl.</p><p class="tdlplm"><a href="#clean">Learn more</a></p></div></a>
+- <a class="tdlp" href="#scan">tctl admin db scan<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db scan</p><p class="tdlppd">Scanning for corrupted executions in a database</p><p class="tdlplm"><a href="#scan">Learn more</a></p></div></a>
+- <a class="tdlp" href="#clean">tctl admin db clean<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db clean</p><p class="tdlppd">How to clean up corrupted Workflows using tctl.</p><p class="tdlplm"><a href="#clean">Learn more</a></p></div></a>
 
 ### clean
 
@@ -459,9 +459,9 @@ The `tctl admin dlq` commands run admin operations on a given dead-letter queue 
 
 `tctl admin dlq command [command modifiers] [arguments...]`
 
-- <a class="tdlp" href="#read">`tctl admin dlq read`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq read</p><p class="tdlppd">Reading DLQ messages.</p><p class="tdlplm"><a href="#read">Learn more</a></p></div></a>
-- <a class="tdlp" href="#purge">`tctl admin dlq purge`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq purge</p><p class="tdlppd">Deleting DLQ messages.</p><p class="tdlplm"><a href="#purge">Learn more</a></p></div></a>
-- <a class="tdlp" href="#merge">`tctl admin dlq merge`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq merge</p><p class="tdlppd">Merging DLQ messages.</p><p class="tdlplm"><a href="#merge">Learn more</a></p></div></a>
+- <a class="tdlp" href="#read">tctl admin dlq read<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq read</p><p class="tdlppd">Reading DLQ messages.</p><p class="tdlplm"><a href="#read">Learn more</a></p></div></a>
+- <a class="tdlp" href="#purge">tctl admin dlq purge<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq purge</p><p class="tdlppd">Deleting DLQ messages.</p><p class="tdlplm"><a href="#purge">Learn more</a></p></div></a>
+- <a class="tdlp" href="#merge">tctl admin dlq merge<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq merge</p><p class="tdlppd">Merging DLQ messages.</p><p class="tdlplm"><a href="#merge">Learn more</a></p></div></a>
 
 `--help`
 
@@ -581,8 +581,8 @@ Alias: `hist`
 
 ## Commands
 
-- <a class="tdlp" href="#describe">`tctl admin history_host describe`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin history_host describe</p><p class="tdlppd">Describing the information in a history host</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#get_shardid">`tctl admin history_host get_shardid`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin history_host get_shardid</p><p class="tdlppd">Providing the shardId on command</p><p class="tdlplm"><a href="#get_shardid">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">tctl admin history_host describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin history_host describe</p><p class="tdlppd">Describing the information in a history host</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get_shardid">tctl admin history_host get_shardid<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin history_host get_shardid</p><p class="tdlppd">Providing the shardId on command</p><p class="tdlplm"><a href="#get_shardid">Learn more</a></p></div></a>
 
 ### describe
 

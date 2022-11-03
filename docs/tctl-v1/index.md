@@ -11,7 +11,11 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This documentation reflects tctl version 1.16
+:::note
+
+This documentation reflects tctl version 1.17
+
+:::
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
 It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a> operations (such as start
@@ -22,14 +26,14 @@ Workflow, show Workflow History, and Signal Workflow).
 
 ## tctl commands
 
-- [`tctl activity`](/tctl-v1/activity/)
-- [`tctl admin`](/tctl-v1/admin/)
-- [`tctl batch`](/tctl-v1/batch/)
-- [`tctl cluster`](/tctl-v1/cluster/)
-- [`tctl data-converter`](/tctl-v1/dataconverter/)
-- [`tctl namespace`](/tctl-v1/namespace/)
-- [`tctl task-queue`](/tctl-v1/taskqueue/)
-- [`tctl workflow`](/tctl-v1/workflow/)
+- [tctl activity](/tctl-v1/activity/)
+- [tctl admin](/tctl-v1/admin/)
+- [tctl batch](/tctl-v1/batch/)
+- [tctl cluster](/tctl-v1/cluster/)
+- [tctl dataconverter](/tctl-v1/dataconverter/)
+- [tctl namespace](/tctl-v1/namespace/)
+- [tctl taskqueue](/tctl-v1/taskqueue/)
+- [tctl workflow](/tctl-v1/workflow/)
 
 ## Install
 
@@ -38,7 +42,7 @@ Workflow, show Workflow History, and Signal Workflow).
 You can install [tctl](/tctl-v1) in the following ways.
 
 - Install locally by using [Homebrew](https://brew.sh/): `brew install tctl`
-- Run locally together with Temporal Server in [docker-compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
+- Run locally together with Temporal Server in [Docker Compose](https://github.com/temporalio/docker-compose): `docker exec temporal-admin-tools tctl YOUR COMMANDS HERE`
   - To invoke [tctl](/tctl-v1) as though it is installed locally (such as `tctl namespace describe`), set an alias: `alias tctl="docker exec temporal-admin-tools tctl"`
 - Run the [temporal-admin-tools](https://hub.docker.com/r/temporalio/admin-tools) Docker image:
   - On Linux: `docker run --rm -it --entrypoint tctl --network host --env TEMPORAL_CLI_ADDRESS=localhost:7233 temporalio/admin-tools:1.14.0`
@@ -158,6 +162,10 @@ The default is `127.0.0.1:7233`.
 Specify a token to be used by the HTTP Basic Authorization plugin.
 
 <!-- TODO: Add link to "Securing tctl" page or its equivalent when it exists. -->
+
+### TEMPORAL_CLI_AUTH
+
+Specify the authorization header to be set for a gRPC request.
 
 ### TEMPORAL_CLI_NAMESPACE
 
