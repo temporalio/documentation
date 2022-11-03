@@ -407,6 +407,7 @@ module.exports = {
         path: "kb",
         blogTitle: "Temporal Platform knowledge base",
         blogSidebarTitle: "Recent KB articles",
+        blogSidebarCount: "ALL",
         blogDescription:
           "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.

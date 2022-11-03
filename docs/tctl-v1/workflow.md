@@ -1,8 +1,8 @@
 ---
 id: workflow
-title: tctl v1.16 workflow command reference
+title: tctl v1.17 workflow command reference
 sidebar_label: workflow
-description: How to use the tctl v1.16 workflow command
+description: How to use the tctl v1.17 workflow command
 toc_max_heading_level: 4
 ---
 
