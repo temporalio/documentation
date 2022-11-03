@@ -33,38 +33,49 @@ If you're using Temporal Cloud, you must file a service ticket when this error o
 
 ### Logs
 
-If a service has gone down, your history logs will be able to point to the culprit.
+If a service has gone down, your history logs might be able to point to the culprit.
+
+If the system has an issue sending or receiving from a service, your logs will be able to tell which service is having trouble.
+
+[One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
+The Temporal Worker failed to connect to the frontend service.
+
+Looking deeper into the problem revealed that HTTP requests were being fulfilled, but weren't registered at any point in their progress on Temporal Web.
 
 ### Logic
 
 If a Workflow repeatedly fails to execute, the problem could lie in the code itself.
 
+`DeadlineExceeded` may be thrown if connections are closed too soon.
+[In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
+
+This behavior is expected, but can be detrimental if there isn't enough time to complete requests.
+By extending the deadlines, the user was able to solve the problem.
+
 ### Latency
 
 If an issue cannot be found in the logs or with the Workflow itself, there may be a problem with the network connection.
-More specifically, the network may be busier than normal, or else be dealing with some kind of high latency.
+More specifically, the network may have latency problems.
+
+Unusually high latency can prevent requests from completing on time.
+This can affect many areas of the Server at once.
+
+As [this user](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) noted, `DeadlineExceeded` was returned while scheduling the Workflow.
+The history logs indicated possible database issues, but their metrics revealed latency issues across the Server.
+
+After seeing the Workflow fail consistently, a new SQL instance was deployed and restarted.
+The workflow executed without another issue.
+
+If you experience widespread occurrences of the `DeadlineExceeded` error, make sure your server metrics are enabled.
+Check persistence and visibility latencies for high values, along with resources exhausted.
 
 ---
-
-### Downed services
-
-- summary
-- user cases
-- solutions
-
-[One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
-The Temporal Worker failed to connect to the frontend service, and appeared to be blocking Workflow Execution.
-Looking deeper into the problem revealed that HTTP requests were being fulfilled, but weren't registered at any point in their progress on Temporal Web.
 
 ### Workflow logic issues
 
 - summary
 - user cases
 - solution
-
-`DeadlineExceeded` may be thrown if connections are closed too soon.
-[In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
-This behavior is expected, but can be detrimental if there isn't enough time to complete requests.
 
 [Another user](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) ran into the same error while setting up mTLS.
 Like before, the frontend could not be reached by the system's Workers.
@@ -81,21 +92,3 @@ Try to resolve the problem with the solutions below.
 - Check your configuration files for missing environmental variables.
 - Make sure that the frontend and internode certificates are clearly defined.
 - Add any missing values before deploying the server again.
-
-### High latencies
-
-- summary
-- use case
-- solution
-
-Unusually high latency can prevent requests from completing on time.
-This can affect many areas of the Server at once.
-
-As [this user](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) noted, `DeadlineExceeded` was returned while scheduling the Workflow.
-The history logs indicated possible database issues, but their metrics revealed latency issues across the Server.
-
-After seeing the Workflow fail consistently, a new SQL instance was deployed and restarted.
-The workflow executed without another issue.
-
-If you experience widespread occurrences of the `DeadlineExceeded` error, make sure your server metrics are enabled.
-Check persistence and visibility latencies for high values, along with resources exhausted.
