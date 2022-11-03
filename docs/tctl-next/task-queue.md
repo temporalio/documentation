@@ -15,8 +15,8 @@ The `tctl task-queue` commands enable <a class="tdlp" href="/tasks#task-queue">T
 
 Alias: `tq`
 
-- [`tctl task-queue describe`](/tctl-next/task-queue#describe)
-- [`tctl task-queue list-partition`](/tctl-next/task-queue#list-partition)
+- [tctl task-queue describe](/tctl-next/task-queue#describe)
+- [tctl task-queue list-partition](/tctl-next/task-queue#list-partition)
 
 ## describe
 

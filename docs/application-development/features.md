@@ -74,8 +74,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
- @SignalMethod
-    void mySignal(String signalName);
+@SignalMethod
+   void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -323,9 +323,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-      Workflow.registerListener(
-        (DynamicSignalHandler)
-            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+Workflow.registerListener(
+  (DynamicSignalHandler)
+      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -1061,9 +1061,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-      Workflow.registerListener(
-        (DynamicQueryHandler)
-            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+Workflow.registerListener(
+  (DynamicQueryHandler)
+      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1263,6 +1263,15 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 Content is currently unavailable.
 
 </TabItem>
+<TabItem value="python">
+
+To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
+
+```python
+await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
@@ -1320,9 +1329,9 @@ Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/te
 
 Available timeouts are:
 
-- [setWorkflowExecutionTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration)>)
-- [setWorkflowRunTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration)>)
-- [setWorkflowTaskTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration)>)
+- [setWorkflowExecutionTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration))
+- [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
+- [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
 
 ```java
 //create Workflow stub for YourWorkflowInterface
@@ -2308,7 +2317,68 @@ client.CompleteActivity(context.Background(), taskToken, nil, err)
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+To complete an Activity asynchronously, set the [`ActivityCompletionClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html) interface to the `complete()` method.
+
+```java
+    @Override
+    public String composeGreeting(String greeting, String name) {
+
+      // Get the activity execution context
+      ActivityExecutionContext context = Activity.getExecutionContext();
+
+      // Set a correlation token that can be used to complete the activity asynchronously
+      byte[] taskToken = context.getTaskToken();
+
+      /**
+       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
+       * activity. In real-life applications this could be any service. The composeGreetingAsync
+       * method is the one that will actually complete workflow action execution.
+       */
+      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
+      context.doNotCompleteOnReturn();
+
+      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
+      // ignored.
+      return "ignored";
+    }
+
+    // Method that will complete action execution using the defined ActivityCompletionClient
+    private void composeGreetingAsync(byte[] taskToken, String greeting, String name) {
+      String result = greeting + " " + name + "!";
+
+      // Complete our workflow activity using ActivityCompletionClient
+      completionClient.complete(taskToken, result);
+    }
+  }
+```
+
+Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) method during an Activity Execution.
+
+```java
+    @Override
+    public String composeGreeting(String greeting, String name) {
+
+      // Get the activity execution context
+      ActivityExecutionContext context = Activity.getExecutionContext();
+
+      // Set a correlation token that can be used to complete the activity asynchronously
+      byte[] taskToken = context.getTaskToken();
+
+      /**
+       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
+       * activity. In real-life applications this could be any service. The composeGreetingAsync
+       * method is the one that will actually complete workflow action execution.
+       */
+      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
+      context.doNotCompleteOnReturn();
+
+      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
+      // ignored.
+      return "ignored";
+    }
+```
+
+When this method is called during an Activity Execution, the Activity Execution does not complete when its method returns.
 
 </TabItem>
 <TabItem value="php">
@@ -2407,7 +2477,10 @@ await handle.complete("Completion value.")
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
+
+<!--SNIPSTART typescript-activity-complete-async -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -2761,17 +2834,17 @@ Set <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<sp
 - Default: None.
 
 ```java
-   public void parentWorkflow() {
-       ChildWorkflowOptions options =
-          ChildWorkflowOptions.newBuilder()
-              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-              .build();
-       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-       Async.procedure(child::<workflowMethod>, <args>...);
-       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-       // Wait for child to start
-       childExecution.get()
-  }
+ public void parentWorkflow() {
+     ChildWorkflowOptions options =
+        ChildWorkflowOptions.newBuilder()
+            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+            .build();
+     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+     Async.procedure(child::<workflowMethod>, <args>...);
+     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+     // Wait for child to start
+     childExecution.get()
+}
 ```
 
 In this example, we are:
@@ -2817,9 +2890,33 @@ In the snippet above we:
 We need `yield` here to ensure that a Child Workflow Execution starts before the parent closes.
 
 </TabItem>
+<TabItem value="python">
+
+Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
+
+```python
+async def run(self, name: str) -> str:
+    return await workflow.execute_child_workflow(
+        ComposeGreeting.run,
+        ComposeGreetingInput("Hello", name),
+        id="hello-child-workflow-workflow-child-id",
+        parent_close_policy=TERMINATE,
+    )
+```
+
+:::note
+
+`execute_child_workflow()` is a shortcut function for `temporalio.workflow.start_child_workflow()` plus `handle.result()`.
+
+:::
+
+</TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
+
+<!--SNIPSTART typescript-child-workflow -->
+<!--SNIPEND-->
 
 </TabItem>
 </Tabs>
@@ -3195,15 +3292,15 @@ On replay the provided function is not executed, the random number will always b
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the nondeterministic code.
 
 ```java
-  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
-  if random < 50 {
-         ....
-  } else {
-         ....
-  }
+int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+if random < 50 {
+       ....
+} else {
+       ....
+}
 ```
 
 Here's another example that uses `sideEffect()`.
@@ -3228,7 +3325,7 @@ public void execute() {
 
 Java also provides a deterministic method to generate random numbers or random UUIDs.
 
-To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
+To generate random numbers in a deterministic method, use [`newRandom()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom())
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3238,7 +3335,7 @@ public void execute() {
 }
 ```
 
-To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
+To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()).
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3540,4 +3637,3 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
-
