@@ -29,14 +29,22 @@ If you're using Temporal Cloud, you must file a service ticket when this error o
 
 :::
 
+<!-- TODO: move the note above or delete if not needed -->
+
 ### Logs
 
-History logs help to determine if any services have gone down.
-If you receive this error accompanied by any mention of a Temporal Service, refer to your logs to determine the problem area.
+If a service has gone down, your history logs will be able to point to the culprit.
 
 ### Logic
 
+If a Workflow repeatedly fails to execute, the problem could lie in the code itself.
+
 ### Latency
+
+If an issue cannot be found in the logs or with the Workflow itself, there may be a problem with the network connection.
+More specifically, the network may be busier than normal, or else be dealing with some kind of high latency.
+
+---
 
 ### Downed services
 
