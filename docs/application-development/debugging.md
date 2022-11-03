@@ -19,7 +19,7 @@ In addition to the normal development tools of logging and a debugger, you can a
 You can debug production Workflows using:
 
 - [Web UI](/web-ui)
-- [`tctl`](/tctl-v1)
+- [tctl](/tctl-v1)
 - [Replay](#replay)
 - [Tracing](/application-development/observability#tracing)
 - [Logging](/application-development/observability#logging)

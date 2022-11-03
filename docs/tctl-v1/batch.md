@@ -39,10 +39,10 @@ Terminating a batch job does not roll back the operations already performed by t
 
 ### tctl batch commands
 
-- <a class="tdlp" href="#describe">`tctl batch describe`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch describe</p><p class="tdlppd">How to describe the progress of a batch job using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#list">`tctl batch list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch list</p><p class="tdlppd">How to list batch jobs using tctl.</p><p class="tdlplm"><a href="#list">Learn more</a></p></div></a>
-- <a class="tdlp" href="#start">`tctl batch start`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch start</p><p class="tdlppd">How to start a batch job using tctl.</p><p class="tdlplm"><a href="#start">Learn more</a></p></div></a>
-- <a class="tdlp" href="#terminate">`tctl batch terminate`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch terminate</p><p class="tdlppd">How to terminate a batch job using tctl.</p><p class="tdlplm"><a href="#terminate">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">tctl batch describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch describe</p><p class="tdlppd">How to describe the progress of a batch job using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list">tctl batch list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch list</p><p class="tdlppd">How to list batch jobs using tctl.</p><p class="tdlplm"><a href="#list">Learn more</a></p></div></a>
+- <a class="tdlp" href="#start">tctl batch start<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch start</p><p class="tdlppd">How to start a batch job using tctl.</p><p class="tdlplm"><a href="#start">Learn more</a></p></div></a>
+- <a class="tdlp" href="#terminate">tctl batch terminate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch terminate</p><p class="tdlppd">How to terminate a batch job using tctl.</p><p class="tdlplm"><a href="#terminate">Learn more</a></p></div></a>
 
 ## start
 

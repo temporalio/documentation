@@ -18,7 +18,7 @@ To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` se
 These steps are needed only if you have a "plain" [Temporal Server Docker image](https://hub.docker.com/r/temporalio/server).
 
 If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
-[docker-compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
+[Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
 
 :::
 
