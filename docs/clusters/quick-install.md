@@ -64,7 +64,7 @@ The following steps start and run a Temporal Cluster using the default configura
    ```
 3. From your project directory, start your application.
    ```bash
-   docker-compose up
+   docker compose up
    ```
 
 **Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/).

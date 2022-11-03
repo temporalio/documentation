@@ -15,7 +15,7 @@ The `tctl dataconverter` command enables custom [Data Converter](/concepts/what-
 
 Alias: `dc`
 
-- <a class="tdlp" href="#web">`tctl dataconverter web`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl dataconverter web</p><p class="tdlppd">How to specify the WebSocket URL of a custom Data Converter using tctl.</p><p class="tdlplm"><a href="#web">Learn more</a></p></div></a>
+- <a class="tdlp" href="#web">tctl dataconverter web<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl dataconverter web</p><p class="tdlppd">How to specify the WebSocket URL of a custom Data Converter using tctl.</p><p class="tdlplm"><a href="#web">Learn more</a></p></div></a>
 
 ## web
 

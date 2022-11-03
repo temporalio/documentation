@@ -15,10 +15,10 @@ The `tctl namespace` commands enable <a class="tdlp" href="/namespaces#">Namespa
 
 Alias: `n`
 
-- [`tctl namespace describe`](/tctl-next/namespace#describe)
-- [`tctl namespace list`](/tctl-next/namespace#list)
-- [`tctl namespace register`](/tctl-next/namespace#register)
-- [`tctl namespace update`](/tctl-next/namespace#update)
+- [tctl namespace describe](/tctl-next/namespace#describe)
+- [tctl namespace list](/tctl-next/namespace#list)
+- [tctl namespace register](/tctl-next/namespace#register)
+- [tctl namespace update](/tctl-next/namespace#update)
 
 ## delete
 
