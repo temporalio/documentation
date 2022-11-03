@@ -1,8 +1,8 @@
 ---
 id: namespace
-title: tctl v1.16 namespace command reference
+title: tctl v1.17 namespace command reference
 sidebar_label: namespace
-description: How to use the tctl v1.16 namespace command
+description: How to use the tctl v1.17 namespace command
 toc_max_heading_level: 4
 ---
 

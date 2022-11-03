@@ -275,5 +275,6 @@ For more details on configuring Grafana dashboards, see the [Grafana Dashboards 
 
 Once you have your dashboard set up, you can start experimenting with different samples provided in the Temporal samples repositories.
 
-Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with. You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster.
-Note that if you are following the examples provided here, and importing a dashboard from the community-driven dashboards repository, check and update the datasource for each panel to "Temporal Prometheus" (which is the name we defined for the Prometheus data source in the [Grafana configuration](#grafana-configuration) section.
+Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with.
+You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster.
+Note that if you are following the examples provided here, and importing a dashboard from the community-driven dashboards repository, check and update the datasource for each panel to "Temporal Prometheus" (which is the name set for the Prometheus data source in the [Grafana configuration](#grafana-configuration) section.
