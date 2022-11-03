@@ -23,11 +23,11 @@ Workflow, show Workflow History, and Signal Workflow).
 
 ## tctl commands
 
-- [`tctl activity`](/tctl-v1/activity/)
-- [`tctl admin`](/tctl-v1/admin/)
-- [`tctl batch`](/tctl-v1/batch/)
-- [`tctl cluster`](/tctl-v1/cluster/)
-- [`tctl dataconverter`](/tctl-v1/dataconverter/)
-- [`tctl namespace`](/tctl-v1/namespace/)
-- [`tctl taskqueue`](/tctl-v1/taskqueue/)
-- [`tctl workflow`](/tctl-v1/workflow/)
+- [tctl activity](/tctl-v1/activity/)
+- [tctl admin](/tctl-v1/admin/)
+- [tctl batch](/tctl-v1/batch/)
+- [tctl cluster](/tctl-v1/cluster/)
+- [tctl dataconverter](/tctl-v1/dataconverter/)
+- [tctl namespace](/tctl-v1/namespace/)
+- [tctl taskqueue](/tctl-v1/taskqueue/)
+- [tctl workflow](/tctl-v1/workflow/)

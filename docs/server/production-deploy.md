@@ -16,7 +16,7 @@ Temporal Server is a Go application which you can [import](/references/server-op
 
 If you are running only the Go binary, Go is not required.
 
-But if you are building Temporal or running it from source, [Go v1.16+ is required](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
+But if you are building Temporal or running it from source, [Go v1.17+ is required](https://github.com/temporalio/temporal/blob/master/CONTRIBUTING.md).
 
 While Temporal can be run as a single Go binary, we recommend that production deployments of Temporal Server should deploy each of the 4 internal services separately (if you are using Kubernetes, one service per pod) so they can be scaled independently in the future.
 

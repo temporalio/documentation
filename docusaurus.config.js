@@ -96,6 +96,11 @@ module.exports = {
           activeBasePath: "changelog",
           position: "left",
         },
+        {
+          label: "Learn Temporal",
+          href: "https://learn.temporal.io",
+          right: "left",
+        }
       ],
     },
     footer: {
@@ -151,7 +156,7 @@ module.exports = {
         {
           items: [
             {
-              label: "Temporal education",
+              label: "Learn Temporal",
               href: "https://learn.temporal.io",
             },
             {

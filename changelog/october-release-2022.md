@@ -16,4 +16,4 @@ During the past month, the following content has been added or improved:
 
 - We published the [“next version” of Temporal’s CLI](/tctl-next/).
   The future name of the CLI is yet to be determined, but the functionality is available to use as tctl v2.0.0-beta.
-  Both [tctl v1.16](/tctl-v1/) and tctl version-next docs are available.
+  Both [tctl v1.17](/tctl-v1/) and tctl version-next docs are available.
