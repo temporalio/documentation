@@ -6,7 +6,7 @@ tags:
 date: 2022-11-01T00:00:00Z
 ---
 
-`DeadlineExceeded` is a Context error thrown when requests are not completed on time.
+`DeadlineExceeded` is a [gRPC Context error](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines) thrown when requests are not completed on time.
 
 Many requests are sent and received with and within the Temporal Platform.
 These requests can be made between Temporal Server services, between a Temporal Client and Server, and between the entire system and a network.
