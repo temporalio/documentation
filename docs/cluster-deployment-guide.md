@@ -365,6 +365,10 @@ If a database schema upgrade is required, it will be called out directly in the 
 Some releases require changes to the schema, and some do not.
 We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior, however there is no guarantee that there is compatibility between _any_ 2 non-consecutive versions.
 
+When upgrading your Temporal Server version, ensure that you upgrade sequentially. For example, when upgrading from v1.n.x, always upgrade to v1.n+1.x (or the next available version) and so on until you get to the required version.
+Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in order (you can skip patch versions).
+Also note, that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow a few minutes on each version for these processes to complete before upgrading to the next version.
+
 Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
 
 If you are using a schema tools version prior to 1.8.0, we strongly recommend _never_ using the "dryrun" (`-y`, or `--dryrun`) options in any of your schema update commands.
