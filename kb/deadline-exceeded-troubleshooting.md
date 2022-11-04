@@ -3,24 +3,15 @@ slug: deadline-exceeded-troubleshooting
 title: DeadlineExceeded error troubleshooting
 tags:
   - kb-article
-date: 2022-11-01T00:00:00Z
+date: 2022-11-08T00:00:00Z
 ---
 
-`DeadlineExceeded` is a [gRPC Context error](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines) thrown when requests are not completed on time.
+All requests to the Temporal Cluster are gRPC requests.
+Sometimes, when these requests can't be completed, you'll see this particular error message: `"error":"context deadline exceeded"`.
+What is this error, and what does it mean?
 
-Many requests are sent and received with and within the Temporal Platform.
-These requests can be made between Temporal Server services, between a Temporal Client and Server, and between the entire system and a network.
-This extensive coverage, along with the error's brief message, makes it confusing to figure out where the error could come from.
-
-Based on what users have seen, we can deduce that the three most common problem areas lie in downed services, faulty Workflow logic, and unusually high latencies.
-
-Therefore, the best route for troubleshooting is to check the 3 L's of system functionality.
-
-- Logs
-- Logic
-- Latency
-
-If you're still unable to find the cause of your timeouts, please visit the community forum, community Slack, or file a support ticket if you are using Temporal Cloud.
+`DeadlineExceeded` is an error that occurs when requests are not completed on time.
+Network interruptions, short timeouts, server overload, and query errors can cause this error.
 
 :::note
 
@@ -29,64 +20,33 @@ If you're using Temporal Cloud, consider file a service ticket when this error o
 
 :::
 
-<!-- TODO: move the note above or delete if not needed -->
+This error can happen across the Cluster.
+To find the cause and begin troubleshooting:
 
-### Logs
+#### Check your Frontend Logs
 
-If a service has gone down, your history logs might be able to point to the culprit.
+Service logs can show which parts of the Cluster aren't working.
+Logs can also be used to find query errors.
 
-Queries that continually return errors can also be traced back in the logs.
+Verify that connections to the Frontend Service are functional.
 
-[One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
-The Temporal Worker failed to connect to the frontend service.
+#### Check your Cluster metrics
 
-Looking deeper into the problem revealed that HTTP requests were being fulfilled, but weren't registered at any point in their progress on Temporal Web.
+Look for unusually high latencies, short timeouts, and other measures indicating trouble.
+If the metrics come from a specific service, check that service's connectivity.
 
-[Other](https://community.temporal.io/t/temporal-cluster-always-seems-to-be-out-of-resources-but-always-seems-healthy/4938)[users](https://community.temporal.io/t/solved-context-deadline-exceeded-not-enough-hosts-to-serve-requests-errors/4328) was unable to get enough hosts to serve their requests.
-Upon reviewing their logs, they were able to correct their production environments to resolve the problem.
+#### Check Workflow logic
 
-If the problem is a downed service, review the logs and redeploy the server instance.
-If needed, run `tctl cluster health` and other environment-related commands to check on server health.
+Your Workflow may be missing some information needed to make the connection.
+Verify connec
 
-If the problem persists, there might be a problem with your Workflow logic.
-Proceed to the next section to find out if your issue is code-related.
+## If your problem lies in a service:
 
-### Logic
+To recap, `"error":"context deadline exceeded"` is a gRPC error thrown when requests can't be completed on time.
+This error is generally caused by network hiccups, short timeouts, server overload, and query errors.
 
-Reviewing your Workflow logic is useful when a Workflow repeatedly fails to execute.
+`DeadlineExceeded` can be located by checking history logs, Workflow logic, and server metrics.
+More troubleshooting may be necessary depending on where you see the error.
 
-`DeadlineExceeded` may be thrown if connections are closed too soon.
-[In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
-
-This behavior is expected, but can be detrimental if there isn't enough time to complete requests.
-By extending the deadlines, the user was able to solve the problem.
-
-[Another scenario](https://community.temporal.io/t/unable-to-execute-workflow-context-deadline-exceeded-after-setting-up-mtls/3124) [that a few users](https://community.temporal.io/t/unable-to-get-temporal-sys-add-search-attributes-workflow-workflow-state-context-deadline-exceeded/4229) have run into was with setting up mTLS.
-
-In both cases, the frontend could not be reached by the system's Workers.
-One user found that their `internode.server` certificate was invalid; both were missing a DNS name in their environmental configuration.
-
-If your Workflow repeatedly fails to start or execute, check your files for any missing or invalid environmental variables.
-Run the server again after adding or changing these variables.
-
-### Latency
-
-If an issue cannot be found in the logs or with the Workflow itself, there may be a problem with the network connection.
-More specifically, the network may have latency problems.
-
-Unusually high latency can prevent requests from completing on time.
-This can affect many areas of the Server at once.
-
-As [this user](https://community.temporal.io/t/context-deadline-exceeded-issue/5310) noted, `DeadlineExceeded` was returned while scheduling the Workflow.
-[Similarly, this user](https://community.temporal.io/t/history-server-context-deadline-exceed-errors-every-hour/6090/3) had a recurring issue on their history server.
-The history logs for both indicated possible database issues, but their metrics revealed latency issues across the Server.
-
-After seeing the Workflow fail consistently, a new SQL instance was deployed and restarted on both setups.
-The workflow executed without another issue.
-
-If you experience widespread occurrences of the `DeadlineExceeded` error, make sure your server metrics are enabled.
-Check persistence and visibility latencies for high values, along with resources exhausted.
-
-<!--- - Check your configuration files for missing environmental variables.
-- Make sure that the frontend and internode certificates are clearly defined.
-- Add any missing values before deploying the server again.-->
+If you were unable to resolve your issue, please visit the community forum, community Slack, or file a support ticket.
+Cloud users should consider filing a support ticket when this error occurs.
