@@ -25,7 +25,7 @@ If you're still unable to find the cause of your timeouts, please visit the comm
 :::note
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
-If you're using Temporal Cloud, you must file a service ticket when this error occurs.
+If you're using Temporal Cloud, consider file a service ticket when this error occurs.
 
 :::
 
@@ -34,6 +34,7 @@ If you're using Temporal Cloud, you must file a service ticket when this error o
 ### Logs
 
 If a service has gone down, your history logs might be able to point to the culprit.
+
 Queries that continually return errors can also be traced back in the logs.
 
 [One user](https://community.temporal.io/t/context-deadline-exceeded-when-trying-to-start-workflow-v1-7-1/4249) received the error while trying to start their Workflow.
