@@ -191,7 +191,7 @@ module.exports = {
     "server/security",
     {
       type: "category",
-      label: "tctl v1.17",
+      label: "CLI - tctl v1.17",
       collapsible: true,
       collapsed: true,
       link: {
@@ -212,7 +212,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "tctl next",
+      label: "CLI - tctl next",
       collapsible: true,
       collapsed: true,
       link: {
