@@ -52,7 +52,7 @@ Proceed to the next section to find out if your issue is code-related.
 
 ### Logic
 
-If a Workflow repeatedly fails to execute, the problem could lie in the code itself.
+Reviewing your Workflow logic is useful when a Workflow repeatedly fails to execute.
 
 `DeadlineExceeded` may be thrown if connections are closed too soon.
 [In the case of one user](https://community.temporal.io/t/how-to-best-handle-mysterious-context-deadline-exceeded-502-errors/2689/3), the Temporal Server was closing connections as they expired.
