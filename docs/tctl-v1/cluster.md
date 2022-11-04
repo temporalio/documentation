@@ -1,8 +1,8 @@
 ---
 id: cluster
-title: tctl v1.16 cluster command reference
+title: tctl v1.17 cluster command reference
 sidebar_label: cluster
-description: How to use the tctl v1.16 cluster command
+description: How to use the tctl v1.17 cluster command
 toc_max_heading_level: 4
 ---
 
