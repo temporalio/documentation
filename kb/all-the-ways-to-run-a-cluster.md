@@ -37,7 +37,7 @@ go build ./cmd/temporalite
 
 For macOS users, if you receive the error `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db: no such file or directory`, create the `temporalite/db` directories in your `Application Support` library and run the `start` command again.
 
-Replace `default` with your custom [Namespace](/concepts/what-is-a-namespaces) name.
+Replace `default` with your custom [Namespace](/namespaces) name.
 
 Local Temporal Clients and Workers can connect to Temporalite at 127.0.0.1:7233 (default Client connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8233.
 
