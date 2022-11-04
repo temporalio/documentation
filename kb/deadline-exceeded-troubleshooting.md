@@ -55,16 +55,47 @@ If the error hasn't resolved, proceed to Advanced Troubleshooting for service-sp
 
 ## Advanced troubleshooting
 
-If this error is happening:
+If you're still getting this error...
+
+#### After enabling mTLS
+
+Check the health of the Cluster with `tctl cluster health`.
+
+Add any missing environmental variables to the configuration files, and correct any incorrect values.
+Server names and certs must match between frontend and internode.
 
 #### After you restart the Server
 
-You might not be giving Temporal services enough time to respond and reconnect.
+You might not be giving the Cluster enough time to respond and reconnect.
 Restart the Server, wait, and then check all services for connectivity and further errors.
+
+If the error persists, review your history and server logs for more specific causes before continuing to troubleshoot.
 
 #### When executing or scheduling Workflows
 
-#### In conclusion...
+One or more services may be unable to connect to the frontend.
+The Workflow might be unable to complete requests within the given connection time.
+
+Check service metrics, history logs, and connectivity between system components.
+If you're running the Cluster in a container, check that service's history or log files.
+If needed, modify configuration files and run diagnostic commands specific to your environment.
+
+Increase the timeout value so that requests can be finished before the connection terminates.
+
+::: note
+
+If you increase timeouts or ConnectionAge values, consider adding a hot spotting check to prevent server overload.
+
+:::
+
+#### While using `tctl`
+
+The Cluster may have deployed with missing or incorrect values.
+
+Check your environment for containers that terminated or failed.
+Run `tctl cluster` commands to fix issues through CLI.
+
+### In conclusion...
 
 `"error":"context deadline exceeded"` is a gRPC error thrown when requests can't be completed on time.
 This error is generally caused by network hiccups, short timeouts, server overload, and query errors.
