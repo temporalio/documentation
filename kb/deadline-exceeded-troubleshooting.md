@@ -6,13 +6,13 @@ tags:
 date: 2022-11-08T00:00:00Z
 ---
 
-All requests made to the Temporal Cluster are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 
 `Context: deadline exceeded` is an error that occurs when requests are not completed on time.
 Network interruptions, short timeouts, server overload, and Query errors can cause this error.
 
-The following sections will discuss the nature of this error, and how to troubleshoot it.
+The following sections will discuss the nature of this error and how to troubleshoot it.
 
 #### Check your logs
 
@@ -23,7 +23,9 @@ If you're using Temporal Cloud, consider filing a service ticket when this error
 
 :::
 
-<!--TODO: show service log or trace -->
+```
+{“level”:“error”,“ts”:“2022-03-21T19:32:42.312Z”,“msg”:“unavailable error”,“service”:“frontend”,“error”:“unable to get temporal-sys-add-search-attributes-workflow workflow state: context deadline exceeded”,“logging-call-at”:“adminHandler.go:1163”,“stacktrace”:“go.temporal.io/server/common/log.
+```
 
 Service logs can show which parts of the Cluster aren't working.
 
@@ -31,29 +33,26 @@ Verify that the frontend is connected by opening the Web UI in your browser.
 
 Check that the following are up and running with `tctl cluster` commands:
 
-- History Service
-- Persistence database
-- Advanced Visibility database
+- [History Service](/concepts/what-is-a-history-service)
+- [Persistence](/clusters#persistence) database
+- [Advanced Visibility](/concepts/what-is-advanced-visibility) database
 
-Logs can also be used to find query errors.
-If connections are functional, proceed to Cluster metrics and Workflow logic.
+Logs can also be used to find [Query](/concepts/what-is-a-query) errors.
 
 #### Check your Cluster metrics
 
-Look for high latencies, short timeouts, and other unusual metrics coming from Cluster services.
-If the metrics come from a specific service, check that service's connectivity and restart if needed.
+Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
+If the metrics come from a specific service (such as History Service), check that service's connectivity and restart if needed.
 
 #### Check Workflow logic
 
 Your Workflow may be missing some information needed to make the connection.
-Check your code and configuration files for missing or invalid values in:
+Check your code and [configuration](/references/configuration) files for missing or invalid values in:
 
 - Server names
-- Network or host names
+- Network or host addresses
 - Certificates
 - Timeouts
-
-If the error hasn't resolved, proceed to Advanced Troubleshooting for service-specific steps to take next.
 
 ## Advanced troubleshooting
 
@@ -63,7 +62,11 @@ If you're still getting this error...
 
 Check the health of the Cluster with `tctl cluster health`.
 
-Add any missing environment variables to the configuration files, and correct any incorrect values.
+```
+tctl --address [SERVER_ADDRESS] cluster health
+```
+
+Add any missing [environment variables](/references/web-ui-environment-variables) to the configuration files, and correct any incorrect values.
 Server names and certificates must match between frontend and internode.
 
 #### After restarting the Temporal Cluster
@@ -105,5 +108,4 @@ This error is generally caused by network hiccups, short timeouts, server overlo
 `Context: deadline exceeded` can be located by checking history logs, Workflow logic, and server metrics.
 More troubleshooting may be necessary depending on where you see the error.
 
-If you were unable to resolve your issue, please visit the community forum, community Slack, or file a support ticket.
-Cloud users should consider filing a support ticket when this error occurs.
+If you were unable to resolve your issue, please visit the [community forum](https://community.temporal.io), community Slack, or file a support ticket.
