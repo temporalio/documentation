@@ -62,7 +62,7 @@ Note that registering a Namespace takes up to 15 seconds to complete. Ensure tha
 
 ### Manage Namespaces
 
-Use a custom <a class="tdlp" href="/clusters#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a href="/clusters#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
 

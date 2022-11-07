@@ -1,31 +1,40 @@
 ---
-id: security
-title: Temporal Server security
-sidebar_label: Security
+id: intro
+title: Temporal Platform security overview
+description: The security guide provides a comprehensive overview of the security related features and how to implement them.
+tags:
+  - security
+  - guide-context
 ---
 
-:::info Work in progress
+:::info Work in progres
 
 This guide is a work in progress. Some sections may be incomplete. Information may change at any time.
 
 :::
 
-## Overview
+:::info General company security
 
-A secured Temporal server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it.
+For information about the general security habits of Temporal Technologies see our [company security page](/temporal-technologies-inc-security).
+
+:::
+
+The Temporal Plaform is designed with security in mind, and there are many features that you can use to keep both the Platform itself and your user's data secure.
+
+A secured Temporal Server has its network communication encrypted and has authentication and authorization protocols set up for API calls made to it.
 Without these, your server could be accessed by unwanted entities.
 
 What is documented on this page are the built-in opt-in security measures that come with Temporal.
-However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside a VPC environment.
+However users may also choose to design their own security architecture with reverse proxies or run unsecured instances inside of a VPC environment.
 
-## Server Samples
+### Server Samples
 
 The https://github.com/temporalio/samples-server repo offers two examples, which are further explained below:
 
 - **TLS**: how to configure Transport Layer Security (TLS) to secure network communication with and within a Temporal cluster.
 - **Authorizer**: how to inject a low-level authorizer component that can control access to all API calls.
 
-## Encryption in transit with mTLS
+### Encryption in transit with mTLS
 
 Temporal supports Mutual Transport Layer Security (mTLS) as a way of encrypting network traffic between the services of a cluster and also between application processes and a Cluster.
 Self-signed or properly minted certificates can be used for mTLS.
@@ -39,25 +48,7 @@ A customized configuration can be passed using either the [WithConfig](/referenc
 
 See [TLS configuration reference](/references/configuration/#tls) for more details.
 
-## Encryption at rest with Data Converter
-
-import DataConverter from '../concepts/what-is-a-data-converter.md'
-
-<DataConverter />
-
-### Codec Server
-
-import CodecServer from '/docs/concepts/what-is-a-codec-server.md'
-
-<CodecServer />
-
-### Codec Server setup
-
-import CodecServerSetup from '/docs/clusters/how-to-set-up-codec-server.md'
-
-<CodecServerSetup />
-
-## Authentication
+### Authentication
 
 There are a few authentication protocols available to prevent unwanted access such as authentication of servers, clients, and users.
 
@@ -67,7 +58,7 @@ To prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-
 This enables established connections to authenticate the endpoint, ensuring that the server certificate presented to any connecting Client has the appropriate server name in its CN property.
 It can be used for both `internode` and `frontend` endpoints.
 
-More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/main/tls), and you can reach out to us for further guidance.
+More guidance on mTLS setup can be found in [the `samples-server` repo](https://github.com/temporalio/samples-server/tree/main/tls) and you can reach out to us for further guidance.
 
 ### Client connections
 
@@ -78,16 +69,16 @@ Use the `clientCAFiles`/ `clientCAData` and `requireClientAuth` properties in bo
 
 To restrict access to specific users, authentication and authorization is performed through extensibility points and plugins as described in the [Authorization](#authorization) section below.
 
-## Authorization
+#### Authorization
 
 :::note
-Information regarding [`Authorizer`](/clusters#authorizer) and [`ClaimMapper`](/clusters#claim-mapper) has been moved to another location.
+Information regarding [`Authorizer`](/concepts/what-is-an-authorizer-plugin) and [`ClaimMapper`](/concepts/what-is-a-claimmapper-plugin) has been moved to another location.
 :::
 
 Temporal offers two plugin interfaces for implementing API call authorization:
 
-- [`ClaimMapper`](/clusters#claim-mapper)
-- [`Authorizer`](/clusters#authorizer-plugin)
+- [`ClaimMapper`](/concepts/what-is-a-claimmapper-plugin)
+- [`Authorizer`](/concepts/what-is-an-authorizer-plugin)
 
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.
@@ -96,11 +87,11 @@ See https://github.com/temporalio/samples-server/blob/main/extensibility/authori
 
 ![](/img/docs/frontend-authorization-order-of-operations.png)
 
-## Single sign-on integration
+### Single sign-on integration
 
 Temporal can be integrated with a single sign-on (SSO) experience by utilizing the `ClaimMapper` and `Authorizer` plugins.
 The default JWT `ClaimMapper` implementation can be used as is or as a base for a custom implementation of a similar plugin.
 
-### Temporal Web
+#### Temporal Web
 
 To enable SSO for the Temporal Web UI edit the web service's configuration per the [Temporal Web README](https://github.com/temporalio/web#configuring-authentication-optional).

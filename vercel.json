@@ -546,6 +546,10 @@
       "source": "/server/quick-install",
       "destination": "/clusters/quick-install"
     },
+    { 
+      "source": "/server/security",
+      "destination": "/security"
+    },
     {
       "source": "/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
       "destination": "/clusters/quick-install/#helm-charts"

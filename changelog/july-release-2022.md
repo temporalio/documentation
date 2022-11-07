@@ -26,7 +26,7 @@ The [Developer's guide](/application-development) is rapidly increasing its cove
 
 - Experimental [Schedule feature](/workflows/#schedules) documentation is now available.
 
-- [Codec Server feature](/server/security/#codec-server) documentation is now available.
+- [Codec Server feature](/security/#codec-server) documentation is now available.
 
 - Last call for feedback on our [quarterly docs survey](https://forms.gle/VWgQdPbV5qa8zJVBA).
 
