@@ -1,8 +1,8 @@
 ---
 id: schedule
-title: tctl 1.16 schedule command reference
+title: tctl 1.17 schedule command reference
 sidebar_label: schedule
-description: How to use the tctl 1.16 schedule command
+description: How to use the tctl 1.17 schedule command
 toc_max_heading_level: 4
 ---
 
