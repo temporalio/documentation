@@ -1,8 +1,8 @@
 ---
 id: batch
-title: tctl v1.16 batch command reference
+title: tctl v1.17 batch command reference
 sidebar_label: batch
-description: How to use the tctl v1.16 batch command
+description: How to use the tctl v1.17 batch command
 toc_max_heading_level: 4
 ---
 

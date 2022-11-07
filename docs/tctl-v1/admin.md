@@ -1,8 +1,8 @@
 ---
 id: admin
-title: tctl v1.16 admin command reference
+title: tctl v1.17 admin command reference
 sidebar_label: admin
-description: How to use the tctl v1.16 admin command
+description: How to use the tctl v1.17 admin command
 toc_max_heading_level: 4
 ---
 
@@ -137,7 +137,7 @@ The name of the remote Cluster to remove.
 
 ### remove_search_attributes
 
-> The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+> The Temporal tctl documentation covers version 1.17 of the Temporal CLI.
 
 The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a Cluster.
 This operation has no effect on Elasticsearch index schema.

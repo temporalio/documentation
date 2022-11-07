@@ -376,5 +376,7 @@ Always include required modifiers when executing this command.
 - [--namespace](/tctl-next/modifiers#--namespace)
 - [--query](/tctl-next/modifiers#--query)
 - [--reason](/tctl-next/modifiers#--reason)
+- [--run-id](/tctl-next/modifiers#--run-id)
+- [--workflow-id](/tctl-next/modifiers#--workflow-id)
 - [--yes](/tctl-next/modifiers#--yes)
 
