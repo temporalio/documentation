@@ -127,7 +127,7 @@ public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
 ```
 
 In this example we use `Workflow.newActivityStub` to create a client-side stub of our file processing Activity.
-We also define ActivityOptions and set the setStartToCloseTimeout timeout to one hour, meaning that we set the total execution timeout for each of its method invocations to one hour (from when the Activity execution is started to when it completes).
+We also define ActivityOptions and set the setStartToCloseTimeout timeout to one hour, meaning that we set the total execution timeout for each of its method invocations to one hour (from when the Activity Execution is started to when it completes).
 
 Workflow can create multiple Activity stubs. Each activity stub can have its own ActivityOptions defined, for example:
 
@@ -320,12 +320,12 @@ When the download is complete, the download service potentially can complete the
 ## Activity heartbeats
 
 Activities can be long-running.
-In these cases the Activity execution timeouts should be set to be longer than the maximum predicted time of the Activity execution.
-In those cases it can happen that an Activity execution is started and cannot proceed, or fails to continue its execution for some reasons.
+In these cases the Activity Execution timeouts should be set to be longer than the maximum predicted time of the Activity Execution.
+In those cases it can happen that an Activity Execution is started and cannot proceed, or fails to continue its execution for some reasons.
 With our long set execution timeout the calling Workflow will not be able to time out the Activity and retry it or fail it until this timeout is reached.
 
 In order to react quickly to crashes of long-running Activities you can use the Activity heartbeat mechanism.
-You can set a short heartbeat timeout in order to detect Activity issues and react to them without having to wait for the long Activity execution timeout to complete first.
+You can set a short heartbeat timeout in order to detect Activity issues and react to them without having to wait for the long Activity Execution timeout to complete first.
 
 `Activity.getExecutionContext().heartbeat()` lets the Temporal service know that the Activity is still alive.
 

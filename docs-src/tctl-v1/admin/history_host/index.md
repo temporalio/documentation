@@ -17,5 +17,5 @@ Alias: `hist`
 
 ## Commands
 
-- [`tctl admin history_host describe`](/tctl-v1/admin/history_host/describe)
-- [`tctl admin history_host get_shardid`](/tctl-v1/admin/history_host/get_shardid)
+- [tctl admin history_host describe](/tctl-v1/admin/history_host/describe)
+- [tctl admin history_host get_shardid](/tctl-v1/admin/history_host/get_shardid)

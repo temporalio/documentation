@@ -20,6 +20,10 @@ Specify a token to be used by the HTTP Basic Authorization plugin.
 
 <!-- TODO: Add link to "Securing tctl" page or its equivalent when it exists. -->
 
+### TEMPORAL_CLI_AUTH
+
+Specify the authorization header to be set for a gRPC request.
+
 ### TEMPORAL_CLI_NAMESPACE
 
 Specify a Namespace.

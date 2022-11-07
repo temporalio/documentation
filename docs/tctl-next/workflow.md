@@ -15,19 +15,19 @@ The `tctl workflow` commands enable <a class="tdlp" href="/workflows#workflow-ex
 
 Alias: `w`
 
-- [`tctl workflow cancel`](/tctl-next/workflow#cancel)
-- [`tctl workflow count`](/tctl-next/workflow#count)
-- [`tctl workflow describe`](/tctl-next/workflow#describe)
-- [`tctl workflow list`](/tctl-next/workflow#list)
-- [`tctl workflow query`](/tctl-next/workflow#query)
-- [`tctl workflow reset`](/tctl-next/workflow#reset)
-- [`tctl workflow reset-batch`](/tctl-next/workflow#reset-batch)
-- [`tctl workflow scan`](/tctl-next/workflow#scan)
-- [`tctl workflow show`](/tctl-next/workflow#show)
-- [`tctl workflow signal`](/tctl-next/workflow#signal)
-- [`tctl workflow stack`](/tctl-next/workflow#stack)
-- [`tctl workflow start`](/tctl-next/workflow#start)
-- [`tctl workflow terminate`](/tctl-next/workflow#terminate)
+- [tctl workflow cancel](/tctl-next/workflow#cancel)
+- [tctl workflow count](/tctl-next/workflow#count)
+- [tctl workflow describe](/tctl-next/workflow#describe)
+- [tctl workflow list](/tctl-next/workflow#list)
+- [tctl workflow query](/tctl-next/workflow#query)
+- [tctl workflow reset](/tctl-next/workflow#reset)
+- [tctl workflow reset-batch](/tctl-next/workflow#reset-batch)
+- [tctl workflow scan](/tctl-next/workflow#scan)
+- [tctl workflow show](/tctl-next/workflow#show)
+- [tctl workflow signal](/tctl-next/workflow#signal)
+- [tctl workflow stack](/tctl-next/workflow#stack)
+- [tctl workflow start](/tctl-next/workflow#start)
+- [tctl workflow terminate](/tctl-next/workflow#terminate)
 
 ## cancel
 
@@ -376,5 +376,7 @@ Always include required modifiers when executing this command.
 - [--namespace](/tctl-next/modifiers#--namespace)
 - [--query](/tctl-next/modifiers#--query)
 - [--reason](/tctl-next/modifiers#--reason)
+- [--run-id](/tctl-next/modifiers#--run-id)
+- [--workflow-id](/tctl-next/modifiers#--workflow-id)
 - [--yes](/tctl-next/modifiers#--yes)
 

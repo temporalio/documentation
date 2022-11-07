@@ -1,8 +1,8 @@
 ---
 id: activity
-title: tctl v1.16 activity command reference
+title: tctl v1.17 activity command reference
 sidebar_label: activity
-description: How to use the tctl v1.16 activity command
+description: How to use the tctl v1.17 activity command
 toc_max_heading_level: 4
 ---
 
@@ -15,8 +15,8 @@ The `tctl activity` commands enable <a class="tdlp" href="/activities#activity-e
 
 Alias: `a`
 
-- <a class="tdlp" href="#complete">`tctl activity complete`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl activity complete</p><p class="tdlppd">How to provide a result and complete an Activity Execution using tctl.</p><p class="tdlplm"><a href="#complete">Learn more</a></p></div></a>
-- <a class="tdlp" href="#fail">`tctl activity fail`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl activity fail</p><p class="tdlppd">How to fail an Activity Execution using tctl.</p><p class="tdlplm"><a href="#fail">Learn more</a></p></div></a>
+- <a class="tdlp" href="#complete">tctl activity complete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl activity complete</p><p class="tdlppd">How to provide a result and complete an Activity Execution using tctl.</p><p class="tdlplm"><a href="#complete">Learn more</a></p></div></a>
+- <a class="tdlp" href="#fail">tctl activity fail<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl activity fail</p><p class="tdlppd">How to fail an Activity Execution using tctl.</p><p class="tdlplm"><a href="#fail">Learn more</a></p></div></a>
 
 ## complete
 

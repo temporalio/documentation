@@ -1,8 +1,8 @@
 ---
 id: cluster
-title: tctl v1.16 cluster command reference
+title: tctl v1.17 cluster command reference
 sidebar_label: cluster
-description: How to use the tctl v1.16 cluster command
+description: How to use the tctl v1.17 cluster command
 toc_max_heading_level: 4
 ---
 
@@ -13,8 +13,8 @@ import TabItem from '@theme/TabItem';
 
 The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> operations.
 
-- <a class="tdlp" href="#health">`tctl cluster health`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster health</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a href="#health">Learn more</a></p></div></a>
-- <a class="tdlp" href="#get-search-attributes">`tctl cluster get-search-attributes`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster get-search-attributes</p><p class="tdlppd">How to list all Search Attributes using tctl.</p><p class="tdlplm"><a href="#get-search-attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster health</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a href="#health">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get-search-attributes">tctl cluster get-search-attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster get-search-attributes</p><p class="tdlppd">How to list all Search Attributes using tctl.</p><p class="tdlplm"><a href="#get-search-attributes">Learn more</a></p></div></a>
 
 ## get-search-attributes
 
