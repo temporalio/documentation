@@ -816,7 +816,7 @@ For information about assert statements in Python, see [`assert`](https://docs.p
 
 The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
 
-By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a href="/tasks#workflow-task">Learn more</a></p></div></a> to fail and be indefinitely retried.
+By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> to fail and be indefinitely retried.
 
 To prevent this behavior, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`.
 These interceptors catch an `AssertionError` and turn it into an `ApplicationFailure` that fails the entire Workflow Execution (not just the Workflow Task).
