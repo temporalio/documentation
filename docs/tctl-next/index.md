@@ -21,11 +21,11 @@ If you are using `tctl` version 1.16.12 or older, you must update to at least ve
 :::
 
 The Temporal CLI (tctl) is a command-line tool that you can use to interact with a Temporal Cluster.
-It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a> operations (such as start
+It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#">Learn more</a></p></div></a> operations (such as start
 Workflow, show Workflow History, and Signal Workflow).
 
-- <a class="tdlp" href="#install">How to install tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to install tctl</p><p class="tdlppd">You can install tctl in four ways, described in this topic.</p><p class="tdlplm"><a href="#install">Learn more</a></p></div></a>
-- <a class="tdlp" href="#environment-variables">Environment variables for tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a href="#environment-variables">Learn more</a></p></div></a>
+- <a class="tdlp" href="#install">How to install tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to install tctl</p><p class="tdlppd">You can install tctl in four ways, described in this topic.</p><p class="tdlplm"><a class="tdlplma" href="#install">Learn more</a></p></div></a>
+- <a class="tdlp" href="#environment-variables">Environment variables for tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a class="tdlplma" href="#environment-variables">Learn more</a></p></div></a>
 
 ### Available commands
 
@@ -53,7 +53,7 @@ For example:
 tctl --address <value> workflow start --task-queue <value> ...
 ```
 
-You can supply the values for many of these modifiers by setting <a class="tdlp" href="#environment-variables">environment variables<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a href="#environment-variables">Learn more</a></p></div></a> instead of including the modifiers in each tctl command.
+You can supply the values for many of these modifiers by setting <a class="tdlp" href="#environment-variables">environment variables<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Environment variables for tctl</p><p class="tdlppd">What are the environment variables for tctl?</p><p class="tdlplm"><a class="tdlplma" href="#environment-variables">Learn more</a></p></div></a> instead of including the modifiers in each tctl command.
 
 ### --address
 
