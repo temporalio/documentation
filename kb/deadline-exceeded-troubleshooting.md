@@ -100,12 +100,6 @@ The Cluster may have deployed with missing or incorrect values.
 Check your environment for containers that terminated or failed.
 Run `tctl cluster` commands to fix issues through CLI.
 
-### In conclusion
+---
 
-`Context: deadline exceeded` is a gRPC error thrown when requests can't be completed on time.
-This error is generally caused by network hiccups, short timeouts, server overload, and query errors.
-
-`Context: deadline exceeded` can be located by checking history logs, Workflow logic, and server metrics.
-More troubleshooting may be necessary depending on where you see the error.
-
-If you were unable to resolve your issue, please visit the [community forum](https://community.temporal.io), community Slack, or file a support ticket.
+If you were unable to resolve your issue, please visit the [community forum](https://community.temporal.io), [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
