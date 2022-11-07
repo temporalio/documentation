@@ -46,7 +46,7 @@ If the metrics come from a specific service (such as History Service), check tha
 
 #### Check Workflow logic
 
-Check your code and [configuration](/references/configuration) files for missing or invalid values in:
+Check your [Client and Worker configuration](/references/configuration) files for missing or invalid values in:
 
 - Server names
 - Network or host addresses
