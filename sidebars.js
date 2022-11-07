@@ -224,7 +224,7 @@ module.exports = {
         "tctl-next/alias",
         "tctl-next/batch",
         "tctl-next/cluster",
-        "tctl-next/config",
+        "tctl-next/env",
         "tctl-next/data-converter",
         "tctl-next/namespace",
         "tctl-next/schedule",
