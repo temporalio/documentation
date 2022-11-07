@@ -2,13 +2,13 @@
 id: how-to-asynchronously-complete-an-activity-in-go
 title: How to asynchronously complete an Activity in Go
 sidebar_label: Asynchronous Activity Completion
-description: todo
+description: Provide the external system with a Task Token to complete the Activity Execution.
 tags:
   - how-to
   - go
 ---
 
-1. Provide the external system with the a Task Token to complete the Activity Execution.
+1. Provide the external system with a Task Token to complete the Activity Execution.
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
 ```go
