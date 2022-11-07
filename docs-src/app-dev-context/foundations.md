@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application)—that is, all the relevant steps to start a [Workflow Execution](/concepts/what-is-a-workflow-execution) that executes an [Activity](/concepts/what-is-an-activity-execution).
+The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a [Temporal Application](/concepts/what-is-a-temporal-application)—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
 :::info WORK IN PROGRESS
 

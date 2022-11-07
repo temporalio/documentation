@@ -50,12 +50,12 @@ The following example shows how to set Activity options for Activity Types with 
                                 ImmutableMap.of(
                                         "GetCustomerGreeting",
                                         ActivityOptions.newBuilder()
-                                                // Set Activity execution timeout (including retries)
+                                                // Set Activity Execution timeout (including retries)
                                                 .setScheduleToCloseTimeout(Duration.ofSeconds(5))
                                                 .build(),
                                         "EmailCustomerGreeting",
                                         ActivityOptions.newBuilder()
-                                                // Set Activity execution timeout (single run)
+                                                // Set Activity Execution timeout (single run)
                                                 .setStartToCloseTimeout(Duration.ofSeconds(2))
                                                 .setRetryOptions(
                                                         RetryOptions.newBuilder()
