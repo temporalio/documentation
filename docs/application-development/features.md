@@ -3249,7 +3249,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
