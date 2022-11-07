@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Activities.
 
-In day-to-day conversations, the term _Activity_ frequently denotes either an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-definition">Learn more</a></p></div></a>, an <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Type?</p><p class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="#activity-type">Learn more</a></p></div></a>, or an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a>.
+In day-to-day conversations, the term _Activity_ frequently denotes either an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="#activity-definition">Learn more</a></p></div></a>, an <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Type?</p><p class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</p><p class="tdlplm"><a href="#activity-type">Learn more</a></p></div></a>, or an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="#activity-execution">Learn more</a></p></div></a>.
 Temporal documentation aims to be explicit and differentiate between them.
 
 An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
@@ -28,14 +28,14 @@ The Event is added to the Workflow Execution's Event History.
 
 ## Activity Definition
 
-An Activity Definition is the code that defines the constraints of an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+An Activity Definition is the code that defines the constraints of an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
 - [How to develop an Activity Definition](/application-development/foundations#develop-activities)
 
-The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
-Activity Definitions are named and referenced in code by their <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Type?</p><p class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="#activity-type">Learn more</a></p></div></a>.
+Activity Definitions are named and referenced in code by their <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Type?</p><p class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</p><p class="tdlplm"><a href="#activity-type">Learn more</a></p></div></a>.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Definition</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-definition.svg" alt="Activity Definition" /></div></div>
 
@@ -51,7 +51,7 @@ Therefore, an Activity Definition has no restrictions on the code it contains.
 
 An Activity Definition can support as many parameters as needed.
 
-All values passed through these parameters are recorded in the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#event-history">Learn more</a></p></div></a> of the Workflow Execution.
+All values passed through these parameters are recorded in the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#event-history">Learn more</a></p></div></a> of the Workflow Execution.
 Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:
@@ -60,7 +60,7 @@ Activity Definitions must contain the following parameters:
 - Heartbeat: a notification from the Worker to the Temporal Cluster that the Activity Execution is progressing. Cancelations are allowed only if the Activity Definition permits Heartbeating.
 - Timeouts: intervals that control the execution and retrying of Activity Task Executions.
 
-Other parameters, such as <a class="tdlp" href="/retry-policies#">Retry Policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> and return values, can be seen in the implementation guides, listed in the next section.
+Other parameters, such as <a class="tdlp" href="/retry-policies#">Retry Policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> and return values, can be seen in the implementation guides, listed in the next section.
 
 ### Activity Type
 
@@ -70,7 +70,7 @@ Activity Types are scoped through Task Queues.
 
 ## Activity Execution
 
-An Activity Execution is the full chain of <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+An Activity Execution is the full chain of <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
 - [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
 
@@ -96,7 +96,7 @@ Cancellation requests are only delivered to Activity Executions that Heartbeat:
 
 ### Activity Id
 
-The identifier for an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a>.
+The identifier for an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="#activity-execution">Learn more</a></p></div></a>.
 The identifier can be generated by the system, or it can be provided by the Workflow code that spawns the Activity Execution.
 The identifier is unique among the open Activity Executions of a [Workflow Run](/concepts/what-is-a-run-id/).
 (A single Workflow Run may reuse an Activity Id if an earlier Activity Execution with the same Id has closed.)
@@ -105,7 +105,7 @@ An Activity Id can be used to [complete the Activity asynchronously](/concepts/w
 
 ### Schedule-To-Start Timeout
 
-A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled (that is, placed in a Task Queue) to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> starts (that is, picks up from the Task Queue) that Activity Task.
+A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled (that is, placed in a Task Queue) to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a href="/workers#">Learn more</a></p></div></a> starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
 [How to set a Schedule-To-Start Timeout](/go/how-to-set-a-schedule-to-start-timeout-in-go)
@@ -121,7 +121,7 @@ The Schedule-To-Start Timeout is enforced for each Activity Task, whereas the Sc
 Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_ Activity Task in the sequence of Activity Tasks that make up the Activity Execution, while
 "Schedule" in Schedule-To-Close refers to the _first_ Activity Task in that sequence.
 
-A <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> attached to an Activity Execution retries an Activity Task.
+A <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> attached to an Activity Execution retries an Activity Task.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-start-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
 
@@ -140,21 +140,21 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 ### Start-To-Close Timeout
 
-A Start-To-Close Timeout is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+A Start-To-Close Timeout is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
 - [How to set a Start-To-Close Timeout](/go/how-to-set-a-start-to-close-timeout-in-go)
 
-**The default Start-To-Close Timeout is the same as the default <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="#schedule-to-close-timeout">Learn more</a></p></div></a>.**
+**The default Start-To-Close Timeout is the same as the default <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a href="#schedule-to-close-timeout">Learn more</a></p></div></a>.**
 
-An Activity Execution must have either this timeout (Start-To-Close) or the <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="#schedule-to-close-timeout">Learn more</a></p></div></a> set.
+An Activity Execution must have either this timeout (Start-To-Close) or the <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a href="#schedule-to-close-timeout">Learn more</a></p></div></a> set.
 We recommend always setting this timeout; however, make sure that it is always set to be longer than the maximum possible time for the Activity Execution to take place.
-For long running Activity Executions, we recommend also using <a class="tdlp" href="#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="#activity-heartbeat">Learn more</a></p></div></a> and <a class="tdlp" href="#heartbeat-timeout">Heartbeat Timeouts<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="#heartbeat-timeout">Learn more</a></p></div></a>.
+For long running Activity Executions, we recommend also using <a class="tdlp" href="#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a href="#activity-heartbeat">Learn more</a></p></div></a> and <a class="tdlp" href="#heartbeat-timeout">Heartbeat Timeouts<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="#heartbeat-timeout">Learn more</a></p></div></a>.
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/start-to-close-timeout.svg" alt="Start-To-Close Timeout period" /></div></div>
 
-A <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> attached to an Activity Execution retries an Activity Task Execution.
+A <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> attached to an Activity Execution retries an Activity Task Execution.
 Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
@@ -170,7 +170,7 @@ If this timeout is reached, the following actions occur:
 
 ### Schedule-To-Close Timeout
 
-A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a>, from when the first <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
+A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="#activity-execution">Learn more</a></p></div></a>, from when the first <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
 - [How to set a Schedule-To-Close Timeout](/go/how-to-set-a-schedule-to-close-timeout-in-go)
 
@@ -182,7 +182,7 @@ Example Schedule-To-Close Timeout period for an Activity Execution that has a ch
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
-An Activity Execution must have either this timeout (Schedule-To-Close) or <a class="tdlp" href="#start-to-close-timeout">Start-To-Close<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="#start-to-close-timeout">Learn more</a></p></div></a> set.
+An Activity Execution must have either this timeout (Schedule-To-Close) or <a class="tdlp" href="#start-to-close-timeout">Start-To-Close<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="#start-to-close-timeout">Learn more</a></p></div></a> set.
 By default, an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
 This timeout can be used to control the overall duration of an Activity Execution in the face of failures (repeated Activity Task Executions), without altering the Maximum Attempts field of the Retry Policy.
 
@@ -193,7 +193,7 @@ Each ping informs the Temporal Cluster that the Activity Execution is making pro
 
 - [How to Heartbeat an Activity](/application-development/features#activity-heartbeats)
 
-Activity Heartbeats work in conjunction with a <a class="tdlp" href="#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="#heartbeat-timeout">Learn more</a></p></div></a>.
+Activity Heartbeats work in conjunction with a <a class="tdlp" href="#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="#heartbeat-timeout">Learn more</a></p></div></a>.
 
 Activity Heartbeats are implemented within the Activity Definition.
 Custom progress information can be included in the Heartbeat which can then be used by the Activity Execution should a retry occur.
@@ -202,13 +202,13 @@ An Activity Heartbeat can be recorded as often as needed (e.g. once a minute or 
 It is often a good practice to Heartbeat on anything but the shortest Activity Function Execution.
 Temporal SDKs control the rate at which Heartbeats are sent to the Cluster.
 
-Heartbeating is not required from <a class="tdlp" href="#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Local Activity?</p><p class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</p><p class="tdlplm"><a class="tdlplma" href="#local-activity">Learn more</a></p></div></a>, and does nothing.
+Heartbeating is not required from <a class="tdlp" href="#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Local Activity?</p><p class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</p><p class="tdlplm"><a href="#local-activity">Learn more</a></p></div></a>, and does nothing.
 
 For _long-running_ Activities, we recommend using a relatively short Heartbeat Timeout and a frequent Heartbeat.
 That way if a Worker fails it can be handled in a timely manner.
 
 A Heartbeat can include an application layer payload that can be used to _save_ Activity Execution progress.
-If an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a> times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
+If an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a> times out due to a missed Heartbeat, the next Activity Task can access and continue with that payload.
 
 Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
@@ -258,13 +258,13 @@ And the following scenarios are not suitable for Heartbeating:
 
 ### Heartbeat Timeout
 
-A Heartbeat Timeout is the maximum time between <a class="tdlp" href="#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="#activity-heartbeat">Learn more</a></p></div></a>.
+A Heartbeat Timeout is the maximum time between <a class="tdlp" href="#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a href="#activity-heartbeat">Learn more</a></p></div></a>.
 
 - [How to set a Heartbeat Timeout](/application-development/features#heartbeat-timeout)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Heartbeat Timeout periods</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/heartbeat-timeout.svg" alt="Heartbeat Timeout periods" /></div></div>
 
-If this timeout is reached, the Activity Task fails and a retry occurs if a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> dictates it.
+If this timeout is reached, the Activity Task fails and a retry occurs if a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> dictates it.
 
 ### Asynchronous Activity Completion
 
@@ -279,28 +279,28 @@ The intended use-case for this feature is when an external system has the final 
 
 Consider using Asynchronous Activities instead of Signals if the external process is unreliable and might fail to send critical status updates through a Signal.
 
-Consider using <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> as an alternative to Asynchronous Activities to return data back to a Workflow Execution if there is a human in the process loop.
+Consider using <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#signal">Learn more</a></p></div></a> as an alternative to Asynchronous Activities to return data back to a Workflow Execution if there is a human in the process loop.
 The reason is that a human in the loop means multiple steps in the process.
 The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
 If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
 
 #### Task Token
 
-A Task Token is a unique identifier for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+A Task Token is a unique identifier for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
 [Asynchronous Activity Completion](/concepts/what-is-asynchronous-activity-completion/) calls take either of the following as arguments:
 
 - a Task Token, or
-- an <a class="tdlp" href="#activity-id">Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Id?</p><p class="tdlppd">A unique identifier for an Activity Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-id">Learn more</a></p></div></a>, a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>, and optionally a [Run Id](/concepts/what-is-a-run-id/).
+- an <a class="tdlp" href="#activity-id">Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Id?</p><p class="tdlppd">A unique identifier for an Activity Execution.</p><p class="tdlplm"><a href="#activity-id">Learn more</a></p></div></a>, a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a>, and optionally a [Run Id](/concepts/what-is-a-run-id/).
 
 ## Local Activity
 
-A Local Activity is an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a> that executes in the same process as the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> that spawns it.
+A Local Activity is an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="#activity-execution">Learn more</a></p></div></a> that executes in the same process as the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> that spawns it.
 
 Some Activity Executions are very short-living and do not need the queuing semantic, flow control, rate limiting, and routing capabilities.
 For this case, Temporal supports the Local Activity feature.
 
-The main benefit of Local Activities is that they use less Temporal service resources (e.g. lower state transitions) and have much lower latency overhead (because no need to roundtrip to the Cluster) compared to normal Activity Executions.
+The main benefit of Local Activities is that they use less Temporal Cluster resources (for example, fewer History events) and have much lower latency overhead (because no need to roundtrip to the Cluster) compared to normal Activity Executions.
 However, Local Activities are subject to shorter durations and a lack of rate limiting.
 
 Consider using Local Activities for functions that are the following:
@@ -308,7 +308,16 @@ Consider using Local Activities for functions that are the following:
 - can be implemented in the same binary as the Workflow that calls them.
 - do not require global rate limiting.
 - do not require routing to a specific Worker or Worker pool.
-- no longer than a few seconds, inclusive of retries (shorter than the Workflow Task Timeout, which is 10 seconds by default).
+- no longer than a few seconds, inclusive of retries.
+
+If it takes longer than 80% of the Workflow Task Timeout (which is 10 seconds by default), the Worker will ask the Cluster to create a new Workflow Task to extend the "lease" for processing the Local Activity.
+The Worker will continue doing so until the Local Activity has completed.
+This is called Workflow Task Heartbeating.
+The drawbacks of long-running Local Activities are:
+
+- Each new Workflow Task results in 3 more Events in History.
+- The Workflow won't get notified of new events like Signals and completions until the next Workflow Task Heartbeat.
+- New Commands created by the Workflow concurrently with the Local Activity will not be sent to the Cluster until either the Local Activity completes or the next Workflow Task Heartbeat.
 
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
