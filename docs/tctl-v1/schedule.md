@@ -1,8 +1,8 @@
 ---
 id: schedule
-title: tctl 1.16 schedule command reference
+title: tctl 1.17 schedule command reference
 sidebar_label: schedule
-description: How to use the tctl 1.16 schedule command
+description: How to use the tctl 1.17 schedule command
 toc_max_heading_level: 4
 ---
 
@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 A <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule</p><p class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</p><p class="tdlplm"><a href="/workflows#schedule">Learn more</a></p></div></a> is an experimental feature and the `schedule` command is available in versions 1.17.0-alpha.2 and later.
 Version 1.17.0-alpha.2 is currently available in version 1.16.2.
-Use `tctl config set version next` command while on version 1.16.2.
+Use `tctl env set version next` command while on version 1.16.2.
 
 - <a class="tdlp" href="#backfill">Backfill a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl schedule backfill</p><p class="tdlppd">How to backfill a Schedule using tctl.</p><p class="tdlplm"><a href="#backfill">Learn more</a></p></div></a>
 - <a class="tdlp" href="#create">Create a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl schedule create</p><p class="tdlppd">How to create a Schedule using tctl.</p><p class="tdlplm"><a href="#create">Learn more</a></p></div></a>
@@ -45,7 +45,7 @@ The other policies don't make much sense in this context.
 With tctl, create a Schedule like this:
 
 ```shell
-$ tctl config set version next   # ensure you're using the new tctl
+$ tctl env set version next   # ensure you're using the new tctl
 $ tctl schedule create \
     --sid 'your-schedule-id' \
     --interval '5h/15m' \

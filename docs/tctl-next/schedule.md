@@ -46,7 +46,7 @@ The other policies don't make much sense in this context.
 With tctl, create a Schedule like this:
 
 ```shell
-$ tctl config set version next   # ensure you're using the new tctl
+$ tctl env set version next   # ensure you're using the new tctl
 $ tctl schedule create \
     --sid 'your-schedule-id' \
     --interval '5h/15m' \
