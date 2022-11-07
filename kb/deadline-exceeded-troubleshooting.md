@@ -56,7 +56,7 @@ Check your code and [configuration](/references/configuration) files for missing
 
 ## Advanced troubleshooting
 
-If you're still getting this error...
+If you're still getting this error, here are further things to check.
 
 #### After enabling mTLS
 
