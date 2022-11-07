@@ -1217,6 +1217,8 @@ One of the primary things that Workflows do is orchestrate the execution of Acti
 Activities are normal function/method executions that can interact with the world.
 For the Workflow to be able to execute the Activity, we must define the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a>.
 
+Temporal recommends that Activities are idempotent. Activities are idempotent if multiple applications of that operation do not change the state of the system beyond the initial application.
+
 <Tabs
 defaultValue="go"
 groupId="site-lang"
