@@ -269,6 +269,11 @@ const appDevGuideLinks = {
     },
     {
       book: true,
+      path: "/application-development/testing",
+      name: "Testing",
+    },
+    {
+      book: true,
       path: "/application-development/worker-performance",
       name: "Worker Performance",
     },

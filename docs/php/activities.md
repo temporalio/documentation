@@ -211,7 +211,7 @@ It takes the Activity's type and `ActivityOptions` as arguments.
 
 Calling (via `yield`) a method on this interface invokes an Activity that implements this method.
 An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
-Even if Activity execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+Even if Activity Execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
 It doesn't matter what happens to the processes that host the Workflow.
 The business logic code just sees a single method call.
 

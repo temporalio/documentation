@@ -2933,7 +2933,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow function should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) API available from the `go.temporal.io/sdk/workflow` package.
+To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
 
 ```go
 func SimpleWorkflow(ctx workflow.Context, value string) error {
