@@ -28,3 +28,7 @@ yarn-error.log*
 
 package-lock.json
 .vercel
+
+
+# .vscode
+.vscode/*

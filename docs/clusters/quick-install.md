@@ -1,11 +1,13 @@
 ---
 id: quick-install
 title: How to quickly install a Temporal Cluster for testing and local development
-sidebar_label: Run a dev Cluster
+sidebar_label: Run a development Cluster
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
 The following sections list various methods of deploying your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally, so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl-v1) commands to test and develop applications.
+
+The following sections list methods for deploying your Temporal development Clusters.
 
 - [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
 - [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
@@ -36,7 +38,7 @@ The following steps start and run a Temporal Cluster.
    ```bash
    temporalite start --namespace default
    ```
-   Replace `default` with your [Namespace Name](/cloud/#temporal-cloud-namespace-name).
+   Replace `default` with your [Namespace Name](/namespaces).
 
 **Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
 
@@ -73,7 +75,7 @@ To try other configurations (different dependencies and databases), or to try a 
 
 ### Gitpod
 
-You can run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
+Run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
 
 One-click deployments are available for the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo and the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo.
 
