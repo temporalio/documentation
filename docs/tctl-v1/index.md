@@ -1,8 +1,8 @@
 ---
 id: index
-title: tctl v1.16 command reference
+title: tctl v1.17 command reference
 sidebar_label: index
-description: How to use Temporal's tctl v1.16 developer tool
+description: How to use Temporal's tctl v1.17 developer tool
 toc_max_heading_level: 4
 ---
 
@@ -37,7 +37,7 @@ Workflow, show Workflow History, and Signal Workflow).
 
 ## Install
 
-> The Temporal tctl documentation covers version 1.16 of the Temporal CLI.
+> The Temporal tctl documentation covers version 1.17 of the Temporal CLI.
 
 You can install [tctl](/tctl-v1) in the following ways.
 
