@@ -19,7 +19,7 @@ The following sections will discuss the nature of this error and how to troubles
 :::note
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
-If you're using Temporal Cloud, consider filing a service ticket when this error occurs.
+If you're using Temporal Cloud, consider filing a [service ticket](https://support.temporal.io/) when this error occurs.
 
 :::
 
