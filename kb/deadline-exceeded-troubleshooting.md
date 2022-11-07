@@ -46,7 +46,6 @@ If the metrics come from a specific service (such as History Service), check tha
 
 #### Check Workflow logic
 
-Your Workflow may be missing some information needed to make the connection.
 Check your code and [configuration](/references/configuration) files for missing or invalid values in:
 
 - Server names
