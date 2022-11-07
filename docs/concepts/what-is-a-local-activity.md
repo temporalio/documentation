@@ -29,7 +29,8 @@ This is called Workflow Task Heartbeating.
 The drawbacks of long-running Local Activities are:
 
 - Each new Workflow Task results in 3 more Events in History.
-- New Commands created by the Workflow concurrently with the Local Activity will not be sent to the Cluster until either the Local Activity completes or the next Worker Task Heartbeat.
+- The Workflow won't get notified of new events like Signals and completions until the next Workflow Task Heartbeat.
+- New Commands created by the Workflow concurrently with the Local Activity will not be sent to the Cluster until either the Local Activity completes or the next Workflow Task Heartbeat.
 
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
