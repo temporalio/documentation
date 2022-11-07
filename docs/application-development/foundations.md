@@ -36,7 +36,7 @@ In this section you can find the following:
 
 ## Run a development Cluster
 
-The following sections list various methods of deploying your <a class="tdlp" href="/clusters#">Temporal Clusters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> locally, so that you can use and interact with the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> APIs and [tctl](/tctl-v1) commands to test and develop applications.
+The following sections list various methods of deploying your <a class="tdlp" href="/clusters#">Temporal Clusters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> locally, so that you can use and interact with the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> APIs and [tctl](/tctl-v1) commands to test and develop applications.
 
 The following sections list methods for deploying your Temporal development Clusters.
 
@@ -121,7 +121,7 @@ A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"
 
 An SDK provides you with the following:
 
-- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
+- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
 - APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow?</p><p class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#">Learn more</a></p></div></a>.
 - APIs to create and manage <a class="tdlp" href="/workers#">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a href="/workers#">Learn more</a></p></div></a>.
 - APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a href="/activities#activity-definition">Learn more</a></p></div></a>.
@@ -334,7 +334,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 ## Connect to a Cluster
 
-A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">TODO</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
+A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</p><p class="tdlplm"><a href="/temporal#temporal-client">Learn more</a></p></div></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -426,6 +426,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
+
 ```
 
 After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
@@ -440,6 +441,7 @@ WorkflowClient client = WorkflowClient.newInstance(
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
                     .build());
+
 ```
 
 For more information, see [WorkflowClientOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html).
@@ -647,25 +649,26 @@ A Workflow implementation implements a Workflow interface.
   }
 ```
 
+
 To call Activities in your Workflow, call the Activity implementation.
 
-Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+ Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
 
-You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+ You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 
-Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
-Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
+ Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+ Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
 
-The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
-These inputs can be specified by the Client when invoking the Workflow Execution.
+ The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+ These inputs can be specified by the Client when invoking the Workflow Execution.
 
-```java
-public class MyDynamicWorkflow implements DynamicWorkflow {
-   @Override
-    public Object execute(EncodedValues args) {
-    }
-}
-```
+ ```java
+ public class MyDynamicWorkflow implements DynamicWorkflow {
+    @Override
+     public Object execute(EncodedValues args) {
+     }
+ }
+ ```
 
 </TabItem>
 <TabItem value="php">
@@ -1312,20 +1315,20 @@ When an Activity implementation that extends `DynamicActivity` is registered, it
 The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
 
 ```java
-// Dynamic Activity implementation
- public static class DynamicGreetingActivityImpl implements DynamicActivity {
-   @Override
-   public Object execute(EncodedValues args) {
-     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-     return activityType
-         + ": "
-         + args.get(0, String.class)
-         + " "
-         + args.get(1, String.class)
-         + " from: "
-         + args.get(2, String.class);
-   }
- }
+ // Dynamic Activity implementation
+  public static class DynamicGreetingActivityImpl implements DynamicActivity {
+    @Override
+    public Object execute(EncodedValues args) {
+      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+      return activityType
+          + ": "
+          + args.get(0, String.class)
+          + " "
+          + args.get(1, String.class)
+          + " from: "
+          + args.get(2, String.class);
+    }
+  }
 ```
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
@@ -1497,20 +1500,20 @@ public interface YourActivities {
 The `execute` method in the dynamic Activity interface implementation takes in `EncodedValues` that are inputs to the Activity Execution, as shown in the following example.
 
 ```java
-// Dynamic Activity implementation
- public static class DynamicActivityImpl implements DynamicActivity {
-   @Override
-   public Object execute(EncodedValues args) {
-     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-     return activityType
-         + ": "
-         + args.get(0, String.class)
-         + " "
-         + args.get(1, String.class)
-         + " from: "
-         + args.get(2, String.class);
-   }
- }
+ // Dynamic Activity implementation
+  public static class DynamicActivityImpl implements DynamicActivity {
+    @Override
+    public Object execute(EncodedValues args) {
+      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+      return activityType
+          + ": "
+          + args.get(0, String.class)
+          + " "
+          + args.get(1, String.class)
+          + " from: "
+          + args.get(2, String.class);
+    }
+  }
 ```
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
@@ -1843,7 +1846,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout"> `setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout"> `ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a> are required) must be set for the Activity.
+- Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout">`setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout">`ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a> are required) must be set for the Activity.
   For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
   See <a class="tdlp" href="#run-worker-processes">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Worker Program in Java</p><p class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</p><p class="tdlplm"><a href="#run-worker-processes">Learn more</a></p></div></a>
@@ -1853,7 +1856,7 @@ Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an <a class="tdlp" href="/workflows#activitytaskscheduled"> `ActivityTaskScheduled` Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#activitytaskscheduled">Learn more</a></p></div></a>.
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an <a class="tdlp" href="/workflows#activitytaskscheduled">`ActivityTaskScheduled` Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#activitytaskscheduled">Learn more</a></p></div></a>.
 
 Activities can be invoked synchronously or asynchronously.
 
@@ -2689,12 +2692,12 @@ You can pass any number of dependencies in the Activity implementation construct
 The following example shows how to register a Workflow and an Activity with a Worker.
 
 ```java
-Worker worker = workerFactory.newWorker("your_task_queue");
-...
-// Register Workflow
-worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-// Register Activity
-worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+    Worker worker = workerFactory.newWorker("your_task_queue");
+    ...
+    // Register Workflow
+    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+    // Register Activity
+    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
 
 When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
@@ -2884,7 +2887,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See <a class="tdlp" href="/application-development/features#signal-with-start"> `SignalwithStart`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to send a Signal-with-Start in Java</p><p class="tdlppd">To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.</p><p class="tdlplm"><a href="/application-development/features#signal-with-start">Learn more</a></p></div></a> to start a Workflow Execution to receive a Signal from within another Workflow.
+See <a class="tdlp" href="/application-development/features#signal-with-start">`SignalwithStart`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to send a Signal-with-Start in Java</p><p class="tdlppd">To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.</p><p class="tdlplm"><a href="/application-development/features#signal-with-start">Learn more</a></p></div></a> to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -2924,7 +2927,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
   ```
 
 - Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The `WorkflowClient` <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+  The `WorkflowClient`<https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
 
   The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
 
@@ -3771,3 +3774,4 @@ try {
 
 </TabItem>
 </Tabs>
+

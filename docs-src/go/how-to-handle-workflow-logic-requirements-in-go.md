@@ -2,7 +2,7 @@
 id: how-to-handle-workflow-logic-requirements-in-go
 title: How to handle Workflow logic requirements in Go
 sidebar_label: Workflow logic requirements
-description: todo
+description: Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized
 tags:
   - go
   - how-to
