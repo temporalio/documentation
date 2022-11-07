@@ -426,7 +426,6 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
-
 ```
 
 After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
@@ -441,7 +440,6 @@ WorkflowClient client = WorkflowClient.newInstance(
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
                     .build());
-
 ```
 
 For more information, see [WorkflowClientOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html).
@@ -649,26 +647,25 @@ A Workflow implementation implements a Workflow interface.
   }
 ```
 
-
 To call Activities in your Workflow, call the Activity implementation.
 
- Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
 
- You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 
- Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
- Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
+Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
 
- The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
- These inputs can be specified by the Client when invoking the Workflow Execution.
+The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+These inputs can be specified by the Client when invoking the Workflow Execution.
 
- ```java
- public class MyDynamicWorkflow implements DynamicWorkflow {
-    @Override
-     public Object execute(EncodedValues args) {
-     }
- }
- ```
+```java
+public class MyDynamicWorkflow implements DynamicWorkflow {
+   @Override
+    public Object execute(EncodedValues args) {
+    }
+}
+```
 
 </TabItem>
 <TabItem value="php">
@@ -1315,20 +1312,20 @@ When an Activity implementation that extends `DynamicActivity` is registered, it
 The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
 
 ```java
- // Dynamic Activity implementation
-  public static class DynamicGreetingActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-      return activityType
-          + ": "
-          + args.get(0, String.class)
-          + " "
-          + args.get(1, String.class)
-          + " from: "
-          + args.get(2, String.class);
-    }
-  }
+// Dynamic Activity implementation
+ public static class DynamicGreetingActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
 ```
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
@@ -1500,20 +1497,20 @@ public interface YourActivities {
 The `execute` method in the dynamic Activity interface implementation takes in `EncodedValues` that are inputs to the Activity Execution, as shown in the following example.
 
 ```java
- // Dynamic Activity implementation
-  public static class DynamicActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-      return activityType
-          + ": "
-          + args.get(0, String.class)
-          + " "
-          + args.get(1, String.class)
-          + " from: "
-          + args.get(2, String.class);
-    }
-  }
+// Dynamic Activity implementation
+ public static class DynamicActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
 ```
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
@@ -2692,12 +2689,12 @@ You can pass any number of dependencies in the Activity implementation construct
 The following example shows how to register a Workflow and an Activity with a Worker.
 
 ```java
-    Worker worker = workerFactory.newWorker("your_task_queue");
-    ...
-    // Register Workflow
-    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-    // Register Activity
-    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+Worker worker = workerFactory.newWorker("your_task_queue");
+...
+// Register Workflow
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+// Register Activity
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
 
 When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
@@ -2927,7 +2924,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
   ```
 
 - Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The `WorkflowClient`<https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+  The `WorkflowClient` <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
 
   The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
 
@@ -3774,4 +3771,3 @@ try {
 
 </TabItem>
 </Tabs>
-
