@@ -10,7 +10,7 @@ tags:
 
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
-There are different types of Failures, and each has a different type in the SDKs and different information in the [protobuf messages](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114) (which are used to communicate with the Cluster and appear in [Event History](/concepts/what-is-an-event-history)).
+There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Cluster and appear in [Event History](/concepts/what-is-an-event-history)).
 
 ## Temporal Failure
 
