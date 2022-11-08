@@ -28,6 +28,7 @@ html[data-theme="dark"] {
   --ifm-footer-background-color: #000000;
   --ifm-navbar-background-color: #000000;
   --ifm-color: #f9fafb;
+  --ifm-preview-text: #f9fafb;
   --ifm-link-color: #f9fafb;
   --ifm-link-hover-color: var(--ifm-color-primary);
   /* --ifm-menu-color-active: var(--ifm-color-primary-lighter);
@@ -53,7 +54,7 @@ html[data-theme="light"] {
   /* --ifm-color: var(--ifm-color-primary-dark); */
   --ifm-link-color: #111827;
   --ifm-link-hover-color: var(--ifm-color-primary);
-
+  --ifm-preview-text: #141414;
   /* --ifm-menu-color-active: var(--ifm-color-primary);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary);
   --ifm-toc-link-color: var(--ifm-color-primary-dark);
@@ -728,15 +729,15 @@ a.tdlp .tdlpc {
   margin-top: -125px;
   margin-left: -120px;
   max-width: 365px;
+  color: var(--ifm-preview-text);
 }
 
 a.tdlp:hover .tdlpc {
   display: inline;
   position: absolute;
-  background-color: #ffffff;
+  background-color: var(--ifm-background-color);
   border: 1px solid #dbdbdb;
   border-radius: 3px;
-  color: #141414;
   z-index: 5;
 }
 
