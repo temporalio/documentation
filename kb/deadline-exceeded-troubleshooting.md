@@ -12,7 +12,7 @@ Sometimes, when these requests can't be completed, you'll see this particular er
 `Context: deadline exceeded` is an error that occurs when requests are not completed on time.
 Network interruptions, short timeouts, server overload, and Query errors are some of the reasons that can cause this error.
 
-The following sections will discuss the nature of this error and how to troubleshoot it.
+The following sections discuss the nature of this error and how to troubleshoot it.
 
 #### Check your logs
 
