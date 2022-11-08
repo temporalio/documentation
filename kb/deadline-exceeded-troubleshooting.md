@@ -33,7 +33,7 @@ Verify that the Frontend Service is connected by opening the Web UI in your brow
 
 Check that the following are up and running with `tctl cluster` commands:
 
-- [History Service](/concepts/what-is-a-history-service)
+- [History Service](/clusters#history-service)
 - [Persistence](/clusters#persistence) database
 - [Advanced Visibility](/concepts/what-is-advanced-visibility) database
 
