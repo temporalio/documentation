@@ -101,4 +101,4 @@ Run `tctl cluster` commands to fix issues through CLI.
 
 ---
 
-If you were unable to resolve your issue, please visit the [community forum](https://community.temporal.io), [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
+If you were unable to resolve your issue, check for similar questions and possible solutions on [community forum](https://community.temporal.io), [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
