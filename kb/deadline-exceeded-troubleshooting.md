@@ -8,8 +8,6 @@ date: 2022-11-08T00:00:00Z
 
 All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
-
-`Context: deadline exceeded` is an error that occurs when requests are not completed on time.
 Network interruptions, short timeouts, server overload, and Query errors are some of the reasons that can cause this error.
 
 The following sections discuss the nature of this error and how to troubleshoot it.
@@ -79,10 +77,6 @@ If the error persists, review your Workflow Execution History and server logs fo
 
 One or more services may be unable to connect to the [Frontend Service](/clusters#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
-
-Check service metrics, history logs, and connectivity between system components.
-If you're running the Cluster in a container, check that service's history or log files.
-If needed, modify configuration files and run diagnostic commands specific to your environment.
 
 Increase the timeout value so that requests can be finished before the connection terminates.
 
