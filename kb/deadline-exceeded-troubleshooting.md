@@ -29,7 +29,7 @@ If you're using Temporal Cloud, consider filing a [service ticket](https://suppo
 
 Service logs can show which parts of the Cluster aren't working.
 
-Verify that the frontend is connected by opening the Web UI in your browser.
+Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
 Check that the following are up and running with `tctl cluster` commands:
 
