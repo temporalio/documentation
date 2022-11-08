@@ -2,7 +2,7 @@
 id: how-to-handle-workflow-logic-requirements-in-go
 title: How to handle Workflow logic requirements in Go
 sidebar_label: Workflow logic requirements
-description: Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized
+description: In Go, Workflow Definition code cannot directly do a few things to adhere to deterministic constraints.
 tags:
   - go
   - how-to
