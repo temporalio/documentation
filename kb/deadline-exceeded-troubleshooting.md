@@ -88,7 +88,7 @@ Increase the timeout value so that requests can be finished before the connectio
 
 ::: note
 
-If you increase timeouts or ConnectionAge values, consider adding a hot spotting check to prevent server overload.
+If you increase timeouts or `ConnectionAge` values, consider checking for server overload.
 
 :::
 
