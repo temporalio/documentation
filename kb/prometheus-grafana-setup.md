@@ -27,7 +27,7 @@ If you’re following through with implementing the examples, ensure that you ha
 
 To set up Prometheus and Grafana:
 
-1. Setup Prometheus endpoints for your [Cluster](#cluster-metrics-setup) and [SDK metrics](sdk-metrics-setup).
+1. Setup Prometheus endpoints for your [Cluster](#cluster-metrics-setup) and [SDK metrics](#sdk-metrics-setup).
 2. [Configure Prometheus](#prometheus-configuration) to receive metrics data from your Cluster and SDK Clients.
    Make sure to test whether you are receiving metrics data on your Prometheus endpoint.
 3. [Setup Grafana](#grafana-configuration) to use Prometheus as a datasource.
