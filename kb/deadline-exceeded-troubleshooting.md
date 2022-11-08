@@ -73,7 +73,7 @@ Server names and certificates must match between frontend and internode.
 You might not be giving the Cluster enough time to respond and reconnect.
 Restart the Server, wait, and then check all services for connectivity and further errors.
 
-If the error persists, review your history and server logs for more specific causes before continuing to troubleshoot.
+If the error persists, review your Workflow Execution History and server logs for more specific causes before continuing to troubleshoot.
 
 #### When executing or scheduling Workflows
 
