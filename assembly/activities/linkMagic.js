@@ -159,7 +159,7 @@ function centeredImage(image) {
 }
 
 function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">${nodeTitle}</p><p class="tdlppd">${description}</p><p class="tdlplm"><a href="${newPath}">Learn more</a></p></div></a>`;
+  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">${nodeTitle}</p><p class="tdlppd">${description}</p><p class="tdlplm"><a class="tdlplma" href="${newPath}">Learn more</a></p></div></a>`;
 }
 
 async function replaceLinks(line, match, link, current_guide_id) {
