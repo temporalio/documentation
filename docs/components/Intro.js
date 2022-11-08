@@ -269,6 +269,11 @@ const appDevGuideLinks = {
     },
     {
       book: true,
+      path: "/application-development/testing",
+      name: "Testing",
+    },
+    {
+      book: true,
       path: "/application-development/worker-performance",
       name: "Worker Performance",
     },
@@ -554,6 +559,7 @@ function Explained() {
       <div className="landing-card-section">
         <h2 className="h2-landing">Devtools</h2>
         <ul className="landing-card-list">{displayLinks(devTools.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(devTools.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/references/">
