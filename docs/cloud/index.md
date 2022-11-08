@@ -59,9 +59,9 @@ Each Namespace Name must conform to the following rules:
 A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
 A Namespace Id is formed by concatenating the following:
 
-1. A <a class="tdlp" href="#temporal-cloud-namespace-name">Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Cloud Namespace Name?</p><p class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</p><p class="tdlplm"><a class="tdlplma" href="#temporal-cloud-namespace-name">Learn more</a></p></div></a>
+1. A <a class="tdlp" href="#temporal-cloud-namespace-name">Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Cloud Namespace Name?</p><p class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</p><p class="tdlplm"><a href="#temporal-cloud-namespace-name">Learn more</a></p></div></a>
 1. A period (.)
-1. The <a class="tdlp" href="#temporal-cloud-account-id">Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cloud Account Id?</p><p class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</p><p class="tdlplm"><a class="tdlplma" href="#temporal-cloud-account-id">Learn more</a></p></div></a> to which the Namespace belongs
+1. The <a class="tdlp" href="#temporal-cloud-account-id">Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cloud Account Id?</p><p class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</p><p class="tdlplm"><a href="#temporal-cloud-account-id">Learn more</a></p></div></a> to which the Namespace belongs
 
 For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
