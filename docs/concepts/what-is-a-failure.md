@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A Failure is Temporal's representation of various types of errors that occur in the system. 
+A Failure is Temporal's representation of various types of errors that occur in the system.
 
 There are different types of Failures, and each has a different type in the SDKs and different information in the [protobuf messages](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114) (which are used to communicate with the Cluster and appear in [Event History](/concepts/what-is-an-event-history)).
 
@@ -40,13 +40,13 @@ This is the only type of Failure created and thrown by user code.
 
 ### Throw from Workflows
 
-In Workflows, if you throw (or return in Go) an error that is not an Application Failure, the Workflow Task will fail and be retried. 
+In Workflows, if you throw (or return in Go) an error that is not an Application Failure, the Workflow Task will fail and be retried.
 If you throw an Application Failure, the Workflow Execution will fail, and may be retried according to its Retry Policy.
 
 ### Throw from Activities
 
-In Activities, you can either throw an Application Failure or another Error to fail the Activity Task. 
-In the latter case, the error will be converted to an Application Failure. 
+In Activities, you can either throw an Application Failure or another Error to fail the Activity Task.
+In the latter case, the error will be converted to an Application Failure.
 During conversion, the following Application Failure fields are set:
 
 - `type` is set to the error's class name
@@ -55,16 +55,17 @@ During conversion, the following Application Failure fields are set:
 - `details` are set to null
 - stack trace is copied
 
-When an [Activity Execution](/concepts/what-is-an-activity-execution) fails, the Application Failure from the last Activity Task will be the `cause` field of the  [ActivityFailure](#activity-failure) thrown in the Workflow.
+When an [Activity Execution](/concepts/what-is-an-activity-execution) fails, the Application Failure from the last Activity Task will be the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
 
 ### Non-retryable
 
-When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/concepts/what-is-a-retry-policy#non-retryable-errors) to determine whether to retry the Activity or Workflow. 
+When an Activity or Workflow throws an Application Failure, the Failure's `type` field is matched against a Retry Policy's list of [non-retryable errors](/concepts/what-is-a-retry-policy#non-retryable-errors) to determine whether to retry the Activity or Workflow.
 Activities and Workflow can also avoid retrying by setting an Application Failure's `non_retryable` flag to `true`.
 
 ## Cancelled Failure
 
-A Cancelled Failure is thrown when [Cancellation](/concepts/what-is-an-activity-execution#cancellation) has been requested. 
+A Cancelled Failure is thrown when [Cancellation](/concepts/what-is-an-activity-execution#cancellation) has been requested.
+
 <!-- TODO also link to Workflow Cancellation concept -->
 
 When a Workflow or Activity has been successfully Cancelled, a Cancelled Failure will be the `cause` field of the Activity Failure or "Workflow failed" error.
@@ -77,9 +78,9 @@ When a Workflow or Activity has been successfully Cancelled, a Cancelled Failure
 
 ## Activity Failure
 
-An Activity Failure is delivered to the Workflow Execution when an Activity fails. 
-It contains information about the failure and the Activity Execution, for example the Activity Type and Id. 
-The reason for the failure will be in the `cause` field. 
+An Activity Failure is delivered to the Workflow Execution when an Activity fails.
+It contains information about the failure and the Activity Execution, for example the Activity Type and Id.
+The reason for the failure will be in the `cause` field.
 For example, if an Activity Execution times out, the `cause` will be a [Timeout Failure](#timeout-failure).
 
 - TS: [`ActivityFailure`](https://typescript.temporal.io/api/classes/client.ActivityFailure)
@@ -90,9 +91,9 @@ For example, if an Activity Execution times out, the `cause` will be a [Timeout 
 
 ## Child Workflow Failure
 
-A Child Workflow Failure is delivered to the Workflow Execution when a Child Workflow Execution fails. 
-It contains information about the failure and the Child Workflow Execution, for example the Workflow Type and Id. 
-The reason for the failure will be in the `cause` field. 
+A Child Workflow Failure is delivered to the Workflow Execution when a Child Workflow Execution fails.
+It contains information about the failure and the Child Workflow Execution, for example the Workflow Type and Id.
+The reason for the failure will be in the `cause` field.
 
 - TS: [`ChildWorkflowFailure`](https://typescript.temporal.io/api/classes/client.ChildWorkflowFailure)
 - Java: [`ChildWorkflowFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ChildWorkflowFailure.html)

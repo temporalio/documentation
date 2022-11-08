@@ -39,10 +39,10 @@ An Activity may receive Cancellation if:
 The reason for the Cancellation is in the Cancelled Failure's `message` field.
 
 There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
-An Activity may accept or ignore Cancellation: 
+An Activity may accept or ignore Cancellation:
 
-- To allow Cancellation to happen, let the Cancellation Failure propagate. 
-- To ignore Cancellation, catch it and continue executing. 
+- To allow Cancellation to happen, let the Cancellation Failure propagate.
+- To ignore Cancellation, catch it and continue executing.
 
 The Workflow can also decide if it wants to wait for the Activity Cancellation to be accepted or to proceed without waiting.
 
