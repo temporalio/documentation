@@ -18,19 +18,20 @@ After you enable your monitoring tool, you can relay these metrics to any monito
 
 This article discusses setting up Prometheus and Grafana to view metrics data on Temporal Cluster, Temporal Client, and Temporal Worker performance.
 
-Each section describes setting up Prometheus and Grafana, with an example on how you can do this in your local docker-compose Temporal Cluster setup and with the Java SDK.
-If you’re following through with implementing the examples, ensure that you have your local docker-compose set up, added your SDK, and have a sample application to work with (you can clone the SDK samples repositories to get started with).
+Each section includes an example on how you can do this in your local docker-compose Temporal Cluster setup and with the Java SDK.
+If you implement the examples, ensure that your local docker-compose is set up, install your SDK, and have a sample application to work with.
+(To get started, you can clone the SDK samples repositories.)
 
-- See [Run a dev Cluster](/application-development/foundations#docker-compose) for details on how to set up your local Temporal docker-compose.
-- See [Add your SDK](/application-development/foundations#add-your-sdk) for details on how to add your SDK and get started with samples.
-- Create your own sample from the workshops or tutorials, or [clone an existing sample/or example](/application-development/foundations?lang=java#code-samples).
+- See [Docker Compose](/application-development/foundations#docker-compose) for details on how to set up your local Temporal docker-compose.
+- See [Install a Temporal SDK](/application-development/foundations#install-a-temporal-sdk) for details on how to install your SDK and get started with samples.
+- Create your own sample from the workshops or tutorials, or clone an existing [code sample](/application-development/foundations?lang=java#code-samples).
 
 To set up Prometheus and Grafana:
 
-1. Setup Prometheus endpoints for your [Cluster](#cluster-metrics-setup) and [SDK metrics](#sdk-metrics-setup).
+1. Set up Prometheus endpoints for your [Cluster metrics](#cluster-metrics-setup) and [SDK metrics](#sdk-metrics-setup).
 2. [Configure Prometheus](#prometheus-configuration) to receive metrics data from your Cluster and SDK Clients.
    Make sure to test whether you are receiving metrics data on your Prometheus endpoint.
-3. [Setup Grafana](#grafana-configuration) to use Prometheus as a datasource.
+3. [Set up Grafana](#grafana-configuration) to use Prometheus as a data source.
 4. Set up your [Grafana dashboard](#grafana-dashboard-setup) with Prometheus queries to display relevant data.
 
 ## Prometheus setup and configuration
@@ -44,7 +45,7 @@ To enable Prometheus to receive metrics data, set listen addresses in the Server
 
 The [docker-compose setup](https://github.com/temporalio/docker-compose/blob/0bca458992ef5135700dcd9369a53fcda30356b0/docker-compose.yml) provided for local development sets up most Temporal Services in one Docker container.
 
-Here’s an example for how to expose a Prometheus endpoint on your local docker-compose Temporal Cluster configuration:
+Here’s an example of how to expose a Prometheus endpoint on your local docker-compose Temporal Cluster configuration:
 
 ```
 version: "3.5"
@@ -85,19 +86,20 @@ Depending on how you deploy your Temporal Cluster, you can set different ports f
 SDK metrics are emitted by Clients and must be set up in your application code.
 The [Metrics section in the Observability guide](/application-development/observability#metrics) details how to set this up for all the supported SDKs.
 
-For example, with the Java SDK, you can set up the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint for Prometheus to scrape the SDK Client metrics from in the following way.
+For example, with the Java SDK, you can set up the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK Client metrics in the following way.
 
 ```java
 //...
-//You will need to import these packages for setting up metrics in Java. See the developer's guide linked in the description here for packages required for the other SDKs.
+// You need to import the following packages to set up metrics in Java.
+// See the Developer's guide for packages required for the other SDKs.
 import com.sun.net.httpserver.HttpServer;
 import com.uber.m3.tally.RootScopeBuilder;
 import com.uber.m3.tally.Scope;
 import com.uber.m3.util.Duration;
 import com.uber.m3.util.ImmutableMap;
 
-  // see the Micrometer documentation for configuration details on other supported monitoring systems.
-  // in this example shows how to set up the Prometheus registry and stats reported.
+  // See the Micrometer documentation for configuration details on other supported monitoring systems.
+  // This example shows how to set up the Prometheus registry and stats reported.
 
   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
@@ -112,19 +114,18 @@ import com.uber.m3.util.ImmutableMap;
             .reporter(reporter)
             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
 
-  // for Prometheus collection, expose the scrape endpoint at port 8077. For example,
+  // For Prometheus collection, expose the scrape endpoint at port 8077. For example,
   HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8077);
-  // Stopping the starter will stop the http server that exposes the
-  // scrape endpoint.
+  // Stopping the starter stops the HTTP server that exposes the scrape endpoint.
   //Runtime.getRuntime().addShutdownHook(new Thread(() -> scrapeEndpoint.stop(1)));
 
-  //Create WF service stubs to connect to the front end service.
+  //Create Workflow service stubs to connect to the Frontend Service.
   WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(
          WorkflowServiceStubsOptions.newBuilder()
                  .setMetricsScope(scope) //set the metrics scope for the WorkflowServiceStubs
                  .build());
 
-  //Create a Workflow service client which can be used to start, Signal, and Query Workflow Executions.
+  //Create a Workflow service client, which can be used to start, signal, and query Workflow Executions.
   WorkflowClient yourClient = WorkflowClient.newInstance(service,
          WorkflowClientOptions.newBuilder().build());
 
@@ -132,15 +133,15 @@ import com.uber.m3.util.ImmutableMap;
 ```
 
 You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions.
-To use this example, add this example code with the Prometheus endpoint on port 8077 in your Worker program, and use `yourClient` to start your Workers.
-Similarly, in your starter code, add this example code and set the Prometheus endpoint to port 8078, create a Workflow Client (as described in the code example), and use it to start your Workflow Execution.
+To use this example, add the example code with the Prometheus endpoint on port 8077 to your Worker program, and use `yourClient` to start your Workers.
+Similarly, in your starter code, add the example code and set the Prometheus endpoint to port 8078, create a Workflow Client (as described in the code example), and use it to start your Workflow Execution.
 
-For more examples on how this is set across SDKs, see the metrics samples:
+For more examples on how to set up SDK metrics in other SDKs, see the metrics samples:
 
 - [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
-In your Workers, you can set specific WorkerOptions for performance tuning, as described in the [Worker Performance Guide](/application-development/worker-performance).
+In your Workers, you can set specific `WorkerOptions` for performance tuning, as described in the [Worker Performance Guide](/application-development/worker-performance).
 
 With the scrape endpoints set, define your Prometheus scrape configuration and targets to receive the metrics data from the Temporal Cluster and Temporal SDKs.
 
@@ -168,13 +169,13 @@ services:
 #...
 ```
 
-The Prometheus container configuration will be read from ./deployment/prometheus/config.yml, so for this example, create a Prometheus configuration YAML file config.yml at ./deployment/prometheus in your docker-compose Temporal Cluster project.
+The Prometheus container configuration will be read from `./deployment/prometheus/config.yml`, so for this example, create a Prometheus configuration YAML file config.yml at `./deployment/prometheus` in your docker-compose Temporal Cluster project.
 
 For other ways to set your Prometheus configuration, see the [Prometheus Configuration documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
 Next, add your Prometheus setup configuration to scrape metrics data from the Temporal Cluster and SDK Client target endpoints.
 
-For example, open the Prometheus configuration YAML file, created in the previous example at ./deployment/prometheus/config.yml, and add the following configuration to scrape metrics from targets set on the docker-compose Temporal Cluster and SDK Clients in the previous sections.
+For example, open the Prometheus configuration YAML file, created in the previous example at `./deployment/prometheus/config.yml`, and add the following configuration to scrape metrics from targets set on the docker-compose Temporal Cluster and SDK Clients in the previous sections.
 
 ```
 global:
@@ -198,22 +199,28 @@ scrape_configs:
          group: 'sdk-metrics'
 ```
 
-In this example, Prometheus is configured to scrape at 10 seconds interval, and to listen for Cluster metrics on `host.docker.internal:8000` and SDK metrics on two targets `host.docker.internal:8077` and `host.docker.internal:8078`.
-The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK, and can be used to create Workers and make Client API calls to start Workflow Executions, send Signals, Queries etc. See the [SDK Metrics](#sdk-metrics-setup) section for details.
+In this example, Prometheus is configured to scrape at 10-second intervals and to listen for Cluster metrics on `host.docker.internal:8000` and SDK metrics on two targets, `host.docker.internal:8077` and `host.docker.internal:8078`.
+The `8077` and `8078` ports must be set on `WorkflowServiceStubs` in your application code with your preferred SDK.
+You can use these ports to create Workers and make Client API calls to start Workflow Executions and send Signals and Queries.
+See the [SDK Metrics](#sdk-metrics-setup) section for details.
 You can set up as many targets as required.
 
 For more details on how to configure Prometheus, refer the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
-To check whether you’re receiving your metrics data, restart your local docker-compose Temporal Cluster (with the configuration provided in the examples here) and check:
+To check whether you’re receiving your metrics data, restart your local docker-compose Temporal Cluster (with the configuration provided in the examples here) and check the following ports:
 
-- [localhost:8000/metrics](http://localhost:8000/metrics) - this is the port you’re exposing your Cluster metrics on. You should see all the Cluster metrics emitted when you start up your local docker-compose Temporal Cluster.
-- [localhost:8077/metrics](http://localhost:8077/metrics) - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
-- [localhost:8078/metrics](http://localhost:8078/metrics) - this is the port you’re exposing your SDK metrics on. Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
-- [localhost:9090/](http://localhost:9090/) - this is the port set for Prometheus detail; Go to Status > Targets to check the statuses of all your Prometheus target endpoints.
+- [localhost:8000/metrics](http://localhost:8000/metrics) - The port for exposing your Cluster metrics.
+  You should see all the Cluster metrics emitted when you start your local docker-compose Temporal Cluster.
+- [localhost:8077/metrics](http://localhost:8077/metrics) - The port for exposing your SDK metrics.
+  Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
+- [localhost:8078/metrics](http://localhost:8078/metrics) - The port for exposing your SDK metrics.
+  Depending on whether you have set this port on the Client that is starting your Worker or your Workflow Executions, the related metrics should show when you start your Worker or Workflow Execution.
+- [localhost:9090/](http://localhost:9090/) - The port for Prometheus detail.
+  Go to **Status > Targets** to check the statuses of your Prometheus target endpoints.
 
 ## Grafana configuration
 
-With Prometheus set up, set up Grafana to use Prometheus as a data source.
+With Prometheus configured, set up Grafana to use Prometheus as a data source.
 
 For example, in the modified local docker-compose Temporal Cluster setup described in the previous section, create a separate container with port 8085 for Grafana.
 
@@ -240,11 +247,12 @@ services:
 ```
 
 Note that in this example, Grafana is set up to start without authorizations; this is not a good practice and is not recommended.
-For more information on how to custimize your Grafana setup, see the [Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/).
+For more information on how to customize your Grafana setup, see the [Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/).
 
-Next, configure Grafana to use Prometheus as the datasource. You can do this either on the UI or in your Grafana deployment configuration.
+Next, configure Grafana to use Prometheus as the data source.
+You can do this either on the UI or in your Grafana deployment configuration.
 
-For the example above, create a configuration file (for example - config.yml) file at ./deployment/grafana/provisioning/datasource in your docker-compose Temporal Cluster project and configure the Prometheus data source for Grafana, as shown:
+For the preceding example, create a configuration file (for example, config.yml) at `./deployment/grafana/provisioning/datasource` in your docker-compose Temporal Cluster project and configure the Prometheus data source for Grafana, as shown:
 
 ```
 apiVersion: 1
@@ -264,16 +272,16 @@ After you update this configuration, restart your local docker-compose Temporal 
 
 ### Grafana dashboard setup
 
-Set up your dashboards in Grafana, using either the UI or configure your dashboards in your Grafana deployment on the Cluster, as done in this [example](https://github.com/tsurdilo/my-temporal-dockercompose/tree/main/deployment/grafana/dashboards).
+To set up your dashboards in Grafana, either use the UI or configure them in your Grafana deployment on the Cluster, as done in this [dashboards](https://github.com/tsurdilo/my-temporal-dockercompose/tree/main/deployment/grafana/dashboards) example.
 
 In your Grafana dashboard, add your Prometheus query to call specific metrics.
 The [Temporal Cluster Metrics reference](/references/cluster-metrics) describes a few metrics and queries that you can get started with.
 
 For example, to create a dashboard in your local Grafana UI at [localhost:8085](http://localhost:8085):
 
-1. Go to Create > Dashboard, and add an empty panel.
-2. On the Panel configuration page, in the Query tab, select "Temporal Prometheus" as the datasource.
-3. In the Metrics field, copy any of the queries listed in the [Temporal Cluster Metrics reference](/references/cluster-metrics);
+1. Go to **Create > Dashboard**, and add an empty panel.
+2. On the **Panel configuration** page, in the **Query** tab, select **Temporal Prometheus** as the data source.
+3. In the **Metrics** field, use any of the queries listed in the [Temporal Cluster Metrics reference](/references/cluster-metrics).
    For example, add `sum by (operation) (rate(service_requests{service_name="frontend"}[2m]))` to see all the Frontend Service requests on your local docker-compose Temporal Cluster.
 4. You should see the graph show metrics data for the Frontend Service from the docker-compose Temporal Cluster.
 5. When you start your Workflows (after setting up your SDK Metrics), you will see your SDK metrics in the graph as well.
@@ -282,8 +290,8 @@ For example, to create a dashboard in your local Grafana UI at [localhost:8085](
 You can add multiple queries in your dashboard to report relevant data.
 For more details on configuring Grafana dashboards, see the [Grafana Dashboards documentation](https://grafana.com/docs/grafana/latest/dashboards/).
 
-Once you have your dashboard set up, you can start experimenting with different samples provided in the Temporal samples repositories.
+After you set up your dashboard, you can start experimenting with different samples provided in the Temporal samples repositories.
 
-Temporal also has a [repository of community-driven dashboards](https://github.com/temporalio/dashboards) that you can get started with.
+Temporal also has a repository of community-driven [Grafana dashboards](https://github.com/temporalio/dashboards) that you can get started with.
 You can set these up in your Grafana configuration to show the dashboards by default when you start your Cluster.
-Note that if you are following the examples provided here, and importing a dashboard from the community-driven dashboards repository, check and update the datasource for each panel to "Temporal Prometheus" (which is the name set for the Prometheus data source in the [Grafana configuration](#grafana-configuration) section.
+If you are following the examples provided here and importing a dashboard from the community-driven dashboards repository, update the data source for each panel to "Temporal Prometheus" (which is the name set for the Prometheus data source in the [Grafana configuration](#grafana-configuration) section).
