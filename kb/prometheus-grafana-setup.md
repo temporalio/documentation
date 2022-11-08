@@ -12,7 +12,7 @@ The Temporal Cluster and SDKs emit metrics that can be used to monitor performan
 - StatsD
 - M3
 
-Once you have enabled your monitoring tool, you can relay these metrics to any monitoring and observability platform.
+After you enable your monitoring tool, you can relay these metrics to any monitoring and observability platform.
 
 <!-- truncate -->
 
