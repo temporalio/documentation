@@ -96,7 +96,7 @@ If you increase timeouts or `ConnectionAge` values, consider checking for server
 
 The Cluster may have deployed with missing or incorrect values.
 
-Check your environment for containers that terminated or failed.
+Check your environment for services that terminated or failed to start correctly.
 Run `tctl cluster` commands to fix issues through CLI.
 
 ---
