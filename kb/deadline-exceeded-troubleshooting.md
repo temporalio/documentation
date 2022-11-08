@@ -66,7 +66,7 @@ tctl --address [SERVER_ADDRESS] cluster health
 ```
 
 Add any missing [environment variables](/references/web-ui-environment-variables) to the configuration files, and correct any incorrect values.
-Server names and certificates must match between frontend and internode.
+Server names and certificates must match between Frontend and internode.
 
 #### After restarting the Temporal Cluster
 
