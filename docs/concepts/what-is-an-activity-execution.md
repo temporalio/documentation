@@ -14,20 +14,37 @@ An Activity Execution is the full chain of [Activity Task Executions](/concepts/
 
 ![Activity Execution](/diagrams/activity-execution.svg)
 
-An Activity Execution has no time limit.
-Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
+By default, an Activity Execution has no time limit.
+Activity Execution [timeouts](/application-development/features#activity-timeouts) and [retry policies](/concepts/what-is-a-retry-policy) can be customized.
 
-If for any reason an Activity Execution does not complete (exhausts all retries), the error is returned to the [Workflow](/workflows), which decides how to handle it.
+If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/concepts/what-is-a-retry-policy#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
-### Request Cancellation
+### Cancellation
 
-A Workflow can request to cancel an Activity Execution.
-When an Activity Execution is canceled, or its Workflow Execution has completed or failed, the context passed into its function is canceled, which also sets its channel’s closed state to `Done`.
-An Activity can use that to perform any necessary cleanup and abort its execution.
+Activity Cancellation:
 
-Cancellation requests are only delivered to Activity Executions that Heartbeat:
+- lets the Activity know it doesn't need to keep doing work, and
+- gives the Activity time to clean up any resources it has created.
 
-- The Heartbeat request fails with a special error indicating that the Activity Execution is canceled.
-  Heartbeats can also fail when the Workflow Execution that spawned it is in a completed state.
-- The Activity should perform all necessary cleanup and report when it is done.
-- The Workflow can decide if it wants to wait for the Activity cancellation confirmation or proceed without waiting.
+Activities can only receive Cancellation if they emit Heartbeats or are Local Activities (which can't heartbeat but receive Cancellation anyway).
+
+An Activity may receive Cancellation if:
+
+- The Activity or Activity's Workflow was requested to be Cancelled and the Activity's Cancellation type was **not** set to `ABANDON`.
+- The Worker has started to shut down.
+- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/concepts/what-is-a-failure#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
+- An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured [Data Converter](/concepts/what-is-a-data-converter).
+- The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
+
+The reason for the Cancellation is in the Cancelled Failure's `message` field.
+
+There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
+An Activity may accept or ignore Cancellation: 
+
+- To allow Cancellation to happen, let the Cancellation Failure propagate. 
+- To ignore Cancellation, catch it and continue executing. 
+
+The Workflow can also decide if it wants to wait for the Activity Cancellation to be accepted or to proceed without waiting.
+
+Cancellation can only be requested a single time.
+If you try to cancel your Activity Execution more than once, it will not receive more than one Cancellation request.
