@@ -10,7 +10,7 @@ All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster
 Sometimes, when these requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 
 `Context: deadline exceeded` is an error that occurs when requests are not completed on time.
-Network interruptions, short timeouts, server overload, and Query errors can cause this error.
+Network interruptions, short timeouts, server overload, and Query errors are some of the reasons that can cause this error.
 
 The following sections will discuss the nature of this error and how to troubleshoot it.
 
