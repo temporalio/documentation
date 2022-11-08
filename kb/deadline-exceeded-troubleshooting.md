@@ -35,7 +35,7 @@ Check that the following are up and running with `tctl cluster` commands:
 
 - [History Service](/clusters#history-service)
 - [Persistence](/clusters#persistence) database
-- [Advanced Visibility](/concepts/what-is-advanced-visibility) database
+- [Advanced Visibility](/visibility#advanced-visibility) database
 
 Logs can also be used to find [Query](/concepts/what-is-a-query) errors.
 
