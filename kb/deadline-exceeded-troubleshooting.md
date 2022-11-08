@@ -17,7 +17,8 @@ The following sections discuss the nature of this error and how to troubleshoot 
 :::note
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
-If you're using Temporal Cloud, consider filing a [service ticket](https://support.temporal.io/) when this error occurs.
+
+If you're using Temporal Cloud, check your Workflow History for errors, look for latencies and errors in your Cloud metrics, and create a [support ticket](https://support.temporal.io/) with Temporal providing these details.
 
 :::
 
