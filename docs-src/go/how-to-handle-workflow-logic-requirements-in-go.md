@@ -2,7 +2,7 @@
 id: how-to-handle-workflow-logic-requirements-in-go
 title: How to handle Workflow logic requirements in Go
 sidebar_label: Workflow logic requirements
-description: todo
+description: In Go, Workflow Definition code cannot directly do a few things to adhere to deterministic constraints.
 tags:
   - go
   - how-to

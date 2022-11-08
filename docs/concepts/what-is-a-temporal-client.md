@@ -2,7 +2,7 @@
 id: what-is-a-temporal-client
 title: What is a Temporal Client
 sidebar_label: Temporal Client
-description: TODO
+description: A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.
 tags:
   - term
   - explanation
