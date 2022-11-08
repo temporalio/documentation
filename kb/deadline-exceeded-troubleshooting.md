@@ -77,7 +77,7 @@ If the error persists, review your history and server logs for more specific cau
 
 #### When executing or scheduling Workflows
 
-One or more services may be unable to connect to the frontend.
+One or more services may be unable to connect to the [Frontend Service](/clusters#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
 
 Check service metrics, history logs, and connectivity between system components.
