@@ -57,7 +57,7 @@ The release notes of each Temporal Server declare when we plan to drop support f
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Monitoring and observing those metrics is optional.
-Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions only.
+Any metrics software that supports the same format can be used. Currently, we test with the following Prometheus and Grafana versions:
 
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**

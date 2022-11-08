@@ -30,7 +30,6 @@ Workflow, show Workflow History, and Signal Workflow).
 ### Available commands
 
 - [tctl activity](/tctl-next/activity/)
-- [tctl alias](/tctl-next/alias)
 - [tctl batch](/tctl-next/batch/)
 - [tctl cluster](/tctl-next/cluster/)
 - [tctl data-converter](/tctl-next/data-converter/)
