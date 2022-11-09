@@ -18,7 +18,7 @@ Most SDKs have a base class that the other Failures extend:
 
 - TS: [`TemporalFailure`](https://typescript.temporal.io/api/classes/client.TemporalFailure)
 - Java: [`TemporalFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TemporalFailure.html)
-- Python: [`TemporalError`](https://python.temporal.io/temporalio.exceptions.TemporalError.html)
+- Python: [`FailureError`](https://python.temporal.io/temporalio.exceptions.FailureError.html)
 
 The base [`Failure` proto message](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114) has these fields:
 
