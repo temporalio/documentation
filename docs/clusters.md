@@ -62,7 +62,7 @@ The release notes of each Temporal Server declare when we plan to drop support f
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Monitoring and observing those metrics is optional.
-Any software that can pull metrics that supports the same format could be used, but we ensure it works with Prometheus and Grafana versions only.
+Any metrics software that supports the same format can be used. Currently, we test with the following Prometheus and Grafana versions:
 
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
@@ -297,7 +297,7 @@ If you don't set the Retention Period value when using the [`RegisterNamespaceRe
 
 Archival is a feature that automatically backs up <a class="tdlp" href="/workflows#event-history">Event Histories<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#event-history">Learn more</a></p></div></a> and Visibility records from Temporal Cluster persistence to a custom blob store.
 
-- <a class="tdlp" href="/cluster-deployment-guide#custom-archiver">How to create a custom Archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a custom Archiver</p><p class="tdlppd">todo</p><p class="tdlplm"><a class="tdlplma" href="/cluster-deployment-guide#custom-archiver">Learn more</a></p></div></a>
+- <a class="tdlp" href="/cluster-deployment-guide#custom-archiver">How to create a custom Archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a custom Archiver</p><p class="tdlppd">To archive data with a given provider, using the Archival feature, Temporal must have a corresponding Archiver component installed.</p><p class="tdlplm"><a class="tdlplma" href="/cluster-deployment-guide#custom-archiver">Learn more</a></p></div></a>
 - <a class="tdlp" href="/cluster-deployment-guide#set-up-archival">How to set up Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set up Archival</p><p class="tdlppd">This guide covers Temporal's archiving capabilities and how to set up the Archival feature.</p><p class="tdlplm"><a class="tdlplma" href="/cluster-deployment-guide#set-up-archival">Learn more</a></p></div></a>
 
 Workflow Execution Event Histories are backed up after the [Retention Period](/concepts/what-is-a-namespace/#retention-period) is reached.
