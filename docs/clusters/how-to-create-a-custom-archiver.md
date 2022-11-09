@@ -2,7 +2,7 @@
 id: how-to-create-a-custom-archiver
 title: How to create a custom Archiver
 sidebar_label: Custom Archiver
-description: todo
+description: To archive data with a given provider, using the Archival feature, Temporal must have a corresponding Archiver component installed.
 tags:
   - how-to
 ---

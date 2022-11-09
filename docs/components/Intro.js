@@ -269,6 +269,11 @@ const appDevGuideLinks = {
     },
     {
       book: true,
+      path: "/application-development/testing",
+      name: "Testing",
+    },
+    {
+      book: true,
       path: "/application-development/worker-performance",
       name: "Worker Performance",
     },
@@ -301,24 +306,24 @@ const appByLang = {
   listOne: [
     {
       book: true,
-      path: "/go",
+      path: "https://legacy-documentation-sdks.temporal.io/go",
       name: "Go",
     },
     {
       book: true,
-      path: "/java",
+      path: "https://legacy-documentation-sdks.temporal.io/java",
       name: "Java",
     },
   ],
   listTwo: [
     {
       book: true,
-      path: "/php/introduction",
+      path: "https://legacy-documentation-sdks.temporal.io/php/introduction",
       name: "PHP",
     },
     {
       book: true,
-      path: "/typescript/introduction",
+      path: "https://legacy-documentation-sdks.temporal.io/typescript/introduction",
       name: "TypeScript",
     },
   ],
@@ -510,7 +515,7 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/sdks">
+        <a className="header-link" href="https://legacy-documentation-sdks.temporal.io/">
           <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
@@ -554,6 +559,7 @@ function Explained() {
       <div className="landing-card-section">
         <h2 className="h2-landing">Devtools</h2>
         <ul className="landing-card-list">{displayLinks(devTools.listOne)}</ul>
+        <ul className="landing-card-list">{displayLinks(devTools.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/references/">

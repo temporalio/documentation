@@ -221,7 +221,6 @@ module.exports = {
       },
       items: [
         "tctl-next/activity",
-        "tctl-next/alias",
         "tctl-next/batch",
         "tctl-next/cluster",
         "tctl-next/config",
