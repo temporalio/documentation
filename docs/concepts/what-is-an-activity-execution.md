@@ -26,12 +26,12 @@ Activity Cancellation:
 - lets the Activity know it doesn't need to keep doing work, and
 - gives the Activity time to clean up any resources it has created.
 
-Activities can only receive Cancellation if they emit Heartbeats or are Local Activities (which can't heartbeat but receive Cancellation anyway).
+Activities can only receive Cancellation if they emit Heartbeats or are Local Activities (which don't heartbeat but receive Cancellation anyway).
 
 An Activity may receive Cancellation if:
 
-- The Activity or Activity's Workflow was requested to be Cancelled and the Activity's Cancellation type was **not** set to `ABANDON`.
-- The Worker has started to shut down.
+- The Activity was requested to be Cancelled (which can often cascade from workflow cancellation). SDKs have ways to disable cancellation from cascading.
+- The Worker is shutting down.
 - The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/concepts/what-is-a-failure#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
 - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured [Data Converter](/concepts/what-is-a-data-converter).
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.

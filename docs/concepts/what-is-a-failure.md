@@ -34,7 +34,7 @@ This is the only type of Failure created and thrown by user code.
 
 - TS: [`ApplicationFailure`](https://typescript.temporal.io/api/classes/client.ApplicationFailure)
 - Java: [`ApplicationFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ApplicationFailure.html)
-- Go: [`ApplicationError`](https://pkg.go.dev/go.temporal.io/sdk/internal#ApplicationError)
+- Go: [`ApplicationError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#ApplicationError)
 - Python: [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html)
 - Proto: [`ApplicationFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L37-L41) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
 
@@ -49,10 +49,10 @@ In Activities, you can either throw an Application Failure or another Error to f
 In the latter case, the error will be converted to an Application Failure.
 During conversion, the following Application Failure fields are set:
 
-- `type` is set to the error's class name
-- `message` is set to `error.message`
+- `type` is set to the error's type name
+- `message` is set to the error message
 - `non_retryable` is set to false
-- `details` are set to null
+- `details` are left unset
 - stack trace is copied
 
 When an [Activity Execution](/concepts/what-is-an-activity-execution) fails, the Application Failure from the last Activity Task will be the `cause` field of the [ActivityFailure](#activity-failure) thrown in the Workflow.
@@ -64,7 +64,7 @@ Activities and Workflow can also avoid retrying by setting an Application Failur
 
 ## Cancelled Failure
 
-A Cancelled Failure is thrown when [Cancellation](/concepts/what-is-an-activity-execution#cancellation) has been requested.
+When [Cancellation](/concepts/what-is-an-activity-execution#cancellation) has been requested of a workflow or activity, SDKs represent this to the user in language-specific ways.
 
 <!-- TODO also link to Workflow Cancellation concept -->
 
