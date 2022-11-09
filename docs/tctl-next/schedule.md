@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl schedule` commands allow for the creation and usage of <a class="tdlp" href="/workflows#schedule">Schedules<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule</p><p class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#schedule">Learn more</a></p></div></a>.
+The `tctl schedule` commands allow for the creation and usage of <a class="tdlp" href="/workflows#schedule">Schedules<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule</p><p class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</p><p class="tdlplm"><a href="/workflows#schedule">Learn more</a></p></div></a>.
 This command is available in versions 1.17.0 and later for tctl.
 
 Schedules can be changed or enabled with the following commands:
