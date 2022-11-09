@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl activity` commands enable <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a> operations.
+The `tctl activity` commands enable <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a> operations.
 
 Alias: `a`
 
@@ -20,7 +20,7 @@ Alias: `a`
 
 ## complete
 
-The `tctl activity complete` command completes an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a>.
+The `tctl activity complete` command completes an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
 
 `tctl activity complete <modifiers>`
 
@@ -35,7 +35,7 @@ Always include required modifiers when executing this command.
 
 ## fail
 
-The `tctl activity fail` command fails an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a>.
+The `tctl activity fail` command fails an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
 
 `tctl activity fail <modifiers>`
 
