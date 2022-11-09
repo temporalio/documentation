@@ -31,7 +31,20 @@ Frontend service logs can show which parts of the Cluster aren't working.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
-Check that the following are up and running with `tctl cluster` commands:
+Alternatively, OSS users can check that Frontend and other service are running with
+
+```
+tctl cluster health
+```
+
+and
+
+```
+alsovia grpcurl
+
+grpc-health-probe
+
+```
 
 - [History Service](/clusters#history-service)
 - [Persistence](/clusters#persistence) database
