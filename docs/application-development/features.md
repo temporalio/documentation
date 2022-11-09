@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
 
 :::
 
@@ -2269,7 +2269,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-1. Provide the external system with the a Task Token to complete the Activity Execution.
+1. Provide the external system with a Task Token to complete the Activity Execution.
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
 ```go
