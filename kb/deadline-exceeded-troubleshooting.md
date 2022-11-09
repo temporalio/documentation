@@ -3,7 +3,7 @@ slug: deadline-exceeded-troubleshooting
 title: DeadlineExceeded error troubleshooting
 tags:
   - kb-article
-date: 2022-11-08T00:00:00Z
+date: 2022-11-09T00:00:00Z
 ---
 
 All client-side requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
@@ -37,7 +37,7 @@ Check that the following are up and running with `tctl cluster` commands:
 - [Persistence](/clusters#persistence) database
 - [Advanced Visibility](/visibility#advanced-visibility) database
 
-Logs can also be used to find [Query](/workflows#queries) errors.
+Logs can also be used to find Client [Query](/workflows#queries) requests that failed with this error.
 
 #### Check your Cluster metrics
 
