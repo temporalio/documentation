@@ -11,11 +11,11 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a> operations.
+The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> operations.
 
-- <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster health</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a href="#health">Learn more</a></p></div></a>
-- <a class="tdlp" href="#describe">tctl cluster describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster describe</p><p class="tdlppd">How to show information about the Cluster using tctl.</p><p class="tdlplm"><a href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#system">tctl cluster system<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster system</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a href="#system">Learn more</a></p></div></a>
+- <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster health</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#health">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">tctl cluster describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster describe</p><p class="tdlppd">How to show information about the Cluster using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#system">tctl cluster system<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster system</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#system">Learn more</a></p></div></a>
 
 ## describe
 
