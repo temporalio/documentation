@@ -41,17 +41,22 @@ Logs can also be used to find [Query](/workflows#queries) errors.
 
 #### Check your Cluster metrics
 
+Cluster metrics can be used to detect issues (such as 'resource exhausted') that implact cluster health.
+This can cause your client to fail and send this error.
+
 Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
-If the metrics come from a specific service (such as History Service), check that service's connectivity and restart if needed.
+If the metrics come from a specific service (such as History Service), check that the service is connected.
 
 #### Check Workflow logic
 
-Check your [Client and Worker configuration](/references/configuration) files for missing or invalid values in:
+Check your [Client and Worker configuration](/references/configuration) files for missing or invalid target values, such as:
 
 - Server names
 - Network or host addresses
 - Certificates
-- Timeouts
+
+Invalid targets also cause `connection refused` errors alongside `deadline exceeded`.
+Check that the Client connects after updating your files.
 
 ## Advanced troubleshooting
 
