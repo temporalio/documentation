@@ -6,19 +6,20 @@ tags:
 date: 2022-11-08T00:00:00Z
 ---
 
-All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All client-side requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
-Network interruptions, short timeouts, server overload, and Query errors are some of the reasons that can cause this error.
+Network interruptions, timeouts, server overload, and Query errors are some of the reasons that can cause this error.
 
 The following sections discuss the nature of this error and how to troubleshoot it.
 
-#### Check your logs
+#### Check frontend service logs
 
 :::note
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, check your Workflow History for errors, look for latencies and errors in your Cloud metrics, and create a [support ticket](https://support.temporal.io/) with Temporal providing these details.
+If you're using Temporal Cloud, check your Workflow History for errors and create a [support ticket](https://support.temporal.io/) with Temporal.
+Provide the full error message in your ticket.
 
 :::
 
@@ -26,7 +27,7 @@ If you're using Temporal Cloud, check your Workflow History for errors, look for
 {“level”:“error”,“ts”:“2022-03-21T19:32:42.312Z”,“msg”:“unavailable error”,“service”:“frontend”,“error”:“unable to get temporal-sys-add-search-attributes-workflow workflow state: context deadline exceeded”,“logging-call-at”:“adminHandler.go:1163”,“stacktrace”:“go.temporal.io/server/common/log.
 ```
 
-Service logs can show which parts of the Cluster aren't working.
+Frontend service logs can show which parts of the Cluster aren't working.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
