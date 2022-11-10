@@ -31,13 +31,23 @@ Frontend service logs can show which parts of the Cluster aren't working.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
-Alternatively, OSS users can check that Frontend and other service are running with `tctl cluster health` and
+Alternatively, OSS users can check that Frontend and other service are running with
 
 ```
 
-grpcurl
+tctl --address frontendAddress:frontendPort cluster health
 
-grpc-health-probe
+```
+
+and
+
+```
+
+./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService
+
+./grpc-health-probe -addr=matchingAddress:matchingPort -service=temporal.api.workflowservice.v1.MatchingService
+
+./grpc-health-probe -addr=historyAddress:historyPort -service=temporal.api.workflowservice.v1.HistoryService
 
 ```
 
