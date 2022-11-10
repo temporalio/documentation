@@ -39,7 +39,7 @@ Aliases: `--rid`, `-r`
 **Example**
 
 ```bash
-tctl workflow terminate  --run_id <id>
+tctl workflow terminate --run_id <id>
 ```
 
 ### `--reason`
