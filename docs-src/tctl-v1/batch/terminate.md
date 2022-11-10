@@ -7,9 +7,15 @@ tags:
   - tctl
 ---
 
-The `tctl batch-v2 terminate` command terminates a batch job.
+The `tctl batch terminate` command terminates a batch job.
 
-`tctl batch-v2 terminate --job_id <id> [<modifiers>]`
+`tctl batch terminate --job_id <id> <modifiers>`
+
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
 
 The following modifiers control the behavior of the command.
 
@@ -24,7 +30,7 @@ Alias: `--jid`
 **Example**
 
 ```bash
-tctl batch-v2 terminate --job_id <id>
+tctl batch terminate --job_id <id>
 ```
 
 ### `--reason`
@@ -36,5 +42,5 @@ Alias: `--re`
 **Example**
 
 ```bash
-tctl batch-v2 terminate --job_id <id> --reason <string>
+tctl batch terminate --job_id <id> --reason <string>
 ```

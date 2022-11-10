@@ -1,6 +1,6 @@
 ---
 id: list
-title: tctl batch list
+title: tctl batch-v2 list
 sidebar_label: list
 description: How to list batch jobs using tctl.
 tags:
@@ -9,9 +9,9 @@ tags:
 
 Alias: `l`
 
-The `tctl batch list` command lists all batch jobs.
+The `tctl batch-v2 list` command lists all batch jobs.
 
-`tctl batch list <modifiers>`
+`tctl batch-v2 list <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.

@@ -14,6 +14,12 @@ A batch job runs in the background and affects Workflow Executions one at a time
 
 Use [tctl batch start](/tctl-v1/batch/start) to start a batch job.
 
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
+
 When starting a batch job, you must provide a [List Filter](/concepts/what-is-a-list-filter) and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
 
@@ -28,14 +34,14 @@ There are three types of batch jobs:
 - Terminate: Terminate the set of Workflow Executions that the List Filter specifies.
 
 A successfully started batch job returns a Job ID.
-You can use this Job ID in the `tctl batch-v2 describe` command, which describes the progress of a specific batch job.
+You can use this Job ID in the `tctl batch describe` command, which describes the progress of a specific batch job.
 
 You can also use the Job ID to terminate the batch job itself.
 Terminating a batch job does not roll back the operations already performed by the batch job.
 
 ### tctl batch commands
 
-- [tctl batch-v2 describe](/tctl-v1/batch/describe)
-- [tctl batch-v2 list](/tctl-v1/batch/list)
+- [tctl batch describe](/tctl-v1/batch/describe)
+- [tctl batch list](/tctl-v1/batch/list)
 - [tctl batch start](/tctl-v1/batch/start)
-- [tctl batch-v2 terminate](/tctl-v1/batch/terminate)
+- [tctl batch terminate](/tctl-v1/batch/terminate)

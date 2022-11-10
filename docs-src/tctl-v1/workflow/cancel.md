@@ -15,7 +15,7 @@ After cancellation, the Workflow Execution can perform cleanup work.
 
 See also [`tctl workflow terminate`](/tctl-v1/workflow/terminate).
 
-`tctl workflow cancel --query [<modifiers>]`
+`tctl workflow cancel <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -28,7 +28,7 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```bash
-tctl workflow cancel --query --workflow_id <id>
+tctl workflow cancel --workflow_id <id>
 ```
 
 ### `--run_id`
@@ -40,5 +40,5 @@ Aliases: `--rid`, `-r`
 **Example**
 
 ```bash
-tctl workflow cancel --query --run_id <id>
+tctl workflow cancel --run_id <id>
 ```
