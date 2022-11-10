@@ -82,13 +82,13 @@ tctl workflow showid HelloSignal
 Signals are written as follows:
 
 ```bash
-tctl workflow signal --workflow_id [modifiers]
+tctl workflow signal --workflow_id <id> [modifiers]
 ```
 
 or
 
 ```bash
-tctl workflow signal --query [modifiers]
+tctl workflow signal --query <query> [modifiers]
 ```
 
 The following modifiers control the behavior of the command.
@@ -140,7 +140,7 @@ Alias: `-i`
 **Example**
 
 ```bash
-tctl workflow signal --query --input <json>
+tctl workflow signal --query <query> --input <json>
 ```
 
 ### `--input_file`
@@ -152,5 +152,5 @@ Alias: `--if`
 **Example**
 
 ```bash
-tctl workflow signal --query --input_file <filename>
+tctl workflow signal --query <query> --input_file <filename>
 ```

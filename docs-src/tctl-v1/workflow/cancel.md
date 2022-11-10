@@ -15,7 +15,7 @@ After cancellation, the Workflow Execution can perform cleanup work.
 
 See also [`tctl workflow terminate --query`](/tctl-v1/workflow/terminate).
 
-`tctl workflow cancel --query <modifiers>`
+`tctl workflow cancel --query <query> <modifiers>`
 
 The following modifiers control the behavior of the command.
 
