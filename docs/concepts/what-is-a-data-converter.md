@@ -71,7 +71,7 @@ A custom Data Converter has three parts:
 
 ### Payload Converter
 
-In some SDKs, there's the concept of a Payload Converter that's part of the Data Converter and does the conversion from a value to a Payload and back.
+Some SDKs have the concept of a Payload Converter that's part of the Data Converter and does the conversion from a value to a Payload and back.
 
 ### Payload Codec
 
