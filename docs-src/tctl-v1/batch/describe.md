@@ -9,9 +9,9 @@ tags:
 
 Alias: `desc`
 
-The `tctl batch describe` command describes the progress of a batch job.
+The `tctl batch-v2 describe` command describes the progress of a batch job.
 
-`tctl batch describe --job_id <id>`
+`tctl batch-v2 describe --job_id <id>`
 
 The following modifier controls the behavior of the command.
 
@@ -26,5 +26,5 @@ Alias: `--jid`
 **Example**
 
 ```bash
-tctl batch describe --job_id <id>
+tctl batch-v2 describe --job_id <id>
 ```

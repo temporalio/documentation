@@ -28,14 +28,14 @@ There are three types of batch jobs:
 - Terminate: Terminate the set of Workflow Executions that the List Filter specifies.
 
 A successfully started batch job returns a Job ID.
-You can use this Job ID in the `tctl batch describe` command, which describes the progress of a specific batch job.
+You can use this Job ID in the `tctl batch-v2 describe` command, which describes the progress of a specific batch job.
 
 You can also use the Job ID to terminate the batch job itself.
 Terminating a batch job does not roll back the operations already performed by the batch job.
 
 ### tctl batch commands
 
-- [tctl batch describe](/tctl-v1/batch/describe)
-- [tctl batch list](/tctl-v1/batch/list)
+- [tctl batch-v2 describe](/tctl-v1/batch/describe)
+- [tctl batch-v2 list](/tctl-v1/batch/list)
 - [tctl batch start](/tctl-v1/batch/start)
-- [tctl batch terminate](/tctl-v1/batch/terminate)
+- [tctl batch-v2 terminate](/tctl-v1/batch/terminate)
