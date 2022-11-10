@@ -127,7 +127,7 @@ Alias: `-n`
 **Example**
 
 ```bash
-tctl workflow signal --query --name <name>
+tctl workflow signal --query <query> --name <name>
 ```
 
 ### `--input`
