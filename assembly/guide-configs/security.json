@@ -1,0 +1,69 @@
+{
+    "file_name": "security.md",
+    "id": "security",
+    "file_dir": "/",
+    "title": "Temporal Platform security features",
+    "sidebar_label": "Security",
+    "description": "This guide is an overview of the Temporal Platform security features.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+      {
+        "type": "p",
+        "id": "security/intro"
+      },
+      {
+        "type": "h2",
+        "id": "concepts/what-is-a-data-converter"
+      },
+      {
+        "type": "h2",
+        "id": "concepts/what-is-a-codec-server"
+      },
+      {
+        "type": "h3",
+        "id": "security/how-to-set-up-codec-server"
+      },
+      {
+        "type": "h2",
+        "id": "security/cluster-plugins"
+      },
+      {
+        "type": "h3",
+        "id": "concepts/what-is-a-claimmapper-plugin"
+      },
+      {
+        "type": "h3",
+        "id": "concepts/what-is-an-authorizer-plugin"
+      },
+      {
+        "type": "h4",
+        "id": "security/how-to-authorize-sdk-api-calls"
+      },
+      {
+        "type": "langtabs",
+        "langtabs": [
+          {
+            "lang": "go",
+            "id": "none"
+          },
+          {
+            "lang": "java",
+            "id": "java/how-to-provide-an-authorization-token-in-java"
+          },
+          {
+            "lang": "php",
+            "id": "none"
+          },
+          {
+            "lang": "python",
+            "id": "none"
+          },
+          {
+            "lang": "typescript",
+            "id": "none"
+          }
+        ]
+      }
+    ]
+  }
