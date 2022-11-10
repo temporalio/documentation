@@ -63,7 +63,7 @@ Custom Data Converters are not applied to all data:
 - `searchAttributes` are always encoded with JSON.
 - Headers are not encoded by the SDK (the one exception will be—when implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
 
-A custom Data converter has three parts:
+A custom Data Converter has three parts:
 
 - [Payload Converter](#payload-converter)
 - [Payload Codec](#payload-codec)
