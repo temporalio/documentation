@@ -18,7 +18,7 @@ The following sections discuss the nature of this error and how to troubleshoot 
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, check your Workflow History for errors and create a [support ticket](https://support.temporal.io/) with Temporal.
+If you're using Temporal Cloud, check your Workflow History for error messages and create a [support ticket](https://support.temporal.io/) with Temporal.
 Provide the full error message in your ticket.
 
 :::
@@ -31,16 +31,11 @@ Frontend service logs can show which parts of the Cluster aren't working.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
-Alternatively, OSS users can check that Frontend and other service are running with
+Alternatively, OSS users can check that Frontend and other service are running with `tctl cluster health` and
 
 ```
-tctl cluster health
-```
 
-and
-
-```
-alsovia grpcurl
+grpcurl
 
 grpc-health-probe
 
@@ -55,7 +50,15 @@ Logs can also be used to find Client [Query](/workflows#queries) requests that f
 #### Check your Cluster metrics
 
 Cluster metrics can be used to detect issues (such as 'resource exhausted') that implact cluster health.
-This can cause your client to fail and send this error.
+`Resource exhausted` errors can cause your client to fail and send a `Deadline exceeded` error.
+
+Use the command below to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded`.
+
+```
+
+sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
+
+```
 
 Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
 If the metrics come from a specific service (such as History Service), check that the service is connected.
@@ -98,11 +101,11 @@ If the error persists, review your Workflow Execution History and server logs fo
 One or more services may be unable to connect to the [Frontend Service](/clusters#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
 
-Increase the timeout value so that requests can be finished before the connection terminates.
+Increase the value of `frontend.keepAliveMaxConnectionAge` so that requests can be finished before the connection terminates.
 
 ::: note
 
-If you increase timeouts or `ConnectionAge` values, consider checking for server overload.
+If you increase `frontend.keepAliveMaxConnectionAge` values, consider checking for server overload.
 
 :::
 
@@ -111,7 +114,6 @@ If you increase timeouts or `ConnectionAge` values, consider checking for server
 The Cluster may have deployed with missing or incorrect values.
 
 Check your environment for services that terminated or failed to start correctly.
-Run `tctl cluster` commands to fix issues through CLI.
 
 ---
 
