@@ -15,7 +15,7 @@ The `tctl batch describe` command describes the progress of a batch job.
 
 :::note
 
-`tctl-v1` can run `batch` and `batch-v2` commands.
+`tctl` can run `batch` and `batch-v2` commands.
 
 :::
 
