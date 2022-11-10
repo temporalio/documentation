@@ -26,7 +26,7 @@ The base [`Failure` proto message](https://github.com/temporalio/api/blob/e381e5
 - `string stack_trace`
 - `string source`: The SDK this Failure originated in (for example, `"TypeScriptSDK"`). In some SDKs, this field is used to rehydrate the stack trace into an exception object.
 - `Failure cause`: The `Failure` message of the cause of this Failure (if applicable).
-- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a Failure Converter. <!-- TODO link to concept page -->
+- `Payload encoded_attributes`: Contains the encoded `message` and `stack_trace` fields when using a [Failure Converter](/concepts/what-is-a-data-converter#failure-converter).
 
 ## Application Failure
 

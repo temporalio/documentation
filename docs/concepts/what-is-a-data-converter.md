@@ -63,7 +63,17 @@ Custom Data Converters are not applied to all data:
 - `searchAttributes` are always encoded with JSON.
 - Headers are not encoded by the SDK (the one exception will be—when implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
 
-### Payload Codecs
+A custom Data converter has three parts:
+
+- [Payload Converter](#payload-converter)
+- [Payload Codec](#payload-codec)
+- [Failure Converter](#failure-converter)
+
+### Payload Converter
+
+In some SDKs, there's the concept of a Payload Converter that's part of the Data Converter and does the conversion from a value to a Payload and back.
+
+### Payload Codec
 
 In [TypeScript](/typescript/data-converters#custom-data-converter), [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), and [Python](https://python.temporal.io/temporalio.converter.DataConverter.html), data conversion happens in two stages:
 
@@ -83,7 +93,9 @@ In codec implementations, we recommended running the function (whether it be com
 - [`ZlibCodec`](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105) in the Go SDK
 - [Encryption Data Converter](https://github.com/temporalio/samples-go/blob/15be864c80d4d983ebb8a8fbd3fa5263bcef6930/encryption/data_converter.go#L100-L126) in Go's encryption sample
 
-### Encryption
+In order to view data that's been converted by a codec in the Web UI and tctl, use a [Codec Server](/server/security#codec-server).
+
+#### Encryption
 
 Doing encryption in a custom Data Converter ensures that all application data is encrypted during the following actions:
 
@@ -99,3 +111,17 @@ Our encryption samples use AES GCM with 256-bit keys:
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
+
+### Failure Converter
+
+A Failure Converter converts error objects to proto [Failures](/concepts/what-is-a-failure) and back.
+
+The default Failure Converter copies error messages and stack traces as plain text. 
+If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the Failure Converter to use your [Payload Codec](#payload-codec), in which case it will move your `message` and `stack_trace` fields to a Payload that's run through your codec.
+
+You can make a custom Failure Converter, but doing so may make Failure serialization incompatible with other SDKs, the Web UI, and tctl.
+
+- TypeScript: [`DefaultFailureConverter`](https://typescript.temporal.io/api/classes/common.DefaultFailureConverter)
+- Go: [`GetDefaultFailureConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.18.0/temporal#GetDefaultFailureConverter)
+- Python: [`DefaultFailureConverter`](https://python.temporal.io/temporalio.converter.DefaultFailureConverter.html)
+- Java: [`FailureConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/FailureConverter.html)

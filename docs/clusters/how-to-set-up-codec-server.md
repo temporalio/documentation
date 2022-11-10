@@ -15,7 +15,7 @@ A Codec Server is an HTTP server that implements two endpoints:
 - `POST /decode`
 
 Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of Payloads.
-The endpoints run the Payloads through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codecs) before returning them.
+The endpoints run the Payloads through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codec) before returning them.
 
 Sample Codec Servers:
 
