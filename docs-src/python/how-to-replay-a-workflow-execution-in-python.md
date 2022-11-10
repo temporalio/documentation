@@ -15,10 +15,11 @@ or
 [`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow)
 methods, passing multiple or one Workflow Histories as arguments.
 
-In the following example (which requires advanced visibility to be enabled), histories are
-downloaded from the server, then replayed. The code will raise an exception if any replay fails.
+In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
+histories are downloaded from the server, then replayed. The code will raise an exception if any
+replay fails.
 ```python
-workflows = client.list_workflows(f"TaskQueue=foo")
+workflows = client.list_workflows(f"TaskQueue=foo and StartTime > '2022-01-01T12:00:00'")
 histories = workflows.map_histories()
 replayer = Replayer(
     workflows=[MyWorkflowA, MyWorkflowB, MyWorkflowC]
