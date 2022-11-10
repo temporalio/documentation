@@ -16,14 +16,16 @@ to replay multiple or one Workflow Histories.
 In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
 histories are downloaded from the server and then replayed by passing in a client and a set of
 executions. The code will throw an exception if any replay fails.
+
 ```ts
-const executions = 
-  client.workflow.list({ query: 'TaskQueue=foo and StartTime > "2022-01-01T12:00:00"' });
+const executions = client.workflow.list({
+  query: 'TaskQueue=foo and StartTime > "2022-01-01T12:00:00"',
+});
 await Worker.runReplayHistories(
   {
     workflowsPath: require.resolve('./your/workflows'),
   },
-  { client, executions }
+  { client, executions },
 );
 ```
 
