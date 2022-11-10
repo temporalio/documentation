@@ -1,6 +1,6 @@
 ---
 id: describe
-title: tctl batch-v2 describe
+title: tctl batch describe
 sidebar_label: describe
 description: How to describe the progress of a batch job using tctl.
 tags:
@@ -9,9 +9,9 @@ tags:
 
 Alias: `desc`
 
-The `tctl batch-v2 describe` command describes the progress of a batch job.
+The `tctl batch describe` command describes the progress of a batch job.
 
-`tctl batch-v2 describe --job-id <value>`
+`tctl batch describe --job-id <value> <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.

@@ -1,7 +1,7 @@
 ---
 id: index
-title: tctl batch-v2
-sidebar_label: batch-v2
+title: tctl batch
+sidebar_label: batch
 description: How to run a tctl batch command. A tctl batch command enables you to affect multiple existing Workflow Executions with a single command.
 tags:
   - tctl
@@ -26,9 +26,9 @@ Terminating a batch job does not roll back the operations already performed by t
 
 ### tctl batch-v2 commands
 
-- [tctl batch-v2 describe](/tctl-next/batch-v2#describe)
-- [tctl batch-v2 list](/tctl-next/batch-v2#list)
-- [tctl batch-v2 terminate](/tctl-next/batch-v2#terminate)
+- [tctl batch describe --job_id](/tctl-next/batch-v2#describe)
+- [tctl batch list](/tctl-next/batch-v2#list)
+- [tctl batch terminate --job_id](/tctl-next/batch-v2#terminate)
 - [tctl workflow signal --query ...](/tctl-next/workflow/signal)
 - [tctl workflow terminate --query ...](/tctl-next/workflow/terminate)
 - [tctl workflow cancel --query ...](/tctl-next/workflow/cancel)

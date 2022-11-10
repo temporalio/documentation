@@ -16,7 +16,7 @@ By default, this command lists a maximum of 100 Workflow Executions.
 
 See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listall`](/tctl-v1/workflow/listall), and [`tctl workflow scan`](/tctl-v1/workflow/scan).
 
-`tctl workflow listarchived [<modifiers>]`
+`tctl workflow listarchived <modifiers>`
 
 The following modifiers control the behavior of the command.
 

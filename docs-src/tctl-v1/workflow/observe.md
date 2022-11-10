@@ -11,7 +11,7 @@ The `tctl workflow observe` command shows the progress of the [Event History](/c
 
 See also [`tctl workflow observeid`](/tctl-v1/workflow/observeid).
 
-`tctl workflow observe [<modifiers>]`
+`tctl workflow observe <modifiers>`
 
 Alias: `o`
 

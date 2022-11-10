@@ -7,15 +7,15 @@ tags:
   - tctl
 ---
 
-The `tctl workflow cancel` command cancels a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+The `tctl workflow cancel --query` command cancels a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
 A new command task will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
-See also [`tctl workflow terminate`](/tctl-v1/workflow/terminate).
+See also [`tctl workflow terminate --query`](/tctl-v1/workflow/terminate).
 
-`tctl workflow cancel <modifiers>`
+`tctl workflow cancel --query <modifiers>`
 
 The following modifiers control the behavior of the command.
 

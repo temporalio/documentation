@@ -14,7 +14,7 @@ To list open Workflow Executions, use the `--open` option.
 
 See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listarchived`](/tctl-v1/workflow/listarchived), and [`tctl workflow scan`](/tctl-v1/workflow/scan).
 
-`tctl workflow listall [<modifiers>]`
+`tctl workflow listall <modifiers>`
 
 The following modifiers control the behavior of the command.
 

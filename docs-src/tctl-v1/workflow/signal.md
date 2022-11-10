@@ -103,7 +103,7 @@ Aliases: `--wid`, `-w`
 **Example**
 
 ```bash
-tctl workflow signal --query --workflow_id <id>
+tctl workflow signal --workflow_id <id>
 ```
 
 ### `--run_id`
@@ -115,7 +115,7 @@ Aliases: `--rid`, `-r`
 **Example**
 
 ```bash
-tctl workflow signal --query --run_id <id>
+tctl workflow signal --run_id <id>
 ```
 
 ### `--name`

@@ -24,7 +24,7 @@ Alias: `--praw`
 **Example**
 
 ```bash
-tctl workflow describeid <workflow_id> --run_id <id>
+tctl workflow describeid <workflow_id> --print_raw <id>
 ```
 
 ### `--reset_points_only`
