@@ -67,7 +67,7 @@ Activities and Workflow can also avoid retrying by setting an Application Failur
 
 ## Cancelled Failure
 
-When [Cancellation](/concepts/what-is-an-activity-execution#cancellation) has been requested of a workflow or activity, SDKs represent this to the user in language-specific ways.
+When [Cancellation](/concepts/what-is-an-activity-execution#cancellation) has been requested of a Workflow or Activity, SDKs represent this to the user in language-specific ways.
 
 <!-- TODO also link to Workflow Cancellation concept -->
 
