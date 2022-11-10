@@ -16,17 +16,14 @@ or
 methods, passing multiple or one Workflow Histories as arguments.
 
 In the following example (which requires advanced visibility to be enabled), histories are
-downloaded from the server, then replayed, creating a dict which maps their run id to whether or not
-they failed with a nondeterminism error:
-
+downloaded from the server, then replayed. The code will raise an exception if any replay fails.
 ```python
 workflows = client.list_workflows(f"TaskQueue=foo")
 histories = workflows.map_histories()
-async with Replayer(workflows=[YourWorkflowA, YourWorkflowB])) as result_iter:
-    run_ids_to_did_fail_nondeterministically = {
-        r.history.run_id: isinstance(r.replay_failure, workflow.NondeterminismError)
-        async for r in result_iter
-    }
+replayer = Replayer(
+    workflows=[MyWorkflowA, MyWorkflowB, MyWorkflowC]
+)
+await replayer.replay_workflows(histories)
 ```
 
 In the next example, a single history is loaded from a JSON string:
