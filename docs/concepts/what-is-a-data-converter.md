@@ -124,4 +124,4 @@ You can make a custom Failure Converter, but if you use multiple SDKs, you'd hav
 - TypeScript: [`DefaultFailureConverter`](https://typescript.temporal.io/api/classes/common.DefaultFailureConverter)
 - Go: [`GetDefaultFailureConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.18.0/temporal#GetDefaultFailureConverter)
 - Python: [`DefaultFailureConverter`](https://python.temporal.io/temporalio.converter.DefaultFailureConverter.html)
-- Java: *Not yet supported*
+- Java: _Not yet supported_
