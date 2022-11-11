@@ -119,9 +119,9 @@ A Failure Converter converts error objects to proto [Failures](/concepts/what-is
 The default Failure Converter copies error messages and stack traces as plain text.
 If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the Failure Converter to use your [Payload Codec](#payload-codec), in which case it will move your `message` and `stack_trace` fields to a Payload that's run through your codec.
 
-You can make a custom Failure Converter, but doing so may make Failure serialization incompatible with other SDKs, the Web UI, and tctl.
+You can make a custom Failure Converter, but if you use multiple SDKs, you'd have to implement the same logic in each.
 
 - TypeScript: [`DefaultFailureConverter`](https://typescript.temporal.io/api/classes/common.DefaultFailureConverter)
 - Go: [`GetDefaultFailureConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.18.0/temporal#GetDefaultFailureConverter)
 - Python: [`DefaultFailureConverter`](https://python.temporal.io/temporalio.converter.DefaultFailureConverter.html)
-- Java: [`FailureConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/FailureConverter.html)
+- Java: *Not yet supported*
