@@ -20,7 +20,7 @@ Most SDKs have a base class that the other Failures extend:
 - Java: [`TemporalFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TemporalFailure.html)
 - Python: [`FailureError`](https://python.temporal.io/temporalio.exceptions.FailureError.html)
 
-The base [`Failure` proto message](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114) has these fields:
+The base [`Failure` proto message](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure) has these fields:
 
 - `string message`
 - `string stack_trace`
@@ -37,7 +37,7 @@ This is the only type of Failure created and thrown by user code.
 - Java: [`ApplicationFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ApplicationFailure.html)
 - Go: [`ApplicationError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#ApplicationError)
 - Python: [`ApplicationError`](https://python.temporal.io/temporalio.exceptions.ApplicationError.html)
-- Proto: [`ApplicationFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L37-L41) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`ApplicationFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.ApplicationFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ### Throw from Workflows
 
@@ -77,7 +77,7 @@ When a Workflow or Activity has been successfully Cancelled, a Cancelled Failure
 - Java: [`CanceledFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/CanceledFailure.html)
 - Go: [`CanceledError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#CanceledError)
 - Python: [`CancelledError`](https://python.temporal.io/temporalio.exceptions.CancelledError.html)
-- Proto: [`CanceledFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L48-L50) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`CanceledFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.CanceledFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Activity Failure
 
@@ -90,7 +90,7 @@ For example, if an Activity Execution times out, the `cause` will be a [Timeout 
 - Java: [`ActivityFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ActivityFailure.html)
 - Go: [`ActivityError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#ActivityError)
 - Python: [`ActivityError`](https://python.temporal.io/temporalio.exceptions.ActivityError.html)
-- Proto: [`ActivityFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L63-L70) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`ActivityFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.ActivityFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Child Workflow Failure
 
@@ -102,7 +102,7 @@ The reason for the failure will be in the `cause` field.
 - Java: [`ChildWorkflowFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ChildWorkflowFailure.html)
 - Go: [`ChildWorkflowExecutionError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#ChildWorkflowExecutionError)
 - Python: [`ChildWorkflowError`](https://python.temporal.io/temporalio.exceptions.ChildWorkflowError.html)
-- Proto: [`ChildWorkflowExecutionFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L72-L79) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`ChildWorkflowExecutionFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.ChildWorkflowExecutionFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Timeout Failure
 
@@ -114,7 +114,7 @@ When an Activity times out, the last Heartbeat details it emitted is attached.
 - Java: [`TimeoutFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TimeoutFailure.html)
 - Go: [`TimeoutError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#TimeoutError)
 - Python: [`TimeoutError`](https://python.temporal.io/temporalio.exceptions.TimeoutError.html)
-- Proto: [`TimeoutFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L43-L46) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`TimeoutFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.TimeoutFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Terminated Failure
 
@@ -124,7 +124,7 @@ Used as the `cause` when a Workflow has been Terminated.
 - Java: [`TerminatedFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/TerminatedFailure.html)
 - Go: [`TerminatedError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#TerminatedError)
 - Python: [`TerminatedError`](https://python.temporal.io/temporalio.exceptions.TerminatedError.html)
-- Proto: [`TerminatedFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L52-L53) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`TerminatedFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.TerminatedFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)
 
 ## Server Failure
 
@@ -134,4 +134,4 @@ Used for errors that originated in the Cluster.
 - Java: [`ServerFailure`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/ServerFailure.html)
 - Go: [`ServerError`](https://pkg.go.dev/go.temporal.io/sdk/temporal#ServerError)
 - Python: [`ServerError`](https://python.temporal.io/temporalio.exceptions.ServerError.html)
-- Proto: [`ServerFailureInfo`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L55-L57) and [`Failure`](https://github.com/temporalio/api/blob/e381e51864ec8f43a90750ef936705258b8f64b2/temporal/api/failure/v1/message.proto#L81-L114)
+- Proto: [`ServerFailureInfo`](https://api-docs.temporal.io/#temporal.api.failure.v1.ServerFailureInfo) and [`Failure`](https://api-docs.temporal.io/#temporal.api.failure.v1.Failure)

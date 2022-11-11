@@ -27,7 +27,7 @@ The main pieces of data that run through the Data Converter are arguments and re
   - Encodes Workflow and Query return values.
   - Decodes and encodes Activity arguments and return values.
 
-Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) Protobuf message, which consists of binary `data` and key-value `metadata`.
+Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) Protobuf message, which consists of binary `data` and key-value `metadata`.
 
 ## Default Data Converter
 
@@ -67,7 +67,7 @@ Custom Data Converters are not applied to all data:
 
 In [TypeScript](/typescript/data-converters#custom-data-converter), [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), and [Python](https://python.temporal.io/temporalio.converter.DataConverter.html), data conversion happens in two stages:
 
-1. A Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49).
+1. A Payload Converter converts a value into a [`Payload`](https://api-docs.temporal.io/#temporal.api.common.v1.Payload).
 2. A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.
 
 The Payload Codec is an optional step that happens between the wire and the Payload Converter:
