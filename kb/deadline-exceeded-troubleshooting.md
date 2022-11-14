@@ -78,7 +78,7 @@ Check that the Client connects after updating your files.
 
 ## Advanced troubleshooting
 
-In addition to the steps listed above, check the areas mentioned in each scenario below.
+In addition to the steps listed in the previous sections, check the areas mentioned in each of the following scenarios.
 
 #### After enabling mTLS
 
