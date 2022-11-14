@@ -27,7 +27,7 @@ Provide the full error message in your ticket.
 {“level”:“error”,“ts”:“2022-03-21T19:32:42.312Z”,“msg”:“unavailable error”,“service”:“frontend”,“error”:“unable to get temporal-sys-add-search-attributes-workflow workflow state: context deadline exceeded”,“logging-call-at”:“adminHandler.go:1163”,“stacktrace”:“go.temporal.io/server/common/log.
 ```
 
-Frontend service logs can show which parts of the Cluster aren't working.
+[Frontend Service](/clusters/#frontend-service) logs can show which parts of the Cluster aren't working.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
