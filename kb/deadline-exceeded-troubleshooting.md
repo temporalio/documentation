@@ -12,7 +12,7 @@ Network interruptions, timeouts, server overload, and Query errors are some of t
 
 The following sections discuss the nature of this error and how to troubleshoot it.
 
-#### Check frontend service logs
+#### Check Frontend Service logs
 
 :::note
 
@@ -23,15 +23,11 @@ Provide the full error message in your ticket.
 
 :::
 
-```
-{“level”:“error”,“ts”:“2022-03-21T19:32:42.312Z”,“msg”:“unavailable error”,“service”:“frontend”,“error”:“unable to get temporal-sys-add-search-attributes-workflow workflow state: context deadline exceeded”,“logging-call-at”:“adminHandler.go:1163”,“stacktrace”:“go.temporal.io/server/common/log.
-```
-
 [Frontend Service](/clusters/#frontend-service) logs can show which parts of the Cluster aren't working.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
-Alternatively, OSS users can check that Frontend and other service are running with
+Alternatively, OSS users can check that Frontend and other service are running with `tctl`.
 
 ```
 
@@ -39,7 +35,7 @@ tctl --address frontendAddress:frontendPort cluster health
 
 ```
 
-and
+Use `grpc-health-probe` to check the Workflow Service, Matching Service, and History Service.
 
 ```
 
@@ -51,16 +47,12 @@ and
 
 ```
 
-- [History Service](/clusters#history-service)
-- [Persistence](/clusters#persistence) database
-- [Advanced Visibility](/visibility#advanced-visibility) database
-
 Logs can also be used to find Client [Query](/workflows#queries) requests that failed with this error.
 
 #### Check your Cluster metrics
 
-Cluster metrics can be used to detect issues (such as 'resource exhausted') that implact cluster health.
-`Resource exhausted` errors can cause your client to fail and send a `Deadline exceeded` error.
+Cluster metrics can be used to detect issues (such as 'resource exhausted') that implact Cluster health.
+`Resource exhausted` errors can cause your client requests to fail, which prompts the `Deadline exceeded` error.
 
 Use the command below to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded`.
 
@@ -71,7 +63,7 @@ sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
 ```
 
 Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
-If the metrics come from a specific service (such as History Service), check that the service is connected.
+If the metrics come from a specific service (such as History Service), check the service's health and performance.
 
 #### Check Workflow logic
 
@@ -86,7 +78,7 @@ Check that the Client connects after updating your files.
 
 ## Advanced troubleshooting
 
-If you're still getting this error, here are further things to check.
+In addition to the steps listed above, check the areas mentioned in each scenario below.
 
 #### After enabling mTLS
 
@@ -113,17 +105,12 @@ The Workflow might be unable to complete requests within the given connection ti
 
 Increase the value of `frontend.keepAliveMaxConnectionAge` so that requests can be finished before the connection terminates.
 
-::: note
+:::note
 
-If you increase `frontend.keepAliveMaxConnectionAge` values, consider checking for server overload.
+If you increase `frontend.keepAliveMaxConnectionAge` values, consider checking your server performance.
+The server might be taking a higher workload over the time period.
 
 :::
-
-#### While using `tctl`
-
-The Cluster may have deployed with missing or incorrect values.
-
-Check your environment for services that terminated or failed to start correctly.
 
 ---
 
