@@ -107,8 +107,7 @@ Increase the value of `frontend.keepAliveMaxConnectionAge` so that requests can 
 
 :::note
 
-If you increase `frontend.keepAliveMaxConnectionAge` values, consider checking your server performance.
-The server might be taking a higher workload over the time period.
+If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring your server performance.
 
 :::
 
