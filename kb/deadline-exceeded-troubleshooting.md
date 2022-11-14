@@ -54,7 +54,7 @@ Logs can also be used to find Client [Query](/workflows#queries) requests that f
 Cluster metrics can be used to detect issues (such as 'resource exhausted') that implact Cluster health.
 `Resource exhausted` errors can cause your client requests to fail, which prompts the `Deadline exceeded` error.
 
-Use the command below to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded`.
+Use the query below to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded` on your metrics dashboard.
 
 ```
 
