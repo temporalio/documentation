@@ -35,7 +35,7 @@ tctl --address frontendAddress:frontendPort cluster health
 
 ```
 
-Use `grpc-health-probe` to check the Workflow Service, Matching Service, and History Service.
+Use `grpc-health-probe` to check the Frontend Service, Matching Service, and History Service.
 
 ```
 
