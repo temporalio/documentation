@@ -53,7 +53,7 @@ The following techniques aren't recommended, but allow you to avoid, skip, or br
 
 To skip a sandboxed-environment for a specific block of code in a Workflow, use [`sandbox_unrestricted()`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_unrestricted). The Workflow will run without sandbox restrictions.
 
-```python
+````python
 with temporalio.workflow.unsafe.sandbox_unrestricted():
     # Your code
 
@@ -63,7 +63,7 @@ To skip a sandboxed-environment for a Workflow, set the `sandboxed` argument i
 
 ```python
 @workflow.def(sandboxed=False)
-```
+````
 
 ### Skip Sandboxing for a Worker
 
