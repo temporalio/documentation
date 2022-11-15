@@ -260,8 +260,8 @@ Calling `yield` on promise blocks until a result is available.
 > Activity promise also exposes `then` method to construct promise chains.
 > Read more about Promises [here](https://github.com/reactphp/promise).
 
-Alternatively you can explicitly wrap your code (including `yield` constucts) using `Workflow::async` which will execute nested code in parallel with main workflow code.
-Call `yeild` on Promise returned by `Workflow::async` to merge execution result back to primary workflow method.
+Alternatively you can explicitly wrap your code (including `yield` constucts) using `Workflow::async` which will execute nested code in parallel with main Workflow code.
+Call `yeild` on Promise returned by `Workflow::async` to merge execution result back to primary Workflow method.
 
 ```php
 public function greet(string $name): \Generator

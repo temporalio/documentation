@@ -33,5 +33,5 @@ class YourWorkflow
 }
 ```
 
-In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
+In the example above the Workflow updates the protected value. Main Workflow coroutine waits for such value to change using
 `Workflow::await()` function.

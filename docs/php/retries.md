@@ -12,7 +12,7 @@ However, if you can't find what you are looking for there, we recommend checking
 :::
 
 Activities and Workflows can fail for a number of expected and unexpected reasons.
-In most failure cases, we want to retry the failed Activity or child Workflow or even the parent Workflow.
+In most failure cases, we want to retry the failed Activity or Child Workflow or even the parent Workflow.
 By default, Temporal retries Activities, but not Workflows.
 To change the default behavior, a custom retry policy can be provided.
 
@@ -94,7 +94,7 @@ class YourActivity
 }
 ```
 
-To enable retries for a Workflow, you need to provide a retry policy via `ChildWorkflowOptions` for child Workflows or
+To enable retries for a Workflow, you need to provide a retry policy via `ChildWorkflowOptions` for Child Workflows or
 via `WorkflowOptions` for top-level Workflows.
 
 There are some subtle nuances to how Workflow's history events are recorded when a `RetryOptions` is used.
@@ -109,5 +109,5 @@ For a Workflow with `RetryOptions`:
 
 - If a Workflow fails and a retry policy is configured for it, the Workflow Execution will be closed with a `ContinueAsNew` event.
   This event will have the `ContinueAsNewInitiator` field set to `RetryOptions` and the new `RunId` for the next retry attempt.
-- The new attempt will be created immediately. But the first workflow task won't be scheduled until the backoff duration.
+- The new attempt will be created immediately. But the first Workflow task won't be scheduled until the backoff duration.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.

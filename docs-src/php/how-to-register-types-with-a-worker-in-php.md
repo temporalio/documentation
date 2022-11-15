@@ -9,7 +9,7 @@ tags:
   - workers
 ---
 
-Worker listens on a task queue and hosts both workflow and activity implementations:
+Worker listens on a task queue and hosts both Workflow and activity implementations:
 
 ```php
 // Workflows are stateful. So you need a type to create instances:

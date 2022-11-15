@@ -12,7 +12,7 @@ import RelatedReadList from '../components/RelatedReadList.js'
 Workflows are resilient programs, meaning that they will continue execution even in the presence of
 different failure conditions.
 
-Workflows encapsulate execution/orchestration of Tasks which include Activities and child Workflows.
+Workflows encapsulate execution/orchestration of Tasks which include Activities and Child Workflows.
 They also need to react to external events, respond to query requests, and deal with Timeouts.
 
 In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow Interface:
@@ -225,10 +225,10 @@ readlist={[
 
 ### Java Child Workflow API
 
-`Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
-It takes a child Workflow Type and optional child Workflow options as arguments. Workflow options can be used
+`Workflow.newChildWorkflowStub` returns a client-side stub that implements a Child Workflow interface.
+It takes a Child Workflow Type and optional Child Workflow options as arguments. Workflow options can be used
 to set timeout, retry options, and task queue settings for example.
-Note that by default a child Workflow inherits the Workflow options of its parent. You can however overwrite these
+Note that by default a Child Workflow inherits the Workflow options of its parent. You can however overwrite these
 by passing in custom Workflow options when creating the child Workflow stub.
 
 The first call to the child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
@@ -384,7 +384,7 @@ YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
 String result = workflow.yourMethod();
 ```
 
-Another way to connect to an existing workflow and wait for its completion from another process is to use
+Another way to connect to an existing Workflow and wait for its completion from another process is to use
 `UntypedWorkflowStub`, for example:
 
 ```java
@@ -415,7 +415,7 @@ See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 Temporal SDK allows you to manually use [Continue-As-New](/concepts/what-is-continue-as-new) in a number of ways:
 
-If you are continuing execution of the same workflow that is currently running you can do:
+If you are continuing execution of the same Workflow that is currently running you can do:
 
 ```java
 Workflow.continueAsNew(input1, ...);
@@ -442,7 +442,7 @@ MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.cl
 continueAsNew.greet(input);
 ```
 
-This allows you to continue workflow execution as a new Workflow run with a different Workflow Type,
+This allows you to continue Workflow Execution as a new Workflow run with a different Workflow Type,
 and on a different Task Queue.
 
 Another way to deal with the execution history size limits is to use Child Workflows, however

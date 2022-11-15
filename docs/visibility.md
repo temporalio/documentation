@@ -165,7 +165,7 @@ These Search Attributes are created when the initial index is created.
 | HistoryLength         | Int      | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                              |
 | StateTransitionCount  | Int      | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                    |
 | TaskQueue             | Keyword  | Task Queue used by Workflow Execution.                                                                                                                                       |
-| TemporalChangeVersion | Keyword  | If workflow versioning is enabled, list of change/version pairs will be stored here.                                                                                         |
+| TemporalChangeVersion | Keyword  | If Workflow versioning is enabled, list of change/version pairs will be stored here.                                                                                         |
 | BinaryChecksums       | Keyword  | List of binary Ids of Workers that run the Workflow Execution.                                                                                                               |
 | BatcherNamespace      | Keyword  | Used by internal batcher to indicate the Namespace where batch operation was applied to.                                                                                     |
 | BatcherUser           | Keyword  | Used by internal batcher to indicate the user who started the batch operation.                                                                                               |

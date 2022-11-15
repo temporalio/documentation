@@ -61,14 +61,14 @@ When a Workflow or Activity fails with an unhandled error, Temporal checks if th
 
 Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.ApplicationFailure#nonretryable-1) to expressly prevent retries.
 
-Propagated Activity and child Workflow failures are considered retryable and will be retried according to the parent Workflow's retry policy.
+Propagated Activity and Child Workflow failures are considered retryable and will be retried according to the parent Workflow's retry policy.
 
 The expected behavior is:
 
-- Non retryable application failure -> fails the workflow and cannot be retried
-- Retryable application failure -> fails the workflow and can be retried according to the retry policy
+- Non retryable application failure -> fails the Workflow and cannot be retried
+- Retryable application failure -> fails the Workflow and can be retried according to the retry policy
 - Other TemporalFailures -> same as retryable application failure
-- Any other error -> fails the workflow task and can be retried
+- Any other error -> fails the Workflow task and can be retried
 
 > Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow Execution to fail - in other words, all errors were Application Failures. The semantics were corrected in v0.17.
 
@@ -160,7 +160,7 @@ Any unhandled exception that doesn't extend [`TemporalFailure`](#temporalfailure
 
 ### [CancelledFailure](https://typescript.temporal.io/api/classes/client.CancelledFailure)
 
-`CancelledFailure` is thrown in a Workflow when a cancellation scope or the entire Workflow has been cancelled or set as the cause for when a child Workflow or Activity has been cancelled.
+`CancelledFailure` is thrown in a Workflow when a cancellation scope or the entire Workflow has been cancelled or set as the cause for when a Child Workflow or Activity has been cancelled.
 
 In an Activity, it may be thrown if the Activity was requested to be cancelled. More on activity cancellation [here](/typescript/activities#activity-cancellation).
 
@@ -172,7 +172,7 @@ Contains information about an Activity failure. Always contains the original rea
 
 ### [ChildWorkflowFailure](https://typescript.temporal.io/api/classes/client.ChildWorkflowFailure)
 
-Contains information about a child Workflow failure. Always contains the original reason for the
+Contains information about a Child Workflow failure. Always contains the original reason for the
 failure as its cause. For example, if a child workflow was terminated, the cause is set to `TerminatedFailure`.
 
 **This exception is expected to be thrown only by the framework code.**

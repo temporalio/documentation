@@ -101,7 +101,7 @@ You can now query `current_state` by using the CLI:
 
 You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object.
 
-Use WorkflowStub to query workflow instances from your client code (can be applied to running workflows as well):
+Use `WorkflowStub` to query Workflow instances from your client code (can be applied to running workflows as well):
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(

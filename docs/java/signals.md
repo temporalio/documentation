@@ -39,7 +39,7 @@ If not specified, the signal type defaults to the name of the method.
 The following example shows how signals can be used to update the Workflow state.
 You can use the `Workflow.await` to block the current Workflow Execution until the provided unblock condition is evaluated
 to `true`. In our case, the unblocking condition is evaluated to `true` when we receive a signal that updates the greeting
-to something different from the current greeting. This workflow completes when the greeting becomes "Bye".
+to something different from the current greeting. This Workflow completes when the greeting becomes "Bye".
 
 ```java
 @WorkflowInterface

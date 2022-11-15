@@ -115,8 +115,8 @@ straight-forward:
 The problem may occur when your Workflow depends on some time changes: it waits for timeout or some other conditions.
 In unit tests we don't want to waste time waiting for timeouts. Thus, by default, the test server starts with
 
-a _"time-skipping"_ option. It means that if the workflow has a timer, the server doesn't wait for it and
-continues immediately. For example, when testing such a workflow the test server will not wait for a minute:
+a _"time-skipping"_ option. It means that if the Workflow has a timer, the server doesn't wait for it and
+continues immediately. For example, when testing such a Workflow the test server will not wait for a minute:
 
 ```php
 #[WorkflowInterface]
