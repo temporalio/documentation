@@ -326,7 +326,7 @@ $accountTransfer = $workflowClient->newWorkflowStub(
 $run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
 ```
 
-Once started you can receive Workflow ID and run ID via `WorkflowRun` object returned by start method:
+Once started you can receive Workflow Id and run ID via `WorkflowRun` object returned by start method:
 
 ```php
 $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);

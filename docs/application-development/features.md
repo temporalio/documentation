@@ -3367,7 +3367,7 @@ Not applicable to this SDK.
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
 
-- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is no existing value, then it records the function result as a value with the given Workflow Id on the History.
 - If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
   - If the values are equal, then it returns the value without recording a new Marker Event
   - If the values aren't equal, then it records the new value with the same ID on the History.
