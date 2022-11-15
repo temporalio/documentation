@@ -27,7 +27,7 @@ Provide the full error message in your ticket.
 
 [Frontend Service](/clusters/#frontend-service) logs can show which parts of the Cluster aren't working.
 
-Verify that the Frontend Service is connected by opening the Web UI in your browser.
+Verify that the [Frontend Service](/clusters#frontend-service) is connected by opening the Web UI in your browser.
 
 Alternatively, OSS users can check that Frontend and other services are running by using `tctl`.
 
