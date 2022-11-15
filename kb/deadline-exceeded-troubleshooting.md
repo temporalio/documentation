@@ -26,9 +26,9 @@ Provide the full error message in your ticket.
 :::
 
 [Frontend Service](/clusters/#frontend-service) logs can show which parts of the Cluster aren't working.
-In order for the error to appear, there has to be a service pod or container up and running.
+For the error to appear, a service pod or container must be up and running.
 
-OSS users can verify that the [Frontend Service](/clusters#frontend-service) is connected and running by using `tctl`.
+OSS users can verify that the Frontend Service is connected and running by using `tctl`.
 
 ```
 
