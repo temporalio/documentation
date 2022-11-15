@@ -115,4 +115,4 @@ If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring
 
 ---
 
-If you were unable to resolve your issue, check for similar questions and possible solutions on [community forum](https://community.temporal.io), [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
+If you were unable to resolve your issue, check for similar questions and possible solutions on our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
