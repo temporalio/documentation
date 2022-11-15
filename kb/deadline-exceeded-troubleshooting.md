@@ -29,7 +29,7 @@ Provide the full error message in your ticket.
 
 Verify that the Frontend Service is connected by opening the Web UI in your browser.
 
-Alternatively, OSS users can check that Frontend and other service are running with `tctl`.
+Alternatively, OSS users can check that Frontend and other services are running by using `tctl`.
 
 ```
 
