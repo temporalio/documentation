@@ -102,7 +102,7 @@ If the error persists, review your Workflow Execution History and server logs fo
 
 #### When executing or scheduling Workflows
 
-One or more services may be unable to connect to the [Frontend Service](/clusters#frontend-service).
+One or more services might be unable to connect to the [Frontend Service](/clusters#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
 
 Increase the value of `frontend.keepAliveMaxConnectionAge` so that requests can be finished before the connection terminates.
