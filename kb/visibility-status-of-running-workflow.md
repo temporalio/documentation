@@ -10,7 +10,7 @@ To check how many Workflows are currently running, you must set up the [Advanced
 
 <!-- truncate -->
 
-Once you've integrated Elasticsearch with your Temporal Cluster, you can get information into the visibility of your running Workflows.
+After you integrated Elasticsearch with your Temporal Cluster, you can get information into the visibility of your running Workflows.
 
 Choose from any of the following methods to get visibility on your running Workflows.
 
@@ -43,13 +43,13 @@ Alternatively, you can use the following APIs with your Visibility Query.
 - [ListWorkflowExecutions](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto#L279)
 - [CountWorkflowExecutions](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto#L291)
 
-It isn’t recommended using the APIs with high-rate calls.
+We don’t recommend using the APIs with high-rate calls.
 
 For more information, see [Search Attributes](/concepts/what-is-a-search-attribute/).
 
 :::note
 
-All APIs lists are paginated.
+All lists from APIs are paginated.
 
 :::
 
