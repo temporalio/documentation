@@ -417,6 +417,10 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 - [How to set a Workflow Task Timeout](/go/startworkflowoptions-reference/#workflowtasktimeout)
 
+### Memo
+
+A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.
+
 ## Signal
 
 A Signal is an asynchronous request to a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-execution">Learn more</a></p></div></a>.
@@ -481,6 +485,15 @@ The `__stack_trace` Query name does not require special handling in your Workflo
 Stack Trace Queries are available only for running Workflow Executions.
 
 :::
+
+## Side Effect
+
+A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
+
+A Side Effect does not re-execute upon replay, but instead returns the recorded result.
+
+Do not ever have a Side Effect that could fail, because failure could result in the Side Effect function executing more than once.
+If there is any chance that the code provided to the Side Effect could fail, use an Activity.
 
 ## Child Workflow
 

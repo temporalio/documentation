@@ -75,7 +75,7 @@ s := temporal.NewServer(
 
 ### WithAuthorizer
 
-Sets a low level <a class="tdlp" href="/clusters#authorizer-plugin">authorization mechanism<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/clusters#authorizer-plugin">Learn more</a></p></div></a> that determines whether to allow or deny inbound API calls.
+Sets a low level <a class="tdlp" href="/security#authorizer-plugin">authorization mechanism<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> that determines whether to allow or deny inbound API calls.
 
 ```go
 s := temporal.NewServer(
@@ -96,7 +96,7 @@ s := temporal.NewServer(
 
 ### WithClaimMapper
 
-Configures a [mechanism to map roles](/server/security/#claimmapper-plugin-interface) to `Claims` for authorization.
+Configures a [mechanism to map roles](/security/#claimmapper-plugin-interface) to `Claims` for authorization.
 
 ```go
 s := temporal.NewServer(
