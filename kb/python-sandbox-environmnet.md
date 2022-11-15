@@ -14,7 +14,7 @@ By default, Workflows run in a sandboxed-environment. If a Workflow Execution pe
 
 ## Benefits
 
-Temporal's Python SDK uses a sandboxed-environment for Worfklow runs to make developing Workflow code safer, easier, and its cost on performance is relatively little.
+Temporal's Python SDK uses a sandboxed-environment for Workflow runs to make developing Workflow code safer.
 
 ## How it works
 
@@ -27,7 +27,7 @@ The Sandbox environment is made up of two main components.
 
 The first component of the Sandbox is a global state isolation. Global state isolation uses `exec` to compile and evaluate statements.
 
-Upon the start of a Workflow, the file that the Workflow is defined in, is imported into a newly created sandbox.
+Upon the start of a Workflow, the file that the Workflow is defined in is imported into a newly created sandbox.
 
 A known set of pass-through modules are sent to the sandbox when the Workflow is imported.
 
@@ -55,14 +55,14 @@ To skip a sandboxed-environment for a specific block of code in a Workflow, use�
 
 ```python
 with temporalio.workflow.unsafe.sandbox_unrestricted():
-```
+    # Your code
 
 ### Skip Sandboxing for an entire Workflow
 
 To skip a sandboxed-environment for a Workflow, set the `sandboxed` argument in the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator to false. The entire Workflow will run without sandbox restrictions.
 
 ```python
-@workflow.def(sandboxed=false)
+@workflow.def(sandboxed=False)
 ```
 
 ### Skip Sandboxing for a Worker
@@ -100,7 +100,7 @@ my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restricti
 
 Checks compare the against the fully qualified path to the item.
 
-To remove this restriction, see the following example.
+For example, to remove a restriction on `datetime.date.today()`, see the following example.
 
 ```python
 my_restrictions = dataclasses.replace(
