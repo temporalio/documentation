@@ -113,7 +113,7 @@ tctl workflow reset-batch --skip_base_is_not_current
 
 ### `--only_non_deterministic`
 
-Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a nondeterministic error.
+Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a non-deterministic error.
 
 **Example**
 

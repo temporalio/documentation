@@ -3,7 +3,7 @@ id: side-effect
 title: SideEffect
 ---
 
-`Workflow::sideEffect` is useful for short, nondeterministic code snippets, such as getting a random
+`Workflow::sideEffect` is useful for short, non-deterministic code snippets, such as getting a random
 value or generating a UUID. It executes the provided function once and records its result into the
 Workflow history. `Workflow::sideEffect` does not re-execute upon replay, but instead returns the
 recorded result. It can be seen as an "inline" Activity.

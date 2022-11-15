@@ -1,20 +1,20 @@
 ---
 slug: python-sandbox-environment
-title: Python sandboxed-environments
+title: Python sandbox environment
 tags:
   - kb-article
 date: 2022-11-15T00:00:00Z
 ---
 
-The Temporal Python SDK allows you to run Workflow code in a sandboxed-environment to help prevent non-determinism errors in your application. The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
+The Temporal Python SDK allows you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application. The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
 
 <!-- truncate -->
 
-By default, Workflows run in a sandboxed-environment. If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Task Worker. The Workflow will not progress until the code is fixed.
+By default, Workflows run in a sandbox environment. If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Task Worker. The Workflow will not progress until the code is fixed.
 
 ## Benefits
 
-Temporal's Python SDK uses a sandboxed-environment for Workflow runs to make developing Workflow code safer.
+Temporal's Python SDK uses a sandbox environment for Workflow runs to make developing Workflow code safer.
 
 ## How it works
 
@@ -29,9 +29,9 @@ The first component of the Sandbox is a global state isolation. Global state iso
 
 Upon the start of a Workflow, the file that the Workflow is defined in is imported into a newly created sandbox.
 
-A known set of pass-through modules are sent to the sandbox when the Workflow is imported.
+If a module is imported by the file, a known set, which includes all of Python's standard library, is _passed through_ from outside the sandbox.
 
-These modules are expected to be Side Effect free and have their nondeterministic aspects restricted.
+These modules are expected to be Side Effect free and have their non-deterministic aspects restricted.
 
 For a full list of modules imported, see [Customizing the Sandbox](#customize-the-sandbox).
 
@@ -43,23 +43,22 @@ Restrictions apply at both the Workflow import level and the Workflow run time.
 
 A default set of restrictions is included that prevents most dangerous standard library calls.
 
-However, it is known in Python that some otherwise-non-deterministic invocations, like reading a file from disk via `open` or using `os.environ`, are done as part of importing modules.
-
 ## Skip Workflow Sandboxing
 
-The following techniques aren't recommended, but allow you to avoid, skip, or break through the sandboxed-environment.
+The following techniques aren't recommended, but allow you to avoid, skip, or break through the sandbox environment.
 
 ### Skip Sandboxing for a block of code
 
-To skip a sandboxed-environment for a specific block of code in a Workflow, use [`sandbox_unrestricted()`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_unrestricted). The Workflow will run without sandbox restrictions.
+To skip a sandbox environment for a specific block of code in a Workflow, use [`sandbox_unrestricted()`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_unrestricted). The Workflow will run without sandbox restrictions.
 
 ````python
 with temporalio.workflow.unsafe.sandbox_unrestricted():
     # Your code
+```
 
 ### Skip Sandboxing for an entire Workflow
 
-To skip a sandboxed-environment for a Workflow, set the `sandboxed` argument in the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator to false. The entire Workflow will run without sandbox restrictions.
+To skip a sandbox environment for a Workflow, set the `sandboxed` argument in the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator to false. The entire Workflow will run without sandbox restrictions.
 
 ```python
 @workflow.def(sandboxed=False)
@@ -67,7 +66,7 @@ To skip a sandboxed-environment for a Workflow, set the `sandboxed` argument i
 
 ### Skip Sandboxing for a Worker
 
-To skip a sandboxed-environment for a Worker, set the `Worker` init's `workflow_runner` keyword argument to, [`UnsandboxedWorkflowRunner()`](https://python.temporal.io/temporalio.worker.UnsandboxedWorkflowRunner.html).
+To skip a sandbox environment for a Worker, set the `Worker` init's `workflow_runner` keyword argument to, [`UnsandboxedWorkflowRunner()`](https://python.temporal.io/temporalio.worker.UnsandboxedWorkflowRunner.html).
 
 ## Customize the sandbox
 
@@ -92,11 +91,7 @@ my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restricti
 
 ### Invalid module members
 
-`invalid_module_members` includes modules that cannot be accessed. This includes the following.
-
-- variables
-- functions
-- class methods (`__init__`)
+`invalid_module_members` includes modules that cannot be accessed.
 
 Checks compare the against the fully qualified path to the item.
 

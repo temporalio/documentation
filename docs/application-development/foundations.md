@@ -691,7 +691,7 @@ interface FileProcessingWorkflow
 </TabItem>
 <TabItem value="python">
 
-In the Temporal Python SDK programming model, Workflows are defined as classes and are run in a [sandboxed-environment](../concepts/what-is-a-python-sandbox).
+In the Temporal Python SDK programming model, Workflows are defined as classes and are run in a [sandbox environment](/kb/python-sandbox-environment).
 
 Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
 

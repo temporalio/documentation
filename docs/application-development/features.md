@@ -3228,7 +3228,7 @@ const handle = await client.start(scheduledWorkflow, {
 
 ## Side Effects
 
-Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 
@@ -3278,13 +3278,13 @@ The following example demonstrates how NOT to use `SideEffect`:
 
 ```go
 // Warning: This is an incorrect example.
-// This code is nondeterministic.
+// This code is non-deterministic.
 var random int
 workflow.SideEffect(func(ctx workflow.Context) interface{} {
       random = rand.Intn(100)
       return nil
 })
-// random will always be 0 in replay, so this code is nondeterministic.
+// random will always be 0 in replay, so this code is non-deterministic.
 ```
 
 On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
@@ -3292,7 +3292,7 @@ On replay the provided function is not executed, the random number will always b
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the non-deterministic code.
 
 ```java
   int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
@@ -3421,7 +3421,7 @@ Content is currently unavailable.
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
-They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+They can't be used normally with Workflow code, as that would be [non-deterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
 
 Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
 

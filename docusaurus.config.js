@@ -1,23 +1,23 @@
 //@ts-check
-const path = require("path");
-const visit = require("unist-util-visit");
-const FontPreloadPlugin = require("webpack-font-preload-plugin");
+const path = require('path');
+const visit = require('unist-util-visit');
+const FontPreloadPlugin = require('webpack-font-preload-plugin');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: "Temporal Documentation",
-  tagline: "Build invincible applications",
-  url: "https://docs.temporal.io",
-  baseUrl: "/",
-  onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "throw",
-  favicon: "img/favicon.png",
-  organizationName: "temporalio", // Usually your GitHub org/user name.
-  projectName: "temporal-documentation", // Usually your repo name.
+  title: 'Temporal Documentation',
+  tagline: 'Build invincible applications',
+  url: 'https://docs.temporal.io',
+  baseUrl: '/',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
+  favicon: 'img/favicon.png',
+  organizationName: 'temporalio', // Usually your GitHub org/user name.
+  projectName: 'temporal-documentation', // Usually your repo name.
   plugins: [
     function preloadFontPlugin() {
       return {
-        name: "preload-font-plugin",
+        name: 'preload-font-plugin',
         configureWebpack() {
           return {
             plugins: [new FontPreloadPlugin()],
@@ -28,7 +28,7 @@ module.exports = {
   ],
   themeConfig: {
     colorMode: {
-      defaultMode: "light",
+      defaultMode: 'light',
       disableSwitch: false,
       // switchConfig: {
       //   darkIcon: "🌙",
@@ -45,9 +45,9 @@ module.exports = {
       // },
     },
     prism: {
-      theme: require("prism-react-renderer/themes/nightOwlLight"),
-      darkTheme: require("prism-react-renderer/themes/dracula"),
-      additionalLanguages: ["java", "ruby", "php"],
+      theme: require('prism-react-renderer/themes/nightOwlLight'),
+      darkTheme: require('prism-react-renderer/themes/dracula'),
+      additionalLanguages: ['java', 'ruby', 'php'],
     },
     docs: {
       sidebar: {
@@ -66,48 +66,48 @@ module.exports = {
     navbar: {
       hideOnScroll: false,
       logo: {
-        alt: "Temporal logo",
-        src: "img/temporal-logo-dark.svg",
-        srcDark: "img/temporal-logo.svg",
-        href: "https://temporal.io",
+        alt: 'Temporal logo',
+        src: 'img/temporal-logo-dark.svg',
+        srcDark: 'img/temporal-logo.svg',
+        href: 'https://temporal.io',
       },
       items: [
         {
-          label: "Home",
-          to: "/",
-          position: "left",
-          activeBasePath: "none",
+          label: 'Home',
+          to: '/',
+          position: 'left',
+          activeBasePath: 'none',
         },
         {
-          label: "Temporal Cloud",
-          to: "/cloud",
-          activeBasePath: "cloud",
-          position: "left",
+          label: 'Temporal Cloud',
+          to: '/cloud',
+          activeBasePath: 'cloud',
+          position: 'left',
         },
         {
-          label: "KB articles",
-          to: "/kb",
-          activeBasePath: "kb",
-          position: "left",
+          label: 'KB articles',
+          to: '/kb',
+          activeBasePath: 'kb',
+          position: 'left',
         },
         {
-          label: "Docs changelog",
-          to: "/changelog",
-          activeBasePath: "changelog",
-          position: "left",
+          label: 'Docs changelog',
+          to: '/changelog',
+          activeBasePath: 'changelog',
+          position: 'left',
         },
         {
-          label: "Learn Temporal",
-          href: "https://learn.temporal.io",
-          right: "left",
-        }
+          label: 'Learn Temporal',
+          href: 'https://learn.temporal.io',
+          right: 'left',
+        },
       ],
     },
     footer: {
       logo: {
-        alt: "Temporal logo",
-        src: "img/favicon.png",
-        href: "https://temporal.io",
+        alt: 'Temporal logo',
+        src: 'img/favicon.png',
+        href: 'https://temporal.io',
         width: 24,
       },
       copyright: `Copyright © ${new Date().getFullYear()}</span> Temporal Technologies Inc.</div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSXFPF2"
@@ -116,103 +116,103 @@ module.exports = {
         {
           items: [
             {
-              label: "Github",
-              href: "https://github.com/temporalio/temporal",
+              label: 'Github',
+              href: 'https://github.com/temporalio/temporal',
             },
             {
-              label: "Twitter",
-              href: "https://twitter.com/temporalio",
+              label: 'Twitter',
+              href: 'https://twitter.com/temporalio',
             },
             {
-              label: "YouTube",
-              href: "https://www.youtube.com/c/Temporalio",
+              label: 'YouTube',
+              href: 'https://www.youtube.com/c/Temporalio',
             },
             {
-              label: "About the docs",
-              href: "https://github.com/temporalio/documentation/blob/master/README.md",
-            },
-          ],
-        },
-        {
-          items: [
-            {
-              label: "Join the Cloud waitlist",
-              href: "https://pages.temporal.io/cloud-early-access",
-            },
-            {
-              label: "Meetups",
-              href: "https://lu.ma/temporal",
-            },
-            {
-              label: "Workshops",
-              href: "https://temporal.io/community#workshops",
-            },
-            {
-              label: "Support forum",
-              href: "https://community.temporal.io/",
+              label: 'About the docs',
+              href: 'https://github.com/temporalio/documentation/blob/master/README.md',
             },
           ],
         },
         {
           items: [
             {
-              label: "Learn Temporal",
-              href: "https://learn.temporal.io",
+              label: 'Join the Cloud waitlist',
+              href: 'https://pages.temporal.io/cloud-early-access',
             },
             {
-              label: "Blog",
-              href: "https://temporal.io/blog",
+              label: 'Meetups',
+              href: 'https://lu.ma/temporal',
             },
             {
-              label: "Use cases",
-              href: "https://temporal.io/use-cases",
+              label: 'Workshops',
+              href: 'https://temporal.io/community#workshops',
             },
             {
-              label: "Newsletter signup",
-              href: "https://pages.temporal.io/newsletter-subscribe",
+              label: 'Support forum',
+              href: 'https://community.temporal.io/',
             },
           ],
         },
         {
           items: [
             {
-              label: "Security",
-              to: "/security",
+              label: 'Learn Temporal',
+              href: 'https://learn.temporal.io',
             },
             {
-              label: "Privacy policy",
-              to: "/privacy-policy",
+              label: 'Blog',
+              href: 'https://temporal.io/blog',
             },
             {
-              label: "Terms of service",
-              href: "https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf",
+              label: 'Use cases',
+              href: 'https://temporal.io/use-cases',
+            },
+            {
+              label: 'Newsletter signup',
+              href: 'https://pages.temporal.io/newsletter-subscribe',
+            },
+          ],
+        },
+        {
+          items: [
+            {
+              label: 'Security',
+              to: '/security',
+            },
+            {
+              label: 'Privacy policy',
+              to: '/privacy-policy',
+            },
+            {
+              label: 'Terms of service',
+              href: 'https://docs.temporal.io/pdf/temporal-tos-2021-07-24.pdf',
             },
             {
               label: "We're hiring",
-              href: "https://temporal.io/careers",
+              href: 'https://temporal.io/careers',
             },
           ],
         },
       ],
     },
     algolia: {
-      apiKey: "4a2fa646f476d7756a7cdc599b625bec",
-      indexName: "temporal",
-      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
+      apiKey: '4a2fa646f476d7756a7cdc599b625bec',
+      indexName: 'temporal',
+      appId: 'T5D6KNJCQS', // Optional, if you run the DocSearch crawler on your own
       // searchParameters: {}, // Optional, if provided by Algolia
       externalUrlRegex: 'temporal\\.io',
     },
   },
   presets: [
     [
-      "@docusaurus/preset-classic",
+      '@docusaurus/preset-classic',
       {
         // Will be passed to @docusaurus/plugin-content-docs
         docs: {
-          sidebarPath: require.resolve("./sidebars.js"),
-          routeBasePath: "/",
+          sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: '/',
           exclude: [], // do not render context content
-          editUrl: "https://github.com/temporalio/documentation/blob/master",
+          editUrl: 'https://github.com/temporalio/documentation/blob/master',
           /**
            * Whether to display the author who last updated the doc.
            */
@@ -242,26 +242,26 @@ module.exports = {
                     if (!/^ts$/.test(node.lang)) {
                       return;
                     }
-                    node.value = "// @ts-nocheck\n" + node.value;
+                    node.value = '// @ts-nocheck\n' + node.value;
                   }
 
-                  visit(tree, "code", visitor);
+                  visit(tree, 'code', visitor);
                 },
               {},
             ],
             [
-              require("remark-typescript-tools").transpileCodeblocks,
+              require('remark-typescript-tools').transpileCodeblocks,
               {
                 compilerSettings: {
                   tsconfig: path.join(
                     __dirname,
-                    "docs",
-                    "typescript",
-                    "tsconfig.json"
+                    'docs',
+                    'typescript',
+                    'tsconfig.json'
                   ),
                   externalResolutions: {},
                 },
-                fileExtensions: [".md", ".mdx"],
+                fileExtensions: ['.md', '.mdx'],
                 // remark-typescript-tools automatically running prettier with a custom config that doesn't
                 // line up with ours. This disables any post processing, including the default prettier step.
                 postProcessTs: (files) => files,
@@ -275,23 +275,23 @@ module.exports = {
                     if (!/^ts$/.test(node.lang) && !/^js$/.test(node.lang)) {
                       return;
                     }
-                    if (node.value.startsWith("// @ts-nocheck\n")) {
-                      node.value = node.value.slice("// @ts-nocheck\n".length);
-                      if (node.lang === "ts") {
+                    if (node.value.startsWith('// @ts-nocheck\n')) {
+                      node.value = node.value.slice('// @ts-nocheck\n'.length);
+                      if (node.lang === 'ts') {
                         node.value = dedent(node.value);
                       }
                     }
                     // If TS compiled output is empty, replace it with a more helpful comment
                     if (
-                      node.lang === "js" &&
-                      node.value.trim() === "export {};"
+                      node.lang === 'js' &&
+                      node.value.trim() === 'export {};'
                     ) {
-                      node.value = "// Not required in JavaScript";
-                    } else if (node.lang === "js") {
+                      node.value = '// Not required in JavaScript';
+                    } else if (node.lang === 'js') {
                       node.value = convertIndent4ToIndent2(node.value).trim();
                     }
                   }
-                  visit(tree, "code", visitor);
+                  visit(tree, 'code', visitor);
                 },
               {},
             ],
@@ -302,7 +302,7 @@ module.exports = {
         // blog: {},
         // Will be passed to @docusaurus/theme-classic.
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: require.resolve('./src/css/custom.css'),
         },
         // gtag: {
         //   trackingID: "GTM-TSXFPF2",
@@ -313,7 +313,7 @@ module.exports = {
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
           //cacheTime: 600 * 1000, // 600 sec - cache purge period
-          changefreq: "weekly",
+          changefreq: 'weekly',
           priority: 0.5,
         },
       },
@@ -321,12 +321,12 @@ module.exports = {
   ],
   scripts: [
     {
-      src: "/scripts/googletag.js",
+      src: '/scripts/googletag.js',
       async: true,
       defer: true,
     },
     {
-      src: "/scripts/set-tab-language.js",
+      src: '/scripts/set-tab-language.js',
       async: true,
       defer: true,
     },
@@ -343,80 +343,80 @@ module.exports = {
   ],
   plugins: [
     [
-      "@docusaurus/plugin-content-blog",
+      '@docusaurus/plugin-content-blog',
       {
         /**
          * Required for any multi-instance plugin
          */
-        id: "cloud-release-notes",
+        id: 'cloud-release-notes',
         /**
          * URL route for the blog section of your site.
          * *DO NOT* include a trailing slash.
          */
-        routeBasePath: "cloud/release-notes",
+        routeBasePath: 'cloud/release-notes',
         /**
          * Path to data on filesystem relative to site dir.
          */
-        path: "cloud/release-notes",
-        blogTitle: "Temporal Cloud release notes",
-        blogSidebarTitle: "Recent release notes",
+        path: 'cloud/release-notes',
+        blogTitle: 'Temporal Cloud release notes',
+        blogSidebarTitle: 'Recent release notes',
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
-          type: "all",
+          type: 'all',
           copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
         },
       },
     ],
     [
-      "@docusaurus/plugin-content-blog",
+      '@docusaurus/plugin-content-blog',
       {
         /**
          * Required for any multi-instance plugin
          */
-        id: "changelog",
+        id: 'changelog',
         /**
          * URL route for the blog section of your site.
          * *DO NOT* include a trailing slash.
          */
-        routeBasePath: "changelog",
+        routeBasePath: 'changelog',
         /**
          * Path to data on filesystem relative to site dir.
          */
-        blogTitle: "Temporal documentation changelog",
-        blogSidebarTitle: "Docs changelog",
-        path: "changelog",
-        routeBasePath: "changelog",
+        blogTitle: 'Temporal documentation changelog',
+        blogSidebarTitle: 'Docs changelog',
+        path: 'changelog',
+        routeBasePath: 'changelog',
         blogDescription: "A log of changes to this site's content.",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
-          type: "all",
+          type: 'all',
           copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
         },
       },
     ],
     [
-      "@docusaurus/plugin-content-blog",
+      '@docusaurus/plugin-content-blog',
       {
         /**
          * Required for any multi-instance plugin
          */
-        id: "kb",
+        id: 'kb',
         /**
          * URL route for the blog section of your site.
          * *DO NOT* include a trailing slash.
          */
-        routeBasePath: "kb",
+        routeBasePath: 'kb',
         /**
          * Path to data on filesystem relative to site dir.
          */
-        path: "kb",
-        blogTitle: "Temporal Platform knowledge base",
-        blogSidebarTitle: "Recent KB articles",
+        path: 'kb',
+        blogTitle: 'Temporal Platform knowledge base',
+        blogSidebarTitle: 'Recent KB articles',
         blogDescription:
-          "User facing Temporal Platform knowledge base articles",
+          'User facing Temporal Platform knowledge base articles',
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {
-          type: "all",
+          type: 'all',
           copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
         },
       },
@@ -428,7 +428,7 @@ function convertIndent4ToIndent2(code) {
   // TypeScript always outputs 4 space indent. This is a workaround.
   // See https://github.com/microsoft/TypeScript/issues/4042
   return code.replace(/^( {4})+/gm, (match) => {
-    return "  ".repeat(match.length / 4);
+    return '  '.repeat(match.length / 4);
   });
 }
 
@@ -436,7 +436,7 @@ function convertIndent4ToIndent2(code) {
 // lines. Helpful for cleaning up TypeScript examples that are pulled from
 // the body of a function.
 function dedent(code) {
-  const lines = code.split("\n");
+  const lines = code.split('\n');
 
   if (!lines.length) {
     return code;
@@ -465,6 +465,6 @@ function dedent(code) {
 
   // Otherwise, remove leading spaces from each line
   return lines
-    .map((line) => line.replace(new RegExp(`^ {${minIndent}}`), ""))
-    .join("\n");
+    .map((line) => line.replace(new RegExp(`^ {${minIndent}}`), ''))
+    .join('\n');
 }
