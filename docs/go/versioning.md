@@ -60,7 +60,7 @@ err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
 return result2, err
 ```
 
-When `workflow.GetVersion()` is run for the new Workflow execution, it records a marker in the Workflow
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow
 history so that all future calls to `GetVersion` for this change Id--`Step 1` in the example--on this
 Workflow Execution will always return the given version number, which is `1` in the example.
 
@@ -82,7 +82,7 @@ Note that we have changed `maxSupported` from 1 to 2. A Workflow that had alread
 `GetVersion()` call before it was introduced will return `DefaultVersion`. A Workflow that was run
 with `maxSupported` set to 1, will return 1. New Workflows will return 2.
 
-After you are sure that all of the Workflow executions prior to version 1 have completed, you can
+After you are sure that all of the Workflow Executions prior to version 1 have completed, you can
 remove the code for that version. It should now look like the following:
 
 ```go
@@ -96,7 +96,7 @@ if v == 1 {
 
 You'll note that `minSupported` has changed from `DefaultVersion` to `1`. If an older version of the
 Workflow Execution history is replayed on this code, it will fail because the minimum expected version
-is 1. After you are sure that all of the Workflow executions for version 1 have completed, then you
+is 1. After you are sure that all of the Workflow Executions for version 1 have completed, then you
 can remove 1 so that your code would look like the following:
 
 ```go
@@ -131,10 +131,10 @@ if v == workflow.DefaultVersion {
 ```
 
 Upgrading a Workflow is straightforward if you don't need to preserve your currently running
-Workflow executions. You can simply terminate all of the currently running Workflow executions and
+Workflow Executions. You can simply terminate all of the currently running Workflow Executions and
 suspend new ones from being created while you deploy the new version of your Workflow code, which does
 not use `GetVersion()`, and then resume Workflow creation. However, that is often not the case, and
-you need to take care of the currently running Workflow executions, so using `GetVersion()` to update
+you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update
 your code is the method to use.
 
 However, if you want your currently running Workflows to proceed based on the current Workflow logic,

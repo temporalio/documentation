@@ -29,7 +29,7 @@ The Workflow Interface is a Java interface which is annotated with the `@Workflo
 
 Workflow interface methods must have one of the following annotations:
 
-- **@WorkflowMethod** denotes the starting point of Workflow execution. Workflow Execution completes when this methods returns.
+- **@WorkflowMethod** denotes the starting point of Workflow Execution. Workflow Execution completes when this methods returns.
 - **@SignalMethod** indicates that this method is a signal handler method and that it can react to external signals. It can have parameters which can contain the signal payload. It does not return a value, so it must have a `void` return type.
 - **@QueryMethod** indicates that this method can be used to query the Workflow's state at any time during its execution.
   It can have parameters which can be used to filter a subset of the Workflow's state that it returns. Since it does return a value it must have a non `void` return type.

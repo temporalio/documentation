@@ -6,7 +6,7 @@ sidebar_label: Activities
 
 ## What is an Activity?
 
-Activities are implementations of certain tasks which need to be performed during a Workflow execution.
+Activities are implementations of certain tasks which need to be performed during a Workflow Execution.
 They can be used to interact with external systems, such as databases, services, etc.
 
 Workflows orchestrate invocations of Activities.
