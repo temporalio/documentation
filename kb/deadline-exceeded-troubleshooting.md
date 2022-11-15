@@ -7,12 +7,10 @@ date: 2022-11-09T00:00:00Z
 ---
 
 All client-side requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
-Sometimes, when these requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
-Network interruptions, timeouts, server overload, and Query errors are some of the reasons that can cause this error.
+Sometimes, when these frontend requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
+Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 
 The following sections discuss the nature of this error and how to troubleshoot it.
-
-<!-- truncate -->
 
 #### Check Frontend Service logs
 
@@ -26,10 +24,9 @@ Provide the full error message in your ticket.
 :::
 
 [Frontend Service](/clusters/#frontend-service) logs can show which parts of the Cluster aren't working.
+In order for the error to appear, there has to be a service pod or container up and running.
 
-Verify that the [Frontend Service](/clusters#frontend-service) is connected by opening the Web UI in your browser.
-
-Alternatively, OSS users can check that Frontend and other services are running by using `tctl`.
+OSS users can verify that the [Frontend Service](/clusters#frontend-service) is connected and running by using `tctl`.
 
 ```
 
@@ -49,7 +46,7 @@ Use `grpc-health-probe` to check the Frontend Service, [Matching Service](/clust
 
 ```
 
-Logs can also be used to find Client [Query](/workflows#queries) requests that failed with this error.
+Logs can also be used to find failed Client [Query](/workflows#queries) requests.
 
 #### Check your Cluster metrics
 
