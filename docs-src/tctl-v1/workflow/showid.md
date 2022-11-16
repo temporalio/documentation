@@ -9,7 +9,7 @@ tags:
 
 The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).
 
-`tctl workflow showid <workflow_id> [<run_id>] [<modifiers>]`
+`tctl workflow showid <workflow_id> [<run_id>] <modifiers>`
 
 This command is a shortcut for `tctl workflow show --workflow_id <workflowid> [--run_id <runid>]`.
 
@@ -50,8 +50,6 @@ The following modifiers control the behavior of the command.
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -61,8 +59,6 @@ tctl workflow showid <workflow_id> --print_datetime
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -74,8 +70,6 @@ tctl workflow showid <workflow_id> --print_raw_time
 
 Serialize an event to a file.
 
-Alias: `--of`
-
 **Example**
 
 ```bash
@@ -86,8 +80,6 @@ tctl workflow showid <workflow_id> --output_filename <filename>
 
 Print full event details.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -97,8 +89,6 @@ tctl workflow showid <workflow_id> --print_full
 ### `--print_event_version`
 
 Print the event version.
-
-Alias: `--pev`
 
 **Example**
 
@@ -111,8 +101,6 @@ tctl workflow showid <workflow_id> --print_event_version
 Print the details of a specified event.
 The default value is 0.
 
-Alias: `--eid`
-
 **Example**
 
 ```bash
@@ -123,8 +111,6 @@ tctl workflow showid <workflow_id> --event_id <id>
 
 Specify the maximum length for each attribute field.
 The default value is 500.
-
-Alias: `--maxl`
 
 **Example**
 
