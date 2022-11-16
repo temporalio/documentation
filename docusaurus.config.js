@@ -411,7 +411,7 @@ module.exports = {
          */
         path: "kb",
         blogTitle: "Temporal Platform knowledge base",
-        blogSidebarTitle: "Recent KB articles",
+        blogSidebarTitle: "KB articles",
         blogSidebarCount: "ALL",
         blogDescription:
           "User facing Temporal Platform knowledge base articles",
