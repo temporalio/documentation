@@ -12,11 +12,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 This documentation reflects the "next" version of Temporal's tctl command line tool.
-Currently it is known as [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux), but the name may change in the future.
+`tctl next` was formerly known as [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux).
 
 :::note
 
-If you are using `tctl` version 1.16.12 or older, you must update to at least version 1.16.3 before you can switch to `tctl` v2.0.0-beta.1.
+Update to version 1.17 or later before switching to `tctl next`.
 
 :::
 

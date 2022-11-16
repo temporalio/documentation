@@ -13,8 +13,6 @@ import TabItem from '@theme/TabItem';
 
 The `tctl workflow` commands enable <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> operations.
 
-Alias: `w`
-
 - <a class="tdlp" href="#cancel">tctl workflow cancel<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#cancel">Learn more</a></p></div></a>
 - <a class="tdlp" href="#count">tctl workflow count<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow count</p><p class="tdlppd">How to count Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#count">Learn more</a></p></div></a>
 - <a class="tdlp" href="#describe">tctl workflow describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow describe</p><p class="tdlppd">How to show information about a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
@@ -46,7 +44,7 @@ After cancellation, the Workflow Execution can perform cleanup work.
 
 See also <a class="tdlp" href="#terminate">`tctl workflow terminate`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#terminate">Learn more</a></p></div></a>.
 
-`tctl workflow cancel [<modifiers>]`
+`tctl workflow cancel <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -54,7 +52,7 @@ The following modifiers control the behavior of the command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -66,7 +64,7 @@ tctl workflow cancel --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -79,7 +77,7 @@ tctl workflow cancel --run_id <id>
 The `tctl workflow count` command counts <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 This command requires Elasticsearch to be enabled.
 
-`tctl workflow count [<modifiers>]`
+`tctl workflow count <modifiers>`
 
 The following modifier controls the behavior of the command.
 
@@ -108,8 +106,6 @@ To find a Workflow with a given Run Id, refer to <a class="tdlp" href="#describe
 
 `tctl workflow describe <modifiers>`
 
-Alias: `d`
-
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
@@ -119,7 +115,7 @@ Always include required modifiers when executing this command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -132,7 +128,7 @@ tctl workflow describe --workflow_id <id>
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 If a Run Id is not provided, the command will show the latest Workflow Execution of that Workflow Id.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -143,8 +139,6 @@ tctl workflow describe --run_id <id>
 ### `--print_raw`
 
 Print properties exactly as they are stored.
-
-Alias: `--praw`
 
 **Example**
 
@@ -176,8 +170,6 @@ The following modifiers control the behavior of the command.
 ### `--print_raw`
 
 Print properties exactly as they are stored.
-
-Alias: `--praw`
 
 **Example**
 
@@ -215,8 +207,6 @@ The following modifiers control the behavior of the command.
 
 Print the raw timestamp.
 
-Alias: `--prt`
-
 **Example**
 
 ```bash
@@ -226,8 +216,6 @@ tctl workflow list --print_raw_time
 ### `--print_datetime`
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -239,8 +227,6 @@ tctl workflow list --print_datetime
 
 Print a memo.
 
-Alias: `--pme`
-
 **Example**
 
 ```bash
@@ -250,8 +236,6 @@ tctl workflow list --print_memo
 ### `--print_search_attr`
 
 Print the <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a>.
-
-Alias: `--psa`
 
 **Example**
 
@@ -263,8 +247,6 @@ tctl workflow list --print_search_attr
 
 Print the full message without table formatting.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -274,8 +256,6 @@ tctl workflow list --print_full
 ### `--print_json`
 
 Print the raw JSON objects.
-
-Alias: `--pjson`
 
 **Example**
 
@@ -287,8 +267,6 @@ tctl workflow list --print_json
 
 List open <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
-
-Alias: `--op`
 
 **Example**
 
@@ -311,8 +289,6 @@ Supported format are as follows:
   - `week` or `w`
   - `month` or `M`
   - `year` or `y`
-
-Alias: `--et`
 
 **Examples**
 
@@ -344,8 +320,6 @@ Supported formats are as follows:
   - `month` or `M`
   - `year` or `y`
 
-Alias: `--lt`
-
 **Examples**
 
 To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
@@ -364,7 +338,7 @@ tctl workflow list --latest_time '10second'
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -375,8 +349,6 @@ tctl workflow list --workflow_id <id>
 ### `--workflow_type`
 
 Specify the name of a <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></p></div></a>.
-
-Alias: `--wt`
 
 **Example**
 
@@ -395,8 +367,6 @@ Supported values are as follows:
 - `terminated`
 - `continuedasnew`
 - `timedout`
-
-Alias: `-s`
 
 **Example**
 
@@ -454,8 +424,6 @@ tctl workflow list \
 List more than one page.
 (By default, the `tctl workflow list` command lists one page of results.)
 
-Alias: `-m`
-
 **Example**
 
 ```bash
@@ -466,8 +434,6 @@ tctl workflow list --more
 
 Specify the maximum number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
-
-Alias: `--ps`
 
 **Example**
 
@@ -484,15 +450,13 @@ To list open Workflow Executions, use the `--open` option.
 
 See also <a class="tdlp" href="#list">`tctl workflow list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>, <a class="tdlp" href="#listarchived">`tctl workflow listarchived`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow listarchived</p><p class="tdlppd">How to list archived Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#listarchived">Learn more</a></p></div></a>, and <a class="tdlp" href="#scan">`tctl workflow scan`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow scan</p><p class="tdlppd">How to quickly list Workflow Executions without sorting using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#scan">Learn more</a></p></div></a>.
 
-`tctl workflow listall [<modifiers>]`
+`tctl workflow listall <modifiers>`
 
 The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -504,8 +468,6 @@ tctl workflow listall --print_raw_time
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -515,8 +477,6 @@ tctl workflow listall --print_datetime
 ### `--print_memo`
 
 Print a memo.
-
-Alias: `--pme`
 
 **Example**
 
@@ -528,8 +488,6 @@ tctl workflow listall --print_memo
 
 Print the <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a>.
 
-Alias: `--psa`
-
 **Example**
 
 ```bash
@@ -539,8 +497,6 @@ tctl workflow listall --print_search_attr
 ### `--print_full`
 
 Print the full message without table formatting.
-
-Alias: `--pf`
 
 **Example**
 
@@ -552,8 +508,6 @@ tctl workflow listall --print_full
 
 Print the raw JSON objects.
 
-Alias: `--pjson`
-
 **Example**
 
 ```bash
@@ -564,8 +518,6 @@ tctl workflow listall --print_json
 
 List open <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
-
-Alias: `--op`
 
 **Example**
 
@@ -587,8 +539,6 @@ Specify the earliest start time to list. Supported format are as follows:
   - `week` or `w`
   - `month` or `M`
   - `year` or `y`
-
-Alias: `--et`
 
 **Examples**
 
@@ -639,7 +589,7 @@ tctl workflow listall --latest-time '10second'
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -650,8 +600,6 @@ tctl workflow listall --workflow_id <id>
 ### `--workflow_type`
 
 Specify the name of a <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></p></div></a>.
-
-Alias: `--wt`
 
 **Example**
 
@@ -670,8 +618,6 @@ Supported values are as follows:
 - `terminated`
 - `continuedasnew`
 - `timedout`
-
-Alias: `-s`
 
 **Example**
 
@@ -712,8 +658,6 @@ The following modifiers control the behavior of the command.
 
 Print the raw timestamp.
 
-Alias: `--prt`
-
 **Example**
 
 ```bash
@@ -723,8 +667,6 @@ tctl workflow listarchived --print_raw_time
 ### `--print_datetime`
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -736,8 +678,6 @@ tctl workflow listarchived --print_datetime
 
 Print a memo.
 
-Alias: `--pme`
-
 **Example**
 
 ```bash
@@ -747,8 +687,6 @@ tctl workflow listarchived --print_memo
 ### `--print_search_attr`
 
 Print the <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a>.
-
-Alias: `--psa`
 
 **Example**
 
@@ -760,8 +698,6 @@ tctl workflow listarchived --print_search_attr
 
 Print the full message without table formatting.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -771,8 +707,6 @@ tctl workflow listarchived --print_full
 ### `--print_json`
 
 Print the raw JSON objects.
-
-Alias: `--pjson`
 
 **Example**
 
@@ -799,8 +733,6 @@ tctl workflow listarchived --query <value>
 Specify the maximum number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
 
-Alias: `--ps`
-
 **Example**
 
 ```bash
@@ -810,8 +742,6 @@ tctl workflow listarchived --pagesize <value>
 ### `--all`
 
 List all pages.
-
-Alias: `-a`
 
 **Example**
 
@@ -825,9 +755,7 @@ The `tctl workflow observe` command shows the progress of the <a class="tdlp" hr
 
 See also <a class="tdlp" href="#observeid">`tctl workflow observeid`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow observeid</p><p class="tdlppd">How to show the progress of the Event History of a Workflow Execution for a specified Workflow Id and optional Run Id using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#observeid">Learn more</a></p></div></a>.
 
-`tctl workflow observe [<modifiers>]`
-
-Alias: `o`
+`tctl workflow observe <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -835,7 +763,7 @@ The following modifiers control the behavior of the command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -847,7 +775,7 @@ tctl workflow observe --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -858,8 +786,6 @@ tctl workflow observe --run_id <id>
 ### `--show_detail`
 
 Show event details.
-
-Alias: `--sd`
 
 **Example**
 
@@ -872,8 +798,6 @@ tctl workflow observe --show_detail
 Specify the maximum length for each attribute field.
 The default value is 0.
 
-Alias: `--maxl`
-
 **Example**
 
 ```bash
@@ -884,7 +808,7 @@ tctl workflow observe --max_field_length <length>
 
 The `tctl workflow observeid` command shows the progress of the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#event-history">Learn more</a></p></div></a> of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> for the specified <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a> and optional <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-`tctl workflow observeid <workflow_id> [<run_id>] [<modifiers>]`
+`tctl workflow observeid <workflow_id> [<run_id>] <modifiers>`
 
 This command is a shortcut for `tctl workflow observe --workflow_id <workflowid> [--run_id <runid>]`.
 
@@ -893,8 +817,6 @@ The following modifiers control the behavior of the command.
 ### `--show_detail`
 
 Show event details.
-
-Alias: `--sd`
 
 **Example**
 
@@ -907,8 +829,6 @@ tctl workflow observeid --show_detail
 Specify the maximum length for each attribute field.
 The default value is 0.
 
-Alias: `--maxl`
-
 **Example**
 
 ```bash
@@ -916,6 +836,8 @@ tctl workflow observeid --max_field_length <length>
 ```
 
 ## query
+
+Alias: `q`
 
 The `tctl workflow query` command sends a <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Query?</p><p class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#query">Learn more</a></p></div></a> to a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
@@ -949,7 +871,7 @@ Always include required modifiers when executing this command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>. **This modifier is required.**
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -961,7 +883,7 @@ tctl workflow query --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -972,8 +894,6 @@ tctl workflow query --run_id <id>
 ### `--query_type`
 
 Specify the type of Query to run.
-
-Alias: `--qt`
 
 **Example**
 
@@ -1001,8 +921,6 @@ Pass input for the Query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -1013,8 +931,6 @@ tctl workflow query --input_file <filename>
 
 Reject Queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
-
-Alias: `--qrc`
 
 **Example**
 
@@ -1038,7 +954,7 @@ The following modifiers control the behavior of the command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -1050,7 +966,7 @@ tctl workflow reset --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -1072,8 +988,6 @@ tctl workflow reset --event_id <id>
 ### `--reason`
 
 Specify a reason for resetting the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
-
-<!-- Alias: `--re` -->
 
 **Example**
 
@@ -1138,8 +1052,6 @@ Provide an input file that specifies <a class="tdlp" href="/workflows#workflow-e
 Each line contains one <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a> as the base Run and, optionally, a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 If a Run Id is not specified, the current Run Id is used.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -1184,8 +1096,6 @@ tctl workflow reset-batch --input_separator <string>
 ### `--reason`
 
 Specify a reason for resetting the <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
-
-<!-- Alias: `--re` -->
 
 **Example**
 
@@ -1282,11 +1192,11 @@ The command is entered in the following format:
 
 To run a Workflow, the user must specify the following:
 
-- Task queue name (`--tq`)
-- Workflow Type (`--wt`)
+- Task queue name (`--taskqueue`)
+- Workflow Type (`--workflow_type`)
 
 ```bash
-tctl workflow run --tq your-task-queue-name --wt YourWorkflowDefinitionName
+tctl workflow run --taskqueue your-task-queue-name --workflow_type YourWorkflowDefinitionName
 ```
 
 Single quotes (`''`) are used to wrap input as JSON.
@@ -1298,7 +1208,7 @@ The following modifiers control the behavior of the command.
 
 Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -1310,7 +1220,7 @@ tctl workflow run --taskqueue <name>
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -1321,8 +1231,6 @@ tctl workflow run --workflow_id <id>
 ### `--workflow_type`
 
 Specify the name of a <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></p></div></a>.
-
-Alias: `--wt`
 
 **Example**
 
@@ -1335,8 +1243,6 @@ tctl workflow run --workflow_type <name>
 Specify the <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> of the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> in seconds.
 The default value is 0.
 
-Alias: `--et`
-
 **Example**
 
 ```bash
@@ -1347,8 +1253,6 @@ tctl workflow run --execution_timeout <seconds>
 
 Specify the <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> of the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> in seconds.
 The default value is 10.
-
-Alias: `--wtt`
 
 **Example**
 
@@ -1404,8 +1308,6 @@ tctl workflow run --input <json>
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 **Example**
 
@@ -1480,8 +1382,6 @@ tctl workflow run --search_attr_value <value>
 
 Get event details.
 
-Alias: `--sd`
-
 **Example**
 
 ```bash
@@ -1492,8 +1392,6 @@ tctl workflow run --show_detail
 
 Specify the maximum length for each attribute field.
 The default value is 0.
-
-Alias: `--maxl`
 
 **Example**
 
@@ -1511,15 +1409,13 @@ To set the size of a page, use the `--pagesize` option.
 
 See also <a class="tdlp" href="#list">`tctl workflow list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>, <a class="tdlp" href="#listall">`tctl workflow listall`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow listall</p><p class="tdlppd">How to list all open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#listall">Learn more</a></p></div></a>, and <a class="tdlp" href="#listarchived">`tctl workflow listarchived`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow listarchived</p><p class="tdlppd">How to list archived Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#listarchived">Learn more</a></p></div></a>.
 
-`tctl workflow scan [<modifiers>]`
+`tctl workflow scan <modifiers>`
 
 The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -1531,8 +1427,6 @@ tctl workflow scan --print_raw_time
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -1542,8 +1436,6 @@ tctl workflow scan --print_datetime
 ### `--print_memo`
 
 Print a memo.
-
-Alias: `--pme`
 
 **Example**
 
@@ -1555,8 +1447,6 @@ tctl workflow scan --print_memo
 
 Print the <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a>.
 
-Alias: `--psa`
-
 **Example**
 
 ```bash
@@ -1566,8 +1456,6 @@ tctl workflow scan --print_search_attr
 ### `--print_full`
 
 Print the full message without table formatting.
-
-Alias: `--pf`
 
 **Example**
 
@@ -1579,8 +1467,6 @@ tctl workflow scan --print_full
 
 Print the raw JSON objects.
 
-Alias: `--pjson`
-
 **Example**
 
 ```bash
@@ -1591,8 +1477,6 @@ tctl workflow scan --print_json
 
 Specify the maximum number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
-
-Alias: `--ps`
 
 **Example**
 
@@ -1626,7 +1510,7 @@ The following modifiers control the behavior of the command.
 
 Show the History of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> by specifying a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -1638,7 +1522,7 @@ tctl workflow show --workflow_id <id>
 
 Show the History of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> by specifying a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -1650,8 +1534,6 @@ tctl workflow show --run_id <id>
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -1661,8 +1543,6 @@ tctl workflow show --print_datetime
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -1674,8 +1554,6 @@ tctl workflow show --print_raw_time
 
 Serialize an event to a file.
 
-Alias: `--of`
-
 **Example**
 
 ```bash
@@ -1686,8 +1564,6 @@ tctl workflow show --output_filename <filename>
 
 Print full event details.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -1697,8 +1573,6 @@ tctl workflow show --print_full
 ### `--print_event_version`
 
 Print the event version.
-
-Alias: `--pev`
 
 **Example**
 
@@ -1711,8 +1585,6 @@ tctl workflow show --print_event_version
 Print the details of a specified event.
 The default value is 0.
 
-Alias: `--eid`
-
 **Example**
 
 ```bash
@@ -1723,8 +1595,6 @@ tctl workflow show --event_id <id>
 
 Specify the maximum length for each attribute field.
 The default value is 500.
-
-Alias: `--maxl`
 
 **Example**
 
@@ -1746,7 +1616,7 @@ tctl workflow show --reset_points_only
 
 The `tctl workflow showid` command shows the Workflow Execution Event History for the specified <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a> and optional <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-`tctl workflow showid <workflow_id> [<run_id>] [<modifiers>]`
+`tctl workflow showid <workflow_id> [<run_id>] <modifiers>`
 
 This command is a shortcut for `tctl workflow show --workflow_id <workflowid> [--run_id <runid>]`.
 
@@ -1787,8 +1657,6 @@ The following modifiers control the behavior of the command.
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -1798,8 +1666,6 @@ tctl workflow showid <workflow_id> --print_datetime
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -1811,8 +1677,6 @@ tctl workflow showid <workflow_id> --print_raw_time
 
 Serialize an event to a file.
 
-Alias: `--of`
-
 **Example**
 
 ```bash
@@ -1823,8 +1687,6 @@ tctl workflow showid <workflow_id> --output_filename <filename>
 
 Print full event details.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -1834,8 +1696,6 @@ tctl workflow showid <workflow_id> --print_full
 ### `--print_event_version`
 
 Print the event version.
-
-Alias: `--pev`
 
 **Example**
 
@@ -1848,8 +1708,6 @@ tctl workflow showid <workflow_id> --print_event_version
 Print the details of a specified event.
 The default value is 0.
 
-Alias: `--eid`
-
 **Example**
 
 ```bash
@@ -1860,8 +1718,6 @@ tctl workflow showid <workflow_id> --event_id <id>
 
 Specify the maximum length for each attribute field.
 The default value is 500.
-
-Alias: `--maxl`
 
 **Example**
 
@@ -1964,7 +1820,7 @@ Make sure to include required modifiers in all command executions.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>. **This modifier is required.**
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -1976,7 +1832,7 @@ tctl workflow signal --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -1987,8 +1843,6 @@ tctl workflow signal --run_id <id>
 ### `--name`
 
 Specify the name of a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a>.
-
-Alias: `-n`
 
 **Example**
 
@@ -2013,8 +1867,6 @@ tctl workflow signal --input <json>
 
 Pass input for the <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> from a JSON file.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -2037,7 +1889,7 @@ The following modifiers control the behavior of the command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -2049,7 +1901,7 @@ tctl workflow stack --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -2077,8 +1929,6 @@ Pass input for the query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -2089,8 +1939,6 @@ tctl workflow stack --input_file <filename>
 
 Reject queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
-
-Alias: `--qrc`
 
 **Example**
 
@@ -2112,7 +1960,7 @@ Always include required modifiers when executing this command.
 
 Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -2126,7 +1974,7 @@ tctl workflow start --taskqueue <name>
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -2147,8 +1995,6 @@ tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQu
 
 Specify the name of a <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></p></div></a>.
 
-Alias: `--wt`
-
 **Example**
 
 ```bash
@@ -2160,8 +2006,6 @@ tctl workflow start --workflow_type <name>
 Specify the <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> of the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> in seconds.
 The default value is 0.
 
-Alias: `--et`
-
 **Example**
 
 ```bash
@@ -2172,8 +2016,6 @@ tctl workflow start --execution_timeout <seconds>
 
 Specify the <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> of the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> in seconds.
 The default value is 10.
-
-Alias: `--wtt`
 
 **Example**
 
@@ -2236,8 +2078,6 @@ tctl workflow start --input <json>
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 **Example**
 
@@ -2326,7 +2166,7 @@ No more command tasks will be scheduled.
 
 See also <a class="tdlp" href="#cancel">`tctl workflow cancel`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#cancel">Learn more</a></p></div></a>.
 
-`tctl workflow terminate [<modifiers>]`
+`tctl workflow terminate <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -2334,7 +2174,7 @@ The following modifiers control the behavior of the command.
 
 Specify a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -2346,7 +2186,7 @@ tctl workflow terminate --workflow_id <id>
 
 Specify a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -2357,8 +2197,6 @@ tctl workflow terminate --run_id <id>
 ### `--reason`
 
 Specify a reason for terminating the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
-
-Alias: `--re`
 
 **Example**
 
