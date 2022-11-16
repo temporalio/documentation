@@ -12,8 +12,6 @@ This information can be used to locate a failed Workflow Execution, for example.
 
 `tctl workflow describe <modifiers>`
 
-Alias: `d`
-
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
