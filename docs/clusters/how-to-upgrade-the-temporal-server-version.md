@@ -18,7 +18,7 @@ If you are using a version that is older than 1.0.0, reach out to us at [communi
 First check to see if an upgrade to the database schema is required for the version you wish to upgrade to.
 If a database schema upgrade is required, it will be called out directly in the [release notes](https://github.com/temporalio/temporal/releases).
 Some releases require changes to the schema, and some do not.
-We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior, however there is no guarantee that there is compatibility between _any_ 2 non-consecutive versions.
+We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior, however there is no guarantee that there is compatibility between _any_ two non-consecutive versions.
 
 When upgrading your Temporal Server version, ensure that you upgrade sequentially. For example, when upgrading from v1.n.x, always upgrade to v1.n+1.x (or the next available version) and so on until you get to the required version.
 Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in order (you can skip patch versions).
