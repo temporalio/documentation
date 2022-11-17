@@ -100,7 +100,7 @@ module.exports = {
           label: "Learn Temporal",
           href: "https://learn.temporal.io",
           right: "left",
-        }
+        },
       ],
     },
     footer: {
@@ -200,7 +200,7 @@ module.exports = {
       indexName: "temporal",
       appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
       // searchParameters: {}, // Optional, if provided by Algolia
-      externalUrlRegex: 'temporal\\.io',
+      externalUrlRegex: "temporal\\.io",
     },
   },
   presets: [
@@ -212,7 +212,7 @@ module.exports = {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
           exclude: [], // do not render context content
-          editUrl: "https://github.com/temporalio/documentation/blob/master",
+         // editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
            */
@@ -411,7 +411,8 @@ module.exports = {
          */
         path: "kb",
         blogTitle: "Temporal Platform knowledge base",
-        blogSidebarTitle: "Recent KB articles",
+        blogSidebarTitle: "KB articles",
+        blogSidebarCount: "ALL",
         blogDescription:
           "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.
