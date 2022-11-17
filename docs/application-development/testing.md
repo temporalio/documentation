@@ -203,6 +203,8 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -510,11 +512,11 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.workflowenvironment#start_time_skipping) method to start a test server process and skip time automatically.
+Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to start a test server process and skip time automatically.
 
-Use the [`start_local()`](https://python.temporal.io/temporalio.testing.workflowenvironment#start_local) method for a full local Temporal server.
+Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal server.
 
-Use the [`from_client`](https://python.temporal.io/temporalio.testing.workflowenvironment#from_client) method for an existing Temporal sever.
+Use the [`from_client`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal sever.
 
 </TabItem>
 <TabItem value="typescript">
@@ -1022,3 +1024,4 @@ If the Workflow code isn’t compatible with the Event History, `runReplayHistor
 
 </TabItem>
 </Tabs>
+
