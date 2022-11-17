@@ -188,7 +188,7 @@ module.exports = {
       ],
     },
     "cluster-deployment-guide",
-    "server/security",
+    "security",
     {
       type: "category",
       label: "CLI - tctl v1.17",
