@@ -250,7 +250,7 @@ Workflow::async(
 yield Workflow::await(fn() => $done);
 ```
 
-You can not use any activity, timer or Child Workflow invocation inside `await` or `awaitWithTimeout` method.
+You cannot use any Activity, timer, or Child Workflow invocations inside the `await` or `awaitWithTimeout` method.
 However, you can use variables referenced by other coroutines.
 
 ## Timers
@@ -263,8 +263,9 @@ yield Workflow::timer(300); // sleep for 5 minutes
 
 ## Starting Workflows
 
-Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
-via `Temporal\Client\WorkflowClient`. To create a Workflow Client:
+Workflows can be started both synchronously and asynchronously.
+You can use typed or untyped workflows stubs available via `Temporal\Client\WorkflowClient`.
+To create a Workflow Client:
 
 ```php
 use Temporal\Client\GRPC\ServiceClient;
@@ -278,7 +279,8 @@ $workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233')
 A Synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
 invocation process and will continue executing even if the waiting process crashes or stops.
 
-Make sure to acquire Workflow interface or class name you want to start. For example:
+Be sure to acquire the Workflow interface or class name you want to start.
+For example:
 
 ```php
 #[WorkflowInterface]
@@ -295,7 +297,7 @@ interface AccountTransferWorkflowInterface
 }
 ```
 
-To start such Workflow in sync mode:
+To start the Workflow in sync mode:
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -315,8 +317,7 @@ $result = $accountTransfer->transfer(
 An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
-To start a Workflow asynchronously pass Workflow stub instance and start parameters into `WorkflowClient`->`start`
-method.
+To start a Workflow asynchronously, pass the Workflow stub instance and start parameters into the `WorkflowClient->start` method.
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -326,7 +327,7 @@ $accountTransfer = $workflowClient->newWorkflowStub(
 $run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
 ```
 
-Once started you can receive Workflow Id and run ID via `WorkflowRun` object returned by start method:
+When started, you can receive the Workflow Id and Run Id via the `WorkflowRun` object returned by the `start` method:
 
 ```php
 $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
@@ -349,8 +350,8 @@ $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000)
 var_dump($run->getResult());
 ```
 
-You can always connect to existing Workflow and wait for its completion from another process using Workflow id. Use
-`WorkflowClient`->`newUntypedRunningWorkflowStub` for such purposes.
+You can always connect to an existing Workflow and wait for its completion from another process by using Workflow Id.
+Use `WorkflowClient->newUntypedRunningWorkflowStub` for such purposes.
 
 ```php
 $workflow = $workflowClient->newUntypedRunningWorkflowStub('workflowID');
@@ -400,8 +401,8 @@ try{
 Let's take a look at each component of this call.
 
 Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
-These options customize various execution timeouts, and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
-Once the is stub created you can invoke its Workflow method based on attribute `WorkflowMethod`.
+These options customize various execution timeouts and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
+After the stub is created, you can invoke its Workflow method based on the `WorkflowMethod` attribute.
 
 The method call returns immediately and returns a `Promise`.
 This allows you to execute more code without having to wait for the scheduled Workflow to complete.

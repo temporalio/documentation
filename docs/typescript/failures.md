@@ -66,9 +66,9 @@ Propagated Activity and Child Workflow failures are considered retryable and wil
 The expected behavior is:
 
 - Non retryable application failure -> fails the Workflow and cannot be retried
-- Retryable application failure -> fails the Workflow and can be retried according to the retry policy
+- Retryable application failure -> fails the Workflow and can be retried according to the Retry Policy
 - Other TemporalFailures -> same as retryable application failure
-- Any other error -> fails the Workflow task and can be retried
+- Any other error -> fails the Workflow Task and can be retried
 
 > Note: Before TypeScript SDK v0.17.0, throwing any error in a Workflow would cause the Workflow Execution to fail - in other words, all errors were Application Failures. The semantics were corrected in v0.17.
 
@@ -172,8 +172,8 @@ Contains information about an Activity failure. Always contains the original rea
 
 ### [ChildWorkflowFailure](https://typescript.temporal.io/api/classes/client.ChildWorkflowFailure)
 
-Contains information about a Child Workflow failure. Always contains the original reason for the
-failure as its cause. For example, if a child workflow was terminated, the cause is set to `TerminatedFailure`.
+Contains information about a Child Workflow failure; always contains the original reason for the failure as its cause.
+For example, if a Child Workflow was terminated, the cause is set to `TerminatedFailure`.
 
 **This exception is expected to be thrown only by the framework code.**
 

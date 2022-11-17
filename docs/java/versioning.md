@@ -11,7 +11,8 @@ new code.
 
 ## Introduction to Versioning
 
-Because we design for potentially long running Workflows at scale, versioning with Temporal works differently than with other Workflow systems. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
+Because we design for potentially long-running Workflows at scale, versioning with Temporal works differently than with other workflow systems.
+We explain more in this optional 30-minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY).
 
 ## Java Versioning API
 

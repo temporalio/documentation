@@ -94,8 +94,7 @@ class YourActivity
 }
 ```
 
-To enable retries for a Workflow, you need to provide a retry policy via `ChildWorkflowOptions` for Child Workflows or
-via `WorkflowOptions` for top-level Workflows.
+To enable retries for a Workflow, you need to provide a Retry Policy via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
 
 There are some subtle nuances to how Workflow's history events are recorded when a `RetryOptions` is used.
 For an Activity with a `RetryOptions`:
@@ -109,5 +108,6 @@ For a Workflow with `RetryOptions`:
 
 - If a Workflow fails and a retry policy is configured for it, the Workflow Execution will be closed with a `ContinueAsNew` event.
   This event will have the `ContinueAsNewInitiator` field set to `RetryOptions` and the new `RunId` for the next retry attempt.
-- The new attempt will be created immediately. But the first Workflow task won't be scheduled until the backoff duration.
+- The new attempt is created immediately.
+  But the first Workflow Task won't be scheduled until the end of the backoff duration.
   That duration is recorded as the `firstWorkflowTaskBackoff` field of the new run's `WorkflowExecutionStartedEventAttributes` event.

@@ -60,9 +60,7 @@ err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
 return result2, err
 ```
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow
-history so that all future calls to `GetVersion` for this change Id--`Step 1` in the example--on this
-Workflow Execution will always return the given version number, which is `1` in the example.
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 If you make an additional change, such as replacing ActivityC with ActivityD, you need to
 add some additional code:
@@ -82,8 +80,8 @@ Note that we have changed `maxSupported` from 1 to 2. A Workflow that had alread
 `GetVersion()` call before it was introduced will return `DefaultVersion`. A Workflow that was run
 with `maxSupported` set to 1, will return 1. New Workflows will return 2.
 
-After you are sure that all of the Workflow Executions prior to version 1 have completed, you can
-remove the code for that version. It should now look like the following:
+After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
+It should now look like the following:
 
 ```go
 v := workflow.GetVersion(ctx, "Step1", 1, 2)
@@ -94,10 +92,9 @@ if v == 1 {
 }
 ```
 
-You'll note that `minSupported` has changed from `DefaultVersion` to `1`. If an older version of the
-Workflow Execution history is replayed on this code, it will fail because the minimum expected version
-is 1. After you are sure that all of the Workflow Executions for version 1 have completed, then you
-can remove 1 so that your code would look like the following:
+You'll note that `minSupported` has changed from `DefaultVersion` to `1`.
+If an older version of the Workflow Execution history is replayed on this code, it fails because the minimum expected version is 1.
+After you are sure that all of the Workflow Executions for version 1 have completed, you can remove version 1 so that your code looks like the following:
 
 ```go
 _ := workflow.GetVersion(ctx, "Step1", 2, 2)
@@ -130,12 +127,9 @@ if v == workflow.DefaultVersion {
 }
 ```
 
-Upgrading a Workflow is straightforward if you don't need to preserve your currently running
-Workflow Executions. You can simply terminate all of the currently running Workflow Executions and
-suspend new ones from being created while you deploy the new version of your Workflow code, which does
-not use `GetVersion()`, and then resume Workflow creation. However, that is often not the case, and
-you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update
-your code is the method to use.
+Upgrading a Workflow is straightforward if you don't need to preserve your currently running Workflow Executions.
+You can simply terminate all of the currently running Workflow Executions and suspend new ones from being created while you deploy the new version of your Workflow code, which does not use `GetVersion()`, and then resume Workflow creation.
+However, that is often not the case, and you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update your code is the method to use.
 
 However, if you want your currently running Workflows to proceed based on the current Workflow logic,
 but you want to ensure new Workflows are running on new logic, you can define your Workflow as a

@@ -58,7 +58,7 @@ export async function yourWorkflow(value: number): Promise<number> {
 }
 ```
 
-If v2 is deployed while there's a Workflow on the `runActivity` step, when the Activity completes, the Worker will try to replay the Workflow (in order to continue Workflow Execution), notice that the sleep command is called and doesn't match with the Workflow's Event History, and throw a nondeterminism error.
+If v2 is deployed while a Workflow is on the `runActivity` step, when the Activity completes, the Worker will try to replay the Workflow (to continue Workflow Execution), notice that the sleep command is called and doesn't match with the Workflow's Event History, and throw a nondeterminism error.
 
 Adding a Signal Handler for a Signal type that has never been sent before does not need patching:
 
