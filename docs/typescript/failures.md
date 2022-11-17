@@ -55,13 +55,13 @@ Outside of Workflow code, failure classes are attached to the `cause` of [`Workf
 
 ## Failures and retries
 
-Activities and Workflows scheduled in the system have a configurable [retry policy](https://typescript.temporal.io/api/interfaces/proto.temporal.api.common.v1.IRetryPolicy), which many contain an array of `nonRetryableErrorTypes`.
+Activities and Workflows scheduled in the system have a configurable [Retry Policy](https://typescript.temporal.io/api/interfaces/proto.temporal.api.common.v1.IRetryPolicy), which many contain an array of `nonRetryableErrorTypes`.
 
 When a Workflow or Activity fails with an unhandled error, Temporal checks if the error name is present in the array of `nonRetryableErrorTypes` and stops retrying if there's a match.
 
 Workflows and Activities may also throw [`ApplicationFailure.nonRetryable`](https://typescript.temporal.io/api/classes/client.ApplicationFailure#nonretryable-1) to expressly prevent retries.
 
-Propagated Activity and Child Workflow failures are considered retryable and will be retried according to the parent Workflow's retry policy.
+Propagated Activity and Child Workflow failures are considered retryable and will be retried according to the parent Workflow's Retry Policy.
 
 The expected behavior is:
 
