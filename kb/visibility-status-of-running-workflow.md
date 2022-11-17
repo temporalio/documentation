@@ -10,7 +10,7 @@ To check how many Workflows are currently running, you must set up the [Advanced
 
 <!-- truncate -->
 
-After you integrated Elasticsearch with your Temporal Cluster, you can get information into the visibility of your running Workflows.
+After you integrate Elasticsearch with your Temporal Cluster, you can get information into the visibility of your running Workflows.
 
 Choose from any of the following methods to get visibility on your running Workflows.
 
