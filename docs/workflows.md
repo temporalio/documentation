@@ -488,7 +488,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 ## Side Effect
 
-A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
+A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
 
 A Side Effect does not re-execute upon replay, but instead returns the recorded result.
 

@@ -3,8 +3,10 @@ slug: python-sandbox-environment
 title: Python sandbox environment
 tags:
   - kb-article
-date: 2022-11-15T00:00:00Z
+date: 2022-11-18T00:00:00Z
 ---
+
+![Python sandbox](static/img/../../../static/img/python-sandbox.svg)
 
 The Temporal Python SDK allows you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
 The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
@@ -66,7 +68,7 @@ with temporalio.workflow.unsafe.sandbox_unrestricted():
 To skip a sandbox environment for a Workflow, set the `sandboxed` argument in the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator to false.
 The entire Workflow will run without sandbox restrictions.
 
-```python
+````python
 @workflow.def(sandboxed=False)
 
 ### Skip Sandboxing for a Worker
@@ -93,13 +95,13 @@ my_restrictions = dataclasses.replace(
     passthrough_modules=SandboxRestrictions.passthrough_modules_default | SandboxMatcher(access={"pydantic"}),
 )
 my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
-```
+````
 
 ### Invalid module members
 
 `invalid_module_members` includes modules that cannot be accessed.
 
-Checks compare the against the fully qualified path to the item.
+Checks are compared against the fully qualified path to the item.
 
 For example, to remove a restriction on `datetime.date.today()`, see the following example.
 
