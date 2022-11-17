@@ -185,7 +185,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster by using `tctl search-attribute create`.
+Custom Search Attributes can be added to a Temporal Cluster by using `tctl search-attribute create`.
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
@@ -244,4 +244,58 @@ To actually have results from the use of a <a class="tdlp" href="#list-filter">L
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
 - [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
+
+
+## Search Attributes implementation
+
+To implement Search Attributes, see the following examples.
+
+### Check for currently running Workflows
+
+To check how many Workflows are currently running, you must set up the <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="#advanced-visibility">Learn more</a></p></div></a> feature, which depends on an integration with Elasticsearch.
+
+After you integrate Elasticsearch with your Temporal Cluster, you can get information into the visibility of your running Workflows.
+
+Choose from any of the following methods to get visibility on your running Workflows.
+
+### Using tctl commands
+
+You can get information about running Workflows by running one of the following `tctl` commands.
+
+```bash
+tctl workflow list --query "ExecutionStatus='Running'"
+tctl workflow count --query "ExecutionStatus='Running'"
+```
+
+:::note
+
+If you receive the following error message, you need to configure the Advanced Visibility feature.
+
+```bash
+Error: unable to count workflows: Operation not supported. Please use on Elasticsearch
+('export TEMPORAL_CLI_SHOW_STACKS=1' to see stack traces)
+```
+
+For more information see the [`tctl` reference content](tctl-v1).
+
+:::
+
+### Using APIs
+
+Alternatively, you can use the following APIs with your Visibility Query.
+
+- [ListWorkflowExecutions](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto#L279)
+- [CountWorkflowExecutions](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto#L291)
+
+We don’t recommend using the APIs with high-rate calls.
+
+:::note
+
+All lists from APIs are paginated.
+
+:::
+
+### Using SDKs
+
+For information on checking the visibility of a Workflow programmatically, see the [Search Attributes](/application-development/observability#search-attributes) section on the Observability page.
 
