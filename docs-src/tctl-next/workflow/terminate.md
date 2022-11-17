@@ -8,6 +8,7 @@ tags:
 ---
 
 The `tctl workflow terminate` command terminates a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+If a `run_id` is not specified, the command will terminate the last Workflow Execution with the given `workflow_id`.
 
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
 No more command tasks will be scheduled.
