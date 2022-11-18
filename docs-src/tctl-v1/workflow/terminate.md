@@ -22,7 +22,7 @@ The following modifiers control the behavior of the command.
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -34,7 +34,7 @@ tctl workflow terminate --workflow_id <id>
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -45,8 +45,6 @@ tctl workflow terminate --run_id <id>
 ### `--reason`
 
 Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-workflow-execution).
-
-Alias: `--re`
 
 **Example**
 

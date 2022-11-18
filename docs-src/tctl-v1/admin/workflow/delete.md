@@ -9,8 +9,6 @@ tags:
   - workflow
 ---
 
-Alias: `del`
-
 The `tctl admin workflow delete` command deletes the current [Workflow Execution](/workflows/#workflow-execution) and the mutableState record.
 
 #### `--db_engine value`
@@ -74,19 +72,17 @@ Elasticsearch index name.
 
 #### `--workflow_id value`
 
-Aliases: `--wid value`, `-w value`
+Alias: `-w`
 
 The Id of the current Workflow.
 
 #### `--run_id value`
 
-Aliases: `--rid value`, `-r value`
+Alias: `-r`
 
 The Id of the current run.
 
 #### `--skip_errors`
-
-Alias: `--serr`
 
 Skip any errors that occur in the Workflow Execution.
 

@@ -25,8 +25,6 @@ _Required modifier_
 
 Specify the job ID of a batch job.
 
-Alias: `--jid`
-
 **Example**
 
 ```bash
@@ -36,8 +34,6 @@ tctl batch terminate --job_id <id>
 ### `--reason`
 
 Specify a reason for terminating this batch job.
-
-Alias: `--re`
 
 **Example**
 

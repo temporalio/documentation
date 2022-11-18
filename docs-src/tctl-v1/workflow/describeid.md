@@ -19,8 +19,6 @@ The following modifiers control the behavior of the command.
 
 Print properties exactly as they are stored.
 
-Alias: `--praw`
-
 **Example**
 
 ```bash

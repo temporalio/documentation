@@ -8,3 +8,5 @@ tags:
 ---
 
 Use the --yes modifier to automatically confirm all prompts.
+
+Alias: `--y`

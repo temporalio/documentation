@@ -7,8 +7,6 @@ tags:
   - tctl
 ---
 
-Alias: `desc`
-
 The `tctl batch describe` command describes the progress of a batch job.
 
 `tctl batch describe --job_id <id>`
@@ -26,8 +24,6 @@ The following modifier controls the behavior of the command.
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`
 
 **Example**
 

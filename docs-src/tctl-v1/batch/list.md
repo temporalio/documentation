@@ -7,8 +7,6 @@ tags:
   - tctl
 ---
 
-Alias: `l`
-
 The `tctl batch list` command lists all batch jobs.
 
 `tctl batch list <modifiers>`
@@ -24,8 +22,6 @@ The following modifier controls the behavior of the command.
 ### `--pagesize`
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
-
-Alias: `--ps`
 
 **Example**
 

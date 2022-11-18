@@ -24,8 +24,6 @@ The following modifiers control the behavior of the command.
 
 Print the raw timestamp.
 
-Alias: `--prt`
-
 **Example**
 
 ```bash
@@ -35,8 +33,6 @@ tctl workflow listarchived --print_raw_time
 ### `--print_datetime`
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -48,8 +44,6 @@ tctl workflow listarchived --print_datetime
 
 Print a memo.
 
-Alias: `--pme`
-
 **Example**
 
 ```bash
@@ -59,8 +53,6 @@ tctl workflow listarchived --print_memo
 ### `--print_search_attr`
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
-
-Alias: `--psa`
 
 **Example**
 
@@ -72,8 +64,6 @@ tctl workflow listarchived --print_search_attr
 
 Print the full message without table formatting.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -83,8 +73,6 @@ tctl workflow listarchived --print_full
 ### `--print_json`
 
 Print the raw JSON objects.
-
-Alias: `--pjson`
 
 **Example**
 
@@ -111,8 +99,6 @@ tctl workflow listarchived --query <value>
 Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
 
-Alias: `--ps`
-
 **Example**
 
 ```bash
@@ -122,8 +108,6 @@ tctl workflow listarchived --pagesize <value>
 ### `--all`
 
 List all pages.
-
-Alias: `-a`
 
 **Example**
 

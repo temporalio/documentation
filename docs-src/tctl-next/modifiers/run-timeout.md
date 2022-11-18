@@ -8,5 +8,3 @@ tags:
 ---
 
 Single Workflow Run timeout, in seconds.
-
-Alias: `--rt`

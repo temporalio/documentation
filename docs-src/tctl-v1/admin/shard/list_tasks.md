@@ -15,14 +15,10 @@ The modifiers below affect the output and behavior of the command.
 
 #### `--more`
 
-Alias: `-m`
-
 Lists more pages of list tasks.
 The default setting is to list one page of 10 list tasks.
 
 #### `--pagesize value`
-
-Alias: `--ps value`
 
 The size of the result page.
 Default: 10

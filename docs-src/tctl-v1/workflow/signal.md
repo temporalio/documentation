@@ -98,7 +98,7 @@ Make sure to include required modifiers in all command executions.
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -110,7 +110,7 @@ tctl workflow signal --workflow_id <id>
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -121,8 +121,6 @@ tctl workflow signal --run_id <id>
 ### `--name`
 
 Specify the name of a [Signal](/concepts/what-is-a-signal).
-
-Alias: `-n`
 
 **Example**
 
@@ -146,8 +144,6 @@ tctl workflow signal --query <query> --input <json>
 ### `--input_file`
 
 Pass input for the [Signal](/concepts/what-is-a-signal) from a JSON file.
-
-Alias: `--if`
 
 **Example**
 

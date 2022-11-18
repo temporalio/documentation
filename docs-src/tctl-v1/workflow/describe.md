@@ -14,8 +14,6 @@ To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](/t
 
 `tctl workflow describe <modifiers>`
 
-Alias: `d`
-
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
@@ -25,7 +23,7 @@ Always include required modifiers when executing this command.
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -38,7 +36,7 @@ tctl workflow describe --workflow_id <id>
 Specify a [Run Id](/concepts/what-is-a-run-id).
 If a Run Id is not provided, the command will show the latest Workflow Execution of that Workflow Id.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -49,8 +47,6 @@ tctl workflow describe --run_id <id>
 ### `--print_raw`
 
 Print properties exactly as they are stored.
-
-Alias: `--praw`
 
 **Example**
 
