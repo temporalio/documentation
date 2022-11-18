@@ -95,7 +95,7 @@ my_restrictions = dataclasses.replace(
     passthrough_modules=SandboxRestrictions.passthrough_modules_default | SandboxMatcher(access={"pydantic"}),
 )
 my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
-````
+```
 
 ### Invalid module members
 
