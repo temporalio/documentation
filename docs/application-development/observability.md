@@ -146,7 +146,7 @@ telemetryOptions: {
 
 ## Tracing
 
-Tracing allows you to view the call graph of a Workflow along with its Activities and any child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
 Temporal Web's tracing capabilities mainly track Activity Execution within a Temporal context. If you need custom tracing specific for your use case, you should make use of context propagation to add tracing logic accordingly.
 
@@ -162,7 +162,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
-Tracing allows you to view the call graph of a Workflow along with its Activities and any child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
 Tracing can be configured by providing an [opentracing.Tracer](https://pkg.go.dev/github.com/opentracing/opentracing-go#Tracer)
 implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.

@@ -4,7 +4,8 @@ title: How to set Workflow Execution Timeout in PHP
 sidebar_label: Workflow Execution Timeout
 ---
 
-The following code example creates a new Workflow and sets the Workflow ID. Then it sets the Workflow ID resuse policy and the Workflow Execution Timeout to 2 minutes.
+The following code example creates a new Workflow and sets the Workflow Id.
+Then it sets the Workflow Id Reuse Policy and the Workflow Execution Timeout to 2 minutes.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(

@@ -2202,7 +2202,7 @@ The whole request-reply interaction can be modeled as a single Activity.
 To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
 
 Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
-To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
+To correlate Activity invocation with completion, use either a `TaskToken` or Workflow and Activity Ids.
 
 Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
 
@@ -2748,7 +2748,7 @@ You can register only one Activity instance that implements `DynamicActivity` wi
 </TabItem>
 <TabItem value="php">
 
-Worker listens on a task queue and hosts both workflow and activity implementations:
+Worker listens on a Task Queue and hosts both Workflow and Activity implementations:
 
 ```php
 // Workflows are stateful. So you need a type to create instances:
@@ -3004,8 +3004,9 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 </TabItem>
 <TabItem value="php">
 
-Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
-via `Temporal\Client\WorkflowClient`. To create workflow client:
+Workflows can be started both synchronously and asynchronously.
+You can use typed or untyped Workflows stubs available via `Temporal\Client\WorkflowClient`.
+To create a Workflow Client:
 
 ```php
 use Temporal\Client\GRPC\ServiceClient;
@@ -3019,7 +3020,8 @@ $workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233')
 A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
 invocation process and will continue executing even if the waiting process crashes or stops.
 
-Make sure to acquire workflow interface or class name you want to start. For example:
+Be sure to acquire the Workflow interface or class name you want to start.
+For example:
 
 ```php
 #[WorkflowInterface]
@@ -3036,7 +3038,7 @@ interface AccountTransferWorkflowInterface
 }
 ```
 
-To start such workflow in sync mode:
+To start the Workflow in sync mode:
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -3056,8 +3058,7 @@ $result = $accountTransfer->transfer(
 An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
-To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
-method.
+To start a Workflow asynchronously, pass the Workflow stub instance and start parameters into the `WorkflowClient`->`start` method.
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -3067,7 +3068,7 @@ $accountTransfer = $workflowClient->newWorkflowStub(
 $run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
 ```
 
-Once started you can receive workflow ID via `WorkflowRun` object returned by start method:
+After the Workflow is started, you can receive the Workflow Id via the `WorkflowRun` object returned by the `start` method:
 
 ```php
 $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
