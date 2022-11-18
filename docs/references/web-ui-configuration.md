@@ -159,3 +159,7 @@ codec:
   endpoint: http://your-codec-server-endpoint
   passAccessToken: false
 ```
+
+# disableWriteActions
+
+Prevents the user from terminating or canceling Workflow Executions from the Web UI.
