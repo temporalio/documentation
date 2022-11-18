@@ -68,8 +68,9 @@ with temporalio.workflow.unsafe.sandbox_unrestricted():
 To skip a sandbox environment for a Workflow, set the `sandboxed` argument in the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator to false.
 The entire Workflow will run without sandbox restrictions.
 
-````python
+```python
 @workflow.def(sandboxed=False)
+```
 
 ### Skip Sandboxing for a Worker
 
