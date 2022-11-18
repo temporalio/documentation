@@ -658,7 +658,7 @@ Alias: `--sa`
 tcld namespace search-attributes add --search-attribute "YourSearchAttribute1=Text" --search-attribute "YourSearchAttribute2=Double"
 ```
 
-## rename
+### rename
 
 The `tcld namespace search-attributes rename` command renames a custom <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a href="/visibility#search-attribute">Learn more</a></p></div></a> in Temporal Cloud.
 
