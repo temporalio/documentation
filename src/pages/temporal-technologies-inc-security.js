@@ -12,7 +12,7 @@ export default function Security() {
   return (
     <Layout
       title="Temporal Security"
-      permalink="/security"
+      permalink="/temporal-technologies-inc-security"
       description="<head />"
     >
       <header className={clsx("hero hero--primary", styles.heroBanner)}>

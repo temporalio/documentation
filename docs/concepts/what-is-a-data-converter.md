@@ -65,7 +65,7 @@ Custom Data Converters are not applied to all data:
 
 ### Payload Codecs
 
-In [TypeScript](/typescript/data-converters#custom-data-converter) and [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), data conversion happens in two stages:
+In [TypeScript](/typescript/data-converters#custom-data-converter), [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), and [Python](https://python.temporal.io/temporalio.converter.DataConverter.html), data conversion happens in two stages:
 
 1. A Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49).
 2. A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.
@@ -97,4 +97,5 @@ Our encryption samples use AES GCM with 256-bit keys:
 
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
+- [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)

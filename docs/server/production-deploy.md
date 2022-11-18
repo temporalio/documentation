@@ -173,7 +173,7 @@ You may sometimes want to have multiple parallel deployments on the same cluster
 
 ## Securing Temporal
 
-Please see our dedicated docs on [Temporal Server Security](/server/security).
+Please see our dedicated docs on [Temporal Server Security](/security).
 
 ## Debugging Temporal
 

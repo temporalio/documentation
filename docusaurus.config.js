@@ -96,6 +96,11 @@ module.exports = {
           activeBasePath: "changelog",
           position: "left",
         },
+        {
+          label: "Learn Temporal",
+          href: "https://learn.temporal.io",
+          right: "left",
+        },
       ],
     },
     footer: {
@@ -151,7 +156,7 @@ module.exports = {
         {
           items: [
             {
-              label: "Temporal education",
+              label: "Learn Temporal",
               href: "https://learn.temporal.io",
             },
             {
@@ -191,11 +196,11 @@ module.exports = {
       ],
     },
     algolia: {
-      apiKey: "cd527863e60d95ebe650cdd21c7a6f3f",
+      apiKey: "4a2fa646f476d7756a7cdc599b625bec",
       indexName: "temporal",
-      // contextualSearch: true, // Optional, If you different version of docs etc (v1 and v2) doesn't display dup results
       appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
-      // algoliaOptions: {}, // Optional, if provided by Algolia
+      // searchParameters: {}, // Optional, if provided by Algolia
+      externalUrlRegex: "temporal\\.io",
     },
   },
   presets: [
@@ -207,7 +212,7 @@ module.exports = {
           sidebarPath: require.resolve("./sidebars.js"),
           routeBasePath: "/",
           exclude: [], // do not render context content
-          editUrl: "https://github.com/temporalio/documentation/blob/master",
+         // editUrl: "https://github.com/temporalio/documentation/blob/master",
           /**
            * Whether to display the author who last updated the doc.
            */
@@ -406,7 +411,8 @@ module.exports = {
          */
         path: "kb",
         blogTitle: "Temporal Platform knowledge base",
-        blogSidebarTitle: "Recent KB articles",
+        blogSidebarTitle: "KB articles",
+        blogSidebarCount: "ALL",
         blogDescription:
           "User facing Temporal Platform knowledge base articles",
         showReadingTime: false, // Show estimated reading time for the blog post.

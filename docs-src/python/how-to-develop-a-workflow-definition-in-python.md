@@ -1,8 +1,8 @@
 ---
 id: how-to-develop-a-workflow-definition-in-python
-title: How to develop a Workflow definition in Python
-sidebar_label: Develop a Workflow definition
-description: Develop a Workflow definition
+title: How to develop a Workflow Definition in Python
+sidebar_label: Develop a Workflow Definition
+description: To develop a Workflow Definition, specify the `@workflow.defn` decorator on the Workflow class and use `@workflow.run` to mark the entry point.
 tags:
   - developer-guide
   - sdk
