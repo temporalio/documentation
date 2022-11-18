@@ -7,6 +7,8 @@ tags:
   - tctl
 ---
 
+Alias: `q`
+
 The `tctl workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
@@ -39,7 +41,7 @@ Always include required modifiers when executing this command.
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -51,7 +53,7 @@ tctl workflow query --workflow_id <id>
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -62,8 +64,6 @@ tctl workflow query --run_id <id>
 ### `--query_type`
 
 Specify the type of Query to run.
-
-Alias: `--qt`
 
 **Example**
 
@@ -91,8 +91,6 @@ Pass input for the Query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -103,8 +101,6 @@ tctl workflow query --input_file <filename>
 
 Reject Queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
-
-Alias: `--qrc`
 
 **Example**
 

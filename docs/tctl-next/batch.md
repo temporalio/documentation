@@ -39,8 +39,6 @@ Terminating a batch job does not roll back the operations already performed by t
 
 ## list
 
-Alias: `l`
-
 The `tctl batch list` command lists all batch jobs.
 
 `tctl batch list <modifiers>`
@@ -57,8 +55,6 @@ Always include required modifiers when executing this command.
 - [--time-format](/tctl-next/modifiers#--time-format)
 
 ## describe
-
-Alias: `desc`
 
 The `tctl batch describe` command describes the progress of a batch job.
 

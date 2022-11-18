@@ -13,13 +13,13 @@ The `tctl admin workflow show` command displays Workflow history from the databa
 
 #### `--workflow_id value`
 
-Aliases: `--wid value`, `-w value`
+Alias: `-w`
 
 The current Workflow.
 
 #### `--run_id value`
 
-Aliases: `--rid value`, `-r value`
+Alias: `-r`
 
 The current RunId.
 
