@@ -51,7 +51,7 @@ Print properties exactly as they are stored.
 **Example**
 
 ```bash
-tctl workflow describe --run_id <id>
+tctl workflow describe --print_raw
 ```
 
 ### `--reset_points_only`

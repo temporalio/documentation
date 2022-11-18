@@ -11,6 +11,12 @@ The `tctl batch terminate` command terminates a batch job.
 
 `tctl batch terminate --job_id <id> <modifiers>`
 
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
+
 The following modifiers control the behavior of the command.
 
 ### `--job_id`

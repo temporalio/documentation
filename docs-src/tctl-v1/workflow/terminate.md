@@ -14,7 +14,7 @@ No more command tasks will be scheduled.
 
 See also [`tctl workflow cancel`](/tctl-v1/workflow/cancel).
 
-`tctl workflow terminate <modifiers>`
+`tctl workflow terminate --query <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -49,5 +49,5 @@ Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-wo
 **Example**
 
 ```bash
-tctl workflow terminate --reason <string>
+tctl workflow terminate --workflow_id --reason <string>
 ```

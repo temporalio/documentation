@@ -13,6 +13,8 @@ See also [`tctl workflow observeid`](/tctl-v1/workflow/observeid).
 
 `tctl workflow observe <modifiers>`
 
+Alias: `o`
+
 The following modifiers control the behavior of the command.
 
 ### `--workflow_id`

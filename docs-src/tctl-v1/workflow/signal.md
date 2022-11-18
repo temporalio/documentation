@@ -10,6 +10,8 @@ tags:
 The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
+Workflows can also listen for SQL queries.
+
 The Workflow below listens for instances of "HelloSignal":
 
 ```bash
@@ -80,7 +82,13 @@ tctl workflow showid HelloSignal
 Signals are written as follows:
 
 ```bash
-tctl workflow signal --workflow_id [modifiers]
+tctl workflow signal --workflow_id <id> <modifiers>
+```
+
+or
+
+```bash
+tctl workflow signal --query <query> <modifiers>
 ```
 
 The following modifiers control the behavior of the command.
@@ -117,7 +125,7 @@ Specify the name of a [Signal](/concepts/what-is-a-signal).
 **Example**
 
 ```bash
-tctl workflow signal --name <name>
+tctl workflow signal --query <query> --name <name>
 ```
 
 ### `--input`
@@ -130,7 +138,7 @@ Alias: `-i`
 **Example**
 
 ```bash
-tctl workflow signal --input <json>
+tctl workflow signal --query <query> --input <json>
 ```
 
 ### `--input_file`
@@ -140,5 +148,5 @@ Pass input for the [Signal](/concepts/what-is-a-signal) from a JSON file.
 **Example**
 
 ```bash
-tctl workflow signal --input_file <filename>
+tctl workflow signal --query <query> --input_file <filename>
 ```
