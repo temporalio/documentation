@@ -18,6 +18,12 @@ A batch job runs in the background and affects Workflow Executions one at a time
 
 Use <a class="tdlp" href="#start">tctl batch start<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch start</p><p class="tdlppd">How to start a batch job using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#start">Learn more</a></p></div></a> to start a batch job.
 
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
+
 When starting a batch job, you must provide a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a> and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
 
@@ -138,6 +144,12 @@ The `tctl batch list` command lists all batch jobs.
 
 `tctl batch list <modifiers>`
 
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
+
 The following modifier controls the behavior of the command.
 
 ### `--pagesize`
@@ -155,6 +167,12 @@ tctl batch list --pagesize <value>
 The `tctl batch describe` command describes the progress of a batch job.
 
 `tctl batch describe --job_id <id>`
+
+:::note
+
+`tctl` can run `batch` and `batch-v2` commands.
+
+:::
 
 The following modifier controls the behavior of the command.
 
@@ -175,6 +193,12 @@ tctl batch describe --job_id <id>
 The `tctl batch terminate` command terminates a batch job.
 
 `tctl batch terminate --job_id <id> <modifiers>`
+
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
 
 The following modifiers control the behavior of the command.
 

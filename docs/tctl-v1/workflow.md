@@ -36,15 +36,15 @@ The `tctl workflow` commands enable <a class="tdlp" href="/workflows#workflow-ex
 
 ## cancel
 
-The `tctl workflow cancel` command cancels a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+The `tctl workflow cancel --query` command cancels a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
 A new command task will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
-See also <a class="tdlp" href="#terminate">`tctl workflow terminate`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#terminate">Learn more</a></p></div></a>.
+See also <a class="tdlp" href="#terminate">`tctl workflow terminate --query`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#terminate">Learn more</a></p></div></a>.
 
-`tctl workflow cancel <modifiers>`
+`tctl workflow cancel --query <query> <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -143,7 +143,7 @@ Print properties exactly as they are stored.
 **Example**
 
 ```bash
-tctl workflow describe --run_id <id>
+tctl workflow describe --print_raw
 ```
 
 ### `--reset_points_only`
@@ -174,7 +174,7 @@ Print properties exactly as they are stored.
 **Example**
 
 ```bash
-tctl workflow describeid <workflow_id> --run_id <id>
+tctl workflow describeid <workflow_id> <id> --print_raw
 ```
 
 ### `--reset_points_only`
@@ -650,7 +650,7 @@ By default, this command lists a maximum of 100 Workflow Executions.
 
 See also <a class="tdlp" href="#list">`tctl workflow list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>, <a class="tdlp" href="#listall">`tctl workflow listall`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow listall</p><p class="tdlppd">How to list all open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#listall">Learn more</a></p></div></a>, and <a class="tdlp" href="#scan">`tctl workflow scan`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow scan</p><p class="tdlppd">How to quickly list Workflow Executions without sorting using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#scan">Learn more</a></p></div></a>.
 
-`tctl workflow listarchived [<modifiers>]`
+`tctl workflow listarchived <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -756,6 +756,8 @@ The `tctl workflow observe` command shows the progress of the <a class="tdlp" hr
 See also <a class="tdlp" href="#observeid">`tctl workflow observeid`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow observeid</p><p class="tdlppd">How to show the progress of the Event History of a Workflow Execution for a specified Workflow Id and optional Run Id using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#observeid">Learn more</a></p></div></a>.
 
 `tctl workflow observe <modifiers>`
+
+Alias: `o`
 
 The following modifiers control the behavior of the command.
 
@@ -1740,6 +1742,8 @@ tctl workflow showid <workflow_id> --reset_points_only
 The `tctl workflow signal` command <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
+Workflows can also listen for SQL queries.
+
 The Workflow below listens for instances of "HelloSignal":
 
 ```bash
@@ -1810,7 +1814,13 @@ tctl workflow showid HelloSignal
 Signals are written as follows:
 
 ```bash
-tctl workflow signal --workflow_id [modifiers]
+tctl workflow signal --workflow_id <id> <modifiers>
+```
+
+or
+
+```bash
+tctl workflow signal --query <query> <modifiers>
 ```
 
 The following modifiers control the behavior of the command.
@@ -1847,7 +1857,7 @@ Specify the name of a <a class="tdlp" href="/workflows#signal">Signal<span class
 **Example**
 
 ```bash
-tctl workflow signal --name <name>
+tctl workflow signal --query <query> --name <name>
 ```
 
 ### `--input`
@@ -1860,7 +1870,7 @@ Alias: `-i`
 **Example**
 
 ```bash
-tctl workflow signal --input <json>
+tctl workflow signal --query <query> --input <json>
 ```
 
 ### `--input_file`
@@ -1870,7 +1880,7 @@ Pass input for the <a class="tdlp" href="/workflows#signal">Signal<span class="t
 **Example**
 
 ```bash
-tctl workflow signal --input_file <filename>
+tctl workflow signal --query <query> --input_file <filename>
 ```
 
 ## stack
@@ -2166,7 +2176,7 @@ No more command tasks will be scheduled.
 
 See also <a class="tdlp" href="#cancel">`tctl workflow cancel`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#cancel">Learn more</a></p></div></a>.
 
-`tctl workflow terminate <modifiers>`
+`tctl workflow terminate --query <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -2201,6 +2211,6 @@ Specify a reason for terminating the <a class="tdlp" href="/workflows#workflow-e
 **Example**
 
 ```bash
-tctl workflow terminate --reason <string>
+tctl workflow terminate --workflow_id --reason <string>
 ```
 

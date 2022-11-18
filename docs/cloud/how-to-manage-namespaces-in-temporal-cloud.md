@@ -86,11 +86,11 @@ This functionality is in development.
 
 To list Namespaces and get information about them, use the following [tcld](/cloud/tcld/) commands:
 
-- [tcld namespace list](/cloud/tcld/namespace/list)
-- [tcld namespace get](/cloud/tcld/namespace/get)
+- <a class="tdlp" href="/cloud/tcld/namespace#list">tcld namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace list</p><p class="tdlppd">How to list all Namespaces in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#list">Learn more</a></p></div></a>
+- <a class="tdlp" href="/cloud/tcld/namespace#get">tcld namespace get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace get</p><p class="tdlppd">How to get information about a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#get">Learn more</a></p></div></a>
 
-To manage certificates, use the [tcld namespace accepted-client-ca](/cloud/tcld/namespace/accepted-client-ca/) commands.
+To manage certificates, use the <a class="tdlp" href="/cloud/tcld/namespace#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace accepted-client-ca</p><p class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#accepted-client-ca">Learn more</a></p></div></a> commands.
 For more information, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud).
 
-To manage certificate filters, use the [tcld namespace certificate-filters](/cloud/tcld/namespace/certificate-filters/) commands.
+To manage certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters</p><p class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#certificate-filters">Learn more</a></p></div></a> commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
