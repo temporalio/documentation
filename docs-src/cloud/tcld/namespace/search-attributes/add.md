@@ -15,7 +15,7 @@ Alias: `a`
 
 The following modifiers control the behavior of the command.
 
-### `--namespace`
+#### `--namespace`
 
 Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
@@ -27,7 +27,7 @@ Alias: `-n`
 tcld namespace search-attributes add --namespace <namespace_id> --search-attribute <value>
 ```
 
-### `--request-id`
+#### `--request-id`
 
 Specify a request identifier to use for the asynchronous operation. If not specified, the server assigns a request identifier.
 
@@ -39,7 +39,7 @@ Alias: `-r`
 tcld namespace search-attributes add --request-id <request_id> --search-attribute <value>
 ```
 
-### `--resource-version`
+#### `--resource-version`
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -51,7 +51,7 @@ Alias: `-v`
 tcld namespace search-attributes add --resource-version <etag> --search-attribute <value>
 ```
 
-### `--search-attribute`
+#### `--search-attribute`
 
 _Required modifier; can be specified more than once_
 
