@@ -8,5 +8,3 @@ tags:
 ---
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
-
-Alias: `--ps`

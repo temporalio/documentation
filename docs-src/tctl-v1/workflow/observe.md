@@ -11,7 +11,7 @@ The `tctl workflow observe` command shows the progress of the [Event History](/c
 
 See also [`tctl workflow observeid`](/tctl-v1/workflow/observeid).
 
-`tctl workflow observe [<modifiers>]`
+`tctl workflow observe <modifiers>`
 
 Alias: `o`
 
@@ -21,7 +21,7 @@ The following modifiers control the behavior of the command.
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -33,7 +33,7 @@ tctl workflow observe --workflow_id <id>
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -45,8 +45,6 @@ tctl workflow observe --run_id <id>
 
 Show event details.
 
-Alias: `--sd`
-
 **Example**
 
 ```bash
@@ -57,8 +55,6 @@ tctl workflow observe --show_detail
 
 Specify the maximum length for each attribute field.
 The default value is 0.
-
-Alias: `--maxl`
 
 **Example**
 

@@ -1,0 +1,18 @@
+{
+  "file_name": "version.md",
+  "file_dir": "cloud/tcld",
+  "id": "version",
+  "title": "tcld version command reference",
+  "sidebar_label": "version",
+  "description": "How to use Temporal Cloud's tcld version command.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cloud/tcld/version"
+    }
+  ]
+}
+  
