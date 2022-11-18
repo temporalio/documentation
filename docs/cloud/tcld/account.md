@@ -15,8 +15,8 @@ The `tcld account` commands manage accounts in Temporal Cloud.
 
 Alias: `a`
 
-- <a class="tdlp" href="#get">tcld account get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account get</p><p class="tdlppd">How to get information about an account in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#get">Learn more</a></p></div></a>
-- <a class="tdlp" href="#metrics">tcld account metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics</p><p class="tdlppd">How to configure the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#metrics">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get">tcld account get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account get</p><p class="tdlppd">How to get information about an account in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#get">Learn more</a></p></div></a>
+- <a class="tdlp" href="#metrics">tcld account metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics</p><p class="tdlppd">How to configure the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#metrics">Learn more</a></p></div></a>
 
 ## get
 
@@ -34,9 +34,9 @@ The `tcld account metrics` commands configure the metrics endpoint for the Tempo
 
 Alias: `m`
 
-- <a class="tdlp" href="#enable">tcld account metrics enable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics enable</p><p class="tdlppd">How to enable the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#enable">Learn more</a></p></div></a>
-- <a class="tdlp" href="#disable">tcld account metrics disable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics disable</p><p class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#disable">Learn more</a></p></div></a>
-- <a class="tdlp" href="#accepted-client-ca">tcld account metrics accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca</p><p class="tdlppd">How to managed the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#accepted-client-ca">Learn more</a></p></div></a>
+- <a class="tdlp" href="#enable">tcld account metrics enable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics enable</p><p class="tdlppd">How to enable the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#enable">Learn more</a></p></div></a>
+- <a class="tdlp" href="#disable">tcld account metrics disable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics disable</p><p class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#disable">Learn more</a></p></div></a>
+- <a class="tdlp" href="#accepted-client-ca">tcld account metrics accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca</p><p class="tdlppd">How to managed the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#accepted-client-ca">Learn more</a></p></div></a>
 
 ### accepted-client-ca
 
@@ -50,10 +50,10 @@ The end-entity certificates for the metrics endpoint must chain up to the CA cer
 
 Alias: `ca`
 
-- <a class="tdlp" href="#add">tcld account metrics accepted-client-ca add<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca add</p><p class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#add">Learn more</a></p></div></a>
-- <a class="tdlp" href="#list">tcld account metrics accepted-client-ca list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca list</p><p class="tdlppd">How to list the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#list">Learn more</a></p></div></a>
-- <a class="tdlp" href="#set">tcld account metrics accepted-client-ca set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca set</p><p class="tdlppd">How to set the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#set">Learn more</a></p></div></a>
-- <a class="tdlp" href="#remove">tcld account metrics accepted-client-ca remove<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca remove</p><p class="tdlppd">How to remove end-entity certificates from the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#remove">Learn more</a></p></div></a>
+- <a class="tdlp" href="#add">tcld account metrics accepted-client-ca add<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca add</p><p class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#add">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list">tcld account metrics accepted-client-ca list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca list</p><p class="tdlppd">How to list the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>
+- <a class="tdlp" href="#set">tcld account metrics accepted-client-ca set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca set</p><p class="tdlppd">How to set the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#set">Learn more</a></p></div></a>
+- <a class="tdlp" href="#remove">tcld account metrics accepted-client-ca remove<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca remove</p><p class="tdlppd">How to remove end-entity certificates from the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#remove">Learn more</a></p></div></a>
 
 #### add
 
@@ -301,7 +301,7 @@ The `tcld account metrics enable` command enables the metrics endpoint for the T
 
 :::info
 
-The end-entity for the metrics endpoint _must_ be configured before the endpoint can be enabled. See the <a class="tdlp" href="#accepted-client-ca">tcld account metrics accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca</p><p class="tdlppd">How to managed the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a href="#accepted-client-ca">Learn more</a></p></div></a> commands.
+The end-entity for the metrics endpoint _must_ be configured before the endpoint can be enabled. See the <a class="tdlp" href="#accepted-client-ca">tcld account metrics accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca</p><p class="tdlppd">How to managed the end-entity certificates for the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#accepted-client-ca">Learn more</a></p></div></a> commands.
 
 :::
 

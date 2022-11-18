@@ -15,7 +15,7 @@ The `tcld request` commands manage asynchronous requests in Temporal Cloud.
 
 Alias: `r`
 
-- <a class="tdlp" href="#get">tcld request get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld request get</p><p class="tdlppd">How to get the status of an asynchronous request in Temporal Cloud using tcld.</p><p class="tdlplm"><a href="#get">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get">tcld request get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld request get</p><p class="tdlppd">How to get the status of an asynchronous request in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="#get">Learn more</a></p></div></a>
 
 ## get
 
