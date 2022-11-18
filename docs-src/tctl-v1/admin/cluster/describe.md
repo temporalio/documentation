@@ -10,8 +10,6 @@ tags:
 
 The `tctl admin cluster describe` command provides information for the current Cluster.
 
-Alias: `d`
-
 The following modifier changes the behavior of the command:
 
 #### --cluster_value

@@ -9,7 +9,7 @@ tags:
 
 The `tctl batch terminate` command terminates a batch job.
 
-`tctl batch terminate --job_id <id> [<modifiers>]`
+`tctl batch terminate --job_id <id> <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -18,8 +18,6 @@ The following modifiers control the behavior of the command.
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`
 
 **Example**
 
@@ -30,8 +28,6 @@ tctl batch terminate --job_id <id>
 ### `--reason`
 
 Specify a reason for terminating this batch job.
-
-Alias: `--re`
 
 **Example**
 

@@ -12,11 +12,7 @@ The `tctl admib dlq merge` command allows dead-letter queue (DLQ) messages to be
 
 The messages must have TaskIds with an equal or lesser value than the given TaskId.
 
-Alias: `m`
-
 #### --dlq_type
-
-Alias: `--dt value`
 
 The type of DLQ to manage.
 
