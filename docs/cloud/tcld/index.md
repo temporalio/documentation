@@ -11,19 +11,6 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::note Beta release
-
-tcld is in beta, and access to Temporal Cloud via tcld is restricted.
-
-:::
-
-:::note Join the Temporal Cloud waitlist
-
-Access to Temporal Cloud is currently by invitation only.
-You can [join the waitlist](https://pages.temporal.io/cloud-early-access).
-
-:::
-
 The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.
 
 - <a class="tdlp" href="#install-tcld">How to install tcld<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to install tcld</p><p class="tdlppd">You can install tcld by using Homebrew or building from source.</p><p class="tdlplm"><a class="tdlplma" href="#install-tcld">Learn more</a></p></div></a>
