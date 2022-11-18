@@ -27,8 +27,8 @@ Terminating a batch job does not roll back the operations already performed by t
 ### tctl batch-v2 commands
 
 - [tctl batch describe --job-id](/tctl-next/batch#describe)
-- [tctl batch list](/tctl-next/batch-v2#list)
-- [tctl batch terminate --job_id](/tctl-next/batch-v2#terminate)
+- [tctl batch list](/tctl-next/batch#list)
+- [tctl batch terminate --job_id](/tctl-next/batch#terminate)
 - [tctl workflow signal --query ...](/tctl-next/workflow/signal)
 - [tctl workflow terminate --query ...](/tctl-next/workflow/terminate)
 - [tctl workflow cancel --query ...](/tctl-next/workflow/cancel)
