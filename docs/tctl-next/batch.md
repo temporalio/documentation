@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A "batch" command enables you to affect multiple existing <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a> with a single command.
+A "batch" command enables you to affect multiple existing <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
 In tctl version-next you can run the typical Signal Workflow, Terminate Workflow, and Cancel Workflow batch jobs using the `tctl workflow signal`, `tctl workflow terminate`, and `tctl workflow cancel` commands respectively.
@@ -19,7 +19,7 @@ The batch command is automatically started when the [`--query` modifier](/tctl-n
 
 In tctl version-next, the `tctl batch` commands are used solely to view the status of and terminate the batch jobs.
 
-The `--query` modifier supports a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a href="/visibility#list-filter">Learn more</a></p></div></a>.
+The `--query` modifier supports a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>.
 The List Filter identifies the set of Workflow Executions to be affected by the command.
 
 A successfully started batch job returns a Job ID.
@@ -28,18 +28,16 @@ You can use this Job ID in the `tctl batch describe` command, which describes th
 You can also use the Job ID to terminate the batch job itself.
 Terminating a batch job does not roll back the operations already performed by the batch job.
 
-### tctl batch commands
+### tctl batch-v2 commands
 
-- [tctl batch describe](/tctl-next/batch#describe)
+- [tctl batch describe --job-id](/tctl-next/batch#describe)
 - [tctl batch list](/tctl-next/batch#list)
-- [tctl batch terminate](/tctl-next/batch#terminate)
-- <a class="tdlp" href="/tctl-next/workflow#signal">tctl workflow signal --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow signal</p><p class="tdlppd">How to Signal a Workflow Execution using tctl.</p><p class="tdlplm"><a href="/tctl-next/workflow#signal">Learn more</a></p></div></a>
-- <a class="tdlp" href="/tctl-next/workflow#terminate">tctl workflow terminate --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a href="/tctl-next/workflow#terminate">Learn more</a></p></div></a>
-- <a class="tdlp" href="/tctl-next/workflow#cancel">tctl workflow cancel --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a href="/tctl-next/workflow#cancel">Learn more</a></p></div></a>
+- [tctl batch terminate --job_id](/tctl-next/batch#terminate)
+- <a class="tdlp" href="/tctl-next/workflow#signal">tctl workflow signal --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow signal</p><p class="tdlppd">How to Signal a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#signal">Learn more</a></p></div></a>
+- <a class="tdlp" href="/tctl-next/workflow#terminate">tctl workflow terminate --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#terminate">Learn more</a></p></div></a>
+- <a class="tdlp" href="/tctl-next/workflow#cancel">tctl workflow cancel --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#cancel">Learn more</a></p></div></a>
 
 ## list
-
-Alias: `l`
 
 The `tctl batch list` command lists all batch jobs.
 
@@ -58,11 +56,9 @@ Always include required modifiers when executing this command.
 
 ## describe
 
-Alias: `desc`
-
 The `tctl batch describe` command describes the progress of a batch job.
 
-`tctl batch describe --job-id <value>`
+`tctl batch describe --job-id <value> <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.

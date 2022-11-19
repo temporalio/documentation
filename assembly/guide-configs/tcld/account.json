@@ -1,0 +1,54 @@
+{
+  "file_name": "account.md",
+  "file_dir": "cloud/tcld",
+  "id": "account",
+  "title": "tcld account command reference",
+  "sidebar_label": "account",
+  "description": "How to use Temporal Cloud's tcld account command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cloud/tcld/account/index"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/account/get"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/account/metrics/index"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/account/metrics/accepted-client-ca/index"
+    },
+    {
+      "type": "h4",
+      "id": "cloud/tcld/account/metrics/accepted-client-ca/add"
+    },
+    {
+      "type": "h4",
+      "id": "cloud/tcld/account/metrics/accepted-client-ca/list"
+    },
+    {
+      "type": "h4",
+      "id": "cloud/tcld/account/metrics/accepted-client-ca/remove"
+    },
+    {
+      "type": "h4",
+      "id": "cloud/tcld/account/metrics/accepted-client-ca/set"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/account/metrics/enable"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/account/metrics/disable"
+    }
+  ]
+}
+  

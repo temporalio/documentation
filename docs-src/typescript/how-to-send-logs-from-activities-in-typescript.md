@@ -13,7 +13,7 @@ Activities run in the standard Node.js environment and can use any Node.js logge
 
 <details>
 <summary>
-Inject Activity context via interceptor and log all Activity executions
+Inject Activity context via interceptor and log all Activity Executions
 </summary>
 
 <!--SNIPSTART typescript-activity-logging-interceptor-->

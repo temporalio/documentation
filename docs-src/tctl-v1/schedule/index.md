@@ -7,9 +7,7 @@ tags:
   - tctl
 ---
 
-A [Schedule](/concepts/what-is-a-schedule) is an experimental feature and the `schedule` command is available in versions 1.17.0-alpha.2 and later.
-Version 1.17.0-alpha.2 is currently available in version 1.16.2.
-Use `tctl config set version next` command while on version 1.16.2.
+A [Schedule](/concepts/what-is-a-schedule) is an experimental feature available in `tctl 1.17` and `tctl next`.
 
 - [Backfill a Schedule using tctl](/tctl-v1/schedule/backfill)
 - [Create a Schedule using tctl](/tctl-v1/schedule/create)

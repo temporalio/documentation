@@ -15,15 +15,13 @@ To set the size of a page, use the `--pagesize` option.
 
 See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listall`](/tctl-v1/workflow/listall), and [`tctl workflow listarchived`](/tctl-v1/workflow/listarchived).
 
-`tctl workflow scan [<modifiers>]`
+`tctl workflow scan <modifiers>`
 
 The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -35,8 +33,6 @@ tctl workflow scan --print_raw_time
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -46,8 +42,6 @@ tctl workflow scan --print_datetime
 ### `--print_memo`
 
 Print a memo.
-
-Alias: `--pme`
 
 **Example**
 
@@ -59,8 +53,6 @@ tctl workflow scan --print_memo
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
-Alias: `--psa`
-
 **Example**
 
 ```bash
@@ -70,8 +62,6 @@ tctl workflow scan --print_search_attr
 ### `--print_full`
 
 Print the full message without table formatting.
-
-Alias: `--pf`
 
 **Example**
 
@@ -83,8 +73,6 @@ tctl workflow scan --print_full
 
 Print the raw JSON objects.
 
-Alias: `--pjson`
-
 **Example**
 
 ```bash
@@ -95,8 +83,6 @@ tctl workflow scan --print_json
 
 Specify the maximum number of [Workflow Execution](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
-
-Alias: `--ps`
 
 **Example**
 

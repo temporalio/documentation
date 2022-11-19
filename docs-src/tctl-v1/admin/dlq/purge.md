@@ -10,11 +10,7 @@ tags:
 
 The `tctl admin dlq purge` command deletes DLQ messages that have a Task Id equal to or less than the provided Task Id.
 
-Alias: `p`
-
 #### --dlq_type
-
-Alias: `--dt value`
 
 The type of DLQ to manage.
 

@@ -12,10 +12,10 @@ import RelatedReadList from '../components/RelatedReadList.js'
 Workflows are resilient programs, meaning that they will continue execution even in the presence of
 different failure conditions.
 
-Workflows encapsulate execution/orchestration of Tasks which include Activities and child Workflows.
-They also need to react to external events, respond to query requests, and deal with Timeouts.
+Workflows encapsulate execution and orchestration of Tasks, which include Activities and Child Workflows.
+They also need to react to external events, respond to Query requests, and deal with Timeouts.
 
-In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow Interface:
+In the Temporal Java SDK programming model, a Workflow is a class that implements a Workflow Interface:
 
 ```java
 public class FileProcessingWorkflowImpl implements FileProcessingWorkflow {
@@ -29,10 +29,14 @@ The Workflow Interface is a Java interface which is annotated with the `@Workflo
 
 Workflow interface methods must have one of the following annotations:
 
-- **@WorkflowMethod** denotes the starting point of Workflow execution. Workflow execution completes when this methods returns.
-- **@SignalMethod** indicates that this method is a signal handler method and that it can react to external signals. It can have parameters which can contain the signal payload. It does not return a value, so it must have a `void` return type.
+- **@WorkflowMethod** denotes the starting point of a Workflow Execution.
+  Workflow Execution completes when this method returns.
+- **@SignalMethod** indicates that this method is a Signal handler method and that it can react to external Signals.
+  It can have parameters that can contain the Signal payload.
+  It does not return a value, so it must have a `void` return type.
 - **@QueryMethod** indicates that this method can be used to query the Workflow's state at any time during its execution.
-  It can have parameters which can be used to filter a subset of the Workflow's state that it returns. Since it does return a value it must have a non `void` return type.
+  It can have parameters that can be used to filter a subset of the Workflow's state that it returns.
+  Because it does return a value, it cannot have a `void` return type.
 
 Workflow interfaces can define only a single method annotated with `@WorkflowMethod`. They can define
 any number of methods annotated with `@SignalMethod` and `@QueryMethod`, for example:
@@ -157,11 +161,11 @@ java.lang.IllegalStateException: BaseWorkflow workflow type is already registere
 
 ## Implementing Workflows
 
-A Workflow implementation implements a Workflow interface. Each time a new Workflow execution is started,
+A Workflow implementation implements a Workflow interface. Each time a new Workflow Execution is started,
 a new instance of the Workflow implementation object is created.
 Then, one of the methods
 (depending on which Workflow Type has been started) annotated with `@WorkflowMethod` can be invoked.
-As soon as this method returns, the Workflow execution is considered as completed.
+As soon as this method returns, the Workflow Execution is considered as completed.
 
 Workflow methods annotated with `@QueryMethod` and `@SignalMethod` can be invoked during a Workflow's execution.
 
@@ -200,7 +204,7 @@ They shouldn't use any constructs that rely on system time.
   - Use `WorkflowQueue` instead of `BlockingQueue`.
 - Use `Workflow.getVersion` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
   might break already running Workflows.
-- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow execution path.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 
 ### Workflow Method Arguments
@@ -225,13 +229,13 @@ readlist={[
 
 ### Java Child Workflow API
 
-`Workflow.newChildWorkflowStub` returns a client-side stub that implements a child Workflow interface.
-It takes a child Workflow Type and optional child Workflow options as arguments. Workflow options can be used
-to set timeout, retry options, and task queue settings for example.
-Note that by default a child Workflow inherits the Workflow options of its parent. You can however overwrite these
-by passing in custom Workflow options when creating the child Workflow stub.
+`Workflow.newChildWorkflowStub` returns a client-side stub that implements a Child Workflow interface.
+It takes a Child Workflow Type and optional Child Workflow options as arguments.
+Workflow options can be used to set Timeouts, retry options, and Task Queue settings, for example.
+By default, a Child Workflow inherits the Workflow options of its parent.
+You can, however, overwrite these default options by passing in custom Workflow options when creating the Child Workflow stub.
 
-The first call to the child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
+The first call to the Child Workflow stub must always be its Workflow method (the method annotated with `@WorkflowMethod`).
 
 Similar to Activities, invoking child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`.
 The synchronous call blocks until a child Workflow method completes. The asynchronous call
@@ -364,7 +368,7 @@ and then call a Workflow method (annotated with the `@WorkflowMethod` annotation
 
 ### Asynchronous start
 
-An asynchronous start initiates a Workflow execution and immediately returns to the caller.
+An asynchronous start initiates a Workflow Execution and immediately returns to the caller.
 This is the most common way to start Workflows in a live environment.
 
 <!--SNIPSTART money-transfer-project-template-java-workflow-initiator-->
@@ -384,8 +388,8 @@ YourWorkflow workflow = client.newWorkflowStub(YourWorkflow.class, workflowId);
 String result = workflow.yourMethod();
 ```
 
-Another way to connect to an existing workflow and wait for its completion from another process is to use
-`UntypedWorkflowStub`, for example:
+Another way to connect to an existing Workflow and wait for its completion from another process is to use `UntypedWorkflowStub`.
+For example:
 
 ```java
 WorkflowStub workflowStub = client.newUntypedWorkflowStub(workflowType, workflowOptions);
@@ -415,7 +419,7 @@ See our [Temporal Polyglot example](https://github.com/tsurdilo/temporal-polyglo
 
 Temporal SDK allows you to manually use [Continue-As-New](/concepts/what-is-continue-as-new) in a number of ways:
 
-If you are continuing execution of the same workflow that is currently running you can do:
+If you are continuing execution of the same Workflow that is currently running, you can do the following:
 
 ```java
 Workflow.continueAsNew(input1, ...);
@@ -442,10 +446,9 @@ MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.cl
 continueAsNew.greet(input);
 ```
 
-This allows you to continue workflow execution as a new Workflow run with a different Workflow Type,
-and on a different Task Queue.
+This allows you to continue Workflow Execution as a new Workflow run with a different Workflow Type and on a different Task Queue.
 
-Another way to deal with the execution history size limits is to use Child Workflows, however
+Another way to deal with the Event History size limits is to use Child Workflows; however,
 they themselves could eventually, if long running, experience the same issue in which case you can again
 apply the "ContinueAsNew" feature if needed.
 

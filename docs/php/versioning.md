@@ -5,12 +5,12 @@ title: Versioning
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
 to reconstruct the Workflow state by replaying the saved history event data on the Workflow
-definition code. This means that any incompatible update to the Workflow definition code could cause
+definition code. This means that any incompatible update to the Workflow Definition code could cause
 a non-deterministic issue if not handled correctly.
 
 ## Workflow::getVersion()
 
-Consider the following Workflow definition:
+Consider the following Workflow Definition:
 
 ```php
 public function yourWorkflow(string $data)
@@ -29,9 +29,9 @@ public function yourWorkflow(string $data)
 ```
 
 Now let's say we have replaced `ActivityA` with `ActivityC`, and deployed the updated code. If there
-is an existing Workflow execution that was started by the original version of the Workflow code, where
+is an existing Workflow Execution that was started by the original version of the Workflow code, where
 `ActivityA` had already completed and the result was recorded to history, the new version of the Workflow
-code will pick up that Workflow execution and try to resume from there. However, the Workflow **will fail**
+code will pick up that Workflow Execution and try to resume from there. However, the Workflow **will fail**
 because the new code expects a result for `ActivityC` from the history data, but instead it gets the
 result for `ActivityA`. This causes the Workflow to fail on the non-deterministic error.
 
@@ -57,9 +57,7 @@ $result2 = yield $yourActivity->activityB($result1);
 return $result2;
 ```
 
-When `Workflow::getVersion()` is run for the new Workflow execution, it records a marker in the Workflow
-history so that all future calls to `GetVersion` for this change Id--`Step 1` in the example--on this
-Workflow execution will always return the given version number, which is `1` in the example.
+When `Workflow::getVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `1` in the example.
 
 If you make an additional change, such as replacing ActivityC with ActivityD, you need to
 add some additional code:
@@ -80,8 +78,8 @@ Note that we have changed `maxSupported` from 1 to 2. A Workflow that had alread
 `GetVersion()` call before it was introduced will return `DEFAULT_VERSION`. A Workflow that was run
 with `maxSupported` set to 1, will return 1. New Workflows will return 2.
 
-After you are sure that all of the Workflow executions prior to version 1 have completed, you can
-remove the code for that version. It should now look like the following:
+After you are sure that all of the Workflow Executions prior to version 1 have completed, you can remove the code for that version.
+It should now look like the following:
 
 ```php
 $v = yield Workflow::getVersion('Step1', 1, 2);
@@ -93,10 +91,9 @@ if ($v === 1) {
 }
 ```
 
-You'll note that `minSupported` has changed from `DEFAULT_VERSION` to `1`. If an older version of the
-Workflow execution history is replayed on this code, it will fail because the minimum expected version
-is 1. After you are sure that all of the Workflow executions for version 1 have completed, then you
-can remove 1 so that your code would look like the following:
+You'll note that `minSupported` has changed from `DEFAULT_VERSION` to `1`.
+If an older version of the Workflow Execution history is replayed on this code, it fails because the minimum expected version is 1.
+After you are sure that all Workflow Executions for version 1 have completed, you can remove version 1 so that your code looks like the following:
 
 ```php
 yield Workflow::getVersion('Step1', 2, 2);
@@ -106,7 +103,7 @@ $result1 = yield $yourActivity->activityD($data);
 
 Note that we have preserved the call to `GetVersion()`. There are two reasons to preserve this call:
 
-1. This ensures that if there is a Workflow execution still running for an older version, it will
+1. This ensures that if there is a Workflow Execution still running for an older version, it will
    fail here and not proceed.
 2. If you need to make additional changes for `Step1`, such as changing ActivityD to ActivityE, you
    only need to update `maxVersion` from 2 to 3 and branch from there.
@@ -131,12 +128,9 @@ if ($v === Workflow::DEFAULT_VERSION) {
 }
 ```
 
-Upgrading a Workflow is straightforward if you don't need to preserve your currently running
-Workflow executions. You can simply terminate all of the currently running Workflow executions and
-suspend new ones from being created while you deploy the new version of your Workflow code, which does
-not use `GetVersion()`, and then resume Workflow creation. However, that is often not the case, and
-you need to take care of the currently running Workflow executions, so using `GetVersion()` to update
-your code is the method to use.
+Upgrading a Workflow is straightforward if you don't need to preserve your currently running Workflow Executions.
+You can simply terminate all of the currently running Workflow Executions and suspend new ones from being created while you deploy the new version of your Workflow code, which does not use `GetVersion()`, and then resume Workflow creation.
+However, that is often not the case, and you need to take care of the currently running Workflow Executions, so using `GetVersion()` to update your code is the method to use.
 
 However, if you want your currently running Workflows to proceed based on the current Workflow logic,
 but you want to ensure new Workflows are running on new logic, you can define your Workflow as a

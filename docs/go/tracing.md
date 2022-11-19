@@ -6,7 +6,7 @@ title: Tracing and Context Propagation
 ## Tracing
 
 The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
-Tracing allows you to view the call graph of a Workflow along with its Activities and any child Workflows.
+Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
 Tracing can be configured by providing an [opentracing.Tracer](https://pkg.go.dev/github.com/opentracing/opentracing-go#Tracer)
 implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
@@ -54,7 +54,7 @@ type HeaderReader interface {
 
 ### Context Propagators
 
-You can propagate additional context through Workflow execution by using a context propagator.
+You can propagate additional context through Workflow Execution by using a context propagator.
 A context propagator needs to implement the `ContextPropagator` interface that includes the following four methods:
 
 ```go

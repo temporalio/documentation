@@ -14,15 +14,13 @@ To list open Workflow Executions, use the `--open` option.
 
 See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listarchived`](/tctl-v1/workflow/listarchived), and [`tctl workflow scan`](/tctl-v1/workflow/scan).
 
-`tctl workflow listall [<modifiers>]`
+`tctl workflow listall <modifiers>`
 
 The following modifiers control the behavior of the command.
 
 ### `--print_raw_time`
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -34,8 +32,6 @@ tctl workflow listall --print_raw_time
 
 Print the timestamp.
 
-Alias: `--pdt`
-
 **Example**
 
 ```bash
@@ -45,8 +41,6 @@ tctl workflow listall --print_datetime
 ### `--print_memo`
 
 Print a memo.
-
-Alias: `--pme`
 
 **Example**
 
@@ -58,8 +52,6 @@ tctl workflow listall --print_memo
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
-Alias: `--psa`
-
 **Example**
 
 ```bash
@@ -69,8 +61,6 @@ tctl workflow listall --print_search_attr
 ### `--print_full`
 
 Print the full message without table formatting.
-
-Alias: `--pf`
 
 **Example**
 
@@ -82,8 +72,6 @@ tctl workflow listall --print_full
 
 Print the raw JSON objects.
 
-Alias: `--pjson`
-
 **Example**
 
 ```bash
@@ -94,8 +82,6 @@ tctl workflow listall --print_json
 
 List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
-
-Alias: `--op`
 
 **Example**
 
@@ -117,8 +103,6 @@ Specify the earliest start time to list. Supported format are as follows:
   - `week` or `w`
   - `month` or `M`
   - `year` or `y`
-
-Alias: `--et`
 
 **Examples**
 
@@ -169,7 +153,7 @@ tctl workflow listall --latest-time '10second'
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -180,8 +164,6 @@ tctl workflow listall --workflow_id <id>
 ### `--workflow_type`
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
 
 **Example**
 
@@ -200,8 +182,6 @@ Supported values are as follows:
 - `terminated`
 - `continuedasnew`
 - `timedout`
-
-Alias: `-s`
 
 **Example**
 

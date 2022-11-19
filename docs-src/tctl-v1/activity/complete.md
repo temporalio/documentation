@@ -9,7 +9,7 @@ tags:
 
 The `tctl activity complete` command completes an [Activity Execution](/concepts/what-is-an-activity-execution).
 
-`tctl activity complete [<modifiers>]`
+`tctl activity complete <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -17,7 +17,7 @@ The following modifiers control the behavior of the command.
 
 Specify the [Workflow Id](/concepts/what-is-a-workflow-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to complete.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -29,7 +29,7 @@ tctl activity complete --workflow_id <id>
 
 Specify the [Run Id](/concepts/what-is-a-run-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to complete.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -40,8 +40,6 @@ tctl activity complete --run_id <id>
 ### --activity_id
 
 Specify the [Activity Id](/concepts/what-is-an-activity-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to complete.
-
-Alias: `--aid`
 
 **Example**
 

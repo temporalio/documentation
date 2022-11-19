@@ -173,7 +173,7 @@ You may sometimes want to have multiple parallel deployments on the same cluster
 
 ## Securing Temporal
 
-Please see our dedicated docs on [Temporal Server Security](/server/security).
+Please see our dedicated docs on [Temporal Server Security](/security).
 
 ## Debugging Temporal
 
@@ -210,7 +210,7 @@ Please search for these topics in our forum or ask on Slack.
 
 _Please request elaboration on any of these_.
 
-- Trying to implement a queue in a workflow (because people hear we replace queues)
+- Trying to implement a queue in a Workflow (because people hear we replace queues)
 - Serializing massive amounts of state into and out of the workflow.
 - Treating everything as rigid/linear sequence of steps instead of dynamic logic
 - Implementing a DSL which is actually just a generic schema based language

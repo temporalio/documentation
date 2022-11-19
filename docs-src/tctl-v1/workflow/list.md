@@ -25,8 +25,6 @@ The following modifiers control the behavior of the command.
 
 Print the raw timestamp.
 
-Alias: `--prt`
-
 **Example**
 
 ```bash
@@ -36,8 +34,6 @@ tctl workflow list --print_raw_time
 ### `--print_datetime`
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -49,8 +45,6 @@ tctl workflow list --print_datetime
 
 Print a memo.
 
-Alias: `--pme`
-
 **Example**
 
 ```bash
@@ -60,8 +54,6 @@ tctl workflow list --print_memo
 ### `--print_search_attr`
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
-
-Alias: `--psa`
 
 **Example**
 
@@ -73,8 +65,6 @@ tctl workflow list --print_search_attr
 
 Print the full message without table formatting.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
@@ -84,8 +74,6 @@ tctl workflow list --print_full
 ### `--print_json`
 
 Print the raw JSON objects.
-
-Alias: `--pjson`
 
 **Example**
 
@@ -97,8 +85,6 @@ tctl workflow list --print_json
 
 List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
-
-Alias: `--op`
 
 **Example**
 
@@ -121,8 +107,6 @@ Supported format are as follows:
   - `week` or `w`
   - `month` or `M`
   - `year` or `y`
-
-Alias: `--et`
 
 **Examples**
 
@@ -154,8 +138,6 @@ Supported formats are as follows:
   - `month` or `M`
   - `year` or `y`
 
-Alias: `--lt`
-
 **Examples**
 
 To specify 11:02:17 PM Pacific Daylight Time on April 13, 2022:
@@ -174,7 +156,7 @@ tctl workflow list --latest_time '10second'
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -185,8 +167,6 @@ tctl workflow list --workflow_id <id>
 ### `--workflow_type`
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
 
 **Example**
 
@@ -205,8 +185,6 @@ Supported values are as follows:
 - `terminated`
 - `continuedasnew`
 - `timedout`
-
-Alias: `-s`
 
 **Example**
 
@@ -264,8 +242,6 @@ tctl workflow list \
 List more than one page.
 (By default, the `tctl workflow list` command lists one page of results.)
 
-Alias: `-m`
-
 **Example**
 
 ```bash
@@ -276,8 +252,6 @@ tctl workflow list --more
 
 Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
-
-Alias: `--ps`
 
 **Example**
 

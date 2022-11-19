@@ -17,7 +17,7 @@ The following modifiers control the behavior of the command.
 
 Specify the [Workflow Id](/concepts/what-is-a-workflow-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to fail.
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -29,7 +29,7 @@ tctl activity fail --workflow_id <id>
 
 Specify the [Run Id](/concepts/what-is-a-run-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to fail.
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -40,8 +40,6 @@ tctl activity fail --run_id <id>
 ### --activity_id
 
 Specify the [Activity Id](/concepts/what-is-an-activity-id) of an [Activity Execution](/concepts/what-is-an-activity-execution) to fail.
-
-Alias: `--aid`
 
 **Example**
 

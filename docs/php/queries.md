@@ -14,7 +14,7 @@ However, if you can't find what you are looking for there, we recommend checking
 
 :::
 
-If a Workflow execution has been stuck at a state for longer than an expected period of time, you
+If a Workflow Execution has been stuck at a state for longer than an expected period of time, you
 might want to query the current call stack. You can use the Temporal CLI to perform this query. For
 example:
 
@@ -101,7 +101,8 @@ You can now query `current_state` by using the CLI:
 
 You can also issue a query from code using the `QueryWorkflow()` API on a Temporal client object.
 
-Use WorkflowStub to query workflow instances from your client code (can be applied to running workflows as well):
+Use `WorkflowStub` to query Workflow instances from your client code.
+(You can apply this technique to running Workflows as well.)
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(

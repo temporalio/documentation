@@ -12,4 +12,4 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 **Where can I find video demos?**
 
-[Temporal Go TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
+[Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).

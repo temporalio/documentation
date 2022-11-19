@@ -211,7 +211,7 @@ It takes the Activity's type and `ActivityOptions` as arguments.
 
 Calling (via `yield`) a method on this interface invokes an Activity that implements this method.
 An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
-Even if Activity execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+Even if Activity Execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
 It doesn't matter what happens to the processes that host the Workflow.
 The business logic code just sees a single method call.
 
@@ -260,8 +260,8 @@ Calling `yield` on promise blocks until a result is available.
 > Activity promise also exposes `then` method to construct promise chains.
 > Read more about Promises [here](https://github.com/reactphp/promise).
 
-Alternatively you can explicitly wrap your code (including `yield` constucts) using `Workflow::async` which will execute nested code in parallel with main workflow code.
-Call `yeild` on Promise returned by `Workflow::async` to merge execution result back to primary workflow method.
+Alternatively, you can explicitly wrap your code (including `yield` constucts) using `Workflow::async`, which executes nested code in parallel with main Workflow code.
+Call `yield` on the Promise returned by `Workflow::async` to merge the execution result back to the primary Workflow method.
 
 ```php
 public function greet(string $name): \Generator

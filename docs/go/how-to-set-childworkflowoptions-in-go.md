@@ -8,22 +8,22 @@ tags:
   - developer-guide
 ---
 
-Used to set all child Workflow specific options
+Used to set all Child Workflow specific options
 
 | Field                    | Description                                                                       | Type                   |
 | ------------------------ | --------------------------------------------------------------------------------- | ---------------------- |
 | Namespace                | Set the namespace of the Child Workflow Execution                                 | string                 |
 | WorkflowID               | Set the Id of the Child Workflow to be scheduled                                  | string                 |
-| TaskQueue                | Set Task Queue that the child Workflow needs to be scheduled on                   | string                 |
-| WorkflowExecutionTimeout | Set the end to end timeout for the child Workflow execution including retries     | time.Duration          |
-| WorkflowRunTimeout       | Set the timeout for a single run of the child Workflow execution                  | time.Duration          |
+| TaskQueue                | Set Task Queue that the Child Workflow needs to be scheduled on                   | string                 |
+| WorkflowExecutionTimeout | Set the end to end timeout for the Child Workflow Execution including retries     | time.Duration          |
+| WorkflowRunTimeout       | Set the timeout for a single run of the Child Workflow Execution                  | time.Duration          |
 | WorkflowTaskTimeout      | Set the maximum execution time of a single Workflow Task                          | time.Duration          |
-| WaitForCancellation      | Set to wait for canceled child Workflow to be ended                               | bool                   |
+| WaitForCancellation      | Set to wait for canceled Child Workflow to be ended                               | bool                   |
 | WorkflowIDReusePolicy    | Set if server allow reuse of Workflow Id                                          | WorkflowIdReusePolicy  |
-| RetryPolicy              | Set how to retry child Workflow if error happens                                  | RetryPolicy            |
-| CronSchedule             | Set the cron schedule for child Workflow                                          | string                 |
-| Memo                     | Set non-indexed info that will be shown in list child Workflow                    | map[string]interface{} |
-| SearchAttributes         | Set indexed info that can be used in query of List/Scan/Count child Workflow APIs | map[string]interface{} |
+| RetryPolicy              | Set how to retry Child Workflow if error happens                                  | RetryPolicy            |
+| CronSchedule             | Set the cron schedule for Child Workflow                                          | string                 |
+| Memo                     | Set non-indexed info that will be shown in list Child Workflow                    | map[string]interface{} |
+| SearchAttributes         | Set indexed info that can be used in query of List/Scan/Count Child Workflow APIs | map[string]interface{} |
 | ParentClosePolicy        | Set policy to decide what to do for the child when the parent closes              | ParentClosePolicy      |
 
 ### Parent Close Policy

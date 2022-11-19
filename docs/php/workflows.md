@@ -189,10 +189,10 @@ Implementations of Workflow1 and Workflow2 can registered with the same worker a
 ## Implementing Workflows
 
 A Workflow implementation implements a Workflow interface.
-Each time a new Workflow execution is started, a new instance of the Workflow implementation object is created.
+Each time a new Workflow Execution is started, a new instance of the Workflow implementation object is created.
 Then, one of the methods (depending on which Workflow Type has been started) annotated with `#[WorkflowMethod]` is invoked.
-As soon as this method returns, the Workflow execution is closed.
-While Workflow execution is open, it can receive calls to signal and query methods.
+As soon as this method returns, the Workflow Execution is closed.
+While Workflow Execution is open, it can receive calls to signal and query methods.
 No additional calls to Workflow methods are allowed.
 The Workflow object is stateful, so query and signal methods can communicate with the other parts of the Workflow through Workflow object fields.
 
@@ -216,7 +216,7 @@ Always do the following in the Workflow implementation code:
 - Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
 - Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
   might break already open Workflows.
-- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow execution path.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
   Pass it as an argument to a Workflow function or use an Activity to load it.
 
 Workflow method arguments and return values are serializable to a byte array using the provided [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html) interface.
@@ -250,7 +250,7 @@ Workflow::async(
 yield Workflow::await(fn() => $done);
 ```
 
-You can not use any activity, timer or child workflow invocation inside `await` or `awaitWithTimeout` method.
+You cannot use any Activity, timer, or Child Workflow invocations inside the `await` or `awaitWithTimeout` method.
 However, you can use variables referenced by other coroutines.
 
 ## Timers
@@ -263,8 +263,9 @@ yield Workflow::timer(300); // sleep for 5 minutes
 
 ## Starting Workflows
 
-Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
-via `Temporal\Client\WorkflowClient`. To create workflow client:
+Workflows can be started both synchronously and asynchronously.
+You can use typed or untyped workflows stubs available via `Temporal\Client\WorkflowClient`.
+To create a Workflow Client:
 
 ```php
 use Temporal\Client\GRPC\ServiceClient;
@@ -278,7 +279,8 @@ $workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233')
 A Synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
 invocation process and will continue executing even if the waiting process crashes or stops.
 
-Make sure to acquire workflow interface or class name you want to start. For example:
+Be sure to acquire the Workflow interface or class name you want to start.
+For example:
 
 ```php
 #[WorkflowInterface]
@@ -295,7 +297,7 @@ interface AccountTransferWorkflowInterface
 }
 ```
 
-To start such workflow in sync mode:
+To start the Workflow in sync mode:
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -312,11 +314,10 @@ $result = $accountTransfer->transfer(
 
 ### Asynchronous start
 
-An asynchronous start initiates a Workflow execution and immediately returns to the caller without waiting for a result.
+An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
-To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
-method.
+To start a Workflow asynchronously, pass the Workflow stub instance and start parameters into the `WorkflowClient->start` method.
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -326,7 +327,7 @@ $accountTransfer = $workflowClient->newWorkflowStub(
 $run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
 ```
 
-Once started you can receive workflow ID and run ID via `WorkflowRun` object returned by start method:
+When started, you can receive the Workflow Id and Run Id via the `WorkflowRun` object returned by the `start` method:
 
 ```php
 $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
@@ -349,8 +350,8 @@ $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000)
 var_dump($run->getResult());
 ```
 
-You can always connect to existing workflow and wait for its completion from another process using workflow id. Use
-`WorkflowClient`->`newUntypedRunningWorkflowStub` for such purposes.
+You can always connect to an existing Workflow and wait for its completion from another process by using Workflow Id.
+Use `WorkflowClient->newUntypedRunningWorkflowStub` for such purposes.
 
 ```php
 $workflow = $workflowClient->newUntypedRunningWorkflowStub('workflowID');
@@ -371,7 +372,7 @@ readlist={[
 ## PHP Child Workflow API
 
 `Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
-The parent Workflow has the ability to monitor and impact the lifecycle of the child Workflow, similar to the way it does for an Activity that it invoked.
+The parent Workflow has the ability to monitor and impact the lifecycle of the Child Workflow, similar to the way it does for an Activity that it invoked.
 
 ```php
 // Use one stub per child workflow run
@@ -400,17 +401,17 @@ try{
 Let's take a look at each component of this call.
 
 Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
-These options customize various execution timeouts, and are passed into the workflow stub defined by the `Workflow::newChildWorkflowStub`.
-Once stub created you can invoke it's workflow method based on attribute `WorkflowMethod`.
+These options customize various execution timeouts and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
+After the stub is created, you can invoke its Workflow method based on the `WorkflowMethod` attribute.
 
 The method call returns immediately and returns a `Promise`.
 This allows you to execute more code without having to wait for the scheduled Workflow to complete.
 
 When you are ready to process the results of the Workflow, call the `yield $promise` method on the returned promise object.
 
-When a parent Workflow is cancelled by the user, the child Workflow can be cancelled or abandoned based on a configurable child policy.
+When a parent Workflow is cancelled by the user, the Child Workflow can be cancelled or abandoned based on a configurable child policy.
 
-You can also skip the stub part of child workflow initiation and use `Workflow::executeChildWorkflow` directly:
+You can also skip the stub part of Child Workflow initiation and use `Workflow::executeChildWorkflow` directly:
 
 ```php
 // Use one stub per child workflow run

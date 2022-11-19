@@ -14,11 +14,11 @@ The command is entered in the following format:
 
 To run a Workflow, the user must specify the following:
 
-- Task queue name (`--tq`)
-- Workflow Type (`--wt`)
+- Task queue name (`--taskqueue`)
+- Workflow Type (`--workflow_type`)
 
 ```bash
-tctl workflow run --tq your-task-queue-name --wt YourWorkflowDefinitionName
+tctl workflow run --taskqueue your-task-queue-name --workflow_type YourWorkflowDefinitionName
 ```
 
 Single quotes (`''`) are used to wrap input as JSON.
@@ -30,7 +30,7 @@ The following modifiers control the behavior of the command.
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -42,7 +42,7 @@ tctl workflow run --taskqueue <name>
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -53,8 +53,6 @@ tctl workflow run --workflow_id <id>
 ### `--workflow_type`
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
 
 **Example**
 
@@ -67,8 +65,6 @@ tctl workflow run --workflow_type <name>
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
 
-Alias: `--et`
-
 **Example**
 
 ```bash
@@ -79,8 +75,6 @@ tctl workflow run --execution_timeout <seconds>
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
 The default value is 10.
-
-Alias: `--wtt`
 
 **Example**
 
@@ -136,8 +130,6 @@ tctl workflow run --input <json>
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 **Example**
 
@@ -212,8 +204,6 @@ tctl workflow run --search_attr_value <value>
 
 Get event details.
 
-Alias: `--sd`
-
 **Example**
 
 ```bash
@@ -224,8 +214,6 @@ tctl workflow run --show_detail
 
 Specify the maximum length for each attribute field.
 The default value is 0.
-
-Alias: `--maxl`
 
 **Example**
 

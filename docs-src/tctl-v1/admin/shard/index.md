@@ -11,8 +11,6 @@ tags:
 
 The `tctl admin shard` commands enable admin-level operations on a specified shard.
 
-Alias: `shar`
-
 #### tctl admin shard commands
 
 - [`describe`](/tctl-v1/admin/shard/describe)

@@ -956,7 +956,7 @@ Special Notes:
 - Child Workflow options automatically inherit their values from the Parent Workflow options if they are not explicitly set. They have two advanced options unique to Child Workflows:
   - [`cancellationType`](https://typescript.temporal.io/api/enums/proto.coresdk.child_workflow.ChildWorkflowCancellationType): Controls at which point to throw the CanceledFailure exception when a child workflow is cancelled
   - `parentClosePolicy`: Explained below
-- Child Workflow executions are [`CancellationScope`](/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
+- Child Workflow Executions are [`CancellationScope`](/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 <details>
 <summary>
