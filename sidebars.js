@@ -244,6 +244,7 @@ module.exports = {
         id: "references/index",
       },
       items: [
+        "references/failures",
         "references/sdk-metrics",
         "references/cluster-metrics",
         "references/commands",
