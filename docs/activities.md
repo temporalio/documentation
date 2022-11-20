@@ -76,23 +76,41 @@ An Activity Execution is the full chain of <a class="tdlp" href="/tasks#activity
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-execution.svg" alt="Activity Execution" /></div></div>
 
-An Activity Execution has no time limit.
-Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
+By default, an Activity Execution has no time limit.
+Activity Execution [timeouts](/application-development/features#activity-timeouts) and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> can be customized.
 
-If for any reason an Activity Execution does not complete (exhausts all retries), the error is returned to the [Workflow](/workflows), which decides how to handle it.
+If an Activity Execution fails (because it exhausted all retries, threw a <a class="tdlp" href="/retry-policies#non-retryable-errors">non-retryable error<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#non-retryable-errors">Learn more</a></p></div></a>, or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
-### Request Cancellation
+### Cancellation
 
-A Workflow can request to cancel an Activity Execution.
-When an Activity Execution is canceled, or its Workflow Execution has completed or failed, the context passed into its function is canceled, which also sets its channel’s closed state to `Done`.
-An Activity can use that to perform any necessary cleanup and abort its execution.
+Activity Cancellation:
 
-Cancellation requests are only delivered to Activity Executions that Heartbeat:
+- lets the Activity know it doesn't need to keep doing work, and
+- gives the Activity time to clean up any resources it has created.
 
-- The Heartbeat request fails with a special error indicating that the Activity Execution is canceled.
-  Heartbeats can also fail when the Workflow Execution that spawned it is in a completed state.
-- The Activity should perform all necessary cleanup and report when it is done.
-- The Workflow can decide if it wants to wait for the Activity cancellation confirmation or proceed without waiting.
+Activities can only receive Cancellation if they emit Heartbeats or in Core-based SDKs (TypeScript/Python) are Local Activities (which don't heartbeat but receive Cancellation anyway).
+
+An Activity may receive Cancellation if:
+
+- The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. <!-- TODO link to workflow cancellation -->
+- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/concepts/what-is-a-failure#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
+- The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
+- In some SDKs:
+  - The Worker is shutting down.
+  - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>. This fails the Activity Task Execution with an Application Failure.
+
+There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
+An Activity may accept or ignore Cancellation:
+
+- To allow Cancellation to happen, let the Cancellation Failure propagate.
+- To ignore Cancellation, catch it and continue executing.
+
+Some SDKs have ways to shield tasks from being stopped while still letting the Cancellation propagate.
+
+The Workflow can also decide if it wants to wait for the Activity Cancellation to be accepted or to proceed without waiting.
+
+Cancellation can only be requested a single time.
+If you try to cancel your Activity Execution more than once, it will not receive more than one Cancellation request.
 
 ### Activity Id
 

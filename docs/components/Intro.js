@@ -430,6 +430,13 @@ const references = {
       name: `Cluster configuration`,
     },
   ],
+  listThree: [
+    {
+      book: true,
+      path: "/references/failures",
+      name: "Failures",
+    },
+  ],
 };
 
 const displayTechListItems = () => {
@@ -515,7 +522,10 @@ function Explained() {
         </ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="https://legacy-documentation-sdks.temporal.io/">
+        <a
+          className="header-link"
+          href="https://legacy-documentation-sdks.temporal.io/"
+        >
           <h2 className="h2-landing">Legacy SDK docs</h2>
         </a>
         <p className="landing-card-p">
@@ -569,8 +579,10 @@ function Explained() {
           {displayLinks(references.listOne)}
         </ul>
         <ul className="landing-card-list">
-          {" "}
           {displayLinks(references.listTwo)}
+        </ul>
+        <ul className="landing-card-list">
+          {displayLinks(references.listThree)}
         </ul>
       </div>
     </div>

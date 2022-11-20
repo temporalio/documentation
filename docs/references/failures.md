@@ -8,6 +8,8 @@ tags:
   - explanation
 ---
 
+> Background: [What is a failure?](/concepts/what-is-a-failure)
+
 A Failure is Temporal's representation of various types of errors that occur in the system.
 
 There are different types of Failures, and each has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Cluster and appear in [Event History](/concepts/what-is-an-event-history)).

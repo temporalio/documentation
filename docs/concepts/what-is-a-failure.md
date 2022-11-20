@@ -1,6 +1,6 @@
 ---
 id: what-is-a-failure
-title: What is a Failure?
+title: What is a failure?
 sidebar_label: Failure
 description: About failures in Temporal
 tags:
