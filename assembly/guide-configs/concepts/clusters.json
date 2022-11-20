@@ -48,18 +48,6 @@
     {
       "type": "h2",
       "id": "concepts/what-is-multi-cluster-replication"
-    },
-    {
-      "type": "h2",
-      "id": "concept-context/cluster-plugins"
-    },
-    {
-      "type": "h3",
-      "id": "concepts/what-is-a-claimmapper-plugin"
-    },
-    {
-      "type": "h3",
-      "id": "concepts/what-is-an-authorizer-plugin"
     }
   ]
 }

@@ -19,12 +19,10 @@ The following modifiers control the behavior of the command.
 
 Print properties exactly as they are stored.
 
-Alias: `--praw`
-
 **Example**
 
 ```bash
-tctl workflow describeid <workflow_id> --run_id <id>
+tctl workflow describeid <workflow_id> <id> --print_raw
 ```
 
 ### `--reset_points_only`

@@ -189,3 +189,7 @@ Whether to send a JWT access token as ‘authorization’ header in requests wit
 ## `TEMPORAL_FORWARD_HEADERS`
 
 Forward-specified HTTP headers to direct from HTTP API requests to the Temporal gRPC backend.
+
+## `TEMPORAL_DISABLE_WRITE_ACTIONS`
+
+Disables any button in the UI that allows the user to modify Workflows or Activities.

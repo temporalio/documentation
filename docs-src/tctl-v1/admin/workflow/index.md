@@ -9,8 +9,6 @@ tags:
   - workflow
 ---
 
-Alias: `-wf`
-
 The `tctl admin workflow` commands enable administrator-level operations on Workflow Executions.
 
 `tctl admin workflow command [modifiers] [arguments...]`

@@ -202,7 +202,7 @@ Temporal gives you fine grained control over what happens when you cancel a work
 
 ## Scheduling Cron Workflows
 
-You can set each workflow to repeat on a schedule with the `cronSchedule` option:
+You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
 
 ```ts
 const handle = await client.start(scheduledWorkflow, {
