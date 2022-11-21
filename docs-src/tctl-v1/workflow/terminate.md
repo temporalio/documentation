@@ -36,7 +36,7 @@ tctl workflow terminate --workflow_id <id>
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-If `run_id` is not specified, `tctl` will terminate the last Workflow Execution for the given `workflow_id`.
+If `run_id` is not specified, `tctl` terminates the last Workflow Execution for the specified `workflow_id`.
 
 Aliases: `--rid`, `-r`
 
