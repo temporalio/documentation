@@ -3411,7 +3411,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 </Tabs>
@@ -3631,7 +3631,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 </Tabs>
