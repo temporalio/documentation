@@ -360,8 +360,8 @@ class YourWorkflow
 }
 ```
 
-In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
-`Workflow::await()` function.
+In the preceding example, the Workflow updates the protected value.
+The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
 
 </TabItem>
 <TabItem value="python">
@@ -463,7 +463,7 @@ See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><im
 
 To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `#[SignalMethod]` in the Workflow interface, from the Client code.
 
-To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+To send a Signal to a Workflow, use `WorkflowClient->newWorkflowStub` or `WorkflowClient->newUntypedWorkflowStub`:
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
@@ -477,8 +477,7 @@ $workflow->setValue(true);
 assert($run->getValue() === true);
 ```
 
-Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with workflow id to send
-signals to already running workflows.
+Use `WorkflowClient->newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send Signals to already running Workflows.
 
 ```php
 $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
@@ -1495,8 +1494,7 @@ GreetWorkflowInterface workflow1 =
 <TabItem value="php">
 
 A Retry Policy can be configured with an instance of the `RetryOptions` object.
-To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions`
-for child Workflows or via `WorkflowOptions` for top-level Workflows.
+To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -2698,7 +2696,7 @@ Related reads:
 Besides Activities, a Workflow can also start other Workflows.
 
 `Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
-The parent Workflow has the ability to monitor and impact the lifecycle of the child Workflow, similar to the way it does for an Activity that it invoked.
+The parent Workflow has the ability to monitor and impact the lifecycle of the Child Workflow, similar to the way it does for an Activity that it invoked.
 
 ```php
 // Use one stub per child workflow run
@@ -2727,7 +2725,7 @@ try{
 Let's take a look at each component of this call.
 
 Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
-These options customize various execution timeouts, and are passed into the workflow stub defined by the `Workflow::newChildWorkflowStub`.
+These options customize various execution timeouts, and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
 Once stub created you can invoke its Workflow method based on attribute `WorkflowMethod`.
 
 The method call returns immediately and returns a `Promise`.
@@ -2735,9 +2733,9 @@ This allows you to execute more code without having to wait for the scheduled Wo
 
 When you are ready to process the results of the Workflow, call the `yield $promise` method on the returned promise object.
 
-When a parent Workflow is cancelled by the user, the child Workflow can be cancelled or abandoned based on a configurable child policy.
+When a parent Workflow is cancelled by the user, the Child Workflow can be cancelled or abandoned based on a configurable child policy.
 
-You can also skip the stub part of child workflow initiation and use `Workflow::executeChildWorkflow` directly:
+You can also skip the stub part of Child Workflow initiation and use `Workflow::executeChildWorkflow` directly:
 
 ```php
 // Use one stub per child workflow run
@@ -2869,7 +2867,7 @@ The possible values can be obtained from the [`ParentClosePolicy`](https://githu
 - `POLICY_ABANDON`
 - `POLICY_REQUEST_CANCEL`
 
-Then `ChildWorkflowOptions` object is used to create a new child workflow object:
+Then `ChildWorkflowOptions` object is used to create a new Child Workflow object:
 
 ```php
 $child = Workflow::newUntypedChildWorkflowStub(
@@ -2883,7 +2881,7 @@ yield $child->start();
 
 In the snippet above we:
 
-1. Create a new untyped child workflow stub with `Workflow::newUntypedChildWorkflowStub`.
+1. Create a new untyped Child Workflow stub with `Workflow::newUntypedChildWorkflowStub`.
 2. Provide `ChildWorkflowOptions` object with Parent Close Policy set to `ParentClosePolicy::POLICY_ABANDON`.
 3. Start Child Workflow Execution asynchronously using `yield` and method `start()`.
 
@@ -3367,7 +3365,7 @@ Not applicable to this SDK.
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
 
-- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is no existing value, then it records the function result as a value with the given Workflow Id on the History.
 - If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
   - If the values are equal, then it returns the value without recording a new Marker Event
   - If the values aren't equal, then it records the new value with the same ID on the History.

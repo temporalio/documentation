@@ -7,8 +7,6 @@ tags:
   - tctl
 ---
 
-Alias: `re`
-
 The `tctl namespace register` command registers a [Namespace](/concepts/what-is-a-namespace).
 
 `tctl namespace register`
@@ -29,8 +27,6 @@ The following modifiers control the behavior of the command.
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 This value changes for Global Namespaces when a failover occurs.
 
-Alias: `--ac`
-
 **Example**
 
 ```bash
@@ -47,8 +43,6 @@ This is a read-only setting and cannot be changed.
 
 This modifier is valid only when the `--global_namespace` modifier is set to true.
 
-Alias `--cl`
-
 **Example**
 
 ```bash
@@ -58,8 +52,6 @@ tctl namespace register --clusters <names>
 ### `--description`
 
 Specify a description when registering a [Namespace](/concepts/what-is-a-namespace).
-
-Alias `--desc`
 
 **Example**
 
@@ -73,8 +65,6 @@ Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Name
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
 This is a read-only setting and cannot be changed.
 
-Alias `--gd`
-
 **Example**
 
 ```bash
@@ -85,8 +75,6 @@ tctl namespace register --global_namespace <boolean>
 
 Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
-
-Alias `--has`
 
 **Example**
 
@@ -99,8 +87,6 @@ tctl namespace register --history_archival_state <value>
 Specify the URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
 
-Alias `--huri`
-
 **Example**
 
 ```bash
@@ -111,8 +97,6 @@ tctl namespace register --history_uri <uri>
 
 Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
-Alias `--dmd`
-
 **Example**
 
 ```bash
@@ -122,8 +106,6 @@ tctl namespace register --namespace_data <data>
 ### `--owner_email`
 
 Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
-
-Alias `--oe`
 
 **Example**
 
@@ -137,8 +119,6 @@ Set the [Retention Period](/clusters#retention-period) for the [Namespace](/conc
 
 The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
-Alias `--rd`
-
 **Example**
 
 ```bash
@@ -150,8 +130,6 @@ tctl namespace register --retention <value>
 Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
 
-Alias `--vas`
-
 **Example**
 
 ```bash
@@ -162,8 +140,6 @@ tctl namespace register --visibility_archival_state <value>
 
 Specify the visibility URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
-
-Alias `--vuri`
 
 **Example**
 

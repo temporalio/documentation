@@ -7,8 +7,6 @@ tags:
   - tctl
 ---
 
-Alias: `desc`
-
 The `tctl taskqueue describe` command describes the poller information of a [Task Queue](/concepts/what-is-a-task-queue).
 
 `tctl taskqueue describe <modifiers> <value>`
@@ -21,7 +19,7 @@ _Required modifier_
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -34,8 +32,6 @@ tctl taskqueue describe --taskqueue <value>
 Specify the type of a [Task Queue](/concepts/what-is-a-task-queue).
 The type can be `workflow` or `activity`.
 The default is `workflow`.
-
-Alias: `--tqt`
 
 **Example**
 

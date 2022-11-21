@@ -18,6 +18,12 @@ A batch job runs in the background and affects Workflow Executions one at a time
 
 Use <a class="tdlp" href="#start">tctl batch start<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch start</p><p class="tdlppd">How to start a batch job using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#start">Learn more</a></p></div></a> to start a batch job.
 
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
+
 When starting a batch job, you must provide a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a> and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
 
@@ -48,7 +54,7 @@ Terminating a batch job does not roll back the operations already performed by t
 
 The `tctl batch start` command starts a batch job.
 
-`tctl batch start --query <value> [<modifiers>]`
+`tctl batch start --query <value> <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -72,8 +78,6 @@ tctl batch start --query <value>
 
 Specify a reason for running this batch job.
 
-Alias: `--re`
-
 **Example**
 
 ```bash
@@ -84,8 +88,6 @@ tctl batch start --query <value> --reason <string>
 
 Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
 
-Alias: `--bt`
-
 **Example**
 
 ```bash
@@ -95,8 +97,6 @@ tctl batch start --query <value> --batch_type <operation>
 ### `--signal_name`
 
 Specify the name of a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a>. This modifier is required when `--batch_type` is `signal`.
-
-Alias: `--sig`
 
 **Example**
 
@@ -130,6 +130,8 @@ tctl batch start --query <value> --rps <value>
 
 Disable the confirmation prompt.
 
+Alias: `y`
+
 **Example**
 
 ```bash
@@ -138,19 +140,21 @@ tctl batch start --query <value> --yes
 
 ## list
 
-Alias: `l`
-
 The `tctl batch list` command lists all batch jobs.
 
-`tctl batch list [<modifiers>]`
+`tctl batch list <modifiers>`
+
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
 
 The following modifier controls the behavior of the command.
 
 ### `--pagesize`
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
-
-Alias: `--ps`
 
 **Example**
 
@@ -160,11 +164,15 @@ tctl batch list --pagesize <value>
 
 ## describe
 
-Alias: `desc`
-
 The `tctl batch describe` command describes the progress of a batch job.
 
 `tctl batch describe --job_id <id>`
+
+:::note
+
+`tctl` can run `batch` and `batch-v2` commands.
+
+:::
 
 The following modifier controls the behavior of the command.
 
@@ -173,8 +181,6 @@ The following modifier controls the behavior of the command.
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`
 
 **Example**
 
@@ -186,7 +192,13 @@ tctl batch describe --job_id <id>
 
 The `tctl batch terminate` command terminates a batch job.
 
-`tctl batch terminate --job_id <id> [<modifiers>]`
+`tctl batch terminate --job_id <id> <modifiers>`
+
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
 
 The following modifiers control the behavior of the command.
 
@@ -195,8 +207,6 @@ The following modifiers control the behavior of the command.
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`
 
 **Example**
 
@@ -207,8 +217,6 @@ tctl batch terminate --job_id <id>
 ### `--reason`
 
 Specify a reason for terminating this batch job.
-
-Alias: `--re`
 
 **Example**
 

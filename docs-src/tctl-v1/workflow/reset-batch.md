@@ -24,8 +24,6 @@ Provide an input file that specifies [Workflow Execution](/concepts/what-is-a-wo
 Each line contains one [Workflow Id](/concepts/what-is-a-workflow-id) as the base Run and, optionally, a [Run Id](/concepts/what-is-a-run-id).
 If a Run Id is not specified, the current Run Id is used.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -70,8 +68,6 @@ tctl workflow reset-batch --input_separator <string>
 ### `--reason`
 
 Specify a reason for resetting the [Workflow Executions](/concepts/what-is-a-workflow-execution).
-
-<!-- Alias: `--re` -->
 
 **Example**
 

@@ -21,7 +21,7 @@ The following modifiers control the behavior of the command.
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -33,7 +33,7 @@ tctl workflow stack --workflow_id <id>
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -61,8 +61,6 @@ Pass input for the query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
 
-Alias: `--if`
-
 **Example**
 
 ```bash
@@ -73,8 +71,6 @@ tctl workflow stack --input_file <filename>
 
 Reject queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.
-
-Alias: `--qrc`
 
 **Example**
 

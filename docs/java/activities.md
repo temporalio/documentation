@@ -6,8 +6,8 @@ sidebar_label: Activities
 
 ## What is an Activity?
 
-Activities are implementations of certain tasks which need to be performed during a Workflow execution.
-They can be used to interact with external systems, such as databases, services, etc.
+Activities are implementations of certain tasks that need to be performed during a Workflow Execution.
+They can be used to interact with external systems, such as databases and services.
 
 Workflows orchestrate invocations of Activities.
 
@@ -282,7 +282,7 @@ The whole request-reply interaction can be modeled as a single Activity.
 To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
 
 Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
-To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
+To correlate Activity invocation with completion, use either a `TaskToken` or Workflow and Activity Ids.
 
 Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
 
