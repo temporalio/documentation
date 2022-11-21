@@ -20,7 +20,7 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
-**_ Required modifier _**
+_Required modifier_
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
