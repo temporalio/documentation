@@ -20,6 +20,8 @@ A Namespace is a unit of isolation within the Temporal Platform.
 
 The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
 
+To create a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/#account-level-roles).
+
 :::
 
 :::tip
