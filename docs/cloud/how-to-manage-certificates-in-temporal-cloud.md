@@ -94,6 +94,12 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 ## Manage certificates
 
+:::note
+
+To manage certificates for a Namespace, a user must have [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+
+:::
+
 To manage certificates for Temporal Cloud Namespaces, use the <a class="tdlp" href="/cloud/tcld/namespace#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace accepted-client-ca</p><p class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#accepted-client-ca">Learn more</a></p></div></a> commands.
 
 ## Manage certificate filters
@@ -174,3 +180,4 @@ To set or clear certificate filters, use the following [tcld](/cloud/tcld) comma
 - <a class="tdlp" href="/cloud/tcld/namespace#clear">tcld namespace certificate-filters clear<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters clear</p><p class="tdlppd">How to clear all certificate filters from a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#clear">Learn more</a></p></div></a>
 
 To view the current certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#export">tcld namespace certificate-filters export<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld namespace certificate-filters export</p><p class="tdlppd">How to export certificate filters from a Namespace in Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/namespace#export">Learn more</a></p></div></a> command.
+
