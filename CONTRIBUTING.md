@@ -147,7 +147,7 @@ yarn assemble --cloud
 
 ## How to use the full build command
 
-Run `yarn gen` or `yarn gen --cloud`.
+Run `yarn gen` or `yarn gen-cloud`.
 
 This command runs snipsync, runs the Assembly Workflow, runs dPrint formatting, and then builds the site.
 
