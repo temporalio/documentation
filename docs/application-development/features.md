@@ -3629,7 +3629,7 @@ Content is currently unavailable.
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
-They can't be used normally with Workflow code, as that would be [nondeterministic](/workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+They can't be used normally with Workflow code, as that would be [nondeterministic](/concepts/what-is-a-workflow-definition#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
 
 Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
 
