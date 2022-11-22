@@ -204,8 +204,6 @@ Values: less, more, favoritePager..[$PAGER]
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
 
-Alias: `--ps`
-
 ## --query
 
 _Required modifier_
@@ -216,6 +214,8 @@ Specify an SQL-like query of <a class="tdlp" href="/visibility#search-attribute"
 
 Using the `--query` option causes tctl to ignore all other filter options, including `open`, `earliest-time`, `latest-time`, `workflow-id`, and `workflow-type`.
 
+Alias: `--q`
+
 ## --raw
 
 Print properties exactly as they are stored.
@@ -223,8 +223,6 @@ Print properties exactly as they are stored.
 ## --reason
 
 Specify a reason for terminating the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
-
-Alias: `-r`
 
 ## --reject-condition
 
@@ -271,8 +269,6 @@ Set the [Retention Period](/clusters#retention-period) for the <a class="tdlp" h
 
 The Retention Period applies to Closed <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
-Alias `--rd`
-
 ## --rps
 
 Specify RPS of processing. The default value is 50.
@@ -281,13 +277,11 @@ Specify RPS of processing. The default value is 50.
 
 Show the History of a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> by specifying a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
-Alias: `--rid`
+Alias: `--r`
 
 ## --run-timeout
 
 Single Workflow Run timeout, in seconds.
-
-Alias: `--rt`
 
 ## --search-attribute
 
@@ -317,6 +311,8 @@ The default is `workflow`.
 ## --task-queue
 
 Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
+
+Alias: `--t`
 
 ## --task-timeout
 
@@ -351,4 +347,6 @@ Show the History of a <a class="tdlp" href="/workflows#workflow-execution">Workf
 ## --yes
 
 Use the --yes modifier to automatically confirm all prompts.
+
+Alias: `--y`
 

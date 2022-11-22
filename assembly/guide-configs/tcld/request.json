@@ -1,0 +1,21 @@
+{
+  "file_name": "request.md",
+  "file_dir": "cloud/tcld",
+  "id": "request",
+  "title": "tcld request command reference",
+  "sidebar_label": "request",
+  "description": "How to use Temporal Cloud's tcld request command.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cloud/tcld/request/index"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/request/get"
+    }
+  ]
+}

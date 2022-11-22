@@ -19,7 +19,7 @@ Always include required modifiers when executing this command.
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -33,7 +33,7 @@ tctl workflow start --taskqueue <name>
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -54,8 +54,6 @@ tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQu
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
-Alias: `--wt`
-
 **Example**
 
 ```bash
@@ -67,8 +65,6 @@ tctl workflow start --workflow_type <name>
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
 
-Alias: `--et`
-
 **Example**
 
 ```bash
@@ -79,8 +75,6 @@ tctl workflow start --execution_timeout <seconds>
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
 The default value is 10.
-
-Alias: `--wtt`
 
 **Example**
 
@@ -143,8 +137,6 @@ tctl workflow start --input <json>
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 **Example**
 

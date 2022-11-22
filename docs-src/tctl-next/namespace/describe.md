@@ -11,8 +11,6 @@ The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
 `tctl namespace describe`
 
-Alias: `d`
-
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 

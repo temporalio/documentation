@@ -10,8 +10,6 @@ tags:
 
 The `tctl admin cluster` command runs the administrator-level operations on a given Cluster.
 
-Alias: `cl`
-
 `tctl admin cluster command [command modifiers] [arguments...]`
 
 - [`add_search_attributes`](/tctl-v1/admin/cluster/add-search-attributes)

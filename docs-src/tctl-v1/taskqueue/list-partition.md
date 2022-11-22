@@ -19,7 +19,7 @@ _Required modifier_
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue) description.
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 

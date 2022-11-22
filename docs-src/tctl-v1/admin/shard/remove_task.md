@@ -15,8 +15,6 @@ The `tctl admin shard remove_task` command removes a Task from the shard.
 
 The Task removed must have values that matches what is given in the command line.
 
-Alias: `rmtk`
-
 The modifiers below change the behavior of the command.
 
 #### `--shard_id value`
