@@ -54,7 +54,7 @@ Run `yarn snipsync --clear` to remove the snippets.
 
 We are now committing the snippets into the docs source files.
 
-See the [full build command](#full-build-command) section for details on how to fully assemble the docs and, format them, and check for build issues.
+See the [full build command](#full-build-command) section for details on how to fully assemble the docs, format them, and check for build issues.
 
 ## How to use dPrint formatter
 
@@ -149,9 +149,9 @@ yarn assemble --cloud
 
 Run `yarn gen` or `yarn gen --cloud`.
 
-This will run Snipsync, run the Assembly Workflow, run dPrint formatting, and then build the site.
+This command runs snipsync, runs the Assembly Workflow, runs dPrint formatting, and then builds the site.
 
-Any build issues logged to your console.
+Any build issues are logged to your console.
 Fix all build issues before submitting a PR.
 
 ## When you submit a Pull Request
