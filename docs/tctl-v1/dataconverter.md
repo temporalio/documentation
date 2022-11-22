@@ -23,7 +23,7 @@ The `tctl dataconverter web` command specifies the WebSocket URL of a custom <a 
 
 The following modifiers control the behavior of the command.
 
-### `port`
+### port
 
 Specify a port for the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
 The default value is 0.
@@ -34,7 +34,7 @@ The default value is 0.
 tctl dataconverter web --web_ui_url <url> --port <value>
 ```
 
-### `--web_ui_url`
+### --web_ui_url
 
 _Required modifier_
 
