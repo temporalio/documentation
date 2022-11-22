@@ -25,7 +25,7 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud).
 - [Manage certificate filters](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters-using-temporal-cloud-ui).
-- Manage [Namespace-level permissions](/cloud/index#namespace-level-permissions).
+- Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
 
 After you make changes, click **Save** in the top-right or bottom-left portion of the page.
 
