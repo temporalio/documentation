@@ -2,7 +2,7 @@
 id: how-to-get-the-result-of-a-workflow-execution-in-typescript
 title: How to get the result of a Workflow Execution in TypeScript
 sidebar_label: Workflow result
-description: Get the result of a Workflow execution
+description: Get the result of a Workflow Execution
 tags:
   - developer-guide
   - sdk

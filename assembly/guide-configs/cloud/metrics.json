@@ -1,0 +1,18 @@
+{
+    "file_name": "how-to-monitor-temporal-cloud-metrics.md",
+    "id": "how-to-monitor-temporal-cloud-metrics",
+    "file_dir": "cloud",
+    "title": "How to monitor Temporal Cloud metrics",
+    "sidebar_label": "Cloud metrics",
+    "description": "Configure and track performance metrics for Temporal Cloud.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+      {
+        "type": "p",
+        "id": "cloud-context/how-to-monitor-temporal-cloud-metrics"
+      }
+    ]
+  }
+  

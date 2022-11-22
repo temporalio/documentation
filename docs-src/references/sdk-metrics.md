@@ -130,7 +130,7 @@ from the queue.
 
 ### activity_task_error
 
-An internal error or kernel panic occurred during Activity Task handling or execution.
+An internal error or panic occurred during Activity Task handling or execution.
 
 - Type: Counter
 - Available in: Go, PHP

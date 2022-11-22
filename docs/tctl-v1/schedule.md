@@ -11,9 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule</p><p class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#schedule">Learn more</a></p></div></a> is an experimental feature and the `schedule` command is available in versions 1.17.0-alpha.2 and later.
-Version 1.17.0-alpha.2 is currently available in version 1.16.2.
-Use `tctl config set version next` command while on version 1.16.2.
+A <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule</p><p class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#schedule">Learn more</a></p></div></a> is an experimental feature available in `tctl 1.17` and `tctl next`.
 
 - <a class="tdlp" href="#backfill">Backfill a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl schedule backfill</p><p class="tdlppd">How to backfill a Schedule using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#backfill">Learn more</a></p></div></a>
 - <a class="tdlp" href="#create">Create a Schedule using tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl schedule create</p><p class="tdlppd">How to create a Schedule using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#create">Learn more</a></p></div></a>

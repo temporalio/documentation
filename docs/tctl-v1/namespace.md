@@ -26,8 +26,6 @@ The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
 `tctl namespace describe`
 
-Alias: `desc`
-
 The following modifier controls the behavior of the command.
 
 ### `--namespace_id`
@@ -59,8 +57,6 @@ Clusters: dc1, dc2
 
 ## list
 
-Alias: `l`
-
 The `tctl namespace list` command lists all <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
 `tctl namespace list`
@@ -68,8 +64,6 @@ The `tctl namespace list` command lists all <a class="tdlp" href="/namespaces#">
 The command has no modifiers.
 
 ## register
-
-Alias: `re`
 
 The `tctl namespace register` command registers a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -91,8 +85,6 @@ The following modifiers control the behavior of the command.
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 This value changes for Global Namespaces when a failover occurs.
 
-Alias: `--ac`
-
 **Example**
 
 ```bash
@@ -109,8 +101,6 @@ This is a read-only setting and cannot be changed.
 
 This modifier is valid only when the `--global_namespace` modifier is set to true.
 
-Alias `--cl`
-
 **Example**
 
 ```bash
@@ -120,8 +110,6 @@ tctl namespace register --clusters <names>
 ### `--description`
 
 Specify a description when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
-
-Alias `--desc`
 
 **Example**
 
@@ -135,8 +123,6 @@ Specifies whether a <a class="tdlp" href="/namespaces#">Namespace<span class="td
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
 This is a read-only setting and cannot be changed.
 
-Alias `--gd`
-
 **Example**
 
 ```bash
@@ -147,8 +133,6 @@ tctl namespace register --global_namespace <boolean>
 
 Set the state of <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
-
-Alias `--has`
 
 **Example**
 
@@ -161,8 +145,6 @@ tctl namespace register --history_archival_state <value>
 Specify the URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
 
-Alias `--huri`
-
 **Example**
 
 ```bash
@@ -173,8 +155,6 @@ tctl namespace register --history_uri <uri>
 
 Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
-Alias `--dmd`
-
 **Example**
 
 ```bash
@@ -184,8 +164,6 @@ tctl namespace register --namespace_data <data>
 ### `--owner_email`
 
 Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> owner.
-
-Alias `--oe`
 
 **Example**
 
@@ -199,8 +177,6 @@ Set the [Retention Period](/clusters#retention-period) for the <a class="tdlp" h
 
 The Retention Period applies to Closed <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
-Alias `--rd`
-
 **Example**
 
 ```bash
@@ -212,8 +188,6 @@ tctl namespace register --retention <value>
 Set the visibility state for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
 
-Alias `--vas`
-
 **Example**
 
 ```bash
@@ -224,8 +198,6 @@ tctl namespace register --visibility_archival_state <value>
 
 Specify the visibility URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
-
-Alias `--vuri`
 
 **Example**
 
@@ -244,8 +216,6 @@ The following modifiers control the behavior of the command.
 ### `--active_cluster`
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
-
-Alias: `--ac`
 
 **Example**
 
@@ -274,8 +244,6 @@ The list contains the names of Clusters (separated by spaces) to which the Names
 
 This modifier is valid only when the `--global_namespace` modifier is set to true.
 
-Alias `--cl`
-
 **Example**
 
 ```bash
@@ -285,8 +253,6 @@ tctl namespace update --clusters <names>
 ### `--description`
 
 Specify a description when updating a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
-
-Alias `--desc`
 
 **Example**
 
@@ -299,8 +265,6 @@ tctl namespace update --description <value>
 Set the state of <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
 
-Alias `--has`
-
 **Example**
 
 ```bash
@@ -312,8 +276,6 @@ tctl namespace update --history_archival_state <value>
 Specify the URI for URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
 
-Alias `--huri`
-
 **Example**
 
 ```bash
@@ -324,8 +286,6 @@ tctl namespace update --history_uri <uri>
 
 Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
-Alias `--dmd`
-
 **Example**
 
 ```bash
@@ -335,8 +295,6 @@ tctl namespace update --namespace_data <data>
 ### `--owner_email`
 
 Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> owner.
-
-Alias `--oe`
 
 **Example**
 
@@ -370,8 +328,6 @@ tctl namespace update --remove_bad_binary <value>
 
 Specify the number of days to retain <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
-Alias `--rd`
-
 **Example**
 
 ```bash
@@ -383,8 +339,6 @@ tctl namespace update --retention <value>
 Set the visibility state for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
 
-Alias `--vas`
-
 **Example**
 
 ```bash
@@ -395,8 +349,6 @@ tctl namespace update --visibility_archival_state <value>
 
 Specify the visibility URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
-
-Alias `--vuri`
 
 **Example**
 

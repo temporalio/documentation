@@ -1,4 +1,5 @@
 {
+  "public": true,
   "trailingSlash": false,
   "github": {
     "silent": true
@@ -547,6 +548,10 @@
       "destination": "/clusters/quick-install"
     },
     {
+      "source": "/server/security",
+      "destination": "/security"
+    },
+    {
       "source": "/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
       "destination": "/clusters/quick-install/#helm-charts"
     },
@@ -636,6 +641,106 @@
     {
       "source": "/references/ui-configuration",
       "destination": "/references/web-ui-configuration"
+    },
+    {
+      "source": "/cloud/tcld/account/get",
+      "destination": "/cloud/tcld/account#get"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/",
+      "destination": "/cloud/tcld/account#metrics"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/enable",
+      "destination": "/cloud/tcld/account#enable"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/disable",
+      "destination": "/cloud/tcld/account#disable"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca/",
+      "destination": "/cloud/tcld/account#accepted-client-ca"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca/add",
+      "destination": "/cloud/tcld/account#add"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca/list",
+      "destination": "/cloud/tcld/account#list"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca/set",
+      "destination": "/cloud/tcld/account#set"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca/remove",
+      "destination": "/cloud/tcld/account#remove"
+    },
+    {
+      "source": "/cloud/tcld/account/metrics/accepted-client-ca/remove",
+      "destination": "/cloud/tcld/account#remove"
+    },
+    {
+      "source": "/cloud/tcld/namespace/list",
+      "destination": "/cloud/tcld/namespace#list"
+    },
+    {
+      "source": "/cloud/tcld/namespace/get",
+      "destination": "/cloud/tcld/namespace#get"
+    },
+    {
+      "source": "/cloud/tcld/namespace/accepted-client-ca/",
+      "destination": "/cloud/tcld/namespace#accepted-client-ca"
+    },
+    {
+      "source": "/cloud/tcld/namespace/accepted-client-ca/add",
+      "destination": "/cloud/tcld/namespace#add"
+    },
+    {
+      "source": "/cloud/tcld/namespace/accepted-client-ca/list",
+      "destination": "/cloud/tcld/namespace#list-1"
+    },
+    {
+      "source": "/cloud/tcld/namespace/accepted-client-ca/set",
+      "destination": "/cloud/tcld/namespace#set"
+    },
+    {
+      "source": "/cloud/tcld/namespace/accepted-client-ca/remove",
+      "destination": "/cloud/tcld/namespace#remove"
+    },
+    {
+      "source": "/cloud/tcld/namespace/certificate-filters/",
+      "destination": "/cloud/tcld/namespace#certificate-filters"
+    },
+    {
+      "source": "/cloud/tcld/namespace/certificate-filters/import",
+      "destination": "/cloud/tcld/namespace#import"
+    },
+    {
+      "source": "/cloud/tcld/namespace/certificate-filters/export",
+      "destination": "/cloud/tcld/namespace#export"
+    },
+    {
+      "source": "/cloud/tcld/namespace/certificate-filters/clear",
+      "destination": "/cloud/tcld/namespace#clear"
+    },
+    {
+      "source": "/cloud/tcld/namespace/search-attributes/",
+      "destination": "/cloud/tcld/namespace#search-attributes"
+    },
+    {
+      "source": "/cloud/tcld/namespace/search-attributes/add",
+      "destination": "/cloud/tcld/namespace#add-1"
+    },
+    {
+      "source": "/cloud/tcld/namespace/search-attributes/rename",
+      "destination": "/cloud/tcld/namespace#rename"
+    },
+    {
+      "source": "/cloud/tcld/request/get",
+      "destination": "/cloud/tcld/request#get"
     }
   ]
 }

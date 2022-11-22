@@ -45,4 +45,4 @@ Most sample projects come with these scripts:
 - `npm run build.watch` — Watch files and compile on change
 - `npm run workflow` — Execute a Workflow
 
-If you aren't familiar with the tradeoffs between these choices, we recommend primarily running `npm run start.watch` to have a live-reloading Worker good enough for most situations, and then `npm run workflow` to start individual Workflow executions.
+If you aren't familiar with the tradeoffs between these choices, we recommend primarily running `npm run start.watch` to have a live-reloading Worker good enough for most situations, and then `npm run workflow` to start individual Workflow Executions.
