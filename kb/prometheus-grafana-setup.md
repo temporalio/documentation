@@ -114,8 +114,8 @@ import com.uber.m3.util.ImmutableMap;
             .reporter(reporter)
             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
 
-  // For Prometheus collection, expose the scrape endpoint at port 8077. For example,
-  HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8077);
+  // For Prometheus collection, expose the scrape endpoint at port 8077. See Micrometer documentation for details on starting the prometheus scrape endpoint. For example,
+  HttpServer scrapeEndpoint = MetricsUtils.startPrometheusScrapeEndpoint(registry, 8077); //note: MetricsUtils is a utility file with the scrape endpoint configuration. See Micrometer docs for details on this configuration.
   // Stopping the starter stops the HTTP server that exposes the scrape endpoint.
   //Runtime.getRuntime().addShutdownHook(new Thread(() -> scrapeEndpoint.stop(1)));
 
