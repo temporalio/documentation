@@ -19,7 +19,7 @@ Activity Definitions are named and referenced in code by their [Activity Type](/
 
 ![Activity Definition](/diagrams/activity-definition.svg)
 
-#### Idempotent Activities
+#### Idempotency
 
 Temporal recommends that Activities are idempotent.
 

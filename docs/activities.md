@@ -39,7 +39,7 @@ Activity Definitions are named and referenced in code by their <a class="tdlp" h
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Definition</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-definition.svg" alt="Activity Definition" /></div></div>
 
-#### Idempotent Activities
+#### Idempotency
 
 Temporal recommends that Activities are idempotent.
 
