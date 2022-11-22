@@ -46,7 +46,7 @@ Example output:
 
 The following modifiers control the behavior of the command.
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
 
@@ -56,7 +56,7 @@ Print the timestamp.
 tctl workflow showid <workflow_id> --print_datetime
 ```
 
-### `--print_raw_time`
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -66,7 +66,7 @@ Print the raw timestamp.
 tctl workflow showid <workflow_id> --print_raw_time
 ```
 
-### `--output_filename`
+### --output_filename
 
 Serialize an event to a file.
 
@@ -76,7 +76,7 @@ Serialize an event to a file.
 tctl workflow showid <workflow_id> --output_filename <filename>
 ```
 
-### `--print_full`
+### --print_full
 
 Print full event details.
 
@@ -86,7 +86,7 @@ Print full event details.
 tctl workflow showid <workflow_id> --print_full
 ```
 
-### `--print_event_version`
+### --print_event_version
 
 Print the event version.
 
@@ -96,7 +96,7 @@ Print the event version.
 tctl workflow showid <workflow_id> --print_event_version
 ```
 
-### `--event_id`
+### --event_id
 
 Print the details of a specified event.
 The default value is 0.
@@ -107,7 +107,7 @@ The default value is 0.
 tctl workflow showid <workflow_id> --event_id <id>
 ```
 
-### `--max_field_length`
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 500.
@@ -118,7 +118,7 @@ The default value is 500.
 tctl workflow showid <workflow_id> --max_field_length <length>
 ```
 
-### `--reset_points_only`
+### --reset_points_only
 
 Show only events that are eligible for reset.
 

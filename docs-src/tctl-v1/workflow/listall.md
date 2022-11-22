@@ -18,7 +18,7 @@ See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listarc
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw_time`
+###`--print_raw_time
 
 Print the raw timestamp.
 
@@ -28,7 +28,7 @@ Print the raw timestamp.
 tctl workflow listall --print_raw_time
 ```
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
 
@@ -38,7 +38,7 @@ Print the timestamp.
 tctl workflow listall --print_datetime
 ```
 
-### `--print_memo`
+### --print_memo
 
 Print a memo.
 
@@ -48,7 +48,7 @@ Print a memo.
 tctl workflow listall --print_memo
 ```
 
-### `--print_search_attr`
+### --print_search_attr
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
@@ -68,7 +68,7 @@ Print the full message without table formatting.
 tctl workflow listall --print_full
 ```
 
-### `--print_json`
+### --print_json
 
 Print the raw JSON objects.
 
@@ -78,7 +78,7 @@ Print the raw JSON objects.
 tctl workflow listall --print_json
 ```
 
-### `--open`
+### --open
 
 List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
@@ -89,7 +89,7 @@ List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 tctl workflow listall --open
 ```
 
-### `--earliest_time`
+### --earliest_time
 
 Specify the earliest start time to list. Supported format are as follows:
 
@@ -118,7 +118,7 @@ To specify 15 minutes before the current time:
 tctl workflow listall --earliest-time '15minute'
 ```
 
-### `--latest_time`
+### --latest_time
 
 Specify the latest start time to list. Supported formats are as follows:
 
@@ -149,7 +149,7 @@ To specify 10 seconds before the current time:
 tctl workflow listall --latest-time '10second'
 ```
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
@@ -161,7 +161,7 @@ Alias: `-w`
 tctl workflow listall --workflow_id <id>
 ```
 
-### `--workflow_type`
+### --workflow_type
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
@@ -171,7 +171,7 @@ Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 tctl workflow listall --workflow_type <name>
 ```
 
-### `--status`
+### --status
 
 Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
@@ -189,7 +189,7 @@ Supported values are as follows:
 tctl workflow listall --status <value>
 ```
 
-### `--query`
+### --query
 
 Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
 
