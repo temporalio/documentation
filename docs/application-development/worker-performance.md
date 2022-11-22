@@ -95,7 +95,7 @@ If, after adjusting the poller and executors count as specified earlier, you sti
 ## Workflow Cache Tuning
 
 When the number of cached Workflow Executions reported by `sticky_cache_size` hits `workflowCacheSize` or the number of their threads reported by `workflow_active_thread_count` metrics gauge hits `maxWorkflowThreadCount`, Workflow Executions start to get _evicted_ from the cache.
-An evicted workflow execution will need to be replayed when it gets any action that may advance it.
+An evicted Workflow Execution will need to be replayed when it gets any action that may advance it.
 
 If
 

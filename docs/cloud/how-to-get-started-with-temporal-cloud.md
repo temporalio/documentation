@@ -72,6 +72,12 @@ Each user can be assigned permissions for individual Namespaces.
 
 ### Invite users using Web UI
 
+:::info
+
+To invite users, a user must have the Global Admin account-level [Role](/cloud/#account-level-roles).
+
+:::
+
 1. In Temporal Web UI, click **Settings** in the lower-left portion of the window.
 1. On the **Settings** page, click **Create Users** in the upper-right portion of the window.
 1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.

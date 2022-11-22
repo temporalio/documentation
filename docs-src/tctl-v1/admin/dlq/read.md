@@ -10,13 +10,9 @@ tags:
 
 The `tctl admin dlq read` command reads out messages from the dead-letter queue (DLQ).
 
-Alias: `r`
-
 ---
 
 #### --dlq_type
-
-Alias: `--dt value`
 
 The type of DLQ to manage.
 

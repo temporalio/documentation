@@ -9,6 +9,4 @@ tags:
 
 The `tctl data-converter` command enables custom [Data Converter](/concepts/what-is-a-data-converter) operations.
 
-Alias: `dc`
-
 - [tctl data-converter web](/tctl-next/data-converter#web)

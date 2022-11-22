@@ -46,10 +46,10 @@ class YourWorkflow
 }
 ```
 
-In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
-`Workflow::await` function.
+In the preceding example, the Workflow updates the protected value.
+The Main Workflow coroutine waits for the value to change by using the `Workflow::await` function.
 
-To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+To send a Signal to a Workflow,  use `WorkflowClient->newWorkflowStub` or `WorkflowClient->newUntypedWorkflowStub`:
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
@@ -63,8 +63,7 @@ $workflow->setValue(true);
 assert($run->getValue() === true);
 ```
 
-Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with workflow id to send
-signals to already running workflows.
+Use `WorkflowClient->newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send Signals to already running Workflows.
 
 ```php
 $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');

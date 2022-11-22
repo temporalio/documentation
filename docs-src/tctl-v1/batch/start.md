@@ -9,7 +9,7 @@ tags:
 
 The `tctl batch start` command starts a batch job.
 
-`tctl batch start --query <value> [<modifiers>]`
+`tctl batch start --query <value> <modifiers>`
 
 The following modifiers control the behavior of the command.
 
@@ -33,8 +33,6 @@ tctl batch start --query <value>
 
 Specify a reason for running this batch job.
 
-Alias: `--re`
-
 **Example**
 
 ```bash
@@ -45,8 +43,6 @@ tctl batch start --query <value> --reason <string>
 
 Specify the operation that this batch job performs. The supported operations are `signal`, `cancel`, and `terminate`.
 
-Alias: `--bt`
-
 **Example**
 
 ```bash
@@ -56,8 +52,6 @@ tctl batch start --query <value> --batch_type <operation>
 ### `--signal_name`
 
 Specify the name of a [Signal](/concepts/what-is-a-signal). This modifier is required when `--batch_type` is `signal`.
-
-Alias: `--sig`
 
 **Example**
 
@@ -90,6 +84,8 @@ tctl batch start --query <value> --rps <value>
 ### `--yes`
 
 Disable the confirmation prompt.
+
+Alias: `y`
 
 **Example**
 

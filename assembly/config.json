@@ -1,6 +1,7 @@
 {
   "content_source_dirs": [
     "docs-src/cloud-context",
+    "docs-src/cloud",
     "docs-src/app-dev-context",
     "docs-src/cluster-ops-context",
     "docs/clusters",
@@ -10,6 +11,7 @@
     "docs/go",
     "docs-src/go",
     "docs/java",
+    "docs-src/security",
     "docs-src/python",
     "docs-src/php",
     "docs-src/typescript",

@@ -1,0 +1,21 @@
+{
+  "file_name": "index.md",
+  "file_dir": "cloud/tcld",
+  "id": "index",
+  "title": "tcld command reference",
+  "sidebar_label": "tcld CLI",
+  "description": "How to use Temporal Cloud's tcld operational tool",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cloud/tcld/index"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/how-to-install-tcld"
+    }
+  ]
+}

@@ -360,8 +360,8 @@ class YourWorkflow
 }
 ```
 
-In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
-`Workflow::await()` function.
+In the preceding example, the Workflow updates the protected value.
+The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
 
 </TabItem>
 <TabItem value="python">
@@ -463,7 +463,7 @@ See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><im
 
 To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `#[SignalMethod]` in the Workflow interface, from the Client code.
 
-To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+To send a Signal to a Workflow, use `WorkflowClient->newWorkflowStub` or `WorkflowClient->newUntypedWorkflowStub`:
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
@@ -477,8 +477,7 @@ $workflow->setValue(true);
 assert($run->getValue() === true);
 ```
 
-Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with workflow id to send
-signals to already running workflows.
+Use `WorkflowClient->newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send Signals to already running Workflows.
 
 ```php
 $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
@@ -918,6 +917,17 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+import { defineQuery } from '@temporalio/workflow';
+
+export const getValueQuery = defineQuery<number | undefined, [string]>(
+  'getValue',
+);
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1179,6 +1189,18 @@ Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.Workf
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+export async function trackState(): Promise<void> {
+  const state = new Map<string, number>();
+  setHandler(setValueSignal, (key, value) => void state.set(key, value));
+  setHandler(getValueQuery, (key) => state.get(key));
+  await CancellationScope.current().cancelRequested;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1277,6 +1299,21 @@ await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
+
+[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
+
+```ts
+import { WorkflowClient } from '@temporalio/client';
+import { getValueQuery } from './workflows';
+
+async function run(): Promise<void> {
+  const client = new WorkflowClient();
+  const handle = client.getHandle('state-id-0');
+  const meaning = await handle.query(getValueQuery, 'meaning-of-life');
+  console.log({ meaning });
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1423,12 +1460,45 @@ Available timeouts are:
 - [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowExecutionTimeout: '1 day',
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-run-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowRunTimeout: '1 minute',
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-task-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowTaskTimeout: '1 minute',
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1495,8 +1565,7 @@ GreetWorkflowInterface workflow1 =
 <TabItem value="php">
 
 A Retry Policy can be configured with an instance of the `RetryOptions` object.
-To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions`
-for child Workflows or via `WorkflowOptions` for top-level Workflows.
+To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -1542,6 +1611,19 @@ handle = await client.execute_workflow(
 Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+const handle = await client.start(example, {
+  taskQueue,
+  workflowId,
+  retry: {
+    maximumAttempts: 3,
+  },
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2437,11 +2519,54 @@ There are two parts to implementing an asynchronously completed Activity:
 The following example demonstrates the first part:
 
 <!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+
+[app/src/AsyncActivityCompletion/GreetingActivity.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/GreetingActivity.php)
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    private LoggerInterface $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger();
+    }
+    /**
+     * Demonstrates how to implement an Activity asynchronously.
+     * When {@link Activity::doNotCompleteOnReturn()} is called,
+     * the Activity implementation function that returns doesn't complete the Activity.
+     */
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        // In real life this request can be executed anywhere. By a separate service for example.
+        $this->logger->info(sprintf('GreetingActivity token: %s', base64_encode(Activity::getInfo()->taskToken)));
+        // Send the taskToken to the external service that will complete the Activity.
+        // Return from the Activity a function indicating that Temporal should wait
+        // for an async completion message.
+        Activity::doNotCompleteOnReturn();
+        // When doNotCompleteOnReturn() is invoked the return value is ignored.
+        return 'ignored';
+    }
+}
+```
+
 <!--SNIPEND-->
 
 The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
 
 <!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+
+[app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/CompleteCommand.php)
+
+```php
+$client = $this->workflowClient->newActivityCompletionClient();
+// Complete the Activity.
+$client->completeByToken(
+    base64_decode($input->getArgument('token')),
+    $input->getArgument('message')
+);
+```
+
 <!--SNIPEND-->
 
 To fail the Activity, you would do the following:
@@ -2480,6 +2605,27 @@ await handle.complete("Completion value.")
 To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
 <!--SNIPSTART typescript-activity-complete-async -->
+
+[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
+
+```ts
+import { CompleteAsyncError, Context } from '@temporalio/activity';
+import { AsyncCompletionClient } from '@temporalio/client';
+
+export async function doSomethingAsync(): Promise<string> {
+  const taskToken = Context.current().info.taskToken;
+  setTimeout(() => doSomeWork(taskToken), 1000);
+  throw new CompleteAsyncError();
+}
+
+// this work could be done in a different process or on a different machine
+async function doSomeWork(taskToken: Uint8Array): Promise<void> {
+  const client = new AsyncCompletionClient();
+  // does some work...
+  await client.complete(taskToken, 'Job\'s done!');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2698,7 +2844,7 @@ Related reads:
 Besides Activities, a Workflow can also start other Workflows.
 
 `Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
-The parent Workflow has the ability to monitor and impact the lifecycle of the child Workflow, similar to the way it does for an Activity that it invoked.
+The parent Workflow has the ability to monitor and impact the lifecycle of the Child Workflow, similar to the way it does for an Activity that it invoked.
 
 ```php
 // Use one stub per child workflow run
@@ -2727,7 +2873,7 @@ try{
 Let's take a look at each component of this call.
 
 Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
-These options customize various execution timeouts, and are passed into the workflow stub defined by the `Workflow::newChildWorkflowStub`.
+These options customize various execution timeouts, and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
 Once stub created you can invoke its Workflow method based on attribute `WorkflowMethod`.
 
 The method call returns immediately and returns a `Promise`.
@@ -2735,9 +2881,9 @@ This allows you to execute more code without having to wait for the scheduled Wo
 
 When you are ready to process the results of the Workflow, call the `yield $promise` method on the returned promise object.
 
-When a parent Workflow is cancelled by the user, the child Workflow can be cancelled or abandoned based on a configurable child policy.
+When a parent Workflow is cancelled by the user, the Child Workflow can be cancelled or abandoned based on a configurable child policy.
 
-You can also skip the stub part of child workflow initiation and use `Workflow::executeChildWorkflow` directly:
+You can also skip the stub part of Child Workflow initiation and use `Workflow::executeChildWorkflow` directly:
 
 ```php
 // Use one stub per child workflow run
@@ -2774,6 +2920,28 @@ To start a Child Workflow Execution and await its completion, use [`executeChild
 By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2869,7 +3037,7 @@ The possible values can be obtained from the [`ParentClosePolicy`](https://githu
 - `POLICY_ABANDON`
 - `POLICY_REQUEST_CANCEL`
 
-Then `ChildWorkflowOptions` object is used to create a new child workflow object:
+Then `ChildWorkflowOptions` object is used to create a new Child Workflow object:
 
 ```php
 $child = Workflow::newUntypedChildWorkflowStub(
@@ -2883,7 +3051,7 @@ yield $child->start();
 
 In the snippet above we:
 
-1. Create a new untyped child workflow stub with `Workflow::newUntypedChildWorkflowStub`.
+1. Create a new untyped Child Workflow stub with `Workflow::newUntypedChildWorkflowStub`.
 2. Provide `ChildWorkflowOptions` object with Parent Close Policy set to `ParentClosePolicy::POLICY_ABANDON`.
 3. Start Child Workflow Execution asynchronously using `yield` and method `start()`.
 
@@ -2916,6 +3084,28 @@ async def run(self, name: str) -> str:
 To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
 
 <!--SNIPSTART typescript-child-workflow -->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -3027,6 +3217,24 @@ workflow.continue_as_new("your-workflow-name")
 To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
 
 <!--SNIPSTART typescript-continue-as-new-workflow -->
+
+[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
+
+```ts
+import { continueAsNew, sleep } from '@temporalio/workflow';
+
+export async function loopingWorkflow(iteration = 0): Promise<void> {
+  if (iteration === 10) {
+    return;
+  }
+  console.log('Running Workflow iteration:', iteration);
+  await sleep(1000);
+  // Must match the arguments expected by `loopingWorkflow`
+  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -3249,7 +3457,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
@@ -3367,7 +3575,7 @@ Not applicable to this SDK.
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
 
-- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is no existing value, then it records the function result as a value with the given Workflow Id on the History.
 - If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
   - If the values are equal, then it returns the value without recording a new Marker Event
   - If the values aren't equal, then it records the new value with the same ID on the History.
@@ -3421,7 +3629,7 @@ Content is currently unavailable.
 ## Environment variables
 
 Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
-They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
+They can't be used normally with Workflow code, as that would be [nondeterministic](/concepts/what-is-a-workflow-definition#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
 
 Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
 
@@ -3551,7 +3759,7 @@ On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces
 
 On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
-Use a custom <a class="tdlp" href="/clusters#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/clusters#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
 
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
 
