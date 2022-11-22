@@ -13,6 +13,10 @@ Use [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worke
 or [worker.runReplayHistory](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistory)
 to replay multiple or one Workflow Histories.
 
+In all examples if Workflow History is non-deterministic, a
+[`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/)
+will be thrown.
+
 In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
 histories are downloaded from the server and then replayed by passing in a client and a set of
 executions. The code will throw an exception if any replay fails.
@@ -21,11 +25,12 @@ executions. The code will throw an exception if any replay fails.
 const executions = client.workflow.list({
   query: 'TaskQueue=foo and StartTime > "2022-01-01T12:00:00"',
 });
+const histories = executions.intoHistories();
 await Worker.runReplayHistories(
   {
     workflowsPath: require.resolve('./your/workflows'),
   },
-  { client, executions },
+  histories,
 );
 ```
 
@@ -41,6 +46,8 @@ await Worker.runReplayHistory(
   hist,
 );
 ```
+
+Here, we show downloading a history and replaying it separately:
 
 <!--SNIPSTART typescript-history-get-workflowhistory-->
 
@@ -77,11 +84,3 @@ await Worker.runReplayHistory(
 ```
 
 <!--SNIPEND-->
-
-If the Workflow code isn’t compatible with the Event History, `runReplayHistory` throws a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/).
-
-In both examples if Workflow History is non-deterministic, an error will be thrown. You can choose
-to wait until all histories have been replayed with `runReplayHistories` by setting the `failFast`
-option to `false`.
-
-See a video on how to replay in [here](https://www.youtube.com/watch?v=fN5bIL7wc5M).
