@@ -13,7 +13,7 @@ The `tctl admin shard describe` command shows the Id for the specified shard.
 
 The modifier below controls the behavior of the command.
 
-#### `--share_id value`
+#### --share_id value
 
 The Id of the shard to describe
 
