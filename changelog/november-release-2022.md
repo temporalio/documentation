@@ -22,6 +22,10 @@ In November, we published the following content:
 
 We also added the following functionality to the documentation site:
 
+- Cross platform search.
+  When using the docs.temporal.io site search feature or the learn.temporal.io site search feature, both of the site's results are made available.
+  This means you can search for tutorials on the docs site or core concepts from the learn site.
+
 - Link previews.
   On hover, and When available, local site links will provide a preview of the destination content.
   For example: <a class="tdlp" href="#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#signal">Learn more</a></p></div></a>
