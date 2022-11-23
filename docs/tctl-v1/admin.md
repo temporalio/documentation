@@ -25,13 +25,13 @@ The `tctl admin cluster` command runs the administrator-level operations on a gi
 
 `tctl admin cluster command [command modifiers] [arguments...]`
 
-- <a class="tdlp" href="#add_search_attributes">`add_search_attributes`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster add_search_attributes</p><p class="tdlppd">Adding custom Search Attributes to a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#add_search_attributes">Learn more</a></p></div></a>
-- <a class="tdlp" href="#remove_search_attributes">`remove_search_attributes`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster remove_search_attributes</p><p class="tdlppd">Removing custom search metadat from a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#remove_search_attributes">Learn more</a></p></div></a>
-- <a class="tdlp" href="#get_search_attributes">`get_search_attributes`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster get_search_attributes</p><p class="tdlppd">Showing existing search attributes.</p><p class="tdlplm"><a class="tdlplma" href="#get_search_attributes">Learn more</a></p></div></a>
-- <a class="tdlp" href="#describe">`describe`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster describe</p><p class="tdlppd">Displaying Cluster information.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#list">`list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster list</p><p class="tdlppd">Listing Cluster information.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>
-- <a class="tdlp" href="#upsert_remote_cluster">`upsert_remote_cluster`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster upsert_remote_cluster</p><p class="tdlppd">How to run admin-level tctl commands.</p><p class="tdlplm"><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></p></div></a>
-- <a class="tdlp" href="#upsert_remote_cluster">`remove_remote_cluster`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster upsert_remote_cluster</p><p class="tdlppd">How to run admin-level tctl commands.</p><p class="tdlplm"><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></p></div></a>
+- <a class="tdlp" href="#add_search_attributes">add_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster add_search_attributes</p><p class="tdlppd">Adding custom Search Attributes to a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#add_search_attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#remove_search_attributes">remove_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster remove_search_attributes</p><p class="tdlppd">Removing custom search metadat from a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#remove_search_attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get_search_attributes">get_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster get_search_attributes</p><p class="tdlppd">Showing existing search attributes.</p><p class="tdlplm"><a class="tdlplma" href="#get_search_attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster describe</p><p class="tdlppd">Displaying Cluster information.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list">list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster list</p><p class="tdlppd">Listing Cluster information.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>
+- <a class="tdlp" href="#upsert_remote_cluster">upsert_remote_cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster upsert_remote_cluster</p><p class="tdlppd">How to run admin-level tctl commands.</p><p class="tdlplm"><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></p></div></a>
+- <a class="tdlp" href="#upsert_remote_cluster">remove_remote_cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster upsert_remote_cluster</p><p class="tdlppd">How to run admin-level tctl commands.</p><p class="tdlplm"><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></p></div></a>
 
 ### add_search_attributes
 
@@ -1065,8 +1065,6 @@ The end Event version to be included in the history.
 Default: 0
 
 #### --output_filename value
-
-Alias: `--of value`
 
 The file where the output is sent to.
 
