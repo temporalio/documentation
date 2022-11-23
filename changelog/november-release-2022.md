@@ -14,6 +14,7 @@ In November, we published the following content:
 - [Setting up Prometheus and Grafana to view metrics](/kb/prometheus-grafana-setup).
   The Temporal Cluster and SDKs emit metrics that can be used to monitor performance and troubleshoot issues.
   After you enable your monitoring tool, you can relay these metrics to any monitoring and observability platform.
+  
 - [Troubleshooting the DeadlineExceeded error](/kb/deadline-exceeded-troubleshooting).
   All client-side requests made to the Temporal Cluster are gRPC requests.
   Sometimes, when these requests can't be completed, you'll see this particular error message: "Context: deadline exceeded."
