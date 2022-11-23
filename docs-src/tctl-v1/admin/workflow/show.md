@@ -49,6 +49,4 @@ Default: 0
 
 #### --output_filename value
 
-Alias: `--of value`
-
 The file where the output is sent to.

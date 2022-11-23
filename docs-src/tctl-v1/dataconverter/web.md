@@ -13,7 +13,7 @@ The `tctl dataconverter web` command specifies the WebSocket URL of a custom [Da
 
 The following modifiers control the behavior of the command.
 
-### port
+### --port
 
 Specify a port for the WebSocket URL of a custom [Data Converter](/concepts/what-is-a-data-converter).
 The default value is 0.
