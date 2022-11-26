@@ -12,4 +12,4 @@ Failure handling is an essential part of development. For more information, incl
 
 Temporal Failures are representations (in the SDKs and Event History) of various types of errors that occur in the system.
 
-- [Failure reference](/references/failures)
+- [Temporal Failures](/kb/failures)

@@ -430,13 +430,6 @@ const references = {
       name: `Cluster configuration`,
     },
   ],
-  listThree: [
-    {
-      book: true,
-      path: "/references/failures",
-      name: "Failures",
-    },
-  ],
 };
 
 const displayTechListItems = () => {
@@ -580,9 +573,6 @@ function Explained() {
         </ul>
         <ul className="landing-card-list">
           {displayLinks(references.listTwo)}
-        </ul>
-        <ul className="landing-card-list">
-          {displayLinks(references.listThree)}
         </ul>
       </div>
     </div>
