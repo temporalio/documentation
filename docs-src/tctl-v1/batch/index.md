@@ -14,6 +14,12 @@ A batch job runs in the background and affects Workflow Executions one at a time
 
 Use [tctl batch start](/tctl-v1/batch/start) to start a batch job.
 
+:::note
+
+`tctl-v1` can run `batch` and `batch-v2` commands.
+
+:::
+
 When starting a batch job, you must provide a [List Filter](/concepts/what-is-a-list-filter) and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
 

@@ -63,7 +63,7 @@ Temporal's previous iteration was Cadence, which shares a lot of the same design
 
 - [How Chronosphere built a deployment system with Temporal](https://chronosphere.io/learn/how-chronosphere-built-a-deployment-system-with-temporal/) on Chronosphere Blog
 
-  > **Temporal has enabled Chronosphere to more safely and reliably automate complex, long-running tasks.** It has also enabled us to easily reuse common activities across different types of workflows. For example, the helper that pauses a workflow if an alert fires can be used by our deployment system and capacity tooling with just a few lines of code. This empowers engineers across different teams to ship features quickly while meeting our rigorous standards for safety and customer trust.
+  > **Temporal has enabled Chronosphere to more safely and reliably automate complex, long-running tasks.** It has also enabled us to easily reuse common activities across different types of workflows. For example, the helper that pauses a Workflow if an alert fires can be used by our deployment system and capacity tooling with just a few lines of code. This empowers engineers across different teams to ship features quickly while meeting our rigorous standards for safety and customer trust.
 
 - [Dealing with Failure](https://dev.to/temporalio/dealing-with-failure-5adf) on Dev.to
 

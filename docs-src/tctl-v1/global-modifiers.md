@@ -15,8 +15,6 @@ You can supply the values for many of these modifiers by setting [environment va
 Specify a host and port for the Frontend Service.
 The default is `127.0.0.1:7233`.
 
-Alias: `--ad`
-
 ### --auto_confirm
 
 Automatically confirm all prompts.
@@ -26,19 +24,13 @@ Automatically confirm all prompts.
 Specify a timeout for the context of an RPC call in seconds.
 The default value is 5.
 
-Alias: `--ct`
-
 ### --data_converter_plugin
 
 Specify the name of the executable for a headers provider plugin.
 
-Alias: `--dcp`
-
 ### --headers_provider_plugin
 
 Specify the name of the executable for a custom Data Converter plugin.
-
-Alias: `--hpp`
 
 ### --help
 
@@ -52,7 +44,7 @@ Specify a Namespace.
 By using this modifier, you don't need to specify a `--namespace` modifier for a sub-command.
 The default Namespace is `default`.
 
-Alias: `--ns`
+Alias: `--n`
 
 ### --tls_ca_path
 
@@ -81,8 +73,6 @@ Specifying this modifier also enables host verification.
 ### --version
 
 Display the version of tctl in the CLI.
-
-Alias: `-v`
 
 ### --codec_endpoint
 

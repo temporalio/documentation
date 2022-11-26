@@ -7,11 +7,9 @@ tags:
   - tctl
 ---
 
-Alias: `desc`
-
 The `tctl batch describe` command describes the progress of a batch job.
 
-`tctl batch describe --job-id <value>`
+`tctl batch describe --job-id <value> <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.

@@ -15,5 +15,5 @@ The `tctl admin membership` command allows admin operations to be run on members
 
 ### Commands
 
-- list_gossip
-- list_db
+- [list_gossip](/tctl-v1/admin/membership/list_gossip)
+- [list_db](/tctl-v1/admin/membership/list_db)

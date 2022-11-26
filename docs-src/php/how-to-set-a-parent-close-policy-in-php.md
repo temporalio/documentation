@@ -2,7 +2,7 @@
 id: how-to-set-a-parent-close-policy-in-php
 title: How to set a Parent Close Policy in PHP
 sidebar_label: Parent Close Policy
-description: Create an instance of `ChildWorkflowOptions` and use `withParentClosePolicy()` method to apply the options to a new child workflow object.
+description: Create an instance of `ChildWorkflowOptions` and use `withParentClosePolicy()` method to apply the options to a new Child Workflow object.
 tags:
   - php
   - developer-guide
@@ -16,7 +16,7 @@ The possible values can be obtained from the [`ParentClosePolicy`](https://githu
 - `POLICY_ABANDON`
 - `POLICY_REQUEST_CANCEL`
 
-Then `ChildWorkflowOptions` object is used to create a new child workflow object:
+Then `ChildWorkflowOptions` object is used to create a new Child Workflow object:
 
 ```php
 $child = Workflow::newUntypedChildWorkflowStub(
@@ -30,7 +30,7 @@ yield $child->start();
 
 In the snippet above we:
 
-1. Create a new untyped child workflow stub with `Workflow::newUntypedChildWorkflowStub`.
+1. Create a new untyped Child Workflow stub with `Workflow::newUntypedChildWorkflowStub`.
 2. Provide `ChildWorkflowOptions` object with Parent Close Policy set to `ParentClosePolicy::POLICY_ABANDON`.
 3. Start Child Workflow Execution asynchronously using `yield` and method `start()`.
 

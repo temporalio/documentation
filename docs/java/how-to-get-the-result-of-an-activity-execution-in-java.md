@@ -17,7 +17,7 @@ The whole request-reply interaction can be modeled as a single Activity.
 To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
 
 Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
-To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
+To correlate Activity invocation with completion, use either a `TaskToken` or Workflow and Activity Ids.
 
 Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
 
