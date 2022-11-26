@@ -1175,7 +1175,7 @@ var_dump($workflow->getCurrentState());
 </TabItem>
 <TabItem value="python">
 
-To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
+To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
 ```python
 await handle.query("some query")
