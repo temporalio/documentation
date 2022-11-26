@@ -3621,7 +3621,7 @@ Not applicable to this SDK.
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 </Tabs>
