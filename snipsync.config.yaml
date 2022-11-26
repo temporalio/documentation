@@ -1,21 +1,5 @@
 origins:
   - owner: temporalio
-    repo: money-transfer-project-template-java
-  - owner: temporalio
-    repo: hello-world-project-template-java
-  - owner: temporalio
-    repo: money-transfer-project-template-go
-  - owner: temporalio
-    repo: hello-world-project-template-go
-  - owner: temporalio
-    repo: subscription-workflow-project-template-go
-  - owner: temporalio
-    repo: subscription-workflow-project-template-java
-  - owner: temporalio
-    repo: subscription-workflow-project-template-typescript
-  - owner: temporalio
-    repo: subscription-workflow-project-template-php
-  - owner: temporalio
     repo: temporal
   - owner: temporalio
     repo: samples-php
@@ -31,14 +15,10 @@ origins:
     repo: samples-go
   - owner: temporalio
     repo: samples-java
-  - owner: temporalio
-    repo: temporal-ecommerce
-  - owner: temporalio
-    repo: background-checks
 
 targets:
   - docs
-  - blog
+  - docs-src
 
 features:
   enable_source_link: true

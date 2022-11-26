@@ -917,6 +917,17 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+import { defineQuery } from '@temporalio/workflow';
+
+export const getValueQuery = defineQuery<number | undefined, [string]>(
+  'getValue',
+);
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1178,6 +1189,18 @@ Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.Workf
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+export async function trackState(): Promise<void> {
+  const state = new Map<string, number>();
+  setHandler(setValueSignal, (key, value) => void state.set(key, value));
+  setHandler(getValueQuery, (key) => state.get(key));
+  await CancellationScope.current().cancelRequested;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1276,6 +1299,21 @@ await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
+
+[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
+
+```ts
+import { WorkflowClient } from '@temporalio/client';
+import { getValueQuery } from './workflows';
+
+async function run(): Promise<void> {
+  const client = new WorkflowClient();
+  const handle = client.getHandle('state-id-0');
+  const meaning = await handle.query(getValueQuery, 'meaning-of-life');
+  console.log({ meaning });
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1422,12 +1460,45 @@ Available timeouts are:
 - [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowExecutionTimeout: '1 day',
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-run-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowRunTimeout: '1 minute',
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-task-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.start(example, {
+  taskQueue,
+  workflowId,
+  workflowTaskTimeout: '1 minute',
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1540,6 +1611,19 @@ handle = await client.execute_workflow(
 Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+const handle = await client.start(example, {
+  taskQueue,
+  workflowId,
+  retry: {
+    maximumAttempts: 3,
+  },
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2435,11 +2519,54 @@ There are two parts to implementing an asynchronously completed Activity:
 The following example demonstrates the first part:
 
 <!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+
+[app/src/AsyncActivityCompletion/GreetingActivity.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/GreetingActivity.php)
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    private LoggerInterface $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger();
+    }
+    /**
+     * Demonstrates how to implement an Activity asynchronously.
+     * When {@link Activity::doNotCompleteOnReturn()} is called,
+     * the Activity implementation function that returns doesn't complete the Activity.
+     */
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        // In real life this request can be executed anywhere. By a separate service for example.
+        $this->logger->info(sprintf('GreetingActivity token: %s', base64_encode(Activity::getInfo()->taskToken)));
+        // Send the taskToken to the external service that will complete the Activity.
+        // Return from the Activity a function indicating that Temporal should wait
+        // for an async completion message.
+        Activity::doNotCompleteOnReturn();
+        // When doNotCompleteOnReturn() is invoked the return value is ignored.
+        return 'ignored';
+    }
+}
+```
+
 <!--SNIPEND-->
 
 The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
 
 <!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+
+[app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/CompleteCommand.php)
+
+```php
+$client = $this->workflowClient->newActivityCompletionClient();
+// Complete the Activity.
+$client->completeByToken(
+    base64_decode($input->getArgument('token')),
+    $input->getArgument('message')
+);
+```
+
 <!--SNIPEND-->
 
 To fail the Activity, you would do the following:
@@ -2478,6 +2605,27 @@ await handle.complete("Completion value.")
 To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
 <!--SNIPSTART typescript-activity-complete-async -->
+
+[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
+
+```ts
+import { CompleteAsyncError, Context } from '@temporalio/activity';
+import { AsyncCompletionClient } from '@temporalio/client';
+
+export async function doSomethingAsync(): Promise<string> {
+  const taskToken = Context.current().info.taskToken;
+  setTimeout(() => doSomeWork(taskToken), 1000);
+  throw new CompleteAsyncError();
+}
+
+// this work could be done in a different process or on a different machine
+async function doSomeWork(taskToken: Uint8Array): Promise<void> {
+  const client = new AsyncCompletionClient();
+  // does some work...
+  await client.complete(taskToken, 'Job\'s done!');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2772,6 +2920,28 @@ To start a Child Workflow Execution and await its completion, use [`executeChild
 By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2914,6 +3084,28 @@ async def run(self, name: str) -> str:
 To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
 
 <!--SNIPSTART typescript-child-workflow -->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -3025,6 +3217,24 @@ workflow.continue_as_new("your-workflow-name")
 To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
 
 <!--SNIPSTART typescript-continue-as-new-workflow -->
+
+[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
+
+```ts
+import { continueAsNew, sleep } from '@temporalio/workflow';
+
+export async function loopingWorkflow(iteration = 0): Promise<void> {
+  if (iteration === 10) {
+    return;
+  }
+  console.log('Running Workflow iteration:', iteration);
+  await sleep(1000);
+  // Must match the arguments expected by `loopingWorkflow`
+  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -3406,7 +3616,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="typescript">
