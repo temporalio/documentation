@@ -1,8 +1,9 @@
 ---
-id: failures
+slug: failures
 title: Failures
 sidebar_label: Failures
 description: A Failure is Temporal's representation of various types of errors that occur in the system.
+date: 2022-11-30
 tags:
   - term
   - explanation
