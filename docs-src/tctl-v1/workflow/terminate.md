@@ -20,6 +20,8 @@ The following modifiers control the behavior of the command.
 
 ### `--workflow_id`
 
+_Required modifier_
+
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
 Alias: `-w`
@@ -33,6 +35,8 @@ tctl workflow terminate --workflow_id <id>
 ### `--run_id`
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
+
+If `run_id` is not specified, `tctl` terminates the last Workflow Execution for the specified `workflow_id`.
 
 Alias: `-r`
 
