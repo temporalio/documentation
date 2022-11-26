@@ -2,17 +2,19 @@
 
 We encourage contributions from the community.
 
-**Create a [GitHub issue](https://github.com/temporalio/documentation/issues) for any changes beyond typos and small fixes.**
+Please read this guide before submitting a Pull Request.
+
+Members of the community are encouraged to **create a [GitHub issue](https://github.com/temporalio/documentation/issues) for any changes beyond typos and small fixes prior to creating a pull request.**
+
+We review GitHub issues on a regular schedule.
 
 If you do create a pull request (PR), please follow our [style guidance](/STYLE.md).
-
-We review GitHub issues and PRs on a regular schedule.
 
 To ensure that each change is relevant and properly peer reviewed, please adhere to best practices for open-source contributions.
 This means that if you are outside the Temporal organization, you must fork the repository and create PRs from branches on your own fork.
 The README in GitHub's [first-contributions repo](https://github.com/firstcontributions/first-contributions) provides an example.
 
-## Preview changes locally
+## How to preview your changes locally
 
 The Temporal documentation site uses [Docusaurus 2](https://v2.docusaurus.io/), which is a static website generator.
 
@@ -37,7 +39,7 @@ However, if you want to build the site and preview changes in the browser, do th
 
   This command starts a local development server and opens a browser window to [localhost:3000](http://localhost:3000/).
 
-### Snipsync
+### How to use snipsync
 
 In the documentation files, [snipsync](https://github.com/temporalio/snipsync) snippets appear like this:
 
@@ -48,11 +50,15 @@ In the documentation files, [snipsync](https://github.com/temporalio/snipsync) s
 
 To preview snipsync snippets, run `yarn snipsync`, which inserts the snippet contents (in this case, from [`samples-typescript`](https://github.com/temporalio/samples-typescript/blob/75bdcd613bd24f8f357cb96d1b83051353c5685a/hello-world/src/client.ts#L1)) between the `SNIPSTART` and `SNIPEND` tags.
 
-Before committing, run `yarn snipsync --clear` to remove the snippets.
+Run `yarn snipsync --clear` to remove the snippets.
 
-## Prettier
+We are now committing the snippets into the docs source files.
 
-Before submitting a PR, use Prettier to reformat.
+See the [full build command](#full-build-command) section for details on how to fully assemble the docs, format them, and check for build issues.
+
+## How to use dPrint formatter
+
+Before submitting a PR, use dPrint to reformat.
 
 To install:
 
@@ -66,13 +72,7 @@ To reformat:
 yarn format
 ```
 
-To reformat incremental changes:
-
-```
-yarn prettier --write .prettierrc.json
-```
-
-## The Assembly Workflow
+## How to use the Assembly Workflow
 
 If you inspect the `/docs` directory, you might notice that many of the files contain the following comment:
 
@@ -110,7 +110,7 @@ To run the Assembly Workflow using a local Cluster, such as Temporalite, do the 
 2. In another terminal, from the root of the repo, run the following command:
 
 ```
-yarn gen
+yarn assemble
 ```
 
 ### Temporal Cloud
@@ -142,13 +142,22 @@ To run the Assembly Workflow using Temporal Cloud, do the following:
 3. In another terminal, from the root of the repo, run the following command:
 
 ```
-yarn gen --cloud
+yarn assemble --cloud
 ```
 
-## Pull requests
+## How to use the full build command
 
-You can preview the changes made by your PR by clicking "Details" next to the Netlify deploy-preview check.
+Run `yarn gen` or `yarn gen-cloud`.
 
-![Netlify build preview](static/img/readme/netlifypreview.png)
+This command runs snipsync, runs the Assembly Workflow, runs dPrint formatting, and then builds the site.
+
+Any build issues are logged to your console.
+Fix all build issues before submitting a PR.
+
+## When you submit a Pull Request
+
+A deployment preview is available for each build in the Pull Request.
+
+![Deployment preview link](static/img/readme/vercel-deploy-preview.png)
 
 When we merge your PR, a new build automatically occurs and your changes publish to [https://docs.temporal.io](https://docs.temporal.io).

@@ -185,7 +185,7 @@ These Search Attributes are created when the initial index is created.
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be [added to a Temporal Cluster by using `tctl search-attribute create`.
+Custom Search Attributes can be added to a Temporal Cluster by using `tctl search-attribute create`.
 Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
 
 There is no hard limit on the number of attributes you can add.
