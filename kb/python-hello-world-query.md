@@ -6,16 +6,16 @@ tags:
 date: 2022-11-02T00:00:03Z
 ---
 
-The following demonstrates how to invoke a Query on a Workflow.
+The following article demonstrates how to invoke a Query on a Workflow.
 
 <!-- truncate -->
 
 ## Hello Retry application
 
 We are going to build a Hello World application that invokes a Query on a Workflow.
-This application is built off of the [`Hello World` application](/kb/python-hello-world-activity).
+This application is based on the [`Hello World` application](/kb/python-hello-world-activity).
 
-This will be a simple application, but offer a great starting point to continue to build on.
+This is a simple application, but it offers a great starting point to build on.
 
 The results will look like the following.
 
@@ -26,7 +26,7 @@ Second greeting result: Goodbye, World!
 
 ## Prerequisites
 
-To follow this tutorial, it is recommended to test out the [`Hello World` application](/kb/python-hello-world-activity) in Python first.
+To follow this tutorial, we recommend that you first test the [Hello World application](/kb/python-hello-world-activity) in Python.
 
 ### `hello_query.py` example
 
@@ -92,11 +92,11 @@ if __name__ == "__main__":
 
 ## Get started
 
-The following sections build off the knowledge from the previous Hello World applications.
+The following sections build on the knowledge from the previous Hello World applications.
 
 ## Import statements
 
-To begin, we will want to import our Temporal SDK into our Python project with the `asyncio` library.
+To begin, we want to import the Temporal SDK into our Python project with the `asyncio` library.
 
 ```python
 import asyncio
@@ -108,7 +108,7 @@ from temporalio.worker import Worker
 
 ## Application code
 
-The following section covers the parameters that will be sent to the Activity and Workflow.
+The following section covers the parameters that are sent to the Activity and Workflow.
 
 ### Workflow Definition
 
@@ -118,7 +118,7 @@ Use `@workflow.run` to mark the following class as a Workflow Definition.
 @workflow.defn
 ```
 
-Then create an initializer class as `GreetingWorkflow` and set the greeting to, `<no greeting>`.
+Then create an initializer class as `GreetingWorkflow` and set the greeting to `<no greeting>`.
 
 ```python
 class GreetingWorkflow:`
@@ -138,7 +138,9 @@ async def run(self, name: str) -> None:
 
 Inside the Workflow, set a Query that can be invoked on the Workflow.
 
-A Query is marked with a `@workflow.query` decorator class. `@workflow.query` defines a method as a Query and should return a value. A Query should never mutate anything in the Workflow.
+A Query is marked with a `@workflow.query` decorator.
+The `@workflow.query` decorator defines a method as a Query and should return a value.
+A Query should never mutate anything in the Workflow.
 
 ```python
 @workflow.query
@@ -148,7 +150,8 @@ def greeting(self) -> str:
 
 ### main()
 
-The following code snippet is similar to what we have used before. Add that to you application code.
+The following code snippet is similar to what we have used before.
+Add it to your application code.
 
 <details>
     <summary>async def main():</summary>
@@ -174,7 +177,7 @@ async def main():
 
 :::note
 
-In a production set up, it is recommended to separate the Client process from the Worker.
+In a production setup, we recommend that you separate the Client process from the Worker.
 
 :::
 
@@ -182,15 +185,15 @@ In a production set up, it is recommended to separate the Client process from th
 
 ### Query the Workflow
 
-Immediately Query the Workflow.
+Immediately query the Workflow.
 
 ```python
 result = await handle.query(GreetingWorkflow.greeting)
 print(f"First greeting result: {result}")
 ```
 
-Then, wait a few seconds to Query the Workflow again.
-The Query will work even if the Workflow is completed.
+Then, wait a few seconds to query the Workflow again.
+The Query works even if the Workflow is completed.
 
 ```python
 await asyncio.sleep(3)
@@ -217,13 +220,14 @@ Second greeting result: Goodbye, Patrick!
 
 Go to [http://127.0.0.1:8233/](http://127.0.0.1:8233/namespaces/default/workflows) to see the results of the Workflow.
 
-Here, you’ll see the Workflow ID as `hello-query-workflow-id`, the Type as `GreetingWorkflow`, and the start and end time.
+Here, you’ll see the Workflow Id as `hello-query-workflow-id`, the Type as `GreetingWorkflow`, and the start and end times.
 
-Select the Workflow ID to see more information. Click **Input and Results** section to see the Query that was invoked on the Workflow.
+Select the Workflow Id to see more information.
+Click the **Input and Results** section to see the Query that was invoked on the Workflow.
 
 ## References
 
 - Try out the [Hello World](kb/python-hello-world-activity) application.
 - Learn about [Activity Retires](/kb/python-hello-world-activity-retry)
-- Read about through the [Temporal Dev guide](/application-development/foundations).
+- Read the [Temporal Dev guide](/application-development/foundations).
 - To see the complete example and more information, see Temporal’s [Python Hello Samples](https://github.com/temporalio/samples-python/tree/main/hello).

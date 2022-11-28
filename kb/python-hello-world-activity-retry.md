@@ -6,15 +6,16 @@ tags:
 date: 2022-11-02T00:09:00Z
 ---
 
-The following demonstrates an Activity Retry by failing 4 attempts before a successful completion.
+The following article demonstrates an Activity Retry by failing four attempts before a successful completion.
 
 <!-- truncate -->
 
 ## Hello Retry application
 
-We are going to build a Hello World application that retries a failed Activity. This application is built off of the [`Hello World` application](/kb/python-hello-world-activity).
+We are going to build a Hello World application that retries a failed Activity.
+This application is based on the [Hello World application](/kb/python-hello-world-activity).
 
-This will be a simple application, but offer a great starting point to continue to build on.
+This is a simple application, but it offers a great starting point to build on.
 
 The results will look like the following.
 
@@ -26,11 +27,11 @@ Result: Hello, World!
 
 ## Prerequisites
 
-To follow this tutorial, it is recommended to test out the [`Hello World` application](/kb/python-hello-world-activity) in Python first.
+To follow this tutorial, we recommend that you first test the [Hello World application](/kb/python-hello-world-activity) in Python.
 
 ### `hello_activity.py` example
 
-The completed `Hello World` application will be used as a starting point for the Activity Retry.
+The completed Hello World application is our starting point for the Activity Retry.
 
 You can use the following template to follow along.
 
@@ -123,7 +124,7 @@ You should see a run time error.
 RuntimeError: Intentional failure
 ```
 
-Then after a few seconds, the terminal will update with a success message.
+Then after a few seconds, the terminal updates with a success message.
 
 ```bash
 Invoking activity, attempt number 4
@@ -132,13 +133,14 @@ Result: Hello, World!
 
 Go to [http://127.0.0.1:8233/](http://127.0.0.1:8233/namespaces/default/workflows) to see the results of the Workflow.
 
-Here, you’ll see the Workflow ID as `hello-activity-workflow-id`, the Type as `GreetingWorkflow`, and the start and end time.
+Here, you’ll see the Workflow Id as `hello-activity-workflow-id`, the Type as `GreetingWorkflow`, and the start and end times.
 
-Select the Workflow ID to see more information. The **Recent Events** page displays the failed attempts and the successful returned results.
+Select the Workflow Id to see more information.
+The **Recent Events** page displays the failed attempts and the successful returned results.
 
 ## References
 
 - Try out the [Hello World](kb/python-hello-world-activity) application.
 - Learn how to [Query a Workflow](/kb/python-hello-world-query).
-- Read about through the [Temporal Dev guide](/application-development/foundations).
+- Read the [Temporal Dev guide](/application-development/foundations).
 - To see the complete example and more information, see Temporal’s [Python Hello Samples](https://github.com/temporalio/samples-python/tree/main/hello).
