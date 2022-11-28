@@ -264,7 +264,7 @@ Ports are configurable in the Cluster configuration.
 
 ### Worker Service
 
-The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
+The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
 

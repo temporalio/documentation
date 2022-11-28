@@ -1,13 +1,13 @@
 ---
 id: what-is-a-worker-service
 title: What is a Worker Service?
-description: The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
+description: The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 sidebar_label: Worker Service
 tags:
   - term
 ---
 
-The Worker Service runs background processing for the eplication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
+The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
 ![Worker Service](/diagrams/temporal-worker-service.svg)
 

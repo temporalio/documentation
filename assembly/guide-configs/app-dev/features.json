@@ -659,65 +659,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
-        }
-      ]
-    },
-    {
-      "type": "h2",
-      "id": "app-dev-context/environment-variables"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "none"
-        },
-        {
-          "lang": "java",
-          "id": "none"
-        },
-        {
-          "lang": "php",
-          "id": "none"
-        },
-        {
-          "lang": "python",
-          "id": "none"
-        },
-        {
-          "lang": "typescript",
-          "id": "typescript/how-to-use-environment-variables-in-typescript"
-        }
-      ]
-    },
-    {
-      "type": "h2",
-      "id": "app-dev-context/namespaces"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "go/how-to-register-namespace-in-go"
-        },
-        {
-          "lang": "java",
-          "id": "java/how-to-register-namespace-in-java"
-        },
-        {
-          "lang": "php",
-          "id": "none"
-        },
-        {
-          "lang": "python",
-          "id": "none"
-        },
-        {
-          "lang": "typescript",
-          "id": "none"
+          "id": "na"
         }
       ]
     }
