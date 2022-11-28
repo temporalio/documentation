@@ -22,7 +22,7 @@ tctl --ns your-namespace n re
 
 The following modifiers control the behavior of the command.
 
-### `--active_cluster`
+### --active_cluster
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 This value changes for Global Namespaces when a failover occurs.
@@ -33,7 +33,7 @@ This value changes for Global Namespaces when a failover occurs.
 tctl namespace register --active_cluster <name>
 ```
 
-### `--clusters`
+### --clusters
 
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
 
@@ -49,7 +49,7 @@ This modifier is valid only when the `--global_namespace` modifier is set to tru
 tctl namespace register --clusters <names>
 ```
 
-### `--description`
+### --description
 
 Specify a description when registering a [Namespace](/concepts/what-is-a-namespace).
 
@@ -59,7 +59,7 @@ Specify a description when registering a [Namespace](/concepts/what-is-a-namespa
 tctl namespace register --description <value>
 ```
 
-### `--global_namespace`
+### --global_namespace
 
 Specifies whether a [Namespace](/concepts/what-is-a-namespace) is a [Global Namespace](/namespaces/#global-namespace).
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
@@ -71,7 +71,7 @@ This is a read-only setting and cannot be changed.
 tctl namespace register --global_namespace <boolean>
 ```
 
-### `--history_archival_state`
+### --history_archival_state
 
 Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
@@ -82,7 +82,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace register --history_archival_state <value>
 ```
 
-### `--history_uri`
+### --history_uri
 
 Specify the URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
@@ -93,7 +93,7 @@ The URI cannot be changed after Archival is first enabled.
 tctl namespace register --history_uri <uri>
 ```
 
-### `--namespace_data`
+### --namespace_data
 
 Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
@@ -103,7 +103,7 @@ Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key
 tctl namespace register --namespace_data <data>
 ```
 
-### `--owner_email`
+### --owner_email
 
 Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
 
@@ -113,7 +113,7 @@ Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owne
 tctl namespace register --owner_email <value>
 ```
 
-### `--retention`
+### --retention
 
 Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
 
@@ -125,7 +125,7 @@ The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a
 tctl namespace register --retention <value>
 ```
 
-### `--visibility_archival_state`
+### --visibility_archival_state
 
 Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
@@ -136,7 +136,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace register --visibility_archival_state <value>
 ```
 
-### `--visibility_uri`
+### --visibility_uri
 
 Specify the visibility URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
