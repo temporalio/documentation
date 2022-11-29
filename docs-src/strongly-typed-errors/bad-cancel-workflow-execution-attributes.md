@@ -8,4 +8,4 @@ tags:
   - strongly-typed
 ---
 
-The Workflow Task failed due to an unset FailWorkflowExecution attribute.
+The Workflow Task failed due to an unset CancelWorkflowExecution attribute.

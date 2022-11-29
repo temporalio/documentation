@@ -8,4 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed due to missing or incorrect ScheduleActivity attributes.
+This error indicates that there are missing or incorrect ScheduleActivity attributes.
+
+If you encounter this error, make sure that `StartToClostTimeout` and `ScheduleToCloseTimeout` are set.
+Restart the Worker that the Workflow and Activity are registered to.
