@@ -7,3 +7,5 @@ tags:
   - errors
   - strongly-typed
 ---
+
+This error indicates that there are unset attributes for `ContinueAsNew`.

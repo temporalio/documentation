@@ -7,3 +7,5 @@ tags:
   - errors
   - strongly-typed
 ---
+
+This error indicates that there are missing or invalid attributes for `CancelExternalWorkflow`.
