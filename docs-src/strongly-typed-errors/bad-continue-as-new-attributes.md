@@ -8,4 +8,5 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that there are unset attributes for `ContinueAsNew`.
+This error indicates that the Workflow Task failed to validate on a `ContinueAsNew attribute.
+The attribute could also be unset.

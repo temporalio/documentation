@@ -8,4 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed while trying to cancel a timer.
+This error indicates that the Workflow Task failed while attempting to cancel a Timer.
+
+Check your Timer attributes for a missing Timer Id value.

@@ -8,4 +8,4 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that a missing or invalid Marker name caused the Workflow Task to fail.
+This error indicates that the Workflow Task failed due to an unset or incorrect Marker name.

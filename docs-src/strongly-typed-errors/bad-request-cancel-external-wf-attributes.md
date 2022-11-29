@@ -8,4 +8,4 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that there are missing or invalid attributes for `CancelExternalWorkflow`.
+This error indicates that the Workflow Task failed while trying to cancel an external Workflow, either from invalid or unset event attributes.
