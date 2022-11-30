@@ -7,3 +7,6 @@ tags:
   - errors
   - strongly-typed
 ---
+
+This error indicates that the Workflow Task is either missing or exceeding a set limit.
+This can cause Workflow Tasks to continue to retry without success.

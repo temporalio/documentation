@@ -7,3 +7,5 @@ tags:
   - errors
   - strongly-typed
 ---
+
+This error indicates that the Payload has exceeded the Signal's available input size.

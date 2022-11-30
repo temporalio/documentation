@@ -7,3 +7,5 @@ tags:
   - errors
   - strongly-typed
 ---
+
+This error indicates that the Workflow Task failed to validate attributes for `StartChildWorkflowExecution`.
