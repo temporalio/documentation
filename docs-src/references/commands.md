@@ -50,12 +50,26 @@ This Command is triggered by a call to spawn a [Child Workflow Execution](/conce
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/references/events/#childworkflowexecutionstarted)
 
+:::note
+
+OSS users cannot have more than 50000 pending Child Workflows.
+Cloud users can have up to 2000 pending Child Workflows.
+
+:::
+
 ### SignalExternalWorkflowExecution
 
 This Command is triggered by a call to [Signal](/concepts/what-is-a-signal) another Workflow Execution.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events/#signalexternalworkflowexecutioninitiated)
+
+:::note
+
+OSS users cannot have more than 50000 pending Signals to other Workflows.
+Cloud users can have up to 2000 pending Signals.
+
+:::
 
 ### RequestCancelExternalWorkflowExecution
 
@@ -64,12 +78,26 @@ This Command is triggered by a call to request cancellation of another Workflow 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events/#requestcancelexternalworkflowexecutioninitiated)
 
+:::note
+
+OSS users cannot have more than 50000 pending Signals to other Workflows.
+Cloud users can have up to 2000 pending Signals.
+
+:::
+
 ### ScheduleActivityTask
 
 This Command is triggered by a call to execute an [Activity](/concepts/what-is-an-activity).
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskScheduled](/references/events/#activitytaskscheduled)
+
+:::note
+
+OSS users cannot schedule more than 50000 Activities.
+Cloud users can schedule up to 2000 pending Activities.
+
+:::
 
 ### RequestCancelActivityTask
 
@@ -84,6 +112,13 @@ This Command is triggered by a call to start a Timer.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [TimerStarted](/references/events/#timerstarted)
+
+:::note
+
+OSS users cannot schedule more than 50000 Timers.
+Cloud users can schedule up to 2000 pending Timers.
+
+:::
 
 ### CancelTimer
 
