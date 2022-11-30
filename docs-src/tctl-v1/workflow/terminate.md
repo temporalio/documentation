@@ -18,7 +18,7 @@ See also [`tctl workflow cancel`](/tctl-v1/workflow/cancel).
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### --workflow_id
 
 _Required modifier_
 
@@ -32,7 +32,7 @@ Alias: `-w`
 tctl workflow terminate --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
@@ -46,7 +46,7 @@ Alias: `-r`
 tctl workflow terminate --run_id <id>
 ```
 
-### `--reason`
+### --reason
 
 Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 

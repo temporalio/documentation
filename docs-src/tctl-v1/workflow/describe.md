@@ -17,7 +17,7 @@ To find a Workflow with a given Run Id, refer to [`tctl workflow describeid`](/t
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-### `--workflow_id`
+### --workflow_id
 
 **This is a required modifier.**
 
@@ -31,7 +31,7 @@ Alias: `-w`
 tctl workflow describe --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 If a Run Id is not provided, the command will show the latest Workflow Execution of that Workflow Id.
@@ -44,7 +44,7 @@ Alias: `-r`
 tctl workflow describe --run_id <id>
 ```
 
-### `--print_raw`
+### --print_raw
 
 Print properties exactly as they are stored.
 
@@ -54,7 +54,7 @@ Print properties exactly as they are stored.
 tctl workflow describe --print_raw
 ```
 
-### `--reset_points_only`
+### --reset_points_only
 
 Show only events that are eligible for reset.
 If successful, the command returns the Run Id of all deployments, and the times at which the Events were created.
