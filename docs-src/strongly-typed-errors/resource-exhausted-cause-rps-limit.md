@@ -7,3 +7,5 @@ tags:
   - errors
   - strongly-typed
 ---
+
+This error indicates that the Workflow has reached its RPS limit.

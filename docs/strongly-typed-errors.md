@@ -141,23 +141,23 @@ The system will retry automatically.
 
 ## Resource Exhausted Cause Concurrent Limit
 
-
+This error indicates that the concurrent poller count has been reached.
 
 ## Resource Exhausted Cause Persistence Limit
 
-
+This error indicates that the persistence rate limit has been reached.
 
 ## Resource Exhausted Cause RPS Limit
 
-
+This error indicates that the Workflow has reached its RPS limit.
 
 ## Resource Exhausted Cause System Overload
 
-
+This error indicates that the system is overloaded and cannot allocate further resources to Workflow Tasks.
 
 ## Resource Exhausted Cause Unspecified
 
-
+This error indicates that an unknown cause is preventing resources from being allocated to further Workflow Tasks.
 
 ## Schedule Activity Duplicate Id
 
