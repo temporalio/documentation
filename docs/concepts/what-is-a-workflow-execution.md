@@ -126,3 +126,21 @@ A Workflow Execution Timeout can be used to limit the duration of Workflow Execu
 You can use the [Continue-As-New](/concepts/what-is-continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
+
+### Size constraints
+
+::: note
+
+The hard limit for OSS users is 50,000 pending Events of a given type.
+Cloud users are limited to 2,000 pending Events.
+
+:::
+
+In addition to the hard limits imposed on Event Histories, certain Commands will fail when pending Events reach a given threshold.
+The following Commands will fail when there are already 50,000 pending Events of a given type:
+
+- `StartTimer`
+- `ScheduleActivityTask`
+- `SignalExternalWorkflowExecution`
+- `RequestCancelExternalWorkflowExecution`
+- `StartChildWorkflowExecution`
