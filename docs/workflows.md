@@ -254,6 +254,24 @@ You can use the <a class="tdlp" href="#continue-as-new">Continue-As-New<span cla
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
 
+### Size constraints
+
+::: note
+
+The hard limit for OSS users is 50,000 pending Events of a given type.
+Cloud users are limited to 2,000 pending Events.
+
+:::
+
+In addition to the hard limits imposed on Event Histories, certain Commands will fail when pending Events reach a given threshold.
+The following Commands will fail when there are already 50,000 pending Events of a given type:
+
+- `StartTimer`
+- `ScheduleActivityTask`
+- `SignalExternalWorkflowExecution`
+- `RequestCancelExternalWorkflowExecution`
+- `StartChildWorkflowExecution`
+
 ### Command
 
 A Command is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></p></div></a> completes.
