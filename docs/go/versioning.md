@@ -45,7 +45,7 @@ Thus we use `workflow.GetVersion().`
 
 ```go
 var err error
-v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 1)
+v := workflow.GetVersion(ctx, "Step1", workflow.DefaultVersion, 0)
 if v == workflow.DefaultVersion {
         err = workflow.ExecuteActivity(ctx, ActivityA, data).Get(ctx, &result1)
 } else {
@@ -60,7 +60,7 @@ err = workflow.ExecuteActivity(ctx, ActivityB, result1).Get(ctx, &result2)
 return result2, err
 ```
 
-When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `1` in the example.
+When `workflow.GetVersion()` is run for the new Workflow Execution, it records a marker in the Workflow history so that all future calls to `GetVersion` for this change Id—`Step 1` in the example—on this Workflow Execution will always return the given version number, which is `0` in the example.
 
 If you make an additional change, such as replacing ActivityC with ActivityD, you need to
 add some additional code:
