@@ -19,7 +19,7 @@ The `tctl batch list` command lists all batch jobs.
 
 The following modifier controls the behavior of the command.
 
-### `--pagesize`
+### --pagesize
 
 Specify the maximum number of batch jobs to list on a page. The default value is 30.
 

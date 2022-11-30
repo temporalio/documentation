@@ -14,7 +14,7 @@ This command requires Elasticsearch to be enabled.
 
 The following modifier controls the behavior of the command.
 
-### `--query`
+### --query
 
 _Required modifier_
 

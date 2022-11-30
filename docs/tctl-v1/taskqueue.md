@@ -26,7 +26,7 @@ The `tctl taskqueue describe` command describes the poller information of a <a c
 
 The following modifiers control the behavior of the command.
 
-### `--taskqueue`
+### --taskqueue
 
 _Required modifier_
 
@@ -40,7 +40,7 @@ Alias: `--t`
 tctl taskqueue describe --taskqueue <value>
 ```
 
-### `--taskqueuetype`
+### --taskqueuetype
 
 Specify the type of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
 The type can be `workflow` or `activity`.
@@ -60,7 +60,7 @@ The `tctl taskqueue list-partition` command lists the partitions of a <a class="
 
 The following modifier controls the behavior of the command.
 
-### `--taskqueue`
+### --taskqueue
 
 _Required modifier_
 

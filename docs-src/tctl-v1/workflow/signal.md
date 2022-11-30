@@ -94,7 +94,7 @@ tctl workflow signal --query <query> <modifiers>
 The following modifiers control the behavior of the command.
 Make sure to include required modifiers in all command executions.
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
@@ -106,7 +106,7 @@ Alias: `-w`
 tctl workflow signal --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
@@ -118,7 +118,7 @@ Alias: `-r`
 tctl workflow signal --run_id <id>
 ```
 
-### `--name`
+### --name
 
 Specify the name of a [Signal](/concepts/what-is-a-signal).
 
@@ -128,7 +128,7 @@ Specify the name of a [Signal](/concepts/what-is-a-signal).
 tctl workflow signal --query <query> --name <name>
 ```
 
-### `--input`
+### --input
 
 Pass input for the [Signal](/concepts/what-is-a-signal).
 Input must be in JSON format.
@@ -141,7 +141,7 @@ Alias: `-i`
 tctl workflow signal --query <query> --input <json>
 ```
 
-### `--input_file`
+### --input_file
 
 Pass input for the [Signal](/concepts/what-is-a-signal) from a JSON file.
 

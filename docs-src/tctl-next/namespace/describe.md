@@ -16,7 +16,7 @@ Always include required modifiers when executing this command.
 
 - [--namespace](/tctl-next/modifiers#--namespace)
 
-### `--namespace-id`
+### --namespace-id
 
 Specify the ID of a Namespace to describe.
 
