@@ -8,4 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that there are missing or invalid RequestCancelActivity attributes.
+An invalid history builder state is preventing the Activity from canceling.
+
+If needed, update the Temporal SDK.
+Review your Workflow logic for nondeterministic code.

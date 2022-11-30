@@ -9,3 +9,6 @@ tags:
 ---
 
 This error indicates that the Workflow Task failed due to unset FailWorkflowExecution attributes.
+
+If you encounter this error, make sure that `StartToClostTimeout` or `ScheduleToCloseTimeout` are set.
+Restart the Worker that the Workflow and Activity are registered to.

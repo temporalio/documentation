@@ -9,3 +9,5 @@ tags:
 ---
 
 This error indicates that the scheduled Event is missing a Timer Id.
+
+Set a valid Timer Id and retry the Event.
