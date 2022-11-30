@@ -1,6 +1,6 @@
 ---
-id: cause-unhandled-command
-title: Cause Unhandled Command
+id: unhandled-command
+title: Unhandled Command
 description: Explanation for unhandled command failure, and steps to fix it.
 sidebar_label: Unhandled Command
 tags:

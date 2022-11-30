@@ -1,8 +1,8 @@
 ---
-id: bad-fail-workflow-activity-attributes
-title: Bad Schedule Activity Attributes
-description: Explanation for Bad Schedule Activity Attributes error message, and how to fix it.
-sidebar_label: Bad Schedule Activity Attributes
+id: bad-fail-workflow-execution-attributes
+title: Bad Fail Workflow Execution Attributes
+description: Explanation for Bad Fail Workflow Execution Attributes error message, and how to fix it.
+sidebar_label: Bad Fail Workflow Execution Attributes
 tags:
   - errors
   - strongly-typed
