@@ -117,7 +117,7 @@ Our encryption samples use AES GCM with 256-bit keys:
 A Failure Converter converts error objects to proto [Failures](/concepts/what-is-a-failure) and back.
 
 The default Failure Converter copies error messages and stack traces as plain text.
-If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the Failure Converter to use your [Payload Codec](#payload-codec), in which case it will move your `message` and `stack_trace` fields to a Payload that's run through your codec.
+If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your [Payload Codec](#payload-codec), in which case it will move your `message` and `stack_trace` fields to a Payload that's run through your codec.
 
 You can make a custom Failure Converter, but if you use multiple SDKs, you'd have to implement the same logic in each.
 
