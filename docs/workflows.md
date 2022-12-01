@@ -254,17 +254,15 @@ You can use the <a class="tdlp" href="#continue-as-new">Continue-As-New<span cla
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
 
-### Size constraints
+### Limits
 
-::: note
+:::note
 
-The hard limit for OSS users is 50,000 pending Events of a given type.
-Cloud users are limited to 2,000 pending Events.
+Cloud users have a hard limit of 2,000 pending Events.
 
 :::
 
-In addition to the hard limits imposed on Event Histories, certain Commands will fail when pending Events reach a given threshold.
-The following Commands will fail when there are already 50,000 pending Events of a given type:
+In addition to the hard limits imposed on Event Histories, certain Commands will not be processed when there are already 50,000 pending Events of a given type:
 
 - `StartTimer`
 - `ScheduleActivityTask`
@@ -304,7 +302,7 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 **Event History limits**
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+[There is a hard limit of 50,000 Events](/docs/concepts/what-is-a-workflow-execution#limits) in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
 When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
 
