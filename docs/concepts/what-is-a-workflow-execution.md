@@ -142,4 +142,3 @@ In addition to the hard limits imposed on Event Histories, certain Commands will
 - `SignalExternalWorkflowExecution`
 - `RequestCancelExternalWorkflowExecution`
 - `StartChildWorkflowExecution`
-
