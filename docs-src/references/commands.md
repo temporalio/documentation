@@ -97,9 +97,6 @@ This Command is triggered by a call to start a Timer.
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [TimerStarted](/references/events/#timerstarted)
 
-OSS users cannot schedule more than 50000 Timers.
-Cloud users can schedule up to 2000 pending Timers.
-
 ### CancelTimer
 
 This Command is triggered by a call to cancel a Timer.

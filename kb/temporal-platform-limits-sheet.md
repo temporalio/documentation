@@ -27,7 +27,6 @@ Here is a list of many hard (error) or soft (warn) limits that you could encount
   - We warn at 10,000 Events: `history size exceeds warn limit.`
   - We error at 50,000 Events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - We fail the following Commands at 50,000 Events for OSS (Cloud will fail at 2,000 Events):
-    - `StartTimer`
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`

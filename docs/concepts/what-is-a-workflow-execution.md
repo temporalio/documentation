@@ -137,7 +137,6 @@ Cloud users have a hard limit of 2,000 pending Events.
 
 In addition to the hard limits imposed on Event Histories, certain Commands will not be processed when there are already 50,000 pending Events of a given type:
 
-- `StartTimer`
 - `ScheduleActivityTask`
 - `SignalExternalWorkflowExecution`
 - `RequestCancelExternalWorkflowExecution`
