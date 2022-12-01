@@ -31,7 +31,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Data Converter](/security#data-converter)
 - [Event](/workflows#event)
 - [Event History](/workflows#event-history)
-- [Failure](/concepts/what-is-a-failure)
+- [Failure](/temporal#failure)
 - [Frontend Service](/clusters#frontend-service)
 - [Global Namespace](/namespaces#global-namespace)
 - [Heartbeat Timeout](/activities#heartbeat-timeout)
