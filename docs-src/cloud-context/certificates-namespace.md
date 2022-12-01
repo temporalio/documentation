@@ -35,11 +35,11 @@ Doing so enables your Namespace to serve both CA certificates for a period of ti
 
 1. In the certificates box, scroll to the end of the existing certificate (that is, past `-----END CERTIFICATE-----`).
 
-1. Paste the entire PEM block of the new certificate.
+1. On the following new line, paste the entire PEM block of the new certificate.
 
 1. Select **Save**.
 
-1. Monitor traffic to your old certificate until it ceases.
+1. Wait until all Workers are using the new certificate.
 
 1. Return to the **Edit** page of the Namespace and select the **CA Certificates** card.
 
