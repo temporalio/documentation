@@ -7,6 +7,12 @@ tags:
   - guide-context
 ---
 
+:::caution
+
+Temporal Cloud does not support TLS version 1.3.
+
+:::
+
 Access to [Temporal Cloud](https://temporal.io/cloud) is secured with the mutual Transport Layer Security (mTLS) protocol.
 This protocol requires a CA certificate from you.
 
