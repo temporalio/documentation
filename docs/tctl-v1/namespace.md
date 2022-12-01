@@ -28,7 +28,7 @@ The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
 The following modifier controls the behavior of the command.
 
-### `--namespace_id`
+### --namespace_id
 
 Specify the ID of a Namespace to describe.
 
@@ -80,7 +80,7 @@ tctl --ns your-namespace n re
 
 The following modifiers control the behavior of the command.
 
-### `--active_cluster`
+### --active_cluster
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 This value changes for Global Namespaces when a failover occurs.
@@ -91,7 +91,7 @@ This value changes for Global Namespaces when a failover occurs.
 tctl namespace register --active_cluster <name>
 ```
 
-### `--clusters`
+### --clusters
 
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -107,7 +107,7 @@ This modifier is valid only when the `--global_namespace` modifier is set to tru
 tctl namespace register --clusters <names>
 ```
 
-### `--description`
+### --description
 
 Specify a description when registering a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -117,7 +117,7 @@ Specify a description when registering a <a class="tdlp" href="/namespaces#">Nam
 tctl namespace register --description <value>
 ```
 
-### `--global_namespace`
+### --global_namespace
 
 Specifies whether a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> is a [Global Namespace](/namespaces/#global-namespace).
 When enabled, it controls the creation of replication tasks on updates allowing the state to be replicated across Clusters.
@@ -129,7 +129,7 @@ This is a read-only setting and cannot be changed.
 tctl namespace register --global_namespace <boolean>
 ```
 
-### `--history_archival_state`
+### --history_archival_state
 
 Set the state of <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
@@ -140,7 +140,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace register --history_archival_state <value>
 ```
 
-### `--history_uri`
+### --history_uri
 
 Specify the URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
@@ -151,7 +151,7 @@ The URI cannot be changed after Archival is first enabled.
 tctl namespace register --history_uri <uri>
 ```
 
-### `--namespace_data`
+### --namespace_data
 
 Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
@@ -161,7 +161,7 @@ Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdl
 tctl namespace register --namespace_data <data>
 ```
 
-### `--owner_email`
+### --owner_email
 
 Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> owner.
 
@@ -171,7 +171,7 @@ Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<s
 tctl namespace register --owner_email <value>
 ```
 
-### `--retention`
+### --retention
 
 Set the [Retention Period](/clusters#retention-period) for the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -183,7 +183,7 @@ The Retention Period applies to Closed <a class="tdlp" href="/workflows#workflow
 tctl namespace register --retention <value>
 ```
 
-### `--visibility_archival_state`
+### --visibility_archival_state
 
 Set the visibility state for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
@@ -194,7 +194,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace register --visibility_archival_state <value>
 ```
 
-### `--visibility_uri`
+### --visibility_uri
 
 Specify the visibility URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
@@ -213,7 +213,7 @@ The `tctl namespace update` command updates a <a class="tdlp" href="/namespaces#
 
 The following modifiers control the behavior of the command.
 
-### `--active_cluster`
+### --active_cluster
 
 Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -223,7 +223,7 @@ Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-c
 tctl namespace update --active_cluster <name>
 ```
 
-### `--add_bad_binary`
+### --add_bad_binary
 
 Add a binary checksum to use when resetting a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 Temporal will not dispatch any <a class="tdlp" href="/workflows#command">Commands<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Command?</p><p class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#command">Learn more</a></p></div></a> to the given binary.
@@ -236,7 +236,7 @@ See also [`--remove_bad_binary`](#--remove_bad_binary).
 tctl namespace update --add_bad_binary <value>
 ```
 
-### `--clusters`
+### --clusters
 
 Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when updating a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -250,7 +250,7 @@ This modifier is valid only when the `--global_namespace` modifier is set to tru
 tctl namespace update --clusters <names>
 ```
 
-### `--description`
+### --description
 
 Specify a description when updating a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -260,7 +260,7 @@ Specify a description when updating a <a class="tdlp" href="/namespaces#">Namesp
 tctl namespace update --description <value>
 ```
 
-### `--history_archival_state`
+### --history_archival_state
 
 Set the state of <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
@@ -271,7 +271,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace update --history_archival_state <value>
 ```
 
-### `--history_uri`
+### --history_uri
 
 Specify the URI for URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.
@@ -282,7 +282,7 @@ The URI cannot be changed after Archival is first enabled.
 tctl namespace update --history_uri <uri>
 ```
 
-### `--namespace_data`
+### --namespace_data
 
 Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
@@ -292,7 +292,7 @@ Specify data for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdl
 tctl namespace update --namespace_data <data>
 ```
 
-### `--owner_email`
+### --owner_email
 
 Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> owner.
 
@@ -302,7 +302,7 @@ Specify the email address of the <a class="tdlp" href="/namespaces#">Namespace<s
 tctl namespace update --owner_email <value>
 ```
 
-### `--reason`
+### --reason
 
 Specify a reason for updating a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 
@@ -312,7 +312,7 @@ Specify a reason for updating a <a class="tdlp" href="/namespaces#">Namespace<sp
 tctl namespace update --reason <value>
 ```
 
-### `--remove_bad_binary`
+### --remove_bad_binary
 
 Remove a binary checksum.
 
@@ -324,7 +324,7 @@ See also [`--add_bad_binary`](#--add_bad_binary).
 tctl namespace update --remove_bad_binary <value>
 ```
 
-### `--retention`
+### --retention
 
 Specify the number of days to retain <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
@@ -334,7 +334,7 @@ Specify the number of days to retain <a class="tdlp" href="/workflows#workflow-e
 tctl namespace update --retention <value>
 ```
 
-### `--visibility_archival_state`
+### --visibility_archival_state
 
 Set the visibility state for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 Valid values are `disabled` and `enabled`.
@@ -345,7 +345,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace update --visibility_archival_state <value>
 ```
 
-### `--visibility_uri`
+### --visibility_uri
 
 Specify the visibility URI for <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a>.
 The URI cannot be changed after Archival is first enabled.

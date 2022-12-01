@@ -19,7 +19,7 @@ The `tctl batch describe` command describes the progress of a batch job.
 
 The following modifier controls the behavior of the command.
 
-### `--job_id`
+### --job_id
 
 _Required modifier_
 

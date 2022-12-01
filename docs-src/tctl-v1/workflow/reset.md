@@ -17,7 +17,7 @@ To run multiple Reset operations at once, see [`tctl workflow reset-batch`](/tct
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
@@ -29,7 +29,7 @@ Alias: `-w`
 tctl workflow reset --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
@@ -41,7 +41,7 @@ Alias: `-r`
 tctl workflow reset --run_id <id>
 ```
 
-### `--event_id`
+### --event_id
 
 Specify the `eventId` of any event after `WorkflowTaskStarted` to which you want to reset.
 Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTaskTimeout`.
@@ -52,7 +52,7 @@ Valid values are `WorkflowTaskCompleted`, `WorkflowTaskFailed`, and `WorkflowTas
 tctl workflow reset --event_id <id>
 ```
 
-### `--reason`
+### --reason
 
 Specify a reason for resetting the [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
@@ -62,7 +62,7 @@ Specify a reason for resetting the [Workflow Execution](/concepts/what-is-a-work
 tctl workflow reset --reason <string>
 ```
 
-### `--reset_type`
+### --reset_type
 
 Specify the event type to which you want to reset.
 
@@ -79,7 +79,7 @@ Specify the event type to which you want to reset.
 tctl workflow reset --reset_type <value>
 ```
 
-### `--reset_reapply_type`
+### --reset_reapply_type
 
 Specify the types of events to reapply after the reset point.
 Valid values are `All`, `Signal`, and `None`. The default is `All`.
@@ -90,7 +90,7 @@ Valid values are `All`, `Signal`, and `None`. The default is `All`.
 tctl workflow reset --reset_reapply_type <value>
 ```
 
-### `--reset_bad_binary_checksum`
+### --reset_bad_binary_checksum
 
 Specify the binary checksum when using `--reset_type BadBinary`.
 

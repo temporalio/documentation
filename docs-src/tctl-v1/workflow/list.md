@@ -17,11 +17,11 @@ By default, this command lists a maximum of 10 closed Workflow Executions.
 
 See also [`tctl workflow listall`](/tctl-v1/workflow/listall), [`tctl workflow listarchived`](/tctl-v1/workflow/listarchived), and [`tctl workflow scan`](/tctl-v1/workflow/scan).
 
-`tctl workflow list [<modifiers>]`
+`tctl workflow list <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw_time`
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -31,7 +31,7 @@ Print the raw timestamp.
 tctl workflow list --print_raw_time
 ```
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
 
@@ -41,7 +41,7 @@ Print the timestamp.
 tctl workflow list --print_datetime
 ```
 
-### `--print_memo`
+### --print_memo
 
 Print a memo.
 
@@ -51,7 +51,7 @@ Print a memo.
 tctl workflow list --print_memo
 ```
 
-### `--print_search_attr`
+### --print_search_attr
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
@@ -61,7 +61,7 @@ Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 tctl workflow list --print_search_attr
 ```
 
-### `--print_full`
+### --print_full
 
 Print the full message without table formatting.
 
@@ -71,7 +71,7 @@ Print the full message without table formatting.
 tctl workflow list --print_full
 ```
 
-### `--print_json`
+### --print_json
 
 Print the raw JSON objects.
 
@@ -81,7 +81,7 @@ Print the raw JSON objects.
 tctl workflow list --print_json
 ```
 
-### `--open`
+### --open
 
 List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
@@ -92,7 +92,7 @@ List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 tctl workflow list --open
 ```
 
-### `--earliest_time`
+### --earliest_time
 
 Specify the earliest start time to list.
 Supported format are as follows:
@@ -122,7 +122,7 @@ To specify 15 minutes before the current time:
 tctl workflow list --earliest-time '15minute'
 ```
 
-### `--latest_time`
+### --latest_time
 
 Specify the latest start time to list.
 Supported formats are as follows:
@@ -152,7 +152,7 @@ To specify 10s before the current time:
 tctl workflow list --latest_time '10second'
 ```
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
@@ -164,7 +164,7 @@ Alias: `-w`
 tctl workflow list --workflow_id <id>
 ```
 
-### `--workflow_type`
+### --workflow_type
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 
@@ -174,7 +174,7 @@ Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
 tctl workflow list --workflow_type <name>
 ```
 
-### `--status`
+### --status
 
 Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
@@ -192,7 +192,7 @@ Supported values are as follows:
 tctl workflow list --status <value>
 ```
 
-### `--query`
+### --query
 
 **How to list and filter Workflow Executions with a [List Filter](/concepts/what-is-a-list-filter) using tctl.**
 
@@ -237,7 +237,7 @@ tctl workflow list \
   --query 'WorkflowType = "main.Workflow" StartTime > "2019-06-07T16:46:34-08:00" and ExecutionStatus = "Running"'
 ```
 
-### `--more`
+### --more
 
 List more than one page.
 (By default, the `tctl workflow list` command lists one page of results.)
@@ -248,7 +248,7 @@ List more than one page.
 tctl workflow list --more
 ```
 
-### `--pagesize`
+### --pagesize
 
 Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)

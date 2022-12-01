@@ -15,7 +15,7 @@ This command is a shortcut for `tctl workflow observe --workflow_id <workflowid>
 
 The following modifiers control the behavior of the command.
 
-### `--show_detail`
+### --show_detail
 
 Show event details.
 
@@ -25,7 +25,7 @@ Show event details.
 tctl workflow observeid --show_detail
 ```
 
-### `--max_field_length`
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 0.
