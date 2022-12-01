@@ -1039,7 +1039,7 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 ### Don't overuse
 
 You should not try to call `continueAsNew` too often - if at all!
-It's primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
+Its primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
 
 Temporal's default limits are set to warn you at 10,000 events in a single Workflow Execution, and error at 50,000.
 This is sufficient for:
