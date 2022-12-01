@@ -12,4 +12,6 @@ Failure handling is an essential part of development. For more information, incl
 
 Temporal Failures are representations (in the SDKs and Event History) of various types of errors that occur in the system.
 
-- [Temporal Failures](/kb/failures)
+- [Knowledge Base ▶️ Temporal Failures](/kb/failures)
+
+For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow will fail the Workflow Task (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure will fail the Workflow Execution. For more information, see [Application Failure](/kb/failures#application-failure).
