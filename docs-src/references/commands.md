@@ -52,7 +52,7 @@ This Command is triggered by a call to spawn a [Child Workflow Execution](/conce
 
 :::note
 
-OSS users cannot have more than 50000 pending Child Workflows.
+OSS users cannot have more than 50,000 pending Child Workflows.
 Cloud users can have up to 2000 pending Child Workflows.
 
 :::
