@@ -256,19 +256,19 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
+When executing Commands, Temporal allocates resources that get released once a Workflow Task has completed or terminated.
+
+For example, each execution of `ScheduleActivityCommand` adds an Activity to the Task Queue, along with the resources needed to execute it.
+However, scheduling too many Activities can take resources away from what's currently running.
+
+To avoid this scenario, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities.
+Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
+
 :::note
 
-Cloud users have a hard limit of 2,000 pending Events.
+Cloud users are limited to 2,000 pending Activities, Child Workflows, and external Workflows.
 
 :::
-
-In addition to the hard limits imposed on Event Histories, certain Commands will not be processed when there are already 50,000 pending Events of a given type:
-
-- `StartTimer`
-- `ScheduleActivityTask`
-- `SignalExternalWorkflowExecution`
-- `RequestCancelExternalWorkflowExecution`
-- `StartChildWorkflowExecution`
 
 ### Command
 
@@ -302,7 +302,7 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 **Event History limits**
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-[There is a hard limit of 50,000 Events](/concepts/what-is-a-workflow-execution/#limits) in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+[There is a hard limit on Events](/concepts/what-is-a-workflow-execution/#limits) in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
 When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
 
