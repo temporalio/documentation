@@ -3,7 +3,7 @@ slug: python-sandbox-environment
 title: Python sandbox environment
 tags:
   - kb-article
-date: 2022-11-18T00:00:00Z
+date: 2022-12-02T00:00:00Z
 ---
 
 ![Python sandbox](/static/img/python-sandbox.svg)
