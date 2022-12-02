@@ -53,6 +53,8 @@ A default set of restrictions that prevents most dangerous standard library call
 
 The following techniques aren't recommended, but they allow you to avoid, skip, or break through the sandbox environment.
 
+Skipping Workflow Sandboxing results in a lack of determinism checks. Using the Workflow Sandboxing environment helps to preventing non-determinism errors but doesn't completely negate the risk.
+
 ### Skip Sandboxing for a block of code
 
 To skip a sandbox environment for a specific block of code in a Workflow, use [`sandbox_unrestricted()`](https://python.temporal.io/temporalio.workflow.unsafe.html#sandbox_unrestricted). The Workflow will run without sandbox restrictions.
