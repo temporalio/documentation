@@ -266,7 +266,7 @@ Similar constraints are enforced for `SignalExternalWorkflowExecution`, `Request
 
 :::note
 
-Cloud users are limited to 2,000 pending Activities, Child Workflows, and external Workflows.
+Cloud users are limited to 2,000 each of: pending Activities, Child Workflows, external Workflows, and Signals.
 
 :::
 
@@ -301,9 +301,12 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 - It also serves as an audit log for debugging.
 
 **Event History limits**
+
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-[There is a hard limit on Events](/concepts/what-is-a-workflow-execution/#limits) in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+
+[There is a hard limit of 50,000 Events](/concepts/what-is-a-workflow-execution/#limits) in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
+
 When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
 
 #### Continue-As-New
