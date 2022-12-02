@@ -28,18 +28,16 @@ You can use this Job ID in the `tctl batch describe` command, which describes th
 You can also use the Job ID to terminate the batch job itself.
 Terminating a batch job does not roll back the operations already performed by the batch job.
 
-### tctl batch commands
+### tctl batch-v2 commands
 
-- [tctl batch describe](/tctl-next/batch#describe)
+- [tctl batch describe --job-id](/tctl-next/batch#describe)
 - [tctl batch list](/tctl-next/batch#list)
-- [tctl batch terminate](/tctl-next/batch#terminate)
+- [tctl batch terminate --job_id](/tctl-next/batch#terminate)
 - <a class="tdlp" href="/tctl-next/workflow#signal">tctl workflow signal --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow signal</p><p class="tdlppd">How to Signal a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#signal">Learn more</a></p></div></a>
 - <a class="tdlp" href="/tctl-next/workflow#terminate">tctl workflow terminate --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#terminate">Learn more</a></p></div></a>
 - <a class="tdlp" href="/tctl-next/workflow#cancel">tctl workflow cancel --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#cancel">Learn more</a></p></div></a>
 
 ## list
-
-Alias: `l`
 
 The `tctl batch list` command lists all batch jobs.
 
@@ -58,11 +56,9 @@ Always include required modifiers when executing this command.
 
 ## describe
 
-Alias: `desc`
-
 The `tctl batch describe` command describes the progress of a batch job.
 
-`tctl batch describe --job-id <value>`
+`tctl batch describe --job-id <value> <modifiers>`
 
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.

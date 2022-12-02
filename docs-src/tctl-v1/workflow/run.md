@@ -10,15 +10,15 @@ tags:
 The `tctl workflow run` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and can show the progress of a Workflow Execution.
 The command is entered in the following format:
 
-`tctl workflow run [modifiers]`
+`tctl workflow run <modifiers>`
 
 To run a Workflow, the user must specify the following:
 
-- Task queue name (`--tq`)
-- Workflow Type (`--wt`)
+- Task queue name (`--taskqueue`)
+- Workflow Type (`--workflow_type`)
 
 ```bash
-tctl workflow run --tq your-task-queue-name --wt YourWorkflowDefinitionName
+tctl workflow run --taskqueue your-task-queue-name --workflow_type YourWorkflowDefinitionName
 ```
 
 Single quotes (`''`) are used to wrap input as JSON.
@@ -26,11 +26,11 @@ This command doesn't finish until the Workflow completes.
 
 The following modifiers control the behavior of the command.
 
-### `--taskqueue`
+### --taskqueue
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -38,11 +38,11 @@ Alias: `--tq`
 tctl workflow run --taskqueue <name>
 ```
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -50,11 +50,9 @@ Aliases: `--wid`, `-w`
 tctl workflow run --workflow_id <id>
 ```
 
-### `--workflow_type`
+### --workflow_type
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
 
 **Example**
 
@@ -62,12 +60,10 @@ Alias: `--wt`
 tctl workflow run --workflow_type <name>
 ```
 
-### `--execution_timeout`
+### --execution_timeout
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
-
-Alias: `--et`
 
 **Example**
 
@@ -75,12 +71,10 @@ Alias: `--et`
 tctl workflow run --execution_timeout <seconds>
 ```
 
-### `--workflow_task_timeout`
+### --workflow_task_timeout
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
 The default value is 10.
-
-Alias: `--wtt`
 
 **Example**
 
@@ -88,7 +82,7 @@ Alias: `--wtt`
 tctl workflow run --workflow_task_timeout <seconds>
 ```
 
-### `--cron`
+### --cron
 
 Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
 
@@ -98,7 +92,7 @@ Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules)
 tctl workflow run --cron <string>
 ```
 
-### `--workflowidreusepolicy`
+### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
@@ -117,7 +111,7 @@ tctl workflow run --workflowidreusepolicy AllowDuplicateFailedOnly
 tctl workflow run --workflowidreusepolicy RejectDuplicate
 ```
 
-### `--input`
+### --input
 
 Pass input for the Workflow.
 Input must be in JSON format.
@@ -131,13 +125,11 @@ Alias: `-i`
 tctl workflow run --input <json>
 ```
 
-### `--input_file`
+### --input_file
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 **Example**
 
@@ -145,7 +137,7 @@ Alias: `--if`
 tctl workflow run --input_file <filename>
 ```
 
-### `--memo_key`
+### --memo_key
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.
@@ -156,7 +148,7 @@ For multiple keys, concatenate them and use spaces as separators.
 tctl workflow run --memo_key <key>
 ```
 
-### `--memo`
+### --memo
 
 Pass a memo.
 A memo is information in JSON format that can be shown when the Workflow is listed.
@@ -169,7 +161,7 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow run --memo <json>
 ```
 
-### `--memo_file`
+### --memo_file
 
 Pass information for a memo from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -181,7 +173,7 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow run --memo_file <filename>
 ```
 
-### `--search_attr_key`
+### --search_attr_key
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) key.
 For multiple keys, concatenate them and use pipes (`|`) as separators.
@@ -194,7 +186,7 @@ To list valid keys, use the `tctl cluster get-search-attributes` command.
 tctl workflow run --search_attr_key <key>
 ```
 
-### `--search_attr_value`
+### --search_attr_value
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.
@@ -208,11 +200,9 @@ To list valid keys and value types, use the `tctl cluster get-search-attributes`
 tctl workflow run --search_attr_value <value>
 ```
 
-### `--show_detail`
+### --show_detail
 
 Get event details.
-
-Alias: `--sd`
 
 **Example**
 
@@ -220,12 +210,10 @@ Alias: `--sd`
 tctl workflow run --show_detail
 ```
 
-### `--max_field_length`
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 0.
-
-Alias: `--maxl`
 
 **Example**
 

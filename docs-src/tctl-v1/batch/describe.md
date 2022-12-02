@@ -7,21 +7,23 @@ tags:
   - tctl
 ---
 
-Alias: `desc`
-
 The `tctl batch describe` command describes the progress of a batch job.
 
 `tctl batch describe --job_id <id>`
 
+:::note
+
+`tctl` can run `batch` and `batch-v2` commands.
+
+:::
+
 The following modifier controls the behavior of the command.
 
-### `--job_id`
+### --job_id
 
 _Required modifier_
 
 Specify the job ID of a batch job.
-
-Alias: `--jid`
 
 **Example**
 

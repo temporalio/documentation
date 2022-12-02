@@ -13,9 +13,9 @@ is that, unlike the Temporal guarantee of at-most-once execution for Activities,
 guarantee with `Workflow::sideEffect` . Under certain failure conditions, `Workflow::sideEffect` can
 end up executing a function more than once.
 
-The only way to fail `sideEffect` is to throw an exception, which causes a workflow task failure. After the
-timeout, Temporal reschedules and then re-executes the workflow task, giving `SideEffect` another chance
-to succeed. Do not return any data from `sideEffect` other than through its recorded return value.
+The only way to fail `sideEffect` is to throw an exception, which causes a Workflow Task failure.
+After the timeout, Temporal reschedules and then re-executes the Workflow Task, giving `SideEffect` another chance to succeed.
+Do not return any data from `sideEffect` other than through its recorded return value.
 
 The following sample demonstrates how to use `SideEffect`:
 

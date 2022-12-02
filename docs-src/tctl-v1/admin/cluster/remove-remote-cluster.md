@@ -10,8 +10,6 @@ tags:
 
 The `tctl admin cluster remove_remote_cluster` command removes remote Cluster information on the given Cluster.
 
-Alias: `rrc`
-
 The modifier below changes the behavior of the operation:
 
 #### --cluster

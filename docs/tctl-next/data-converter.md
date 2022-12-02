@@ -13,8 +13,6 @@ import TabItem from '@theme/TabItem';
 
 The `tctl data-converter` command enables custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a> operations.
 
-Alias: `dc`
-
 - [tctl data-converter web](/tctl-next/data-converter#web)
 
 ## web

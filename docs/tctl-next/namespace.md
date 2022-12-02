@@ -38,14 +38,12 @@ The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
 `tctl namespace describe`
 
-Alias: `d`
-
 The following modifiers are supported and control the behavior of the command.
 Always include required modifiers when executing this command.
 
 - [--namespace](/tctl-next/modifiers#--namespace)
 
-### `--namespace-id`
+### --namespace-id
 
 Specify the ID of a Namespace to describe.
 
@@ -73,8 +71,6 @@ Clusters: dc1, dc2
 ```
 
 ## list
-
-Alias: `l`
 
 The `tctl namespace list` command lists all <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a>.
 

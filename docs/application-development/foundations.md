@@ -1088,6 +1088,15 @@ In TypeScript, the Workflow Type is the Workflow function name and there isn't a
 In the following example, the Workflow Type is the name of the function, `helloWorld`.
 
 <!--SNIPSTART typescript-workflow-type -->
+
+[snippets/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/workflows.ts)
+
+```ts
+export async function helloWorld(): Promise<string> {
+  return '👋 Hello World!';
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1428,6 +1437,15 @@ These require special primitives for heartbeating and cancellation. The `shared_
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
 <!--SNIPSTART typescript-activity-fn -->
+
+[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
+
+```ts
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1552,6 +1570,15 @@ async def your_activity(params: YourParams) -> None:
 This Activity takes a single `name` parameter of type `string`.
 
 <!--SNIPSTART typescript-activity-fn -->
+
+[snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
+
+```ts
+export async function greet(name: string): Promise<string> {
+  return `👋 Hello, ${name}!`;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1771,6 +1798,26 @@ You can customize the name of the Activity when you register it with the Worker.
 In the following example, the Activity Name is `activityFoo`.
 
 <!--SNIPSTART typescript-custom-activity-type -->
+
+[snippets/src/worker-activity-type-custom.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/worker-activity-type-custom.ts)
+
+```ts
+import { Worker } from '@temporalio/worker';
+import { greet } from './activities';
+
+async function run() {
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'snippets',
+    activities: {
+      activityFoo: greet,
+    },
+  });
+
+  await worker.run();
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2205,7 +2252,7 @@ The whole request-reply interaction can be modeled as a single Activity.
 To indicate that an Activity should not be completed upon its method return, call `ActivityExecutionContext.doNotCompleteOnReturn()` from the original Activity thread.
 
 Then later, when replies come, complete the Activity using the `ActivityCompletionClient`.
-To correlate Activity invocation with completion use either a `TaskToken` or Workflow and Activity IDs.
+To correlate Activity invocation with completion, use either a `TaskToken` or Workflow and Activity Ids.
 
 Following is an example of using `ActivityExecutionContext.doNotCompleteOnReturn()`:
 
@@ -2571,6 +2618,35 @@ Create a Worker with `Worker.create()` (which establishes the initial gRPC conne
 Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
 
 <!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+
+```ts
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  // Step 1: Register Workflows and Activities with the Worker and connect to
+  // the Temporal server.
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    activities,
+    taskQueue: 'hello-world',
+  });
+  // Worker connects to localhost by default and uses console.error for logging.
+  // Customize the Worker by passing more options to create():
+  // https://typescript.temporal.io/api/classes/worker.Worker
+  // If you need to configure server connection parameters, see docs:
+  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+
+  // Step 2: Start accepting tasks on the `hello-world` queue
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
 <!--SNIPEND-->
 
 `taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
@@ -2751,7 +2827,7 @@ You can register only one Activity instance that implements `DynamicActivity` wi
 </TabItem>
 <TabItem value="php">
 
-Worker listens on a task queue and hosts both workflow and activity implementations:
+Worker listens on a Task Queue and hosts both Workflow and Activity implementations:
 
 ```php
 // Workflows are stateful. So you need a type to create instances:
@@ -2798,6 +2874,24 @@ worker = Worker(
 In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
 <!--SNIPSTART typescript-worker-create -->
+
+[snippets/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/worker.ts)
+
+```ts
+import { Worker } from '@temporalio/worker';
+import * as activities from './activities';
+
+async function run() {
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'snippets',
+    activities,
+  });
+
+  await worker.run();
+}
+```
+
 <!--SNIPEND-->
 
 In this snippet, the Worker bundles the Workflow code at runtime.
@@ -2805,11 +2899,54 @@ In this snippet, the Worker bundles the Workflow code at runtime.
 In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
 
 <!--SNIPSTART typescript-bundle-workflow -->
+
+[production/src/scripts/build-workflow-bundle.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/scripts/build-workflow-bundle.ts)
+
+```ts
+import { bundleWorkflowCode } from '@temporalio/worker';
+import { writeFile } from 'fs/promises';
+import path from 'path';
+
+async function bundle() {
+  const { code } = await bundleWorkflowCode({
+    workflowsPath: require.resolve('../workflows'),
+  });
+  const codePath = path.join(__dirname, '../../workflow-bundle.js');
+
+  await writeFile(codePath, code);
+  console.log(`Bundle written to ${codePath}`);
+}
+```
+
 <!--SNIPEND-->
 
 Then the bundle can be passed to the Worker:
 
 <!--SNIPSTART typescript-production-worker-->
+
+[production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/worker.ts)
+
+```ts
+const workflowOption = () =>
+  process.env.NODE_ENV === 'production'
+    ? {
+      workflowBundle: {
+        codePath: require.resolve('../workflow-bundle.js'),
+      },
+    }
+    : { workflowsPath: require.resolve('./workflows') };
+
+async function run() {
+  const worker = await Worker.create({
+    ...workflowOption(),
+    activities,
+    taskQueue: 'production-sample',
+  });
+
+  await worker.run();
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -3007,8 +3144,9 @@ You can start a Workflow Execution on a regular schedule by using [`setCronSched
 </TabItem>
 <TabItem value="php">
 
-Workflows can be started both synchronously and asynchronously. You can use typed or untyped workflows stubs available
-via `Temporal\Client\WorkflowClient`. To create workflow client:
+Workflows can be started both synchronously and asynchronously.
+You can use typed or untyped Workflows stubs available via `Temporal\Client\WorkflowClient`.
+To create a Workflow Client:
 
 ```php
 use Temporal\Client\GRPC\ServiceClient;
@@ -3022,7 +3160,8 @@ $workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233')
 A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
 invocation process and will continue executing even if the waiting process crashes or stops.
 
-Make sure to acquire workflow interface or class name you want to start. For example:
+Be sure to acquire the Workflow interface or class name you want to start.
+For example:
 
 ```php
 #[WorkflowInterface]
@@ -3039,7 +3178,7 @@ interface AccountTransferWorkflowInterface
 }
 ```
 
-To start such workflow in sync mode:
+To start the Workflow in sync mode:
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -3059,8 +3198,7 @@ $result = $accountTransfer->transfer(
 An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
 This is the most common way to start Workflows in a live environment.
 
-To start a Workflow asynchronously pass workflow stub instance and start parameters into `WorkflowClient`->`start`
-method.
+To start a Workflow asynchronously, pass the Workflow stub instance and start parameters into the `WorkflowClient`->`start` method.
 
 ```php
 $accountTransfer = $workflowClient->newWorkflowStub(
@@ -3070,7 +3208,7 @@ $accountTransfer = $workflowClient->newWorkflowStub(
 $run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
 ```
 
-Once started you can receive workflow ID via `WorkflowRun` object returned by start method:
+After the Workflow is started, you can receive the Workflow Id via the `WorkflowRun` object returned by the `start` method:
 
 ```php
 $run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);

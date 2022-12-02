@@ -15,11 +15,11 @@ See also [`tctl workflow showid`](/tctl-v1/workflow/showid).
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### --workflow_id
 
 Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -27,11 +27,11 @@ Aliases: `--wid`, `-w`
 tctl workflow show --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -39,11 +39,9 @@ Aliases: `--rid`, `-r`
 tctl workflow show --run_id <id>
 ```
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -51,11 +49,9 @@ Alias: `--pdt`
 tctl workflow show --print_datetime
 ```
 
-### `--print_raw_time`
+### --print_raw_time
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -63,11 +59,9 @@ Alias: `--prt`
 tctl workflow show --print_raw_time
 ```
 
-### `--output_filename`
+### --output_filename
 
 Serialize an event to a file.
-
-Alias: `--of`
 
 **Example**
 
@@ -75,11 +69,9 @@ Alias: `--of`
 tctl workflow show --output_filename <filename>
 ```
 
-### `--print_full`
+### --print_full
 
 Print full event details.
-
-Alias: `--pf`
 
 **Example**
 
@@ -87,11 +79,9 @@ Alias: `--pf`
 tctl workflow show --print_full
 ```
 
-### `--print_event_version`
+### --print_event_version
 
 Print the event version.
-
-Alias: `--pev`
 
 **Example**
 
@@ -99,12 +89,10 @@ Alias: `--pev`
 tctl workflow show --print_event_version
 ```
 
-### `--event_id`
+### --event_id
 
 Print the details of a specified event.
 The default value is 0.
-
-Alias: `--eid`
 
 **Example**
 
@@ -112,12 +100,10 @@ Alias: `--eid`
 tctl workflow show --event_id <id>
 ```
 
-### `--max_field_length`
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 500.
-
-Alias: `--maxl`
 
 **Example**
 
@@ -125,7 +111,7 @@ Alias: `--maxl`
 tctl workflow show --max_field_length <length>
 ```
 
-### `--reset_points_only`
+### --reset_points_only
 
 Show only events that are eligible for reset.
 

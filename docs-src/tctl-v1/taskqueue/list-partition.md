@@ -13,13 +13,13 @@ The `tctl taskqueue list-partition` command lists the partitions of a [Task Queu
 
 The following modifier controls the behavior of the command.
 
-### `--taskqueue`
+### --taskqueue
 
 _Required modifier_
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue) description.
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 

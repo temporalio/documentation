@@ -9,58 +9,56 @@ tags:
   - workflow
 ---
 
-Alias: `del`
-
 The `tctl admin workflow delete` command deletes the current [Workflow Execution](/workflows/#workflow-execution) and the mutableState record.
 
-#### `--db_engine value`
+#### --db_engine value
 
 The type of database (DB) engine to use.
 
 Default: "cassandra"
 Values: "cassandra", "mysql", "postgres"
 
-#### `--db_address value`
+#### --db_address value
 
 Persistence address for the database.
 
 Default: 127.0.0.1
 
-#### `--db_port value`
+#### --db_port value
 
 Persistence port for the database.
 
 Default: 9042
 
-#### `--username value`
+#### --username value
 
 Username entered into the database.
 
-#### `--password value`
+#### --password value
 
 Password entered into the database.
 
-#### `--keyspace value`
+#### --keyspace value
 
 Keyspace for the database.
 
 default: "temporal"
 
-#### `--url value`
+#### --url value
 
 URL of the Elasticsearch cluster.
 
 Default: "http://127.0.0.1:9200"
 
-#### `--es-username value`
+#### --es-username value
 
 Username for the Elasticsearch cluster.
 
-#### `--es-password value`
+#### --es-password value
 
 Password for the Elasticsearch cluster.
 
-#### `--version value`
+#### --version value
 
 The version of the Elasticsearch cluster for the Workflow.
 
@@ -68,29 +66,27 @@ Default: v7
 
 Values: v6, v7
 
-#### `--index value`
+#### --index value
 
 Elasticsearch index name.
 
-#### `--workflow_id value`
+#### --workflow_id value
 
-Aliases: `--wid value`, `-w value`
+Alias: `-w`
 
 The Id of the current Workflow.
 
-#### `--run_id value`
+#### --run_id value
 
-Aliases: `--rid value`, `-r value`
+Alias: `-r`
 
 The Id of the current run.
 
-#### `--skip_errors`
-
-Alias: `--serr`
+#### --skip_errors
 
 Skip any errors that occur in the Workflow Execution.
 
-#### `--tls`
+#### --tls
 
 Enables TLS over the database connection.
 
@@ -100,31 +96,31 @@ TLS must be enabled to use the following modifiers.
 
 :::
 
-#### `--tls_cert_path value`
+#### --tls_cert_path value
 
 DB tls client cert path.
 
 Note: tls must be enabled
 
-#### `--tls_key_path value`
+#### --tls_key_path value
 
 DB tls client key path
 
 Note: tls must be enabled
 
-#### `--tls_ca_path value`
+#### --tls_ca_path value
 
 DB tls client ca path
 
 Note: tls must be enabled
 
-#### `--tls_server_name value`
+#### --tls_server_name value
 
 DB tls server name
 
 Note: tls must be enabled
 
-#### `--tls_disable_host_verification`
+#### --tls_disable_host_verification
 
 DB tls verify hostname and server cert
 

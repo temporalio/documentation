@@ -11,11 +11,9 @@ The `tctl namespace describe` command describes a [Namespace](/namespaces).
 
 `tctl namespace describe`
 
-Alias: `desc`
-
 The following modifier controls the behavior of the command.
 
-### `--namespace_id`
+### --namespace_id
 
 Specify the ID of a Namespace to describe.
 

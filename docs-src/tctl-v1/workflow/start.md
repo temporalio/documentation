@@ -15,11 +15,11 @@ Unlike `run`, this command returns the Workflow Id and Run Id immediately after 
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-### `--taskqueue`
+### --taskqueue
 
 Specify a [Task Queue](/concepts/what-is-a-task-queue).
 
-Alias: `--tq`
+Alias: `--t`
 
 **Example**
 
@@ -27,13 +27,13 @@ Alias: `--tq`
 tctl workflow start --taskqueue <name>
 ```
 
-### `--workflow_id`
+### --workflow_id
 
 **This is a required modifier.**
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -50,11 +50,9 @@ Temporal recommends using a business id rather than the client-generated UUID.
 tctl workflow start  --workflow_id "HelloTemporal1" --taskqueue HelloWorldTaskQueue --workflow_type HelloWorld --execution_timeout 3600 --input \"Temporal\"
 ```
 
-### `--workflow_type`
+### --workflow_type
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
 
 **Example**
 
@@ -62,12 +60,10 @@ Alias: `--wt`
 tctl workflow start --workflow_type <name>
 ```
 
-### `--execution_timeout`
+### --execution_timeout
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
 The default value is 0.
-
-Alias: `--et`
 
 **Example**
 
@@ -75,12 +71,10 @@ Alias: `--et`
 tctl workflow start --execution_timeout <seconds>
 ```
 
-### `--workflow_task_timeout`
+### --workflow_task_timeout
 
 Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Task](/concepts/what-is-a-workflow-task) in seconds.
 The default value is 10.
-
-Alias: `--wtt`
 
 **Example**
 
@@ -88,7 +82,7 @@ Alias: `--wtt`
 tctl workflow start --workflow_task_timeout <seconds>
 ```
 
-### `--cron`
+### --cron
 
 Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
 
@@ -98,7 +92,7 @@ Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules)
 tctl workflow start --cron <string>
 ```
 
-### `--workflowidreusepolicy`
+### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
 Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
@@ -123,7 +117,7 @@ Multiple Workflows with the same Id cannot be run at the same time
 
 :::
 
-### `--input`
+### --input
 
 Pass input for the Workflow.
 Input must be in JSON format.
@@ -138,13 +132,11 @@ Alias: `-i`
 tctl workflow start --input <json>
 ```
 
-### `--input_file`
+### --input_file
 
 Pass input for the Workflow from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
 Input from the command line overwrites input from the file.
-
-Alias: `--if`
 
 **Example**
 
@@ -152,7 +144,7 @@ Alias: `--if`
 tctl workflow start --input_file <filename>
 ```
 
-### `--memo_key`
+### --memo_key
 
 Pass a key for a memo.
 For multiple keys, concatenate them and use spaces as separators.
@@ -163,7 +155,7 @@ For multiple keys, concatenate them and use spaces as separators.
 tctl workflow start --memo_key <key>
 ```
 
-### `--memo`
+### --memo
 
 Pass information for a [memo](/concepts/what-is-a-memo) from a JSON file.
 
@@ -185,7 +177,7 @@ tctl workflow start \
   -memo '<value>'
 ```
 
-### `--memo_file`
+### --memo_file
 
 Pass information for a memo from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -197,7 +189,7 @@ The order must match the order of keys in `--memo_key`.
 tctl workflow start --memo_file <filename>
 ```
 
-### `--search_attr_key`
+### --search_attr_key
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) name.
 For multiple names, concatenate them and use pipes (`|`) as separators.
@@ -210,7 +202,7 @@ To list valid Search Attributes, use the `tctl cluster get-search-attributes` co
 tctl workflow start --search_attr_key <key>
 ```
 
-### `--search_attr_value`
+### --search_attr_value
 
 Specify a [Search Attribute](/concepts/what-is-a-search-attribute) value.
 For multiple values, concatenate them and use pipes (`|`) as separators.

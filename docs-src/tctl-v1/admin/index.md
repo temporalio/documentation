@@ -10,8 +10,8 @@ tags:
 
 A `tctl admin` command allows the user to run admin operations.
 
-Alias : `adm`
-
 Modifiers:
 
-- Help: `tctl admin [--help | -h]`
+#### --help
+
+`tctl admin [--help | -h]`
