@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-In the Temporal Python SDK programming model, Workflows are defined as classes and are run in a [sandbox environment](/kb/python-sandbox-environment).
+In the Temporal Python SDK programming model, Workflows are defined as classes.
 
 Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
 

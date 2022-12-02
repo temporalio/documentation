@@ -8,18 +8,17 @@ date: 2022-11-18T00:00:00Z
 
 ![Python sandbox](static/img/../../../static/img/python-sandbox.svg)
 
-The Temporal Python SDK allows you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
+The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
 The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
 
 <!-- truncate -->
 
-By default, Workflows run in a sandbox environment.
-If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Task Worker.
-The Workflow will not progress until the code is fixed.
-
 ## Benefits
 
 Temporal's Python SDK uses a sandbox environment for Workflow runs to make developing Workflow code safer.
+
+If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Task Worker.
+The Workflow will not progress until the code is fixed.
 
 ## How it works
 
