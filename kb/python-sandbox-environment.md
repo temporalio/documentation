@@ -6,7 +6,7 @@ tags:
 date: 2022-12-02T00:00:00Z
 ---
 
-![Python sandbox](/static/img/python-sandbox.svg)
+![Python sandbox](static/img/../../../static/img/python-sandbox.svg)
 
 The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
 The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
