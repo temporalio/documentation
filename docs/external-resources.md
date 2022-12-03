@@ -120,7 +120,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - Other Languages
   - (Español) [Construye aplicaciones invencibles con Temporal](https://sistecma.github.io/2021/02/04/aplicaciones-invencibles-con-temporal.html) y [Aplicando el patrón SAGA en tus microservicios construidos](https://sistecma.github.io/2021/03/04/aplicando-saga-en-microservicios-con-temporal.html) by Hernán Moreno
   - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
-  - (русский) [PHP Russia talks](/php/introduction/#resources) by Anton Titov
+  - (русский) [PHP Russia talks](https://legacy-documentation-sdks.temporal.io/php/introduction/#resources) by Anton Titov
   - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
 - _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
 

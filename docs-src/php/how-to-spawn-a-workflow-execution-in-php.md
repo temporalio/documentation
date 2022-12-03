@@ -82,4 +82,4 @@ var_dump($run->getExecution()->getID());
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
+You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/app-dev-context/cron-jobs).

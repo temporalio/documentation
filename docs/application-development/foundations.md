@@ -3215,7 +3215,7 @@ var_dump($run->getExecution()->getID());
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
+You can start a Workflow Execution on a regular schedule with <a class="tdlp" href="/application-development/features#temporal-cron-jobs">the CronSchedule option<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Temporal Cron Jobs</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#temporal-cron-jobs">Learn more</a></p></div></a>.
 
 </TabItem>
 <TabItem value="python">

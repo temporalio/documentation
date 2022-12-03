@@ -97,7 +97,7 @@ Things to consider when defining Signals:
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Queries</p><p class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#queries">Learn more</a></p></div></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="#signals">Learn more</a></p></div></a>.
 
 All interface methods must have one of the following annotations:
 
@@ -484,7 +484,7 @@ $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workfl
 $workflow->setValue(true);
 ```
 
-See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle Signals in an Workflow in PHP</p><p class="tdlppd">Use the `#[SignalMethod]` annotation to handle Signals within the Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
+See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle a Signal</p><p class="tdlppd">Workflows listen for Signals by the Signal's name.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="python">
@@ -823,7 +823,7 @@ Query methods must never change any Workflow state including starting Activities
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Queries</p><p class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#queries">Learn more</a></p></div></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="#signals">Learn more</a></p></div></a>.
 
 All interface methods must have one of the following annotations:
 
@@ -1576,7 +1576,7 @@ $workflow = $this->workflowClient->newWorkflowStub(
 );
 ```
 
-For more detailed information about `RetryOptions` object see [retries](/php/retries) for more details.
+For more detailed information about `RetryOptions` object see <a class="tdlp" href="#workflow-retries">retries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow retries</p><p class="tdlppd">A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-retries">Learn more</a></p></div></a> for more details.
 
 </TabItem>
 <TabItem value="python">
