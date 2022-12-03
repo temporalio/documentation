@@ -47,7 +47,7 @@ The [docker-compose setup](https://github.com/temporalio/docker-compose/blob/0bc
 
 Here’s an example of how to expose a Prometheus endpoint on your local docker-compose Temporal Cluster configuration:
 
-```
+```{20, 26}
 version: "3.5"
 services:
 #...
