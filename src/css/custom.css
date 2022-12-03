@@ -5,8 +5,6 @@
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
-
 :root {
   /* --ifm-color-primary: #f2633f;
   --ifm-color-primary-dark: #111827; */
@@ -16,7 +14,6 @@
   --ifm-color-primary-lighter: #BFDBFE; */
   /* --ifm-color-primary-lightest: #cae3fb; */
   --ifm-code-font-size: 95%;
-
   /* --doc-sidebar-width: 275px !important;
   --ifm-link-hover-decoration: none;
   --ifm-link-hover-color: inherit; */
@@ -44,6 +41,7 @@ html[data-theme="dark"] {
   --ifm-badge-background-color: hsl(210deg, 15%, 20%); */
   --ifm-card-background-color: #1a1a1a;
   /* --card-color: var(--ifm-color-primary-dark); */
+  --docusaurus-highlighted-code-line-bg: rgb(57, 104, 77);
 }
 
 html[data-theme="light"] {
@@ -68,6 +66,7 @@ html[data-theme="light"] {
   --ifm-card-background-color: #ffffff;
   --ifm-badge-background-color: rgba(239, 246, 255); */
   --card-color: #ffffff;
+  --docusaurus-highlighted-code-line-bg: rgb(179, 250, 206);
 }
 
 /* --ifm-background-surface-color: #000000;
