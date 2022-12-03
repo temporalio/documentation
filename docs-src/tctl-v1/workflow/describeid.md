@@ -15,7 +15,7 @@ This command is a shortcut for `tctl workflow describe --workflow_id <workflowid
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw`
+### --print_raw
 
 Print properties exactly as they are stored.
 
@@ -25,7 +25,7 @@ Print properties exactly as they are stored.
 tctl workflow describeid <workflow_id> <id> --print_raw
 ```
 
-### `--reset_points_only`
+### --reset_points_only
 
 Show only events that are eligible for reset.
 

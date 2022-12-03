@@ -13,7 +13,7 @@ The `tctl taskqueue describe` command describes the poller information of a [Tas
 
 The following modifiers control the behavior of the command.
 
-### `--taskqueue`
+### --taskqueue
 
 _Required modifier_
 
@@ -27,7 +27,7 @@ Alias: `--t`
 tctl taskqueue describe --taskqueue <value>
 ```
 
-### `--taskqueuetype`
+### --taskqueuetype
 
 Specify the type of a [Task Queue](/concepts/what-is-a-task-queue).
 The type can be `workflow` or `activity`.
