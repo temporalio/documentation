@@ -258,10 +258,12 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 When executing Commands, Temporal allocates resources that get released once a Workflow Task has completed or terminated.
 
-For example, each execution of `ScheduleActivityCommand` adds an Activity to the Task Queue, along with the resources needed to execute it.
-However, scheduling too many Activities can take resources away from what's currently running.
+Each pending Activity generates a metadata entry in the Workflow's mutable state.
+Too many entries create a large mutable state, which causes unstable persistence.
 
-To avoid this scenario, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities.
+To protect the system, Temporal enforces a maximum pending Activity limit.
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities.
+
 Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
 
 :::note
