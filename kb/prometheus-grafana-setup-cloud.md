@@ -27,7 +27,7 @@ The process for setting up observability includes the following steps:
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - [Global Admin privileges](/cloud#account-level-roles) to the Temporal Cloud account.
-- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud, and both the certificate and key when setting up this endpoint in Grafana for the Temporal Cloud metrics.
+- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud, and both the end-entity certificate and key when setting up this endpoint in Grafana for the Temporal Cloud metrics.
 
 The following steps describe how to set up your Observability on Temporal Cloud to generate an endpoint:
 
