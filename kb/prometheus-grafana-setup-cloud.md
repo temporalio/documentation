@@ -37,7 +37,7 @@ The following steps describe how to set up your Observability on Temporal Cloud 
 4. Add your root CA certificate (.pem) and save it.
    Note that if an observability endpoint is already set up, you can append certificates here to use the generated observability endpoint with your instance of Grafana.
 5. To test your endpoint, run the following command on your host:
-   `curl -v --cert <path to your cert.pem> --key <path to your cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"`
+   `curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"`.
    If you have Workflows running on a namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
 6. Copy the HTTP API endpoint that is generated (it shows on your UI).
 
