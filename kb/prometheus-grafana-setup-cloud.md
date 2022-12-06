@@ -8,7 +8,7 @@ date: 2022-12-02T00:00:00Z
 
 Temporal Cloud and SDKs emit metrics that can be used to monitor performance and troubleshoot errors.
 
-While Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, the open-source SDKs require you to set up a Prometheus scrape endpoint to collect and aggregate the Worker and Client metrics.
+While Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, the open-source SDKs require you to set up a Prometheus scrape endpoint for Prometheus to collect and aggregate the Worker and Client metrics.
 
 This article describes how to set up your Temporal Cloud and SDK metrics, and use them as data sources in Grafana.
 
