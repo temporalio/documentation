@@ -81,8 +81,7 @@ import java.io.InputStream;
    {
      // See the Micrometer documentation for configuration details on other supported monitoring systems.
      // Set up the Prometheus registry.
-     PrometheusMeterRegistry yourRegistry = new
-                    PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
+     PrometheusMeterRegistry yourRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
        public static Scope yourScope(){
      //Set up a scope, report every 10 seconds
