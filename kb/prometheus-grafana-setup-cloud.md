@@ -1,6 +1,6 @@
 ---
 slug: prometheus-grafana-setup-cloud
-title: Set up Grafana with Temporal Cloud Observability to view metrics
+title: Set up Grafana with Temporal Cloud observability to view metrics
 tags:
   - kb-article
 date: 2022-12-02T00:00:00Z
