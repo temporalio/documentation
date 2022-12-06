@@ -199,10 +199,10 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the 
 3. Enter a name for your Temporal Cloud metrics data source, such as _Temporal Cloud metrics_.
 4. In the **HTTP section**, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
 5. In the **Auth section**, enable **TLS Client Auth**.
-6. In the **TLS/SSL Auth Details** section, paste the root CA certificate and key that you used to [set up observability](#temporal-cloud-metrics-setup) in your Temporal Cloud UI.
+6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key. Note that the end-entity certificate used here must chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
 7. Select **Save and test** to ensure the data source is working properly.
 
-If you see issues in setting this data source, verify that you are using the correct certificates (root CA) on both your Temporal Cloud observability setup and in the TLS authentication in Grafana.
+If you see issues in setting this data source, verify that your end-entity and root CA certificates are chained, and you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
 
 To add the SDK metrics Prometheus endpoint that we configured in the previous section, do the following:
 
@@ -220,7 +220,7 @@ If you see metrics on the scrape endpoints, but Prometheus shows your targets ar
 Verify your Prometheus configuration and restart Prometheus.
 
 If you’re running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
-See the example Grafana configuration described in the Prometheus and Grafana setup for open-source Temporal Cluster.
+See the [example Grafana configuration](/kb/prometheus-grafana-setup) described in the Prometheus and Grafana setup for open-source Temporal Cluster.
 
 ## Grafana dashboards setup
 
