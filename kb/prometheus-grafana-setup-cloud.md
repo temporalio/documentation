@@ -27,7 +27,7 @@ The process for setting up observability includes the following steps:
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - [Global Admin privileges](/cloud#account-level-roles) to the Temporal Cloud account.
-- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud, and both the end-entity certificate and key when setting up this endpoint in Grafana for the Temporal Cloud metrics.
+- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud, and the end-entity certificate and key when setting up this endpoint in Grafana for the Temporal Cloud metrics.
 
 The following steps describe how to set up your Observability on Temporal Cloud to generate an endpoint:
 
@@ -35,7 +35,7 @@ The following steps describe how to set up your Observability on Temporal Cloud 
 2. Go to Settings and select Integrations.
 3. Select **Configure Observability** (if you’re setting it up for the first time) or click **Edit** (if it was already configured before).
 4. Add your root CA certificate (.pem) and save it.
-   Note that if an observability endpoint is already set up, you can append certificates here to use the generated observability endpoint with your instance of Grafana.
+   Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
 5. To test your endpoint, run the following command on your host:
    `curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"`.
    If you have Workflows running on a namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
@@ -47,7 +47,7 @@ See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#
 ## SDK metrics setup
 
 SDK metrics are emitted by SDK Clients used to start your Workers and to start, signal, or query your Workflow Executions.
-You must configure a Prometheus scrape endpoint to collect and aggregate your SDK metrics.
+You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 The [Metrics](/application-development/observability#metrics) section of the Observability guide details how to set this up for all supported SDKs.
 
 The following example uses the Java SDK to set the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK metrics.
@@ -148,13 +148,20 @@ import java.io.InputStream;
 
 To check whether your scrape endpoints are emitting metrics, run your code and go to [http://localhost:8077/metrics](http://localhost:8077/metrics) to verify that you see all the SDK metrics.
 
+You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions.
+
+For more examples on how to set up SDK metrics in other SDKs, see the metrics samples:
+
+- [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
+- [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
+
 ## Prometheus configuration for SDK metrics
 
-For Temporal SDKs, you must have Prometheus installed on your host and configured to listen on the scrape endpoints exposed in the application code.
+For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in the application code.
 
 For this example, you can run Prometheus locally or as a Docker container.
 In either case, ensure that you set the listen targets to the ports where you exposed your scrape endpoints.
-When running Prometheus locally, set your target address to port 8077, which we set in the SDK metrics setup example in your Prometheus configuration YAML file.
+When you run Prometheus locally, set your target address to port 8077 in your Prometheus configuration YAML file. (We set the scrape endopint to port 8077 in the [SDK metrics setup](#sdk-metrics-setup) example.)
 
 Example:
 
@@ -180,7 +187,7 @@ See the Prometheus documentation for more details on how you can run Prometheus 
 Note that Temporal Cloud exposes metrics through a Prometheus HTTP API endpoint (not a scrape endpoint) that can be configured as a data source in Grafana.
 The Prometheus configuration described here is for scraping metrics data on endpoints for SDK metrics only.
 
-To check whether Prometheus is receiving metrics from your SDK target, go to http://localhost:9090 and navigate to **Status&nbsp;> Targets**.
+To check whether Prometheus is receiving metrics from your SDK target, go to [http://localhost:9090](http://localhost:9090) and navigate to **Status&nbsp;> Targets**.
 The status of your target endpoint defined in your configuration appears here.
 
 ## Data sources configuration for Temporal Cloud and SDK metrics in Grafana
@@ -191,7 +198,7 @@ If you have installed and are running Grafana locally, go to [http://localhost:3
 
 You must configure your Temporal Cloud and SDK metrics data sources separately in Grafana.
 
-To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the previous section, do the following:
+To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the [Temporal Cloud metrics setup](#temporal-cloud-metrics-setup) section, do the following:
 
 1. Go to **Configuration&nbsp;> Data sources**.
 2. Select **Add data source&nbsp;> Prometheus**.
@@ -203,7 +210,7 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the 
 
 If you see issues in setting this data source, verify that your end-entity and root CA certificates are chained, and you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
 
-To add the SDK metrics Prometheus endpoint that we configured in the previous section, do the following:
+To add the SDK metrics Prometheus endpoint that we configured in the [SDK metrics setup](#sdk-metrics-setup) and [Prometheus configuration for SDK metrics](#prometheus-configuration-for-sdk-metrics) sections, do the following:
 
 1. Go to **Configuration&nbsp;> Data sources**.
 2. Select **Add data source&nbsp;> Prometheus**.
@@ -219,7 +226,7 @@ If you see metrics on the scrape endpoints, but Prometheus shows your targets ar
 Verify your Prometheus configuration and restart Prometheus.
 
 If you’re running Grafana as a container, you can set your SDK metrics Prometheus data source in your Grafana configuration.
-See the [example Grafana configuration](/kb/prometheus-grafana-setup) described in the Prometheus and Grafana setup for open-source Temporal Cluster.
+See the [example Grafana configuration](/kb/prometheus-grafana-setup) described in the Prometheus and Grafana setup for open-source Temporal Cluster KB article.
 
 ## Grafana dashboards setup
 
@@ -234,7 +241,7 @@ In this article, we will configure our dashboards using the UI.
 3. Add your metrics queries:
    - For Temporal Cloud metrics, expand the **Metrics browser** and select the metrics you want to see.
      You can also select associated labels and values to sort the data on the query.
-     The documentation on Cloud metrics describes metrics emitted from Temporal Cloud.
+     The documentation on [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics#available-performance-metrics) lists metrics emitted from Temporal Cloud.
    - For Temporal SDK metrics, expand the **Metrics browser** and select the metrics you want to see.
      A list of metrics on Worker performance are described in [Developer's Guide - Worker performance](/application-development/worker-performance).
      All metrics related to SDKs are described in the [SDK metrics](/references/sdk-metrics) reference.
