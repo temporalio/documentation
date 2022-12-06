@@ -1778,7 +1778,7 @@ interface FileProcessingActivities
 The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 </TabItem>
-<TabItem value="undefined">
+<TabItem value="python">
 
 You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the function name.
 
