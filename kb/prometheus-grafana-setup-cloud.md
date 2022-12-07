@@ -14,7 +14,7 @@ This article describes how to set up your Temporal Cloud and SDK metrics, and us
 
 The process for setting up observability includes the following steps:
 
-1. Get Prometheus endpoints for Temporal Cloud metrics and SDK metrics.
+1. Create or get your Prometheus endpoint for Temporal Cloud metrics and enable SDK metrics.
    - For Temporal Cloud, [generate a Prometheus HTTP API endpoint](#temporal-cloud-metrics-setup) on Temporal Cloud using valid certificates.
    - For SDKs, [expose a metrics endpoint](#sdk-metrics-setup) where Prometheus can scrape SDK metrics and [run Prometheus](#prometheus-configuration-for-sdk-metrics) on your host. The examples in this article describe running Prometheus on your local machine where you run your application code.
 2. Run Grafana and [set up data sources for Temporal Cloud and SDK metrics](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) in Grafana. The examples in this article describe running Grafana on your local host where you run your application code.
@@ -39,9 +39,9 @@ The following steps describe how to set up your Observability on Temporal Cloud 
 5. To test your endpoint, run the following command on your host:
    `curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"`.
    If you have Workflows running on a namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
-6. Copy the HTTP API endpoint that is generated (it shows on your UI).
+6. Copy the HTTP API endpoint that is generated (it is shown in the UI).
 
-This endpoint can be configured as the data source for Temporal Cloud metrics in Grafana.
+This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana.
 See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#data-sources-configuration-for-temporal-cloud-andssdk-metrics-in-grafana) for details.
 
 ## SDK metrics setup
