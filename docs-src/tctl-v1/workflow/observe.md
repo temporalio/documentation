@@ -17,7 +17,7 @@ Alias: `o`
 
 The following modifiers control the behavior of the command.
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
@@ -29,7 +29,7 @@ Alias: `-w`
 tctl workflow observe --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
@@ -41,7 +41,7 @@ Alias: `-r`
 tctl workflow observe --run_id <id>
 ```
 
-### `--show_detail`
+### --show_detail
 
 Show event details.
 
@@ -51,7 +51,7 @@ Show event details.
 tctl workflow observe --show_detail
 ```
 
-### `--max_field_length`
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 0.

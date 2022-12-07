@@ -11,13 +11,13 @@ tags:
 
 The `tctl admin workflow refresh_tasks` command updates all [Tasks](/tasks) in a [Workflow](/workflows), provided that the command can fetch new information for Tasks.
 
-#### `--workflow_id value`
+#### --workflow_id value
 
 Alias: `-w`
 
 The Id of the current Workflow.
 
-#### `--run_id value`
+#### --run_id value
 
 Alias: `-r`
 

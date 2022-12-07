@@ -20,7 +20,7 @@ See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listall
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw_time`
+### --print_raw_time
 
 Print the raw timestamp.
 
@@ -30,7 +30,7 @@ Print the raw timestamp.
 tctl workflow listarchived --print_raw_time
 ```
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
 
@@ -40,7 +40,7 @@ Print the timestamp.
 tctl workflow listarchived --print_datetime
 ```
 
-### `--print_memo`
+### --print_memo
 
 Print a memo.
 
@@ -50,7 +50,7 @@ Print a memo.
 tctl workflow listarchived --print_memo
 ```
 
-### `--print_search_attr`
+### --print_search_attr
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 
@@ -60,7 +60,7 @@ Print the [Search Attributes](/concepts/what-is-a-search-attribute).
 tctl workflow listarchived --print_search_attr
 ```
 
-### `--print_full`
+### --print_full
 
 Print the full message without table formatting.
 
@@ -70,7 +70,7 @@ Print the full message without table formatting.
 tctl workflow listarchived --print_full
 ```
 
-### `--print_json`
+### --print_json
 
 Print the raw JSON objects.
 
@@ -80,7 +80,7 @@ Print the raw JSON objects.
 tctl workflow listarchived --print_json
 ```
 
-### `--query`
+### --query
 
 Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
 
@@ -94,7 +94,7 @@ Alias: `-q`
 tctl workflow listarchived --query <value>
 ```
 
-### `--pagesize`
+### --pagesize
 
 Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
 (By default, the `tctl workflow listarchived` command lists 100 Workflow Executions per page.)
@@ -105,7 +105,7 @@ Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow
 tctl workflow listarchived --pagesize <value>
 ```
 
-### `--all`
+### --all
 
 List all pages.
 
