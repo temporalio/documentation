@@ -12,10 +12,35 @@ tags:
 Use the [WorkflowReplayer](https://www.javadoc.io/doc/io.temporal/temporal-testing/latest/io/temporal/testing/WorkflowReplayer.html)
 class in the `temporal-testing` package to replay Workflow Histories.
 
-In the following example, histories are downloaded from the server, and then replayed:
+In the following example, histories are downloaded from the server, and then replayed. Note that
+this requires advanced visibility to be enabled.
 
 ```java
-# TODO: Use list workflows API once it's ready
+// Note we assume you already have a WorkflowServiceStubs (`service`) and WorkflowClient (`client`)
+// in scope.
+ListWorkflowExecutionsRequest listWorkflowExecutionRequest =
+    ListWorkflowExecutionsRequest.newBuilder()
+        .setNamespace(client.getOptions().getNamespace())
+        .setQuery("TaskQueue = 'mytaskqueue'")
+        .build();
+ListWorkflowExecutionsResponse listWorkflowExecutionsResponse =
+    service.blockingStub().listWorkflowExecutions(listWorkflowExecutionRequest);
+List<WorkflowExecutionHistory> histories =
+    listWorkflowExecutionsResponse.getExecutionsList().stream()
+        .map(
+            (info) -> {
+              GetWorkflowExecutionHistoryResponse weh =
+                  service.blockingStub().getWorkflowExecutionHistory(
+                      GetWorkflowExecutionHistoryRequest.newBuilder()
+                          .setNamespace(testEnvironment.getNamespace())
+                          .setExecution(info.getExecution())
+                          .build());
+              return new WorkflowExecutionHistory(
+                  weh.getHistory(), info.getExecution().getWorkflowId());
+            })
+        .collect(Collectors.toList());
+
+
 WorkflowReplayer.replayWorkflowExecutions(
     histories, true, WorkflowA.class, WorkflowB.class, WorkflowC.class);
 ```
