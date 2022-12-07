@@ -259,14 +259,20 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum pending Activity limit.
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities.
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows and Signals.
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/53f46157728224a4f62b66d474724a346d7c8405/service/history/configs/config.go):
 
+- `NumPendingChildExecutionsLimit`
+- `NumPendingActivitiesLimit`
+- `NumPendingSignals`
+- `NumPendingCancelRequestsLimit`
+
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
 Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
 
 :::note
 
-Cloud users are limited to 2,000 each of: pending Activities, Child Workflows, external Workflows, and Signals.
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
 
 :::
 
@@ -304,7 +310,7 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-[There is a hard limit of 50,000 Events](/concepts/what-is-a-workflow-execution/#limits) in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+A Workflow Execution Event History has [a hard limit of 50,000 Events](/concepts/what-is-a-workflow-execution/#limits), as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
 
 When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
