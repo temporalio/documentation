@@ -30,7 +30,7 @@ Here is a list of many hard (error) or soft (warn) limits that you could encount
 
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 
-  - We fail the following Commands at 50,000 for OSS (Cloud will fail at 2,000):
+  - We fail the following Commands at 50,000 for OSS and at 2,000 for Temporal Cloud:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
