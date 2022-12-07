@@ -139,6 +139,6 @@ Similar constraints are enforced for `SignalExternalWorkflowExecution`, `Request
 
 :::note
 
-Cloud users are limited to 2,000 each of: pending Activities, Child Workflows, external Workflows, and Signals.
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
 
 :::
