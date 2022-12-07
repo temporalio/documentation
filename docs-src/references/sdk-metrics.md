@@ -15,7 +15,8 @@ All metrics are prefixed with `temporal_` before being exported to their configu
 (The prefix has been removed in the following reference.)
 Currently, some metrics are specific to certain SDKs.
 
-Metrics are defined in the following locations (The Typescript and Python SDK metrics are defined in the Core SDK and PHP SDK metrics are defined in the Go SDK):
+Metrics are defined in the following locations.
+(Typescript and Python SDK metrics are defined in the Core SDK, and PHP SDK metrics are defined in the Go SDK.)
 
 - [Core SDK Worker metrics](https://github.com/temporalio/sdk-core/blob/master/core/src/telemetry/metrics.rs)
 - [Core SDK Client metrics](https://github.com/temporalio/sdk-core/blob/master/client/src/metrics.rs)
