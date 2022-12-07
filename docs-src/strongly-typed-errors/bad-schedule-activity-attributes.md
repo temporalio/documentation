@@ -8,7 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that there are missing or incorrect ScheduleActivity attributes.
+This error indicates unset or invalid attributes for `ScheduleActivityTask` or `CompleteWorkflowExecution`.
 
-If you encounter this error, make sure that `StartToClostTimeout` or `ScheduleToCloseTimeout` are set.
-Restart the Worker that the Workflow and Activity are registered to.
+<!-- TODO: steps for unset attributes and too big values -->

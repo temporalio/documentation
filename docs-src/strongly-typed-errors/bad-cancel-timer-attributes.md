@@ -10,4 +10,5 @@ tags:
 
 This error indicates that the Workflow Task failed while attempting to cancel a Timer.
 
-Check your Timer attributes for a missing Timer Id value, and retry the Event.
+Check your Timer attributes for a missing Timer Id value.
+Add a valid Timer Id and retry the Task.
