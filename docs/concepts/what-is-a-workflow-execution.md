@@ -129,8 +129,6 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 
 ### Limits
 
-When executing Commands, Temporal allocates resources that get released once a Workflow Task has completed or terminated.
-
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
