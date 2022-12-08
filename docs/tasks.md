@@ -34,7 +34,7 @@ A Workflow Task Execution occurs when a <a class="tdlp" href="/workers#worker-en
 
 ## Activity Task
 
-An Activity Task contains the context needed to proceed with an <a class="tdlp" href="#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="#activity-task-execution">Learn more</a></p></div></a>.
+An Activity Task contains the context needed to proceed with an <a class="tdlp" href="#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="#activity-task-execution">Learn more</a></p></div></a>.
 Activity Tasks largely represent the Activity Task Scheduled Event, which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.

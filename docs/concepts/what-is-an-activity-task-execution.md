@@ -2,7 +2,7 @@
 id: what-is-an-activity-task-execution
 title: What is an Activity Task Execution?
 sidebar_label: Activity Task Execution
-description: An Activity Task Execution is the execution of an Activity Type.
+description: An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.
 tags:
   - term
   - explanation
