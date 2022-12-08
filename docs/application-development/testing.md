@@ -978,11 +978,21 @@ TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://m
 ## Replay
 
 Replay recreates the exact state of a Workflow Execution.
-You can replay a Workflow from the beginning of its history when resumed.
+You can replay a Workflow from the beginning of its history.
 
-Replay allows code to resume only if it is compatible from a deterministic point of view.
+Replay only succeeds if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></p></div></a> is
+compatible with the provided history from a deterministic point of view.
 
-To retrieve the Workflow History, use any of the following options and then pass the object to your SDK of choice.
+An advisable approach to testing changes to your Workflow Definitions is to do the following as
+part of your CI checks:
+
+1. Determine what Workflow Types and/or Task Queues will be targeted by the Worker code under test
+2. Download the histories of a representative set of recent open and closed workflows from that Task
+   Queue, either programmatically using the SDK client, or via `tctl`.
+3. Run the histories through replay
+4. Fail CI if there is any error encountered during replay
+
+What follow are some examples of fetching and replaying histories:
 
 <Tabs
 defaultValue="go"
@@ -1045,10 +1055,58 @@ The code above will cause the Worker to re-execute the Workflow's Workflow Funct
 If a noticeably different code path was followed or some code caused a deadlock, it will be returned in the error code.
 Replaying a Workflow Execution locally is a good way to see exactly what code path was taken for given input and events.
 
+You can replay many histories by registering all the needed workflow implementation, and then
+calling `ReplayWorkflowHistory` repeatedly.
+
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Use the [WorkflowReplayer](https://www.javadoc.io/doc/io.temporal/temporal-testing/latest/io/temporal/testing/WorkflowReplayer.html)
+class in the `temporal-testing` package to replay Workflow Histories.
+
+In the following example, histories are downloaded from the server, and then replayed. Note that
+this requires advanced visibility to be enabled.
+
+```java
+// Note we assume you already have a WorkflowServiceStubs (`service`) and WorkflowClient (`client`)
+// in scope.
+ListWorkflowExecutionsRequest listWorkflowExecutionRequest =
+    ListWorkflowExecutionsRequest.newBuilder()
+        .setNamespace(client.getOptions().getNamespace())
+        .setQuery("TaskQueue = 'mytaskqueue'")
+        .build();
+ListWorkflowExecutionsResponse listWorkflowExecutionsResponse =
+    service.blockingStub().listWorkflowExecutions(listWorkflowExecutionRequest);
+List<WorkflowExecutionHistory> histories =
+    listWorkflowExecutionsResponse.getExecutionsList().stream()
+        .map(
+            (info) -> {
+              GetWorkflowExecutionHistoryResponse weh =
+                  service.blockingStub().getWorkflowExecutionHistory(
+                      GetWorkflowExecutionHistoryRequest.newBuilder()
+                          .setNamespace(testEnvironment.getNamespace())
+                          .setExecution(info.getExecution())
+                          .build());
+              return new WorkflowExecutionHistory(
+                  weh.getHistory(), info.getExecution().getWorkflowId());
+            })
+        .collect(Collectors.toList());
+
+
+WorkflowReplayer.replayWorkflowExecutions(
+    histories, true, WorkflowA.class, WorkflowB.class, WorkflowC.class);
+```
+
+In the next example, a single history is loaded from a JSON file on disk:
+
+```java
+File file = new File("my_history.json");
+WorkflowReplayer.replayWorkflowExecution(file, MyWorkflow.class);
+```
+
+In both examples if Workflow History is non-deterministic, an error will be thrown. You can choose
+to wait until all histories have been replayed with `replayWorkflowExecutions` by setting the `failFast`
+argument to `false`.
 
 </TabItem>
 <TabItem value="php">
@@ -1058,17 +1116,35 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To replay a Workflow Execution, use the [`replay_workflow()`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) method and pass a Workflow History as an argument.
+To replay Workflow Executions, use the
+[`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows)
+or
+[`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow)
+methods, passing multiple or one Workflow Histories as arguments.
 
-In the following example, `history_json_str` references the Workflow History as a JSON string.
+In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
+histories are downloaded from the server, then replayed. The code will raise an exception if any
+replay fails.
 
 ```python
-async def run_replayer(history_json_str: str):
-    replayer = Replayer(workflows=[YourWorkflow])
-    await replayer.replay_workflow(history_json_str)
+workflows = client.list_workflows(f"TaskQueue=foo and StartTime > '2022-01-01T12:00:00'")
+histories = workflows.map_histories()
+replayer = Replayer(
+    workflows=[MyWorkflowA, MyWorkflowB, MyWorkflowC]
+)
+await replayer.replay_workflows(histories)
 ```
 
-If the Workflow History is non-deterministic, `run_replayer()` raises an error.
+In the next example, a single history is loaded from a JSON string:
+
+```python
+replayer = Replayer(workflows=[YourWorkflow])
+await replayer.replay_workflow(WorkflowHistory.from_json(history_json_str))
+```
+
+In both examples if Workflow History is non-deterministic, an error will be thrown. You can choose
+to wait until all histories have been replayed with `replay_workflows` by setting the `fail_fast`
+option to `false`.
 
 :::note
 
@@ -1079,7 +1155,45 @@ If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tc
 </TabItem>
 <TabItem value="typescript">
 
-Retrieve Event History with [`WorkflowService.getWorkflowExecutionHistory`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#getworkflowexecutionhistory).
+Use [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories)
+or [worker.runReplayHistory](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistory)
+to replay multiple or one Workflow Histories.
+
+In all examples if Workflow History is non-deterministic, a
+[`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/)
+will be thrown.
+
+In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
+histories are downloaded from the server and then replayed by passing in a client and a set of
+executions. The code will throw an exception if any replay fails.
+
+```ts
+const executions = client.workflow.list({
+  query: 'TaskQueue=foo and StartTime > "2022-01-01T12:00:00"',
+});
+const histories = executions.intoHistories();
+await Worker.runReplayHistories(
+  {
+    workflowsPath: require.resolve('./your/workflows'),
+  },
+  histories,
+);
+```
+
+In the next example, a single history is loaded from a JSON file on disk:
+
+```ts
+const filePath = './history_file.json';
+const hist = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
+await Worker.runReplayHistory(
+  {
+    workflowsPath: require.resolve('./your/workflows'),
+  },
+  hist,
+);
+```
+
+Here, we show downloading a history and replaying it separately:
 
 <!--SNIPSTART typescript-history-get-workflowhistory-->
 
@@ -1116,8 +1230,6 @@ await Worker.runReplayHistory(
 ```
 
 <!--SNIPEND-->
-
-If the Workflow code isn’t compatible with the Event History, `runReplayHistory` throws a [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/).
 
 </TabItem>
 </Tabs>
