@@ -4,7 +4,7 @@ title: How to define a Signal in PHP
 sidebar_label: Define a Signal
 ---
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous [Queries](/app-dev-context/queries) and receive [Signals](/app-dev-context/signals).
 
 All interface methods must have one of the following annotations:
 
