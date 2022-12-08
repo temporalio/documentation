@@ -8,7 +8,8 @@ date: 2022-12-02T00:00:00Z
 
 Temporal Cloud and SDKs emit metrics that can be used to monitor performance and troubleshoot errors.
 
-While Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, the open-source SDKs require you to set up a Prometheus scrape endpoint for Prometheus to collect and aggregate the Worker and Client metrics.
+Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/) which can be used to query and export Cloud metrics to any observability platform.
+The open-source SDKs require you to set up a Prometheus scrape endpoint for Prometheus to collect and aggregate the Worker and Client metrics.
 
 This article describes how to set up your Temporal Cloud and SDK metrics, and use them as data sources in Grafana.
 
@@ -20,6 +21,12 @@ The process for setting up observability includes the following steps:
 2. Run Grafana and [set up data sources for Temporal Cloud and SDK metrics](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) in Grafana. The examples in this article describe running Grafana on your local host where you run your application code.
 3. [Create dashboards](#grafana-dashboards-setup) in Grafana to view Temporal Cloud metrics and SDK metrics.
 
+If you're following through with the examples provided here, ensure that you have the following:
+
+- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
+- Set up your connections to Temporal Cloud using an SDK of your choice, and have some Workflows running on Temporal Cloud. See [Connect to a Cluster](application-development/foundations#connect-to-a-cluster) for details.
+- Prometheus and Grafana installed.
+
 <!-- truncate -->
 
 ## Temporal Cloud metrics setup
@@ -27,18 +34,18 @@ The process for setting up observability includes the following steps:
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - [Global Admin privileges](/cloud#account-level-roles) to the Temporal Cloud account.
-- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud, and the end-entity certificate and key when setting up this endpoint in Grafana for the Temporal Cloud metrics.
+- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
-The following steps describe how to set up your Observability on Temporal Cloud to generate an endpoint:
+The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 
 1. Log in to Temporal Cloud UI as a Global Admin.
-2. Go to Settings and select Integrations.
-3. Select **Configure Observability** (if you’re setting it up for the first time) or click **Edit** (if it was already configured before).
+2. Go to **Settings** and select **Integrations**.
+3. Select **Configure Observability** (if you’re setting it up for the first time) or click **Edit** in the Observability section (if it was already configured before).
 4. Add your root CA certificate (.pem) and save it.
    Note that if an observability endpoint is already set up, you can append your root CA certificate here to use the generated observability endpoint with your instance of Grafana.
 5. To test your endpoint, run the following command on your host:
    `curl -v --cert <path to your client-cert.pem> --key <path to your client-cert.key> "<your generated Temporal Cloud prometheus_endpoint>/api/v1/query?query=temporal_cloud_v0_state_transition_count"`.
-   If you have Workflows running on a namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
+   If you have Workflows running on a Namespace in your Temporal Cloud instance, you should see some data as a result of running this command.
 6. Copy the HTTP API endpoint that is generated (it is shown in the UI).
 
 This endpoint should be configured as a data source for Temporal Cloud metrics in Grafana.
@@ -150,17 +157,17 @@ To check whether your scrape endpoints are emitting metrics, run your code and g
 
 You can set up separate scrape endpoints in your Clients that you use to start your Workers and Workflow Executions.
 
-For more examples on how to set up SDK metrics in other SDKs, see the metrics samples:
+For more examples on setting metrics endpoints in other SDKs, see the metrics samples:
 
 - [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics)
 - [Go SDK Samples](https://github.com/temporalio/samples-go/tree/main/metrics)
 
 ## Prometheus configuration for SDK metrics
 
-For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in the application code.
+For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in your application code.
 
 For this example, you can run Prometheus locally or as a Docker container.
-In either case, ensure that you set the listen targets to the ports where you exposed your scrape endpoints.
+In either case, ensure that you set the listen targets to the ports where you expose your scrape endpoints (localhost:8077 in the previous example).
 When you run Prometheus locally, set your target address to port 8077 in your Prometheus configuration YAML file. (We set the scrape endopint to port 8077 in the [SDK metrics setup](#sdk-metrics-setup) example.)
 
 Example:
@@ -205,10 +212,10 @@ To add the Temporal Cloud Prometheus HTTP API endpoint that we generated in the 
 3. Enter a name for your Temporal Cloud metrics data source, such as _Temporal Cloud metrics_.
 4. In the **HTTP section**, paste the URL that was generated in the Observability section on the Temporal Cloud UI.
 5. In the **Auth section**, enable **TLS Client Auth**.
-6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key. Note that the end-entity certificate used here must chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
+6. In the **TLS/SSL Auth Details** section, paste the end-entity certificate and key. Note that the end-entity certificate used here must be part of the certificate chain with the root CA certificates used in your [Temporal Cloud observability setup](#temporal-cloud-metrics-setup).
 7. Select **Save and test** to ensure the data source is working properly.
 
-If you see issues in setting this data source, verify that your end-entity and root CA certificates are chained, and you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
+If you see issues in setting this data source, verify your CA certificate chain, and that you are setting the correct certificates in your Temporal Cloud observability setup and in the TLS authentication in Grafana.
 
 To add the SDK metrics Prometheus endpoint that we configured in the [SDK metrics setup](#sdk-metrics-setup) and [Prometheus configuration for SDK metrics](#prometheus-configuration-for-sdk-metrics) sections, do the following:
 
@@ -255,5 +262,5 @@ To import a dashboard in Grafana, do the following.
 
 1. Go to **Create&nbsp;> Import**.
 2. You can either copy and paste the JSON from [Temporal Cloud](https://github.com/temporalio/dashboards/tree/master/cloud) and [Temporal SDKs](https://github.com/temporalio/dashboards/tree/master/sdk) sample dashboards, or import the JSON files into Grafana.
-   Ensure that you update dashboard data sources (`"uid": "${datasource}"`) in the JSON to the names you configured in the [Data sources configuration](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) section.
+   If you import a dashboard from the repositories, ensure that you update dashboard data sources (`"uid": "${datasource}"`) in the JSON to the names you configured in the [Data sources configuration](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) section.
 3. Save the dashboard and review the metrics data in the graphs.
