@@ -568,6 +568,8 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
+- [How to set a Cron Schedule](/application-development/features#temporal-cron-jobs)
+
 <div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" /></div></div>
 
 A Temporal Cron Job is similar to a classic unix cron job.
@@ -664,13 +666,6 @@ A Temporal Cron Job does not stop spawning Runs until it has been Terminated or 
 A Cancellation Request affects only the current Run.
 
 Use the Workflow Id in any requests to Cancel or Terminate.
-
-**Implementation guides:**
-
-- [How to set a Cron Schedule in Go](/go/startworkflowoptions-reference/#cronschedule)
-- [How to set a Cron Schedule in Java](/java/reference-workflowoptions/#cronschedule)
-- [How to set a Cron Schedule in PHP](/php/distributed-cron)
-- [How to set a Cron Schedule in Typescript](/typescript/clients)
 
 ## Schedule
 
