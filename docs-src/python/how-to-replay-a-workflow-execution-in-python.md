@@ -9,15 +9,10 @@ tags:
   - python
 ---
 
-To replay Workflow Executions, use the
-[`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows)
-or
-[`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow)
-methods, passing multiple or one Workflow Histories as arguments.
+To replay Workflow Executions, use the [`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows) or [`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) methods, passing one or more Event Histories as arguments.
 
-In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
-histories are downloaded from the server, then replayed. The code will raise an exception if any
-replay fails.
+In the following example (which, as of server v1.18, requires Advanced Visibility to be enabled), Event Histories are downloaded from the server and then replayed.
+If any replay fails, the code raises an exception.
 
 ```python
 workflows = client.list_workflows(f"TaskQueue=foo and StartTime > '2022-01-01T12:00:00'")
@@ -35,9 +30,8 @@ replayer = Replayer(workflows=[YourWorkflow])
 await replayer.replay_workflow(WorkflowHistory.from_json(history_json_str))
 ```
 
-In both examples if Workflow History is non-deterministic, an error will be thrown. You can choose
-to wait until all histories have been replayed with `replay_workflows` by setting the `fail_fast`
-option to `false`.
+In both examples, if Event History is non-deterministic, an error is thrown.
+You can choose to wait until all histories have been replayed with `replay_workflows` by setting the `fail_fast` option to `false`.
 
 :::note
 

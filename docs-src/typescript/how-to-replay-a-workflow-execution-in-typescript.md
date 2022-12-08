@@ -9,9 +9,7 @@ tags:
   - typescript
 ---
 
-Use [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories)
-or [worker.runReplayHistory](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistory)
-to replay multiple or one Workflow Histories.
+To replay one or more Event Histories, use [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) or [worker.runReplayHistory](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistory).
 
 In all examples if Workflow History is non-deterministic, a
 [`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/)

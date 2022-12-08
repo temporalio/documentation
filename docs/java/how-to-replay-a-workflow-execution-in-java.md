@@ -9,11 +9,10 @@ tags:
   - java
 ---
 
-Use the [WorkflowReplayer](https://www.javadoc.io/doc/io.temporal/temporal-testing/latest/io/temporal/testing/WorkflowReplayer.html)
-class in the `temporal-testing` package to replay Workflow Histories.
+To replay Workflow Executions, use the [WorkflowReplayer](https://www.javadoc.io/doc/io.temporal/temporal-testing/latest/io/temporal/testing/WorkflowReplayer.html) class in the `temporal-testing` package.
 
-In the following example, histories are downloaded from the server, and then replayed. Note that
-this requires advanced visibility to be enabled.
+In the following example, Event Histories are downloaded from the server, and then replayed.
+Note that this requires Advanced Visibility to be enabled.
 
 ```java
 // Note we assume you already have a WorkflowServiceStubs (`service`) and WorkflowClient (`client`)
@@ -52,6 +51,5 @@ File file = new File("my_history.json");
 WorkflowReplayer.replayWorkflowExecution(file, MyWorkflow.class);
 ```
 
-In both examples if Workflow History is non-deterministic, an error will be thrown. You can choose
-to wait until all histories have been replayed with `replayWorkflowExecutions` by setting the `failFast`
-argument to `false`.
+In both examples, if Event History is non-deterministic, an error is thrown.
+You can choose to wait until all histories have been replayed with `replayWorkflowExecutions` by setting the `failFast` argument to `false`.
