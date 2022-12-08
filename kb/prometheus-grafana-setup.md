@@ -47,35 +47,35 @@ The [docker-compose setup](https://github.com/temporalio/docker-compose/blob/0bc
 
 Here’s an example of how to expose a Prometheus endpoint on your local docker-compose Temporal Cluster configuration:
 
-```
+```yaml {20,26}
 version: "3.5"
 services:
-#...
+  #...
 
   temporal:
-   container_name: temporal
-   depends_on:
-     - postgresql
-     - elasticsearch
-   environment:
-     - DB=postgresql
-     - DB_PORT=5432
-     - POSTGRES_USER=temporal
-     - POSTGRES_PWD=temporal
-     - POSTGRES_SEEDS=postgresql
-     - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
-     - ENABLE_ES=true
-     - ES_SEEDS=elasticsearch
-     - ES_VERSION=v7
-     - PROMETHEUS_ENDPOINT=0.0.0.0:8000 #expose a port for Prometheus
-   image: temporalio/auto-setup:${TEMPORAL_VERSION}
-   networks:
-     - temporal-network
-   ports:
-     - 7233:7233
-     - 8000:8000 #add your port
-   volumes:
-     - ./dynamicconfig:/etc/temporal/config/dynamicconfig
+    container_name: temporal
+    depends_on:
+      - postgresql
+      - elasticsearch
+    environment:
+      - DB=postgresql
+      - DB_PORT=5432
+      - POSTGRES_USER=temporal
+      - POSTGRES_PWD=temporal
+      - POSTGRES_SEEDS=postgresql
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
+      - ENABLE_ES=true
+      - ES_SEEDS=elasticsearch
+      - ES_VERSION=v7
+      - PROMETHEUS_ENDPOINT=0.0.0.0:8000 #expose a port for Prometheus
+    image: temporalio/auto-setup:${TEMPORAL_VERSION}
+    networks:
+      - temporal-network
+    ports:
+      - 7233:7233
+      - 8000:8000 #add your port
+    volumes:
+      - ./dynamicconfig:/etc/temporal/config/dynamicconfig
 #...
 ```
 
