@@ -170,7 +170,7 @@ For more examples on setting metrics endpoints in other SDKs, see the metrics sa
 For Temporal SDKs, you must have Prometheus running and configured to listen on the scrape endpoints exposed in your application code.
 
 For this example, you can run Prometheus locally or as a Docker container.
-In either case, ensure that you set the listen targets to the ports where you expose your scrape endpoints (localhost:8077 in the previous example).
+In either case, ensure that you set the listen targets to the ports where you expose your scrape endpoints (port 8077 in the previous example).
 When you run Prometheus locally, set your target address to port 8077 in your Prometheus configuration YAML file. (We set the scrape endopint to port 8077 in the [SDK metrics setup](#sdk-metrics-setup) example.)
 
 Example:
