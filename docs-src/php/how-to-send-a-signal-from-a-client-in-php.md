@@ -31,4 +31,4 @@ $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workfl
 $workflow->setValue(true);
 ```
 
-See [Handle Signals](/app-dev-context/handle-signal) for details on how to handle Signals in a Workflow.
+See [Handle Signal](/app-dev-context/handle-signal) for details on how to handle Signals in a Workflow.

@@ -10,7 +10,7 @@ tags:
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-- [How to set a Cron Schedule](/application-development/features#cron-jobs)
+- [How to set a Cron Schedule](/application-development/features#temporal-cron-jobs)
 
 ![Temporal Cron Job timeline](/diagrams/temporal-cron-job.svg)
 

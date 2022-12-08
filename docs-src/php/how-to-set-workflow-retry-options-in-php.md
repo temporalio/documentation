@@ -21,4 +21,3 @@ $workflow = $this->workflowClient->newWorkflowStub(
 );
 ```
 
-For more detailed information about `RetryOptions` object see [retries](/app-dev-context/workflow-retries) for more details.
