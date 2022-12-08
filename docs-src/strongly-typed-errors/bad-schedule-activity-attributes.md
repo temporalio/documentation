@@ -10,4 +10,5 @@ tags:
 
 This error indicates unset or invalid attributes for `ScheduleActivityTask` or `CompleteWorkflowExecution`.
 
-<!-- TODO: steps for unset attributes and too big values -->
+Reset any unset or empty attributes.
+Adjust the size of the received payload to stay within the given size limit.

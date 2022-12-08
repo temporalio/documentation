@@ -9,3 +9,5 @@ tags:
 ---
 
 The capacity for pending Signals to be sent from this Workflow has been reached.
+
+Wait for Signals to be processed before retrying the Task.

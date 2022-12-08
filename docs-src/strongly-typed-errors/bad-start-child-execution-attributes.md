@@ -9,3 +9,7 @@ tags:
 ---
 
 This error indicates that the Workflow Task failed to validate attributes for `StartChildWorkflowExecution`.
+
+Adjust the input size of the attributes to fall within the system's size limits.
+
+Make sure that Search Attribute validation is performed after unaliasing keys.

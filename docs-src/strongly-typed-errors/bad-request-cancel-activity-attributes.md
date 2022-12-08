@@ -8,11 +8,9 @@ tags:
   - strongly-typed
 ---
 
-<!--TODO: ADD TOO BIG CAUSE -->
+This error either indicates the possibility of unset attributes for `RequestCancelActivity`, or an invalid History Builder state.
 
-An invalid history builder state is preventing the Activity from canceling.
+Update the Temporal SDK to the most recent release.
+Reset any unset attributes before retrying the Task.
 
-<!-- TODO: ASK ABOUT TROUBLESHOOTING -->
-
-If needed, update the Temporal SDK.
-Review your Workflow logic for nondeterministic code.
+If you continue to see this error, review your code for nondeterministic causes.

@@ -8,5 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Worker deployment was marked as bad binary.
-Therefore, the system must fail the Workflow Task.
+This error indicates that the Worker deployment returned a bad binary checksum.
+
+<!-- TODO: get more information about binary -->

@@ -20,9 +20,9 @@ Add a valid Timer Id and retry the Task.
 
 ## Bad Cancel Workflow Execution Attributes
 
-The Workflow Task failed due to an unset CancelWorkflowExecution attribute.
+The Workflow Task failed due to unset CancelWorkflowExecution attributeS.
 
-<!--TODO: add steps -->
+Reset any missing attributes and run the Workflow Task again.
 
 ## Bad Complete Workflow Execution Attributes
 
@@ -33,10 +33,13 @@ Adjust the size of your payload if it exceeds size limits.
 
 ## Bad Continue as New Attributes
 
-This error indicates that the Workflow Task failed to validate on a `ContinueAsNew attribute.
-The attribute could also be unset.
+This error indicates that the Workflow Task failed to validate a `ContinueAsNew` attribute.
+The attribute could be unset or invalid.
 
-<!--TODO: add troubleshooting -->
+Reset and missing attributes.
+If the payload or memo exceeded size limits, adjust the input size.
+
+Check that the Workflow is validating search attributes after unaliasing keys.
 
 ## Bad Fail Workflow Execution Attributes
 
@@ -47,9 +50,11 @@ Restart the Worker that the Workflow and Activity are registered to.
 
 ## Bad Modify Workflow Properties Attributes
 
-This error indicastes that the Workflow Task failed to validate attributes on a property in the Upsert Memo.
+This error indicastes that the Workflow Task failed to validate attributes on a property in the Upsert Memo or in a payload.
+These attributes are either unset or exceeding size limits.
 
-<!--TODO: add troubleshooting -->
+Reset any unset and empty atrributes.
+Adjust the size of the Memo or payload to fit within the system's limits.
 
 ## Bad Record Marker Attributes
 
@@ -59,51 +64,59 @@ Enter a valid Marker name and retry the Task.
 
 ## Bad Request Cancel Activity Attributes
 
-<!--TODO: ADD TOO BIG CAUSE -->
+This error either indicates the possibility of unset attributes for `RequestCancelActivity`, or an invalid History Builder state.
 
-An invalid history builder state is preventing the Activity from canceling.
+Update the Temporal SDK to the most recent release.
+Reset any unset attributes before retrying the Task.
 
-<!-- TODO: ASK ABOUT TROUBLESHOOTING -->
-
-If needed, update the Temporal SDK.
-Review your Workflow logic for nondeterministic code.
+If you continue to see this error, review your code for nondeterministic causes.
 
 ## Bad Request Cancel External Workflow Execution
 
-This error indicates that the Workflow Task failed while trying to cancel an external Workflow, either from invalid or unset event attributes.
+This error indicates that the Workflow Task failed while trying to cancel an external Workflow.
+Unset or invalid attributes can cause this to occur.
 
-<!--TODO: add troubleshooting -->
+Reset any missing attributes, such as Workflow Id or Run Id.
+Adjust any fields that exceed length limits.
+
+If a Child Workflow is set to `Start` and `RequestCancel`, remove one of these attributes.
+A Child Workflow cannot perform both actions in the same Workflow Task.
 
 ## Bad Schedule Activity Attributes
 
 This error indicates unset or invalid attributes for `ScheduleActivityTask` or `CompleteWorkflowExecution`.
 
-<!-- TODO: steps for unset attributes and too big values -->
+Reset any unset or empty attributes.
+Adjust the size of the received payload to stay within the given size limit.
 
 ## Bad Search Attributes
 
-This error indicates that the Workflow Task is either missing or exceeding a set limit.
+This error indicates that the Workflow Task has unset or invalid Search Attributes.
 This can cause Workflow Tasks to continue to retry without success.
 
-<!--TODO: add troubleshooting -->
+Make sure that all attributes are defined before retrying the Task.
+Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size
 
 This error indicates that the Payload has exceeded the Signal's available input size.
 
-<!--TODO: add troubleshooting -->
+Adjust the size of the Payload, and retry the Task.
 
 ## Bad Signal Workflow Execution Attributes
 
 This error indicates that the Workflow Task failed to validate attributes for `SignalWorkflowExecution`.
 
-<!--TODO: add troubleshooting -->
+Reset any unset, missing, nil, or invalid attributes.
+Adjust the input to fit within the system's size limits.
 
 ## Bad Start Child Execution Attributes
 
 This error indicates that the Workflow Task failed to validate attributes for `StartChildWorkflowExecution`.
 
-<!--TODO: add troubleshooting -->
+Adjust the input size of the attributes to fall within the system's size limits.
+
+Make sure that Search Attribute validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes
 
@@ -111,20 +124,17 @@ This error indicates that the scheduled Event is missing a Timer Id.
 
 Set a valid Timer Id and retry the Task.
 
-<!--TODO: add troubleshooting -->
-
 ## Cause Bad Binary
 
-This error indicates that the Worker deployment was marked as bad binary.
-Therefore, the system must fail the Workflow Task.
+This error indicates that the Worker deployment returned a bad binary checksum.
 
-<!--TODO: add troubleshooting -->
+<!-- TODO: get more information about binary -->
 
 ## Cause Reset Workflow
 
 This error indicates that the Workflow Task failed due to a request to reset the Workflow.
 
-<!--TODO: add troubleshooting -->
+If the system hasn't started a new Workflow, manually reset the Workflow.
 
 ## Cause Unspecified
 
@@ -137,47 +147,46 @@ If you see this error, file a bug report here.
 ## Failover Close Command
 
 This error indicates that a Namespace failover forced the Workflow Task to close.
+The system automatically schedules a retry when this error occurs.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: troubleshooting -->
 
 ## Force Close Command
 
 This error indicates that the Workflow Task was forced to close.
 A retry will be scheduled if the error is recoverable.
 
-<!--TODO: add troubleshooting -->
+<!-- TODO: more info-->
 
 ## Non-Deterministic Error
 
 The Workflow Task failed due to a nondeterministic error.
 
-<!--TODO: add troubleshooting -->
+<!-- TODO: info -->
 
 ## Pending Activities Limit Exceeded
 
-The Workflow has reached the maximum number of pending Activities.
-The Workflow Task was failed to prevent the creation of more Activities.
+This error indicates that the Workflow Task was failed to prevent more Activities from being created.
 
-<!--TODO: add troubleshooting -->
+Let the Workflow complete any current Activities before trying to run this Task again.
 
 ## Pending Child Workflows Limit Exceeded
 
-This error indicates that the maximum number of Child Workflows has been reached.
-The Workflow Task was failed to prevent any more Child Workflows from being added.
+This error indicates that the Workflow Task was failed to prevent the creation of more Child Workflows.
 
-<!--TODO: add troubleshooting -->
+Wait for the system to finish any currently running Child Workflows before retrying this Task.
 
 ## Pending Request Cancel Limit Exceeded
 
-The capacity for pending `CancelWorkflow` requests has been reached.
+This error indicates that the capacity for pending `CancelWorkflow` requests has been reached.
 
-<!--TODO: add troubleshooting -->
+If you see this error, give the system time to process pending requests before retrying the Task.
 
 ## Pending Signals Limit Exceeded
 
 The capacity for pending Signals to be sent from this Workflow has been reached.
 
-<!--TODO: add troubleshooting -->
+Wait for Signals to be processed before retrying the Task.
 
 ## Reset Sticky Task Queue
 
@@ -190,44 +199,45 @@ The system will retry automatically.
 
 This error indicates that the concurrent poller count has been reached.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: more info needed -->
+
+Adjust the poller count per Worker.
 
 ## Resource Exhausted Cause Persistence Limit
 
 This error indicates that the persistence rate limit has been reached.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: more info needed -->
 
 ## Resource Exhausted Cause RPS Limit
 
 This error indicates that the Workflow has reached its RPS limit.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: more info needed -->
 
 ## Resource Exhausted Cause System Overload
 
 This error indicates that the system is overloaded and cannot allocate further resources to Workflow Tasks.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: more info needed -->
 
 ## Resource Exhausted Cause Unspecified
 
 This error indicates that an unknown cause is preventing resources from being allocated to further Workflow Tasks.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: more info needed -->
 
 ## Schedule Activity Duplicate Id
 
 This error indicates that the Activity Id is already in use.
 
-<!--TODO: add troubleshooting -->
+Enter another Activity Id, and try running the Workflow Task again.
 
 ## Start Timer Duplicate Id
 
 This error indicates that a Timer with the given Timer Id has already started.
-Therefore, the Workflow Task failed.
 
-<!--TODO: add troubleshooting -->
+Try entering a different Timer Id, and retry the Workflow Task.
 
 ## Unhandled Command
 
@@ -248,4 +258,5 @@ The Workflow may have been picked up by a different Worker.
 
 This error indicates that the Workflow Task encountered an unhandled failure from the Workflow Definition.
 
-<!--TODO: add troubleshooting -->
+<!--TODO: more info needed -->
+

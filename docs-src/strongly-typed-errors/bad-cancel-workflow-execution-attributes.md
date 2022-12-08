@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-The Workflow Task failed due to an unset CancelWorkflowExecution attribute.
+The Workflow Task failed due to unset CancelWorkflowExecution attributeS.
 
-<!--TODO: add steps -->
+Reset any missing attributes and run the Workflow Task again.

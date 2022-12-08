@@ -8,5 +8,8 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task is either missing or exceeding a set limit.
+This error indicates that the Workflow Task has unset or invalid Search Attributes.
 This can cause Workflow Tasks to continue to retry without success.
+
+Make sure that all attributes are defined before retrying the Task.
+Adjust the size of the Payload to fit within the system's size limits.

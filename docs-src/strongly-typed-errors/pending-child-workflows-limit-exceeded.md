@@ -8,5 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the maximum number of Child Workflows has been reached.
-The Workflow Task was failed to prevent any more Child Workflows from being added.
+This error indicates that the Workflow Task was failed to prevent the creation of more Child Workflows.
+
+Wait for the system to finish any currently running Child Workflows before retrying this Task.

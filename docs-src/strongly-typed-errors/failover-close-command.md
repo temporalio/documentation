@@ -9,3 +9,6 @@ tags:
 ---
 
 This error indicates that a Namespace failover forced the Workflow Task to close.
+The system automatically schedules a retry when this error occurs.
+
+<!--TODO: troubleshooting -->

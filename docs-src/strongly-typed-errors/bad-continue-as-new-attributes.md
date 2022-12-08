@@ -8,5 +8,10 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed to validate on a `ContinueAsNew attribute.
-The attribute could also be unset.
+This error indicates that the Workflow Task failed to validate a `ContinueAsNew` attribute.
+The attribute could be unset or invalid.
+
+Reset and missing attributes.
+If the payload or memo exceeded size limits, adjust the input size.
+
+Check that the Workflow is validating search attributes after unaliasing keys.

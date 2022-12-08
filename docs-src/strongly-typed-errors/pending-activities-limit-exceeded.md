@@ -8,5 +8,6 @@ tags:
   - strongly-typed
 ---
 
-The Workflow has reached the maximum number of pending Activities.
-The Workflow Task was failed to prevent the creation of more Activities.
+This error indicates that the Workflow Task was failed to prevent more Activities from being created.
+
+Let the Workflow complete any current Activities before trying to run this Task again.

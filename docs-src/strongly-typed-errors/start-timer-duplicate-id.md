@@ -9,4 +9,5 @@ tags:
 ---
 
 This error indicates that a Timer with the given Timer Id has already started.
-Therefore, the Workflow Task failed.
+
+Try entering a different Timer Id, and retry the Workflow Task.

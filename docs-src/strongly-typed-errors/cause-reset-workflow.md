@@ -9,3 +9,5 @@ tags:
 ---
 
 This error indicates that the Workflow Task failed due to a request to reset the Workflow.
+
+If the system hasn't started a new Workflow, manually reset the Workflow.

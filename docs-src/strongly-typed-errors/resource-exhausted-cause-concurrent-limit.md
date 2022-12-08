@@ -9,3 +9,7 @@ tags:
 ---
 
 This error indicates that the concurrent poller count has been reached.
+
+<!--TODO: more info needed -->
+
+Adjust the poller count per Worker.

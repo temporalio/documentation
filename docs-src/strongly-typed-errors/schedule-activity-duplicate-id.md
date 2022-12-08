@@ -9,3 +9,5 @@ tags:
 ---
 
 This error indicates that the Activity Id is already in use.
+
+Enter another Activity Id, and try running the Workflow Task again.

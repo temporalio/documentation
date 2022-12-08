@@ -10,3 +10,5 @@ tags:
 
 This error indicates that the Workflow Task was forced to close.
 A retry will be scheduled if the error is recoverable.
+
+<!-- TODO: more info-->
