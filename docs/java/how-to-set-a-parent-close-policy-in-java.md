@@ -12,7 +12,7 @@ tags:
 Set [Parent Close Policy](/concepts/what-is-a-parent-close-policy) on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
 
 - Type: `ChildWorkflowOptions.Builder`
-- Default: None.
+- Default: `PARENT_CLOSE_POLICY_TERMINATE`
 
 ```java
    public void parentWorkflow() {
