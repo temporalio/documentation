@@ -20,4 +20,3 @@ $workflow = $this->workflowClient->newWorkflowStub(
       )
 );
 ```
-

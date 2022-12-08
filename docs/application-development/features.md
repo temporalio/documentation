@@ -484,7 +484,7 @@ $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workfl
 $workflow->setValue(true);
 ```
 
-See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle a Signal</p><p class="tdlppd">Workflows listen for Signals by the Signal's name.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
+See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle a Signal</p><p class="tdlppd">Workflows listen for Signals by the Signal's name.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="python">
@@ -1575,8 +1575,6 @@ $workflow = $this->workflowClient->newWorkflowStub(
       )
 );
 ```
-
-For more detailed information about `RetryOptions` object see <a class="tdlp" href="#workflow-retries">retries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow retries</p><p class="tdlppd">A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-retries">Learn more</a></p></div></a> for more details.
 
 </TabItem>
 <TabItem value="python">

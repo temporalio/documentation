@@ -568,7 +568,7 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-- [How to set a Cron Schedule](/application-development/features#cron-jobs)
+- [How to set a Cron Schedule](/application-development/features#temporal-cron-jobs)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" /></div></div>
 
