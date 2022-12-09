@@ -2951,7 +2951,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
 
 A <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></p></div></a> determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
-The default Parent Close Policy option is set to `TERMINATE`.
+The default Parent Close Policy option is set to terminate the Child Workflow Execution.
 
 <Tabs
 defaultValue="go"
