@@ -2,7 +2,9 @@
 slug: prometheus-grafana-setup
 title: Set up Prometheus and Grafana to view metrics
 tags:
-  - kb-article
+  - prometheus
+  - grafana
+  - how-to
 date: 2022-10-31T00:00:00Z
 ---
 
