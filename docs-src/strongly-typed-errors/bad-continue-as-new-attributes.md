@@ -11,7 +11,7 @@ tags:
 This error indicates that the Workflow Task failed to validate a `ContinueAsNew` attribute.
 The attribute could be unset or invalid.
 
-Reset and missing attributes.
+Reset any missing attributes.
 If the payload or memo exceeded size limits, adjust the input size.
 
 Check that the Workflow is validating search attributes after unaliasing keys.
