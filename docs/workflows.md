@@ -259,8 +259,8 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows and Signals.
-These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/53f46157728224a4f62b66d474724a346d7c8405/service/history/configs/config.go):
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
 - `NumPendingChildExecutionsLimit`
 - `NumPendingActivitiesLimit`
