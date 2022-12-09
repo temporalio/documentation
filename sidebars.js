@@ -367,28 +367,6 @@ module.exports = {
       ],
     },
   ],
-  sidebarPHP: [
-    {
-      type: "category",
-      label: "PHP how-tos",
-      collapsible: false,
-      collapsed: false,
-      items: [
-        "php/introduction",
-        "php/workflows",
-        "php/activities",
-        "php/task-queues",
-        "php/workers",
-        "php/signals",
-        "php/queries",
-        "php/retries",
-        "php/error-handling",
-        "php/side-effect",
-        "php/versioning",
-        "php/distributed-cron",
-      ],
-    },
-  ],
   sidebarTypeScript: [
     {
       type: "category",
