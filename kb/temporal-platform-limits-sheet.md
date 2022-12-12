@@ -2,7 +2,9 @@
 slug: temporal-platform-limits-sheet
 title: Temporal Platform limits sheet
 tags:
-  - kb-article
+  - error
+  - warn
+  - limits
 date: 2022-06-07T00:00:00Z
 ---
 
