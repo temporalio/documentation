@@ -52,12 +52,16 @@ This Command is triggered by a call to spawn a <a class="tdlp" href="/workflows#
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/references/events/#childworkflowexecutionstarted)
 
+By default, OSS users cannot have more than 50,000 pending Child Workflows.
+
 ### SignalExternalWorkflowExecution
 
 This Command is triggered by a call to <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> another Workflow Execution.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events/#signalexternalworkflowexecutioninitiated)
+
+By default, OSS users cannot have more than 50,000 pending Signals to other Workflows.
 
 ### RequestCancelExternalWorkflowExecution
 
@@ -66,12 +70,16 @@ This Command is triggered by a call to request cancellation of another Workflow 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events/#requestcancelexternalworkflowexecutioninitiated)
 
+By default, OSS users cannot have more than 50,000 pending Signals to other Workflows.
+
 ### ScheduleActivityTask
 
 This Command is triggered by a call to execute an <a class="tdlp" href="/activities#">Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity?</p><p class="tdlppd">In day-to-day conversations, the term "Activity" frequently denotes either an Activity Type, an Activity Definition, or an Activity Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#">Learn more</a></p></div></a>.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskScheduled](/references/events/#activitytaskscheduled)
+
+By default, OSS users cannot schedule more than 50,000 Activities.
 
 ### RequestCancelActivityTask
 
