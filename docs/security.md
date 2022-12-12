@@ -150,7 +150,7 @@ To use a custom Data Converter, provide it in the following contexts:
 
 - The Client and Worker in the SDKs you use.
 - Temporal Web via [`tctl data-converter web`](/tctl-v1/dataconverter#web) (for displaying decoded data in the Web UI).
-- `tctl` via <a class="tdlp" href="/tctl-next/index#--data-converter-plugin">`--data-converter-plugin`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl v2.0.0-beta global modifiers</p><p class="tdlppd">Global modifiers are provided before command modifiers.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/index#--data-converter-plugin">Learn more</a></p></div></a> (for displaying decoded headers in `tctl` output).
+- `tctl` via [`--data-converter-plugin`](/tctl-next/#--data-converter-plugin) (for displaying decoded headers in `tctl` output).
 
 Custom Data Converters are not applied to all data:
 
