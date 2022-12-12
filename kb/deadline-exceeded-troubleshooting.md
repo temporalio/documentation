@@ -2,7 +2,9 @@
 slug: deadline-exceeded-troubleshooting
 title: Troubleshoot deadline-exceeded error
 tags:
-  - kb-article
+  - troubleshooting
+  - error
+
 date: 2022-11-09T00:00:00Z
 ---
 

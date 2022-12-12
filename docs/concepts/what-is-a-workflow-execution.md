@@ -126,3 +126,25 @@ A Workflow Execution Timeout can be used to limit the duration of Workflow Execu
 You can use the [Continue-As-New](/concepts/what-is-continue-as-new) feature to close the current Workflow Execution and create a new Workflow Execution in a single atomic operation.
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
+
+### Limits
+
+Each pending Activity generates a metadata entry in the Workflow's mutable state.
+Too many entries create a large mutable state, which causes unstable persistence.
+
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
+
+- `NumPendingChildExecutionsLimit`
+- `NumPendingActivitiesLimit`
+- `NumPendingSignals`
+- `NumPendingCancelRequestsLimit`
+
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
+Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
+
+:::note
+
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
+
+:::
