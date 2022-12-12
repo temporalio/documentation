@@ -289,7 +289,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 - [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
-- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentaion](https://learn.temporal.io/examples/go/background-checks/).
+- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentation](https://learn.temporal.io/examples/go/background-checks/).
 - [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
   This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
 - [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
@@ -3215,7 +3215,7 @@ var_dump($run->getExecution()->getID());
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
+You can start a Workflow Execution on a regular schedule with <a class="tdlp" href="/application-development/features#temporal-cron-jobs">the CronSchedule option<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Temporal Cron Jobs</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#temporal-cron-jobs">Learn more</a></p></div></a>.
 
 </TabItem>
 <TabItem value="python">

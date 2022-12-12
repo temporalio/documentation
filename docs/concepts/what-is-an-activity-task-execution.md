@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-An Activity Task Execution is when the Worker uses the Context provided from the [Activity Task](/concepts/what-is-an-activity-task) and executes the [Activity Definition](/concepts/what-is-an-activity-definition) (also known as the Activity Function).
+An Activity Task Execution occurs when a [Worker](/concepts/what-is-a-worker-entity) uses the context provided in the [Activity Task](/concepts/what-is-an-activity-task) and executes the [Activity Definition](/concepts/what-is-an-activity-definition) (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
