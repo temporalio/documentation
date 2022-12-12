@@ -164,7 +164,6 @@ module.exports = {
         },
       ],
     },
-    "external-resources",
     "glossary",
     {
       type: "link",

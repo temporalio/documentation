@@ -1,14 +1,16 @@
 ---
-id: external-resources
-title: External Resources
-sidebar_label: External Resources
+slug: additional-resources
+title: Additional Resources
+tags:
+  - resources
+date: 2022-12-12T00:00:00Z
 ---
 
 There are many ways to introduce and teach Temporal based on what background you are coming from. Temporal doesn't have a monopoly on explaining Temporal.
 
 Here, we list great blogposts and videos by Temporal staff and users that may be helpful in increasing your understanding or convincing your team.
 
-If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md) so that others can find it!
+If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/docs/kb/additional-resources.md) so that others can find it!
 
 ## Press Announcements
 
@@ -122,7 +124,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
   - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
   - (русский) [PHP Russia talks](https://legacy-documentation-sdks.temporal.io/php/introduction/#resources) by Anton Titov
   - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
-- _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
+- _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/kb/additional-resources.md)!_
 
 ## Temporal users
 
