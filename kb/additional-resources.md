@@ -13,6 +13,8 @@ Here, we list great blogposts and videos by Temporal staff and users that might 
 
 If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/kb/additional-resources.md) so that others can find it!
 
+<!-- truncate -->
+
 ## Press Announcements
 
 There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
