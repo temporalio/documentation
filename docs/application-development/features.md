@@ -1303,12 +1303,12 @@ Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/clien
 [state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
 
 ```ts
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { getValueQuery } from './workflows';
 
 async function run(): Promise<void> {
-  const client = new WorkflowClient();
-  const handle = client.getHandle('state-id-0');
+  const client = new Client();
+  const handle = client.workflow.getHandle('state-id-0');
   const meaning = await handle.query(getValueQuery, 'meaning-of-life');
   console.log({ meaning });
 }
@@ -1464,7 +1464,7 @@ Available timeouts are:
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowExecutionTimeout: '1 day',
@@ -1478,7 +1478,7 @@ await client.start(example, {
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowRunTimeout: '1 minute',
@@ -1492,7 +1492,7 @@ await client.start(example, {
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowTaskTimeout: '1 minute',
@@ -1615,7 +1615,7 @@ Create an instance of the Retry Policy, known as [`retry`](https://typescript.te
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   taskQueue,
   workflowId,
   retry: {

@@ -18,6 +18,22 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   - **IN**
   - **BETWEEN ... AND**
   - **ORDER BY**
+  - **LIKE**
+
+- Wildcards ('\*', '%', etc.) are supported for string-type List Filter Search Attributes.
+
+  - Use wildcards with the **LIKE** operator to query possible values:
+
+  ```bash
+  // get available string-type search attributes with "ProductId"
+  tctl admin cluster add-search-attributes --name ProductId --type String
+
+  // get possible book values
+  ProductId LIKE "book%"
+
+  // get possible favorite values
+  ProductId LIKE "%favorite%"
+  ```
 
 - A List Filter applies to a single Namespace.
 
