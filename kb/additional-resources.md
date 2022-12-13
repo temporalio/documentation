@@ -6,6 +6,8 @@ tags:
 date: 2022-12-12T00:00:00Z
 ---
 
+<!-- truncate -->
+
 There are many ways to introduce and teach Temporal based on your background.
 Temporal doesn't have a monopoly on explaining Temporal.
 
