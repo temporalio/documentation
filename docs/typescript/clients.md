@@ -35,7 +35,7 @@ The following code is a `WorkflowClient` example, from our Hello World sample:
 [hello-world/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/hello-world/src/client.ts)
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 import { nanoid } from 'nanoid';
 import { example } from './workflows';
 
@@ -48,12 +48,12 @@ async function run() {
   //   tls: {}
   // }
 
-  const client = new WorkflowClient({
+  const client = new Client({
     connection,
     // namespace: 'foo.bar', // connects to 'default' namespace if not specified
   });
 
-  const handle = await client.start(example, {
+  const handle = await client.workflow.start(example, {
     // type inference works! args: [name: string]
     args: ['Temporal'],
     taskQueue: 'hello-world',
@@ -328,9 +328,9 @@ This Service is capable of making a wider range of introspection calls.
 ```ts
 const connection = await Connection.connect();
 
-// // normal way of starting a Workflow, with a WorkflowClient
-// const client = new WorkflowClient({ connection });
-// await client.start(/* etc */);
+// // normal way of starting a Workflow, with a Client
+// const client = new Client({ connection });
+// await client.workflow.start(/* etc */);
 
 const payload = defaultPayloadConverter.toPayload('Temporal');
 if (payload == null) {
@@ -345,7 +345,7 @@ await connection.workflowService.startWorkflowExecution({
   taskQueue: { name: 'grpc-calls' },
   workflowType: { name: 'example' },
   input: {
-    // WorkflowClient passes data through Data Converter to convert to Payloads; with gRPC calls have to do it yourself
+    // Client passes data through Data Converter to convert to Payloads; with gRPC calls have to do it yourself
     // import { defaultPayloadConverter, toPayloads } from '@temporalio/common';
     payloads: [payload],
   },
