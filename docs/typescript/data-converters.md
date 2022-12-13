@@ -84,10 +84,10 @@ import {
   EncodingType,
   METADATA_ENCODING_KEY,
   Payload,
+  PayloadConverterError,
   PayloadConverterWithEncoding,
 } from '@temporalio/common';
 import { decode, encode } from '@temporalio/common/lib/encoding';
-import { PayloadConverterError } from '@temporalio/internal-workflow-common';
 import EJSON from 'ejson';
 
 /**
@@ -183,7 +183,7 @@ const worker = await Worker.create({
 [ejson/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/ejson/src/client.ts)
 
 ```ts
-const client = new WorkflowClient({
+const client = new Client({
   dataConverter: {
     payloadConverterPath: require.resolve('./payload-converter'),
   },
@@ -208,7 +208,7 @@ const user: User = {
   createdAt: new Date(),
 };
 
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   args: [user],
   taskQueue: 'ejson',
   workflowId: `example-user-${user.id}`,
@@ -345,19 +345,19 @@ const worker = await Worker.create({
 [protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/client.ts)
 
 ```ts
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { v4 as uuid } from 'uuid';
 import { foo, ProtoResult } from '../protos/root';
 import { example } from './workflows';
 
 async function run() {
-  const client = new WorkflowClient({
+  const client = new Client({
     dataConverter: {
       payloadConverterPath: require.resolve('./payload-converter'),
     },
   });
 
-  const handle = await client.start(example, {
+  const handle = await client.workflow.start(example, {
     args: [foo.bar.ProtoInput.create({ name: 'Proto', age: 2 })],
     // can't do:
     // args: [new foo.bar.ProtoInput({ name: 'Proto', age: 2 })],
@@ -552,11 +552,11 @@ As before, we provide a custom data converter to the Client and Worker:
 [encryption/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/encryption/src/client.ts)
 
 ```ts
-const client = new WorkflowClient({
+const client = new Client({
   dataConverter: await getDataConverter(),
 });
 
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   args: ['Alice: Private message for Bob.'],
   taskQueue: 'encryption',
   workflowId: `my-business-id-${uuid()}`,
