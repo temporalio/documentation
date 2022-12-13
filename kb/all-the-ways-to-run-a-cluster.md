@@ -2,7 +2,9 @@
 slug: all-the-ways-to-run-a-cluster
 title: All the ways to run a Temporal Cluster
 tags:
-  - kb-article
+  - cluster
+  - server
+  - how-to
 date: 2022-10-20T00:00:00Z
 ---
 

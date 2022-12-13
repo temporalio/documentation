@@ -802,7 +802,7 @@ Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/inte
 [search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/client.ts)
 
 ```ts
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   taskQueue: 'search-attributes',
   workflowId: 'search-attributes-example-0',
   searchAttributes: {

@@ -7,6 +7,12 @@ tags:
   - guide-context
 ---
 
+:::caution
+
+Temporal Cloud does not support TLS version 1.3.
+
+:::
+
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
 ### CA certificates
