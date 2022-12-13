@@ -1,6 +1,6 @@
 ---
 slug: additional-resources
-title: Additional Resources
+title: Additional resources
 tags:
   - resources
 date: 2022-12-12T00:00:00Z
