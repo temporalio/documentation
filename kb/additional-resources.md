@@ -11,7 +11,7 @@ Temporal doesn't have a monopoly on explaining Temporal.
 
 Here, we list great blogposts and videos by Temporal staff and users that might be helpful in increasing your understanding or convincing your team.
 
-If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/docs/kb/additional-resources.md) so that others can find it!
+If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/kb/additional-resources.md) so that others can find it!
 
 ## Press Announcements
 
