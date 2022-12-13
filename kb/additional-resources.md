@@ -15,7 +15,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 
 <!-- truncate -->
 
-## Press Announcements
+## Press announcements
 
 There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
 
