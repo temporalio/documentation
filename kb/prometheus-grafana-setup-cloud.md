@@ -20,7 +20,7 @@ The process for setting up observability includes the following steps:
    - For Temporal Cloud, [generate a Prometheus HTTP API endpoint](#temporal-cloud-metrics-setup) on Temporal Cloud using valid certificates.
    - For SDKs, [expose a metrics endpoint](#sdk-metrics-setup) where Prometheus can scrape SDK metrics and [run Prometheus](#prometheus-configuration-for-sdk-metrics) on your host. The examples in this article describe running Prometheus on your local machine where you run your application code.
 2. Run Grafana and [set up data sources for Temporal Cloud and SDK metrics](#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana) in Grafana. The examples in this article describe running Grafana on your local host where you run your application code.
-3. [Create dashboards](#grafana-dashboards-setup) in Grafana to view Temporal Cloud metrics and SDK metrics.
+3. [Create dashboards](#grafana-dashboards-setup) in Grafana to view Temporal Cloud metrics and SDK metrics. Temporal provides [sample community-driven Grafana dashboards](https://github.com/temporalio/dashboards) for Cloud and SDK metrics that you can use and customize according to your requirements.
 
 If you're following through with the examples provided here, ensure that you have the following:
 
