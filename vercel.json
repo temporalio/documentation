@@ -6,6 +6,7 @@
   },
   "redirects": [
     {"source": "/docs/:path*", "destination": "/:path*"},
+    {"source": "/typescript/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"},
     {"source": "/reference/:path*", "destination": "/references/:path*"},
     {"source": "/system-tools/:path*", "destination": "/devtools/:path*"},
     {"source": "/devtools/tctl", "destination": "/tctl"},
