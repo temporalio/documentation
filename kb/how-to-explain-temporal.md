@@ -174,7 +174,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby) - Ruby SDK with Rails example
 - [Nunchi Blacksmith](https://www.nunchi.studio/blacksmith/start/onboarding/how) - ETL data platform
 
-## Misc
+## Miscellaneous
 
 _Everything that doesn't fit above goes here._
 
