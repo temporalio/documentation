@@ -178,7 +178,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 
 _Everything that doesn't fit above goes here._
 
-If you can't find what you need, don't hesitate to ask on the Temporal Slack, or search in the Forums where there are common questions like:
+If you can't find what you need, don't hesitate to ask on the Temporal Slack workspace or search in the [Temporal Community Forum](https://community.temporal.io/), where you can find answers to common questions like the following:
 
 - [What is the best practice for a polling activity?](https://community.temporal.io/t/what-is-the-best-practice-for-a-polling-activity/328)
 - [How to create a Signalling system for Human driven workflows? SMS OTP use case](https://community.temporal.io/t/signalling-system-human-driven-workflows/160)
