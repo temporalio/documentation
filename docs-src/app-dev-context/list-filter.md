@@ -33,6 +33,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 
   // match values that contain "favorite"
   ProductId LIKE "%favorite%"
+  ```
 
 - A List Filter applies to a single Namespace.
 
