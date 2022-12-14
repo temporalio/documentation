@@ -129,7 +129,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
   - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
   - (русский) [PHP Russia talks](https://legacy-documentation-sdks.temporal.io/php/introduction/#resources) by Anton Titov
   - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
-- _Submit yours [here](https://github.com/temporalio/documentation/edit/master/kb/additional-resources.md)!_
+- _Submit yours [here](https://github.com/temporalio/documentation/edit/master/kb/how-to-explain-temporal.md)!_
 
 ## Temporal users
 
