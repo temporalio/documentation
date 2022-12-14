@@ -16,7 +16,7 @@ We can set [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/a
 [search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/client.ts)
 
 ```ts
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   taskQueue: 'search-attributes',
   workflowId: 'search-attributes-example-0',
   searchAttributes: {

@@ -2,7 +2,9 @@
 slug: cadence-to-temporal
 title: Cadence to Temporal migration highlights
 tags:
-  - kb-article
+  - cadence
+  - migration
+  - how-to
 date: 2022-05-26T00:00:00Z
 ---
 

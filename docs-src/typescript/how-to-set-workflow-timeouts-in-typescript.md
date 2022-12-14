@@ -22,7 +22,7 @@ Available timeouts are:
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowExecutionTimeout: '1 day',
@@ -36,7 +36,7 @@ await client.start(example, {
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowRunTimeout: '1 minute',
@@ -50,7 +50,7 @@ await client.start(example, {
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowTaskTimeout: '1 minute',
