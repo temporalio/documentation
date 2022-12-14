@@ -20,7 +20,7 @@ If you have made a tutorial or explanation of Temporal, please [submit them here
 Our Series A and Series B press releases provided high-level descriptions of Temporal.
 These might be helpful for non-technical or technical-adjacent audiences:
 
-- **Series B (2022)** Linked in [our Series B press roundup](https://temporal.io/blog/series-b-press)
+- **Series B (2022)**: Linked in [our Series B press roundup](https://temporal.io/blog/series-b-press)
 - **Series A (2020)**: Linked in [our Series A blogpost](https://temporal.io/blog/funding-announcement)
 
 ## How Temporal works
