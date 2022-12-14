@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl search-attribute` command enables <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> operations.
+The `tctl search-attribute` command enables [Search Attribute](/concepts/what-is-a-search-attribute) operations.
 
 - <a class="tdlp" href="#create">tctl search-attribute create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl search-attribute create</p><p class="tdlppd">How to create Search Attributes using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#create">Learn more</a></p></div></a>
 - <a class="tdlp" href="#list">tctl search-attribute list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl search-attribute list</p><p class="tdlppd">How to list Search Attributes using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>
@@ -36,7 +36,7 @@ tctl search-attribute create \
 
 ## list
 
-The `tctl search-attribute list` command lists all <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> that can be used in the `--query` modifier of the <a class="tdlp" href="/tctl-next/workflow#list">`tctl workflow list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#list">Learn more</a></p></div></a> command.
+The `tctl search-attribute list` command lists all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in the `--query` modifier of the <a class="tdlp" href="/tctl-next/workflow#list">`tctl workflow list`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#list">Learn more</a></p></div></a> command.
 
 **Example:**
 

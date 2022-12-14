@@ -19,7 +19,7 @@ The batch command is automatically started when the [`--query` modifier](/tctl-n
 
 In tctl version-next, the `tctl batch` commands are used solely to view the status of and terminate the batch jobs.
 
-The `--query` modifier supports a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>.
+The `--query` modifier supports a [List Filter](/concepts/what-is-a-list-filter).
 The List Filter identifies the set of Workflow Executions to be affected by the command.
 
 A successfully started batch job returns a Job ID.

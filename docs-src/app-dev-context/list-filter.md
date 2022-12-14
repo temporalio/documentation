@@ -7,9 +7,9 @@ tags:
   - guide-context
 ---
 
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
+A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/app-dev-context/advanced-visibility) List API.
 
-A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and Operators.
+A List Filter contains [Search Attribute](/app-dev-context/search-attributes) names, Search Attribute values, and Operators.
 
 - The following operators are supported in List Filters:
 
@@ -25,7 +25,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   - Use wildcards with the **LIKE** operator to query possible values:
 
   ```bash
-  // Create a "ProductId" custom search attribute of type String
+  // Create a "ProductId" custom Search Attribute of type String
   tctl admin cluster add-search-attributes --name ProductId --type String
 
   // Match values that start with "book"

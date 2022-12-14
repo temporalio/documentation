@@ -111,7 +111,7 @@ This Command is triggered by the SDK.
 
 ### UpsertWorkflowSearchAttributes
 
-This Command is triggered by a call to "upsert" Workflow <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a>.
+This Command is triggered by a call to "upsert" Workflow [Search Attributes](/concepts/what-is-a-search-attribute).
 
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [UpsertWorkflowSearchAttributes](/references/events/#upsertworkflowsearchattributes)

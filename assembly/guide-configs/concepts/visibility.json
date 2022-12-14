@@ -11,7 +11,7 @@
   "sections": [
     {
       "type": "p",
-      "id": "concepts/what-is-visibility"
+      "id": "app-dev-context/visibility"
     },
     {
       "type": "h2",
@@ -19,15 +19,15 @@
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-advanced-visibility"
+      "id": "app-dev-context/advanced-visibility"
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-a-list-filter"
+      "id": "app-dev-context/list-filter"
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-a-search-attribute"
+      "id": "app-dev-context/search-attributes"
     }
   ]
 }
