@@ -8,6 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Activity Id is already in use.
+The Workflow Task failed because the Activity Id is already in use.
 
+Check your code to see if you've already specified the same Activity Id in your Workflow.
 Enter another Activity Id, and try running the Workflow Task again.

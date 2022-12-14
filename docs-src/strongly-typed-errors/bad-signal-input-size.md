@@ -10,4 +10,4 @@ tags:
 
 This error indicates that the Payload has exceeded the Signal's available input size.
 
-Adjust the size of the Payload, and retry the Task.
+Adjust the size of the Payload, and redeploy the Task.

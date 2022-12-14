@@ -8,6 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the capacity for pending `CancelWorkflow` requests has been reached.
+This error indicates that the Workflow Task failed after attempting to add more cancel requests.
+The Workflow has reached capacity for pending requests to cancel other Workflows, and cannot accept more requests.
 
 If you see this error, give the system time to process pending requests before retrying the Task.

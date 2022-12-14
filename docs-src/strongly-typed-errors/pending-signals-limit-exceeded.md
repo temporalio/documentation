@@ -8,6 +8,7 @@ tags:
   - strongly-typed
 ---
 
-The capacity for pending Signals to be sent from this Workflow has been reached.
+The Workflow has reached capacity for pending Signals.
+Therefore, the Workflow Task was failed after attempting to add more Signals to an external Workflow.
 
-Wait for Signals to be processed before retrying the Task.
+Wait for Signals to be processed by the Workflow before retrying the Task.

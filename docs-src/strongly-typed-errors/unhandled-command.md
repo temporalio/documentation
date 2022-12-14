@@ -8,14 +8,12 @@ tags:
 ---
 
 This error indicates new available Events since the last Workflow Task started.
-A RetryWorkflow Task has been scheduled to handle these new Events.
+The Workflow Task was failed because the Workflow attempted to close itself without handling the new Events.
 
 `UnhandledCommand` can happen when the Workflow is receiving a high number of Signals.
-If the Workflow doesn't have enough time to handle these Signals, the Workflow Task will fail and try to call the previous Event again.
+If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
 
 If you continue to see this error, check your logs for failing Workflow Tasks.
 The Workflow may have been picked up by a different Worker.
-
-<!--TODO: get this checked. -->

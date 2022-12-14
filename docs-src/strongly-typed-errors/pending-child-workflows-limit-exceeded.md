@@ -8,6 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task was failed to prevent the creation of more Child Workflows.
+This error indicates that the Workflow has reached capacity for pending Child Workflows.
+Therefore, the Workflow Task was failed to prevent additional Child Workflows from being added.
 
-Wait for the system to finish any currently running Child Workflows before retrying this Task.
+Wait for the system to finish any currently running Child Workflows before redploying this Task.

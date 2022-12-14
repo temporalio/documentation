@@ -8,6 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task was failed to prevent more Activities from being created.
+The Workflow has reached capacity for pending Activities.
+Therefore, the Workflow Task was failed to prevent the creation of another Activity.
 
-Let the Workflow complete any current Activities before trying to run this Task again.
+Let the Workflow complete any current Activities before redeploying the code.

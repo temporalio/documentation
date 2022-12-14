@@ -16,13 +16,13 @@ import TabItem from '@theme/TabItem';
 This error indicates that the Workflow Task failed while attempting to cancel a Timer.
 
 Check your Timer attributes for a missing Timer Id value.
-Add a valid Timer Id and retry the Task.
+Add a valid Timer Id and redeploy the code.
 
 ## Bad Cancel Workflow Execution Attributes
 
 The Workflow Task failed due to unset CancelWorkflowExecution attributeS.
 
-Reset any missing attributes and run the Workflow Task again.
+Reset any missing attributes and redeploy the Workflow Task.
 
 ## Bad Complete Workflow Execution Attributes
 
@@ -36,7 +36,7 @@ Adjust the size of your payload if it exceeds size limits.
 This error indicates that the Workflow Task failed to validate a `ContinueAsNew` attribute.
 The attribute could be unset or invalid.
 
-Reset and missing attributes.
+Reset any missing attributes.
 If the payload or memo exceeded size limits, adjust the input size.
 
 Check that the Workflow is validating search attributes after unaliasing keys.
@@ -60,7 +60,7 @@ Adjust the size of the Memo or payload to fit within the system's limits.
 
 This error indicates that the Workflow Task failed due to an unset or incorrect Marker name.
 
-Enter a valid Marker name and retry the Task.
+Enter a valid Marker name and redeploy the Task.
 
 ## Bad Request Cancel Activity Attributes
 
@@ -101,7 +101,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 This error indicates that the Payload has exceeded the Signal's available input size.
 
-Adjust the size of the Payload, and retry the Task.
+Adjust the size of the Payload, and redeploy the Task.
 
 ## Bad Signal Workflow Execution Attributes
 
@@ -166,27 +166,31 @@ The Workflow Task failed due to a nondeterministic error.
 
 ## Pending Activities Limit Exceeded
 
-This error indicates that the Workflow Task was failed to prevent more Activities from being created.
+The Workflow has reached capacity for pending Activities.
+Therefore, the Workflow Task was failed to prevent the creation of another Activity.
 
-Let the Workflow complete any current Activities before trying to run this Task again.
+Let the Workflow complete any current Activities before redeploying the code.
 
 ## Pending Child Workflows Limit Exceeded
 
-This error indicates that the Workflow Task was failed to prevent the creation of more Child Workflows.
+This error indicates that the Workflow has reached capacity for pending Child Workflows.
+Therefore, the Workflow Task was failed to prevent additional Child Workflows from being added.
 
-Wait for the system to finish any currently running Child Workflows before retrying this Task.
+Wait for the system to finish any currently running Child Workflows before redploying this Task.
 
 ## Pending Request Cancel Limit Exceeded
 
-This error indicates that the capacity for pending `CancelWorkflow` requests has been reached.
+This error indicates that the Workflow Task failed after attempting to add more cancel requests.
+The Workflow has reached capacity for pending requests to cancel other Workflows, and cannot accept more requests.
 
 If you see this error, give the system time to process pending requests before retrying the Task.
 
 ## Pending Signals Limit Exceeded
 
-The capacity for pending Signals to be sent from this Workflow has been reached.
+The Workflow has reached capacity for pending Signals.
+Therefore, the Workflow Task was failed after attempting to add more Signals to an external Workflow.
 
-Wait for Signals to be processed before retrying the Task.
+Wait for Signals to be processed by the Workflow before retrying the Task.
 
 ## Reset Sticky Task Queue
 
@@ -229,8 +233,9 @@ This error indicates that an unknown cause is preventing resources from being al
 
 ## Schedule Activity Duplicate Id
 
-This error indicates that the Activity Id is already in use.
+The Workflow Task failed because the Activity Id is already in use.
 
+Check your code to see if you've already specified the same Activity Id in your Workflow.
 Enter another Activity Id, and try running the Workflow Task again.
 
 ## Start Timer Duplicate Id
@@ -242,17 +247,15 @@ Try entering a different Timer Id, and retry the Workflow Task.
 ## Unhandled Command
 
 This error indicates new available Events since the last Workflow Task started.
-A RetryWorkflow Task has been scheduled to handle these new Events.
+The Workflow Task was failed because the Workflow attempted to close itself without handling the new Events.
 
 `UnhandledCommand` can happen when the Workflow is receiving a high number of Signals.
-If the Workflow doesn't have enough time to handle these Signals, the Workflow Task will fail and try to call the previous Event again.
+If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
 
 If you continue to see this error, check your logs for failing Workflow Tasks.
 The Workflow may have been picked up by a different Worker.
-
-<!--TODO: get this checked. -->
 
 ## Workflow Worker Unhandled Failure
 

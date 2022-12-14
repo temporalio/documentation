@@ -10,4 +10,4 @@ tags:
 
 This error indicates that the Workflow Task failed due to an unset or incorrect Marker name.
 
-Enter a valid Marker name and retry the Task.
+Enter a valid Marker name and redeploy the Task.

@@ -10,4 +10,4 @@ tags:
 
 The Workflow Task failed due to unset CancelWorkflowExecution attributeS.
 
-Reset any missing attributes and run the Workflow Task again.
+Reset any missing attributes and redeploy the Workflow Task.
