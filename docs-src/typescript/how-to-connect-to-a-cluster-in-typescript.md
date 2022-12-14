@@ -12,7 +12,7 @@ tags:
 Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
 
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
-However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
+However, always configure your connection and Namespace when [deploying to production](https://legacy-documentation-sdks.temporal.io/typescript/security/#encryption-in-transit-with-mtls).
 
 Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
 

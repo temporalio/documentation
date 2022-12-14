@@ -103,7 +103,7 @@ It is important to note that a practical way to handle different versions of Wor
 
 - [How to version Workflow Definitions in Go](/go/versioning)
 - [How to version Workflow Definitions in Java](/java/versioning)
-- [How to version Workflow Definitions in TypeScript](/typescript/patching)
+- [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
 
 ### Handling unreliable Worker Processes
 

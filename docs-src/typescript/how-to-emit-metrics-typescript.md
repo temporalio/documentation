@@ -14,7 +14,7 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](https://legacy-documentation-sdks.temporal.io/typescript/logging#opentelemetry-tracing) package.
 
 ```typescript
 telemetryOptions: {
