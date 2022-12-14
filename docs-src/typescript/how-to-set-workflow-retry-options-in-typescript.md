@@ -16,7 +16,7 @@ Create an instance of the Retry Policy, known as [`retry`](https://typescript.te
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   taskQueue,
   workflowId,
   retry: {
