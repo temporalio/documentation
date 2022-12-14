@@ -97,7 +97,7 @@ Things to consider when defining Signals:
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Queries</p><p class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#queries">Learn more</a></p></div></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="#signals">Learn more</a></p></div></a>.
 
 All interface methods must have one of the following annotations:
 
@@ -484,7 +484,7 @@ $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workfl
 $workflow->setValue(true);
 ```
 
-See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle Signals in an Workflow in PHP</p><p class="tdlppd">Use the `#[SignalMethod]` annotation to handle Signals within the Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
+See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle a Signal</p><p class="tdlppd">Workflows listen for Signals by the Signal's name.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="python">
@@ -823,7 +823,7 @@ Query methods must never change any Workflow state including starting Activities
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Queries</p><p class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#queries">Learn more</a></p></div></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="#signals">Learn more</a></p></div></a>.
 
 All interface methods must have one of the following annotations:
 
@@ -1303,12 +1303,12 @@ Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/clien
 [state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
 
 ```ts
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { getValueQuery } from './workflows';
 
 async function run(): Promise<void> {
-  const client = new WorkflowClient();
-  const handle = client.getHandle('state-id-0');
+  const client = new Client();
+  const handle = client.workflow.getHandle('state-id-0');
   const meaning = await handle.query(getValueQuery, 'meaning-of-life');
   console.log({ meaning });
 }
@@ -1464,7 +1464,7 @@ Available timeouts are:
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowExecutionTimeout: '1 day',
@@ -1478,7 +1478,7 @@ await client.start(example, {
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowRunTimeout: '1 minute',
@@ -1492,7 +1492,7 @@ await client.start(example, {
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-await client.start(example, {
+await client.workflow.start(example, {
   taskQueue,
   workflowId,
   workflowTaskTimeout: '1 minute',
@@ -1576,8 +1576,6 @@ $workflow = $this->workflowClient->newWorkflowStub(
 );
 ```
 
-For more detailed information about `RetryOptions` object see [retries](/php/retries) for more details.
-
 </TabItem>
 <TabItem value="python">
 
@@ -1615,7 +1613,7 @@ Create an instance of the Retry Policy, known as [`retry`](https://typescript.te
 [snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
 
 ```ts
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   taskQueue,
   workflowId,
   retry: {
@@ -1636,7 +1634,7 @@ Each Activity timeout controls the maximum duration of a different aspect of an 
 The following timeouts are available in the Activity Options.
 
 - **<a class="tdlp" href="/activities#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a>**: is the maximum amount of time allowed for the overall <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a>.
-- **<a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a>**: is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+- **<a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a>**: is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 - **<a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Start Timeout?</p><p class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></p></div></a>**: is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> starts that Activity Task.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
@@ -1972,7 +1970,7 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></p></div></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-process">Learn more</a></p></div></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a>.
 Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a> is making progress and the Worker has not crashed.
-If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a> may be scheduled according to the Retry Policy.
+If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a> may be scheduled according to the Retry Policy.
 
 Heartbeats may not always be sent to the Cluster—they may be <a class="tdlp" href="/activities#throttling">throttled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="/activities#throttling">Learn more</a></p></div></a> by the Worker.
 

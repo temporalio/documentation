@@ -2,7 +2,9 @@
 slug: migrate-visibility-data-from-es6
 title: Migrate visibility data from ES6
 tags:
-  - kb-article
+  - visibility
+  - migration
+  - elasticsearch
 date: 2022-08-29T00:00:00Z
 ---
 

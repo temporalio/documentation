@@ -1,12 +1,14 @@
 ---
 slug: deadline-exceeded-troubleshooting
-title: DeadlineExceeded error troubleshooting
+title: Troubleshoot deadline-exceeded error
 tags:
-  - kb-article
+  - troubleshooting
+  - error
+
 date: 2022-11-09T00:00:00Z
 ---
 
-All client-side requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these frontend requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 
@@ -14,7 +16,7 @@ The following sections discuss the nature of this error and how to troubleshoot 
 
 <!-- truncate -->
 
-#### Check Frontend Service logs
+### Check Frontend Service logs
 
 :::note
 
@@ -50,7 +52,7 @@ Use `grpc-health-probe` to check the Frontend Service, [Matching Service](/clust
 
 Logs can also be used to find failed Client [Query](/workflows#queries) requests.
 
-#### Check your Cluster metrics
+### Check your Cluster metrics
 
 Cluster metrics can be used to detect issues (such as `resource exhausted`) that impact Cluster health.
 A `resource exhausted` error can cause your client request to fail, which prompts the `deadline exceeded` error.
@@ -66,7 +68,7 @@ sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
 Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
 If the metrics come from a specific service (such as History Service), check the service's health and performance.
 
-#### Check Workflow logic
+### Check Workflow logic
 
 Check your [Client and Worker configuration](/references/configuration) files for missing or invalid target values, such as the following:
 
@@ -81,7 +83,7 @@ Check that the Client connects after updating your files.
 
 In addition to the steps listed in the previous sections, check the areas mentioned in each of the following scenarios.
 
-#### After enabling mTLS
+### After enabling mTLS
 
 Check the health of the Cluster with `tctl cluster health`.
 
@@ -92,14 +94,14 @@ tctl --address [SERVER_ADDRESS] cluster health
 Add any missing [environment variables](/references/web-ui-environment-variables) to the configuration files, and correct any incorrect values.
 Server names and certificates must match between Frontend and internode.
 
-#### After restarting the Temporal Cluster
+### After restarting the Temporal Cluster
 
 You might not be giving the Cluster enough time to respond and reconnect.
 Restart the Server, wait, and then check all services for connectivity and further errors.
 
 If the error persists, review your Workflow Execution History and server logs for more specific causes before continuing to troubleshoot.
 
-#### When executing or scheduling Workflows
+### When executing or scheduling Workflows
 
 One or more services might be unable to connect to the [Frontend Service](/clusters#frontend-service).
 The Workflow might be unable to complete requests within the given connection time.
