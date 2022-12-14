@@ -1,7 +1,7 @@
 ---
 id: how-to-manage-namespaces-in-temporal-cloud
 title: How to manage Namespaces in Temporal Cloud
-sidebar_label: Manage Namespaces
+sidebar_label: Namespaces
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
 toc_max_heading_level: 4
 ---
@@ -82,12 +82,12 @@ Each Namespace in Temporal Cloud has two unique endpoints, both of which include
 
 To list Namespaces:
 
-- On the left side of the window, click **Namespaces**.
+- On the left side of the window, select **Namespaces**.
 
-To edit a Namespace (including custom Search Attributes, certificates, certificate filters, and permissions), find the Namespace and do either of the following:
+To edit a Namespace (including custom Search Attributes, certificates, certificate filters, permissions, and users), find the Namespace and do either of the following:
 
-- On the right end of the Namespace row, click the three vertical dots (⋮). Click **Edit**.
-- Click the Namespace name. In the top-right portion of the page, click **Edit**.
+- On the right end of the Namespace row, select the three vertical dots (⋮). Click **Edit**.
+- Select the Namespace name. In the top-right portion of the page, select **Edit**.
 
 On the **Edit** page, you can do the following:
 
@@ -95,8 +95,11 @@ On the **Edit** page, you can do the following:
 - [Manage CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud).
 - [Manage certificate filters](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters-using-temporal-cloud-ui).
 - Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
+- Add users.
 
-After you make changes, click **Save** in the top-right or bottom-left portion of the page.
+To add a user to a Namespace, scroll to the bottom of the page and select **Add User**.
+
+After you make changes, select **Save** in the top-right or bottom-left portion of the page.
 
 <!--- How to manage Namespaces in Temporal Cloud using tcld --->
 
