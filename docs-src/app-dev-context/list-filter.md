@@ -25,13 +25,13 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   - Use wildcards with the **LIKE** operator to query possible values:
 
   ```bash
-  // create a "ProductId" custom search attribute of type String
+  // Create a "ProductId" custom search attribute of type String
   tctl admin cluster add-search-attributes --name ProductId --type String
 
-  // match values that start with "book"
+  // Match values that start with "book"
   ProductId LIKE "book%"
 
-  // match values that contain "favorite"
+  // Match values that contain "favorite"
   ProductId LIKE "%favorite%"
   ```
 
