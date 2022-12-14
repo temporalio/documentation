@@ -542,7 +542,7 @@ client = await Client.connect(
 Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
 
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
-However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
+However, always configure your connection and Namespace when [deploying to production](https://legacy-documentation-sdks.temporal.io/typescript/security/#encryption-in-transit-with-mtls).
 
 Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
 
@@ -2703,11 +2703,11 @@ There are three main things the Worker needs:
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options         | Description                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
-| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |
+| Options         | Description                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
+| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
 
 **Operation guides:**
 
@@ -2893,7 +2893,7 @@ async function run() {
 
 In this snippet, the Worker bundles the Workflow code at runtime.
 
-In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](https://legacy-documentation-sdks.temporal.io/typescript/workers#prebuilt-workflow-bundles):
 
 <!--SNIPSTART typescript-bundle-workflow -->
 
@@ -3269,7 +3269,7 @@ Calling `client.start()` and `client.execute()` send a command to Temporal Serve
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](https://legacy-documentation-sdks.temporal.io/typescript/determinism).
 
 </TabItem>
 </Tabs>

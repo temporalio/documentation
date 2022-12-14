@@ -130,7 +130,7 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](https://legacy-documentation-sdks.temporal.io/typescript/logging#opentelemetry-tracing) package.
 
 ```typescript
 telemetryOptions: {
@@ -394,7 +394,7 @@ To work around these limitations, we recommend using the Sinks feature in the Ty
 Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
 <!--
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](https://legacy-documentation-sdks.temporal.io/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
 
 Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
