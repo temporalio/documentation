@@ -25,7 +25,7 @@ These might be helpful for non-technical or technical-adjacent audiences:
 
 ## How Temporal works
 
-> See also: [Concepts ➡️ What is Temporal](/temporal)
+See the Concepts topic about [Temporal](/temporal).
 
 ### Talks
 
