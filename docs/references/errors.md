@@ -249,7 +249,7 @@ Try entering a different Timer Id, and retry the [Workflow Task](/tasks/#workflo
 This error indicates new available [Events](/references/events) since the last [Workflow Task](/tasks/#workflow-task) started.
 The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of <a class="tdlp" href="/application-development/features#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#signals">Learn more</a></p></div></a>.
+`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/application-development/features/#signals).
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
