@@ -91,7 +91,7 @@ Adjust the size of the received payload to stay within the given size limit.
 
 ## Bad Search Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid <a class="tdlp" href="/application-development/observability#search-attributes">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Search Attributes</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a>.
+This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid <a class="tdlp" href="/application-development/observability#search-attributes">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What are Search Attributes?</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a>.
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.
@@ -116,7 +116,7 @@ This error indicates that the [Workflow Task](/tasks#workflow-task) failed to va
 
 Adjust the input size of the attributes to fall within the system's size limits.
 
-Make sure that <a class="tdlp" href="/application-development/observability#search-attributes">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Search Attributes</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a> validation is performed after unaliasing keys.
+Make sure that <a class="tdlp" href="/application-development/observability#search-attributes">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What are Search Attributes?</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a> validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes
 
