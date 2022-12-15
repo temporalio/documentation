@@ -126,7 +126,7 @@ When an Activity times out, the last Heartbeat details it emitted is attached.
 
 ## Terminated Failure
 
-A Terminated Failure is used as the `cause` of an error when a Workflow is terminated, and you receive the error in one of the following:
+A Terminated Failure is used as the `cause` of an error when a Workflow is terminated, and you receive the error in one of the following locations:
 
 - Inside a Workflow that's waiting for the result of a Child Workflow.
 - When waiting for the result of a Workflow on the Client.
