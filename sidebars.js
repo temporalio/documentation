@@ -137,6 +137,7 @@ module.exports = {
         "references/sdk-metrics",
         "references/cluster-metrics",
         "references/commands",
+        "references/errors",
         "references/events",
         "references/configuration",
         "references/web-ui-configuration",
