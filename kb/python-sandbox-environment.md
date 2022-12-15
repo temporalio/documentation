@@ -3,7 +3,7 @@ slug: python-sandbox-environment
 title: Python sandbox environment
 tags:
   - kb-article
-date: 2022-12-02T00:00:00Z
+date: 2022-12-06T00:00:00Z
 ---
 
 ![Python sandbox](static/img/../../../static/img/python-sandbox.svg)
@@ -19,6 +19,8 @@ Temporal's Python SDK uses a sandbox environment for Workflow runs to make devel
 
 If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Task Worker.
 The Workflow will not progress until the code is fixed.
+
+The Temporal Python sandbox offers a mechanism to _pass through modules_ from outside the sandbox. By default, this includes all standard library modules and Temporal modules. For performance and behavior reasons, users are encouraged to pass through all third-party modules whose calls will be deterministic. For more information, see [Passthrough modules](#passthrough-modules).
 
 ## How it works
 
@@ -89,15 +91,40 @@ The `SandboxRestrictions` dataclass is immutable and contains three fields that 
 
 ### Passthrough modules
 
-To make the Sandbox quicker and more memory efficient when importing known third-party libraries, use [`passthrough_modules`](https://python.temporal.io/temporalio.worker.workflow_sandbox.SandboxRestrictions.html#passthrough_modules).
+By default, the sandbox completely reloads non-standard-library and non-Temporal modules for every workflow run. Passing through a module means that the module will not be reloaded every time the Workflow runs. Instead, the module will be imported from outside the sandbox and used directly in the Workflow. This can improve performance because importing a module can be a time-consuming process, and passing through a module can avoid this overhead.
+:::note
+
+It is important to note that you should only import _known-side-effect-free_ third-party modules: meaning they don't have any unintended consequences when imported and used multiple times. This is because passing through a module means that it will be used multiple times in a workflow without being reloaded, so any side effects it has will be repeated. For this reason, it's recommended to only pass through modules that are known to be deterministic, meaning they will always produce the same output given the same input.
+
+:::
+
+One way to pass through a module is at import time in the workflow file using the [`imports_passed_through`](https://python.temporal.io/temporalio.workflow.unsafe.html#imports_passed_through) context manager.
 
 ```python
-my_restrictions = dataclasses.replace(
-    SandboxRestrictions.default,
-    passthrough_modules=SandboxRestrictions.passthrough_modules_default | SandboxMatcher(access={"pydantic"}),
-)
-my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
+# my_workflow_file.py
+
+from temporalio import workflow
+
+with workflow.unsafe.imports_passed_through():
+    import pydantic
+
+@workflow.defn
+class MyWorkflow:
+     # ...
 ```
+
+Alternatively, this can be done at worker creation time by customizing the runner's restrictions.
+
+```python
+my_worker = Worker(
+  ...,
+  workflow_runner=SandboxedWorkflowRunner(
+    restrictions=SandboxRestrictions.default.with_passthrough_modules("pydantic")
+  )
+)
+```
+
+In both of these cases, now the `pydantic` module will be passed through from outside the sandbox instead of being reloaded for every Workflow run.
 
 ### Invalid module members
 
@@ -114,7 +141,7 @@ my_restrictions = dataclasses.replace(
       "datetime", "date", "today",
     ),
 )
-my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
+my_worker = Worker(..., workflow_runner=SandboxeWorkflowRunner(restrictions=my_restrictions))
 ```
 
 Restrictions can also be added by piping (`|`) together matchers.
@@ -128,7 +155,7 @@ my_restrictions = dataclasses.replace(
       children={"datetime": SandboxMatcher(use={"date"})},
     ),
 )
-my_worker = Worker(..., runner=SandboxedWorkflowRunner(restrictions=my_restrictions))
+my_worker = Worker(..., workflow_runner=SandboxeWorkflowRunner(restrictions=my_restrictions))
 ```
 
 For more information on the Python sandbox, see the following resources.
