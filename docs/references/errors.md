@@ -99,7 +99,7 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size
 
-This error indicates that the Payload has exceeded the [Signal's](/app-dev-context/signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/application-development/features/#signals) available input size.
 
 Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks/#workflow-task).
 
@@ -188,7 +188,7 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more <a class="tdlp" href="/application-development/features#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#signals">Learn more</a></p></div></a> to an external Workflow.
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/application-development/features/#signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
