@@ -113,7 +113,7 @@ It is important to note that a practical way to handle different versions of Wor
 
 - [How to version Workflow Definitions in Go](/go/versioning)
 - [How to version Workflow Definitions in Java](/java/versioning)
-- [How to version Workflow Definitions in TypeScript](/typescript/patching)
+- [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
 
 ### Handling unreliable Worker Processes
 
@@ -254,9 +254,31 @@ You can use the <a class="tdlp" href="#continue-as-new">Continue-As-New<span cla
 The Workflow Execution spawned from Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 For example, it may be reasonable to use Continue-As-New once per day for a long-running Workflow Execution that is generating a large Event History.
 
+### Limits
+
+Each pending Activity generates a metadata entry in the Workflow's mutable state.
+Too many entries create a large mutable state, which causes unstable persistence.
+
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
+These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
+
+- `NumPendingChildExecutionsLimit`
+- `NumPendingActivitiesLimit`
+- `NumPendingSignals`
+- `NumPendingCancelRequestsLimit`
+
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
+Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
+
+:::note
+
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
+
+:::
+
 ### Command
 
-A Command is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></p></div></a> completes.
+A Command is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></p></div></a> completes.
 
 The action that the Cluster takes is recorded in the [Workflow Execution's](/concepts/what-is-a-workflow-execution) <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#event-history">Learn more</a></p></div></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#event">Learn more</a></p></div></a>.
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
@@ -285,9 +307,12 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 - It also serves as an audit log for debugging.
 
 **Event History limits**
+
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
+
+A Workflow Execution Event History has [a hard limit of 50,000 Events](/concepts/what-is-a-workflow-execution/#limits), as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
+
 When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
 
 #### Continue-As-New
@@ -568,6 +593,8 @@ This is useful for starting Child Workflows asynchronously (see [relevant issue 
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
+- [How to set a Cron Schedule](/application-development/features#temporal-cron-jobs)
+
 <div class="tdiw"><div class="tditw"><p class="tdit">Temporal Cron Job timeline</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-cron-job.svg" alt="Temporal Cron Job timeline" /></div></div>
 
 A Temporal Cron Job is similar to a classic unix cron job.
@@ -664,13 +691,6 @@ A Temporal Cron Job does not stop spawning Runs until it has been Terminated or 
 A Cancellation Request affects only the current Run.
 
 Use the Workflow Id in any requests to Cancel or Terminate.
-
-**Implementation guides:**
-
-- [How to set a Cron Schedule in Go](/go/startworkflowoptions-reference/#cronschedule)
-- [How to set a Cron Schedule in Java](/java/reference-workflowoptions/#cronschedule)
-- [How to set a Cron Schedule in PHP](/php/distributed-cron)
-- [How to set a Cron Schedule in Typescript](/typescript/clients)
 
 ## Schedule
 

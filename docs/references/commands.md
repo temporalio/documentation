@@ -9,7 +9,7 @@ tags:
 
 <!-- This file is generated. Do not edit it directly. -->
 
-A <a class="tdlp" href="/workflows#command">Command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Command?</p><p class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#command">Learn more</a></p></div></a> is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></p></div></a> completes.
+A <a class="tdlp" href="/workflows#command">Command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Command?</p><p class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#command">Learn more</a></p></div></a> is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></p></div></a> completes.
 
 The following is a complete list of possible Commands.
 
@@ -52,12 +52,16 @@ This Command is triggered by a call to spawn a <a class="tdlp" href="/workflows#
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ChildWorkflowExecutionStarted](/references/events/#childworkflowexecutionstarted)
 
+By default, OSS users cannot have more than 50,000 pending Child Workflows.
+
 ### SignalExternalWorkflowExecution
 
 This Command is triggered by a call to <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> another Workflow Execution.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [SignalExternalWorkflowExecutionInitiated](/references/events/#signalexternalworkflowexecutioninitiated)
+
+By default, OSS users cannot have more than 50,000 pending Signals to other Workflows.
 
 ### RequestCancelExternalWorkflowExecution
 
@@ -66,12 +70,16 @@ This Command is triggered by a call to request cancellation of another Workflow 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [RequestCancelExternalWorkflowExecutionInitiated](/references/events/#requestcancelexternalworkflowexecutioninitiated)
 
+By default, OSS users cannot have more than 50,000 pending Signals to other Workflows.
+
 ### ScheduleActivityTask
 
 This Command is triggered by a call to execute an <a class="tdlp" href="/activities#">Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity?</p><p class="tdlppd">In day-to-day conversations, the term "Activity" frequently denotes either an Activity Type, an Activity Definition, or an Activity Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#">Learn more</a></p></div></a>.
 
 - Awaitable: Yes, a Workflow Execution can await on the action resulting from this Command.
 - Corresponding Event: [ActivityTaskScheduled](/references/events/#activitytaskscheduled)
+
+By default, OSS users cannot schedule more than 50,000 Activities.
 
 ### RequestCancelActivityTask
 
