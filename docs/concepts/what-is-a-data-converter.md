@@ -93,7 +93,7 @@ In codec implementations, we recommended running the function (whether it be com
 - [`ZlibCodec`](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105) in the Go SDK
 - [Encryption Data Converter](https://github.com/temporalio/samples-go/blob/15be864c80d4d983ebb8a8fbd3fa5263bcef6930/encryption/data_converter.go#L100-L126) in Go's encryption sample
 
-To view data that's been converted by a codec in the Web UI and tctl, use a [Codec Server](/server/security#codec-server).
+To view data that's been converted by a codec in the Web UI and tctl, use a [Codec Server](/security#codec-server).
 
 #### Encryption
 
@@ -114,7 +114,7 @@ Our encryption samples use AES GCM with 256-bit keys:
 
 ### Failure Converter
 
-A Failure Converter converts error objects to proto [Failures](/concepts/what-is-a-failure) and back.
+A Failure Converter converts error objects to proto [Failures](/temporal#failure) and back.
 
 The default Failure Converter copies error messages and stack traces as plain text.
 If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your [Payload Codec](#payload-codec), in which case it will move your `message` and `stack_trace` fields to a Payload that's run through your codec.

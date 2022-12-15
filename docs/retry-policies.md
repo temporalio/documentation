@@ -87,7 +87,7 @@ Non-Retryable Errors = []
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
   - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
-  - The errors are matched against the `type` field of the <a class="tdlp" href="/temporal#application-failure">ApplicationFailure<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Failure?</p><p class="tdlppd">Temporal Failures are representations of various types of errors that occur in the system.</p><p class="tdlplm"><a class="tdlplma" href="/temporal#application-failure">Learn more</a></p></div></a>.
+  - The errors are matched against the `type` field of the [ApplicationFailure](/kb/failures#application-failure).
 - **Use case**: There may be errors that you know of that should not trigger a retry.
   In this case, you can specify them such that, if they occur, the given execution is not retried.
 

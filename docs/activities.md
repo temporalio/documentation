@@ -93,7 +93,7 @@ Activities can only receive Cancellation if they emit Heartbeats or in Core-base
 An Activity may receive Cancellation if:
 
 - The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. <!-- TODO link to workflow cancellation -->
-- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The <a class="tdlp" href="/temporal#cancelled-failure">Cancelled Failure<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Failure?</p><p class="tdlppd">Temporal Failures are representations of various types of errors that occur in the system.</p><p class="tdlplm"><a class="tdlplma" href="/temporal#cancelled-failure">Learn more</a></p></div></a> that the Activity receives will have `message: 'TIMED_OUT'`.
+- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/kb/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
 - In some SDKs:
   - The Worker is shutting down.
