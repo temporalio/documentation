@@ -164,7 +164,6 @@ module.exports = {
         },
       ],
     },
-    "external-resources",
     "glossary",
     {
       type: "link",
@@ -364,69 +363,6 @@ module.exports = {
         "java/how-to-set-child-workflow-options-in-java",
         "java/how-to-develop-a-worker-program-in-java",
         "java/how-to-provide-an-authorization-token-in-java",
-      ],
-    },
-  ],
-  sidebarTypeScript: [
-    {
-      type: "category",
-      label: "TypeScript how-tos",
-      collapsible: false,
-      collapsed: false,
-      items: [
-        "typescript/introduction",
-        {
-          type: "link",
-          label: "TypeScript tutorials",
-          href: "https://learn.temporal.io",
-        },
-        {
-          type: "link",
-          label: "Code samples",
-          href: "https://github.com/temporalio/samples-typescript#samples",
-        },
-        {
-          type: "category",
-          label: "TS Core APIs",
-          collapsed: true,
-          items: [
-            "typescript/workflows",
-            "typescript/activities",
-            "typescript/workers",
-            "typescript/clients",
-          ],
-        },
-        "typescript/troubleshooting",
-        {
-          type: "category",
-          label: "TS Production APIs",
-          collapsed: true,
-          items: [
-            "typescript/security",
-            "typescript/testing",
-            "typescript/patching",
-            "typescript/logging",
-            "typescript/production-deploy",
-          ],
-        },
-        {
-          type: "category",
-          label: "TS Advanced APIs",
-          collapsed: true,
-          items: [
-            "typescript/cancellation-scopes",
-            "typescript/determinism",
-            "typescript/handling-failure",
-            "typescript/data-converters",
-            "typescript/search-attributes",
-            "typescript/interceptors",
-          ],
-        },
-        {
-          type: "link",
-          label: "API Reference",
-          href: "https://typescript.temporal.io",
-        },
       ],
     },
   ],
