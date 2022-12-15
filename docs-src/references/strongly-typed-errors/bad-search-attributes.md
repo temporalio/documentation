@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task has unset or invalid Search Attributes.
+This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid [Search Attributes](/app-dev-context/search-attributes).
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.

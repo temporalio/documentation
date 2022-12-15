@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-The Workflow Task failed due to unset CancelWorkflowExecution attributeS.
+The [Workflow Task](/tasks#workflow-task) failed due to unset [CancelWorkflowExecution](/references/commands/#cancelworkflowexecution) attributes.
 
 Reset any missing attributes and redeploy the Workflow Task.

@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Sticky Task Queue needs to be reset.
+This error indicates that the Sticky [Task Queue](/tasks#task-queue)needs to be reset.
 
 If you see this error, reset the Sticky Task Queue.
 The system will retry automatically.

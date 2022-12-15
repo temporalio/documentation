@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-The Workflow has reached capacity for pending Activities.
-Therefore, the Workflow Task was failed to prevent the creation of another Activity.
+The [Workflow](/workflows) has reached capacity for pending [Activities](/activities).
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed to prevent the creation of another Activity.
 
 Let the Workflow complete any current Activities before redeploying the code.

@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Worker deployment returned a bad binary checksum.
+This error indicates that the [Worker](/workers) deployment returned a bad binary checksum.
 
 <!-- TODO: get more information about binary -->

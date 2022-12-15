@@ -9,6 +9,6 @@ tags:
 ---
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the Workflow Task was failed after attempting to add more Signals to an external Workflow.
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/app-dev-context/signals) to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.

@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed due to unset attributes on CompleteWorkflowExecution.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to unset attributes on [CompleteWorkflowExecution](/references/commands/#completeworkflowexecution).
 
 Reset any missing attributes.
-Adjust the size of your payload if it exceeds size limits.
+Adjust the size of your Payload if it exceeds size limits.

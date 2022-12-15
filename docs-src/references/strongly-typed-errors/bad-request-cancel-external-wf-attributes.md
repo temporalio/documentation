@@ -8,11 +8,11 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed while trying to cancel an external Workflow.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed while trying to cancel an [external Workflow](/workflows/#external-workflows).
 Unset or invalid attributes can cause this to occur.
 
 Reset any missing attributes, such as Workflow Id or Run Id.
 Adjust any fields that exceed length limits.
 
-If a Child Workflow is set to `Start` and `RequestCancel`, remove one of these attributes.
+If a [Child Workflow](/workflows/#child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
 A Child Workflow cannot perform both actions in the same Workflow Task.

@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task was forced to close.
+This error indicates that the [Workflow Task](/tasks#workflow-task) was forced to close.
 A retry will be scheduled if the error is recoverable.
 
 <!-- TODO: more info-->

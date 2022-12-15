@@ -8,8 +8,8 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task has failed for an unknown reason.
+This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
 
-If you see this error, file a bug report here.
+If you see this error, contact your administrator to file a support ticket or report it [here](https://github.com/temporalio/temporal/issues).
 
 <!--TODO: add link above -->

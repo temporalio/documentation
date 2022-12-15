@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that a Namespace failover forced the Workflow Task to close.
+This error indicates that a [Namespace](/namespaces) failover forced the [Workflow Task](/tasks#workflow-task) to close.
 The system automatically schedules a retry when this error occurs.
 
 <!--TODO: troubleshooting -->

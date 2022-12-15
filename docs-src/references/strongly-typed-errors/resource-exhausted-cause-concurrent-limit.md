@@ -8,8 +8,8 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the concurrent poller count has been reached.
+This error indicates that the concurrent [poller count](/application-development/worker-performance/#poller-count) has been reached.
 
 <!--TODO: more info needed -->
 
-Adjust the poller count per Worker.
+Adjust the poller count per [Worker](/workers).

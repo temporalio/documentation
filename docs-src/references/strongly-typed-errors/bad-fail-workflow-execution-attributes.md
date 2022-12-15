@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed due to unset FailWorkflowExecution attributes.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to unset [FailWorkflowExecution](/references/commands/#failworkflowexecution) attributes.
 
 If you encounter this error, make sure that `StartToClostTimeout` or `ScheduleToCloseTimeout` are set.
-Restart the Worker that the Workflow and Activity are registered to.
+Restart the [Worker](/workers) that the [Workflow](/workflows) and [Activity](/activities) are registered to.

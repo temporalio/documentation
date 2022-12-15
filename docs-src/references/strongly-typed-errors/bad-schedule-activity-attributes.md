@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates unset or invalid attributes for `ScheduleActivityTask` or `CompleteWorkflowExecution`.
+This error indicates unset or invalid attributes for [`ScheduleActivityTask`](/references/commands/#scheduleactivitytask) or [`CompleteWorkflowExecution`](/references/commands/#completeworkflowexecution).
 
 Reset any unset or empty attributes.
 Adjust the size of the received payload to stay within the given size limit.

@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that a Timer with the given Timer Id has already started.
+This error indicates that a [Timer](/app-dev-context/timers) with the given Timer Id has already started.
 
-Try entering a different Timer Id, and retry the Workflow Task.
+Try entering a different Timer Id, and retry the [Workflow Task](/tasks/#workflow-task).

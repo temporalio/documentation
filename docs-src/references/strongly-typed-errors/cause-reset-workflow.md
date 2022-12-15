@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task failed due to a request to reset the Workflow.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to a request to reset the [Workflow](/workflows).
 
 If the system hasn't started a new Workflow, manually reset the Workflow.

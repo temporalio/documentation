@@ -13,85 +13,85 @@ import TabItem from '@theme/TabItem';
 
 ## Bad Cancel Timer Attributes
 
-This error indicates that the Workflow Task failed while attempting to cancel a Timer.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed while attempting to cancel a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Timer?</p><p class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#timers">Learn more</a></p></div></a>.
 
 Check your Timer attributes for a missing Timer Id value.
 Add a valid Timer Id and redeploy the code.
 
 ## Bad Cancel Workflow Execution Attributes
 
-The Workflow Task failed due to unset CancelWorkflowExecution attributeS.
+The [Workflow Task](/tasks#workflow-task) failed due to unset [CancelWorkflowExecution](/references/commands/#cancelworkflowexecution) attributes.
 
 Reset any missing attributes and redeploy the Workflow Task.
 
 ## Bad Complete Workflow Execution Attributes
 
-This error indicates that the Workflow Task failed due to unset attributes on CompleteWorkflowExecution.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to unset attributes on [CompleteWorkflowExecution](/references/commands/#completeworkflowexecution).
 
 Reset any missing attributes.
-Adjust the size of your payload if it exceeds size limits.
+Adjust the size of your Payload if it exceeds size limits.
 
 ## Bad Continue as New Attributes
 
-This error indicates that the Workflow Task failed to validate a `ContinueAsNew` attribute.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate a [ContinueAsNew](/references/commands/#continueasnew) attribute.
 The attribute could be unset or invalid.
 
 Reset any missing attributes.
 If the payload or memo exceeded size limits, adjust the input size.
 
-Check that the Workflow is validating search attributes after unaliasing keys.
+Check that the [Workflow](/workflows) is validating search attributes after unaliasing keys.
 
 ## Bad Fail Workflow Execution Attributes
 
-This error indicates that the Workflow Task failed due to unset FailWorkflowExecution attributes.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to unset [FailWorkflowExecution](/references/commands/#failworkflowexecution) attributes.
 
 If you encounter this error, make sure that `StartToClostTimeout` or `ScheduleToCloseTimeout` are set.
-Restart the Worker that the Workflow and Activity are registered to.
+Restart the [Worker](/workers) that the [Workflow](/workflows) and [Activity](/activities) are registered to.
 
 ## Bad Modify Workflow Properties Attributes
 
-This error indicastes that the Workflow Task failed to validate attributes on a property in the Upsert Memo or in a payload.
+This error indicastes that the [Workflow Task](/tasks/#workflow-task) failed to validate attributes on a property in the Upsert Memo or in a payload.
 These attributes are either unset or exceeding size limits.
 
 Reset any unset and empty atrributes.
-Adjust the size of the Memo or payload to fit within the system's limits.
+Adjust the size of the [Memo](/workflows/#memo) or payload to fit within the system's limits.
 
 ## Bad Record Marker Attributes
 
-This error indicates that the Workflow Task failed due to an unset or incorrect Marker name.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to an unset or incorrect [Marker](/references/events/#markerrecorded) name.
 
 Enter a valid Marker name and redeploy the Task.
 
 ## Bad Request Cancel Activity Attributes
 
-This error either indicates the possibility of unset attributes for `RequestCancelActivity`, or an invalid History Builder state.
+This error either indicates the possibility of unset attributes for [RequestCancelActivity](/references/commands/#requestcancelactivity), or an invalid History Builder state.
 
-Update the Temporal SDK to the most recent release.
-Reset any unset attributes before retrying the Task.
+Update the [Temporal SDK](/temporal/#temporal-sdk) to the most recent release.
+Reset any unset attributes before retrying the [Workflow Task](/tasks#workflow-task).
 
-If you continue to see this error, review your code for nondeterministic causes.
+If you continue to see this error, review your code for [nondeterministic causes](/workflows/#code-changes-can-cause-non-deterministic-behavior).
 
 ## Bad Request Cancel External Workflow Execution
 
-This error indicates that the Workflow Task failed while trying to cancel an external Workflow.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed while trying to cancel an [external Workflow](/workflows/#external-workflows).
 Unset or invalid attributes can cause this to occur.
 
 Reset any missing attributes, such as Workflow Id or Run Id.
 Adjust any fields that exceed length limits.
 
-If a Child Workflow is set to `Start` and `RequestCancel`, remove one of these attributes.
+If a [Child Workflow](/workflows/#child-workflows) is set to `Start` and `RequestCancel`, remove one of these attributes.
 A Child Workflow cannot perform both actions in the same Workflow Task.
 
 ## Bad Schedule Activity Attributes
 
-This error indicates unset or invalid attributes for `ScheduleActivityTask` or `CompleteWorkflowExecution`.
+This error indicates unset or invalid attributes for [`ScheduleActivityTask`](/references/commands/#scheduleactivitytask) or [`CompleteWorkflowExecution`](/references/commands/#completeworkflowexecution).
 
 Reset any unset or empty attributes.
 Adjust the size of the received payload to stay within the given size limit.
 
 ## Bad Search Attributes
 
-This error indicates that the Workflow Task has unset or invalid Search Attributes.
+This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid <a class="tdlp" href="/application-development/observability#search-attributes">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Search Attributes</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a>.
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.
@@ -99,113 +99,113 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size
 
-This error indicates that the Payload has exceeded the Signal's available input size.
+This error indicates that the Payload has exceeded the [Signal's](/app-dev-context/signals) available input size.
 
-Adjust the size of the Payload, and redeploy the Task.
+Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks/#workflow-task).
 
 ## Bad Signal Workflow Execution Attributes
 
-This error indicates that the Workflow Task failed to validate attributes for `SignalWorkflowExecution`.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate attributes for [`SignalWorkflowExecution`](/references/commands/#signalworkflowexecution).
 
 Reset any unset, missing, nil, or invalid attributes.
 Adjust the input to fit within the system's size limits.
 
 ## Bad Start Child Execution Attributes
 
-This error indicates that the Workflow Task failed to validate attributes for `StartChildWorkflowExecution`.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate attributes for [`StartChildWorkflowExecution`](/references/commands/#startchildworkflowexecution)
 
 Adjust the input size of the attributes to fall within the system's size limits.
 
-Make sure that Search Attribute validation is performed after unaliasing keys.
+Make sure that <a class="tdlp" href="/application-development/observability#search-attributes">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Search Attributes</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a> validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes
 
-This error indicates that the scheduled Event is missing a Timer Id.
+This error indicates that the scheduled [Event](/workflows/#event) is missing a <a class="tdlp" href="/application-development/features#timers">Timer Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Timer?</p><p class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#timers">Learn more</a></p></div></a>.
 
-Set a valid Timer Id and retry the Task.
+Set a valid Timer Id and retry the [Workflow Task](/tasks/#workflow-task).
 
 ## Cause Bad Binary
 
-This error indicates that the Worker deployment returned a bad binary checksum.
+This error indicates that the [Worker](/workers) deployment returned a bad binary checksum.
 
 <!-- TODO: get more information about binary -->
 
 ## Cause Reset Workflow
 
-This error indicates that the Workflow Task failed due to a request to reset the Workflow.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to a request to reset the [Workflow](/workflows).
 
 If the system hasn't started a new Workflow, manually reset the Workflow.
 
 ## Cause Unspecified
 
-This error indicates that the Workflow Task has failed for an unknown reason.
+This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
 
-If you see this error, file a bug report here.
+If you see this error, contact your administrator to file a support ticket or report it [here](https://github.com/temporalio/temporal/issues).
 
 <!--TODO: add link above -->
 
 ## Failover Close Command
 
-This error indicates that a Namespace failover forced the Workflow Task to close.
+This error indicates that a [Namespace](/namespaces) failover forced the [Workflow Task](/tasks#workflow-task) to close.
 The system automatically schedules a retry when this error occurs.
 
 <!--TODO: troubleshooting -->
 
 ## Force Close Command
 
-This error indicates that the Workflow Task was forced to close.
+This error indicates that the [Workflow Task](/tasks#workflow-task) was forced to close.
 A retry will be scheduled if the error is recoverable.
 
 <!-- TODO: more info-->
 
 ## Non-Deterministic Error
 
-The Workflow Task failed due to a nondeterministic error.
+The [Workflow Task](/tasks#workflow-task) failed due to a [nondeterministic error](/workflows/#code-changes-can-cause-non-deterministic-behavior).
 
 <!-- TODO: info -->
 
 ## Pending Activities Limit Exceeded
 
-The Workflow has reached capacity for pending Activities.
-Therefore, the Workflow Task was failed to prevent the creation of another Activity.
+The [Workflow](/workflows) has reached capacity for pending [Activities](/activities).
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed to prevent the creation of another Activity.
 
 Let the Workflow complete any current Activities before redeploying the code.
 
 ## Pending Child Workflows Limit Exceeded
 
-This error indicates that the Workflow has reached capacity for pending Child Workflows.
-Therefore, the Workflow Task was failed to prevent additional Child Workflows from being added.
+This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/workflows/#child-workflows).
+Therefore, the [Workflow Task](/tasks/#workflow-task)was failed to prevent additional Child Workflows from being added.
 
 Wait for the system to finish any currently running Child Workflows before redploying this Task.
 
 ## Pending Request Cancel Limit Exceeded
 
-This error indicates that the Workflow Task failed after attempting to add more cancel requests.
-The Workflow has reached capacity for pending requests to cancel other Workflows, and cannot accept more requests.
+This error indicates that the [Workflow Task](/tasks/#workflow-task) failed after attempting to add more cancel requests.
+The [Workflow](/workflows) has reached capacity for pending requests to cancel other Workflows, and cannot accept more requests.
 
 If you see this error, give the system time to process pending requests before retrying the Task.
 
 ## Pending Signals Limit Exceeded
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the Workflow Task was failed after attempting to add more Signals to an external Workflow.
+Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more <a class="tdlp" href="/application-development/features#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#signals">Learn more</a></p></div></a> to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
 ## Reset Sticky Task Queue
 
-This error indicates that the Sticky Task Queue needs to be reset.
+This error indicates that the Sticky [Task Queue](/tasks#task-queue)needs to be reset.
 
 If you see this error, reset the Sticky Task Queue.
 The system will retry automatically.
 
 ## Resource Exhausted Cause Concurrent Limit
 
-This error indicates that the concurrent poller count has been reached.
+This error indicates that the concurrent [poller count](/application-development/worker-performance/#poller-count) has been reached.
 
 <!--TODO: more info needed -->
 
-Adjust the poller count per Worker.
+Adjust the poller count per [Worker](/workers).
 
 ## Resource Exhausted Cause Persistence Limit
 
@@ -215,51 +215,51 @@ This error indicates that the persistence rate limit has been reached.
 
 ## Resource Exhausted Cause RPS Limit
 
-This error indicates that the Workflow has reached its RPS limit.
+This error indicates that the [Workflow](/workflows) has reached its RPS limit.
 
 <!--TODO: more info needed -->
 
 ## Resource Exhausted Cause System Overload
 
-This error indicates that the system is overloaded and cannot allocate further resources to Workflow Tasks.
+This error indicates that the system is overloaded and cannot allocate further resources to [Workflow Tasks](/tasks#workflow-task).
 
 <!--TODO: more info needed -->
 
 ## Resource Exhausted Cause Unspecified
 
-This error indicates that an unknown cause is preventing resources from being allocated to further Workflow Tasks.
+This error indicates that an unknown cause is preventing resources from being allocated to further [Workflow Tasks](/tasks#workflow-task).
 
 <!--TODO: more info needed -->
 
 ## Schedule Activity Duplicate Id
 
-The Workflow Task failed because the Activity Id is already in use.
+The [Workflow Task](/tasks#workflow-task) failed because the [Activity](/activities) Id is already in use.
 
-Check your code to see if you've already specified the same Activity Id in your Workflow.
+Check your code to see if you've already specified the same Activity Id in your [Workflow](/workflows).
 Enter another Activity Id, and try running the Workflow Task again.
 
 ## Start Timer Duplicate Id
 
-This error indicates that a Timer with the given Timer Id has already started.
+This error indicates that a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Timer?</p><p class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#timers">Learn more</a></p></div></a> with the given Timer Id has already started.
 
-Try entering a different Timer Id, and retry the Workflow Task.
+Try entering a different Timer Id, and retry the [Workflow Task](/tasks/#workflow-task).
 
 ## Unhandled Command
 
-This error indicates new available Events since the last Workflow Task started.
-The Workflow Task was failed because the Workflow attempted to close itself without handling the new Events.
+This error indicates new available [Events](/references/events) since the last [Workflow Task](/tasks/#workflow-task) started.
+The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of Signals.
+`UnhandledCommand` can happen when the Workflow is receiving a high number of <a class="tdlp" href="/application-development/features#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#signals">Learn more</a></p></div></a>.
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
 
 If you continue to see this error, check your logs for failing Workflow Tasks.
-The Workflow may have been picked up by a different Worker.
+The Workflow may have been picked up by a different [Worker](/workers).
 
 ## Workflow Worker Unhandled Failure
 
-This error indicates that the Workflow Task encountered an unhandled failure from the Workflow Definition.
+This error indicates that the [Workflow Task](/tasks#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflows/#workflow-definition).
 
 <!--TODO: more info needed -->
 

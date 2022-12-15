@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Workflow Task encountered an unhandled failure from the Workflow Definition.
+This error indicates that the [Workflow Task](/tasks#workflow-task) encountered an unhandled failure from the [Workflow Definition](/workflows/#workflow-definition).
 
 <!--TODO: more info needed -->
