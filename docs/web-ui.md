@@ -48,7 +48,7 @@ Users can list Workflow Executions by any of the following:
   - UTC
   - Local
   - Relative
-- A [List Filter](/concepts/what-is-a-list-filter)
+- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>
 
 Select a Workflow Execution to see a breakdown of the Workflow Execution's History, Workers, and pending Activities.
 

@@ -710,7 +710,7 @@ The Action of a Schedule is where the Workflow Execution properties are establis
 Workflow Executions started by a Schedule have the following additional properties:
 
 - The Action's timestamp is appended to the Workflow Id.
-- The `TemporalScheduledStartTime` [Search Attribute](/concepts/what-is-a-search-attribute) is added to the Workflow Execution.
+- The `TemporalScheduledStartTime` <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> is added to the Workflow Execution.
   The value is the Action's timestamp.
 - The `TemporalScheduledById` Search Attribute is added to the Workflow Execution.
   The value is the Schedule Id.

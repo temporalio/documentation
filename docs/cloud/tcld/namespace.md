@@ -584,7 +584,7 @@ tcld namespace certificate-filters import --resource-version <etag> --certificat
 
 ## search-attributes
 
-The `tcld namespace search-attributes` commands manage [Search Attributes](/concepts/what-is-a-search-attribute) of the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> in Temporal Cloud.
+The `tcld namespace search-attributes` commands manage <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> of the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> in Temporal Cloud.
 
 Alias: `sa`
 
@@ -593,7 +593,7 @@ Alias: `sa`
 
 ### add
 
-The `tcld namespace search-attributes add` command adds custom [Search Attributes](/concepts/what-is-a-search-attribute) to a Namespace in Temporal Cloud.
+The `tcld namespace search-attributes add` command adds custom <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> to a Namespace in Temporal Cloud.
 
 `tcld namespace search-attributes add --search-attribute <value>`
 
@@ -660,7 +660,7 @@ tcld namespace search-attributes add --search-attribute "YourSearchAttribute1=Te
 
 ### rename
 
-The `tcld namespace search-attributes rename` command renames a custom [Search Attribute](/concepts/what-is-a-search-attribute) in Temporal Cloud.
+The `tcld namespace search-attributes rename` command renames a custom <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> in Temporal Cloud.
 
 `tcld namespace search-attributes rename --existing-name <value> --new-name <value>`
 

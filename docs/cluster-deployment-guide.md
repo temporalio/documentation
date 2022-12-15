@@ -22,7 +22,7 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Elasticsearch
 
-[Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
+<a class="tdlp" href="/visibility#">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a> features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 

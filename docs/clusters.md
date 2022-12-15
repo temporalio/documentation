@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility).
+An Elasticsearch database can be added to enable <a class="tdlp" href="/visibility#">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a>.
 
 #### Dependency versions
 
@@ -244,7 +244,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 - Internal Timer Task Queue: Durably persists Timers.
 - Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
   (Relies on the experimental Multi-Cluster feature.)
-- Internal Visibility Task Queue: Pushes data to the [Advanced Visibility](/concepts/what-is-advanced-visibility) index.
+- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a> index.
 
 ### Matching Service
 
