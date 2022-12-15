@@ -1,6 +1,6 @@
 ---
 id: advanced-visibility
-title: What is Advanced Visibility?
+title: How to use Advanced Visibility application features
 sidebar_label: Advanced Visibility
 description: Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like List Filter.
 tags:

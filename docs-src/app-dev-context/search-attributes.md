@@ -1,6 +1,6 @@
 ---
 id: search-attributes
-title: What are Search Attributes?
+title: How to use Search Attributes
 description: Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.
 sidebar_label: Search Attributes
 tags:
