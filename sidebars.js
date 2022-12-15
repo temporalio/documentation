@@ -209,6 +209,7 @@ module.exports = {
         "concepts/what-is-a-data-converter",
         "concepts/what-is-an-event",
         "concepts/what-is-an-event-history",
+        "concepts/what-is-a-failure",
         "concepts/what-is-a-heartbeat-timeout",
         "concepts/what-is-a-list-filter",
         "concepts/what-is-a-local-activity",
