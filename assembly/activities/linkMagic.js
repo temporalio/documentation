@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 
 const docsLinkRegex =
-  "\\[([a-zA-Z0-9-_#.&`\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
+  "\\[([a-zA-Z0-9-_#.&`',\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
 const docsImageRegex = "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
 const imageRegex = RegExp(docsImageRegex, "gm");

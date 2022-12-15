@@ -7,6 +7,9 @@
   "redirects": [
     {"source": "/docs/:path*", "destination": "/:path*"},
     {"source": "/typescript/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"},
+    {"source": "/go/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/go/:path*"},
+    {"source": "/java/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"},
+    {"source": "/concepts/what-is:path*", "destination": "concepts/landing"},
     {"source": "/reference/:path*", "destination": "/references/:path*"},
     {"source": "/system-tools/:path*", "destination": "/devtools/:path*"},
     {"source": "/devtools/tctl", "destination": "/tctl"},
@@ -357,7 +360,7 @@
     },
     {
       "source": "/go/task-queues",
-      "destination": "/concepts/what-is-a-task-queue"
+      "destination": "/tasks"
     },
     {
       "source": "/go/testing",
@@ -512,11 +515,19 @@
     },
     {
       "source": "/server-archive-data",
-      "destination": "/concepts/what-is-archival"
+      "destination": "/clusters#"
     },
     {
       "source": "/server/archive-data",
-      "destination": "/concepts/what-is-archival"
+      "destination": "/clusters#archival"
+    },
+    {
+      "source": "/clusters/how-to-set-up-archival",
+      "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/clusters/how-to-create-a-custom-archiver",
+      "destination": "/cluster-deployment-guide#archival"
     },
     {
       "source": "/server-configuration",
@@ -528,7 +539,11 @@
     {"source": "/server/namespaces", "destination": "/namespaces"},
     {
       "source": "/server/multi-cluster",
-      "destination": "/concepts/what-is-multi-cluster-replication"
+      "destination": "/clusters#multi-cluster-replication"
+    },
+    {
+      "source": "/clusters/how-to-set-up-multi-cluster-replication",
+      "destination": "/cluster-deployment-guide#set-up-multi-cluster-replication"
     },
     {"source": "/server-options", "destination": "/references/server-options"},
     {"source": "/server/options", "destination": "/references/server-options"},
@@ -542,11 +557,15 @@
     },
     {
       "source": "/server-quick-install",
-      "destination": "/clusters/quick-install"
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/server/quick-install",
-      "destination": "/clusters/quick-install"
+      "destination": "/application-development/foundations#run-a-development-cluster"
+    },
+    {
+      "source": "/clusters/quick-install",
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/server/security",
@@ -554,27 +573,31 @@
     },
     {
       "source": "/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
-      "destination": "/clusters/quick-install/#helm-charts"
+      "destination": "/kb/all-the-ways-to-run-a-cluster#helm-charts"
     },
     {
       "source": "/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
-      "destination": "/clusters/quick-install/#docker-compose"
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
-      "destination": "/clusters/quick-install/#helm-charts"
+      "destination": "/kb/all-the-ways-to-run-a-cluster#helm-charts"
     },
     {
       "source": "/content/how-to-quickly-install-the-temporal-server",
-      "destination": "/clusters/quick-install"
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+      "destination": "/cluster-deployment-guide#elasticsearch"
     },
     {
       "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+      "destination": "/cluster-deployment-guide#elasticsearch"
+    },
+    {
+      "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
+      "destination": "/cluster-deployment-guide#elasticsearch"
     },
     {"source": "/server-security", "destination": "/server/security"},
     {"source": "/server-versions-and-dependencies", "destination": "/clusters"},

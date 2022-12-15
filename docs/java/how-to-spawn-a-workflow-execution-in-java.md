@@ -125,4 +125,4 @@ See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code 
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/java/reference-workflowoptions/#cronschedule) Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/java/how-to-set-a-cron-schedule-in-java) Workflow option in the Client code.

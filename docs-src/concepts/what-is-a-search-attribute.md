@@ -131,4 +131,4 @@ Note:
 To actually have results from the use of a [List Filter](/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
+- [How to set Search Attributes as Workflow Execution metadata in Go](/app-dev-context/set-custom-search-attributes)

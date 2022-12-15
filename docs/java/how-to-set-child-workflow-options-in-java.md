@@ -90,7 +90,7 @@ import ParentClosePolicy from './how-to-set-a-parent-close-policy-in-java.md'
     }
 ```
 
-See [What is a Workflow Id Reuse Policy?](/concepts/what-is-a-workflow-id-reuse-policy)
+See [What is a Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy)
 
 ### `WorkflowExecutionTimeout`
 
@@ -110,7 +110,7 @@ See [What is a Workflow Id Reuse Policy?](/concepts/what-is-a-workflow-id-reuse-
     }
 ```
 
-See [What is a Workflow Execution Timeout?](/concepts/what-is-a-workflow-execution-timeout)
+See [What is a Workflow Execution Timeout](/concepts/what-is-a-workflow-execution-timeout)
 
 ### `WorkflowRunTimeout`
 

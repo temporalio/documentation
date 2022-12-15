@@ -101,8 +101,8 @@ The Workflow Versioning feature enables the creation of logical branching inside
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](/go/versioning)
-- [How to version Workflow Definitions in Java](/java/versioning)
+- [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/)
+- [How to version Workflow Definitions in Java](https://legacy-documentation-sdks.temporal.io/java/versioning)
 - [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
 
 ### Handling unreliable Worker Processes
