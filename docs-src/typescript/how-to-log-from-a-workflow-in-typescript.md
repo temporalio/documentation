@@ -19,7 +19,7 @@ To work around these limitations, we recommend using the Sinks feature in the Ty
 Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
 <!--
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](https://legacy-documentation-sdks.temporal.io/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
 
 Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
@@ -40,6 +40,19 @@ However, they differ from Activities in important ways:
 Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
+
+[packages/test/src/workflows/definitions.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/definitions.ts)
+
+```ts
+import type { Sinks } from '@temporalio/workflow';
+
+export interface LoggerSinks extends Sinks {
+  logger: {
+    info(message: string): void;
+  };
+}
+```
+
 <!--SNIPEND-->
 
 **Implementing Sinks**
@@ -49,6 +62,45 @@ Implementing Sinks is a two-step process.
 Implement and inject the Sink function into a Worker
 
 <!--SNIPSTART typescript-logger-sink-worker-->
+
+[sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
+
+```ts
+import { defaultSinks, InjectedSinks, Worker } from '@temporalio/worker';
+import { MySinks } from './workflows';
+
+async function main() {
+  const sinks: InjectedSinks<MySinks> = {
+    ...defaultSinks(),
+    alerter: {
+      alert: {
+        fn(workflowInfo, message) {
+          console.log(`sending SMS alert!
+workflow: ${workflowInfo.runId}
+message: ${message}`);
+        },
+        callDuringReplay: false, // The default
+      },
+    },
+  };
+  const worker = await Worker.create({
+    workflowsPath: require.resolve('./workflows'),
+    taskQueue: 'sinks',
+    sinks,
+  });
+  await worker.run();
+  console.log('Worker gracefully shutdown');
+}
+
+main().then(
+  () => void process.exit(0),
+  (err) => {
+    console.error(err);
+    process.exit(1);
+  },
+);
+```
+
 <!--SNIPEND-->
 
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
@@ -57,6 +109,20 @@ Implement and inject the Sink function into a Worker
 **Proxy and call a Sink function from a Workflow**
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
+
+[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/log-sample.ts)
+
+```ts
+import * as wf from '@temporalio/workflow';
+import { LoggerSinks } from './definitions';
+
+const { logger } = wf.proxySinks<LoggerSinks>();
+
+export async function logSampleWorkflow(): Promise<void> {
+  logger.info('Workflow execution started');
+}
+```
+
 <!--SNIPEND-->
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:

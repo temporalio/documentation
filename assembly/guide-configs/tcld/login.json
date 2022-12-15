@@ -1,0 +1,17 @@
+{
+  "file_name": "login.md",
+  "file_dir": "cloud/tcld",
+  "id": "login",
+  "title": "tcld login command reference",
+  "sidebar_label": "login",
+  "description": "How to use Temporal Cloud's tcld login command.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cloud/tcld/login"
+    }
+  ]
+}

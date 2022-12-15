@@ -10,7 +10,7 @@ tags:
 
 A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.
 
-- TypeScript: [Data Converters](/typescript/data-converters)
+- TypeScript: [Data Converters](https://legacy-documentation-sdks.temporal.io/typescript/data-converters)
 - Go: [Create a custom Data Converter](/go/how-to-create-a-custom-data-converter-in-go)
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
@@ -27,7 +27,7 @@ The main pieces of data that run through the Data Converter are arguments and re
   - Encodes Workflow and Query return values.
   - Decodes and encodes Activity arguments and return values.
 
-Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) Protobuf message, which consists of binary `data` and key-value `metadata`.
+Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) Protobuf message, which consists of binary `data` and key-value `metadata`.
 
 ## Default Data Converter
 
@@ -56,7 +56,7 @@ To use a custom Data Converter, provide it in the following contexts:
 
 - The Client and Worker in the SDKs you use.
 - Temporal Web via [`tctl data-converter web`](/tctl-v1/dataconverter#web) (for displaying decoded data in the Web UI).
-- `tctl` via [`--data-converter-plugin`](/tctl-next/modifiers#--data-converter-plugin) (for displaying decoded headers in `tctl` output).
+- `tctl` via [`--data-converter-plugin`](/tctl-next/#--data-converter-plugin) (for displaying decoded headers in `tctl` output).
 
 Custom Data Converters are not applied to all data:
 
@@ -75,9 +75,9 @@ Some SDKs have the concept of a Payload Converter that's part of the Data Conver
 
 ### Payload Codec
 
-In [TypeScript](/typescript/data-converters#custom-data-converter), [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), and [Python](https://python.temporal.io/temporalio.converter.DataConverter.html), data conversion happens in two stages:
+In [TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/data-converters#custom-data-converter), [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), and [Python](https://python.temporal.io/temporalio.converter.DataConverter.html), data conversion happens in two stages:
 
-1. A Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49).
+1. A Payload Converter converts a value into a [`Payload`](https://api-docs.temporal.io/#temporal.api.common.v1.Payload).
 2. A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.
 
 The Payload Codec is an optional step that happens between the wire and the Payload Converter:

@@ -55,7 +55,7 @@ module.exports = {
         "cloud/how-to-monitor-temporal-cloud-metrics",
         {
           type: "category",
-          label: "tcld",
+          label: "CLI - tcld",
           collapsible: true,
           collapsed: true,
           link: {
@@ -64,119 +64,9 @@ module.exports = {
           },
           items: [
             "cloud/tcld/login",
-            {
-              type: "category",
-              label: "account",
-              collapsible: true,
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "cloud/tcld/account/index",
-              },
-              items: [
-                "cloud/tcld/account/get",
-                {
-                  type: "category",
-                  label: "metrics",
-                  collapsible: true,
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "cloud/tcld/account/metrics/index",
-                  },
-                  items: [
-                    "cloud/tcld/account/metrics/enable",
-                    "cloud/tcld/account/metrics/disable",
-                    {
-                      type: "category",
-                      label: "accepted-client-ca",
-                      collapsible: true,
-                      collapsed: true,
-                      link: {
-                        type: "doc",
-                        id: "cloud/tcld/account/metrics/accepted-client-ca/index",
-                      },
-                      items: [
-                        "cloud/tcld/account/metrics/accepted-client-ca/add",
-                        "cloud/tcld/account/metrics/accepted-client-ca/list",
-                        "cloud/tcld/account/metrics/accepted-client-ca/set",
-                        "cloud/tcld/account/metrics/accepted-client-ca/remove",
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: "category",
-              label: "namespace",
-              collapsible: true,
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "cloud/tcld/namespace/index",
-              },
-              items: [
-                "cloud/tcld/namespace/list",
-                "cloud/tcld/namespace/get",
-                {
-                  type: "category",
-                  label: "accepted-client-ca",
-                  collapsible: true,
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "cloud/tcld/namespace/accepted-client-ca/index",
-                  },
-                  items: [
-                    "cloud/tcld/namespace/accepted-client-ca/add",
-                    "cloud/tcld/namespace/accepted-client-ca/list",
-                    "cloud/tcld/namespace/accepted-client-ca/set",
-                    "cloud/tcld/namespace/accepted-client-ca/remove",
-                  ],
-                },
-                {
-                  type: "category",
-                  label: "certificate-filters",
-                  collapsible: true,
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "cloud/tcld/namespace/certificate-filters/index",
-                  },
-                  items: [
-                    "cloud/tcld/namespace/certificate-filters/import",
-                    "cloud/tcld/namespace/certificate-filters/export",
-                    "cloud/tcld/namespace/certificate-filters/clear",
-                  ],
-                },
-                {
-                  type: "category",
-                  label: "search-attributes",
-                  collapsible: true,
-                  collapsed: true,
-                  link: {
-                    type: "doc",
-                    id: "cloud/tcld/namespace/search-attributes/index",
-                  },
-                  items: [
-                    "cloud/tcld/namespace/search-attributes/add",
-                    "cloud/tcld/namespace/search-attributes/rename",
-                  ],
-                },
-              ],
-            },
-            {
-              type: "category",
-              label: "request",
-              collapsible: true,
-              collapsed: true,
-              link: {
-                type: "doc",
-                id: "cloud/tcld/request/index",
-              },
-              items: ["cloud/tcld/request/get"],
-            },
+            "cloud/tcld/account",
+            "cloud/tcld/namespace",
+            "cloud/tcld/request",
             "cloud/tcld/version",
           ],
         },
@@ -188,7 +78,7 @@ module.exports = {
       ],
     },
     "cluster-deployment-guide",
-    "server/security",
+    "security",
     {
       type: "category",
       label: "CLI - tctl v1.17",
@@ -475,91 +365,6 @@ module.exports = {
         "java/how-to-set-child-workflow-options-in-java",
         "java/how-to-develop-a-worker-program-in-java",
         "java/how-to-provide-an-authorization-token-in-java",
-      ],
-    },
-  ],
-  sidebarPHP: [
-    {
-      type: "category",
-      label: "PHP how-tos",
-      collapsible: false,
-      collapsed: false,
-      items: [
-        "php/introduction",
-        "php/workflows",
-        "php/activities",
-        "php/task-queues",
-        "php/workers",
-        "php/signals",
-        "php/queries",
-        "php/retries",
-        "php/error-handling",
-        "php/side-effect",
-        "php/versioning",
-        "php/distributed-cron",
-      ],
-    },
-  ],
-  sidebarTypeScript: [
-    {
-      type: "category",
-      label: "TypeScript how-tos",
-      collapsible: false,
-      collapsed: false,
-      items: [
-        "typescript/introduction",
-        {
-          type: "link",
-          label: "TypeScript tutorials",
-          href: "https://learn.temporal.io",
-        },
-        {
-          type: "link",
-          label: "Code samples",
-          href: "https://github.com/temporalio/samples-typescript#samples",
-        },
-        {
-          type: "category",
-          label: "TS Core APIs",
-          collapsed: true,
-          items: [
-            "typescript/workflows",
-            "typescript/activities",
-            "typescript/workers",
-            "typescript/clients",
-          ],
-        },
-        "typescript/troubleshooting",
-        {
-          type: "category",
-          label: "TS Production APIs",
-          collapsed: true,
-          items: [
-            "typescript/security",
-            "typescript/testing",
-            "typescript/patching",
-            "typescript/logging",
-            "typescript/production-deploy",
-          ],
-        },
-        {
-          type: "category",
-          label: "TS Advanced APIs",
-          collapsed: true,
-          items: [
-            "typescript/cancellation-scopes",
-            "typescript/determinism",
-            "typescript/handling-failure",
-            "typescript/data-converters",
-            "typescript/search-attributes",
-            "typescript/interceptors",
-          ],
-        },
-        {
-          type: "link",
-          label: "API Reference",
-          href: "https://typescript.temporal.io",
-        },
       ],
     },
   ],

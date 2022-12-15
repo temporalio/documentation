@@ -66,6 +66,10 @@
       "id": "concepts/what-is-a-workflow-task-timeout"
     },
     {
+      "type": "h3",
+      "id": "concepts/what-is-a-memo"
+    },
+    {
       "type": "h2",
       "id": "concepts/what-is-a-signal"
     },
@@ -74,7 +78,10 @@
       "type": "h2",
       "id": "concepts/what-is-a-query"
     },
-
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-side-effect"
+    },
     {
       "type": "h2",
       "id": "concepts/what-is-a-child-workflow-execution"

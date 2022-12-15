@@ -9,7 +9,7 @@ tags:
 
 The `tctl workflow showid` command shows the Workflow Execution Event History for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).
 
-`tctl workflow showid <workflow_id> [<run_id>] [<modifiers>]`
+`tctl workflow showid <workflow_id> [<run_id>] <modifiers>`
 
 This command is a shortcut for `tctl workflow show --workflow_id <workflowid> [--run_id <runid>]`.
 
@@ -46,11 +46,9 @@ Example output:
 
 The following modifiers control the behavior of the command.
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -58,11 +56,9 @@ Alias: `--pdt`
 tctl workflow showid <workflow_id> --print_datetime
 ```
 
-### `--print_raw_time`
+### --print_raw_time
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -70,11 +66,9 @@ Alias: `--prt`
 tctl workflow showid <workflow_id> --print_raw_time
 ```
 
-### `--output_filename`
+### --output_filename
 
 Serialize an event to a file.
-
-Alias: `--of`
 
 **Example**
 
@@ -82,11 +76,9 @@ Alias: `--of`
 tctl workflow showid <workflow_id> --output_filename <filename>
 ```
 
-### `--print_full`
+### --print_full
 
 Print full event details.
-
-Alias: `--pf`
 
 **Example**
 
@@ -94,11 +86,9 @@ Alias: `--pf`
 tctl workflow showid <workflow_id> --print_full
 ```
 
-### `--print_event_version`
+### --print_event_version
 
 Print the event version.
-
-Alias: `--pev`
 
 **Example**
 
@@ -106,12 +96,10 @@ Alias: `--pev`
 tctl workflow showid <workflow_id> --print_event_version
 ```
 
-### `--event_id`
+### --event_id
 
 Print the details of a specified event.
 The default value is 0.
-
-Alias: `--eid`
 
 **Example**
 
@@ -119,12 +107,10 @@ Alias: `--eid`
 tctl workflow showid <workflow_id> --event_id <id>
 ```
 
-### `--max_field_length`
+### --max_field_length
 
 Specify the maximum length for each attribute field.
 The default value is 500.
-
-Alias: `--maxl`
 
 **Example**
 
@@ -132,7 +118,7 @@ Alias: `--maxl`
 tctl workflow showid <workflow_id> --max_field_length <length>
 ```
 
-### `--reset_points_only`
+### --reset_points_only
 
 Show only events that are eligible for reset.
 

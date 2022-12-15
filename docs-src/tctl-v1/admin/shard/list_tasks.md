@@ -13,39 +13,35 @@ The `tctl admin shard list_tasks` command will list the Tasks available for a gi
 
 The modifiers below affect the output and behavior of the command.
 
-#### `--more`
-
-Alias: `-m`
+#### --more
 
 Lists more pages of list tasks.
 The default setting is to list one page of 10 list tasks.
 
-#### `--pagesize value`
-
-Alias: `--ps value`
+#### --pagesize value
 
 The size of the result page.
 Default: 10
 
-#### `--target_cluster value`
+#### --target_cluster value
 
 Temporal cluster to use.
 Default: "active"
 
-#### `--shard_id value`
+#### --shard_id value
 
 The ID of the shard
 
 Default: 0
 
-#### `--task_type value`
+#### --task_type value
 
 The type of Task.
 
 Default: transfer
 Values: transfer, timer, replication, visibility
 
-#### `--min_visibility_ts value`
+#### --min_visibility_ts value
 
 The minimum value that can be set as a Task Visibility timestamp.
 
@@ -60,7 +56,7 @@ Supported formats include:
   - month/m
   - year/y
 
-#### `--max_visibility_ts value`
+#### --max_visibility_ts value
 
 The maximum value that can be set as a Task Visibility timestamp.
 

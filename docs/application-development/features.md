@@ -19,7 +19,7 @@ This guide is a work in progress.
 Some sections may be incomplete or missing for some languages.
 Information may change at any time.
 
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](/sdks).
+If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
 
 :::
 
@@ -38,7 +38,7 @@ In this section you can find the following:
 
 ## Signals
 
-A <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#signal">Learn more</a></p></div></a> is a message sent to a running Workflow Execution.
+A <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> is a message sent to a running Workflow Execution.
 
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
@@ -97,7 +97,7 @@ Things to consider when defining Signals:
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Queries</p><p class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#queries">Learn more</a></p></div></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="#signals">Learn more</a></p></div></a>.
 
 All interface methods must have one of the following annotations:
 
@@ -360,8 +360,8 @@ class YourWorkflow
 }
 ```
 
-In the example above the workflow updates the protected value. Main workflow coroutine waits for such value to change using
-`Workflow::await()` function.
+In the preceding example, the Workflow updates the protected value.
+The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
 
 </TabItem>
 <TabItem value="python">
@@ -408,9 +408,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#signal">Learn more</a></p></div></a> to a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> to a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
-Pass in both the <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a href="/workflows#workflow-id">Learn more</a></p></div></a> and <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#run-id">Learn more</a></p></div></a> to uniquely identify the Workflow Execution.
+Pass in both the <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a> and <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a> to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
 
 ```go
@@ -456,14 +456,14 @@ Customer customer = new Customer("John", "Spanish", "john@john.com");
 workflow.addCustomer(customer); //addCustomer is the Signal method defined in the greetCustomer Workflow.
 ```
 
-See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle Signals in an Workflow in Java</p><p class="tdlppd">Use the `@SignalMethod` annotation to handle Signals within the Workflow interface.</p><p class="tdlplm"><a href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
+See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle Signals in an Workflow in Java</p><p class="tdlppd">Use the `@SignalMethod` annotation to handle Signals within the Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="php">
 
 To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `#[SignalMethod]` in the Workflow interface, from the Client code.
 
-To send signal to workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+To send a Signal to a Workflow, use `WorkflowClient->newWorkflowStub` or `WorkflowClient->newUntypedWorkflowStub`:
 
 ```php
 $workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
@@ -477,15 +477,14 @@ $workflow->setValue(true);
 assert($run->getValue() === true);
 ```
 
-Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with workflow id to send
-signals to already running workflows.
+Use `WorkflowClient->newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send Signals to already running Workflows.
 
 ```php
 $workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
 $workflow->setValue(true);
 ```
 
-See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle Signals in an Workflow in PHP</p><p class="tdlppd">Use the `#[SignalMethod]` annotation to handle Signals within the Workflow interface.</p><p class="tdlplm"><a href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
+See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to handle a Signal</p><p class="tdlppd">Workflows listen for Signals by the Signal's name.</p><p class="tdlplm"><a class="tdlplma" href="#handle-signal">Learn more</a></p></div></a> for details on how to handle Signals in a Workflow.
 
 </TabItem>
 <TabItem value="python">
@@ -778,7 +777,7 @@ await client.signalWithStart(yourWorkflow, {
 
 ## Queries
 
-A <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Query?</p><p class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#query">Learn more</a></p></div></a> is a synchronous operation that is used to get the state of a Workflow Execution.
+A <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Query?</p><p class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#query">Learn more</a></p></div></a> is a synchronous operation that is used to get the state of a Workflow Execution.
 
 ### Define Query
 
@@ -824,7 +823,7 @@ Query methods must never change any Workflow state including starting Activities
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous [Queries](/php/queries) and receive [Signals](/php/signals).
+Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Queries</p><p class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#queries">Learn more</a></p></div></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop with Signals</p><p class="tdlppd">A Signal is a message sent to a running Workflow Execution</p><p class="tdlplm"><a class="tdlplma" href="#signals">Learn more</a></p></div></a>.
 
 All interface methods must have one of the following annotations:
 
@@ -918,6 +917,17 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+import { defineQuery } from '@temporalio/workflow';
+
+export const getValueQuery = defineQuery<number | undefined, [string]>(
+  'getValue',
+);
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -927,7 +937,7 @@ Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#defi
 
 Queries are handled by your Workflow.
 
-Don’t include any logic that causes <a class="tdlp" href="/workflows#command">Command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Command?</p><p class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</p><p class="tdlplm"><a href="/workflows#command">Learn more</a></p></div></a> generation within a Query handler (such as executing Activities).
+Don’t include any logic that causes <a class="tdlp" href="/workflows#command">Command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Command?</p><p class="tdlppd">A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#command">Learn more</a></p></div></a> generation within a Query handler (such as executing Activities).
 Including such logic causes unexpected behavior.
 
 <Tabs
@@ -1165,7 +1175,7 @@ var_dump($workflow->getCurrentState());
 </TabItem>
 <TabItem value="python">
 
-To send a Query from to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
+To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
 ```python
 await handle.query("some query")
@@ -1179,6 +1189,18 @@ Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.Workf
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
+
+[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
+
+```ts
+export async function trackState(): Promise<void> {
+  const state = new Map<string, number>();
+  setHandler(setValueSignal, (key, value) => void state.set(key, value));
+  setHandler(getValueQuery, (key) => state.get(key));
+  await CancellationScope.current().cancelRequested;
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1277,6 +1299,21 @@ await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
+
+[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
+
+```ts
+import { Client } from '@temporalio/client';
+import { getValueQuery } from './workflows';
+
+async function run(): Promise<void> {
+  const client = new Client();
+  const handle = client.workflow.getHandle('state-id-0');
+  const meaning = await handle.query(getValueQuery, 'meaning-of-life');
+  console.log({ meaning });
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1286,11 +1323,11 @@ Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/clien
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
 
-Workflow timeouts are set when <a class="tdlp" href="#workflow-timeouts">starting the Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow timeouts</p><p class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</p><p class="tdlplm"><a href="#workflow-timeouts">Learn more</a></p></div></a>.
+Workflow timeouts are set when <a class="tdlp" href="#workflow-timeouts">starting the Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow timeouts</p><p class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-timeouts">Learn more</a></p></div></a>.
 
-- **<a class="tdlp" href="/workflows#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution Timeout?</p><p class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</p><p class="tdlplm"><a href="/workflows#workflow-execution-timeout">Learn more</a></p></div></a>** - restricts the maximum amount of time that a single Workflow Execution can be executed.
-- **<a class="tdlp" href="/workflows#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Run Timeout?</p><p class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</p><p class="tdlplm"><a href="/workflows#workflow-run-timeout">Learn more</a></p></div></a>**: restricts the maximum amount of time that a single Workflow Run can last.
-- **<a class="tdlp" href="/workflows#workflow-task-timeout">Workflow Task Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Timeout?</p><p class="tdlppd">A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.</p><p class="tdlplm"><a href="/workflows#workflow-task-timeout">Learn more</a></p></div></a>**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
+- **<a class="tdlp" href="/workflows#workflow-execution-timeout">Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution Timeout?</p><p class="tdlppd">A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution-timeout">Learn more</a></p></div></a>** - restricts the maximum amount of time that a single Workflow Execution can be executed.
+- **<a class="tdlp" href="/workflows#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Run Timeout?</p><p class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-run-timeout">Learn more</a></p></div></a>**: restricts the maximum amount of time that a single Workflow Run can last.
+- **<a class="tdlp" href="/workflows#workflow-task-timeout">Workflow Task Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Timeout?</p><p class="tdlppd">A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-task-timeout">Learn more</a></p></div></a>**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
 <Tabs
 defaultValue="go"
@@ -1423,12 +1460,45 @@ Available timeouts are:
 - [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
 
 <!--SNIPSTART typescript-execution-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.workflow.start(example, {
+  taskQueue,
+  workflowId,
+  workflowExecutionTimeout: '1 day',
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-run-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.workflow.start(example, {
+  taskQueue,
+  workflowId,
+  workflowRunTimeout: '1 minute',
+});
+```
+
 <!--SNIPEND-->
 
 <!--SNIPSTART typescript-task-timeout -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+await client.workflow.start(example, {
+  taskQueue,
+  workflowId,
+  workflowTaskTimeout: '1 minute',
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1438,7 +1508,7 @@ Available timeouts are:
 
 A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-Use a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> to retry a Workflow Execution in the event of a failure.
+Use a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> to retry a Workflow Execution in the event of a failure.
 
 Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
@@ -1495,8 +1565,7 @@ GreetWorkflowInterface workflow1 =
 <TabItem value="php">
 
 A Retry Policy can be configured with an instance of the `RetryOptions` object.
-To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions`
-for child Workflows or via `WorkflowOptions` for top-level Workflows.
+To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
 
 ```php
 $workflow = $this->workflowClient->newWorkflowStub(
@@ -1506,8 +1575,6 @@ $workflow = $this->workflowClient->newWorkflowStub(
       )
 );
 ```
-
-For more detailed information about `RetryOptions` object see [retries](/php/retries) for more details.
 
 </TabItem>
 <TabItem value="python">
@@ -1542,6 +1609,19 @@ handle = await client.execute_workflow(
 Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
 
 <!--SNIPSTART typescript-retry-workflow -->
+
+[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
+
+```ts
+const handle = await client.workflow.start(example, {
+  taskQueue,
+  workflowId,
+  retry: {
+    maximumAttempts: 3,
+  },
+});
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -1553,9 +1633,9 @@ Each Activity timeout controls the maximum duration of a different aspect of an 
 
 The following timeouts are available in the Activity Options.
 
-- **<a class="tdlp" href="/activities#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a>**: is the maximum amount of time allowed for the overall <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a>.
-- **<a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a href="/activities#start-to-close-timeout">Learn more</a></p></div></a>**: is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
-- **<a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Start Timeout?</p><p class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</p><p class="tdlplm"><a href="/activities#schedule-to-start-timeout">Learn more</a></p></div></a>**: is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a href="/workers#">Learn more</a></p></div></a> starts that Activity Task.
+- **<a class="tdlp" href="/activities#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a>**: is the maximum amount of time allowed for the overall <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a>.
+- **<a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a>**: is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
+- **<a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Start Timeout?</p><p class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></p></div></a>**: is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> starts that Activity Task.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -1719,7 +1799,7 @@ const { greet } = proxyActivities<typeof activities>({
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-Activity Executions are automatically associated with a default <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> if a custom one is not provided.
+Activity Executions are automatically associated with a default <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> if a custom one is not provided.
 
 <Tabs
 defaultValue="go"
@@ -1728,7 +1808,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a <a class="tdlp" href="/retry-policies#">RetryPolicy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a <a class="tdlp" href="/retry-policies#">RetryPolicy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 - Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
 - Default:
@@ -1766,7 +1846,7 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-To set a Retry Policy, known as the <a class="tdlp" href="/retry-policies#">Retry Options<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a href="/retry-policies#">Learn more</a></p></div></a> in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a Retry Policy, known as the <a class="tdlp" href="/retry-policies#">Retry Options<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `RetryOptions`
 - Default: Server-defined Activity Retry policy.
@@ -1888,11 +1968,11 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 ## Activity Heartbeats
 
-An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a href="/activities#activity-heartbeat">Learn more</a></p></div></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a href="/workers#worker-process">Learn more</a></p></div></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a href="/clusters#">Learn more</a></p></div></a>.
-Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a href="/activities#activity-execution">Learn more</a></p></div></a> is making progress and the Worker has not crashed.
-If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="/activities#heartbeat-timeout">Learn more</a></p></div></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a href="/tasks#activity-task-execution">Learn more</a></p></div></a> may be scheduled according to the Retry Policy.
+An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></p></div></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-process">Learn more</a></p></div></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a>.
+Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-execution">Learn more</a></p></div></a> is making progress and the Worker has not crashed.
+If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a> may be scheduled according to the Retry Policy.
 
-Heartbeats may not always be sent to the Cluster—they may be <a class="tdlp" href="/activities#throttling">throttled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a href="/activities#throttling">Learn more</a></p></div></a> by the Worker.
+Heartbeats may not always be sent to the Cluster—they may be <a class="tdlp" href="/activities#throttling">throttled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="/activities#throttling">Learn more</a></p></div></a> by the Worker.
 
 Activity Cancellations are delivered to Activities from the Cluster when they Heartbeat. Activities that don't Heartbeat can't receive a Cancellation.
 Heartbeat throttling may lead to Cancellation getting delivered later than expected.
@@ -1907,7 +1987,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To <a class="tdlp" href="/activities#activity-heartbeat">Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a href="/activities#activity-heartbeat">Learn more</a></p></div></a> in an Activity in Go, use the `RecordHeartbeat` API.
+To <a class="tdlp" href="/activities#activity-heartbeat">Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></p></div></a> in an Activity in Go, use the `RecordHeartbeat` API.
 
 ```go
 import (
@@ -2049,7 +2129,7 @@ If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heart
 </TabItem>
 <TabItem value="typescript">
 
-Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="/activities#heartbeat-timeout">Learn more</a></p></div></a>) and resuming stalled Activities from checkpoints (with Heartbeat details).
+Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a>) and resuming stalled Activities from checkpoints (with Heartbeat details).
 
 To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
 
@@ -2096,7 +2176,7 @@ In this example, when the `heartbeatTimeout` is reached and the Activity is retr
 
 #### Heartbeat Timeout
 
-A <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="/activities#heartbeat-timeout">Learn more</a></p></div></a> works in conjunction with <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a href="/activities#activity-heartbeat">Learn more</a></p></div></a>.
+A <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a> works in conjunction with <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Heartbeat?</p><p class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -2105,7 +2185,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="/activities#heartbeat-timeout">Learn more</a></p></div></a>, Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a>, Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -2122,7 +2202,7 @@ if err != nil {
 </TabItem>
 <TabItem value="java">
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a href="/activities#heartbeat-timeout">Learn more</a></p></div></a>, use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Heartbeat Timeout?</p><p class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</p><p class="tdlplm"><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></p></div></a>, use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
 - Type: `Duration`
 - Default: None
@@ -2253,12 +2333,12 @@ const { longRunningActivity } = proxyActivities<typeof activities>({
 
 ## Asynchronous Activity Completion
 
-<a class="tdlp" href="/activities#asynchronous-activity-completion">Asynchronous Activity Completion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Asynchronous Activity Completion?</p><p class="tdlppd">Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.</p><p class="tdlplm"><a href="/activities#asynchronous-activity-completion">Learn more</a></p></div></a> enables the Activity Function to return without the Activity Execution completing.
+<a class="tdlp" href="/activities#asynchronous-activity-completion">Asynchronous Activity Completion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Asynchronous Activity Completion?</p><p class="tdlppd">Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.</p><p class="tdlplm"><a class="tdlplma" href="/activities#asynchronous-activity-completion">Learn more</a></p></div></a> enables the Activity Function to return without the Activity Execution completing.
 
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Token?</p><p class="tdlppd">A Task Token is a unique Id that correlates to an Activity Execution.</p><p class="tdlplm"><a href="/activities#task-token">Learn more</a></p></div></a>, or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Token?</p><p class="tdlppd">A Task Token is a unique Id that correlates to an Activity Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#task-token">Learn more</a></p></div></a>, or a combination of Namespace, Workflow Id, and Activity Id.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
@@ -2269,7 +2349,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-1. Provide the external system with the a Task Token to complete the Activity Execution.
+1. Provide the external system with a Task Token to complete the Activity Execution.
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
 ```go
@@ -2437,11 +2517,54 @@ There are two parts to implementing an asynchronously completed Activity:
 The following example demonstrates the first part:
 
 <!--SNIPSTART samples-php-async-activity-completion-activity-class-->
+
+[app/src/AsyncActivityCompletion/GreetingActivity.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/GreetingActivity.php)
+
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    private LoggerInterface $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger();
+    }
+    /**
+     * Demonstrates how to implement an Activity asynchronously.
+     * When {@link Activity::doNotCompleteOnReturn()} is called,
+     * the Activity implementation function that returns doesn't complete the Activity.
+     */
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        // In real life this request can be executed anywhere. By a separate service for example.
+        $this->logger->info(sprintf('GreetingActivity token: %s', base64_encode(Activity::getInfo()->taskToken)));
+        // Send the taskToken to the external service that will complete the Activity.
+        // Return from the Activity a function indicating that Temporal should wait
+        // for an async completion message.
+        Activity::doNotCompleteOnReturn();
+        // When doNotCompleteOnReturn() is invoked the return value is ignored.
+        return 'ignored';
+    }
+}
+```
+
 <!--SNIPEND-->
 
 The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
 
 <!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
+
+[app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/CompleteCommand.php)
+
+```php
+$client = $this->workflowClient->newActivityCompletionClient();
+// Complete the Activity.
+$client->completeByToken(
+    base64_decode($input->getArgument('token')),
+    $input->getArgument('message')
+);
+```
+
 <!--SNIPEND-->
 
 To fail the Activity, you would do the following:
@@ -2480,6 +2603,27 @@ await handle.complete("Completion value.")
 To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
 <!--SNIPSTART typescript-activity-complete-async -->
+
+[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
+
+```ts
+import { CompleteAsyncError, Context } from '@temporalio/activity';
+import { AsyncCompletionClient } from '@temporalio/client';
+
+export async function doSomethingAsync(): Promise<string> {
+  const taskToken = Context.current().info.taskToken;
+  setTimeout(() => doSomeWork(taskToken), 1000);
+  throw new CompleteAsyncError();
+}
+
+// this work could be done in a different process or on a different machine
+async function doSomeWork(taskToken: Uint8Array): Promise<void> {
+  const client = new AsyncCompletionClient();
+  // does some work...
+  await client.complete(taskToken, 'Job\'s done!');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2487,12 +2631,12 @@ To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](
 
 ## Child Workflows
 
-A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Child Workflow Execution?</p><p class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</p><p class="tdlplm"><a href="/workflows#child-workflow">Learn more</a></p></div></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
+A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Child Workflow Execution?</p><p class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></p></div></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
 
 When using a Child Workflow API, Child Workflow related Events ([StartChildWorkflowExecutionInitiated](/references/events#startchildworkflowexecutioninitiated), [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted), [ChildWorkflowExecutionCompleted](/references/events#childworkflowexecutioncompleted), etc...) are logged in the Workflow Execution Event History.
 
 Always block progress until the [ChildWorkflowExecutionStarted](/references/events#childworkflowexecutionstarted) Event is logged to the Event History to ensure the Child Workflow Execution has started.
-After that, Child Workflow Executions may be abandoned using the default _Abandon_ <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a href="/workflows#parent-close-policy">Learn more</a></p></div></a> set in the Child Workflow Options.
+After that, Child Workflow Executions may be abandoned using the default _Abandon_ <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></p></div></a> set in the Child Workflow Options.
 
 To be sure that the Child Workflow Execution has started, first call the Child Workflow Execution method on the instance of Child Workflow future, which returns a different future.
 
@@ -2505,7 +2649,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Child Workflow Execution?</p><p class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</p><p class="tdlplm"><a href="/workflows#child-workflow">Learn more</a></p></div></a> in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+To spawn a <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Child Workflow Execution?</p><p class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></p></div></a> in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
 
 The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
 
@@ -2688,7 +2832,7 @@ Related reads:
 
 - [How to set a Child Workflow Options in Java](/java/how-to-set-child-workflow-options-in-java)
 
-- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
+- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
 
 - Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
@@ -2698,7 +2842,7 @@ Related reads:
 Besides Activities, a Workflow can also start other Workflows.
 
 `Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
-The parent Workflow has the ability to monitor and impact the lifecycle of the child Workflow, similar to the way it does for an Activity that it invoked.
+The parent Workflow has the ability to monitor and impact the lifecycle of the Child Workflow, similar to the way it does for an Activity that it invoked.
 
 ```php
 // Use one stub per child workflow run
@@ -2727,7 +2871,7 @@ try{
 Let's take a look at each component of this call.
 
 Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
-These options customize various execution timeouts, and are passed into the workflow stub defined by the `Workflow::newChildWorkflowStub`.
+These options customize various execution timeouts, and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
 Once stub created you can invoke its Workflow method based on attribute `WorkflowMethod`.
 
 The method call returns immediately and returns a `Promise`.
@@ -2735,9 +2879,9 @@ This allows you to execute more code without having to wait for the scheduled Wo
 
 When you are ready to process the results of the Workflow, call the `yield $promise` method on the returned promise object.
 
-When a parent Workflow is cancelled by the user, the child Workflow can be cancelled or abandoned based on a configurable child policy.
+When a parent Workflow is cancelled by the user, the Child Workflow can be cancelled or abandoned based on a configurable child policy.
 
-You can also skip the stub part of child workflow initiation and use `Workflow::executeChildWorkflow` directly:
+You can also skip the stub part of Child Workflow initiation and use `Workflow::executeChildWorkflow` directly:
 
 ```php
 // Use one stub per child workflow run
@@ -2774,6 +2918,28 @@ To start a Child Workflow Execution and await its completion, use [`executeChild
 By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2781,7 +2947,7 @@ By default, a child is scheduled on the same Task Queue as the parent.
 
 #### Parent Close Policy
 
-A <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a href="/workflows#parent-close-policy">Learn more</a></p></div></a> determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
+A <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></p></div></a> determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
 <Tabs
 defaultValue="go"
@@ -2828,7 +2994,7 @@ func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (Chil
 </TabItem>
 <TabItem value="java">
 
-Set <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a href="/workflows#parent-close-policy">Learn more</a></p></div></a> on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
+Set <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></p></div></a> on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
 
 - Type: `ChildWorkflowOptions.Builder`
 - Default: None.
@@ -2862,14 +3028,14 @@ If the parent initiates a Child Workflow Execution and then completes immediatel
 </TabItem>
 <TabItem value="php">
 
-In PHP, a <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a href="/workflows#parent-close-policy">Learn more</a></p></div></a> is set via the `ChildWorkflowOptions` object and `withParentClosePolicy()` method.
+In PHP, a <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Parent Close Policy?</p><p class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</p><p class="tdlplm"><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></p></div></a> is set via the `ChildWorkflowOptions` object and `withParentClosePolicy()` method.
 The possible values can be obtained from the [`ParentClosePolicy`](https://github.com/temporalio/sdk-php/blob/master/src/Workflow/ParentClosePolicy.php) class.
 
 - `POLICY_TERMINATE`
 - `POLICY_ABANDON`
 - `POLICY_REQUEST_CANCEL`
 
-Then `ChildWorkflowOptions` object is used to create a new child workflow object:
+Then `ChildWorkflowOptions` object is used to create a new Child Workflow object:
 
 ```php
 $child = Workflow::newUntypedChildWorkflowStub(
@@ -2883,7 +3049,7 @@ yield $child->start();
 
 In the snippet above we:
 
-1. Create a new untyped child workflow stub with `Workflow::newUntypedChildWorkflowStub`.
+1. Create a new untyped Child Workflow stub with `Workflow::newUntypedChildWorkflowStub`.
 2. Provide `ChildWorkflowOptions` object with Parent Close Policy set to `ParentClosePolicy::POLICY_ABANDON`.
 3. Start Child Workflow Execution asynchronously using `yield` and method `start()`.
 
@@ -2916,6 +3082,28 @@ async def run(self, name: str) -> str:
 To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
 
 <!--SNIPSTART typescript-child-workflow -->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -2923,7 +3111,7 @@ To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed st
 
 ## Continue-As-New
 
-<a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="/workflows#continue-as-new">Learn more</a></p></div></a> enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
+<a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a> enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.
 The Workflow Execution spawned from the use of Continue-As-New has the same Workflow Id, a new Run Id, and a fresh Event History and is passed all the appropriate parameters.
 
 <Tabs
@@ -2933,7 +3121,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
+To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
 
 ```go
 func SimpleWorkflow(ctx workflow.Context, value string) error {
@@ -2954,7 +3142,7 @@ To check whether a Workflow Execution was spawned as a result of Continue-As-New
 </TabItem>
 <TabItem value="java">
 
-Temporal SDK allows you to use <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="/workflows#continue-as-new">Learn more</a></p></div></a> in various ways.
+Temporal SDK allows you to use <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a> in various ways.
 
 To continue execution of the same Workflow that is currently running, use:
 
@@ -3024,9 +3212,27 @@ workflow.continue_as_new("your-workflow-name")
 </TabItem>
 <TabItem value="typescript">
 
-To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
+To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Continue-As-New?</p><p class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></p></div></a>, the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
 
 <!--SNIPSTART typescript-continue-as-new-workflow -->
+
+[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
+
+```ts
+import { continueAsNew, sleep } from '@temporalio/workflow';
+
+export async function loopingWorkflow(iteration = 0): Promise<void> {
+  if (iteration === 10) {
+    return;
+  }
+  console.log('Running Workflow iteration:', iteration);
+  await sleep(1000);
+  // Must match the arguments expected by `loopingWorkflow`
+  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+}
+```
+
 <!--SNIPEND-->
 
 </TabItem>
@@ -3114,7 +3320,7 @@ export async function sleepWorkflow(): Promise<void> {
 
 ## Temporal Cron Jobs
 
-A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a href="/workflows#temporal-cron-job">Learn more</a></p></div></a> is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
+A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></p></div></a> is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
@@ -3249,7 +3455,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a [Side Effect](/concepts/what-is-a-side-effect) directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
@@ -3367,7 +3573,7 @@ Not applicable to this SDK.
 
 Mutable Side Effects execute the provided function once, and then it looks up the History of the value with the given Workflow ID.
 
-- If there is no existing value, then it records the function result as a value with the given Workflow ID on the History.
+- If there is no existing value, then it records the function result as a value with the given Workflow Id on the History.
 - If there is an existing value, then it compares whether the existing value from the History has changed from the new function results, by calling the equals function.
   - If the values are equal, then it returns the value without recording a new Marker Event
   - If the values aren't equal, then it records the new value with the same ID on the History.
@@ -3408,232 +3614,12 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
-
-</TabItem>
-</Tabs>
-
-## Environment variables
-
-Environment variables can be provided in the normal way for our language to our Client, Worker, and Activity code.
-They can't be used normally with Workflow code, as that would be [nondeterministic](workflows#intrinsic-non-deterministic-logic) (if the environment variables changed between Workflow replays, the code that used them would behave differently).
-
-Most of the time, you can provide environment variables in your Activity function; however, if you need them in your Workflow functions, you can use the following options:
-
-- Provide environment variables as arguments when starting the Workflow.
-- Call a Local Activity at the beginning of the Workflow that returns environment variables.
-
-In either case, the environment variables will appear in Event History, so you may want to use an [encryption Data Converter](/concepts/what-is-a-data-converter/#encryption).
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="java">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="php">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="python">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="typescript">
-
-**Using in Activity code**
-
-```ts
-async function runWorker(): Promise<void> {
-  const activities = createActivities({ apiKey: process.env.MAILGUN_API_KEY });
-
-  const worker = await Worker.create({
-    taskQueue: 'example',
-    activities,
-    workflowsPath: require.resolve('./workflows'),
-  });
-  await worker.run();
-}
-
-const createActivities = (envVars: { apiKey: string }) => ({
-  async sendNotificationEmail(): Promise<void> {
-    // ...
-    await axios({
-      url: `https://api.mailgun.net/v3/your-domain/messages`,
-      method: 'post',
-      params: { to, from, subject, html },
-      auth: {
-        username: 'api',
-        password: envVars.apiKey,
-      },
-    });
-  },
-});
-```
-
-**Getting into Workflow**
-
-If we needed environment variables in our Workflow, here's how we'd use a Local Activity:
-
-```ts
-const worker = await Worker.create({
-  taskQueue: 'example',
-  activities: createActivities(process.env),
-  workflowsPath: require.resolve('./workflows'),
-});
-
-type EnvVars = Record<string, string>;
-
-const createActivities = (envVars: EnvVars) => ({
-  async getEnvVars(): Promise<EnvVars> {
-    return envVars;
-  },
-  async sendNotificationEmail(apiKey: string): Promise<void> {
-    // ...
-    await axios({
-      url: `https://api.mailgun.net/v3/your-domain/messages`,
-      method: 'post',
-      params: { to, from, subject, html },
-      auth: {
-        username: 'api',
-        password: apiKey,
-      },
-    });
-  },
-});
-```
-
-```ts
-const { getEnvVars } = proxyLocalActivities({
-  startToCloseTimeout: '1m',
-});
-
-const { sendNotificationEmail } = proxyActivities({
-  startToCloseTimeout: '1m',
-});
-
-async function yourWorkflow() {
-  const envVars = await getEnvVars();
-  if (!envVars.apiKey) {
-    throw new Error('missing env var apiKey');
-  }
-  await sendNotificationEmail(envVars.apiKey);
-}
-```
-
-</TabItem>
-</Tabs>
-
-## Namespaces
-
-A <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> is a unit of isolation within the Temporal Platform.
-
-You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
-Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
-
-On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
-
-On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
-
-Use a custom <a class="tdlp" href="/clusters#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a href="/clusters#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
-
-You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Register) with the `NamespaceClient` interface to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a href="/clusters#retention-period">Learn more</a></p></div></a> for the Workflow Execution Event History for the Namespace.
-
-You can also <a class="tdlp" href="/tctl-v1/namespace#register">register Namespaces using the tctl command-line tool<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a href="/tctl-v1/namespace#register">Learn more</a></p></div></a>.
-
-```go
-client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-        //...
-    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-        Namespace: your-namespace-name,
-        WorkflowExecutionRetentionPeriod: &retention,
-    })
-```
-
-The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
-The minimum value you can set for this period is 1 day.
-
-Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
-See <a class="tdlp" href="/application-development/foundations#connect-to-a-cluster">how to set Namespace in a Client in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</p><p class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</p><p class="tdlplm"><a href="/application-development/foundations#connect-to-a-cluster">Learn more</a></p></div></a> for details.
-
-Note that Namespace registration using this API takes up to 10 seconds to complete.
-Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
-
-To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk@v1.17.0/client#NamespaceClient.Update) with the `NamespaceClient`.
-
-To update your Namespace using tctl, use the <a class="tdlp" href="/tctl-v1/namespace#update">tctl namespace update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace update</p><p class="tdlppd">How to update a Namespace using tctl.</p><p class="tdlplm"><a href="/tctl-v1/namespace#update">Learn more</a></p></div></a> command.
-
-</TabItem>
-<TabItem value="java">
-
-Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a href="/namespaces#">Learn more</a></p></div></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a href="/clusters#retention-period">Learn more</a></p></div></a> for the Workflow Execution Event History for the Namespace.
-
-```java
-//...
-import com.google.protobuf.util.Durations;
-import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
-//...
-public static void createNamespace(String name) {
-    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
-            .setNamespace("your-custom-namespace")
-            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
-            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
-            .build();
-    service.blockingStub().registerNamespace(req);
-}
-//...
-```
-
-The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
-The minimum value you can set for this period is 1 day.
-
-Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
-
-Note that Namespace registration using this API takes up to 10 seconds to complete.
-Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
-
-To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
-
-</TabItem>
-<TabItem value="php">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="python">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is currently unavailable.
+Not applicable to this SDK.
 
 </TabItem>
 </Tabs>

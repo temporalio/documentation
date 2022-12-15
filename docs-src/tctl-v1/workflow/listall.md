@@ -14,15 +14,13 @@ To list open Workflow Executions, use the `--open` option.
 
 See also [`tctl workflow list`](/tctl-v1/workflow/list), [`tctl workflow listarchived`](/tctl-v1/workflow/listarchived), and [`tctl workflow scan`](/tctl-v1/workflow/scan).
 
-`tctl workflow listall [<modifiers>]`
+`tctl workflow listall <modifiers>`
 
 The following modifiers control the behavior of the command.
 
-### `--print_raw_time`
+###`--print_raw_time
 
 Print the raw timestamp.
-
-Alias: `--prt`
 
 **Example**
 
@@ -30,11 +28,9 @@ Alias: `--prt`
 tctl workflow listall --print_raw_time
 ```
 
-### `--print_datetime`
+### --print_datetime
 
 Print the timestamp.
-
-Alias: `--pdt`
 
 **Example**
 
@@ -42,11 +38,9 @@ Alias: `--pdt`
 tctl workflow listall --print_datetime
 ```
 
-### `--print_memo`
+### --print_memo
 
 Print a memo.
-
-Alias: `--pme`
 
 **Example**
 
@@ -54,11 +48,9 @@ Alias: `--pme`
 tctl workflow listall --print_memo
 ```
 
-### `--print_search_attr`
+### --print_search_attr
 
 Print the [Search Attributes](/concepts/what-is-a-search-attribute).
-
-Alias: `--psa`
 
 **Example**
 
@@ -70,19 +62,15 @@ tctl workflow listall --print_search_attr
 
 Print the full message without table formatting.
 
-Alias: `--pf`
-
 **Example**
 
 ```bash
 tctl workflow listall --print_full
 ```
 
-### `--print_json`
+### --print_json
 
 Print the raw JSON objects.
-
-Alias: `--pjson`
 
 **Example**
 
@@ -90,12 +78,10 @@ Alias: `--pjson`
 tctl workflow listall --print_json
 ```
 
-### `--open`
+### --open
 
 List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
-
-Alias: `--op`
 
 **Example**
 
@@ -103,7 +89,7 @@ Alias: `--op`
 tctl workflow listall --open
 ```
 
-### `--earliest_time`
+### --earliest_time
 
 Specify the earliest start time to list. Supported format are as follows:
 
@@ -117,8 +103,6 @@ Specify the earliest start time to list. Supported format are as follows:
   - `week` or `w`
   - `month` or `M`
   - `year` or `y`
-
-Alias: `--et`
 
 **Examples**
 
@@ -134,7 +118,7 @@ To specify 15 minutes before the current time:
 tctl workflow listall --earliest-time '15minute'
 ```
 
-### `--latest_time`
+### --latest_time
 
 Specify the latest start time to list. Supported formats are as follows:
 
@@ -165,11 +149,11 @@ To specify 10 seconds before the current time:
 tctl workflow listall --latest-time '10second'
 ```
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id).
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -177,11 +161,9 @@ Aliases: `--wid`, `-w`
 tctl workflow listall --workflow_id <id>
 ```
 
-### `--workflow_type`
+### --workflow_type
 
 Specify the name of a [Workflow Type](/concepts/what-is-a-workflow-type).
-
-Alias: `--wt`
 
 **Example**
 
@@ -189,7 +171,7 @@ Alias: `--wt`
 tctl workflow listall --workflow_type <name>
 ```
 
-### `--status`
+### --status
 
 Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Supported values are as follows:
@@ -201,15 +183,13 @@ Supported values are as follows:
 - `continuedasnew`
 - `timedout`
 
-Alias: `-s`
-
 **Example**
 
 ```bash
 tctl workflow listall --status <value>
 ```
 
-### `--query`
+### --query
 
 Specify an SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute).
 

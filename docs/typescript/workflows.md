@@ -35,6 +35,22 @@ A Workflow function becomes a **Workflow Execution** (instance) only when starte
 Workflow Definitions are "just functions", which can store state, and orchestrate [Activity functions](/typescript/activities).
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
+
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+// Only import the activity types
+import type * as activities from './activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+/** A workflow that simply calls an activity */
+export async function example(name: string): Promise<string> {
+  return await greet(name);
+}
+```
+
 <!--SNIPEND-->
 
 The snippet above uses `proxyActivities` to create functions that, when called, schedule a `greet` Activity in the system to say "Hello World".
@@ -136,6 +152,32 @@ The rest of this document explains the major Workflow APIs you should know:
 If you know the name of your signals and queries upfront, we recommend declaring them outside of the Workflow Definition.
 
 <!--SNIPSTART typescript-blocked-workflow-->
+
+[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
+
+export async function unblockOrCancel(): Promise<void> {
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  console.log('Blocked');
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log('Unblocked');
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log('Cancelled');
+    }
+    throw err;
+  }
+}
+```
+
 <!--SNIPEND-->
 
 This helps provide type safety, since you can export the type signature of the signal or query to be called on the clientside.
@@ -623,6 +665,27 @@ export async function trackStepChanges(): Promise<void> {
 This leads to some nice patterns, like placing `await condition` inside an `if`:
 
 <!--SNIPSTART typescript-oneclick-buy-->
+
+[nextjs-ecommerce-oneclick/temporal/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/nextjs-ecommerce-oneclick/temporal/src/workflows.ts)
+
+```ts
+export async function OneClickBuy(itemId: string) {
+  const itemToBuy = itemId;
+  let purchaseState: PurchaseState = 'PURCHASE_PENDING';
+  wf.setHandler(
+    cancelPurchase,
+    () => void (purchaseState = 'PURCHASE_CANCELED'),
+  );
+  wf.setHandler(purchaseStateQuery, () => purchaseState);
+  if (await wf.condition(() => purchaseState === 'PURCHASE_CANCELED', '5s')) {
+    return await canceledPurchase(itemToBuy);
+  } else {
+    purchaseState = 'PURCHASE_CONFIRMED';
+    return await checkoutItem(itemToBuy);
+  }
+}
+```
+
 <!--SNIPEND-->
 
 </details>
@@ -852,6 +915,28 @@ You should use [cancellationScopes](/typescript/cancellation-scopes) if you need
 [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild) starts a child workflow and awaits (blocks until) its completion:
 
 <!--SNIPSTART typescript-child-workflow-->
+
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
+```ts
+import { executeChild } from '@temporalio/workflow';
+
+export async function parentWorkflow(...names: string[]): Promise<string> {
+  const responseArray = await Promise.all(
+    names.map((name) =>
+      executeChild(childWorkflow, {
+        args: [name],
+        // workflowId, // add business-meaningful workflow id here
+        // // regular workflow options apply here, with two additions (defaults shown):
+        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
+        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
+      })
+    ),
+  );
+  return responseArray.join('\n');
+}
+```
+
 <!--SNIPEND-->
 
 To control any running Workflow from inside a Workflow, use [`getExternalWorkflowHandle(workflowId)`](https://typescript.temporal.io/api/namespaces/workflow/#getexternalworkflowhandle).
@@ -871,7 +956,7 @@ Special Notes:
 - Child Workflow options automatically inherit their values from the Parent Workflow options if they are not explicitly set. They have two advanced options unique to Child Workflows:
   - [`cancellationType`](https://typescript.temporal.io/api/enums/proto.coresdk.child_workflow.ChildWorkflowCancellationType): Controls at which point to throw the CanceledFailure exception when a child workflow is cancelled
   - `parentClosePolicy`: Explained below
-- Child Workflow executions are [`CancellationScope`](/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
+- Child Workflow Executions are [`CancellationScope`](/typescript/cancellation-scopes) aware and will automatically be cancelled when their containing scope is cancelled.
 
 <details>
 <summary>
@@ -919,6 +1004,24 @@ We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit.
 [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew) stops the current Workflow Execution and starts another one with new arguments and an empty Event History. Note that this is done immediately, so make sure that your Signal handlers have finished running before calling `continueAsNew`.
 
 <!--SNIPSTART typescript-continue-as-new-workflow-->
+
+[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
+
+```ts
+import { continueAsNew, sleep } from '@temporalio/workflow';
+
+export async function loopingWorkflow(iteration = 0): Promise<void> {
+  if (iteration === 10) {
+    return;
+  }
+  console.log('Running Workflow iteration:', iteration);
+  await sleep(1000);
+  // Must match the arguments expected by `loopingWorkflow`
+  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
+  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
+}
+```
+
 <!--SNIPEND-->
 
 You can also call `continueAsNew` from a signal handler or `continueAsNew` to a different Workflow (or different Task Queue) using [`makeContinueAsNewFunc`](https://nodejs.temporal.io/api/namespaces/workflow/#makecontinueasnewfunc).
@@ -936,7 +1039,7 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 ### Don't overuse
 
 You should not try to call `continueAsNew` too often - if at all!
-It's primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
+Its primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
 
 Temporal's default limits are set to warn you at 10,000 events in a single Workflow Execution, and error at 50,000.
 This is sufficient for:
@@ -1002,186 +1105,7 @@ export async function entityWorkflow(
 
 <span id="putting-it-all-together-schedule-workflow-example" />
 
-## Putting it all together
-
-Individually, the core Workflow APIs (Signals/Queries, sleep/condition, startChild/executeChild, and continueAsNew) are interesting, but they become truly powerful when wielded together.
-
-We can illustrate this by building an example Workflow that combines them.
-
-### Schedule Workflow Example
-
-One common request from users is for more powerful alternatives to [Cron Workflows](/typescript/clients#scheduling-cron-workflows). We can try implementing them with the Workflow API primitives we have learned here.
-
-Some desirable requirements:
-
-- One Parent Workflow that schedules `ChildWorkflow`s based on either a:
-  - Cron string (with timezone support, eg "at 8am every day")
-  - or "unaligned" sleep period (eg "every 3 hours")
-- Allows setting:
-  - a random "jitter" period to spread out execution
-  - a maximum number of invocations, or have the schedules end by a set date
-  - a "paused" or "running" state (that can also be queried)
-- Allows querying:
-  - the expected times of the next N invocations
-  - the number of invocations so far
-- Allows manual trigger at any point
-
-Take some time to think about how you would implement these features, and then look at our suggested solution below.
-
-<details>
-<summary>Example CronScheduleWorkflow
-</summary>
-
-The desired clientside usage would look something like this:
-
-```ts
-// client.ts
-const handle = await client.start(MyScheduleWorkflow, {
-  args: [
-    {
-      cronParser: {
-        // every day 8am
-        expression: '0 8 * * *',
-        options: {
-          currentDate: '2016-03-27 00:00:01',
-          endDate: new Date('Wed, 26 Dec 2012 14:40:00 UTC'),
-          tz: 'Europe/Athens',
-        },
-      },
-      maxInvocations: 500,
-      jitterMs: 1000,
-      userId, // defined elsewhere
-    },
-  ],
-  taskQueue: 'scheduler',
-  workflowId: 'schedule-for-' + userId,
-});
-```
-
-This Workflow would want a `sleepUntil` timer at its core to power the scheduling - ideal for implementing clock-aligned "run at a set time" semantics. Temporal doesn't export `sleepUntil` for you - you can write your own with some simple time math.
-
-```ts
-import * as wf from '@temporalio/workflow';
-import parser from 'cron-parser';
-import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
-
-// example atomic unit of work you are scheduling, can be workflow or activity or whatever
-async function spawnChild(
-  userId: string,
-  nextTime: string,
-  invocation: number,
-) {
-  return wf.executeChild(childWorkflow, {
-    args: [userId],
-    workflowId: `childWorkflow-${invocation}-${nextTime}`,
-    // // regular workflow options apply here, with two additions (defaults shown):
-    // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-    // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
-  });
-}
-
-export async function sleepUntil(futureDate: string, fromDate = new Date()) {
-  const timeUntilDate = differenceInMilliseconds(
-    new Date(futureDate),
-    fromDate,
-  );
-  return wf.sleep(timeUntilDate);
-}
-
-// queries
-export const numInvocationsQuery = wf.defineQuery('numInvocationsQuery');
-export const futureScheduleQuery = wf.defineQuery('futureScheduleQuery');
-export const manualTriggerSignal = wf.defineSignal('manualTriggerSignal');
-export type ScheduleWorkflowState = 'RUNNING' | 'PAUSED' | 'STOPPED';
-export const stateSignal = wf.defineSignal<[ScheduleWorkflowState]>(
-  'stateSignal',
-);
-export const stateQuery = wf.defineQuery<ScheduleWorkflowState>('stateQuery');
-
-export async function CronScheduleWorkflow(
-  args: {
-    cronParser: {
-      expression: string;
-      options: parser.ParserOptions;
-    };
-    callbackFn: (nextTime?: string, invocations?: number) => Promise<void>;
-    maxInvocations?: number;
-    jitterMs?: number;
-    userId?: string;
-  },
-  invocations = 1,
-) {
-  // signal and query handlers
-  wf.setHandler(numInvocationsQuery, () => invocations);
-  wf.setHandler(
-    manualTriggerSignal,
-    () => spawnChild(userId, nextTime.toString(), invocations++),
-  );
-  let scheduleWorkflowState = 'RUNNING' as ScheduleWorkflowState;
-  wf.setHandler(stateQuery, () => scheduleWorkflowState);
-  wf.setHandler(stateSignal, (state) => void (scheduleWorkflowState = state));
-
-  const interval = parser.parseExpression(
-    args.cronParser.expression,
-    args.cronParser.options,
-  );
-  const nextTime = interval.next().toString();
-  wf.setHandler(futureScheduleQuery, (numEntriesInFutureSchedule?: number) => {
-    const interval = parser.parseExpression(
-      args.cronParser.expression,
-      args.cronParser.options,
-    ); // reset interval
-    return {
-      futureSchedule: genNextTimes(
-        numEntriesInFutureSchedule,
-        () => interval.next().toString(),
-      ),
-      timeLeft: differenceInMilliseconds(new Date(nextTime), new Date()),
-    };
-  });
-
-  // timer logic
-  try {
-    await sleepUntil(nextTime);
-    if (args.jitterMs) {
-      await wf.sleep(Math.floor(Math.random() * (args.jitterMs + 1)));
-    }
-    if (scheduleWorkflowState === 'PAUSED') {
-      await wf.condition(() => scheduleWorkflowState === 'RUNNING');
-    }
-    await spawnChild(userId, nextTime.toString(), invocations); // no need to increment invocations bc relying on continueAsNew for that
-    if (args.maxInvocations && args.maxInvocations > invocations) {
-      await wf.continueAsNew<typeof CronScheduleWorkflow>(
-        args,
-        invocations + 1,
-      );
-    } else {
-      scheduleWorkflowState = 'STOPPED';
-    }
-  } catch (err) {
-    if (wf.isCancellation(err)) scheduleWorkflowState = 'STOPPED';
-    else throw err;
-  }
-}
-
-// shared
-function genNextTimes<T extends string | Date>(
-  number = 5,
-  getNextTimes: () => T,
-): T[] {
-  const times = [];
-  for (let i = 0; i < number; i++) {
-    times.push(getNextTimes());
-  }
-  return times;
-}
-```
-
-</details>
-
-You can extend or add features as you please. For example, notice that we only implemented a very trivial cancellation cleanup step. By default, if a Parent Workflow is cancelled, all child workflows will be cancelled as well. What if you wanted them to carry on to completion? (Hint: check the `ParentClosePolicy`).
-
-### Workflow Utility Libraries
+## Workflow Utility Libraries
 
 As you build up strong opinions of how you'd like to compose behavior, you may want to publish reusable Temporal utility function or Temporal Workflow libraries. Let us know and we'd be happy to feature them here!
 

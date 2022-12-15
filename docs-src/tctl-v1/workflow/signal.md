@@ -10,6 +10,8 @@ tags:
 The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Workflows listen for Signals by their Signal name, and can be made to listen to one or more Signal names.
+Workflows can also listen for SQL queries.
+
 The Workflow below listens for instances of "HelloSignal":
 
 ```bash
@@ -80,17 +82,23 @@ tctl workflow showid HelloSignal
 Signals are written as follows:
 
 ```bash
-tctl workflow signal --workflow_id [modifiers]
+tctl workflow signal --workflow_id <id> <modifiers>
+```
+
+or
+
+```bash
+tctl workflow signal --query <query> <modifiers>
 ```
 
 The following modifiers control the behavior of the command.
 Make sure to include required modifiers in all command executions.
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
-Aliases: `--wid`, `-w`
+Alias: `-w`
 
 **Example**
 
@@ -98,11 +106,11 @@ Aliases: `--wid`, `-w`
 tctl workflow signal --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
-Aliases: `--rid`, `-r`
+Alias: `-r`
 
 **Example**
 
@@ -110,19 +118,17 @@ Aliases: `--rid`, `-r`
 tctl workflow signal --run_id <id>
 ```
 
-### `--name`
+### --name
 
 Specify the name of a [Signal](/concepts/what-is-a-signal).
-
-Alias: `-n`
 
 **Example**
 
 ```bash
-tctl workflow signal --name <name>
+tctl workflow signal --query <query> --name <name>
 ```
 
-### `--input`
+### --input
 
 Pass input for the [Signal](/concepts/what-is-a-signal).
 Input must be in JSON format.
@@ -132,17 +138,15 @@ Alias: `-i`
 **Example**
 
 ```bash
-tctl workflow signal --input <json>
+tctl workflow signal --query <query> --input <json>
 ```
 
-### `--input_file`
+### --input_file
 
 Pass input for the [Signal](/concepts/what-is-a-signal) from a JSON file.
-
-Alias: `--if`
 
 **Example**
 
 ```bash
-tctl workflow signal --input_file <filename>
+tctl workflow signal --query <query> --input_file <filename>
 ```
