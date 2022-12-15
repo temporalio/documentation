@@ -1,0 +1,152 @@
+{
+  "file_name": "errors.md",
+  "id": "errors",
+  "file_dir": "references",
+  "title": "Errors",
+  "sidebar_label": "Errors",
+  "description": "This guide is an overview of the errors that can appear on the Temporal Web UI.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-cancel-timer-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-cancel-workflow-execution-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-complete-workflow-execution-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-continue-as-new-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-fail-workflow-execution-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-modify-workflow-properties-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-record-marker-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-request-cancel-activity-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-request-cancel-external-wf-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-schedule-activity-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-search-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-signal-input-size"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-signal-workflow-execution-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-start-child-execution-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/bad-start-timer-attributes"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/cause-bad-binary"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/cause-reset-workflow"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/cause-unspecified"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/failover-close-command"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/force-close-command"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/non-deterministic-error"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/pending-activities-limit-exceeded"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/pending-child-workflows-limit-exceeded"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/pending-request-cancel-limit-exceeded"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/pending-signals-limit-exceeded"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/reset-sticky-task-queue"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/resource-exhausted-cause-concurrent-limit"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/resource-exhausted-cause-persistence-limit"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/resource-exhausted-cause-rps-limit"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/resource-exhausted-cause-system-overload"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/resource-exhausted-cause-unspecified"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/schedule-activity-duplicate-id"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/start-timer-duplicate-id"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/unhandled-command"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/workflow-worker-unhandled-failure"
+    }
+  ]
+}
