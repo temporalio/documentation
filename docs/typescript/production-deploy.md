@@ -92,7 +92,7 @@ We endeavor to give you good defaults, so you don't have to worry about them, bu
 
 Workers based on TypeScript SDK can be deployed and run as Docker containers.
 
-At this moment, we recommend usage of NodeJS 16 (note that there are known issues with NodeJS 18). Both `amd64` and `arm64` platforms are supported. A glibc-based image is required; musl-based images are _not_ supported (see below).
+At this moment, we recommend usage of NodeJS 16 for production scenarios (support for NodeJS 18 is currently being tested). Both `amd64` and `arm64` platforms are supported. A glibc-based image is required; musl-based images are _not_ supported (see below).
 
 The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:16-bullseye` image. For example:
 
@@ -107,6 +107,8 @@ RUN npm install --only=production \
 
 CMD ["build/worker.js"]
 ```
+
+Make sure to add `node_modules` to your `.dockerignore` file (ie. `echo node_modules >> .dockerignore`). Not doing so may results in an error message similar to: `Module build failed (from swc-loader). Error: Bindings not found` when starting your worker.
 
 For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:16-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:16`) with the below caveats.
 

@@ -61,6 +61,39 @@ When you pass a `workflowsPath`, our Webpack config expects to find `node_module
 Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
 We do offer a [bundleWorkflowCode](/typescript/workers/#prebuilt-workflow-bundles) method to assist you with this, though it uses our Webpack settings.
 
+## TypeScript path aliases support
+
+In projects using TypeScript path aliases (ie. nx and other monorepo projects), workflow bundling may result in error messages similar to:
+
+```
+[ERROR] ERROR in packages/workflows/src/index.ts
+[ERROR] Module not found: Error: Can't resolve '@mycorp/utils' in 'packages/workflows/src'
+[ERROR] resolve '@mycorp/utils' in 'packages/workflows/src'
+[ERROR]   Parsed request is a module
+[ERROR]   using description file: package.json (relative path: ./src)
+[ERROR]     Field 'browser' doesn't contain a valid alias configuration
+```
+
+The solution is to modify your workflow bundler's Webpack configuration as follow:
+
+1. Add NPM package `tsconfig-paths-webpack-plugin` to your project (the one containing the `bundleWorkflowCode()` or the worker, depending on how your workflows are loaded), as a regular dependency.
+2. Add the following code to your bundler’s or worker’s config:
+
+```
+import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+
+// ...
+
+webpackConfigHook: (config) => {
+    config.resolve!.plugins = [
+        ...(config.resolve!.plugins ?? []),
+        new TsconfigPathsPlugin({ baseUrl: path.dirname(config.entry!) }) as unknown as typeof config['resolve']['plugins'][0],
+    ];
+    return config;
+}
+```
+
 ## Webpack errors
 
 The TypeScript SDK's [Worker](/typescript/workers) bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
