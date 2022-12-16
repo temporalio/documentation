@@ -26,7 +26,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/app-dev-context/list-filter):
+- Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter):
   - [In `tctl`](/tctl-v1/workflow/list).
   - In code by calling `ListWorkflowExecutions`.
 

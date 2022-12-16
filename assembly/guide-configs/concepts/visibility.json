@@ -11,7 +11,7 @@
   "sections": [
     {
       "type": "p",
-      "id": "concepts/what-is-advanced-visibility"
+      "id": "concepts/what-is-visibility"
     },
     {
       "type": "h2",
@@ -19,7 +19,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/advanced-visibility"
+      "id": "concepts/what-is-advanced-visibility"
     },
     {
       "type": "h2",

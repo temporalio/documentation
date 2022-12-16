@@ -37,7 +37,7 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable <a class="tdlp" href="/visibility#">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a>.
+An Elasticsearch database can be added to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></p></div></a>.
 
 #### Dependency versions
 
@@ -69,7 +69,7 @@ Any metrics software that supports the same format can be used. Currently, we te
 
 ### Visibility
 
-Temporal has built-in [Visibility](/concepts/what-is-visibility) features.
+Temporal has built-in <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Visibility?</p><p class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a> features.
 To enhance this feature, Temporal supports an <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integration with Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</p><p class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</p><p class="tdlplm"><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></p></div></a>.
 
 - Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
@@ -181,7 +181,7 @@ Types of inbound calls include the following:
 - <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> CRUD
 - External events
 - Worker polls
-- [Visibility](/concepts/what-is-visibility) requests
+- <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Visibility?</p><p class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a> requests
 - [tctl](/tctl-v1) (the Temporal CLI) operations
 - Calls from a remote Cluster related to <a class="tdlp" href="#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Multi-Cluster Replication?</p><p class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</p><p class="tdlplm"><a class="tdlplma" href="#multi-cluster-replication">Learn more</a></p></div></a>
 
@@ -244,7 +244,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 - Internal Timer Task Queue: Durably persists Timers.
 - Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
   (Relies on the experimental Multi-Cluster feature.)
-- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#">Learn more</a></p></div></a> index.
+- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></p></div></a> index.
 
 ### Matching Service
 

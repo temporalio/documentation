@@ -648,7 +648,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/app-dev-context/list-filter):
+- Query Workflow Executions by the Search Attribute using a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>:
   - <a class="tdlp" href="/tctl-v1/workflow#list">In `tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></p></div></a>.
   - In code by calling `ListWorkflowExecutions`.
 
