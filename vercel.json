@@ -765,6 +765,10 @@
     {
       "source": "/cloud/tcld/request/get",
       "destination": "/cloud/tcld/request#get"
+    },
+    {
+      "source": "/external-resources",
+      "destination": "/kb/additional-resources"
     }
   ]
 }

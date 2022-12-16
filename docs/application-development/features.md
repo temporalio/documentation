@@ -2830,7 +2830,7 @@ The following examples show how to spawn a Child Workflow:
 
 Related reads:
 
-- [How to set a Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
+- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
 
 - <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
 

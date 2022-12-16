@@ -33,7 +33,7 @@ To send values that are not [JSON-serializable](https://en.wikipedia.org/wiki/JS
 - [`new WorkflowClient({ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#dataconverter)
 - [`Worker.create({ ..., dataConverter })`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
-Data Converters have [two parts](/concepts/what-is-a-data-converter#payload-codecs):
+Data Converters have [two parts](/concepts/what-is-a-data-converter#payload-codec):
 
 - [`PayloadConverter`](#payloadconverter): sync methods that sometimes run inside the Workflow isolate (and are thus [limited](/typescript/determinism#imports-in-workflow-code))
 - [`PayloadCodec`](#payloadcodec): async methods that are run outside the isolate
