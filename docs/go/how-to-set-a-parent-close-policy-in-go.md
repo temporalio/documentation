@@ -18,7 +18,7 @@ The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](htt
 The Child Workflow Options are then applied to the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
 
 - Type: [`ParentClosePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy)
-- Default: `PARENT_CLOSE_POLICY_ABANDON`
+- Default: `PARENT_CLOSE_POLICY_TERMINATE`
 
 ```go
 import (
