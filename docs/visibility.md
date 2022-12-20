@@ -54,6 +54,20 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
   - **BETWEEN ... AND**
   - **IN**
   - **ORDER BY**
+  - **LIKE**
+
+- Wildcards ('\*', '%', etc.) are supported for string-type List Filter Search Attributes.
+
+  - Use wildcards with the **LIKE** operator to query possible values:
+
+  ```bash
+  // Create a "ProductId" custom Search Attribute of type String
+  tctl admin cluster add-search-attributes --name ProductId --type String
+  // Match values that start with "book"
+  ProductId LIKE "book%"
+  // Match values that contain "favorite"
+  ProductId LIKE "%favorite%"
+  ```
 
 - A List Filter applies to a single Namespace.
 
