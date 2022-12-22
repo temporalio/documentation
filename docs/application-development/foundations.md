@@ -221,7 +221,7 @@ This project requires Node.js 14 or later.
 **Create a new project**
 
 ```bash
-npx @temporalio/create@latest ./your-app
+npm init @temporalio@latest ./your-app
 ```
 
 **Add to an existing project**
