@@ -56,8 +56,6 @@ On self-hosted Temporal Clusters, you can register your Namespaces in the follow
 
 - In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
 
-  - [How to register a new Namespace using SDK](/application-development/features#namespaces)
-
 Note that registering a Namespace takes up to 15 seconds to complete. Ensure that you are waiting for this process to complete before making calls to the Namespace.
 
 ### Manage Namespaces
@@ -76,21 +74,25 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 - Get details for a registered Namespace on your Temporal Cluster:
 
   - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
-  - Use the [`DescribeNamespace` API](/application-development/features#namespaces) to return information and configuration details for a registered Namespace.
+  - Use the `DescribeNamespace` API to return information and configuration details for a registered Namespace.
 
 - Get details for all registered Namespaces on your Temporal Cluster:
 
   - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
-  - Use the [`ListNamespace` API](/application-development/features#namespaces) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+  - Use the `ListNamespace` API to return information and configuration details for all registered Namespaces on your Temporal Cluster.
 
-- Deprecate a Namespace: The [`DeprecateNamespace` API](/application-development/features#namespaces) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
+- Deprecate a Namespace: The `DeprecateNamespace` API updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
+
+- Delete a Namespace:
+- With tctl: [`tctl namespace delete`](/tctl-next/namespace#delete). Note that this feature is only available in the [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux).
+- Use the `DeleteNamespace` API deletes a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
 
 ### Setting
 
 Set Namespaces in your SDK Client to isolate your Workflow Executions to the Namespace.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the "default" Namespace. This means, you must have a default Namespace called "default" registered with your Temporal Cluster. See [Registration](#Registration) for details.
 
-- [How to set the Namespace for a Temporal Client](/application-development/foundations#set-namespace)
+- [How to set the Namespace for a Temporal Client](/application-development/foundations?lang=go#connect-to-a-cluster)
 - [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)
 
