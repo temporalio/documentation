@@ -83,7 +83,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 
 - Delete a Namespace:
 - With tctl: [`tctl namespace delete`](/tctl-next/namespace#delete). Note that this feature is only available in the [tctl v2.0.0-beta](https://github.com/temporalio/tctl#trying-out-new-tctl-v200-beta-with-updated-ux).
-- Use the `DeleteNamespace` API deletes a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
+- Use the `DeleteNamespace` API t delete a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
 
 ### Setting
 
