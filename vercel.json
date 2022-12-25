@@ -78,7 +78,10 @@
       "source": "/blog/build-an-ecommerce-app-with-temporal-part-4-rest-api",
       "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-4-rest-api"
     },
-
+    {
+      "source": "/blog/typescript-1.0.0",
+      "destination": "https://temporal.io/blog/typescript-1-0-0"
+    },
     {
       "source": "/blog/:path*",
       "destination": "https://temporal.io/blog/:path*"
