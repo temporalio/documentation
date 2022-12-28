@@ -67,7 +67,7 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer.
+- Changing the duration of a Timer (unless changing from a duration of 0).
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.

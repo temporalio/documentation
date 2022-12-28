@@ -77,7 +77,7 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer.
+- Changing the duration of a Timer (unless changing from a duration of 0).
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
@@ -650,7 +650,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
