@@ -46,7 +46,7 @@ https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0
 For example:
 
 ```
-$ curl -sSL --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count" | jq .
+$ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count" | jq .
 {
   "status": "success",
   "data": {
