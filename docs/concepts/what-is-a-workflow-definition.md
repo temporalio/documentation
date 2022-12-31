@@ -72,6 +72,7 @@ The following are examples of minor changes that would not result in non-determi
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
+- Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
 
 ### Intrinsic non-deterministic logic
 
