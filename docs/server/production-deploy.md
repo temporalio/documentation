@@ -161,6 +161,9 @@ You may sometimes want to have multiple parallel deployments on the same cluster
 - when you want to split Temporal deployments based on namespaces, e.g. staging/dev/uat, or for different teams who need to share common infrastructure.
 - when you need a new deployment to change `numHistoryShards`.
 
+You can skip the following procedure if your server is running v1.19 or later.
+The v1.19 release ensures that the membership from different clusters does not combine.
+
 **We recommend not doing this if you can avoid it**. If you need to do it anyway, double-check the following:
 
 - Have a separate persistence (database) for each deployment
