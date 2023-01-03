@@ -12,7 +12,7 @@ To use a [Codec Server](/concepts/what-is-a-codec-server), first run it with you
 
 ### Run the server
 
-A Codec Server is an HTTP server that implements two endpoints:
+A Codec Server is an HTTP server that follows [this protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol). It implements two endpoints:
 
 - `POST /encode`
 - `POST /decode`
