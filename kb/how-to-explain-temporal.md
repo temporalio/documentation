@@ -1,25 +1,31 @@
 ---
-id: external-resources
-title: External Resources
-sidebar_label: External Resources
+slug: how-to-explain-temporal
+title: How to explain Temporal
+tags:
+  - resources
+date: 2022-12-12T00:00:00Z
 ---
 
-There are many ways to introduce and teach Temporal based on what background you are coming from. Temporal doesn't have a monopoly on explaining Temporal.
+There are many ways to introduce and teach Temporal based on your background.
+Temporal doesn't have a monopoly on explaining Temporal.
 
-Here, we list great blogposts and videos by Temporal staff and users that may be helpful in increasing your understanding or convincing your team.
+<!-- truncate -->
 
-If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md) so that others can find it!
+Here, we list great blogposts and videos by Temporal staff and users that might be helpful in increasing your understanding or convincing your team.
 
-## Press Announcements
+If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/kb/how-to-explain-temporal.md) so that others can find it!
 
-There have been many high-level descriptions of Temporal from our Series A and B PR. This may be helpful for non-technical or technical-adjacent audiences:
+## Press announcements
 
-- **Series B (2022)** Linked in [our Series B press roundup](https://temporal.io/blog/series-b-press)
+Our Series A and Series B press releases provided high-level descriptions of Temporal.
+These might be helpful for non-technical or technical-adjacent audiences:
+
+- **Series B (2022)**: Linked in [our Series B press roundup](https://temporal.io/blog/series-b-press)
 - **Series A (2020)**: Linked in [our Series A blogpost](https://temporal.io/blog/funding-announcement)
 
 ## How Temporal works
 
-> See also: [Concepts ➡️ What is Temporal](/temporal)
+See the Concepts topic about [Temporal](/temporal).
 
 ### Talks
 
@@ -122,7 +128,7 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
   - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
   - (русский) [PHP Russia talks](https://legacy-documentation-sdks.temporal.io/php/introduction/#resources) by Anton Titov
   - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
-- _submit yours [here](https://github.com/temporalio/documentation/edit/master/docs/external-resources.md)!_
+- _Submit yours [here](https://github.com/temporalio/documentation/edit/master/kb/how-to-explain-temporal.md)!_
 
 ## Temporal users
 
@@ -168,11 +174,11 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Coinbase/temporal-ruby](https://github.com/coinbase/temporal-ruby) - Ruby SDK with Rails example
 - [Nunchi Blacksmith](https://www.nunchi.studio/blacksmith/start/onboarding/how) - ETL data platform
 
-## Misc
+## Miscellaneous
 
 _Everything that doesn't fit above goes here._
 
-If you can't find what you need, don't hesitate to ask on the Temporal Slack, or search in the Forums where there are common questions like:
+If you can't find what you need, don't hesitate to ask on the Temporal Slack workspace or search in the [Temporal Community Forum](https://community.temporal.io/), where you can find answers to common questions like the following:
 
 - [What is the best practice for a polling activity?](https://community.temporal.io/t/what-is-the-best-practice-for-a-polling-activity/328)
 - [How to create a Signalling system for Human driven workflows? SMS OTP use case](https://community.temporal.io/t/signalling-system-human-driven-workflows/160)
