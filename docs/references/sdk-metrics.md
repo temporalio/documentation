@@ -9,10 +9,12 @@ tags:
 
 <!-- This file is generated. Do not edit it directly. -->
 
-> For Cluster metrics, see [Cluster ▶️ Production deployment ▶️ Scaling and Metrics](/server/production-deployment/#scaling-and-metrics).
-> For Cloud metrics, see [Temporal Cloud ▶️ Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics).
+> See also: [References ▶️ Cluster metrics](/references/cluster-metrics).
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
+To set up metrics, see [Dev guide ▶️ Observability ▶️ Metrics](/application-development/observability#metrics).
+To make changes to your Worker deployments based on these metrics, see [Dev guide ▶️ Worker performance](/application-development/worker-performance).
+
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
 Currently, some metrics are specific to certain SDKs.
@@ -45,7 +47,7 @@ Each metric may have some combination of the following keys attached to them:
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                             | Emitted by     | Metric type | Availability                      |
-| --------------------------------------------------------------------------------------- | -------------- | ----------- | --------------------------------- |
+|-----------------------------------------------------------------------------------------|----------------|-------------|-----------------------------------|
 | [activity_execution_cancelled](#activity_execution_cancelled)                           | Worker         | Counter     | Java                              |
 | [activity_execution_failed](#activity_execution_failed)                                 | Worker         | Counter     | TypeScript, Python, Go, PHP, Java |
 | [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | TypeScript, Python, Go, PHP, Java |

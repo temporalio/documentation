@@ -9,6 +9,11 @@ tags:
 
 <!-- This file is generated. Do not edit it directly. -->
 
+> This page is for deployments of the open-source Cluster. 
+> For metrics emitted by Temporal Cloud, see [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics).
+
+> See also: [SDK metrics](/references/sdk-metrics).
+
 A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
 All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 
