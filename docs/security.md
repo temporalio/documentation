@@ -263,7 +263,7 @@ To use a <a class="tdlp" href="#codec-server">Codec Server<span class="tdlpiw"><
 
 ### Run the server
 
-A Codec Server is an HTTP server that implements two endpoints:
+A Codec Server is an HTTP server that follows [this protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol). It implements two endpoints:
 
 - `POST /encode`
 - `POST /decode`
