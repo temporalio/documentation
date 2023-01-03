@@ -21,33 +21,40 @@ Use a new `WorkflowClient()` with the requisite gRPC [`Connection`](https://type
 Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
 
 ```typescript
-import fs from "fs-extra";
-import {Connection, WorkflowClient} from "@temporalio/client";
-import path = from "path";
+import { Connection, WorkflowClient } from '@temporalio/client';
+import fs from 'fs-extra';
+
+const { NODE_ENV = 'development' } = process.env;
+const isDeployed = ['production', 'staging'].includes(NODE_ENV);
 
 async function run() {
-  const cert = await fs.readFile("./path-to/your.pem");
-  const key = await fs.readFile("./path-to/your.key");
+  const cert = await fs.readFile('./path-to/your.pem');
+  const key = await fs.readFile('./path-to/your.key');
 
-  const connectionOptions = {
-    address: "your-custom-namespace.tmprl.cloud:7233",
-    tls: {
-      clientCertPair: {
-        crt: cert,
-        key: key,
+  let connectionOptions = {};
+  if (isDeployed) {
+    connectionOptions = {
+      address: 'your-custom-namespace.tmprl.cloud:7233',
+      tls: {
+        clientCertPair: {
+          crt: cert,
+          key,
+        },
       },
-    // serverRootCACertificatePath: "ca.cert",
-    },
-  };
-  const connection = await Connection.connect(connectionOptions);
+    };
 
-  const client = new WorkflowClient({
-    connection,
-    // connects to 'default' namespace if not specified
-    namespace: "your-custom-namespace",
-  });
+    const connection = await Connection.connect(connectionOptions);
+
+    const client = new WorkflowClient({
+      connection,
+      // connects to 'default' namespace if not specified
+      // namespace: 'your-custom-namespace',
+    });
 
     // . . .
+
+    await client.connection.close();
+  }
 }
 
 run().catch((err) => {
