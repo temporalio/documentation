@@ -1879,7 +1879,7 @@
     node-fetch "^2.6.7"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@^18.0.3":
+"@octokit/rest@^18.12.0":
   version "18.12.0"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-18.12.0.tgz#f06bc4952fc87130308d810ca9d00e79f6988881"
   integrity sha512-gDPiOHlyGavxr72y0guQEhLsemgVjwRePayJ+FcKc2SJqKUbxbkvf5kAZEWA/MKvsfYlQAMVzNJE3ezQcxMJ2Q==
@@ -3962,6 +3962,11 @@ decompress-response@^3.3.0:
   integrity sha512-BzRPQuY1ip+qDonAOz42gRm/pg9F768C+npV/4JOsxRC2sq+Rlk+Q4ZCAsOhnIaMrgarILY+RMUIvMmmX1qAEA==
   dependencies:
     mimic-response "^1.0.0"
+
+dedent@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
+  integrity sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==
 
 deep-extend@^0.6.0:
   version "0.6.0"
@@ -8119,15 +8124,16 @@ slice-ansi@^4.0.0:
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
 
-snipsync@1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.7.0.tgz#8049a37415531701ed0fcb64ea5d44a941483cad"
-  integrity sha512-JyakzPHiZpA5p0wzYYEh/f1w2qa8jzBrFc6o6sTL8QH3clbcQdygXggUMX3KeHK7c90sm7T5keUzRm65bLAxMA==
+snipsync@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/snipsync/-/snipsync-1.8.0.tgz#c83b6dc492e7ae62a3aa2ea38c121737271df007"
+  integrity sha512-AkZSe8UGmf6ZZ84+1aWrE8RFyKR8pL/0Dp5ZT0vEOAdyncGzp4tw4YwsFFi73YUG8FCAkreynSHhOfewX+EjBQ==
   dependencies:
-    "@octokit/rest" "^18.0.3"
+    "@octokit/rest" "^18.12.0"
     anzip "^0.2.0"
     arraybuffer-to-buffer "^0.0.7"
     cli-progress "^3.8.2"
+    dedent "^0.7.0"
     glob "^7.1.6"
     js-logger "^1.6.1"
     line-reader "^0.4.0"

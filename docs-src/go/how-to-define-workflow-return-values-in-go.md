@@ -11,24 +11,39 @@ tags:
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
 Again, the best practice here is to use a `struct` type to hold all custom values.
 
-```go
-type YourWorkflowResponse struct{
- WorkflowResultFieldOne string
- WorkflowResultFieldTwo int
-}
+<!--SNIPSTART go-samples-your-workflow-definition { "selectedLines":["1-7","14-17","20","45-54"], "highlightedLines": ["9-12","20-24"] } -->
 
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
- if err != nil {
-   return "", err
- }
- responseVar := YourWorkflowResponse {
-   FieldOne: "super",
-   FieldTwo: 1,
- }
- return responseVar, nil
+[yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
+
+```go {9-12,20-24}
+package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+// ...
+type YourWorkflowResultObject struct {
+	WFResultFieldX string
+	WFResultFieldY int
+}
+// ...
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResultObject, error) {
+// ...
+	if err != nil {
+		return YourWorkflowResultObject{}, err
+	}
+	// Make the results of the Workflow Execution available.
+	workflowResult := YourWorkflowResultObject{
+		WFResultFieldX: activityResult.ResultFieldX,
+		WFResultFieldY: activityResult.ResultFieldY,
+	}
+	return workflowResult, nil
 }
 ```
+
+<!--SNIPEND-->
 
 A Workflow Definition written in Go can return both a custom value and an error.
 However, it's not possible to receive both a custom value and an error in the calling process, as is normal in Go.

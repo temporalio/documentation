@@ -29,16 +29,30 @@ A Workflow Definition may support multiple custom parameters, or none.
 These parameters can be regular type variables or safe pointers.
 However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
 
-```go
-type YourWorkflowParam struct {
- WorkflowParamFieldOne string
- WorkflowParamFieldTwo int
-}
+<!--SNIPSTART go-samples-your-workflow-definition { "selectedLines":["1-12","20","54"] } -->
 
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
- // ...
+[yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
+
+```go
+package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+
+type YourWorkflowParam struct {
+	WorkflowParamX string
+	WorkflowParamY int
+}
+// ...
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResultObject, error) {
+// ...
 }
 ```
+
+<!--SNIPEND-->
 
 All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used.
 Parameters can’t be channels, functions, variadic, or unsafe pointers.

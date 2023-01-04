@@ -13,6 +13,7 @@ origins:
     repo: sdk-typescript
   - owner: temporalio
     repo: samples-go
+    ref: yourapp
   - owner: temporalio
     repo: samples-java
 
