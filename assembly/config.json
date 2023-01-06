@@ -26,5 +26,19 @@
   "guide_configs_path": "assembly/guide-configs",
   "guide_configs_with_attached_nodes_file_name": "matched-guides.json",
   "notion_store_file_name": "notion-questions.json",
-  "glossary_file_name": "glossary.md"
+  "glossary_file_name": "glossary.md",
+  "supported_versions": {
+    "temporal_server": {
+      "latest_stable": "1.19.0",
+      "oldest_supported": "1.17.0"
+    },
+    "temporal-go-sdk": {
+      "latest_stable": "1.19.0",
+      "oldest_supported": "1.17.0"
+    },
+    "temporal_typescript_sdk": {
+      "latest_stable": "1.5.2",
+      "oldest_supported": "1.3.0"
+    }
+  }
 }

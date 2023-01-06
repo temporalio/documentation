@@ -7,6 +7,11 @@ tags:
   - operation-guide
   - filtered-lists
   - visibility
+ssdi:
+  - Elasticsearch v8 is supported from Temporal Server version 1.18.0 onwards
+  - Elasticsearch v7.10 is supported from Temporal Server version 1.7.0 onwards
+  - Elasticsearch v6.8 is supported up to Temporal Server version 1.17.x
+  - Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
 ---
 
 [Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
@@ -19,15 +24,6 @@ These steps are needed only if you have a "plain" [Temporal Server Docker image]
 
 If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
 [Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
-
-:::
-
-:::note Supported versions
-
-- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
 
 :::
 
