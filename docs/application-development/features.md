@@ -48,7 +48,7 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
-- The arguments must be [serializable](/concepts/what-is-a-data-converter/).
+- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -784,7 +784,7 @@ A <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/i
 A Query has a name and can have arguments.
 
 - The name, also called a Query type, is a string.
-- The arguments must be [serializable](/concepts/what-is-a-data-converter/).
+- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -2830,9 +2830,9 @@ The following examples show how to spawn a Child Workflow:
 
 Related reads:
 
-- [How to set a Child Workflow Options in Java](/java/how-to-set-child-workflow-options-in-java)
+- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
 
-- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
+- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
 
 - Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
