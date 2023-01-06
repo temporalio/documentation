@@ -34,8 +34,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   - **LIKE**
 
 - Wildcards ('\*', '%', etc.) are supported for string-type List Filter Search Attributes.
-
-  - Use wildcards with the **LIKE** operator to query possible values:
+  Use wildcards with the **LIKE** operator to query possible values:
 
   ```bash
   // Create a "ProductId" custom Search Attribute of type String
