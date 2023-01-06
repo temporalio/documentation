@@ -2,7 +2,7 @@
 id: intro
 ---
 
-This reference lists possible [Workflow Task](/tasks#workflow-task) errors and how to resolve them.
+This reference lists possible [Workflow Task](/tasks/#workflow-task) errors and how to resolve them.
 
 > For other types of errors, see [Temporal Failures](https://docs.temporal.io/kb/failures).
 
