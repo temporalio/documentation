@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This reference lists possible [Workflow Task](/tasks#workflow-task) errors and how to resolve them. 
+This reference lists possible [Workflow Task](/tasks/#workflow-task) errors and how to resolve them.
 
 > For other types of errors, see [Temporal Failures](https://docs.temporal.io/kb/failures).
 
