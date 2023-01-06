@@ -2,7 +2,7 @@
 id: errors
 title: Errors
 sidebar_label: Errors
-description: This guide is an overview of the errors that can appear on the Temporal Web UI.
+description: This reference lists possible Workflow Task errors and how to resolve them.
 toc_max_heading_level: 4
 ---
 
@@ -10,6 +10,12 @@ toc_max_heading_level: 4
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+This reference lists possible [Workflow Task](/tasks/#workflow-task) errors and how to resolve them.
+
+> For other types of errors, see [Temporal Failures](https://docs.temporal.io/kb/failures).
+
+Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://api-docs.temporal.io/#temporal.api.enums.v1.WorkflowTaskFailedCause), which appears in [Events](/workflows#event) under `workflow_task_failed_event_attributes`.
 
 ## Bad Cancel Timer Attributes
 
@@ -105,7 +111,7 @@ Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks/#workflo
 
 ## Bad Signal Workflow Execution Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate attributes for [`SignalWorkflowExecution`](/references/commands/#signalworkflowexecution).
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate attributes for [SignalExternalWorkflowExecution](/references/commands/#signalexternalworkflowexecution).
 
 Reset any unset, missing, nil, or invalid attributes.
 Adjust the input to fit within the system's size limits.
