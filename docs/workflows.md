@@ -82,7 +82,7 @@ The following are examples of minor changes that would not result in non-determi
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
-- Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.  
+- Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
 
 ### Intrinsic non-deterministic logic
 
@@ -651,7 +651,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-|------------------------|--------------------------------------------|---------------|
+| ---------------------- | ------------------------------------------ | ------------- |
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
