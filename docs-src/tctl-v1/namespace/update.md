@@ -15,7 +15,7 @@ The following modifiers control the behavior of the command.
 
 ### --active_cluster
 
-Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 **Example**
 
@@ -38,7 +38,7 @@ tctl namespace update --add_bad_binary <value>
 
 ### --clusters
 
-Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 

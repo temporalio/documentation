@@ -11,7 +11,7 @@ tags:
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout](/go/how-to-set-a-workflow-execution-timeout-in-go)
+- [How to set a Workflow Execution Timeout](/app-dev-context/workflow-retries)
 
 ![Workflow Execution Timeout period](/diagrams/workflow-execution-timeout.svg)
 

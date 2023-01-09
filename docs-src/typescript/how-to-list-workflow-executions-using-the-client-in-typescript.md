@@ -20,4 +20,4 @@ const response = await connection.workflowService.listWorkflowExecutions({
 });
 ```
 
-where `query` is a [List Filter](/concepts/what-is-a-list-filter/).
+where `query` is a [List Filter](/concepts/what-is-a-list-filter).

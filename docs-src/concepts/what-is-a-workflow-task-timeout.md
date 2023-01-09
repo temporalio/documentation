@@ -19,4 +19,4 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 **Implementation guides:**
 
-- [How to set a Workflow Task Timeout](/go/startworkflowoptions-reference/#workflowtasktimeout)
+- [How to set a Workflow Task Timeout](/app-dev-context/workflow-retries)
