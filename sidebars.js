@@ -160,6 +160,11 @@ module.exports = {
         },
         {
           type: "link",
+          label: "Ruby SDK API",
+          href: "https://rubydoc.info/gems/temporalio",
+        },
+        {
+          type: "link",
           label: "TypeScript SDK API",
           href: "https://typescript.temporal.io",
         },
@@ -188,9 +193,7 @@ module.exports = {
       label: "Cluster how-tos",
       collapsible: false,
       collapsed: false,
-      items: [
-        "server/production-deployment",
-      ],
+      items: ["server/production-deployment"],
     },
   ],
 };

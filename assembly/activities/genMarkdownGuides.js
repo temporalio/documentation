@@ -58,7 +58,7 @@ async function generateLangTabs(langtabs) {
   const unavailable = "Content is not available";
   tabStr = `${tabStr}defaultValue="go"\n`;
   tabStr = `${tabStr}groupId="site-lang"\n`;
-  tabStr = `${tabStr}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
+  tabStr = `${tabStr}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   for (const tab of langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
     if (tab.id == "none") {

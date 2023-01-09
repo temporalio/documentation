@@ -129,7 +129,7 @@ An SDK provides you with the following:
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -212,6 +212,21 @@ pip install temporalio
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+To install the latest version of the Temporal Ruby package, run the following command.
+
+```ruby
+gem install temporalio
+```
+
+Add the Temporal gem to your Gemfile.
+
+```ruby
+gem 'temporalio'
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
@@ -246,7 +261,7 @@ Each SDK has its own API reference. Select a programming language and follow the
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -268,6 +283,11 @@ Content is currently unavailable.
 The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
 </TabItem>
+<TabItem value="ruby">
+
+The Temporal Ruby SDK API reference is published on [rubydoc.info/gems/temporalio](https://rubydoc.info/gems/temporalio/file/README.md).
+
+</TabItem>
 <TabItem value="typescript">
 
 The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
@@ -284,7 +304,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -319,6 +339,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="python">
 
 - [Python samples library](https://github.com/temporalio/samples-python)
+
+</TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -367,7 +392,7 @@ For more information about configuring TLS to secure inter and intra network com
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -537,6 +562,24 @@ client = await Client.connect(
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Use the [`Temporal::Connection`](https://rubydoc.info/gems/temporalio/Temporalio/Connection) class to establish a connection to the Temporal Server.
+
+Specify the `host` parameter as a string.
+
+```ruby
+Temporalio::Connection.new('localhost:7233')
+```
+
+To initialize a [Client](https://rubydoc.info/gems/temporalio/Temporalio/Client#namespace-instance_method), pass the [connection](https://rubydoc.info/gems/temporalio/Temporalio/Connection) object and a [Namespace](https://rubydoc.info/gems/temporalio/Temporalio/Client#namespace-instance_method).
+
+```ruby
+connection = Temporalio::Connection.new('localhost:7233')
+Temporalio::Client.new(connection, 'your-custom-namespace')
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
@@ -596,7 +639,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -707,6 +750,11 @@ class YourWorkflow:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 In the Temporal TypeScript SDK programming model, Workflow Definitions are _just functions_, which can store state and orchestrate Activity Functions.
@@ -739,7 +787,7 @@ All Workflow Definition parameters must be serializable.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -840,6 +888,11 @@ class YourWorkflow:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 You can define and pass parameters in your Workflow. In this example, you define your arguments in your `client.ts` file and pass those parameters to `workflow.ts` through your Workflow function.
@@ -883,7 +936,7 @@ However, Temporal APIs that must be used to get the result of a Workflow Executi
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -965,6 +1018,11 @@ class YourWorkflow:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 To return a value of the Workflow function, use `Promise<something>`. The `Promise` is used to make asynchronous calls and comes with guarantees.
@@ -993,7 +1051,7 @@ The following examples demonstrate how to set a custom name for your Workflow Ty
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1078,6 +1136,15 @@ class YourWorkflow:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+You can customize the Workflow name with a custom name in the [`start_workflow`](https://rubydoc.info/gems/temporalio/Temporalio/Client#start_workflow-instance_method) method parameter's `workflow`.
+
+```ruby
+client.start_workflow('your-workflow-name', 'some input', id: 'your-id', task_queue: 'your-task-queue')
+```
+
+</TabItem>
 <TabItem value="typescript">
 
 In TypeScript, the Workflow Type is the Workflow function name and there isn't a mechanism to customize the Workflow Type.
@@ -1108,7 +1175,7 @@ However, each Temporal SDK provides a set of APIs that can be used inside your W
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1216,6 +1283,11 @@ Workflow code must be deterministic. This means:
 All API safe for Workflows used in the [`temporalio.workflow`](https://python.temporal.io/temporalio.workflow.html) must run in the implicit [`asyncio` event loop](https://docs.python.org/3/library/asyncio-eventloop.html) and be _deterministic_.
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 Content is currently unavailable.
@@ -1232,7 +1304,7 @@ For the Workflow to be able to execute the Activity, we must define the <a class
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1427,6 +1499,11 @@ If `activity_executor` is set to an instance of [`concurrent.futures.Executor`](
 These require special primitives for heartbeating and cancellation. The `shared_state_manager` Worker parameter must be set to an instance of [`worker.SharedStateManager`](https://python.temporal.io/temporalio.worker.SharedStateManager.html). The most common implementation can be created by passing a [`multiprocessing.managers.SyncManager`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.managers.SyncManager) (for example, as a result of [`multiprocessing.managers.Manager()`](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Manager)) to [`worker.SharedStateManager.create_from_multiprocessing()`](https://python.temporal.io/temporalio.worker.SharedStateManager.html#create_from_multiprocessing).
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 - Activities execute in the standard Node.js environment.
@@ -1470,7 +1547,7 @@ This is so that you can change what data is passed to the Activity without break
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1564,6 +1641,11 @@ async def your_activity(params: YourParams) -> None:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 This Activity takes a single `name` parameter of type `string`.
@@ -1592,7 +1674,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1669,6 +1751,11 @@ async def say_hello(name: str) -> str:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 In TypeScript, the return value is always a Promise.
@@ -1692,7 +1779,7 @@ The following examples demonstrate how to set a custom name for your Activity Ty
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -1791,6 +1878,11 @@ async def your_activity(name: str) -> str:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 You can customize the name of the Activity when you register it with the Worker.
@@ -1841,7 +1933,7 @@ Otherwise, no additional limitations exist on Activity implementations.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2155,6 +2247,11 @@ In most cases, use `execute_activity()` unless advanced task capabilities are ne
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 To spawn an Activity Execution, you must retrieve the _Activity handle_ in your Workflow.
@@ -2193,7 +2290,7 @@ Workflow Executions can either block progress until the result is available thro
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2353,6 +2450,11 @@ class YourWorkflow:
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 Since Activities are referenced by their string name, you can reference them dynamically to get the result of an Activity Execution.
@@ -2393,7 +2495,7 @@ A Worker Entity contains both a Workflow Worker and an Activity Worker so that i
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2610,6 +2712,11 @@ Although this example accepts a stop event and uses `async with`, you can also u
 The `shutdown()` operation waits on all Activities to complete, so if a long-running Activity does not at least respect cancellation, the shutdown might never complete.
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
@@ -2728,7 +2835,7 @@ However, the failure of the Task does not cause the associated Workflow Executio
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -2868,6 +2975,11 @@ worker = Worker(
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
@@ -2966,7 +3078,7 @@ The Temporal Cluster then creates the first Workflow Task, resulting in the firs
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3253,6 +3365,11 @@ async def main():
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 When you have a Workflow Client, you can schedule the start of a Workflow with `client.start()`, specifying `workflowId`, `taskQueue`, and `args` and returning a Workflow handle immediately after the Server acknowledges the receipt.
@@ -3285,7 +3402,7 @@ For any code to execute, a Worker Process must be running that contains a Worker
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3440,6 +3557,11 @@ result = await client.execute_workflow(
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 A Task Queue is a dynamic queue in Temporal polled by one or more Workers.
@@ -3523,7 +3645,7 @@ Although it is not required, we recommend providing your own <a class="tdlp" hre
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3614,6 +3736,11 @@ result = await client.execute_workflow(
 ```
 
 </TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
+
+</TabItem>
 <TabItem value="typescript">
 
 Connect to a Client with `client.start()` and any arguments. Then specify your `taskQueue` and set your `workflowId` to a meaningful business identifier.
@@ -3644,7 +3771,7 @@ In the Temporal Platform, it's also acceptable to use Queries as the preferred m
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -3860,6 +3987,11 @@ To get a handle for an existing Workflow by its Id, you can use [`get_workflow_h
 
 Then use [`describe()`](https://python.temporal.io/temporalio.client.workflowhandle#describe) to get the current status of the Workflow.
 If the Workflow does not exist, this call fails.
+
+</TabItem>
+<TabItem value="ruby">
+
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">

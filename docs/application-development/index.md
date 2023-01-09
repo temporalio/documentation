@@ -26,7 +26,7 @@ The following language is selected:
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -61,6 +61,15 @@ Python is currently selected!
 
 <div class="app-dev-landing-page-lang-logo">
 <img src="/app-dev/python.svg" alt="python logo" />
+</div>
+
+</TabItem>
+<TabItem value="ruby">
+
+Ruby is currently selected!
+
+<div class="app-dev-landing-page-lang-logo">
+<img src="/app-dev/ruby.svg" alt="ruby logo" />
 </div>
 
 </TabItem>

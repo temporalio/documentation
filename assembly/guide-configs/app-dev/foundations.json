@@ -41,6 +41,10 @@
           "id": "python/index"
         },
         {
+          "lang": "ruby",
+          "id": "ruby/index"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/index"
         }
@@ -68,6 +72,10 @@
         {
           "lang": "python",
           "id": "python/api-reference-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "ruby/api-reference-ruby"
         },
         {
           "lang": "typescript",
@@ -99,6 +107,10 @@
           "id": "python/code-samples-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/code-samples-typescript"
         }
@@ -126,6 +138,10 @@
         {
           "lang": "python",
           "id": "python/how-to-connect-to-a-cluster-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "ruby/how-to-connect-to-a-cluster-in-ruby"
         },
         {
           "lang": "typescript",
@@ -157,6 +173,10 @@
           "id": "python/how-to-develop-a-workflow-definition-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-develop-a-workflow-definition-in-typescript"
         }
@@ -184,6 +204,10 @@
         {
           "lang": "python",
           "id": "python/how-to-define-workflow-parameters-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -215,6 +239,10 @@
           "id": "python/how-to-define-workflow-return-values-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-define-workflow-return-values-in-typescript"
         }
@@ -242,6 +270,10 @@
         {
           "lang": "python",
           "id": "python/how-to-customize-workflow-type-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "ruby/how-to-customize-workflow-type-in-ruby"
         },
         {
           "lang": "typescript",
@@ -273,6 +305,10 @@
           "id": "python/how-to-handle-workflow-logic-requirements-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "none"
         }
@@ -300,6 +336,10 @@
         {
           "lang": "python",
           "id": "python/how-to-develop-an-activity-definition-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -331,6 +371,10 @@
           "id": "python/how-to-define-activity-parameters-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-define-activity-parameters-in-typescript"
         }
@@ -358,6 +402,10 @@
         {
           "lang": "python",
           "id": "python/how-to-define-activity-return-values-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -389,6 +437,10 @@
           "id": "python/how-to-customize-activity-type-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-customize-activity-type-in-typescript"
         }
@@ -416,6 +468,10 @@
         {
           "lang": "python",
           "id": "python/how-to-spawn-an-activity-execution-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -451,6 +507,10 @@
           "id": "python/how-to-get-the-result-of-an-activity-execution-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
         }
@@ -478,6 +538,10 @@
         {
           "lang": "python",
           "id": "python/how-to-develop-a-worker-program-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -509,6 +573,10 @@
           "id": "python/how-to-register-types-with-a-worker-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-register-types-with-a-worker-in-typescript"
         }
@@ -536,6 +604,10 @@
         {
           "lang": "python",
           "id": "python/how-to-spawn-a-workflow-execution-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -567,6 +639,10 @@
           "id": "python/how-to-set-a-workflow-task-queue-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
         }
@@ -596,6 +672,10 @@
           "id": "python/how-to-set-a-workflow-id-in-python"
         },
         {
+          "lang": "ruby",
+          "id": "none"
+        },
+        {
           "lang": "typescript",
           "id": "typescript/how-to-set-a-workflow-id-in-typescript"
         }
@@ -623,6 +703,10 @@
         {
           "lang": "python",
           "id": "python/how-to-get-the-result-of-a-workflow-execution-in-python"
+        },
+        {
+          "lang": "ruby",
+          "id": "none"
         },
         {
           "lang": "typescript",

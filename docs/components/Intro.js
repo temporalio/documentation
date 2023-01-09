@@ -190,6 +190,12 @@ const supportedTech = [
     class: "w-7 h-7",
   },
   {
+    link: " /application-development?lang=ruby",
+    image: "/img/ruby.svg",
+    alt: "Ruby logo",
+    class: "w-7 h-7",
+  },
+  {
     link: " /application-development?lang=typescript",
     image: "/img/typescript.svg",
     alt: "TypeScript logo",
@@ -298,6 +304,11 @@ const appDevGuideLinks = {
       exit: true,
       path: "https://python.temporal.io",
       name: "Python SDK API reference",
+    },
+    {
+      exit: true,
+      path: "https://rubygems.org/gems/temporalio",
+      name: "Ruby SDK API reference",
     },
   ],
 };

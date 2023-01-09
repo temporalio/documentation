@@ -13,6 +13,7 @@
     "docs-src/security",
     "docs-src/python",
     "docs-src/php",
+    "docs-src/ruby",
     "docs-src/typescript",
     "docs-src/references",
     "docs-src/tctl-v1",
