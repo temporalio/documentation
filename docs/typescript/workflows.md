@@ -72,7 +72,7 @@ export async function example(
 
 ### Workflow Limitations
 
-Workflow code must be [deterministic](/typescript/determinism), and the TypeScript SDK replaces common sources of nondeterminism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/typescript/workflows#sleep) API instead).
+Workflow code must be [deterministic](/typescript/determinism), and the TypeScript SDK replaces common sources of non-determinism for you, like `Date.now()`, `Math.random`, and `setTimeout` (we recommend using our [`sleep`](/typescript/workflows#sleep) API instead).
 However, there are other important limitations:
 
 - No Node built-ins like `process` or the `path` and `fs` modules
