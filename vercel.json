@@ -6,10 +6,9 @@
   },
   "redirects": [
     {"source": "/docs/:path*", "destination": "/:path*"},
-    {
-      "source": "/typescript/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"
-    },
+    {"source": "/typescript/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"},
+    {"source": "/go/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/go/:path*"},
+    {"source": "/java/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"},
     {"source": "/reference/:path*", "destination": "/references/:path*"},
     {"source": "/system-tools/:path*", "destination": "/devtools/:path*"},
     {"source": "/devtools/tctl", "destination": "/tctl"},
@@ -360,7 +359,7 @@
     },
     {
       "source": "/go/task-queues",
-      "destination": "/concepts/what-is-a-task-queue"
+      "destination": "/tasks"
     },
     {
       "source": "/go/testing",
@@ -515,11 +514,19 @@
     },
     {
       "source": "/server-archive-data",
-      "destination": "/concepts/what-is-archival"
+      "destination": "/clusters#"
     },
     {
       "source": "/server/archive-data",
-      "destination": "/concepts/what-is-archival"
+      "destination": "/clusters#archival"
+    },
+    {
+      "source": "/clusters/how-to-set-up-archival",
+      "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/clusters/how-to-create-a-custom-archiver",
+      "destination": "/cluster-deployment-guide#archival"
     },
     {
       "source": "/server-configuration",
@@ -531,7 +538,11 @@
     {"source": "/server/namespaces", "destination": "/namespaces"},
     {
       "source": "/server/multi-cluster",
-      "destination": "/concepts/what-is-multi-cluster-replication"
+      "destination": "/clusters#multi-cluster-replication"
+    },
+    {
+      "source": "/clusters/how-to-set-up-multi-cluster-replication",
+      "destination": "/cluster-deployment-guide#set-up-multi-cluster-replication"
     },
     {"source": "/server-options", "destination": "/references/server-options"},
     {"source": "/server/options", "destination": "/references/server-options"},
@@ -545,11 +556,15 @@
     },
     {
       "source": "/server-quick-install",
-      "destination": "/clusters/quick-install"
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/server/quick-install",
-      "destination": "/clusters/quick-install"
+      "destination": "/application-development/foundations#run-a-development-cluster"
+    },
+    {
+      "source": "/clusters/quick-install",
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/server/security",
@@ -557,27 +572,31 @@
     },
     {
       "source": "/cluster/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
-      "destination": "/clusters/quick-install/#helm-charts"
+      "destination": "/kb/all-the-ways-to-run-a-cluster#helm-charts"
     },
     {
       "source": "/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
-      "destination": "/clusters/quick-install/#docker-compose"
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
-      "destination": "/clusters/quick-install/#helm-charts"
+      "destination": "/kb/all-the-ways-to-run-a-cluster#helm-charts"
     },
     {
       "source": "/content/how-to-quickly-install-the-temporal-server",
-      "destination": "/clusters/quick-install"
+      "destination": "/application-development/foundations#run-a-development-cluster"
     },
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+      "destination": "/cluster-deployment-guide#elasticsearch"
     },
     {
       "source": "/cluster/how-to-integrate-elasticsearch-into-a-temporal-cluster",
-      "destination": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+      "destination": "/cluster-deployment-guide#elasticsearch"
+    },
+    {
+      "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
+      "destination": "/cluster-deployment-guide#elasticsearch"
     },
     {"source": "/server-security", "destination": "/server/security"},
     {"source": "/server-versions-and-dependencies", "destination": "/clusters"},
@@ -749,6 +768,246 @@
     {
       "source": "/external-resources",
       "destination": "/kb/additional-resources"
+    },
+    {
+      "source": "/concepts/what-is-an-activity",
+      "destination": "/activities"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-definition",
+      "destination": "/activities#activity-definition"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-execution",
+      "destination": "/activities#activity-execution"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-heartbeat",
+      "destination": "/activities#activity-heartbeat"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-id",
+      "destination": "/activities#activity-id"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-task",
+      "destination": "/tasks#activity-task"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-task-execution",
+      "destination": "/tasks#activity-task-execution"
+    },
+    {
+      "source": "/concepts/what-is-an-activity-type",
+      "destination": "/activities#activity-type"
+    },
+    {
+      "source": "/concepts/what-is-advanced-visibility",
+      "destination": "/visibility#advanced-visibility"
+    },
+    {
+      "source": "/concepts/what-is-archival",
+      "destination": "/clusters#archival"
+    },
+    {
+      "source": "/concepts/what-is-a-child-workflow-execution",
+      "destination": "/workflows#child-workflow"
+    },
+    {
+      "source": "/concepts/what-is-a-command",
+      "destination": "/workflows#command"
+    },
+    {
+      "source": "/concepts/what-is-continue-as-new",
+      "destination": "/workflows#continue-as-new"
+    },
+    {
+      "source": "/concepts/what-is-a-data-converter",
+      "destination": "/security#data-converter"
+    },
+    {
+      "source": "/concepts/what-is-an-event",
+      "destination": "/workflows#event"
+    },
+    {
+      "source": "/concepts/what-is-an-event-history",
+      "destination": "/workflows#event-history"
+    },
+    {
+      "source": "/concepts/what-is-a-failure",
+      "destination": "/temporal#failure"
+    },
+    {
+      "source": "/concepts/what-is-a-heartbeat-timeout",
+      "destination": "/activities#heartbeat-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-list-filter",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/concepts/what-is-a-local-activity",
+      "destination": "/activities#local-activity"
+    },
+    {
+      "source": "/concepts/what-is-a-memo",
+      "destination": "/workflows#memo"
+    },
+    {
+      "source": "/concepts/what-is-a-namespace",
+      "destination": "/namespaces"
+    },
+    {
+      "source": "/concepts/what-is-a-parent-close-policy",
+      "destination": "/workflows#parent-close-policy"
+    },
+    {
+      "source": "/concepts/what-is-a-query",
+      "destination": "/workflows#query"
+    },
+    {
+      "source": "/concepts/what-is-a-run-id",
+      "destination": "/workflows#run-id"
+    },
+    {
+      "source": "/concepts/what-is-a-schedule-to-close-timeout",
+      "destination": "/activities#schedule-to-close-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-schedule-to-start-timeout",
+      "destination": "/activities#schedule-to-start-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-run-id",
+      "destination": "/workflows#run-id"
+    },
+    {
+      "source": "/concepts/what-is-a-search-attribute",
+      "destination": "/visibility#search-attribute"
+    },
+    {
+      "source": "/concepts/what-is-a-side-effect",
+      "destination": "/workflows#side-effect"
+    },
+    {
+      "source": "/concepts/what-is-a-signal",
+      "destination": "/workflows#signal"
+    },
+    {
+      "source": "/concepts/what-is-standard-visibility",
+      "destination": "/visibility#standard-visibility"
+    },
+    {
+      "source": "/concepts/what-is-a-start-to-close-timeout",
+      "destination": "/activities#start-to-close-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-start-to-close-timeout",
+      "destination": "/activities#start-to-close-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-sticky-execution",
+      "destination": "/tasks#sticky-execution"
+    },
+    {
+      "source": "/concepts/what-is-a-task-queue",
+      "destination": "/tasks#task-queue"
+    },
+    {
+      "source": "/concepts/what-is-task-routing",
+      "destination": "/tasks#task-routing"
+    },
+    {
+      "source": "/concepts/what-is-a-task-token",
+      "destination": "/activities#task-token"
+    },
+    {
+      "source": "/concepts/what-is-a-task",
+      "destination": "/tasks"
+    },
+    {
+      "source": "/concepts/what-is-temporal",
+      "destination": "/temporal"
+    },
+    {
+      "source": "/concepts/what-is-a-temporal-application",
+      "destination": "/temporal#temporal-application"
+    },
+    {
+      "source": "/concepts/what-is-a-temporal-cluster",
+      "destination": "/clusters"
+    },
+    {
+      "source": "/concepts/what-is-a-temporal-cron-job",
+      "destination": "/workflows#temporal-cron-job"
+    },
+    {
+      "source": "/concepts/what-is-the-temporal-platform",
+      "destination": "/temporal#temporal-platform"
+    },
+    {
+      "source": "/concepts/what-is-a-temporal-sdk",
+      "destination": "/temporal#temporal-sdk"
+    },
+    {
+      "source": "/concepts/what-is-a-worker",
+      "destination": "/workers"
+    },
+    {
+      "source": "/concepts/what-is-a-worker-entity",
+      "destination": "/workers#worker-entity"
+    },
+    {
+      "source": "/concepts/what-is-a-worker-process",
+      "destination": "/workers#worker-process"
+    },
+    {
+      "source": "/concepts/what-is-a-worker-program",
+      "destination": "/workers#worker-program"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow",
+      "destination": "/workflows"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-definition",
+      "destination": "/workflows#workflow-definition"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-execution",
+      "destination": "/workflows#workflow-execution"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-execution-timeout",
+      "destination": "/workflows#workflow-execution-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-id-reuse-policy",
+      "destination": "/workflows#workflow-id-reuse-policy"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-id",
+      "destination": "/workflows#workflow-id"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-run-timeout",
+      "destination": "/workflows#workflow-run-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-task",
+      "destination": "/workflows#workflow-task-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-task-execution",
+      "destination": "/tasks#workflow-task-execution"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-task-timeout",
+      "destination": "/workflows#workflow-task-timeout"
+    },
+    {
+      "source": "/concepts/what-is-a-workflow-type",
+      "destination": "/workflows#workflow-type"
     }
   ]
 }

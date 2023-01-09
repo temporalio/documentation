@@ -115,8 +115,8 @@ The following examples show how to spawn a Child Workflow:
 
 Related reads:
 
-- [How to set a Child Workflow Options in Java](/java/how-to-set-child-workflow-options-in-java)
+- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
 
-- [How to develop a Workflow Definition in Java](/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition](/java/how-to-develop-a-workflow-definition-in-java)
 
 - Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
