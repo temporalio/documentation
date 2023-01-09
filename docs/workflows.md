@@ -170,12 +170,11 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Replay is effectively a retry of the Workflow Execution that checks against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
-If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History. 
+If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-To do this, the Replay retries the Workflow Execution function and expects a response. If the corresponding response was recorded in the Event History, the Replay process continues to the next function. If a response wasn't recorded in the Event History, the Replay _retries_ that function and records the response in the Event History. This process repeats often.
+To accomplish this, the Replay retries the Workflow Execution function and expects a response. If the corresponding response was recorded in the Event History, the Replay process continues to the next function. If a response wasn't recorded in the Event History, the Replay _retries_ that function and records the response in the Event History. This process repeats often.
 
 You can use Replay APIs from any of the Temporal SDKs to control this behavior.
-
 
 ### Commands and awaitables
 
