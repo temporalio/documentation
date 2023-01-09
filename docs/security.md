@@ -105,7 +105,7 @@ To enable SSO for the Temporal Web UI edit the web service's configuration per t
 A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.
 
 - TypeScript: [Data Converters](https://legacy-documentation-sdks.temporal.io/typescript/data-converters)
-- Go: [Create a custom Data Converter](/go/how-to-create-a-custom-data-converter-in-go)
+- Go: [Create a custom Data Converter](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-custom-data-converter-in-go)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" /></div></div>
 
@@ -121,7 +121,7 @@ The main pieces of data that run through the Data Converter are arguments and re
   - Encodes Workflow and Query return values.
   - Decodes and encodes Activity arguments and return values.
 
-Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49) Protobuf message, which consists of binary `data` and key-value `metadata`.
+Each piece of data (like a single argument or return value) is encoded as a [`Payload`](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) Protobuf message, which consists of binary `data` and key-value `metadata`.
 
 ## Default Data Converter
 
@@ -157,11 +157,21 @@ Custom Data Converters are not applied to all data:
 - `searchAttributes` are always encoded with JSON.
 - Headers are not encoded by the SDK (the one exception will be—when implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
 
-### Payload Codecs
+A custom Data Converter has three parts:
+
+- [Payload Converter](#payload-converter)
+- [Payload Codec](#payload-codec)
+- [Failure Converter](#failure-converter)
+
+### Payload Converter
+
+Some SDKs have the concept of a Payload Converter that's part of the Data Converter and does the conversion from a value to a Payload and back.
+
+### Payload Codec
 
 In [TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/data-converters#custom-data-converter), [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec), and [Python](https://python.temporal.io/temporalio.converter.DataConverter.html), data conversion happens in two stages:
 
-1. A Payload Converter converts a value into a [`Payload`](https://github.com/temporalio/api/blob/2f980f7ce4349e808b16ec0f21e0fe675f79330f/temporal/api/common/v1/message.proto#L49).
+1. A Payload Converter converts a value into a [`Payload`](https://api-docs.temporal.io/#temporal.api.common.v1.Payload).
 2. A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.
 
 The Payload Codec is an optional step that happens between the wire and the Payload Converter:
@@ -177,7 +187,9 @@ In codec implementations, we recommended running the function (whether it be com
 - [`ZlibCodec`](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105) in the Go SDK
 - [Encryption Data Converter](https://github.com/temporalio/samples-go/blob/15be864c80d4d983ebb8a8fbd3fa5263bcef6930/encryption/data_converter.go#L100-L126) in Go's encryption sample
 
-### Encryption
+To view data that's been converted by a codec in the Web UI and tctl, use a [Codec Server](/security#codec-server).
+
+#### Encryption
 
 Doing encryption in a custom Data Converter ensures that all application data is encrypted during the following actions:
 
@@ -194,13 +206,27 @@ Our encryption samples use AES GCM with 256-bit keys:
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
 
+### Failure Converter
+
+A Failure Converter converts error objects to proto [Failures](/temporal#failure) and back.
+
+The default Failure Converter copies error messages and stack traces as plain text.
+If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your [Payload Codec](#payload-codec), in which case it will move your `message` and `stack_trace` fields to a Payload that's run through your codec.
+
+You can make a custom Failure Converter, but if you use multiple SDKs, you'd have to implement the same logic in each.
+
+- TypeScript: [`DefaultFailureConverter`](https://typescript.temporal.io/api/classes/common.DefaultFailureConverter)
+- Go: [`GetDefaultFailureConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.18.0/temporal#GetDefaultFailureConverter)
+- Python: [`DefaultFailureConverter`](https://python.temporal.io/temporalio.converter.DefaultFailureConverter.html)
+- Java: _Not yet supported_
+
 ## Codec Server
 
-A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [Web UI](/web-ui) through a <a class="tdlp" href="#payload-codecs">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codecs">Learn more</a></p></div></a>.
+A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [Web UI](/web-ui) through a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codec">Learn more</a></p></div></a>.
 
 - <a class="tdlp" href="#codec-server">How to set up a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set up a Codec Server</p><p class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</p><p class="tdlplm"><a class="tdlplma" href="#codec-server">Learn more</a></p></div></a>
 
-By default, tctl and the Web UI use the <a class="tdlp" href="#default-data-converter">Default Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#default-data-converter">Learn more</a></p></div></a> without a <a class="tdlp" href="#payload-codecs">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codecs">Learn more</a></p></div></a>.
+By default, tctl and the Web UI use the <a class="tdlp" href="#default-data-converter">Default Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#default-data-converter">Learn more</a></p></div></a> without a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codec">Learn more</a></p></div></a>.
 If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed).
 In order to convert the data to its original format, you can configure the Web UI/tctl to use a Codec Server that uses your Payload Codec.
 
@@ -243,7 +269,7 @@ A Codec Server is an HTTP server that implements two endpoints:
 - `POST /decode`
 
 Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of Payloads.
-The endpoints run the Payloads through a <a class="tdlp" href="#payload-codecs">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codecs">Learn more</a></p></div></a> before returning them.
+The endpoints run the Payloads through a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codec">Learn more</a></p></div></a> before returning them.
 
 Sample Codec Servers:
 

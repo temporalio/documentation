@@ -76,39 +76,57 @@ An Activity Execution is the full chain of <a class="tdlp" href="/tasks#activity
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-execution.svg" alt="Activity Execution" /></div></div>
 
-An Activity Execution has no time limit.
-Activity Execution time limits and retries can be optimized for each situation within the Temporal Application.
+By default, an Activity Execution has no time limit.
+Activity Execution [timeouts](/application-development/features#activity-timeouts) and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#">Learn more</a></p></div></a> can be customized.
 
-If for any reason an Activity Execution does not complete (exhausts all retries), the error is returned to the [Workflow](/workflows), which decides how to handle it.
+If an Activity Execution fails (because it exhausted all retries, threw a <a class="tdlp" href="/retry-policies#non-retryable-errors">non-retryable error<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retry Policy?</p><p class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/retry-policies#non-retryable-errors">Learn more</a></p></div></a>, or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
-### Request Cancellation
+### Cancellation
 
-A Workflow can request to cancel an Activity Execution.
-When an Activity Execution is canceled, or its Workflow Execution has completed or failed, the context passed into its function is canceled, which also sets its channel’s closed state to `Done`.
-An Activity can use that to perform any necessary cleanup and abort its execution.
+Activity Cancellation:
 
-Cancellation requests are only delivered to Activity Executions that Heartbeat:
+- lets the Activity know it doesn't need to keep doing work, and
+- gives the Activity time to clean up any resources it has created.
 
-- The Heartbeat request fails with a special error indicating that the Activity Execution is canceled.
-  Heartbeats can also fail when the Workflow Execution that spawned it is in a completed state.
-- The Activity should perform all necessary cleanup and report when it is done.
-- The Workflow can decide if it wants to wait for the Activity cancellation confirmation or proceed without waiting.
+Activities can only receive Cancellation if they emit Heartbeats or in Core-based SDKs (TypeScript/Python) are Local Activities (which don't heartbeat but receive Cancellation anyway).
+
+An Activity may receive Cancellation if:
+
+- The Activity was requested to be Cancelled. This can often cascade from Workflow Cancellation, but not always—SDKs have ways to stop Cancellation from cascading. <!-- TODO link to workflow cancellation -->
+- The Activity was considered failed by the Server because any of the Activity timeouts have triggered (for example, the Server didn't receive a heartbeat within the Activity's Heartbeat timeout). The [Cancelled Failure](/kb/failures#cancelled-failure) that the Activity receives will have `message: 'TIMED_OUT'`.
+- The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
+- In some SDKs:
+  - The Worker is shutting down.
+  - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>. This fails the Activity Task Execution with an Application Failure.
+
+There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
+An Activity may accept or ignore Cancellation:
+
+- To allow Cancellation to happen, let the Cancellation Failure propagate.
+- To ignore Cancellation, catch it and continue executing.
+
+Some SDKs have ways to shield tasks from being stopped while still letting the Cancellation propagate.
+
+The Workflow can also decide if it wants to wait for the Activity Cancellation to be accepted or to proceed without waiting.
+
+Cancellation can only be requested a single time.
+If you try to cancel your Activity Execution more than once, it will not receive more than one Cancellation request.
 
 ### Activity Id
 
 The identifier for an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a>.
 The identifier can be generated by the system, or it can be provided by the Workflow code that spawns the Activity Execution.
-The identifier is unique among the open Activity Executions of a [Workflow Run](/concepts/what-is-a-run-id/).
+The identifier is unique among the open Activity Executions of a <a class="tdlp" href="/workflows#run-id">Workflow Run<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 (A single Workflow Run may reuse an Activity Id if an earlier Activity Execution with the same Id has closed.)
 
-An Activity Id can be used to [complete the Activity asynchronously](/concepts/what-is-asynchronous-activity-completion/).
+An Activity Id can be used to <a class="tdlp" href="#asynchronous-activity-completion">complete the Activity asynchronously<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Asynchronous Activity Completion?</p><p class="tdlppd">Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.</p><p class="tdlplm"><a class="tdlplma" href="#asynchronous-activity-completion">Learn more</a></p></div></a>.
 
 ### Schedule-To-Start Timeout
 
 A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled (that is, placed in a Task Queue) to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> starts (that is, picks up from the Task Queue) that Activity Task.
 In other words, it's a limit for how long an Activity Task can be enqueued.
 
-[How to set a Schedule-To-Start Timeout](/go/how-to-set-a-schedule-to-start-timeout-in-go)
+<a class="tdlp" href="/application-development/features#activity-retries">How to set a Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set an Activity Retry Policy</p><p class="tdlppd">Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#activity-retries">Learn more</a></p></div></a>
 
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
@@ -142,7 +160,7 @@ In most cases, we recommend monitoring the `temporal_activity_schedule_to_start_
 
 A Start-To-Close Timeout is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
-- [How to set a Start-To-Close Timeout](/go/how-to-set-a-start-to-close-timeout-in-go)
+- <a class="tdlp" href="/application-development/features#activity-retries">How to set a Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set an Activity Retry Policy</p><p class="tdlppd">Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#activity-retries">Learn more</a></p></div></a>
 
 **The default Start-To-Close Timeout is the same as the default <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="#schedule-to-close-timeout">Learn more</a></p></div></a>.**
 
@@ -172,7 +190,7 @@ If this timeout is reached, the following actions occur:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a>, from when the first <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task">Learn more</a></p></div></a> is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout](/go/how-to-set-a-schedule-to-close-timeout-in-go)
+- <a class="tdlp" href="/application-development/features#activity-retries">How to set a Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set an Activity Retry Policy</p><p class="tdlppd">Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#activity-retries">Learn more</a></p></div></a>
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-close-timeout.svg" alt="Schedule-To-Close Timeout period" /></div></div>
 
@@ -288,10 +306,10 @@ If the first step fails, you want to detect that quickly and retry instead of wa
 
 A Task Token is a unique identifier for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
-[Asynchronous Activity Completion](/concepts/what-is-asynchronous-activity-completion/) calls take either of the following as arguments:
+<a class="tdlp" href="#asynchronous-activity-completion">Asynchronous Activity Completion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Asynchronous Activity Completion?</p><p class="tdlppd">Asynchronous Activity Completion occurs when an external system provides the final result of a computation, started by an Activity, to the Temporal System.</p><p class="tdlplm"><a class="tdlplma" href="#asynchronous-activity-completion">Learn more</a></p></div></a> calls take either of the following as arguments:
 
 - a Task Token, or
-- an <a class="tdlp" href="#activity-id">Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Id?</p><p class="tdlppd">A unique identifier for an Activity Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-id">Learn more</a></p></div></a>, a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>, and optionally a [Run Id](/concepts/what-is-a-run-id/).
+- an <a class="tdlp" href="#activity-id">Activity Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Id?</p><p class="tdlppd">A unique identifier for an Activity Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-id">Learn more</a></p></div></a>, a <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>, and optionally a <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a>.
 
 ## Local Activity
 

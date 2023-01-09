@@ -8,7 +8,7 @@ tags:
 date: 2022-11-09T00:00:00Z
 ---
 
-All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All requests made to the [Temporal Cluster](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these frontend requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 

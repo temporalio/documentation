@@ -426,7 +426,6 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newInstance(
                     WorkflowServiceStubsOptions.newBuilder()
                      .setTarget(TARGET_ENDPOINT)
                             .build());
-
 ```
 
 After the connection to the Temporal Frontend Service is established, create a Client for the service stub.
@@ -441,7 +440,6 @@ WorkflowClient client = WorkflowClient.newInstance(
                 WorkflowClientOptions.newBuilder()
                         .setNamespace(“Abc”)
                     .build());
-
 ```
 
 For more information, see [WorkflowClientOptions](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowClientOptions.Builder.html).
@@ -649,26 +647,25 @@ A Workflow implementation implements a Workflow interface.
   }
 ```
 
-
 To call Activities in your Workflow, call the Activity implementation.
 
- Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
+Use `ExternalWorkflowStub` to start or send Signals from within a Workflow to other running Workflow Executions.
 
- You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
+You can also invoke other Workflows as Child Workflows with `Workflow.newChildWorkflowStub()` or `Workflow.newUntypedChildWorkflowStub()` within a Workflow Definition.
 
- Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
- Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
+Use [`DynamicWorkflow`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/DynamicWorkflow.html) to implement Workflow Types dynamically.
+Register a Workflow implementation type that extends `DynamicWorkflow` to implement any Workflow Type that is not explicitly registered with the Worker.
 
- The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
- These inputs can be specified by the Client when invoking the Workflow Execution.
+The dynamic Workflow interface is implemented with the `execute` method. This method takes in `EncodedValues` that are inputs to the Workflow Execution.
+These inputs can be specified by the Client when invoking the Workflow Execution.
 
- ```java
- public class MyDynamicWorkflow implements DynamicWorkflow {
-    @Override
-     public Object execute(EncodedValues args) {
-     }
- }
- ```
+```java
+public class MyDynamicWorkflow implements DynamicWorkflow {
+   @Override
+    public Object execute(EncodedValues args) {
+    }
+}
+```
 
 </TabItem>
 <TabItem value="php">
@@ -927,7 +924,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 
 Related references:
 
-- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1104,7 +1101,7 @@ export async function helloWorld(): Promise<string> {
 
 ### Workflow logic requirements
 
-Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition/#deterministic-constraints).
+Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></p></div></a>.
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -1131,8 +1128,10 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Go()` This is a replacement for the `go` statement.
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
-- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](/go/selectors) page
-- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](/go/tracing) page.
+- `workflow.Selector` This is a replacement for the `select` statement.
+  Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
+- `workflow.Context` This is a replacement for `context.Context`.
+  See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to setup Tracing</p><p class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></p></div></a> for more information about context propagation.
 
 </TabItem>
 <TabItem value="java">
@@ -1324,20 +1323,20 @@ When an Activity implementation that extends `DynamicActivity` is registered, it
 The dynamic Activity interface is implemented with the `execute` method, as shown in the following example.
 
 ```java
- // Dynamic Activity implementation
-  public static class DynamicGreetingActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-      return activityType
-          + ": "
-          + args.get(0, String.class)
-          + " "
-          + args.get(1, String.class)
-          + " from: "
-          + args.get(2, String.class);
-    }
-  }
+// Dynamic Activity implementation
+ public static class DynamicGreetingActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
 ```
 
 Use `Activity.getExecutionContext()` to get information about the Activity type that should be implemented dynamically.
@@ -1518,20 +1517,20 @@ public interface YourActivities {
 The `execute` method in the dynamic Activity interface implementation takes in `EncodedValues` that are inputs to the Activity Execution, as shown in the following example.
 
 ```java
- // Dynamic Activity implementation
-  public static class DynamicActivityImpl implements DynamicActivity {
-    @Override
-    public Object execute(EncodedValues args) {
-      String activityType = Activity.getExecutionContext().getInfo().getActivityType();
-      return activityType
-          + ": "
-          + args.get(0, String.class)
-          + " "
-          + args.get(1, String.class)
-          + " from: "
-          + args.get(2, String.class);
-    }
-  }
+// Dynamic Activity implementation
+ public static class DynamicActivityImpl implements DynamicActivity {
+   @Override
+   public Object execute(EncodedValues args) {
+     String activityType = Activity.getExecutionContext().getInfo().getActivityType();
+     return activityType
+         + ": "
+         + args.get(0, String.class)
+         + " "
+         + args.get(1, String.class)
+         + " from: "
+         + args.get(2, String.class);
+   }
+ }
 ```
 
 For more details, see [Dynamic Activity Reference](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/DynamicActivity.html).
@@ -1624,7 +1623,7 @@ Activity return values must be serializable and deserializable by the provided [
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
-- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1893,8 +1892,8 @@ Activities are not executable on their own. You cannot start an Activity Executi
 
 Note that before an Activity Execution is invoked:
 
-- Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout">`setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout">`ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a> are required) must be set for the Activity.
-  For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
+- Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout"> `setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout"> `ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a> are required) must be set for the Activity.
+  For details, see [Set Activity Options](https://legacy-documentation-sdks.temporal.io/java/how-to-set-activityoptions-in-java) and [Activity Options reference](https://legacy-documentation-sdks.temporal.io/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
   See <a class="tdlp" href="#run-worker-processes">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Worker Program in Java</p><p class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</p><p class="tdlplm"><a class="tdlplma" href="#run-worker-processes">Learn more</a></p></div></a>
 - Activity code must be thread-safe.
@@ -1903,7 +1902,7 @@ Activities should only be instantiated using stubs from within a Workflow.
 An `ActivityStub` returns a client-side stub that implements an Activity interface.
 You can invoke Activities using `Workflow.newActivityStub`(type-safe) or `Workflow.newUntypedActivityStub` (untyped).
 
-Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an <a class="tdlp" href="/workflows#activitytaskscheduled">`ActivityTaskScheduled` Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#activitytaskscheduled">Learn more</a></p></div></a>.
+Calling a method on the Activity interface schedules the Activity invocation with the Temporal service, and generates an <a class="tdlp" href="/workflows#activitytaskscheduled"> `ActivityTaskScheduled` Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#activitytaskscheduled">Learn more</a></p></div></a>.
 
 Activities can be invoked synchronously or asynchronously.
 
@@ -2402,7 +2401,7 @@ Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Wo
 
 1. An instance of the Temporal Go SDK `Client`.
 1. The name of the Task Queue that it will poll.
-1. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
+1. An instance of `worker.Options`, which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
@@ -2745,12 +2744,12 @@ When you use `RegisterActivity()` for an Activity struct, that Worker has access
 To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
 
 ```go
-w.registerActivity(ActivityA)
-w.registerActivity(ActivityB)
-w.registerActivity(ActivityC)
-w.registerWorkflow(WorkflowA)
-w.registerWorkflow(WorkflowB)
-w.registerWorkflow(WorkflowC)
+w.RegisterActivity(ActivityA)
+w.RegisterActivity(ActivityB)
+w.RegisterActivity(ActivityC)
+w.RegisterWorkflow(WorkflowA)
+w.RegisterWorkflow(WorkflowB)
+w.RegisterWorkflow(WorkflowC)
 ```
 
 </TabItem>
@@ -2768,12 +2767,12 @@ You can pass any number of dependencies in the Activity implementation construct
 The following example shows how to register a Workflow and an Activity with a Worker.
 
 ```java
-    Worker worker = workerFactory.newWorker("your_task_queue");
-    ...
-    // Register Workflow
-    worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
-    // Register Activity
-    worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
+Worker worker = workerFactory.newWorker("your_task_queue");
+...
+// Register Workflow
+worker.registerWorkflowImplementationTypes(GreetingWorkflowImpl.class);
+// Register Activity
+worker.registerActivitiesImplementations(new GreetingActivitiesImpl());
 ```
 
 When you register a single instance of an Activity, you can have multiple instances of Workflow Executions calling the same Activity.
@@ -3024,7 +3023,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 Use `WorkflowStub` to start a Workflow Execution from within a Client, and `ExternalWorkflowStub` to start a different Workflow Execution from within a Workflow.
 
-See <a class="tdlp" href="/application-development/features#signal-with-start">`SignalwithStart`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to send a Signal-with-Start in Java</p><p class="tdlppd">To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#signal-with-start">Learn more</a></p></div></a> to start a Workflow Execution to receive a Signal from within another Workflow.
+See <a class="tdlp" href="/application-development/features#signal-with-start"> `SignalwithStart`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to send a Signal-with-Start in Java</p><p class="tdlppd">To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#signal-with-start">Learn more</a></p></div></a> to start a Workflow Execution to receive a Signal from within another Workflow.
 
 **Using `WorkflowStub`**
 
@@ -3064,7 +3063,7 @@ A Workflow Execution can be started either synchronously or asynchronously.
   ```
 
 - Asynchronous start initiates a Workflow Execution and immediately returns to the caller. This is the most common way to start Workflows in production code.
-  The `WorkflowClient`<https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
+  The `WorkflowClient` <https://github.com/temporalio/sdk-java/blob/master/temporal-sdk/src/main/java/io/temporal/client/WorkflowClient.java)> provides some static methods, such as `start`, `execute`, `signalWithStart` etc., that help with starting your Workflows asynchronously.
 
   The following examples show how to start Workflow Executions asynchronously, with either typed or untyped `WorkflowStub`.
 
@@ -3139,7 +3138,7 @@ See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code 
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/java/reference-workflowoptions/#cronschedule) Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using <a class="tdlp" href="/application-development/features#temporal-cron-jobs"> `setCronSchedule`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set a Cron Schedule in Java</p><p class="tdlppd">Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#temporal-cron-jobs">Learn more</a></p></div></a> Workflow option in the Client code.
 
 </TabItem>
 <TabItem value="php">
@@ -3912,4 +3911,3 @@ try {
 
 </TabItem>
 </Tabs>
-

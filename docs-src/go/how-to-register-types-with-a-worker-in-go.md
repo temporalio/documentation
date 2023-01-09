@@ -21,10 +21,10 @@ When you use `RegisterActivity()` for an Activity struct, that Worker has access
 To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
 
 ```go
-w.registerActivity(ActivityA)
-w.registerActivity(ActivityB)
-w.registerActivity(ActivityC)
-w.registerWorkflow(WorkflowA)
-w.registerWorkflow(WorkflowB)
-w.registerWorkflow(WorkflowC)
+w.RegisterActivity(ActivityA)
+w.RegisterActivity(ActivityB)
+w.RegisterActivity(ActivityC)
+w.RegisterWorkflow(WorkflowA)
+w.RegisterWorkflow(WorkflowB)
+w.RegisterWorkflow(WorkflowC)
 ```

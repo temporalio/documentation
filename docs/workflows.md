@@ -77,11 +77,12 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer.
+- Changing the duration of a Timer (unless changing from a duration of 0).
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
+- Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
 
 ### Intrinsic non-deterministic logic
 
@@ -111,8 +112,8 @@ The Workflow Versioning feature enables the creation of logical branching inside
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](/go/versioning)
-- [How to version Workflow Definitions in Java](/java/versioning)
+- [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/go/versioning)
+- [How to version Workflow Definitions in Java](https://legacy-documentation-sdks.temporal.io/java/versioning)
 - [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
 
 ### Handling unreliable Worker Processes
@@ -178,7 +179,7 @@ Commands are issued and Awaitables are provided by the use of Workflow APIs in t
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
-(For more information, see [Deterministic constraints](/concepts/what-is-a-workflow-definition/#deterministic-constraints).)
+(For more information, see <a class="tdlp" href="#deterministic-constraints">Deterministic constraints<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#deterministic-constraints">Learn more</a></p></div></a>.)
 The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
 
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.
@@ -280,7 +281,7 @@ Cloud users are limited to 2,000 each of pending Activities, Child Workflows, ex
 
 A Command is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker?</p><p class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</p><p class="tdlplm"><a class="tdlplma" href="/workers#">Learn more</a></p></div></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task Execution?</p><p class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></p></div></a> completes.
 
-The action that the Cluster takes is recorded in the [Workflow Execution's](/concepts/what-is-a-workflow-execution) <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#event-history">Learn more</a></p></div></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#event">Learn more</a></p></div></a>.
+The action that the Cluster takes is recorded in the <a class="tdlp" href="#workflow-execution">Workflow Execution's<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-execution">Learn more</a></p></div></a> <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#event-history">Learn more</a></p></div></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event?</p><p class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#event">Learn more</a></p></div></a>.
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
 
 Commands are generated by the use of Workflow APIs in your code. During a Workflow Task Execution there may be several Commands that are generated.
@@ -310,7 +311,7 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-A Workflow Execution Event History has [a hard limit of 50,000 Events](/concepts/what-is-a-workflow-execution/#limits), as well as a hard limit of 50 MB in terms of size.
+A Workflow Execution Event History has <a class="tdlp" href="#limits">a hard limit of 50,000 Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="#limits">Learn more</a></p></div></a>, as well as a hard limit of 50 MB in terms of size.
 The Temporal Cluster logs a warning at every 10,000 Events.
 
 When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
@@ -406,7 +407,7 @@ If there is an attempt to spawn a Workflow Execution with a Workflow Id Reuse Po
 
 A Workflow Execution Timeout is the maximum time that a Workflow Execution can be executing (have an Open status) including retries and any usage of Continue As New.
 
-- [How to set a Workflow Execution Timeout](/go/how-to-set-a-workflow-execution-timeout-in-go)
+- <a class="tdlp" href="/application-development/features#workflow-retries">How to set a Workflow Execution Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow retries</p><p class="tdlppd">A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#workflow-retries">Learn more</a></p></div></a>
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Execution Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/workflow-execution-timeout.svg" alt="Workflow Execution Timeout period" /></div></div>
 
@@ -419,7 +420,7 @@ This timeout is most commonly used for stopping the execution of a <a class="tdl
 
 A Workflow Run Timeout is the maximum amount of time that a single Workflow Run is restricted to.
 
-- [How to set a Workflow Run Timeout](/go/startworkflowoptions-reference/#workflowruntimeout)
+- <a class="tdlp" href="/application-development/features#workflow-retries">How to set a Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow retries</p><p class="tdlppd">A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#workflow-retries">Learn more</a></p></div></a>
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Run Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/workflow-run-timeout.svg" alt="Workflow Run Timeout period" /></div></div>
 
@@ -440,7 +441,7 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 **Implementation guides:**
 
-- [How to set a Workflow Task Timeout](/go/startworkflowoptions-reference/#workflowtasktimeout)
+- <a class="tdlp" href="/application-development/features#workflow-retries">How to set a Workflow Task Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">Workflow retries</p><p class="tdlppd">A Retry Policy can work in cooperation with the timeouts to provide fine controls to optimize the execution experience.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#workflow-retries">Learn more</a></p></div></a>
 
 ### Memo
 
