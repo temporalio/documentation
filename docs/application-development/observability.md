@@ -47,7 +47,7 @@ Temporal also provides a dashboard you can integrate with graphing services like
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -157,7 +157,7 @@ For information about how to configure exporters and instrument your code, see [
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -290,7 +290,7 @@ The SDK core uses `WARN` for its default logging level.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -523,7 +523,7 @@ Use a custom logger for logging.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -657,7 +657,7 @@ Here is how to query Workflow Executions:
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -704,7 +704,7 @@ After you've created custom Search Attributes in your Cluster (using `tctl searc
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -833,7 +833,7 @@ You can upsert Search Attributes to add or update Search Attributes from within 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -969,7 +969,7 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 

@@ -35,7 +35,7 @@ If an Activity references its context, you need to mock that context when testin
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -92,7 +92,7 @@ When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in y
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -149,7 +149,7 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -212,7 +212,7 @@ When integration testing Workflows with a Worker, you can mock Activities by pro
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -364,7 +364,7 @@ Learn to set up the time-skipping test framework in the SDK of your choice.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -491,7 +491,7 @@ For example, in the time-skipping mode, Timers, which include sleeps and conditi
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -564,7 +564,7 @@ Learn to skip time manually in the SDK of your choice.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -648,7 +648,7 @@ Learn to skip time in Activities in the SDK of your choice.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -780,7 +780,7 @@ In Python, we allow testing of Workflows only and not generic Workflow-related c
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -861,7 +861,7 @@ The `assert` method is available in Python and TypeScript.
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -935,7 +935,7 @@ Some SDKs have support or examples for popular test frameworks, runners, or libr
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
@@ -994,7 +994,7 @@ The following are examples of fetching and replaying Event Histories:
 <Tabs
 defaultValue="go"
 groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'Ruby', value: 'ruby'},{label: 'TypeScript', value: 'typescript'},]}>
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
