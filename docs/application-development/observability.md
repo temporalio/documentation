@@ -130,7 +130,7 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](https://legacy-documentation-sdks.temporal.io/typescript/logging#opentelemetry-tracing) package.
 
 ```typescript
 telemetryOptions: {
@@ -394,7 +394,7 @@ To work around these limitations, we recommend using the Sinks feature in the Ty
 Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
 <!--
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](https://legacy-documentation-sdks.temporal.io/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
 
 Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 
@@ -633,11 +633,11 @@ The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
 However, sometimes you'll want to retrieve one or more Workflow Executions based on another property. For example, imagine you want to get all Workflow Executions of a certain type that have failed within a time range, so that you can start new ones with the same arguments.
 
-You can do this with [Search Attributes](/concepts/what-is-a-search-attribute/).
+You can do this with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a>.
 
-- [**Default** Search Attributes](/concepts/what-is-a-search-attribute/#default-search-attributes) like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
+- <a class="tdlp" href="/visibility#default-search-attributes">Default Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#default-search-attributes">Learn more</a></p></div></a> like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few [generic Custom Search Attributes](/concepts/what-is-a-search-attribute/#custom-search-attributes) like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/clusters/quick-install/#docker-compose).
+  - A few <a class="tdlp" href="/visibility#custom-search-attributes">generic Custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></p></div></a> like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's <a class="tdlp" href="/application-development/foundations#docker-compose">Docker Compose<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</p><p class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#docker-compose">Learn more</a></p></div></a>.
 
 The steps to using custom Search Attributes are:
 
@@ -648,7 +648,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a [List Filter](/concepts/what-is-a-list-filter/):
+- Query Workflow Executions by the Search Attribute using a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>:
   - <a class="tdlp" href="/tctl-v1/workflow#list">In `tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow list</p><p class="tdlppd">How to list open or closed Workflow Executions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></p></div></a>.
   - In code by calling `ListWorkflowExecutions`.
 
@@ -692,7 +692,7 @@ const response = await connection.workflowService.listWorkflowExecutions({
 });
 ```
 
-where `query` is a [List Filter](/concepts/what-is-a-list-filter/).
+where `query` is a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>.
 
 </TabItem>
 </Tabs>
@@ -711,7 +711,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
 Search Attributes are represented as `map[string]interface{}`.
-The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute/#types):
+The values in the map must correspond to the <a class="tdlp" href="/visibility#types">Search Attribute's value type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#types">Learn more</a></p></div></a>:
 
 - Bool = `bool`
 - Datetime = `time.Time`
@@ -802,7 +802,7 @@ Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/inte
 [search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/client.ts)
 
 ```ts
-const handle = await client.start(example, {
+const handle = await client.workflow.start(example, {
   taskQueue: 'search-attributes',
   workflowId: 'search-attributes-example-0',
   searchAttributes: {

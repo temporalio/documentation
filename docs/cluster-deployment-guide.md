@@ -206,7 +206,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
-Archival is supported in [Global Namespaces](/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
+Archival is supported in <a class="tdlp" href="/namespaces#global-namespace">Global Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Global Namespace?</p><p class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#global-namespace">Learn more</a></p></div></a> (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup
@@ -363,7 +363,19 @@ If you are using a version that is older than 1.0.0, reach out to us at [communi
 First check to see if an upgrade to the database schema is required for the version you wish to upgrade to.
 If a database schema upgrade is required, it will be called out directly in the [release notes](https://github.com/temporalio/temporal/releases).
 Some releases require changes to the schema, and some do not.
-We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior, however there is no guarantee that there is compatibility between _any_ 2 non-consecutive versions.
+We ensure that any consecutive versions are compatible in terms of database schema upgrades, features, and system behavior; however there is no guarantee that there is compatibility between _any_ two non-consecutive versions.
+
+When upgrading your Temporal Server version, ensure that you upgrade sequentially.
+For example, when upgrading from v1.n.x, always upgrade to v1.n+1.x (or the next available version) and so on until you get to the required version.
+
+The Temporal Server upgrade updates or rewrites the old version data with the format introduced in the newer version.
+Because Temporal Server guarantees backward compatibility between two consecutive minor versions, and because older versions of the code are eventually removed from the code base, skipping versions when upgrading might cause older formats to become unrecognizable.
+If the old format of the data can't be read to be rewritten to the new format, the upgrades fail.
+
+Check the [Temporal Server releases](https://github.com/temporalio/temporal/releases) and follow these releases in order.
+You can skip patch versions; use the latest patch of a minor version when upgrading.
+
+Also be aware that each upgrade requires the History Service to load all Shards and update the Shard metadata, so allow approximately 10 minutes on each version for these processes to complete before upgrading to the next version.
 
 Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
 

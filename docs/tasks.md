@@ -30,18 +30,18 @@ A Workflow Task is a Task that contains the context needed to make progress with
 
 ## Workflow Task Execution
 
-A Workflow Task Execution is when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow function.
+A Workflow Task Execution occurs when a <a class="tdlp" href="/workers#worker-entity">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Entity?</p><p class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-entity">Learn more</a></p></div></a> picks up a <a class="tdlp" href="#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-task">Learn more</a></p></div></a> and uses it to make progress on the execution of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></p></div></a> (also known as a Workflow function).
 
 ## Activity Task
 
-An Activity Task contains the context needed to proceed with an <a class="tdlp" href="#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="#activity-task-execution">Learn more</a></p></div></a>.
+An Activity Task contains the context needed to proceed with an <a class="tdlp" href="#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="#activity-task-execution">Learn more</a></p></div></a>.
 Activity Tasks largely represent the Activity Task Scheduled Event, which contains the data needed to execute an Activity Function.
 
 If Heartbeat data is being passed, an Activity Task will also contain the latest Heartbeat details.
 
 ## Activity Task Execution
 
-An Activity Task Execution is when the Worker uses the Context provided from the <a class="tdlp" href="#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-task">Learn more</a></p></div></a> and executes the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-definition">Learn more</a></p></div></a> (also known as the Activity Function).
+An Activity Task Execution occurs when a <a class="tdlp" href="/workers#worker-entity">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Entity?</p><p class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-entity">Learn more</a></p></div></a> uses the context provided from the <a class="tdlp" href="#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task?</p><p class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-task">Learn more</a></p></div></a> and executes the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#activity-definition">Learn more</a></p></div></a> (also known as the Activity Function).
 
 The [ActivityTaskScheduled Event](/references/events#activitytaskscheduled) corresponds to when the Temporal Cluster puts the Activity Task into the Task Queue.
 
@@ -132,7 +132,7 @@ The Worker Entity caches the Workflow Execution Event History and begins polling
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
+- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](https://legacy-documentation-sdks.temporal.io/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -189,7 +189,7 @@ Code samples:
 Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
-- [How to create Worker Sessions in Go](/go/how-to-create-a-worker-session-in-go)
+- [How to create Worker Sessions in Go](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-worker-session-in-go)
 
 #### Route Activity Tasks to a specific process
 

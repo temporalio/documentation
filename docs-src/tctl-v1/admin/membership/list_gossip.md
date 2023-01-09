@@ -12,7 +12,7 @@ The `tctl admin membership list_gossip` command lists the ringpop membership ite
 
 The following modifier changes the behavior of the command:
 
-#### `--role value`
+#### --role value
 
 Filters the results by membership role
 

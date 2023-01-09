@@ -37,7 +37,7 @@ Queries are written as follows:
 The following modifiers control the behavior of the command.
 Always include required modifiers when executing this command.
 
-### `--workflow_id`
+### --workflow_id
 
 Specify a [Workflow Id](/concepts/what-is-a-workflow-id). **This modifier is required.**
 
@@ -49,7 +49,7 @@ Alias: `-w`
 tctl workflow query --workflow_id <id>
 ```
 
-### `--run_id`
+### --run_id
 
 Specify a [Run Id](/concepts/what-is-a-run-id).
 
@@ -61,7 +61,7 @@ Alias: `-r`
 tctl workflow query --run_id <id>
 ```
 
-### `--query_type`
+### --query_type
 
 Specify the type of Query to run.
 
@@ -71,7 +71,7 @@ Specify the type of Query to run.
 tctl workflow query --query_type <value>
 ```
 
-### `--input`
+### --input
 
 Pass input for the Query.
 Input must be in JSON format.
@@ -85,7 +85,7 @@ Alias: `-i`
 tctl workflow query --input <json>
 ```
 
-### `--input_file`
+### --input_file
 
 Pass input for the Query from a JSON file.
 For multiple JSON objects, concatenate them and use spaces or newline characters as separators.
@@ -97,7 +97,7 @@ Input from the command line overwrites input from the file.
 tctl workflow query --input_file <filename>
 ```
 
-### `--query_reject_condition`
+### --query_reject_condition
 
 Reject Queries based on Workflow state.
 Valid values are `not_open` and `not_completed_cleanly`.

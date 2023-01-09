@@ -12,4 +12,6 @@ A `tctl admin` command allows the user to run admin operations.
 
 Modifiers:
 
-- Help: `tctl admin [--help | -h]`
+#### --help
+
+`tctl admin [--help | -h]`

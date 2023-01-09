@@ -289,7 +289,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 - [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
-- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentaion](https://learn.temporal.io/examples/go/background-checks/).
+- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentation](https://learn.temporal.io/examples/go/background-checks/).
 - [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
   This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
 - [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
@@ -544,7 +544,7 @@ client = await Client.connect(
 Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
 
 If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
-However, always configure your connection and Namespace when [deploying to production](/typescript/security/#encryption-in-transit-with-mtls).
+However, always configure your connection and Namespace when [deploying to production](https://legacy-documentation-sdks.temporal.io/typescript/security/#encryption-in-transit-with-mtls).
 
 Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
 
@@ -927,7 +927,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 
 Related references:
 
-- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1104,7 +1104,7 @@ export async function helloWorld(): Promise<string> {
 
 ### Workflow logic requirements
 
-Workflow logic is constrained by [deterministic execution requirements](/concepts/what-is-a-workflow-definition/#deterministic-constraints).
+Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></p></div></a>.
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
@@ -1131,8 +1131,10 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Go()` This is a replacement for the `go` statement.
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
-- `workflow.Selector` This is a replacement for the `select` statement. Learn more on the [Go SDK Selectors](/go/selectors) page
-- `workflow.Context` This is a replacement for `context.Context`. Learn more on the [Go SDK Context Propagation](/go/tracing) page.
+- `workflow.Selector` This is a replacement for the `select` statement.
+  Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
+- `workflow.Context` This is a replacement for `context.Context`.
+  See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to setup Tracing</p><p class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></p></div></a> for more information about context propagation.
 
 </TabItem>
 <TabItem value="java">
@@ -1626,7 +1628,7 @@ Activity return values must be serializable and deserializable by the provided [
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
-- [What is a Data Converter?](/concepts/what-is-a-data-converter)
+- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1783,7 +1785,7 @@ interface FileProcessingActivities
 The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 </TabItem>
-<TabItem value="undefined">
+<TabItem value="python">
 
 You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the function name.
 
@@ -1896,7 +1898,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 Note that before an Activity Execution is invoked:
 
 - Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout">`setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Start-To-Close Timeout?</p><p class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></p></div></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout">`ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Close Timeout?</p><p class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></p></div></a> are required) must be set for the Activity.
-  For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
+  For details, see [Set Activity Options](https://legacy-documentation-sdks.temporal.io/java/how-to-set-activityoptions-in-java) and [Activity Options reference](https://legacy-documentation-sdks.temporal.io/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
   See <a class="tdlp" href="#run-worker-processes">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Worker Program in Java</p><p class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</p><p class="tdlplm"><a class="tdlplma" href="#run-worker-processes">Learn more</a></p></div></a>
 - Activity code must be thread-safe.
@@ -2404,7 +2406,7 @@ Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Wo
 
 1. An instance of the Temporal Go SDK `Client`.
 1. The name of the Task Queue that it will poll.
-1. An instance of [`worker.Options`](/go/how-to-set-workeroptions-in-go), which can be empty.
+1. An instance of `worker.Options`, which can be empty.
 
 Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
 
@@ -2708,11 +2710,11 @@ There are three main things the Worker needs:
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options         | Description                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                        |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                        |
-| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/interceptors)) |
+| Options         | Description                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
+| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
 
 **Operation guides:**
 
@@ -2747,12 +2749,12 @@ When you use `RegisterActivity()` for an Activity struct, that Worker has access
 To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
 
 ```go
-w.registerActivity(ActivityA)
-w.registerActivity(ActivityB)
-w.registerActivity(ActivityC)
-w.registerWorkflow(WorkflowA)
-w.registerWorkflow(WorkflowB)
-w.registerWorkflow(WorkflowC)
+w.RegisterActivity(ActivityA)
+w.RegisterActivity(ActivityB)
+w.RegisterActivity(ActivityC)
+w.RegisterWorkflow(WorkflowA)
+w.RegisterWorkflow(WorkflowB)
+w.RegisterWorkflow(WorkflowC)
 ```
 
 </TabItem>
@@ -2898,7 +2900,7 @@ async function run() {
 
 In this snippet, the Worker bundles the Workflow code at runtime.
 
-In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](/typescript/workers#prebuilt-workflow-bundles):
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](https://legacy-documentation-sdks.temporal.io/typescript/workers#prebuilt-workflow-bundles):
 
 <!--SNIPSTART typescript-bundle-workflow -->
 
@@ -3141,7 +3143,7 @@ See the [Temporal Polyglot](https://github.com/tsurdilo/temporal-polyglot) code 
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule by using [`setCronSchedule`](/java/reference-workflowoptions/#cronschedule) Workflow option in the Client code.
+You can start a Workflow Execution on a regular schedule by using <a class="tdlp" href="/application-development/features#temporal-cron-jobs">`setCronSchedule`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set a Cron Schedule in Java</p><p class="tdlppd">Set the Cron Schedule with the `WorkflowStub` instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#temporal-cron-jobs">Learn more</a></p></div></a> Workflow option in the Client code.
 
 </TabItem>
 <TabItem value="php">
@@ -3220,7 +3222,7 @@ var_dump($run->getExecution()->getID());
 
 **Recurring start**
 
-You can start a Workflow Execution on a regular schedule with [the CronSchedule option](/php/distributed-cron).
+You can start a Workflow Execution on a regular schedule with <a class="tdlp" href="/application-development/features#temporal-cron-jobs">the CronSchedule option<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Temporal Cron Jobs</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#temporal-cron-jobs">Learn more</a></p></div></a>.
 
 </TabItem>
 <TabItem value="python">
@@ -3274,7 +3276,7 @@ Calling `client.start()` and `client.execute()` send a command to Temporal Serve
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](/typescript/determinism).
+Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](https://legacy-documentation-sdks.temporal.io/typescript/determinism).
 
 </TabItem>
 </Tabs>

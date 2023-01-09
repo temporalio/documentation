@@ -13,9 +13,9 @@ The `tctl namespace update` command updates a [Namespace](/concepts/what-is-a-na
 
 The following modifiers control the behavior of the command.
 
-### `--active_cluster`
+### --active_cluster
 
-Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 **Example**
 
@@ -23,7 +23,7 @@ Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-c
 tctl namespace update --active_cluster <name>
 ```
 
-### `--add_bad_binary`
+### --add_bad_binary
 
 Add a binary checksum to use when resetting a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 Temporal will not dispatch any [Commands](/concepts/what-is-a-command) to the given binary.
@@ -36,9 +36,9 @@ See also [`--remove_bad_binary`](#--remove_bad_binary).
 tctl namespace update --add_bad_binary <value>
 ```
 
-### `--clusters`
+### --clusters
 
-Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 
@@ -50,7 +50,7 @@ This modifier is valid only when the `--global_namespace` modifier is set to tru
 tctl namespace update --clusters <names>
 ```
 
-### `--description`
+### --description
 
 Specify a description when updating a [Namespace](/concepts/what-is-a-namespace).
 
@@ -60,7 +60,7 @@ Specify a description when updating a [Namespace](/concepts/what-is-a-namespace)
 tctl namespace update --description <value>
 ```
 
-### `--history_archival_state`
+### --history_archival_state
 
 Set the state of [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
@@ -71,7 +71,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace update --history_archival_state <value>
 ```
 
-### `--history_uri`
+### --history_uri
 
 Specify the URI for URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
@@ -82,7 +82,7 @@ The URI cannot be changed after Archival is first enabled.
 tctl namespace update --history_uri <uri>
 ```
 
-### `--namespace_data`
+### --namespace_data
 
 Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key-value pairs (such as `k1:v1,k2:v2,k3:v3`).
 
@@ -92,7 +92,7 @@ Specify data for a [Namespace](/concepts/what-is-a-namespace) in the form of key
 tctl namespace update --namespace_data <data>
 ```
 
-### `--owner_email`
+### --owner_email
 
 Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owner.
 
@@ -102,7 +102,7 @@ Specify the email address of the [Namespace](/concepts/what-is-a-namespace) owne
 tctl namespace update --owner_email <value>
 ```
 
-### `--reason`
+### --reason
 
 Specify a reason for updating a [Namespace](/concepts/what-is-a-namespace).
 
@@ -112,7 +112,7 @@ Specify a reason for updating a [Namespace](/concepts/what-is-a-namespace).
 tctl namespace update --reason <value>
 ```
 
-### `--remove_bad_binary`
+### --remove_bad_binary
 
 Remove a binary checksum.
 
@@ -124,7 +124,7 @@ See also [`--add_bad_binary`](#--add_bad_binary).
 tctl namespace update --remove_bad_binary <value>
 ```
 
-### `--retention`
+### --retention
 
 Specify the number of days to retain [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
@@ -134,7 +134,7 @@ Specify the number of days to retain [Workflow Executions](/concepts/what-is-a-w
 tctl namespace update --retention <value>
 ```
 
-### `--visibility_archival_state`
+### --visibility_archival_state
 
 Set the visibility state for [Archival](/concepts/what-is-archival).
 Valid values are `disabled` and `enabled`.
@@ -145,7 +145,7 @@ Valid values are `disabled` and `enabled`.
 tctl namespace update --visibility_archival_state <value>
 ```
 
-### `--visibility_uri`
+### --visibility_uri
 
 Specify the visibility URI for [Archival](/concepts/what-is-archival).
 The URI cannot be changed after Archival is first enabled.
