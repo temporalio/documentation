@@ -1139,7 +1139,7 @@ tctl workflow reset-batch --skip_base_is_not_current
 
 ### --only_non_deterministic
 
-Indicate that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> should be reset only if its last event is `WorkflowTaskFailed` with a nondeterministic error.
+Indicate that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> should be reset only if its last event is `WorkflowTaskFailed` with a non-deterministic error.
 
 **Example**
 
@@ -1264,7 +1264,7 @@ tctl workflow run --workflow_task_timeout <seconds>
 
 ### --cron
 
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
+Specify a <a class="tdlp" href="/workflows#cron-schedules">Cron Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#cron-schedules">Learn more</a></p></div></a>.
 
 **Example**
 
@@ -1279,9 +1279,9 @@ Configure if the same <a class="tdlp" href="/workflows#workflow-id">Workflow Id<
 
 There are three allowed values:
 
-- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**RejectDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- <a class="tdlp" href="/workflows#workflow-id-reuse-policy">AllowDuplicateFailedOnly<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id Reuse Policy?</p><p class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id-reuse-policy">Learn more</a></p></div></a>
+- <a class="tdlp" href="/workflows#workflow-id-reuse-policy">AllowDuplicate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id Reuse Policy?</p><p class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id-reuse-policy">Learn more</a></p></div></a>
+- <a class="tdlp" href="/workflows#workflow-id-reuse-policy">RejectDuplicate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id Reuse Policy?</p><p class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id-reuse-policy">Learn more</a></p></div></a>
 
 **Examples**
 
@@ -2035,7 +2035,7 @@ tctl workflow start --workflow_task_timeout <seconds>
 
 ### --cron
 
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
+Specify a <a class="tdlp" href="/workflows#cron-schedules">Cron Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#cron-schedules">Learn more</a></p></div></a>.
 
 **Example**
 
@@ -2050,9 +2050,9 @@ Configure if the same <a class="tdlp" href="/workflows#workflow-id">Workflow Id<
 
 There are three allowed values:
 
-- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**RejectDuplicate:**] (/concepts/what-is-a-workflow-id-reuse-policy)
+- <a class="tdlp" href="/workflows#workflow-id-reuse-policy">AllowDuplicateFailedOnly<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id Reuse Policy?</p><p class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id-reuse-policy">Learn more</a></p></div></a>
+- <a class="tdlp" href="/workflows#workflow-id-reuse-policy">AllowDuplicate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id Reuse Policy?</p><p class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id-reuse-policy">Learn more</a></p></div></a>
+- [RejectDuplicate] (/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 

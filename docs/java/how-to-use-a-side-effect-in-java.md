@@ -2,13 +2,13 @@
 id: how-to-use-a-side-effect-in-java
 title: How to use a Side Effect in Java
 sidebar_label: Side Effect
-description: A Side Effect is a method of execution to produce nondeterministic code.
+description: A Side Effect is a method of execution to produce non-deterministic code.
 tags:
   - Java
   - developer-guide
 ---
 
-To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the nondeterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the non-deterministic code.
 
 ```java
   int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));

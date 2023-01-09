@@ -14,7 +14,7 @@ Activities are not executable on their own. You cannot start an Activity Executi
 Note that before an Activity Execution is invoked:
 
 - Activity options (either [`setStartToCloseTimeout`](/concepts/what-is-a-start-to-close-timeout) or [`ScheduleToCloseTimeout`](/concepts/what-is-a-schedule-to-close-timeout) are required) must be set for the Activity.
-  For details, see [Set Activity Options](/java/how-to-set-activityoptions-in-java) and [Activity Options reference](/java/reference-activityoptions).
+  For details, see [Set Activity Options](https://legacy-documentation-sdks.temporal.io/java/how-to-set-activityoptions-in-java) and [Activity Options reference](https://legacy-documentation-sdks.temporal.io/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
   See [Worker Program](/java/how-to-develop-a-worker-program-in-java)
 - Activity code must be thread-safe.
