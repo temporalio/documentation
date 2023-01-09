@@ -30,10 +30,12 @@ The Event is added to the Workflow Execution's Event History.
 
 An Activity Definition is the code that defines the constraints of an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
+One way to understand an Activity is to think of it as a normal function or object method that executes a single, well-defined action (either short or long-running), such as calling another service, transcoding a media file, or sending an email message.
+
 - [How to develop an Activity Definition](/application-development/foundations#develop-activities)
 
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
-Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
+Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution. 
 
 Activity Definitions are named and referenced in code by their <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Type?</p><p class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="#activity-type">Learn more</a></p></div></a>.
 
@@ -41,13 +43,14 @@ Activity Definitions are named and referenced in code by their <a class="tdlp" h
 
 #### Idempotency
 
-Temporal recommends that Activities are idempotent.
+Temporal recommends that Activities be idempotent.
 
-Activities are idempotent if multiple applications of that operation do not change the state of the system beyond the initial application.
+Activities are idempotent if multiple <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution is the execution of an Activity Type.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a> do not change the state of the system beyond the first Activity Task Execution.
 
-Activities may be retried repeatedly, so you may need to use idempotency keys for critical side effects.
+Activities may be tried more than once even if the Retry Policy says they shouldn't. Because of that, you may need to use idempotency keys for critical side effects.
 
-Unlike determinism in a Workflow, which actually is a requirement, Temporal cannot enforce that your Activity is idempotent.
+<!-- Unlike determinism in a Workflow, which actually is a requirement, Temporal cannot enforce that your Activity is idempotent.
+-->
 
 The lack of idempotency may affect the correctness of your application, but does not affect Temporal (in other words, it does not lead to a platform error).
 
