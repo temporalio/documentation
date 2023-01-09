@@ -1,6 +1,6 @@
 ---
 id: how-to-log-from-a-workflow-in-go
-title: How to log from a Workflow in TypeScript
+title: How to log from a Workflow in Go
 sidebar_label: Log from a Workflow
 description: Log from a Workflow
 tags:
