@@ -15,7 +15,7 @@ One way to understand an Activity is to think of it as a normal function or obje
 - [How to develop an Activity Definition](/application-development/foundations#develop-activities)
 
 The term 'Activity Definition' is used to refer to the full set of primitives in any given language SDK that provides an access point to an Activity Function Definition——the method or function that is invoked for an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
-Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution. 
+Therefore, the terms Activity Function and Activity Method refer to the source of an instance of an execution.
 
 Activity Definitions are named and referenced in code by their [Activity Type](/concepts/what-is-an-activity-type).
 
