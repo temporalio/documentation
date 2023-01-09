@@ -37,13 +37,13 @@ The following example demonstrates how NOT to use `SideEffect`:
 
 ```go
 // Warning: This is an incorrect example.
-// This code is nondeterministic.
+// This code is non-deterministic.
 var random int
 workflow.SideEffect(func(ctx workflow.Context) interface{} {
       random = rand.Intn(100)
       return nil
 })
-// random will always be 0 in replay, so this code is nondeterministic.
+// random will always be 0 in replay, so this code is non-deterministic.
 ```
 
 On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.

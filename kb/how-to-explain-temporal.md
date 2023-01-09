@@ -135,13 +135,11 @@ _Note: Each of [our SDK docs](/application-development) have a Hello World and R
 - [Mitchell Hashimoto](https://twitter.com/mitchellh/status/1316510643030114304?s=20), Hashicorp
 
   > So every "cluster create" is a long-running Cadence operation. Once complete, this kicks of a variety of Cadence workflows _per cluster_ that run forever until it is destroyed. **This lets you have a central "event loop" per cluster.** For example: a "snapshot" triggers an event in the main event loop for a cluster, which ensures that no other ops (upgrades, etc.) are running at the same time, kicks off the snapshot job, then continues.
-  >
   > We have **long (multi-day/week) sleeps** in the main event loop that wake up to renew TLS certs. And if any of the Cadence workers die, they come back up and continue right where they left off.
 
 - [Software Delivery Building Blocks at Datadog](https://www.youtube.com/watch?v=eWFpl-nzGsY&feature=youtu.be) by Jacob LeGrone and Kevin Devroede (Datadog) (starting at 6min 30s)
 
   > Temporal lets [Datadog]:
-  >
   > 1. write "fault oblivious" stateful control flow and business logic, in the programming language of your choice,
   > 2. respond to external events,
   > 3. support very long running operations,

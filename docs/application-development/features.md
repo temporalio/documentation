@@ -3436,7 +3436,7 @@ const handle = await client.start(scheduledWorkflow, {
 
 ## Side Effects
 
-Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 
@@ -3457,7 +3457,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
@@ -3486,13 +3486,13 @@ The following example demonstrates how NOT to use `SideEffect`:
 
 ```go
 // Warning: This is an incorrect example.
-// This code is nondeterministic.
+// This code is non-deterministic.
 var random int
 workflow.SideEffect(func(ctx workflow.Context) interface{} {
       random = rand.Intn(100)
       return nil
 })
-// random will always be 0 in replay, so this code is nondeterministic.
+// random will always be 0 in replay, so this code is non-deterministic.
 ```
 
 On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
@@ -3500,7 +3500,7 @@ On replay the provided function is not executed, the random number will always b
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the nondeterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the non-deterministic code.
 
 ```java
 int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
