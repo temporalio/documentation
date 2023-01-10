@@ -838,7 +838,7 @@
     },
     {
       "source": "/concepts/what-is-a-failure",
-      "destination": "/temporal#failure"
+      "destination": "/temporal#failure-mitigation"
     },
     {
       "source": "/concepts/what-is-a-heartbeat-timeout",

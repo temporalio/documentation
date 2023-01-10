@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-Temporal is a scalable and reliable runtime for Reentrant Processes called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+Temporal is a scalable and reliable runtime for durable Reentrant Processes called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
@@ -33,10 +33,36 @@ Together these components create a runtime for Workflow Executions.
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
 
 The Temporal Cluster is open source and can be operated by you.
-The Temporal Cloud is a set of Clusters operated by us.
+<a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Temporal Cloud?</p><p class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/index#">Learn more</a></p></div></a> is a set of Clusters operated by us.
 
 Worker Processes are hosted by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.
+
+### Failure mitigation
+
+The Temporal Platform addresses both platform-level failures and application-level failures.
+
+#### Platform-level failure
+
+A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system. This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application, and can be detected and mitigated at a platform level. This is one of the things that Temporal does really well. An example of a platform-level failure could be a network connection issue or hardware failure.
+
+#### Application-level failure
+
+An application-level failure, on the other hand, refers to a failure that occurs within the application itself. This type of failure is directly visible to the user or application and must be detected and mitigated at the application level. Temporal cannot mitigate application level failures for you, but Temporal makes it easy to handle failures or debug your application. An example of an application-level failure could be an error in the application's code or a problem with the input data being used by the application.
+
+#### Failure handling
+
+Failure handling is an essential part of an application.
+
+For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow fails the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure (or letting a Temporal Failure propagate from Temporal calls, like an [Activity Failure](/kb/failures#activity-failure) from an Activity call) fails the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+For more information, see [Application Failure](/kb/failures#application-failure).
+
+:::note Related blog posts
+
+- [Handling Failure From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869)
+- [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice)
+
+:::
 
 ## Temporal Application
 
@@ -127,17 +153,4 @@ The most common operations that a Temporal Client enables you to perform are the
 - Query a Workflow Execution.
 - Signal a Workflow Execution.
 - Start a Workflow Execution.
-
-## Failure
-
-Temporal Failures are representations (in the SDKs and Event History) of various types of errors that occur in the system.
-
-- KB article: [Temporal Failures](/kb/failures)
-
-Failure handling is an essential part of development.
-For more information, including the difference between application-level and platform-level failures, see [Handling Failure From First Principles](https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869).
-For the practical application of those concepts in Temporal, see [Failure Handling in Practice](https://temporal.io/blog/failure-handling-in-practice).
-
-For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow fails the Workflow Task (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure (or letting a Temporal Failure propagate from Temporal calls, like an [Activity Failure](/kb/failures#activity-failure) from an Activity call) fails the Workflow Execution.
-For more information, see [Application Failure](/kb/failures#application-failure).
 

@@ -28,10 +28,6 @@
     {
       "type": "h3",
       "id": "concepts/what-is-a-temporal-client"
-    },
-    {
-      "type": "h2",
-      "id": "concepts/what-is-a-failure"
     }
   ]
 }
