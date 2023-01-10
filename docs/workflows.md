@@ -695,6 +695,13 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 ## Schedule
 
+:::tip Support, stability, and dependency info
+- Introduced in Temporal Server version 1.17.0
+- Available in tctl v1.17 and Temporal CLI
+- Available in Temporal Cloud via tctl and CLI
+
+:::
+
 A Schedule contains instructions for starting a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="#workflow-execution">Learn more</a></p></div></a> at specific times.
 Schedules provide a more flexible and user-friendly approach than <a class="tdlp" href="#temporal-cron-job">Temporal Cron Jobs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cron Job?</p><p class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#temporal-cron-job">Learn more</a></p></div></a>.
 
