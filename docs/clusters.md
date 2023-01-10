@@ -16,7 +16,7 @@ This guide provides a comprehensive overview of Temporal Clusters.
 A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is the Temporal Server?</p><p class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</p><p class="tdlplm"><a class="tdlplma" href="#temporal-server">Learn more</a></p></div></a>, combined with persistence stores, that together act as a component of the Temporal Platform.
 
 - <a class="tdlp" href="/application-development/foundations#run-a-development-cluster">How to quickly install a Temporal Cluster for testing and development<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</p><p class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#run-a-development-cluster">Learn more</a></p></div></a>
-- [Cluster deployment guide](/cluster-deployment-guide)
+- [Cluster deployment guide](/cluster-deployment)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 

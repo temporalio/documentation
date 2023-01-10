@@ -333,19 +333,19 @@ const clusterGuide = {
   listOne: [
     {
       book: true,
-      path: "/cluster-deployment-guide/#advanced-visibility",
+      path: "/cluster-deployment/set-up#advanced-visibility",
       name: "Visibility",
     },
     {
       book: true,
-      path: "/cluster-deployment-guide/#archival",
+      path: "/cluster-deployment/set-up#archival",
       name: "Archival",
     },
   ],
   listTwo: [
     {
       book: true,
-      path: "/cluster-deployment-guide/#multi-cluster-replication",
+      path: "/cluster-deployment/migrate",
       name: "Multi-Cluster Replication",
     },
   ],
@@ -535,7 +535,7 @@ function Explained() {
         <ul className="landing-card-list">{displayLinks(appByLang.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="/cluster-deployment-guide">
+        <a className="header-link" href="/cluster-deployment">
           <h2 className="h2-landing">Cluster deployment guide</h2>
         </a>
         <p className="landing-card-p">

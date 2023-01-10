@@ -25,4 +25,4 @@ For the complete list of defined terms, see the [Glossary](/glossary).
 
 Information on how to implement the developer-facing features is available in the [Developer's guide](/application-development).
 
-Information on how to set up and operate a Temporal Cluster is available in the [Cluster deployment guide](/cluster-deployment-guide).
+Information on how to set up and operate a Temporal Cluster is available in the [Cluster deployment guide](/cluster-deployment).

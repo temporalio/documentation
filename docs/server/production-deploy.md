@@ -6,7 +6,7 @@ sidebar_label: Production deployment
 
 :::note
 
-The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment-guide).
+The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment).
 
 :::
 
@@ -39,14 +39,14 @@ Each release also ships a `Server with Auto Setup` Docker image that includes [a
 
 Though **neither are blessed for production use**, you can consult our [Docker-Compose repo](https://github.com/temporalio/docker-compose) or [Helm Charts](https://github.com/temporalio/helm-charts) for more hints on configuration options.
 
-The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment-guide).
+The information in this page is being dispersed into [Knowledge base articles](/kb), [Cluster concept guide](/clusters), and the [Cluster deployment guide](/cluster-deployment).
 
 :::
 
 ## Minimum Requirements
 
 - The minimum Temporal Server dependency is a database. We support [Cassandra](https://cassandra.apache.org/), [MySQL](https://www.mysql.com/), or [PostgreSQL](https://www.postgresql.org/), with [SQLite on the way](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite+).
-- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/cluster-deployment-guide#elasticsearch).
+- Further dependencies are only needed to support optional features. For example, enhanced Workflow search can be achieved using [Elasticsearch](/cluster-deployment/set-up#elasticsearch).
 - Monitoring and observability are available with [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
 - Each language SDK also has minimum version requirements. See the [versions and dependencies page](/clusters/) for precise versions we support together with these features.
 
@@ -134,13 +134,13 @@ You can set up a high availability deployment by running more than one instance 
 clusterMetadata:
   enableGlobalNamespace: false
   failoverVersionIncrement: 10
-  masterClusterName: "active"
-  currentClusterName: "active"
+  masterClusterName: 'active'
+  currentClusterName: 'active'
   clusterInformation:
     active:
       enabled: true
       initialFailoverVersion: 0
-      rpcAddress: "127.0.0.1:7233"
+      rpcAddress: '127.0.0.1:7233'
 ```
 
 ### FAQ: Multiple deployments on a single cluster

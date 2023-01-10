@@ -24,6 +24,22 @@ module.exports = {
     },
     {
       type: "category",
+      label: "Production readiness guide",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "production-readiness/index",
+      },
+      items: [
+        "production-readiness/bootstrap",
+        "production-readiness/develop",
+        "production-readiness/prepare",
+        "production-readiness/run",
+      ],
+    },
+    {
+      type: "category",
       label: "Dev guide",
       collapsible: true,
       collapsed: true,
