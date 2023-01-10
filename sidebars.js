@@ -77,7 +77,23 @@ module.exports = {
         },
       ],
     },
-    "cluster-deployment-guide",
+    {
+      type: "category",
+      label: "Cluster deployment guide",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "cluster-deployment/index",
+      },
+      items: [
+        "cluster-deployment/set-up",
+        "cluster-deployment/run",
+        "cluster-deployment/scale",
+        "cluster-deployment/upgrade",
+        "cluster-deployment/migrate",
+      ],
+    },
     "security",
     {
       type: "category",
