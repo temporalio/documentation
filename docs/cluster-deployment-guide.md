@@ -400,7 +400,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/temporal/versioned
-
 ```
 
 **Example visibility schema upgrade:**
@@ -416,7 +415,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/visibility/versioned
-
 ```
 
 ### Upgrade MySQL / PostgreSQL schema
