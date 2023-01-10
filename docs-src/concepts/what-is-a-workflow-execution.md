@@ -51,7 +51,7 @@ Commands are issued and Awaitables are provided by the use of Workflow APIs in t
 
 Commands are generated whenever the Workflow Function is executed.
 The Worker Process supervises the Command generation and makes sure that it maps to the current Event History.
-(For more information, see [Deterministic constraints](/concepts/what-is-a-workflow-definition/#deterministic-constraints).)
+(For more information, see [Deterministic constraints](/concepts/what-is-a-workflow-definition#deterministic-constraints).)
 The Worker Process batches the Commands and then suspends progress to send the Commands to the Cluster whenever the Workflow Function reaches a place where it can no longer progress without a result from an Awaitable.
 
 A Workflow Execution may only ever block progress on an Awaitable that is provided through a Temporal SDK API.

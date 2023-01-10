@@ -132,7 +132,7 @@ The Worker Entity caches the Workflow Execution Event History and begins polling
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
+- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](https://legacy-documentation-sdks.temporal.io/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -189,7 +189,7 @@ Code samples:
 Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like **concurrent session limitations** and **worker failure detection**.
 
-- [How to create Worker Sessions in Go](/go/how-to-create-a-worker-session-in-go)
+- [How to create Worker Sessions in Go](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-worker-session-in-go)
 
 #### Route Activity Tasks to a specific process
 
