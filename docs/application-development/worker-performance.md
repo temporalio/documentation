@@ -17,7 +17,7 @@ _Note: All metrics in this article are prepended with the “temporal\_” prefi
 Performance tuning involves three important SDK metric groups:
 
 1. `worker_task_slots_available` gauges tagged `worker_type=WorkflowWorker` and `worker_type=ActivityWorker` for Workflow Task and Activity Workers correspondingly. These gauges report how many executor “slots” are currently available (unoccupied) for each Worker type.
-2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [/concepts/what-is-a-schedule-to-start-timeout/](/concepts/what-is-a-schedule-to-start-timeout/).
+2. `workflow_task_schedule_to_start_latency` and `activity_schedule_to_start_latency` timers for Workflow Tasks and Activities correspondingly. For more information about `schedule_to_start` timeout and latency, see [Schedule-To-Start Timeout](/activities#schedule-to-start-timeout).
 3. `sticky_cache_size` and `workflow_active_thread_count` report the size of the Workflow cache and the number of cached Workflow threads.
 
 _Note: To have access to all the metrics mentioned above in the JavaSDK, version ≥ 1.8.0 is required._
@@ -89,8 +89,8 @@ then consider increasing the number of pollers by adjusting `maxConcurrentWorkfl
 
 If, after adjusting the poller and executors count as specified earlier, you still observe an elevated `schedule_to_start`, underutilized Worker hosts, or high `worker_task_slots_available`, you might want to check the following:
 
-- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](/go/how-to-set-workeroptions-in-go/#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
-- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](/go/how-to-set-workeroptions-in-go/#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If server-side rate limiting per Task Queue is set by `WorkerOptions#maxTaskQueueActivitiesPerSecond`, remove the limit or adjust the value up. (See [Go](https://legacy-documentation-sdks.temporal.io/go/how-to-set-workeroptions-in-go/#taskqueueactivitiespersecond) and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
+- If Worker-side rate limiting per Worker is set by `WorkerOptions#maxWorkerActivitiesPerSecond`, remove the limit. (See [Go](https://legacy-documentation-sdks.temporal.io/go/how-to-set-workeroptions-in-go/#workeractivitiespersecond), [TypeScript](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#maxconcurrentactivitytaskexecutions), and [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerOptions.Builder.html).)
 
 ## Workflow Cache Tuning
 

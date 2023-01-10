@@ -6,6 +6,10 @@ description: A Schedule enables the scheduling of Workflow Executions.
 tags:
   - term
   - explanation
+ssdi:
+  - Introduced in Temporal Server version 1.17.0
+  - Available in tctl v1.17 and Temporal CLI
+  - Available in Temporal Cloud via tctl and CLI
 ---
 
 A Schedule contains instructions for starting a [Workflow Execution](/concepts/what-is-a-workflow-execution) at specific times.

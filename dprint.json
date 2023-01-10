@@ -37,7 +37,8 @@
     "docs/typescript/**/*.md",
     "docs/typescript/*.md",
     "docs/cloud/**/*.md",
-    "docs/concepts/*.md"
+    "docs/concepts/*.md",
+    "kb/*.md"
   ],
   "excludes": [
     "**/node_modules",
