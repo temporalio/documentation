@@ -23,10 +23,10 @@ Legacy production deployment information is available [here](/server/production-
 ## Elasticsearch
 
 :::tip Support, stability, and dependency info
-- Elasticsearch v8 is supported from Temporal Server version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal Server version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal Server version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
+- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
+- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
+- Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
+- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
 
 :::
 
