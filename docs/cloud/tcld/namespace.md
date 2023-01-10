@@ -729,3 +729,4 @@ Alias: `--nn`
 ```bash
 tcld namespace search-attributes rename --existing-name <value> --new-name <value>
 ```
+

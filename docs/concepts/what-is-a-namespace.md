@@ -91,6 +91,6 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 Set Namespaces in your SDK Client to isolate your Workflow Executions to the Namespace.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the "default" Namespace. This means, you must have a default Namespace called "default" registered with your Temporal Cluster. See [Registration](#Registration) for details.
 
-- [How to set the Namespace for a Temporal Client](/application-development/foundations?lang=go#connect-to-a-cluster)
+- [How to set the Namespace for a Temporal Client](/application-development/foundations#connect-to-a-cluster)
 - [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)
