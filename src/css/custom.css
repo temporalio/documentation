@@ -85,10 +85,6 @@ a:hover {
   border-style: solid;
 }
 
-.alert--success {
-  
-}
-
 /* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
 .tailwindcss .flex {
   display: flex;
