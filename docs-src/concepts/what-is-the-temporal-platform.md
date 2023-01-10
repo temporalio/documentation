@@ -25,11 +25,17 @@ The Temporal Platform addresses both platform-level failures and application-lev
 
 #### Platform-level failure
 
-A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system. This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application, and can be detected and mitigated at a platform level. This is one of the things that Temporal does really well. An example of a platform-level failure could be a network connection issue or hardware failure.
+A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system.
+This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application and can be detected and mitigated at a platform level.
+Temporal is made to insulate your application from platform-level failures.
+An example of a platform-level failure could be a network connection issue or hardware failure.
 
 #### Application-level failure
 
-An application-level failure, on the other hand, refers to a failure that occurs within the application itself. This type of failure is directly visible to the user or application and must be detected and mitigated at the application level. Temporal cannot mitigate application level failures for you, but Temporal makes it easy to handle failures or debug your application. An example of an application-level failure could be an error in the application's code or a problem with the input data being used by the application.
+Conversely, an application-level failure refers to a failure that occurs within the application itself.
+This type of failure is directly visible to the user or application and must be detected and mitigated at the application level.
+Temporal cannot mitigate application-level failures for you, but Temporal greatly simplifies handling failures and debugging your application.
+An example of an application-level failure could be an error in the application's code or a problem with the input data being used by the application.
 
 #### Failure handling
 
