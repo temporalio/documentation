@@ -67,11 +67,12 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer.
+- Changing the duration of a Timer (unless changing from a duration of 0).
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
   - Call to Signal an External Workflow Execution.
+- Adding a Signal Handler for a Signal Type that has not been sent to this Workflow Execution.
 
 ### Intrinsic non-deterministic logic
 
@@ -101,8 +102,8 @@ The Workflow Versioning feature enables the creation of logical branching inside
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](/go/versioning)
-- [How to version Workflow Definitions in Java](/java/versioning)
+- [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/go/versioning)
+- [How to version Workflow Definitions in Java](https://legacy-documentation-sdks.temporal.io/java/versioning)
 - [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
 
 ### Handling unreliable Worker Processes

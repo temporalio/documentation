@@ -27,7 +27,7 @@ The command has no modifiers.
 
 ## health
 
-The `tctl cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-temporal-cluster/#frontend-service).
+The `tctl cluster health` command checks the health of the <a class="tdlp" href="/clusters#frontend-service">Frontend Service<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#frontend-service">Learn more</a></p></div></a>.
 
 `tctl cluster health`
 

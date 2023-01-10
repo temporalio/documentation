@@ -54,6 +54,19 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
   - **BETWEEN ... AND**
   - **IN**
   - **ORDER BY**
+  - **LIKE**
+
+- Wildcards ('\*', '%', etc.) are supported for string-type List Filter Search Attributes.
+  Use wildcards with the **LIKE** operator to query possible values:
+
+  ```bash
+  // Create a "ProductId" custom Search Attribute of type String
+  tctl admin cluster add-search-attributes --name ProductId --type String
+  // Match values that start with "book"
+  ProductId LIKE "book%"
+  // Match values that contain "favorite"
+  ProductId LIKE "%favorite%"
+  ```
 
 - A List Filter applies to a single Namespace.
 
@@ -243,5 +256,5 @@ Note:
 To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="#list-filter">Learn more</a></p></div></a>, Search Attributes must be added to a Workflow Execution as metadata.
 How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- [How to set Search Attributes as Workflow Execution metadata in Go](/go/startworkflowoptions-reference/#searchattributes)
+- <a class="tdlp" href="/application-development/observability#custom-search-attributes">How to set Search Attributes as Workflow Execution metadata<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set custom Search Attributes</p><p class="tdlppd">After you've created custom Search Attributes in your Cluster (using `tctl` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></p></div></a>
 
