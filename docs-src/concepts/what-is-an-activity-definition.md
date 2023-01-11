@@ -8,9 +8,7 @@ tags:
   - explanation
 ---
 
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
-
-One way to understand an Activity is to think of it as a normal function or object method that executes a single, well-defined action (either short or long-running), such as calling another service, transcoding a media file, or sending an email message.
+An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution). For example, one way to understand an Activity Definition is to think of it as a normal function or object method that executes a single, well-defined action (either short or long-running), such as calling another service, transcoding a media file, or sending an email message.
 
 - [How to develop an Activity Definition](/application-development/foundations#develop-activities)
 

@@ -11,4 +11,4 @@ One of the primary things that Workflows do is orchestrate the execution of Acti
 Activities are normal function/method executions that can interact with the world.
 For the Workflow to be able to execute the Activity, we must define the [Activity Definition](/concepts/what-is-an-activity-definition).
 
-Temporal requires that Activities are idempotent. Activities are idempotent if multiple applications of that operation do not change the state of the system beyond the initial application.
+An Activity is a normal function or object method that executes a single, well-defined action (either short or long-running), such as calling another service, transcoding a media file, or sending an email message.
