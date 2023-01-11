@@ -23,7 +23,7 @@ The Web UI is packed with several features.
 
 ### Namespace selection
 
-The Namespace Switcher (located in the left navigational menu)  allows users to search for or select a Namespace.
+The Namespace Switcher (located in the left navigational menu) allows users to search for or select a Namespace.
 After a Namespace is selected, the user is redirected to that Namespace's Recent Workflows.
 In Temporal Cloud, users can only access Namespaces that they have been granted access to.
 
@@ -40,9 +40,10 @@ Users can list Workflow Executions by any of the following:
 - A [List Filter](/concepts/what-is-a-list-filter)
 
 Date and Time—users can set their preferred date and time format as one of the following:
-  - UTC
-  - Local
-  - Relative
+
+- UTC
+- Local
+- Relative
 
 Select a Workflow Execution to view the Workflow Execution's History, Workers, and pending Activities.
 
