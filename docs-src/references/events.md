@@ -31,7 +31,7 @@ It indicates that the Cluster received a request to spawn the Workflow Execution
 | continued_failure                  | Serialized result of a failure.                                                                                                                          |
 | last_completion_result             | Information from the previously completed [Task](/concepts/what-is-a-task), if applicable.                                                               |
 | original_execution_run_id          | The [Run Id](/concepts/what-is-a-run-id) of the original Workflow started.                                                                               |
-| identity                           | Id of the [Worker](/concepts/what-is-a-worker) that requested the start of this Workflow.                                                                |
+| identity                           | Id of the [Client](/clusters#temporal-client-connections) that requested the start of this Workflow.                                                     |
 | first_execution_run_id             | The first [Run Id](/concepts/what-is-a-run-id), along the chain of [Continue-As-New](/concepts/what-is-continue-as-new) Runs and Reset.                  |
 | retry_policy                       | The amount of retries as determined by the service's dynamic configuration. Retries will happen until 'schedule_to_close_timeout' is reached.            |
 | attempt                            | The number of attempts that have been made to complete this Task.                                                                                        |
