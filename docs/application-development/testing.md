@@ -1219,3 +1219,11 @@ await Worker.runReplayHistory(
 
 </TabItem>
 </Tabs>
+
+## Debug with IDE
+
+Many IDEs support a debugging feature that enables you to step through your code.
+You can use these tools with your Workflow code, however make sure to set the `TEMPORAL_DEBUG` environment variable to `true` first.
+
+The SDKs include deadlock detection which fails a Workflow Task whenever the code blocks for over a second without relinquishing execution control.
+If the environment variable is not set, you can often encounter a "potential deadlock detected" error while stepping through Workflow Definitions during debugging.

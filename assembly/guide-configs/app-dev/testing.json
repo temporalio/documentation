@@ -372,6 +372,10 @@
           "id": "typescript/how-to-replay-a-workflow-execution-in-typescript"
         }
       ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/ide-debug"
     }
   ]
 }
