@@ -23,9 +23,9 @@ The Web UI is packed with several features.
 
 ### Namespace selection
 
-The Namespace Switcher (located in the left navigational menu) allows users to search for or select a Namespace.
-After a Namespace is selected, the user is redirected to that Namespace's Recent Workflows.
-In Temporal Cloud, users can only access Namespaces that they have been granted access to.
+You can search for or select a Namespace by using the Namespace Switcher, located in the left navigational menu.
+After you select a Namespace, the Web UI shows the Recent Workflows page for that Namespace.
+In Temporal Cloud, users can access only the Namespaces that they have been granted access to.
 
 ### Recent Workflows
 
@@ -34,12 +34,14 @@ The default number shown is 1,000 Workflow Executions.
 
 Users can list Workflow Executions by any of the following:
 
+- Status
 - <a class="tdlp" href="/workflows#workflow-id">Workflow ID<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a>
 - <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Type?</p><p class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></p></div></a>
-- Status
+- Start time
+- End time
 - A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>
 
-Date and Time—users can set their preferred date and time format as one of the following:
+For start time and end time, users can set their preferred date and time format as one of the following:
 
 - UTC
 - Local
@@ -119,12 +121,8 @@ Displays the following information:
 
 <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a> feature information.
 
-### Import Event History
-
-Allows the Event History to be imported in JSON format for populating a Workflow details page.
-
 ### Data Encoder
 
 The Web UI can use the same Data Converter that Workers use for inputs and return values.
-The UI supports both a Remote Codec endpoint and/or the `tctl` plugin port.
+The UI supports both a Remote Codec endpoint and the `tctl` plugin port.
 

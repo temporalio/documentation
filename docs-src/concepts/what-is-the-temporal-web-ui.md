@@ -121,10 +121,6 @@ Displays the following information:
 
 [Archival](/concepts/what-is-archival) feature information.
 
-### Import Event History
-
-Allows the Event History to be imported in JSON format for populating a Workflow details page.
-
 ### Data Encoder
 
 The Web UI can use the same Data Converter that Workers use for inputs and return values.
