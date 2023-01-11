@@ -23,9 +23,9 @@ The Web UI is packed with several features.
 
 ### Namespace selection
 
-The Namespace Switcher (located in the left navigational menu) allows users to search for or select a Namespace.
-After a Namespace is selected, the user is redirected to that Namespace's Recent Workflows.
-In Temporal Cloud, users can only access Namespaces that they have been granted access to.
+You can search for or select a Namespace by using the Namespace Switcher, located in the left navigational menu.
+After you select a Namespace, the Web UI shows the Recent Workflows page for that Namespace.
+In Temporal Cloud, users can access only the Namespaces that they have been granted access to.
 
 ### Recent Workflows
 
