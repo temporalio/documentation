@@ -41,7 +41,7 @@ Users can list Workflow Executions by any of the following:
 - End time
 - A [List Filter](/concepts/what-is-a-list-filter)
 
-Date and Time—users can set their preferred date and time format as one of the following:
+For start time and end time, users can set their preferred date and time format as one of the following:
 
 - UTC
 - Local
