@@ -128,4 +128,4 @@ Allows the Event History to be imported in JSON format for populating a Workflow
 ### Data Encoder
 
 The Web UI can use the same Data Converter that Workers use for inputs and return values.
-The UI supports both a Remote Codec endpoint and/or the `tctl` plugin port.
+The UI supports both a Remote Codec endpoint and the `tctl` plugin port.
