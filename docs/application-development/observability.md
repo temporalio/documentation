@@ -188,11 +188,11 @@ WorkflowClientOptions.newBuilder()
 ```
 
 ```java
-WorkflowClientOptions clientOptions =
-    WorkflowClientOptions.newBuilder()
-        .setInterceptors(new OpenTracingClientInterceptor(JaegerUtils.getJaegerOptions(type)))
-        .build();
-WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
+    WorkflowClientOptions clientOptions =
+        WorkflowClientOptions.newBuilder()
+            .setInterceptors(new OpenTracingClientInterceptor(JaegerUtils.getJaegerOptions(type)))
+            .build();
+    WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
 ```
 
 The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
@@ -205,12 +205,12 @@ WorkerFactoryOptions.newBuilder()
 ```
 
 ```java
-WorkerFactoryOptions factoryOptions =
-    WorkerFactoryOptions.newBuilder()
-        .setWorkerInterceptors(
-            new OpenTracingWorkerInterceptor(JaegerUtils.getJaegerOptions(type)))
-        .build();
-WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
+    WorkerFactoryOptions factoryOptions =
+        WorkerFactoryOptions.newBuilder()
+            .setWorkerInterceptors(
+                new OpenTracingWorkerInterceptor(JaegerUtils.getJaegerOptions(type)))
+            .build();
+    WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
 ```
 
 For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
@@ -334,10 +334,10 @@ workflow.WithActivityOptions(ctx, ao)
 To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
 
 ```java
-private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
+  private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
 ```
 
-Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
+Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)>) method is set to true.
 
 </TabItem>
 <TabItem value="php">
@@ -710,7 +710,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
 Search Attributes are represented as `map[string]interface{}`.
-The values in the map must correspond to the <a class="tdlp" href="/visibility#types">Search Attribute's value type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#types">Learn more</a></p></div></a>:
+The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute#types):
 
 - Bool = `bool`
 - Datetime = `time.Time`
@@ -740,13 +740,13 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 </TabItem>
 <TabItem value="java">
 
-To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
+To set a custom Search Attribute, call the [`setSearchAttributes()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)>) method.
 
 ```java
-WorkflowOptions workflowOptions =
-    WorkflowOptions.newBuilder()
-        .setSearchAttributes(generateSearchAttributes())
-        .build();
+    WorkflowOptions workflowOptions =
+        WorkflowOptions.newBuilder()
+            .setSearchAttributes(generateSearchAttributes())
+            .build();
 ```
 
 `generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
@@ -872,7 +872,7 @@ map[string]interface{}{
 </TabItem>
 <TabItem value="java">
 
-In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
+In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)>) method.
 
 ```java
  Map<String, Object> attr1 = new HashMap<>();
@@ -889,11 +889,11 @@ In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAt
 The results of `upsertSearchAttributes()` output the following search attributes.
 
 ```json
-{
-    "CustomIntField": 1, 2,
-    "CustomBoolField": true,
-    "CustomKeywordField": "Seattle",
-  }
+   {
+       "CustomIntField": 1, 2,
+       "CustomBoolField": true,
+       "CustomKeywordField": "Seattle",
+     }
 ```
 
 </TabItem>
@@ -1013,3 +1013,4 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
+

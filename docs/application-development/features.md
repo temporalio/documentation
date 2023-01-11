@@ -74,8 +74,8 @@ MySignal struct {
 The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
 
 ```java
-@SignalMethod
-   void mySignal(String signalName);
+ @SignalMethod
+    void mySignal(String signalName);
 ```
 
 The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
@@ -323,9 +323,9 @@ You can also implement Signal handlers dynamically. This is useful for library-l
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicSignalHandler)
+            (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
@@ -1071,9 +1071,9 @@ You can also implement Query handlers dynamically. This is useful for library-le
 Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
 
 ```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
+      Workflow.registerListener(
+        (DynamicQueryHandler)
+            (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
 ```
 
 When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
@@ -1366,9 +1366,9 @@ Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/te
 
 Available timeouts are:
 
-- [setWorkflowExecutionTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration))
-- [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
-- [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
+- [setWorkflowExecutionTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration)>)
+- [setWorkflowRunTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration)>)
+- [setWorkflowTaskTimeout()](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration)>)
 
 ```java
 //create Workflow stub for YourWorkflowInterface
@@ -2432,7 +2432,7 @@ To complete an Activity asynchronously, set the [`ActivityCompletionClient`](htt
   }
 ```
 
-Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) method during an Activity Execution.
+Alternatively, set the [`doNotCompleteOnReturn()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()>) method during an Activity Execution.
 
 ```java
     @Override
@@ -3002,17 +3002,17 @@ Set <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<sp
 - Default: `PARENT_CLOSE_POLICY_TERMINATE`
 
 ```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
+   public void parentWorkflow() {
+       ChildWorkflowOptions options =
+          ChildWorkflowOptions.newBuilder()
+              .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
+              .build();
+       MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
+       Async.procedure(child::<workflowMethod>, <args>...);
+       Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
+       // Wait for child to start
+       childExecution.get()
+  }
 ```
 
 In this example, we are:
@@ -3500,15 +3500,15 @@ On replay the provided function is not executed, the random number will always b
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the non-deterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)>) function in your Workflow Execution and return the non-deterministic code.
 
 ```java
-int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
-if random < 50 {
-       ....
-} else {
-       ....
-}
+  int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
+  if random < 50 {
+         ....
+  } else {
+         ....
+  }
 ```
 
 Here's another example that uses `sideEffect()`.
@@ -3533,7 +3533,7 @@ public void execute() {
 
 Java also provides a deterministic method to generate random numbers or random UUIDs.
 
-To generate random numbers in a deterministic method, use [`newRandom()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom())
+To generate random numbers in a deterministic method, use [`newRandom()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>)
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3543,7 +3543,7 @@ public void execute() {
 }
 ```
 
-To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()).
+To generate a random UUID in a deterministic method, use [`randomUUID()`](<https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()>).
 
 ```java
 // implementation of the @WorkflowMethod
@@ -3628,10 +3628,11 @@ Not applicable to this SDK.
 
 ## Namespaces
 
-A <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> is a unit of isolation within the Temporal Platform.
+You can create, update, deprecate or delete your <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> using either tctl or SDK APIs.
 
-You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
-Or you could use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+Use Namespaces to isolate your Workflow Executions according to your needs.
+For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
+You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 
 On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
@@ -3940,3 +3941,4 @@ Content is currently unavailable.
 
 </TabItem>
 </Tabs>
+
