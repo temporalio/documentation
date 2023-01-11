@@ -9,7 +9,7 @@ tags:
   - workers
 ---
 
-Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/concepts/what-is-a-namespace) and set the [Retention Period](/concepts/what-is-a-retention-period) for the Workflow Execution Event History for the Namespace.
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a [Namespace](/concepts/what-is-a-namespace) and set the [Retention Period](/concepts/what-is-a-retention-period) for the Workflow Execution Event History for the Namespace.
 
 ```java
 //...
@@ -31,9 +31,9 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Java](/application-development/features/#namespaces) for details.
+See [how to set Namespace in a Client in Java](/application-development/foundations#connect-to-a-cluster) for details.
 
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
 
-To update your Namespace, use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto) with the `NamespaceClient`.
+To update your Namespace, use the [`UpdateNamespace` API](/application-development/features/#namespaces) with the `NamespaceClient`.
