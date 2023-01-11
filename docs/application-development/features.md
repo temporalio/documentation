@@ -3625,3 +3625,319 @@ Not applicable to this SDK.
 
 </TabItem>
 </Tabs>
+
+## Namespaces
+
+You can create, update, deprecate or delete your <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> using either tctl or SDK APIs.
+
+Use Namespaces to isolate your Workflow Executions according to your needs.
+For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
+You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
+
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+### Register Namespace
+
+Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal Cloud.
+
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
+
+On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#retention-period">Learn more</a></p></div></a> for the Workflow Execution Event History for the Namespace.
+
+You can also <a class="tdlp" href="/tctl-v1/namespace#register">register Namespaces using the tctl command-line tool<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-v1/namespace#register">Learn more</a></p></div></a>.
+
+```go
+client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+        //...
+    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+        Namespace: your-namespace-name,
+        WorkflowExecutionRetentionPeriod: &retention,
+    })
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
+See <a class="tdlp" href="/application-development/foundations#connect-to-a-cluster">how to set Namespace in a Client in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</p><p class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#connect-to-a-cluster">Learn more</a></p></div></a> for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient`.
+
+To update your Namespace using tctl, use the <a class="tdlp" href="/tctl-v1/namespace#update">tctl namespace update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace update</p><p class="tdlppd">How to update a Namespace using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-v1/namespace#update">Learn more</a></p></div></a> command.
+
+</TabItem>
+<TabItem value="java">
+
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#retention-period">Learn more</a></p></div></a> for the Workflow Execution Event History for the Namespace.
+
+```java
+//...
+import com.google.protobuf.util.Durations;
+import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
+//...
+public static void createNamespace(String name) {
+    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
+            .setNamespace("your-custom-namespace")
+            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
+            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
+            .build();
+    service.blockingStub().registerNamespace(req);
+}
+//...
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/application-development/foundations#connect-to-a-cluster) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`UpdateNamespace` API](/application-development/features/#namespaces) with the `NamespaceClient`.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
+</Tabs>
+
+### Manage Namespaces
+
+You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
+
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+- Update information and configuration for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
+    Example
+  - Use the [`UpdateNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to update configuration on a Namespace.
+    Example
+
+    ```go
+    //...
+      err = client.Update(context.Background(), &workflowservice.UpdateNamespaceRequest{
+      Namespace:         "your-namespace-name",
+      UpdateInfo:        &namespace.UpdateNamespaceInfo{ //updates info for the namespace "your-namespace-name"
+          Description:   "updated namespace description",
+          OwnerEmail:    "newowner@mail.com",
+          //Data:        nil,
+          //State:       0,
+      },
+      /*other details that you can update:
+      Config:            &namespace.NamespaceConfig{ //updates the configuration of the namespace with the following options
+          //WorkflowExecutionRetentionTtl: nil,
+          //BadBinaries:                   nil,
+          //HistoryArchivalState:          0,
+          //HistoryArchivalUri:            "",
+          //VisibilityArchivalState:       0,
+          //VisibilityArchivalUri:         "",
+      },
+      ReplicationConfig: &replication.NamespaceReplicationConfig{ //updates the replication configuration for the namespace
+          //ActiveClusterName: "",
+          //Clusters:          nil,
+          //State:             0,
+      },
+      SecurityToken:     "",
+      DeleteBadBinary:   "",
+      PromoteNamespace:  false,
+      })*/
+    //...
+    ```
+
+- Get details for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
+  - Use the [`DescribeNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to return information and configuration details for a registered Namespace.
+    Example
+
+    ```go
+    //...
+      client, err := client.NewNamespaceClient(client.Options{})
+      //...
+      client.Describe(context.Background(), "default")
+    //...
+    ```
+
+- Get details for all registered Namespaces on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
+  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+    Example
+
+  ```go
+  //...
+      namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active cluster. You can set a large PageSize or loop until NextPageToken is nil
+          //PageSize:        0,
+          //NextPageToken:   nil,
+          //NamespaceFilter: nil,
+          })
+  //...
+  ```
+
+- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
+  Example:
+
+  ```go
+  //...
+  client.OperatorService().DeleteNamespace(ctx, &operatorservice.DeleteNamespaceRequest{...
+  //...
+  ```
+
+</TabItem>
+<TabItem value="java">
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+- Update information and configuration for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
+    Example
+  - Use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to update configuration on a Namespace.
+    Example
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  UpdateNamespaceRequest updateNamespaceRequest = UpdateNamespaceRequest.newBuilder()
+              .setNamespace("your-namespace-name") //the namespace that you want to update
+              .setUpdateInfo(UpdateNamespaceInfo.newBuilder() //has options to update namespace info
+                      .setDescription("your updated namespace description") //updates description in the namespace info.
+                      .build())
+              .setConfig(NamespaceConfig.newBuilder() //has options to update namespace configuration
+                      .setWorkflowExecutionRetentionTtl(Durations.fromHours(30)) //updates the retention period for the namespace "your-namespace--name" to 30 hrs.
+                      .build())
+              .build();
+      UpdateNamespaceResponse updateNamespaceResponse = namespaceservice.blockingStub().updateNamespace(updateNamespaceRequest);
+  //...
+  ```
+
+- Get details for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
+  - Use the [`DescribeNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for a registered Namespace.
+    Example
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  DescribeNamespaceRequest descNamespace = DescribeNamespaceRequest.newBuilder()
+              .setNamespace("your-namespace-name") //specify the namespace you want details for
+              .build();
+      DescribeNamespaceResponse describeNamespaceResponse = namespaceservice.blockingStub().describeNamespace(descNamespace);
+      System.out.println("Namespace Description: " + describeNamespaceResponse);
+  //...
+  ```
+
+- Get details for all registered Namespaces on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
+  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+    Example
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  ListNamespacesRequest listNamespaces = ListNamespacesRequest.newBuilder().build();
+      ListNamespacesResponse listNamespacesResponse = namespaceservice.blockingStub().listNamespaces(listNamespaces); //lists 1-100 namespaces (1 page) in the active cluster. To list all, set the page size or loop until NextPageToken is nil.
+  //...
+  ```
+
+- Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
+  Example:
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  DeprecateNamespaceRequest deprecateNamespace = DeprecateNamespaceRequest.newBuilder()
+              .setNamespace("your-namespace-name") //specify the namespace that you want to deprecate
+              .build();
+      DeprecateNamespaceResponse response = namespaceservice.blockingStub().deprecateNamespace(deprecateNamespace);
+  //...
+  ```
+
+- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
+
+  Example:
+
+  ```java
+  //...
+  DeleteNamespaceResponse res =
+  OperatorServiceStubs.newServiceStubs(OperatorServiceStubsOptions.newBuilder()
+          .setChannel(service.getRawChannel())
+          .validateAndBuildWithDefaults())
+      .blockingStub()
+      .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("your-namespace-name").build());
+  //...
+  ```
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
+</Tabs>
