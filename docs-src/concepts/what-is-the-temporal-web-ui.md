@@ -34,9 +34,11 @@ The default number shown is 1,000 Workflow Executions.
 
 Users can list Workflow Executions by any of the following:
 
+- Status
 - [Workflow ID](/concepts/what-is-a-workflow-id)
 - [Workflow Type](/concepts/what-is-a-workflow-type)
-- Status
+- Start time
+- End time
 - A [List Filter](/concepts/what-is-a-list-filter)
 
 Date and Time—users can set their preferred date and time format as one of the following:
