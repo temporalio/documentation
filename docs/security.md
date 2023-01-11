@@ -490,16 +490,16 @@ Temporal Server provides a [default implementation of JWT authentication](/secur
 **Example**
 
 ```java
-  AuthorizationTokenSupplier tokenSupplier =
-    //your implementation of token supplier
-    () -> "Bearer <Base64 url-encoded value of the token for default JWT ClaimMapper>";
-  WorkflowServiceStubsOptions serviceStubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-      //other service stub options
-      .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
-      .build();
-  WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
-  WorkflowClient client = WorkflowClient.newInstance(service);
+AuthorizationTokenSupplier tokenSupplier =
+  //your implementation of token supplier
+  () -> "Bearer <Base64 url-encoded value of the token for default JWT ClaimMapper>";
+WorkflowServiceStubsOptions serviceStubOptions =
+  WorkflowServiceStubsOptions.newBuilder()
+    //other service stub options
+    .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
+    .build();
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
+WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 
 Related read:
