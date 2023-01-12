@@ -1,8 +1,8 @@
 {
-  "file_name": "index.md",
-  "id": "index",
-  "file_dir": "cloud",
-  "title": "Temporal Cloud documentation",
+  "file_name": "temporal-cloud.md",
+  "id": "temporal-cloud",
+  "file_dir": "/",
+  "title": "What is Temporal Cloud?",
   "sidebar_label": "Temporal Cloud",
   "description": "Temporal Cloud documentation, including explanations and usage.",
   "use_description": false,

@@ -24,22 +24,6 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Production readiness guide",
-      collapsible: true,
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "production-readiness/index",
-      },
-      items: [
-        "production-readiness/bootstrap",
-        "production-readiness/develop",
-        "production-readiness/prepare",
-        "production-readiness/run",
-      ],
-    },
-    {
-      type: "category",
       label: "Dev guide",
       collapsible: true,
       collapsed: true,
@@ -57,7 +41,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Temporal Cloud",
+      label: "Cloud onboarding guide",
       collapsible: true,
       collapsed: true,
       link: {
@@ -91,6 +75,22 @@ module.exports = {
           label: "Release notes",
           href: "https://docs.temporal.io/cloud/release-notes",
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Production readiness guide",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "production-readiness/index",
+      },
+      items: [
+        "production-readiness/bootstrap",
+        "production-readiness/develop",
+        "production-readiness/prepare",
+        "production-readiness/run",
       ],
     },
     {
