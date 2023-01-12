@@ -564,7 +564,7 @@ client = await Client.connect(
 </TabItem>
 <TabItem value="ruby">
 
-Use the [`Temporal::Connection`](https://rubydoc.info/gems/temporalio/Temporalio/Connection) class to establish a connection to the Temporal Server.
+Use the [`Temporalio::Connection`](https://rubydoc.info/gems/temporalio/Temporalio/Connection) class to establish a connection to the Temporal Server.
 
 Specify the `host` parameter as a string.
 
