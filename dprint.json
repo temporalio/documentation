@@ -38,7 +38,8 @@
     "docs/typescript/*.md",
     "docs/cloud/**/*.md",
     "docs/concepts/*.md",
-    "kb/*.md"
+    "kb/*.md",
+    "vercel.json"
   ],
   "excludes": [
     "**/node_modules",
