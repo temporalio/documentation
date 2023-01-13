@@ -22,6 +22,14 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Elasticsearch
 
+:::tip Support, stability, and dependency info
+- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
+- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
+- Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
+- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
+
+:::
+
 <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></p></div></a> features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
@@ -32,15 +40,6 @@ These steps are needed only if you have a "plain" [Temporal Server Docker image]
 
 If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
 [Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
-
-:::
-
-:::note Supported versions
-
-- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
 
 :::
 
@@ -206,7 +205,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
-Archival is supported in [Global Namespaces](/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
+Archival is supported in <a class="tdlp" href="/namespaces#global-namespace">Global Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Global Namespace?</p><p class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#global-namespace">Learn more</a></p></div></a> (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup
@@ -401,7 +400,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/temporal/versioned
-
 ```
 
 **Example visibility schema upgrade:**
@@ -417,7 +415,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/visibility/versioned
-
 ```
 
 ### Upgrade MySQL / PostgreSQL schema

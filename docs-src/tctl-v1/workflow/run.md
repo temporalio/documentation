@@ -84,7 +84,7 @@ tctl workflow run --workflow_task_timeout <seconds>
 
 ### --cron
 
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
+Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job#cron-schedules).
 
 **Example**
 
@@ -99,9 +99,9 @@ Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed 
 
 There are three allowed values:
 
-- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**RejectDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
+- [AllowDuplicateFailedOnly](/concepts/what-is-a-workflow-id-reuse-policy)
+- [AllowDuplicate](/concepts/what-is-a-workflow-id-reuse-policy)
+- [RejectDuplicate](/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 
