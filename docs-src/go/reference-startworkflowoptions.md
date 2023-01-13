@@ -13,7 +13,7 @@ Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io
 The following fields are available:
 
 | Field                                                                                   | Required | Type                                                                                            |
-| --------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
+|-----------------------------------------------------------------------------------------|----------|-------------------------------------------------------------------------------------------------|
 | [`ID`](#id)                                                                             | No       | `string`                                                                                        |
 | [`TaskQueue`](#taskqueue)                                                               | **Yes**  | `string`                                                                                        |
 | [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)                                 | No       | `time.Duration`                                                                                 |
@@ -139,7 +139,7 @@ if err != nil {
 - Type: `map[string]interface{}`
 - Default: Empty.
 
-These are the corresponding [Search Attribute value types](/concepts/what-is-a-search-attribute#types) in Go:
+These are the corresponding [Search Attribute value types](/visibility#types) in Go:
 
 - Keyword = string
 - Int = int64

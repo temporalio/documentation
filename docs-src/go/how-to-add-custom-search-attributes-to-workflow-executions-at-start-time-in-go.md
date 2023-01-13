@@ -12,7 +12,7 @@ tags:
 Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
 
 Search Attributes are represented as `map[string]interface{}`.
-The values in the map must correspond to the [Search Attribute's value type](/concepts/what-is-a-search-attribute#types):
+The values in the map must correspond to the [Search Attribute's value type](/visibility#types):
 
 - Bool = `bool`
 - Datetime = `time.Time`
