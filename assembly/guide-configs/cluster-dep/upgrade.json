@@ -1,22 +1,22 @@
 {
-    "file_name": "upgrade-it.md",
-    "id": "upgrade",
-    "file_dir": "/cluster-deployment",
-    "title": "Temporal Cluster deployment guide - Upgrading",
-    "sidebar_label": "Upgrade",
-    "description": "This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.",
-    "use_description": true,
-    "toc_max_heading_level": 4,
-    "add_tabs_support": false,
-    "sections": [
-      {
-        "type": "p",
-        "id": "cluster-ops-context/intro"
-      },
-      {
-        "type": "h2",
-        "id": "clusters/how-to-upgrade-the-temporal-server-version"
-      }
-    ]
-  }
+  "file_name": "upgrade-it.md",
+  "id": "upgrade",
+  "file_dir": "/cluster-deployment",
+  "title": "Temporal Cluster deployment guide - Upgrading",
+  "sidebar_label": "Upgrade",
+  "description": "This guide provides a comprehensive overview to deploy and operate a Temporal Cluster in a live environment.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cluster-ops-context/intro"
+    },
+    {
+      "type": "h2",
+      "id": "clusters/how-to-upgrade-the-temporal-server-version"
+    }
+  ]
+}
   

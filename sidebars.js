@@ -14,6 +14,7 @@ module.exports = {
         "temporal",
         "workflows",
         "activities",
+        "temporal-cloud",
         "retry-policies",
         "workers",
         "tasks",
@@ -75,6 +76,22 @@ module.exports = {
           label: "Release notes",
           href: "https://docs.temporal.io/cloud/release-notes",
         },
+      ],
+    },
+    {
+      type: "category",
+      label: "Feature fitting guide",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "feature-fitting/index",
+      },
+      items: [
+        "feature-fitting/availability",
+        "feature-fitting/cost",
+        "feature-fitting/latency",
+        "feature-fitting/throughput",
       ],
     },
     {

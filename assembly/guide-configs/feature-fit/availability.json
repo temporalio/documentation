@@ -1,0 +1,14 @@
+{
+  "file_name": "availability.md",
+  "id": "availability",
+  "file_dir": "/feature-fitting",
+  "title": "Temporal feature fitting guide - Availability",
+  "sidebar_label": "Availability",
+  "description": "This guide provides a way to assess and fit your feature through the viewpoint of availability.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+  ]
+}
+  

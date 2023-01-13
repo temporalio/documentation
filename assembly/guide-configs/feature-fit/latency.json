@@ -1,0 +1,14 @@
+{
+  "file_name": "latency.md",
+  "id": "latency",
+  "file_dir": "/feature-fitting",
+  "title": "Temporal feature fitting guide - Latency",
+  "sidebar_label": "Latency",
+  "description": "This guide provides a way to assess and fit your feature through the viewpoint of latency.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+  ]
+}
+  

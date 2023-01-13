@@ -1,0 +1,14 @@
+{
+  "file_name": "cost.md",
+  "id": "cost",
+  "file_dir": "/feature-fitting",
+  "title": "Temporal feature fitting guide - Cost",
+  "sidebar_label": "Costs",
+  "description": "This guide provides a way to assess and fit your feature through the viewpoint of cost.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+  ]
+}
+  

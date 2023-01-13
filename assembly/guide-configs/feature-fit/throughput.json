@@ -1,0 +1,14 @@
+{
+  "file_name": "throughput.md",
+  "id": "throughput",
+  "file_dir": "/feature-fitting",
+  "title": "Temporal feature fitting guide - Throughput",
+  "sidebar_label": "Throughput",
+  "description": "This guide provides a way to assess and fit your feature through the viewpoint of throughput.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+  ]
+}
+  
