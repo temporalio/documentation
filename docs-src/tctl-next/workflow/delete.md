@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow delete` command deletes a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+The `tctl workflow delete` command deletes a [Workflow Execution](/workflows#workflow-execution).
 
 `tctl workflow delete`
 

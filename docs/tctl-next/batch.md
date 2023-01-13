@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A "batch" command enables you to affect multiple existing <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> with a single command.
+A "batch" command enables you to affect multiple existing [Workflow Executions](/workflows#workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
 In tctl version-next you can run the typical Signal Workflow, Terminate Workflow, and Cancel Workflow batch jobs using the `tctl workflow signal`, `tctl workflow terminate`, and `tctl workflow cancel` commands respectively.

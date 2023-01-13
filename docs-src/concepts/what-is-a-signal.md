@@ -9,7 +9,7 @@ tags:
   - explanation
 ---
 
-A Signal is an asynchronous request to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+A Signal is an asynchronous request to a [Workflow Execution](/workflows#workflow-execution).
 
 - [How to develop, send, and handle Signals in code](/application-development/features#signals)
 - [How to send a Signal using tctl](/tctl-v1/workflow#signal)

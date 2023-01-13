@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+The `tctl workflow signal` command [Signals](/concepts/what-is-a-signal) a [Workflow Execution](/workflows#workflow-execution).
 
 The use of the [`--query` modifier](/tctl-next/modifiers#--query) (`tctl workflow signal --query ...`) starts a [batch job](/tctl-next/batch) that sends a Signal to the Workflow Executions according to the List Filter provided.
 

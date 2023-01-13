@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/concepts/what-is-a-workflow-execution) or an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
+A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 (Retry Policies do not apply to [Workflow Task Executions](/concepts/what-is-a-workflow-task-execution), which always retry indefinitely.)
 
 - [Activity retry simulator](/application-development/features#activity-retry-simulator)

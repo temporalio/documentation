@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 **How to run a tctl batch command.**
 
-A `tctl batch` command enables you to affect multiple existing <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> with a single command.
+A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/workflows#workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
 Use <a class="tdlp" href="#start">tctl batch start<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl batch start</p><p class="tdlppd">How to start a batch job using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#start">Learn more</a></p></div></a> to start a batch job.
@@ -62,7 +62,7 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify the <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a> that this batch job should operate.
+Specify the [Workflow Executions](/workflows#workflow-execution) that this batch job should operate.
 
 The SQL-like query of <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> is the same as used by the `tctl workflow list --query` command.
 
