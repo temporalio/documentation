@@ -117,7 +117,7 @@ tctl namespace register --owner_email <value>
 
 Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
 
-The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The Retention Period applies to Closed [Workflow Executions](/workflows#workflow-execution).
 
 **Example**
 

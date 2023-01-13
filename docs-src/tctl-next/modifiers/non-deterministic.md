@@ -7,4 +7,4 @@ tags:
   - tctl
 ---
 
-Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a non-deterministic error.
+Indicate that a [Workflow Execution](/workflows#workflow-execution) should be reset only if its last event is `WorkflowTaskFailed` with a non-deterministic error.

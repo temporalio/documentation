@@ -17,7 +17,7 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify the [Workflow Executions](/concepts/what-is-a-workflow-execution) that this batch job should operate.
+Specify the [Workflow Executions](/workflows#workflow-execution) that this batch job should operate.
 
 The SQL-like query of [Search Attributes](/concepts/what-is-a-search-attribute) is the same as used by the `tctl workflow list --query` command.
 

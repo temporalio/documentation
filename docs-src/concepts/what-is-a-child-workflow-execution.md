@@ -9,7 +9,7 @@ tags:
   - child-workflow
 ---
 
-A Child Workflow Execution is a [Workflow Execution](/concepts/what-is-a-workflow-execution) that is spawned from within another Workflow.
+A Child Workflow Execution is a [Workflow Execution](/workflows#workflow-execution) that is spawned from within another Workflow.
 
 - [How to start a Child Workflow Execution](/application-development/features#child-workflows)
 
