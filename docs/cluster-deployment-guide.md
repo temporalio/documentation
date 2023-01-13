@@ -22,6 +22,14 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Elasticsearch
 
+:::tip Support, stability, and dependency info
+- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
+- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
+- Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
+- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
+
+:::
+
 <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></p></div></a> features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
