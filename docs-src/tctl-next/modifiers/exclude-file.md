@@ -7,6 +7,6 @@ tags:
   - tctl
 ---
 
-Provide an input file that specifies [Workflow Executions](/concepts/what-is-a-workflow-execution) to exclude from resetting.
+Provide an input file that specifies [Workflow Executions](/workflows#workflow-execution) to exclude from resetting.
 
 Each line contains one [Workflow Id](/concepts/what-is-a-workflow-id).

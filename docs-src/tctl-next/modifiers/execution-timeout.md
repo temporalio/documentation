@@ -7,5 +7,5 @@ tags:
   - tctl
 ---
 
-Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
+Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
 The default value is 0.

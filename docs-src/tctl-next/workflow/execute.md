@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow execute` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and shows its progress until completion.
+The `tctl workflow execute` command starts a new [Workflow Execution](/workflows#workflow-execution) and shows its progress until completion.
 
 The command is entered in the following format:
 

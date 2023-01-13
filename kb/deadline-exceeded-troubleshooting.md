@@ -33,21 +33,17 @@ For the error to appear, a service pod or container must be up and running.
 OSS users can verify that the Frontend Service is connected and running by using `tctl`.
 
 ```
-
 tctl --address frontendAddress:frontendPort cluster health
-
 ```
 
 Use `grpc-health-probe` to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
 
 ```
-
 ./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService
 
 ./grpc-health-probe -addr=matchingAddress:matchingPort -service=temporal.api.workflowservice.v1.MatchingService
 
 ./grpc-health-probe -addr=historyAddress:historyPort -service=temporal.api.workflowservice.v1.HistoryService
-
 ```
 
 Logs can also be used to find failed Client [Query](/workflows#queries) requests.
@@ -60,9 +56,7 @@ A `resource exhausted` error can cause your client request to fail, which prompt
 Use the following query to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded` on your metrics dashboard.
 
 ```
-
 sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
-
 ```
 
 Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).

@@ -35,15 +35,6 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 :::
 
-:::note Supported versions
-
-- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
-
-:::
-
 #### Edit persistence
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
@@ -401,7 +392,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/temporal/versioned
-
 ```
 
 **Example visibility schema upgrade:**
@@ -417,7 +407,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/visibility/versioned
-
 ```
 
 ### Upgrade MySQL / PostgreSQL schema
