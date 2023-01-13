@@ -54,7 +54,9 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To run an Activity in a test, you can use the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class.
+
+This class allows you to run any callable inside an activity context, and you can use it to test the behavior of your code under different conditions.
 
 </TabItem>
 <TabItem value="typescript">
@@ -111,7 +113,23 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To test a Heartbeat in an Activity, you can use the `on_heartbeat()` property of the `ActivityEnvironment` class. This property allows you to set a custom function that will be called every time the `activity.heartbeat()` function is called within the Activity.
+
+```python
+async def test_heartbeats():
+    async def activity_with_heartbeats(param: str):
+        activity.heartbeat(f"param: {param}")
+        activity.heartbeat("second heartbeat")
+
+    env = ActivityEnvironment()
+    heartbeats = []
+    # Set the `on_heartbeat` property to a callback function that will be called for each heartbeat sent by the activity.
+    env.on_heartbeat = lambda *args: heartbeats.append(args[0])
+    # Use the run method to start the activity, passing in the function that contains the heartbeats and any necessary parameters.
+    await env.run(activity_with_heartbeats, "test")
+    # Verify that the expected heartbeats are received by the callback function.
+    assert heartbeats == ["param: test", "second heartbeat"]
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -168,7 +186,42 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To cancel an Activity in Temporal, you can use the [`WorkflowHandle.cancel()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) method, which will send a cancellation request to the running Workflow.
+
+```python
+import asyncio
+import uuid
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+# Import your Workflow definition
+from hello.hello_cancellation import CancellationWorkflow
+
+async def test_cancel_workflow(client: Client):
+    task_queue_name = str(uuid.uuid4())
+    async with Worker(
+        client,
+        task_queue=task_queue_name,
+        workflows=[CancellationWorkflow],
+    ):
+        # Start your Workflow 
+        handle = await client.start_workflow(
+            CancellationWorkflow.run,
+            id=(str(uuid.uuid4())),
+            task_queue=task_queue_name,
+        )
+
+        # Wait for the Activity to start
+        await asyncio.sleep(5)
+
+        # Cancel the workflow
+        await handle.cancel()
+
+        # Assert that the workflow has been canceled
+        assert "CANCELED" == (await handle.describe()).status
+```
+
+The async `cancel()` method sends a cancellation request to the running Workflow. If the Workflow is running an Activity that listens to cancellation, it will terminate the Activity.
 
 </TabItem>
 <TabItem value="typescript">
@@ -313,7 +366,46 @@ $this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Provide mock Activity implementations to the Worker.
+
+```python
+import uuid
+from temporalio.client import Client
+from temporalio.worker import Worker
+
+# Import your Activity definition and real implementation
+from hello.hello_activity import (
+    ComposeGreetingInput,
+    GreetingWorkflow,
+    compose_greeting,
+)
+
+# Define your mocked Activity implementation
+@activity.defn(name="compose_greeting")
+async def compose_greeting_mocked(input: ComposeGreetingInput) -> str:
+    return f"{input.greeting}, {input.name} from mocked activity!"
+
+async def test_mock_activity(client: Client):
+    task_queue_name = str(uuid.uuid4())
+    # Provide the mocked Activity implementation to the Worker
+    async with Worker(
+        client,
+        task_queue=task_queue_name,
+        workflows=[GreetingWorkflow],
+        activities=[compose_greeting_mocked],
+    ):
+        # Execute your Workflow as usual
+        assert "Hello, World from mocked activity!" == await client.execute_workflow(
+            GreetingWorkflow.run,
+            "World",
+            id=str(uuid.uuid4()),
+            task_queue=task_queue_name,
+        )
+```
+
+When providing the Worker with the mocked Activity implementations, you should only provide the mocked implementations and not the real implementations.
+
+The mocked Activity implementation should have the same signature as the real implementation, including the input and output types, and the same name. So that when the Workflow invokes the Activity, it will invoke the mocked implementation instead of the real one, allowing you to test your Workflow in isolation.
 
 </TabItem>
 <TabItem value="typescript">
@@ -424,7 +516,11 @@ temporal-test-server
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To set up a time skipping environment, import [`WorkflowEnvironment`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html) from the [`testing`](https://python.temporal.io/temporalio.testing.html) module.
+
+```python
+from temporalio.testing import WorkflowEnvironment
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -514,7 +610,7 @@ Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.
 
 Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal server.
 
-Use the [`from_client`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal sever.
+Use the [`from_client()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal sever.
 
 </TabItem>
 <TabItem value="typescript">
@@ -583,7 +679,18 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To implement manual time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
+
+```python
+from temporalio.testing import WorkflowEnvironment
+
+async def test_manual_time_skipping():
+    async with await WorkflowEnvironment.start_time_skipping() as env:
+        # Your code here
+        # You can use the env.sleep(seconds) method to manually advance time
+        await env.sleep(3) # This will advance time by 3 seconds
+        # Your code here
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -954,7 +1061,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parametrized tests.
 
 </TabItem>
 <TabItem value="typescript">
