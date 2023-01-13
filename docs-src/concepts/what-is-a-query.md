@@ -9,7 +9,7 @@ tags:
   - explanation
 ---
 
-A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/workflows#workflow-execution).
 The state of a running Workflow Execution is constantly changing.
 You can use Queries to expose the internal Workflow Execution state to the external world.
 Queries are available for running or completed Workflows Executions only if the Worker is up and listening on the Task Queue.

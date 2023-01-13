@@ -28,7 +28,7 @@ And as these systems scale, responding to multiple asynchronous events, communic
 Temporal restructures the use of services, databases, cron jobs, queues, host processes, and SDKs, into the Temporal Platform, and addresses failures head on.
 
 In a traditional system, the service exists to spawn function executions.
-The Temporal Platform exists to facilitate [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The Temporal Platform exists to facilitate [Workflow Executions](/workflows#workflow-execution).
 
 ![Temporal vs Traditional system](/diagrams/temporal-vs-traditional.svg)
 

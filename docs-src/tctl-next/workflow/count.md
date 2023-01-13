@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow count` command counts [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The `tctl workflow count` command counts [Workflow Executions](/workflows#workflow-execution).
 This command requires Elasticsearch to be enabled.
 
 `tctl workflow count <modifiers>`
