@@ -40,7 +40,7 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 ### Replays
 
-A Replay is effectively a retry of the Workflow Execution that checks against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
+A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
