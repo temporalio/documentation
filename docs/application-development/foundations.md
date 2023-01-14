@@ -216,7 +216,7 @@ pip install temporalio
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
-This project requires Node.js 14 or later.
+This project requires Node.js 14.18 or later.
 
 **Create a new project**
 
@@ -2706,7 +2706,7 @@ There are three main things the Worker needs:
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
 | Options         | Description                                                                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
 | `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
 | `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
