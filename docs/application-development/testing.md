@@ -477,7 +477,7 @@ test('workflowFoo', async () => {
 ```
 
 This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result.
-The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
+The Workflow is executed using `testEnv.client.workflow`, which is connected to the test server.
 
 </TabItem>
 </Tabs>
@@ -520,7 +520,7 @@ Use the [`from_client`](https://python.temporal.io/temporalio.testing.WorkflowEn
 <TabItem value="typescript">
 
 The test server starts in "normal" time.
-When you use `TestWorkflowEnvironment.workflowClient.execute()` or `.result()`, the test server switches to "skipped" time mode until the Workflow completes.
+When you use `TestWorkflowEnvironment.client.workflow.execute()` or `.result()`, the test server switches to "skipped" time mode until the Workflow completes.
 In "skipped" mode, timers (`sleep()` calls and `condition()` timeouts) are fast-forwarded except when Activities are running.
 
 `workflows.ts`
@@ -546,7 +546,7 @@ test('sleep completes almost immediately', async () => {
   });
   // Does not wait an entire day
   await worker.runUntil(
-    testEnv.workflowClient.execute(sleeperWorkflow, {
+    testEnv.client.workflow.execute(sleeperWorkflow, {
       workflowId: uuid(),
       taskQueue: 'test',
     }),
@@ -619,7 +619,7 @@ test('sleeperWorkflow counts days correctly', async () => {
   // `start()` starts the test server in "normal" mode, not skipped time mode.
   // If you don't advance time using `testEnv.sleep()`, then `sleeperWorkflow()`
   // will run for days.
-  handle = await testEnv.workflowClient.start(sleeperWorkflow, {
+  handle = await testEnv.client.workflow.start(sleeperWorkflow, {
     workflowId: uuid4(),
     taskQueue,
   });
@@ -829,7 +829,7 @@ const worker = await Worker.create({
 });
 
 const result = await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions),
+  testEnv.client.workflow.execute(functionToTest, workflowOptions),
 );
 
 assert.equal(result, 42);
@@ -921,7 +921,7 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
 );
 ```
 

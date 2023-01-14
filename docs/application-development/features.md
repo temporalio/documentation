@@ -497,12 +497,12 @@ Content is currently unavailable.
 [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { joinSignal } from './workflows';
 
-const client = new WorkflowClient();
+const client = new Client();
 
-const handle = client.getHandle('workflow-id-123');
+const handle = client.workflow.getHandle('workflow-id-123');
 
 await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```
@@ -756,15 +756,15 @@ async def main():
 </TabItem>
 <TabItem value="typescript">
 
-[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
+[`Client.workflow.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { joinSignal, yourWorkflow } from './workflows';
 
-const client = new WorkflowClient();
+const client = new Client();
 
-await client.signalWithStart(yourWorkflow, {
+await client.workflow.signalWithStart(yourWorkflow, {
   workflowId: 'workflow-id-123',
   args: [{ foo: 1 }],
   signal: joinSignal,

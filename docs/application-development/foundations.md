@@ -539,20 +539,20 @@ client = await Client.connect(
 </TabItem>
 <TabItem value="typescript">
 
-Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
+Declaring the `Client()` creates a new connection to the Temporal service.
 
-If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
+If you omit the connection and just call the `new Client()`, you create a default connection that works locally.
 However, always configure your connection and Namespace when [deploying to production](https://legacy-documentation-sdks.temporal.io/typescript/security/#encryption-in-transit-with-mtls).
 
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
+Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`Client`](https://typescript.temporal.io/api/classes/client.Client) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
 
-Use a new `WorkflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
+Use a new `Client()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
 
 Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
 
 ```typescript
 import fs from "fs-extra";
-import {Connection, WorkflowClient} from "@temporalio/client";
+import {Connection, Client} from "@temporalio/client";
 import path = from "path";
 
 async function run() {
@@ -571,7 +571,7 @@ async function run() {
   };
   const connection = await Connection.connect(connectionOptions);
 
-  const client = new WorkflowClient({
+  const client = new Client({
     connection,
     // connects to 'default' namespace if not specified
     namespace: "your-custom-namespace",
@@ -3489,11 +3489,11 @@ run().catch((err) => {
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Connection, Client } from '@temporalio/client';
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({ connection });
-const result = await client.execute(yourWorkflow, {
+const client = new Client({ connection });
+const result = await client.workflow.execute(yourWorkflow, {
   // required
   taskQueue: 'your-task-queue',
   // required
