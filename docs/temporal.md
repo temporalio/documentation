@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-Temporal is a scalable and reliable runtime for Reentrant Processes called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
@@ -40,7 +40,7 @@ They communicate with a Temporal Cluster via gRPC.
 
 ## Temporal Application
 
-A Temporal Application is a set of <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+A Temporal Application is a set of [Temporal Workflow Executions](/workflows#workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.
@@ -81,6 +81,24 @@ See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
 ### Auth
 
 Temporal offers methods of authenticating and authorizing client API calls within our SDKs.
+
+### Sandbox environment
+
+Some SDKs support running Workflows inside a sandbox environment.
+
+<Tabs>
+  <TabItem value="python" label="Python">
+
+The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
+The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
+
+By default, Workflows run in a sandbox environment.
+If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task.
+The Workflow will not progress until the code is fixed.
+
+For more information, see the knowledge base article on [Python sandbox environments](/kb/python-sandbox-environment).
+</TabItem>
+</Tabs>
 
 ### SDKs in development
 

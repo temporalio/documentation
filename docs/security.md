@@ -105,7 +105,7 @@ To enable SSO for the Temporal Web UI edit the web service's configuration per t
 A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.
 
 - TypeScript: [Data Converters](https://legacy-documentation-sdks.temporal.io/typescript/data-converters)
-- Go: [Create a custom Data Converter](/go/how-to-create-a-custom-data-converter-in-go)
+- Go: [Create a custom Data Converter](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-custom-data-converter-in-go)
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" /></div></div>
 
@@ -263,7 +263,8 @@ To use a <a class="tdlp" href="#codec-server">Codec Server<span class="tdlpiw"><
 
 ### Run the server
 
-A Codec Server is an HTTP server that implements two endpoints:
+A Codec Server is an HTTP server that follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
+It implements two endpoints:
 
 - `POST /encode`
 - `POST /decode`
@@ -490,16 +491,16 @@ Temporal Server provides a [default implementation of JWT authentication](/secur
 **Example**
 
 ```java
-  AuthorizationTokenSupplier tokenSupplier =
-    //your implementation of token supplier
-    () -> "Bearer <Base64 url-encoded value of the token for default JWT ClaimMapper>";
-  WorkflowServiceStubsOptions serviceStubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-      //other service stub options
-      .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
-      .build();
-  WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
-  WorkflowClient client = WorkflowClient.newInstance(service);
+AuthorizationTokenSupplier tokenSupplier =
+  //your implementation of token supplier
+  () -> "Bearer <Base64 url-encoded value of the token for default JWT ClaimMapper>";
+WorkflowServiceStubsOptions serviceStubOptions =
+  WorkflowServiceStubsOptions.newBuilder()
+    //other service stub options
+    .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
+    .build();
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
+WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 
 Related read:

@@ -24,7 +24,7 @@ The following modifiers control the behavior of the command.
 
 ### --active_cluster
 
-Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster) when registering a [Namespace](/concepts/what-is-a-namespace).
 This value changes for Global Namespaces when a failover occurs.
 
 **Example**
@@ -35,7 +35,7 @@ tctl namespace register --active_cluster <name>
 
 ### --clusters
 
-Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when registering a [Namespace](/concepts/what-is-a-namespace).
+Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster) when registering a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 Make sure to include to the currently active Cluster.
@@ -117,7 +117,7 @@ tctl namespace register --owner_email <value>
 
 Set the [Retention Period](/clusters#retention-period) for the [Namespace](/concepts/what-is-a-namespace).
 
-The Retention Period applies to Closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The Retention Period applies to Closed [Workflow Executions](/workflows#workflow-execution).
 
 **Example**
 

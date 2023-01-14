@@ -35,15 +35,6 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 :::
 
-:::note Supported versions
-
-- Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
-- Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
-- Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
-
-:::
-
 #### Edit persistence
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
@@ -206,7 +197,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
-Archival is supported in [Global Namespaces](/concepts/what-is-a-global-namespace/) (Namespaces that span multiple clusters).
+Archival is supported in <a class="tdlp" href="/namespaces#global-namespace">Global Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Global Namespace?</p><p class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#global-namespace">Learn more</a></p></div></a> (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup
@@ -401,7 +392,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/temporal/versioned
-
 ```
 
 **Example visibility schema upgrade:**
@@ -417,7 +407,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/visibility/versioned
-
 ```
 
 ### Upgrade MySQL / PostgreSQL schema

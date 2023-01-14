@@ -48,7 +48,7 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
-- The arguments must be [serializable](/concepts/what-is-a-data-converter/).
+- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -408,7 +408,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> to a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> to a [Workflow Execution](/workflows#workflow-execution).
 
 Pass in both the <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Id?</p><p class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></p></div></a> and <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Run Id?</p><p class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#run-id">Learn more</a></p></div></a> to uniquely identify the Workflow Execution.
 If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
@@ -784,7 +784,7 @@ A <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/i
 A Query has a name and can have arguments.
 
 - The name, also called a Query type, is a string.
-- The arguments must be [serializable](/concepts/what-is-a-data-converter/).
+- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
 
 <Tabs
 defaultValue="go"
@@ -2830,9 +2830,9 @@ The following examples show how to spawn a Child Workflow:
 
 Related reads:
 
-- [How to set a Child Workflow Options in Java](/java/how-to-set-child-workflow-options-in-java)
+- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
 
-- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
+- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to develop a Workflow Definition in Java</p><p class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></p></div></a>
 
 - Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
 
@@ -3436,7 +3436,7 @@ const handle = await client.start(scheduledWorkflow, {
 
 ## Side Effects
 
-Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 
@@ -3457,7 +3457,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, nondeterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
+Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Side Effect?</p><p class="tdlppd">A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#side-effect">Learn more</a></p></div></a> directly in your Workflow.
 
 Pass it an instance of `context.Context` and the function to execute.
 
@@ -3486,13 +3486,13 @@ The following example demonstrates how NOT to use `SideEffect`:
 
 ```go
 // Warning: This is an incorrect example.
-// This code is nondeterministic.
+// This code is non-deterministic.
 var random int
 workflow.SideEffect(func(ctx workflow.Context) interface{} {
       random = rand.Intn(100)
       return nil
 })
-// random will always be 0 in replay, so this code is nondeterministic.
+// random will always be 0 in replay, so this code is non-deterministic.
 ```
 
 On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
@@ -3500,7 +3500,7 @@ On replay the provided function is not executed, the random number will always b
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the nondeterministic code.
+To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the non-deterministic code.
 
 ```java
 int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
@@ -3622,6 +3622,322 @@ Not applicable to this SDK.
 <TabItem value="typescript">
 
 Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
+## Namespaces
+
+You can create, update, deprecate or delete your <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> using either tctl or SDK APIs.
+
+Use Namespaces to isolate your Workflow Executions according to your needs.
+For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
+You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
+
+On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+### Register Namespace
+
+Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal Cloud.
+
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
+
+On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#retention-period">Learn more</a></p></div></a> for the Workflow Execution Event History for the Namespace.
+
+You can also <a class="tdlp" href="/tctl-v1/namespace#register">register Namespaces using the tctl command-line tool<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace register</p><p class="tdlppd">How to register a Namespace using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-v1/namespace#register">Learn more</a></p></div></a>.
+
+```go
+client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
+        //...
+    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
+        Namespace: your-namespace-name,
+        WorkflowExecutionRetentionPeriod: &retention,
+    })
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
+See <a class="tdlp" href="/application-development/foundations#connect-to-a-cluster">how to set Namespace in a Client in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</p><p class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/foundations#connect-to-a-cluster">Learn more</a></p></div></a> for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient`.
+
+To update your Namespace using tctl, use the <a class="tdlp" href="/tctl-v1/namespace#update">tctl namespace update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl namespace update</p><p class="tdlppd">How to update a Namespace using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-v1/namespace#update">Learn more</a></p></div></a> command.
+
+</TabItem>
+<TabItem value="java">
+
+Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Namespace?</p><p class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#">Learn more</a></p></div></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Retention Period?</p><p class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#retention-period">Learn more</a></p></div></a> for the Workflow Execution Event History for the Namespace.
+
+```java
+//...
+import com.google.protobuf.util.Durations;
+import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
+//...
+public static void createNamespace(String name) {
+    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
+            .setNamespace("your-custom-namespace")
+            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
+            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
+            .build();
+    service.blockingStub().registerNamespace(req);
+}
+//...
+```
+
+The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
+The minimum value you can set for this period is 1 day.
+
+Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
+See [how to set Namespace in a Client in Java](/application-development/foundations#connect-to-a-cluster) for details.
+
+Note that Namespace registration using this API takes up to 10 seconds to complete.
+Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
+
+To update your Namespace, use the [`UpdateNamespace` API](/application-development/features/#namespaces) with the `NamespaceClient`.
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
+
+</TabItem>
+</Tabs>
+
+### Manage Namespaces
+
+You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
+
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a Namespace in Temporal Cloud</p><p class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace">Learn more</a></p></div></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></p></div></a> on your Frontend Service in the Temporal Cluster to set restrictions on who can create, update, or deprecate Namespaces.
+
+You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
+
+<Tabs
+defaultValue="go"
+groupId="site-lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+- Update information and configuration for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
+    Example
+  - Use the [`UpdateNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to update configuration on a Namespace.
+    Example
+
+    ```go
+    //...
+      err = client.Update(context.Background(), &workflowservice.UpdateNamespaceRequest{
+      Namespace:         "your-namespace-name",
+      UpdateInfo:        &namespace.UpdateNamespaceInfo{ //updates info for the namespace "your-namespace-name"
+          Description:   "updated namespace description",
+          OwnerEmail:    "newowner@mail.com",
+          //Data:        nil,
+          //State:       0,
+      },
+      /*other details that you can update:
+      Config:            &namespace.NamespaceConfig{ //updates the configuration of the namespace with the following options
+          //WorkflowExecutionRetentionTtl: nil,
+          //BadBinaries:                   nil,
+          //HistoryArchivalState:          0,
+          //HistoryArchivalUri:            "",
+          //VisibilityArchivalState:       0,
+          //VisibilityArchivalUri:         "",
+      },
+      ReplicationConfig: &replication.NamespaceReplicationConfig{ //updates the replication configuration for the namespace
+          //ActiveClusterName: "",
+          //Clusters:          nil,
+          //State:             0,
+      },
+      SecurityToken:     "",
+      DeleteBadBinary:   "",
+      PromoteNamespace:  false,
+      })*/
+    //...
+    ```
+
+- Get details for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
+  - Use the [`DescribeNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to return information and configuration details for a registered Namespace.
+    Example
+
+    ```go
+    //...
+      client, err := client.NewNamespaceClient(client.Options{})
+      //...
+      client.Describe(context.Background(), "default")
+    //...
+    ```
+
+- Get details for all registered Namespaces on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
+  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+    Example
+
+  ```go
+  //...
+      namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active cluster. You can set a large PageSize or loop until NextPageToken is nil
+          //PageSize:        0,
+          //NextPageToken:   nil,
+          //NamespaceFilter: nil,
+          })
+  //...
+  ```
+
+- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
+  Example:
+
+  ```go
+  //...
+  client.OperatorService().DeleteNamespace(ctx, &operatorservice.DeleteNamespaceRequest{...
+  //...
+  ```
+
+</TabItem>
+<TabItem value="java">
+
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+- Update information and configuration for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
+    Example
+  - Use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to update configuration on a Namespace.
+    Example
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  UpdateNamespaceRequest updateNamespaceRequest = UpdateNamespaceRequest.newBuilder()
+              .setNamespace("your-namespace-name") //the namespace that you want to update
+              .setUpdateInfo(UpdateNamespaceInfo.newBuilder() //has options to update namespace info
+                      .setDescription("your updated namespace description") //updates description in the namespace info.
+                      .build())
+              .setConfig(NamespaceConfig.newBuilder() //has options to update namespace configuration
+                      .setWorkflowExecutionRetentionTtl(Durations.fromHours(30)) //updates the retention period for the namespace "your-namespace--name" to 30 hrs.
+                      .build())
+              .build();
+      UpdateNamespaceResponse updateNamespaceResponse = namespaceservice.blockingStub().updateNamespace(updateNamespaceRequest);
+  //...
+  ```
+
+- Get details for a registered Namespace on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
+  - Use the [`DescribeNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for a registered Namespace.
+    Example
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  DescribeNamespaceRequest descNamespace = DescribeNamespaceRequest.newBuilder()
+              .setNamespace("your-namespace-name") //specify the namespace you want details for
+              .build();
+      DescribeNamespaceResponse describeNamespaceResponse = namespaceservice.blockingStub().describeNamespace(descNamespace);
+      System.out.println("Namespace Description: " + describeNamespaceResponse);
+  //...
+  ```
+
+- Get details for all registered Namespaces on your Temporal Cluster:
+
+  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
+  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+    Example
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  ListNamespacesRequest listNamespaces = ListNamespacesRequest.newBuilder().build();
+      ListNamespacesResponse listNamespacesResponse = namespaceservice.blockingStub().listNamespaces(listNamespaces); //lists 1-100 namespaces (1 page) in the active cluster. To list all, set the page size or loop until NextPageToken is nil.
+  //...
+  ```
+
+- Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
+  Example:
+
+  ```java
+  import io.temporal.api.workflowservice.v1.*;
+  //...
+  DeprecateNamespaceRequest deprecateNamespace = DeprecateNamespaceRequest.newBuilder()
+              .setNamespace("your-namespace-name") //specify the namespace that you want to deprecate
+              .build();
+      DeprecateNamespaceResponse response = namespaceservice.blockingStub().deprecateNamespace(deprecateNamespace);
+  //...
+  ```
+
+- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
+
+  Example:
+
+  ```java
+  //...
+  DeleteNamespaceResponse res =
+  OperatorServiceStubs.newServiceStubs(OperatorServiceStubsOptions.newBuilder()
+          .setChannel(service.getRawChannel())
+          .validateAndBuildWithDefaults())
+      .blockingStub()
+      .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("your-namespace-name").build());
+  //...
+  ```
+
+</TabItem>
+<TabItem value="php">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="python">
+
+Content is currently unavailable.
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is currently unavailable.
 
 </TabItem>
 </Tabs>
