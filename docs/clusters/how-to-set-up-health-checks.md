@@ -27,7 +27,6 @@ service {
   check {
     type         = "grpc"
     port         = 7233
-    grpc_service = "grpc.health.v1.Health"
     interval     = "10s"
     timeout      = "2s"
   }
