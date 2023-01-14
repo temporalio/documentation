@@ -180,7 +180,7 @@ namespaceDefaults:
 The following table showcases acceptable values for each configuration and what purpose they serve.
 
 | Config                                         | Acceptable values                                                                  | Description                                                                                                                  |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+|------------------------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | `archival.history.state`                       | `enabled`, `disabled`                                                              | Must be `enabled` to use the Archival feature with any Namespace in the cluster.                                             |
 | `archival.history.enableRead`                  | `true`, `false`                                                                    | Must be `true` to read from the archived Event History.                                                                      |
 | `archival.history.provider`                    | Sub provider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. | Default config specifies `filestore`.                                                                                        |
@@ -476,6 +476,34 @@ We recommend preparing a staging Cluster and then do the following to verify the
 3. Wait and observe for a few minutes to verify that there is no unstable behavior from both the server and the simulation load logic.
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
+
+## Health checks
+
+The [Frontend Service](/clusters#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
+
+If you use [Nomad](https://www.nomadproject.io/) to manage your containers, the [check stanza](https://developer.hashicorp.com/nomad/docs/job-specification/check) would look like this for TCP:
+
+```
+service {
+  check {
+    type     = "tcp"
+    port     = 7233
+    interval = "10s"
+    timeout  = "2s"
+  }
+```
+
+or like this for gRPC (requires Consul ≥ `1.0.5`):
+
+```
+service {
+  check {
+    type         = "grpc"
+    port         = 7233
+    interval     = "10s"
+    timeout      = "2s"
+  }
+```
 
 ## Set up Multi-Cluster Replication
 
