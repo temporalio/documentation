@@ -57,7 +57,7 @@ async function run() {
     // type inference works! args: [name: string]
     args: ['Temporal'],
     taskQueue: 'hello-world',
-    // in practice, use a meaningful business ID, like customerId or transactionId
+    // in practice, use a meaningful business identifier, like customerId or transactionId
     workflowId: 'workflow-' + nanoid(),
   });
   console.log(`Started workflow ${handle.workflowId}`);
