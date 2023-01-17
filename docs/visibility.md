@@ -166,7 +166,7 @@ A Temporal Cluster that is integrated with Elasticsearch has a set of default Se
 These Search Attributes are created when the initial index is created.
 
 | NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |
-|-----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | WorkflowType          | Keyword  | The type of Workflow.                                                                                                                                                        |
 | WorkflowId            | Keyword  | Identifies the Workflow Execution.                                                                                                                                           |
 | ExecutionStatus       | Keyword  | The current state of the Workflow Execution.                                                                                                                                 |
