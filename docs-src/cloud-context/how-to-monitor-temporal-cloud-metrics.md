@@ -34,7 +34,7 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 1. Click **Generate endpoint**.
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
-Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json). 
+Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
 For more information, see [Set up Grafana with Temporal Cloud](/kb/prometheus-grafana-setup-cloud).
 
 You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
