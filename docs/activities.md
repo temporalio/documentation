@@ -37,7 +37,7 @@ Therefore, the terms Activity Function and Activity Method refer to the source o
 
 Activity Definitions are named and referenced in code by their <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Type?</span><br /><br /><span class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-type">Learn more</a></span></span></a>.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Activity Definition</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-definition.svg" alt="Activity Definition" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Activity Definition</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/activity-definition.svg" alt="Activity Definition" height="680" width="1000" /></div></div>
 
 #### Constraints
 
@@ -74,7 +74,7 @@ An Activity Execution is the full chain of <a class="tdlp" href="/tasks#activity
 
 - [How to spawn an Activity Execution](/application-development/foundations#activity-execution)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/activity-execution.svg" alt="Activity Execution" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/activity-execution.svg" alt="Activity Execution" height="1780" width="1140" /></div></div>
 
 By default, an Activity Execution has no time limit.
 Activity Execution [timeouts](/application-development/features#activity-timeouts) and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> can be customized.
@@ -131,7 +131,7 @@ In other words, it's a limit for how long an Activity Task can be enqueued.
 The moment that the Task is picked by the Worker from the Task Queue is considered to be the start of the Activity Task for the purposes of the Schedule-To-Start Timeout and associated metrics.
 This definition of "Start" avoids issues that a clock difference between the Temporal Cluster and a Worker might create.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Start Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-start-timeout.svg" alt="Schedule-To-Start Timeout period" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Start Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/schedule-to-start-timeout.svg" alt="Schedule-To-Start Timeout period" height="666" width="1120" /></div></div>
 
 "Schedule" in Schedule-To-Start and Schedule-To-Close have different frequency guarantees.
 
@@ -141,7 +141,7 @@ Thus, "Schedule" in Schedule-To-Start refers to the scheduling moment of _every_
 
 A <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> attached to an Activity Execution retries an Activity Task.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-start-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/schedule-to-start-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" height="1246" width="1601" /></div></div>
 
 This timeout has two primary use cases:
 
@@ -170,14 +170,14 @@ For long running Activity Executions, we recommend also using <a class="tdlp" hr
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/start-to-close-timeout.svg" alt="Start-To-Close Timeout period" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/start-to-close-timeout.svg" alt="Start-To-Close Timeout period" height="666" width="1119" /></div></div>
 
 A <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> attached to an Activity Execution retries an Activity Task Execution.
 Thus, the Start-To-Close Timeout is applied to each Activity Task Execution within an Activity Execution.
 
 If the first Activity Task Execution returns an error the first time, then the full Activity Execution might look like this:
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/start-to-close-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period with retries</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/start-to-close-timeout-with-retry.svg" alt="Start-To-Close Timeout period with retries" height="1246" width="1601" /></div></div>
 
 If this timeout is reached, the following actions occur:
 
@@ -192,11 +192,11 @@ A Schedule-To-Close Timeout is the maximum amount of time allowed for the overal
 
 - <a class="tdlp" href="/application-development/features#activity-retries">How to set a Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set an Activity Retry Policy</span><br /><br /><span class="tdlppd">Activity Executions are automatically associated with a default Retry Policy if a custom one is not provided.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#activity-retries">Learn more</a></span></span></a>
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-close-timeout.svg" alt="Schedule-To-Close Timeout period" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/schedule-to-close-timeout.svg" alt="Schedule-To-Close Timeout period" height="666" width="1120" /></div></div>
 
 Example Schedule-To-Close Timeout period for an Activity Execution that has a chain Activity Task Executions:
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period with a retry</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/schedule-to-close-timeout-with-retry.svg" alt="Schedule-To-Close Timeout period with a retry" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Schedule-To-Close Timeout period with a retry</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/schedule-to-close-timeout-with-retry.svg" alt="Schedule-To-Close Timeout period with a retry" height="1246" width="1540" /></div></div>
 
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
@@ -280,7 +280,7 @@ A Heartbeat Timeout is the maximum time between <a class="tdlp" href="#activity-
 
 - [How to set a Heartbeat Timeout](/application-development/features#heartbeat-timeout)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Heartbeat Timeout periods</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/heartbeat-timeout.svg" alt="Heartbeat Timeout periods" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Heartbeat Timeout periods</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/heartbeat-timeout.svg" alt="Heartbeat Timeout periods" height="866" width="1140" /></div></div>
 
 If this timeout is reached, the Activity Task fails and a retry occurs if a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> dictates it.
 

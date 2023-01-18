@@ -9,8 +9,10 @@
     "@notionhq/client": "^2.2.0",
     "fs-extra": "^10.1.0",
     "gray-matter": "^4.0.3",
+    "image-size": "^1.0.2",
     "path": "^0.12.7",
     "readdirp": "^3.6.0",
+    "svg-parser": "^2.0.4",
     "temporalio": "^1.1.0"
   }
 }

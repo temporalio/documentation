@@ -23,14 +23,14 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 :::
 -->
 
-<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" height="740" width="1140" /></div></div>
 
 ## Temporal Platform
 
 The Temporal Platform consists of a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
 Together these components create a runtime for Workflow Executions.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" height="740" width="1140" /></div></div>
 
 The Temporal Cluster is open source and can be operated by you.
 The Temporal Cloud is a set of Clusters operated by us.

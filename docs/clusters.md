@@ -25,7 +25,7 @@ A Temporal Cluster is the group of services, known as the <a class="tdlp" href="
 A Temporal Cluster's only required dependency for basic operation is a database.
 Multiple types of databases are supported.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-database.svg" alt="Persistence" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" height="620" width="1140" /></div></div>
 
 The database stores the following types of data:
 
@@ -174,7 +174,7 @@ Temporal offers official support for, and is tested against, dependencies with t
 The Frontend Service is a stateless gateway service that exposes a strongly typed [Proto API](https://github.com/temporalio/api/blob/master/temporal/api/workflowservice/v1/service.proto).
 The Frontend Service is responsible for rate limiting, authorizing, validating, and routing all inbound calls.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Frontend Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-frontend-service.svg" alt="Frontend Service" height="1040" width="1140" /></div></div>
 
 Types of inbound calls include the following:
 
@@ -201,7 +201,7 @@ Ports are configurable in the Cluster configuration.
 
 The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using <a class="tdlp" href="#history-shard">History Shards<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a History Shard?</span><br /><br /><span class="tdlppd">A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#history-shard">Learn more</a></span></span></a>.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-history-service.svg" alt="History Service" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">History Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-history-service.svg" alt="History Service" height="1040" width="1140" /></div></div>
 
 The total number of History Services can be between 1 and the total number of History Shards.
 An individual History Service can support a large number of History Shards.
@@ -250,7 +250,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 The Matching Service is responsible for hosting user-facing <a class="tdlp" href="/tasks#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a> for Task dispatching.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" height="980" width="870" /></div></div>
 
 It is responsible for matching Workers to Tasks and routing new Tasks to the appropriate queue.
 This service can scale internally by having multiple instances.
@@ -266,7 +266,7 @@ Ports are configurable in the Cluster configuration.
 
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Worker Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-worker-service.svg" alt="Worker Service" height="740" width="1140" /></div></div>
 
 It talks to the Frontend Service.
 
