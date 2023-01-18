@@ -160,7 +160,7 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
 }
 
 function centeredImage(image, dimensions) {
-  return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="tdi" src="${image[2]}" alt="${image[1]}" height="${dimensions.height}" width="${dimensions.width}" /></div></div>`;
+  return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="img_ev3q" src="${image[2]}" alt="${image[1]}" height="${dimensions.height}" width="${dimensions.width}" /></div></div>`;
 }
 
 function linkPreview(newPath, linkText, nodeTitle, description) {
