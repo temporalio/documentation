@@ -35,6 +35,10 @@
     },
     {
       "type": "h2",
+      "id": "clusters/how-to-set-up-health-checks"
+    },
+    {
+      "type": "h2",
       "id": "clusters/how-to-set-up-multi-cluster-replication"
     }
   ]
