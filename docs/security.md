@@ -107,7 +107,7 @@ A Data Converter is a Temporal SDK component that encodes and decodes data enter
 - TypeScript: [Data Converters](https://legacy-documentation-sdks.temporal.io/typescript/data-converters)
 - Go: [Create a custom Data Converter](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-custom-data-converter-in-go)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" height="1240" width="2300" /></div></div>
 
 Data is encoded before it is sent to a Temporal Server, and it is decoded when it is received from a Temporal Server.
 
@@ -292,7 +292,7 @@ Once the Codec Server is started, there are two ways to provide it to the Web UI
 
 #### In the UI
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Data Encoder icon</p></div><div class="tdiiw"><img class="tdi" src="/img/docs/data-encoder-button.png" alt="Data Encoder icon" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Data Encoder icon</p></div><div class="tdiiw"><img class="tdi" src="/img/docs/data-encoder-button.png" alt="Data Encoder icon" height="304" width="406" /></div></div>
 
 Select the icon with an up-down arrow on the bottom left of the screen.
 This action displays the codec endpoint dialog.
