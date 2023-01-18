@@ -16,7 +16,7 @@ This guide provides a comprehensive overview of Temporal Activities.
 In day-to-day conversations, the term _Activity_ frequently denotes either an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Definition?</p><p class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</p><p class="tdlplm"><a class="tdlplma" href="#activity-definition">Learn more</a></p></div></a>, an <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Type?</p><p class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="#activity-type">Learn more</a></p></div></a>, or an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Execution?</p><p class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</p><p class="tdlplm"><a class="tdlplma" href="#activity-execution">Learn more</a></p></div></a>.
 Temporal documentation aims to be explicit and differentiate between them.
 
-Temporal recommends that Activities are idempotent. Activities are idempotent if multiple applications of that operation do not change the state of the system beyond the initial application.
+An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
 
 Workflow code orchestrates the execution of Activities, persisting the results.
 If an Activity Function Execution fails, any future execution starts from initial state (except Heartbeats).
@@ -28,7 +28,7 @@ The Event is added to the Workflow Execution's Event History.
 
 ## Activity Definition
 
-An Activity Definition is the code that defines the constraints of an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>. For example, one way to understand an Activity Definition is to think of it as a normal function or object method that executes a single, well-defined action (either short or long-running), such as calling another service, transcoding a media file, or sending an email message.
+An Activity Definition is the code that defines the constraints of an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Activity Task Execution?</p><p class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></p></div></a>.
 
 - [How to develop an Activity Definition](/application-development/foundations#develop-activities)
 
@@ -47,12 +47,7 @@ Activities are idempotent if multiple <a class="tdlp" href="/tasks#activity-task
 
 Activities may be tried more than once even if the Retry Policy says they shouldn't. Because of that, you may need to use idempotency keys for critical side effects.
 
-<!-- Unlike determinism in a Workflow, which actually is a requirement, Temporal cannot enforce that your Activity is idempotent.
--->
-
 The lack of idempotency may affect the correctness of your application, but does not affect Temporal (in other words, it does not lead to a platform error).
-
-<!-- Temporal supports either at most once or at least once execution of Activities, and in the case of at least once activities must be idempotent -->
 
 In some cases, whether something is idempotent does not affect the correctness of an application. For example, if you have a monotonically-incrementing counter, you may not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
 

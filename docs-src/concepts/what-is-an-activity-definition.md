@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution). For example, one way to understand an Activity Definition is to think of it as a normal function or object method that executes a single, well-defined action (either short or long-running), such as calling another service, transcoding a media file, or sending an email message.
+An Activity Definition is the code that defines the constraints of an [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
 - [How to develop an Activity Definition](/application-development/foundations#develop-activities)
 
@@ -27,12 +27,7 @@ Activities are idempotent if multiple [Activity Task Executions](/concepts/what-
 
 Activities may be tried more than once even if the Retry Policy says they shouldn't. Because of that, you may need to use idempotency keys for critical side effects.
 
-<!-- Unlike determinism in a Workflow, which actually is a requirement, Temporal cannot enforce that your Activity is idempotent.
--->
-
 The lack of idempotency may affect the correctness of your application, but does not affect Temporal (in other words, it does not lead to a platform error).
-
-<!-- Temporal supports either at most once or at least once execution of Activities, and in the case of at least once activities must be idempotent -->
 
 In some cases, whether something is idempotent does not affect the correctness of an application. For example, if you have a monotonically-incrementing counter, you may not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
 
