@@ -1,13 +1,13 @@
 ---
 id: side-effects
 title: Side Effects
-description: A Side Effect is used to produce nondeterministic code, such as generating a UUID or a random number.
+description: A Side Effect is used to produce non-deterministic code, such as generating a UUID or a random number.
 sidebar_label: Side Effects
 tags:
   - guide-context
 ---
 
-Side Effects are used to execute nondeterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the nondeterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
 
 A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 

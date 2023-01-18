@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 
 const docsLinkRegex =
-  "\\[([a-zA-Z0-9-_#.&`\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
+  "\\[([a-zA-Z0-9-_#.&`',\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
 const docsImageRegex = "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
 const imageRegex = RegExp(docsImageRegex, "gm");
@@ -159,7 +159,7 @@ function centeredImage(image) {
 }
 
 function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">${nodeTitle}</p><p class="tdlppd">${description}</p><p class="tdlplm"><a class="tdlplma" href="${newPath}">Learn more</a></p></div></a>`;
+  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
 }
 
 async function replaceLinks(line, match, link, current_guide_id) {
