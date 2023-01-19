@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-Temporal is a scalable and reliable runtime for durable Reentrant Processes called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+Temporal is a scalable and reliable runtime for durable function executions called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
@@ -28,15 +28,59 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 ## Temporal Platform
 
 The Temporal Platform consists of a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-process">Learn more</a></p></div></a>.
-Together these components create a runtime for Workflow Executions.
+Together these components create a runtime for Workflow Executions; that is-they create a runtime for your application.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
 
 The Temporal Cluster is open source and can be operated by you.
 <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Temporal Cloud?</p><p class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/index#">Learn more</a></p></div></a> is a set of Clusters operated by us.
 
-Worker Processes are hosted by you and execute your code.
+Worker Processes are hosted and operated by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" /></div></div>
+
+### Temporal vs traditional
+
+In a traditional system, the service exists to spawn function executions.
+The Temporal Platform exists to facilitate [Workflow Executions](/workflows#workflow-execution).
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Temporal vs Traditional system</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-vs-traditional.svg" alt="Temporal vs Traditional system" /></div></div>
+
+Although the two systems seem similar at first glance, they differ in several significant ways.
+
+**Failure**
+
+With a traditional system, a service function execution is both volatile and short-lived.
+
+- If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the chance of failure.
+- A traditional function execution typically has a limited lifespan, often measured in minutes.
+
+With Temporal, a Workflow Execution is resumable.
+
+- A Workflow Execution is fully resumable after a failure.
+- Temporal imposes no deadlines on Workflow Executions.
+
+**State**
+
+With a traditional system, stoppage or failure means that all execution state is lost.
+Your application (or a supporting component) must monitor the service's response to initiate a retry of the service execution.
+A retry starts from its _initial_ state.
+
+With Temporal, computation resumes from its _latest_ state. All progress is retained.
+
+**Communication**
+
+With a traditional system, you can't communicate with a function execution.
+
+With Temporal, <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> and <a class="tdlp" href="/workflows#query">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Query?</p><p class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#query">Learn more</a></p></div></a> enable data to be sent to or extracted from a Workflow Execution.
+
+**Scope**
+
+With a traditional system, a service function execution can at best represent a business process.
+Typically, it represents only a part of a business process.
+
+A Temporal Workflow Execution can represent a business process or an entire business object.
 
 ### Failure mitigation
 
@@ -44,15 +88,22 @@ The Temporal Platform addresses both platform-level failures and application-lev
 
 #### Platform-level failure
 
-A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system. This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application, and can be detected and mitigated at a platform level. This is one of the things that Temporal does really well. An example of a platform-level failure could be a network connection issue or hardware failure.
+A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system.
+This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application and can be detected and mitigated at a platform level.
+Temporal is made to insulate your application from platform-level failures.
+In Temporal, platform-level failures include network issues, process crashes, hardware failures, and transient errors in downstream services or third-party APIs.
 
 #### Application-level failure
 
-An application-level failure, on the other hand, refers to a failure that occurs within the application itself. This type of failure is directly visible to the user or application and must be detected and mitigated at the application level. Temporal cannot mitigate application level failures for you, but Temporal makes it easy to handle failures or debug your application. An example of an application-level failure could be an error in the application's code or a problem with the input data being used by the application.
+Conversely, an application-level failure refers to a failure that occurs within the application itself.
+This type of failure is directly visible to the user or application and must be detected and mitigated at the application level.
+Temporal cannot mitigate application-level failures for you, but Temporal greatly simplifies handling failures and debugging your application.
+An example of an application-level failure could be an error in the application's code or a problem with the input data being used by the application.
 
 #### Failure handling
 
 Failure handling is an essential part of an application.
+[Temporal Failures](/kb/failures) is a list of the types of errors that occur in the system.
 
 For languages that throw (or raise) errors (or exceptions), throwing an error that is not a Temporal Failure from a Workflow fails the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> (and the Task will be retried until it succeeds), whereas throwing a Temporal Failure (or letting a Temporal Failure propagate from Temporal calls, like an [Activity Failure](/kb/failures#activity-failure) from an Activity call) fails the <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
 For more information, see [Application Failure](/kb/failures#application-failure).
