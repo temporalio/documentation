@@ -13,9 +13,7 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-# Temporal is a scalable and reliable runtime for durable function executions called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
-
-Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
+Temporal is a scalable and reliable runtime for durable function executions called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
@@ -40,7 +38,7 @@ The Temporal Cluster is open source and can be operated by you.
 Worker Processes are hosted and operated by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" height="1620" width="840" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" height="1720" width="1240" /></div></div>
 
 ### Temporal vs traditional
 
