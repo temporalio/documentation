@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow list` command lists open or closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The `tctl workflow list` command lists open or closed [Workflow Executions](/workflows#workflow-execution).
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 

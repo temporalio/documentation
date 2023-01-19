@@ -9,4 +9,4 @@ tags:
 
 _This modifier is required._
 
-Show the History of a [Workflow Execution](/concepts/what-is-a-workflow-execution) by specifying a [Workflow Id](/concepts/what-is-a-workflow-id).
+Show the History of a [Workflow Execution](/workflows#workflow-execution) by specifying a [Workflow Id](/concepts/what-is-a-workflow-id).
