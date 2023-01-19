@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-A "batch" command enables you to affect multiple existing [Workflow Executions](/concepts/what-is-a-workflow-execution) with a single command.
+A "batch" command enables you to affect multiple existing [Workflow Executions](/workflows#workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
 In tctl version-next you can run the typical Signal Workflow, Terminate Workflow, and Cancel Workflow batch jobs using the `tctl workflow signal`, `tctl workflow terminate`, and `tctl workflow cancel` commands respectively.

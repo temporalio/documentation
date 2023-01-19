@@ -5,19 +5,19 @@
     "silent": true
   },
   "redirects": [
-    {"source": "/docs/:path*", "destination": "/:path*"},
-    {"source": "/typescript/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"},
-    {"source": "/go/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/go/:path*"},
-    {"source": "/java/:path*", "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"},
-    {"source": "/reference/:path*", "destination": "/references/:path*"},
-    {"source": "/system-tools/:path*", "destination": "/devtools/:path*"},
-    {"source": "/devtools/tctl", "destination": "/tctl"},
-    {"source": "/devtools/introduction", "destination": "/"},
-    {"source": "/devtools/web-ui", "destination": "/web-ui"},
-    {"source": "/sdks-introduction", "destination": "/application-development"},
-    {"source": "/other-sdks", "destination": "/application-development"},
-    {"source": "/get-started", "destination": "/"},
-    {"source": "/references/glossary", "destination": "/glossary"},
+    { "source": "/docs/:path*", "destination": "/:path*" },
+    { "source": "/reference/:path*", "destination": "/references/:path*" },
+    { "source": "/system-tools/:path*", "destination": "/devtools/:path*" },
+    { "source": "/devtools/tctl", "destination": "/tctl" },
+    { "source": "/devtools/introduction", "destination": "/" },
+    { "source": "/devtools/web-ui", "destination": "/web-ui" },
+    {
+      "source": "/sdks-introduction",
+      "destination": "/application-development"
+    },
+    { "source": "/other-sdks", "destination": "/application-development" },
+    { "source": "/get-started", "destination": "/" },
+    { "source": "/references/glossary", "destination": "/glossary" },
     {
       "source": "/application-development-guide",
       "destination": "/application-development"
@@ -26,7 +26,7 @@
       "source": "/samples-library",
       "destination": "/application-development/foundations#code-samples"
     },
-    {"source": "/change-log", "destination": "/changelog"},
+    { "source": "/change-log", "destination": "/changelog" },
 
     {
       "source": "/blog/airbyte-case-study/",
@@ -86,13 +86,13 @@
       "destination": "https://temporal.io/blog/:path*"
     },
 
-    {"source": "/temporal-explained", "destination": "/temporal"},
-    {"source": "/concepts/introduction", "destination": "/temporal"},
-    {"source": "/concepts/workflows", "destination": "/workflows"},
-    {"source": "/concepts/activities", "destination": "/activities"},
-    {"source": "/concepts/signals", "destination": "/signals"},
-    {"source": "/concepts/queries", "destination": "/workflows#queries"},
-    {"source": "/concepts/task-queues", "destination": "/tasks"},
+    { "source": "/temporal-explained", "destination": "/temporal" },
+    { "source": "/concepts/introduction", "destination": "/temporal" },
+    { "source": "/concepts/workflows", "destination": "/workflows" },
+    { "source": "/concepts/activities", "destination": "/activities" },
+    { "source": "/concepts/signals", "destination": "/signals" },
+    { "source": "/concepts/queries", "destination": "/workflows#queries" },
+    { "source": "/concepts/task-queues", "destination": "/tasks" },
     {
       "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
       "destination": "/application-development/features#activity-retry-simulator"
@@ -101,9 +101,15 @@
       "source": "/retry-policies/#visualizing-retry-policies",
       "destination": "/application-development/features#activity-retry-simulator"
     },
-    {"source": "/temporal-explained/introduction", "destination": "/temporal"},
-    {"source": "/temporal-explained/workflows", "destination": "/workflows"},
-    {"source": "/temporal-explained/activities", "destination": "/activities"},
+    {
+      "source": "/temporal-explained/introduction",
+      "destination": "/temporal"
+    },
+    { "source": "/temporal-explained/workflows", "destination": "/workflows" },
+    {
+      "source": "/temporal-explained/activities",
+      "destination": "/activities"
+    },
     {
       "source": "/temporal-explained/task-queues-and-workers",
       "destination": "/workers"
@@ -116,19 +122,22 @@
       "source": "/temporal-explained/timeouts-and-retries",
       "destination": "/retry-policies"
     },
-    {"source": "/temporal-explained/visibility", "destination": "/visibility"},
+    {
+      "source": "/temporal-explained/visibility",
+      "destination": "/visibility"
+    },
 
     {
       "source": "/content/:path(what-is-.*)",
       "destination": "/concepts/:path"
     },
 
-    {"source": "/node/:path*", "destination": "/typescript/:path*"},
+    { "source": "/node/:path*", "destination": "/typescript/:path*" },
     {
       "source": "/typescript/getting-started",
       "destination": "/typescript/introduction#getting-started"
     },
-    {"source": "/typescript", "destination": "/typescript/introduction"},
+    { "source": "/typescript", "destination": "/typescript/introduction" },
     {
       "source": "/content/how-to-develop-a-worker-program-in-typescript",
       "destination": "/typescript/how-to-develop-a-worker-program-in-typescript"
@@ -235,8 +244,8 @@
       "destination": "https://learn.temporal.io/examples/go/background-checks/cli-reference"
     },
 
-    {"source": "/go/getting-started", "destination": "/go"},
-    {"source": "/go/introduction", "destination": "/go"},
+    { "source": "/go/getting-started", "destination": "/go" },
+    { "source": "/go/introduction", "destination": "/go" },
     {
       "source": "/go-activities",
       "destination": "/application-development/foundations#develop-activities"
@@ -305,7 +314,7 @@
       "source": "/go/distributed-cron",
       "destination": "/application-development/features#temporal-cron-jobs"
     },
-    {"source": "/go-error-handling", "destination": "/go/error-handling"},
+    { "source": "/go-error-handling", "destination": "/go/error-handling" },
     {
       "source": "/go-hello-world",
       "destination": "https://learn.temporal.io/getting_started/go/hello_world_in_go/"
@@ -326,8 +335,8 @@
       "source": "/go-sdk-video-tutorial",
       "destination": "https://learn.temporal.io"
     },
-    {"source": "/go-search-apis", "destination": "/go/search-apis"},
-    {"source": "/go-selectors", "destination": "/go/selectors"},
+    { "source": "/go-search-apis", "destination": "/go/search-apis" },
+    { "source": "/go-selectors", "destination": "/go/selectors" },
     {
       "source": "/go/sessions",
       "destination": "/go/how-to-create-a-worker-session-in-go"
@@ -368,13 +377,13 @@
       "source": "/go/testing",
       "destination": "/go/how-to-test-workflow-definitions-in-go"
     },
-    {"source": "/go-tracing", "destination": "/go/tracing"},
+    { "source": "/go-tracing", "destination": "/go/tracing" },
     {
       "source": "/go-tutorial-prerequisites",
       "destination": "/go/tutorial-prerequisites"
     },
-    {"source": "/go-versioning", "destination": "/go/versioning"},
-    {"source": "/go-workflows", "destination": "/go/workflows"},
+    { "source": "/go-versioning", "destination": "/go/versioning" },
+    { "source": "/go-workflows", "destination": "/go/workflows" },
     {
       "source": "/go/workers",
       "destination": "/application-development/foundations#run-worker-processes"
@@ -404,13 +413,16 @@
       "destination": "/go/activityoptions-reference"
     },
 
-    {"source": "/java/introduction", "destination": "/java"},
-    {"source": "/java-activities", "destination": "/java/activities"},
+    { "source": "/java/introduction", "destination": "/java" },
+    { "source": "/java-activities", "destination": "/java/activities" },
     {
       "source": "/java-distributed-cron",
       "destination": "/java/distributed-cron"
     },
-    {"source": "/java-hello-world", "destination": "https://learn.temporal.io"},
+    {
+      "source": "/java-hello-world",
+      "destination": "https://learn.temporal.io"
+    },
     {
       "source": "/java/implementing-workflows",
       "destination": "/java/workflows"
@@ -419,13 +431,13 @@
       "source": "/java-implementing-workflows",
       "destination": "/java/workflows"
     },
-    {"source": "/java-queries", "destination": "/java/queries"},
-    {"source": "/java-quick-start", "destination": "/java/quick-start"},
+    { "source": "/java-queries", "destination": "/java/queries" },
+    { "source": "/java-quick-start", "destination": "/java/quick-start" },
     {
       "source": "/java-run-your-first-app",
       "destination": "https://learn.temporal.io"
     },
-    {"source": "/java-signals", "destination": "/java/signals"},
+    { "source": "/java-signals", "destination": "/java/signals" },
     {
       "source": "/java-start-workflow-execution",
       "destination": "/java/workflows"
@@ -434,7 +446,7 @@
       "source": "/java/start-workflow-execution",
       "destination": "/java/workflows"
     },
-    {"source": "/java-task-queues", "destination": "/java/task-queues"},
+    { "source": "/java-task-queues", "destination": "/java/task-queues" },
     {
       "source": "/java-testing-and-debugging",
       "destination": "/java/testing-and-debugging"
@@ -443,10 +455,10 @@
       "source": "/java-sdk-tutorial-prerequisites",
       "destination": "https://learn.temporal.io"
     },
-    {"source": "/java-versioning", "destination": "/java/versioning"},
-    {"source": "/java-workers", "destination": "/java/workers"},
-    {"source": "/java/workflow-interface", "destination": "/java/workflows"},
-    {"source": "/java-workflow-interface", "destination": "/java/workflows"},
+    { "source": "/java-versioning", "destination": "/java/versioning" },
+    { "source": "/java-workers", "destination": "/java/workers" },
+    { "source": "/java/workflow-interface", "destination": "/java/workflows" },
+    { "source": "/java-workflow-interface", "destination": "/java/workflows" },
     {
       "source": "/java/starting-workflow-executions",
       "destination": "/java/workflows"
@@ -460,10 +472,10 @@
       "destination": "/java/how-to-develop-a-worker-program-in-java"
     },
 
-    {"source": "/php", "destination": "/php/introduction"},
-    {"source": "/php-sdk-overview", "destination": "/php/introduction"},
-    {"source": "/php-sdk-introduction", "destination": "/php/introduction"},
-    {"source": "/php-activities", "destination": "/php/activities"},
+    { "source": "/php", "destination": "/php/introduction" },
+    { "source": "/php-sdk-overview", "destination": "/php/introduction" },
+    { "source": "/php-sdk-introduction", "destination": "/php/introduction" },
+    { "source": "/php-activities", "destination": "/php/activities" },
     {
       "source": "/php-activity-async-completion",
       "destination": "/php/activities/#async-completion"
@@ -480,8 +492,11 @@
       "source": "/php-continue-as-new",
       "destination": "/php/workflows/#large-event-histories"
     },
-    {"source": "/php-distributed-cron", "destination": "/php/distributed-cron"},
-    {"source": "/php-error-handling", "destination": "/php/error-handling"},
+    {
+      "source": "/php-distributed-cron",
+      "destination": "/php/distributed-cron"
+    },
+    { "source": "/php-error-handling", "destination": "/php/error-handling" },
     {
       "source": "/php-implementing-activities",
       "destination": "/php/activities/#implementing-activities"
@@ -490,17 +505,17 @@
       "source": "/php-implementing-workflows",
       "destination": "/php/workflows/#implementing-workflows"
     },
-    {"source": "/workflow-interface", "destination": "/php/workflows"},
-    {"source": "/php-workflows", "destination": "/php/workflows"},
-    {"source": "/php-queries", "destination": "/php/queries"},
-    {"source": "/php-retries", "destination": "/php/retries"},
-    {"source": "/php-side-effect", "destination": "/php/side-effect"},
-    {"source": "/php-signals", "destination": "/php/signals"},
+    { "source": "/workflow-interface", "destination": "/php/workflows" },
+    { "source": "/php-workflows", "destination": "/php/workflows" },
+    { "source": "/php-queries", "destination": "/php/queries" },
+    { "source": "/php-retries", "destination": "/php/retries" },
+    { "source": "/php-side-effect", "destination": "/php/side-effect" },
+    { "source": "/php-signals", "destination": "/php/signals" },
     {
       "source": "/php-sync-vs-async-start",
       "destination": "/php/workflows/#starting-workflows"
     },
-    {"source": "/php-task-queues", "destination": "/php/task-queues"},
+    { "source": "/php-task-queues", "destination": "/php/task-queues" },
     {
       "source": "/content/how-to-develop-a-worker-program-in-php",
       "destination": "/application-development/foundations#run-worker-processes"
@@ -510,7 +525,7 @@
       "destination": "/application-development/foundations#run-worker-processes"
     },
 
-    {"source": "/server", "destination": "/clusters/"},
+    { "source": "/server", "destination": "/clusters/" },
     {
       "source": "/server/configuration",
       "destination": "/references/configuration"
@@ -535,10 +550,10 @@
       "source": "/server-configuration",
       "destination": "/references/configuration"
     },
-    {"source": "/server-introduction", "destination": "/clusters"},
-    {"source": "/server/introduction", "destination": "/clusters"},
-    {"source": "/server-namespaces", "destination": "/namespaces"},
-    {"source": "/server/namespaces", "destination": "/namespaces"},
+    { "source": "/server-introduction", "destination": "/clusters" },
+    { "source": "/server/introduction", "destination": "/clusters" },
+    { "source": "/server-namespaces", "destination": "/namespaces" },
+    { "source": "/server/namespaces", "destination": "/namespaces" },
     {
       "source": "/server/multi-cluster",
       "destination": "/clusters#multi-cluster-replication"
@@ -547,8 +562,14 @@
       "source": "/clusters/how-to-set-up-multi-cluster-replication",
       "destination": "/cluster-deployment-guide#set-up-multi-cluster-replication"
     },
-    {"source": "/server-options", "destination": "/references/server-options"},
-    {"source": "/server/options", "destination": "/references/server-options"},
+    {
+      "source": "/server-options",
+      "destination": "/references/server-options"
+    },
+    {
+      "source": "/server/options",
+      "destination": "/references/server-options"
+    },
     {
       "source": "/server-production-deploy",
       "destination": "/server/production-deploy"
@@ -601,9 +622,12 @@
       "source": "/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster",
       "destination": "/cluster-deployment-guide#elasticsearch"
     },
-    {"source": "/server-security", "destination": "/server/security"},
-    {"source": "/server-versions-and-dependencies", "destination": "/clusters"},
-    {"source": "/server/workflow-search", "destination": "/visibility"},
+    { "source": "/server-security", "destination": "/server/security" },
+    {
+      "source": "/server-versions-and-dependencies",
+      "destination": "/clusters"
+    },
+    { "source": "/server/workflow-search", "destination": "/visibility" },
     {
       "source": "/content/how-to-remove-a-search-attribute-from-a-cluster-using-tctl",
       "destination": "/tctl-v1/how-to-remove-a-search-attribute-from-a-cluster-using-tctl"
@@ -1011,6 +1035,18 @@
     {
       "source": "/concepts/what-is-a-workflow-type",
       "destination": "/workflows#workflow-type"
+    },
+    {
+      "source": "/typescript/:path*",
+      "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"
+    },
+    {
+      "source": "/go/:path*",
+      "destination": "https://legacy-documentation-sdks.temporal.io/go/:path*"
+    },
+    {
+      "source": "/java/:path*",
+      "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
     }
   ]
 }
