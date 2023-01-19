@@ -12,6 +12,8 @@ Running into limits can cause unexpected failures, so be mindful when you design
 
 Here is a list of many hard (error) or soft (warn) limits that you could encounter while using the Temporal Platform.
 
+Unless otherwise stated, Event limits apply to all Events running in parallel on a system.
+
 <!-- truncate -->
 
 - **gRPC**: gRPC has a limit of 4 MB for [each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466).
@@ -33,7 +35,7 @@ Here is a list of many hard (error) or soft (warn) limits that you could encount
 
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 
-  - We fail the following Commands at 50,000 Events for OSS and 2,000 parallel Events for Cloud:
+  -  We fail the following Commands at 50,000 Events for OSS and 2,000 Events for Cloud:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
