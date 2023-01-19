@@ -13,11 +13,9 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-<<<<<<< HEAD
-Temporal is a scalable and reliable runtime for durable function executions called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
-=======
+# Temporal is a scalable and reliable runtime for durable function executions called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
+
 Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
->>>>>>> main
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
