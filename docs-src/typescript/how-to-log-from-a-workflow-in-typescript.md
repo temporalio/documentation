@@ -137,12 +137,12 @@ Instead of explicitly calling `proxySinks()` to create a logger sink in your Wor
 [logger-shared/src/sharedLogger.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/sharedLogger.ts)
 
 ```ts
-import { proxySinks, inWorkflowContext } from '@temporalio/workflow';
+import { inWorkflowContext, proxySinks } from '@temporalio/workflow';
 import logger from './logger';
 
-const sharedLogger = inWorkflowContext() ?
-  proxySinks().defaultWorkerLogger :
-  logger;
+const sharedLogger = inWorkflowContext()
+  ? proxySinks().defaultWorkerLogger
+  : logger;
 export default sharedLogger;
 ```
 
@@ -171,8 +171,8 @@ export async function greet(name: string): Promise<string> {
 
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
-import logger from '../sharedLogger';
 import type * as activities from '../activities';
+import logger from '../sharedLogger';
 
 const { greet } = proxyActivities<typeof activities>({
   startToCloseTimeout: '5 minutes',
