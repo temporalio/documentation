@@ -733,7 +733,7 @@ export async function example(
 ### Workflow parameters
 
 Temporal Workflows may have any number of custom parameters.
-However, we strongly recommended that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
+However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
 
 <Tabs
@@ -3222,7 +3222,7 @@ You can start a Workflow Execution on a regular schedule with <a class="tdlp" hr
 </TabItem>
 <TabItem value="python">
 
-To start a Workflow Execution in python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
+To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
 The following code example starts a Workflow and returns its handle.
 
