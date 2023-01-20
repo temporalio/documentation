@@ -13,17 +13,17 @@ tags:
 To test a Heartbeat in an Activity, you can use the `on_heartbeat()` property of the `ActivityEnvironment` class. This property allows you to set a custom function that will be called every time the `activity.heartbeat()` function is called within the Activity.
 
 ```python
-async def test_heartbeats():
-    async def activity_with_heartbeats(param: str):
-        activity.heartbeat(f"param: {param}")
-        activity.heartbeat("second heartbeat")
+@activity.defn
+async def activity_with_heartbeats(param: str):
+    activity.heartbeat(f"param: {param}")
+    activity.heartbeat("second heartbeat")
 
-    env = ActivityEnvironment()
-    heartbeats = []
-    # Set the `on_heartbeat` property to a callback function that will be called for each heartbeat sent by the activity.
-    env.on_heartbeat = lambda *args: heartbeats.append(args[0])
-    # Use the run method to start the activity, passing in the function that contains the heartbeats and any necessary parameters.
-    await env.run(activity_with_heartbeats, "test")
-    # Verify that the expected heartbeats are received by the callback function.
-    assert heartbeats == ["param: test", "second heartbeat"]
+env = ActivityEnvironment()
+heartbeats = []
+# Set the `on_heartbeat` property to a callback function that will be called for each heartbeat sent by the activity.
+env.on_heartbeat = lambda *args: heartbeats.append(args[0])
+# Use the run method to start the activity, passing in the function that contains the heartbeats and any necessary parameters.
+await env.run(activity_with_heartbeats, "test")
+# Verify that the expected heartbeats are received by the callback function.
+assert heartbeats == ["param: test", "second heartbeat"]
 ```

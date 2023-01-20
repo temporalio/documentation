@@ -9,7 +9,7 @@ tags:
   - time-skipping
 ---
 
-To implement manual time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
+To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
 
 ```python
 from temporalio.testing import WorkflowEnvironment

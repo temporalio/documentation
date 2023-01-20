@@ -11,13 +11,13 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl dataconverter` command enables custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a> operations.
+The `tctl dataconverter` command enables custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a> operations.
 
-- <a class="tdlp" href="#web">tctl dataconverter web<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl dataconverter web</p><p class="tdlppd">How to specify the WebSocket URL of a custom Data Converter using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#web">Learn more</a></p></div></a>
+- <a class="tdlp" href="#web">tctl dataconverter web<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl dataconverter web</span><br /><br /><span class="tdlppd">How to specify the WebSocket URL of a custom Data Converter using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#web">Learn more</a></span></span></a>
 
 ## web
 
-The `tctl dataconverter web` command specifies the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a> to use with Temporal Web.
+The `tctl dataconverter web` command specifies the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a> to use with Temporal Web.
 
 `tctl dataconverter web --web_ui_url <url>`
 
@@ -25,7 +25,7 @@ The following modifiers control the behavior of the command.
 
 ### --port
 
-Specify a port for the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
+Specify a port for the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>.
 The default value is 0.
 
 **Example**
@@ -38,7 +38,7 @@ tctl dataconverter web --web_ui_url <url> --port <value>
 
 _Required modifier_
 
-Specify the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="/security#data-converter">Learn more</a></p></div></a>.
+Specify the WebSocket URL of a custom <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>.
 
 **Example**
 

@@ -10,7 +10,7 @@ tags:
   - testing
 ---
 
-To cancel an Activity in Temporal, you can use the [`WorkflowHandle.cancel()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) method, which will send a cancellation request to the running Workflow.
+To cancel a Workflow in Temporal, you can use the [`WorkflowHandle.cancel()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) method, which will send a cancellation request to the running Workflow.
 
 ```python
 import asyncio
@@ -42,7 +42,7 @@ async def test_cancel_workflow(client: Client):
         await handle.cancel()
 
         # Assert that the workflow has been canceled
-        assert "CANCELED" == (await handle.describe()).status
+        assert (await handle.describe()).status == WorkflowExecutionStatus.CANCELED
 ```
 
-The async `cancel()` method sends a cancellation request to the running Workflow. If the Workflow is running an Activity that listens to cancellation, it will terminate the Activity.
+The async `cancel()` method sends a cancellation request to the running Workflow. If the Workflow is running an, it will cancel the Activity.

@@ -116,19 +116,19 @@ Content is currently unavailable.
 To test a Heartbeat in an Activity, you can use the `on_heartbeat()` property of the `ActivityEnvironment` class. This property allows you to set a custom function that will be called every time the `activity.heartbeat()` function is called within the Activity.
 
 ```python
-async def test_heartbeats():
-    async def activity_with_heartbeats(param: str):
-        activity.heartbeat(f"param: {param}")
-        activity.heartbeat("second heartbeat")
+@activity.defn
+async def activity_with_heartbeats(param: str):
+    activity.heartbeat(f"param: {param}")
+    activity.heartbeat("second heartbeat")
 
-    env = ActivityEnvironment()
-    heartbeats = []
-    # Set the `on_heartbeat` property to a callback function that will be called for each heartbeat sent by the activity.
-    env.on_heartbeat = lambda *args: heartbeats.append(args[0])
-    # Use the run method to start the activity, passing in the function that contains the heartbeats and any necessary parameters.
-    await env.run(activity_with_heartbeats, "test")
-    # Verify that the expected heartbeats are received by the callback function.
-    assert heartbeats == ["param: test", "second heartbeat"]
+env = ActivityEnvironment()
+heartbeats = []
+# Set the `on_heartbeat` property to a callback function that will be called for each heartbeat sent by the activity.
+env.on_heartbeat = lambda *args: heartbeats.append(args[0])
+# Use the run method to start the activity, passing in the function that contains the heartbeats and any necessary parameters.
+await env.run(activity_with_heartbeats, "test")
+# Verify that the expected heartbeats are received by the callback function.
+assert heartbeats == ["param: test", "second heartbeat"]
 ```
 
 </TabItem>
@@ -186,7 +186,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To cancel an Activity in Temporal, you can use the [`WorkflowHandle.cancel()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) method, which will send a cancellation request to the running Workflow.
+To cancel a Workflow in Temporal, you can use the [`WorkflowHandle.cancel()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) method, which will send a cancellation request to the running Workflow.
 
 ```python
 import asyncio
@@ -218,10 +218,10 @@ async def test_cancel_workflow(client: Client):
         await handle.cancel()
 
         # Assert that the workflow has been canceled
-        assert "CANCELED" == (await handle.describe()).status
+        assert (await handle.describe()).status == WorkflowExecutionStatus.CANCELED
 ```
 
-The async `cancel()` method sends a cancellation request to the running Workflow. If the Workflow is running an Activity that listens to cancellation, it will terminate the Activity.
+The async `cancel()` method sends a cancellation request to the running Workflow. If the Workflow is running an, it will cancel the Activity.
 
 </TabItem>
 <TabItem value="typescript">
@@ -402,8 +402,6 @@ async def test_mock_activity(client: Client):
             task_queue=task_queue_name,
         )
 ```
-
-When providing the Worker with the mocked Activity implementations, you should only provide the mocked implementations and not the real implementations.
 
 The mocked Activity implementation should have the same signature as the real implementation, including the input and output types, and the same name. So that when the Workflow invokes the Activity, it will invoke the mocked implementation instead of the real one, allowing you to test your Workflow in isolation.
 
@@ -679,7 +677,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To implement manual time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
+To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
 
 ```python
 from temporalio.testing import WorkflowEnvironment
@@ -994,7 +992,7 @@ For information about assert statements in Python, see [`assert`](https://docs.p
 
 The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
 
-By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> to fail and be indefinitely retried.
+By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> to fail and be indefinitely retried.
 
 To prevent this behavior, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`.
 These interceptors catch an `AssertionError` and turn it into an `ApplicationFailure` that fails the entire Workflow Execution (not just the Workflow Task).
@@ -1087,7 +1085,7 @@ TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://m
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.
 
-Replay succeeds only if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></p></div></a> is compatible with the provided history from a deterministic point of view.
+Replay succeeds only if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is compatible with the provided history from a deterministic point of view.
 
 When you test changes to your Workflow Definitions, we recommend doing the following as part of your CI checks:
 
