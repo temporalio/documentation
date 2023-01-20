@@ -28,7 +28,7 @@ An Activity is idempotent if multiple [Activity Task Executions](/concepts/what-
 An Activity can be tried more than once even if the Retry Policy says it shouldn't.
 Because of that behavior, you might need to use idempotency keys for critical side effects.
 
-The lack of idempotency might affect the correctness of your application but does not affect Temporal.
+The lack of idempotency might affect the correctness of your application but does not affect the Temporal Platform.
 (In other words, lack of idempotency does not lead to a platform error.)
 
 In some cases, whether something is idempotent does not affect the correctness of an application.
