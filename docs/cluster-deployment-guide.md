@@ -22,7 +22,15 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Elasticsearch
 
-<a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Advanced Visibility?</p><p class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></p></div></a> features depend on an integration with Elasticsearch.
+:::tip Support, stability, and dependency info
+- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
+- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
+- Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
+- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
+
+:::
+
+<a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> features depend on an integration with Elasticsearch.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
@@ -103,11 +111,11 @@ Run the following command to create search attributes: `tctl search-attribute cr
 
 ## Archival
 
-<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a> is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
+<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.
 
 ### Set up Archival
 
-<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a> consists of the following elements:
+<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> consists of the following elements:
 
 - **Configuration**: Archival is controlled by the [server configuration](https://github.com/temporalio/temporal/blob/master/config/development.yaml#L81) (i.e. the `config/development.yaml` file).
 - **Provider**: Location where the data should be archived. Supported providers are S3, GCloud, and the local file system.
@@ -126,7 +134,7 @@ Temporal directly supports several providers:
 - **Local file system**: The [filestore archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/filestore) is used to archive data in the file system of whatever host the Temporal server is running on. This provider is used mainly for local installations and testing and should not be relied on for production environments.
 - **Google Cloud**: The [gcloud archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/gcloud) is used to connect and archive data with [Google Cloud](https://cloud.google.com/storage).
 - **S3**: The [s3store archiver](https://github.com/temporalio/temporal/tree/master/common/archiver/s3store) is used to connect and archive data with [S3](https://aws.amazon.com/s3).
-- **Custom**: If you want to use a provider that is not currently supported, you can <a class="tdlp" href="#custom-archiver">create your own archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to create a custom Archiver</p><p class="tdlppd">To archive data with a given provider, using the Archival feature, Temporal must have a corresponding Archiver component installed.</p><p class="tdlplm"><a class="tdlplma" href="#custom-archiver">Learn more</a></p></div></a> to support it.
+- **Custom**: If you want to use a provider that is not currently supported, you can <a class="tdlp" href="#custom-archiver">create your own archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a custom Archiver</span><br /><br /><span class="tdlppd">To archive data with a given provider, using the Archival feature, Temporal must have a corresponding Archiver component installed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#custom-archiver">Learn more</a></span></span></a> to support it.
 
 Make sure that you save the provider's storage location URI in a place where you can reference it later, because it is passed as a parameter when you [create a Namespace](#namespace-creation).
 
@@ -197,7 +205,7 @@ The Archival URI cannot be changed after the Namespace is created.
 Each Namespace supports only a single Archival URI, but each Namespace can use a different URI.
 A Namespace can safely switch Archival between `enabled` and `disabled` states as long as Archival is enabled at the cluster level.
 
-Archival is supported in <a class="tdlp" href="/namespaces#global-namespace">Global Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Global Namespace?</p><p class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</p><p class="tdlplm"><a class="tdlplma" href="/namespaces#global-namespace">Learn more</a></p></div></a> (Namespaces that span multiple clusters).
+Archival is supported in <a class="tdlp" href="/namespaces#global-namespace">Global Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Global Namespace?</span><br /><br /><span class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#global-namespace">Learn more</a></span></span></a> (Namespaces that span multiple clusters).
 When Archival is running in a Global Namespace, it first runs on the active cluster; later it runs on the standby cluster. Before archiving, a history check is done to see what has been previously archived.
 
 #### Test setup
@@ -238,7 +246,7 @@ You can retrieve archived Event Histories by copying the `workflowId` and `runId
 
 ### Custom Archiver
 
-To archive data with a given provider, using the <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Archival?</p><p class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#archival">Learn more</a></p></div></a> feature, Temporal must have a corresponding Archiver component installed.
+To archive data with a given provider, using the <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> feature, Temporal must have a corresponding Archiver component installed.
 The platform does not limit you to the existing providers.
 To use a provider that is not currently supported, you can create your own Archiver.
 
@@ -343,7 +351,7 @@ As for now, try to make your syntax similar to the one used by our advanced list
 
 ## Upgrade Server
 
-If a newer version of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is the Temporal Server?</p><p class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></p></div></a> is available, a notification appears in the Temporal Web UI.
+If a newer version of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> is available, a notification appears in the Temporal Web UI.
 
 :::info
 
@@ -479,7 +487,7 @@ We recommend preparing a staging Cluster and then do the following to verify the
 
 ## Set up Multi-Cluster Replication
 
-The <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is Multi-Cluster Replication?</p><p class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#multi-cluster-replication">Learn more</a></p></div></a> feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
+The <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Multi-Cluster Replication?</span><br /><br /><span class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#multi-cluster-replication">Learn more</a></span></span></a> feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
 
 1. `enableGlobalNamespace` must be set to `true`.
 2. `failoverVersionIncrement` has to be equal across connected Clusters.
