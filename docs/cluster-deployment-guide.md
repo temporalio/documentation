@@ -485,6 +485,34 @@ We recommend preparing a staging Cluster and then do the following to verify the
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
 
+## Health checks
+
+The [Frontend Service](/clusters#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
+
+If you use [Nomad](https://www.nomadproject.io/) to manage your containers, the [check stanza](https://developer.hashicorp.com/nomad/docs/job-specification/check) would look like this for TCP:
+
+```
+service {
+  check {
+    type     = "tcp"
+    port     = 7233
+    interval = "10s"
+    timeout  = "2s"
+  }
+```
+
+or like this for gRPC (requires Consul ≥ `1.0.5`):
+
+```
+service {
+  check {
+    type         = "grpc"
+    port         = 7233
+    interval     = "10s"
+    timeout      = "2s"
+  }
+```
+
 ## Set up Multi-Cluster Replication
 
 The <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Multi-Cluster Replication?</span><br /><br /><span class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#multi-cluster-replication">Learn more</a></span></span></a> feature asynchronously replicates Workflow Execution Event Histories from active Clusters to other passive Clusters, and can be enabled by setting the appropriate values in the `clusterMetadata` section of your configuration file.
