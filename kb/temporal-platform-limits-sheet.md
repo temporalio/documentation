@@ -36,9 +36,9 @@ Unless otherwise stated, Event limits apply to all Events running in parallel on
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 
   - We fail the following Commands at 50,000 Events for OSS and 2,000 Events for Cloud:
-  - `ScheduleActivityTask`
-  - `SignalExternalWorkflowExecution`
-  - `RequestCancelExternalWorkflowExecution`
-  - `StartChildWorkflowExecution`
+    - `ScheduleActivityTask`
+    - `SignalExternalWorkflowExecution`
+    - `RequestCancelExternalWorkflowExecution`
+    - `StartChildWorkflowExecution`
 
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
