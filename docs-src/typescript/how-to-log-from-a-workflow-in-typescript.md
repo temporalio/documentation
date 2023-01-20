@@ -128,6 +128,64 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 - **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 - **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
 
+**Shared logger interface**
+
+Instead of explicitly calling `proxySinks()` to create a logger sink in your Workflow, you can also create a `sharedLogger.ts` file that handles calling `proxySinks()` for you.
+
+<!--SNIPSTART typescript-shared-logger-->
+
+[logger-shared/src/sharedLogger.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/sharedLogger.ts)
+
+```ts
+import { proxySinks, inWorkflowContext } from '@temporalio/workflow';
+import logger from './logger';
+
+const sharedLogger = inWorkflowContext() ?
+  proxySinks().defaultWorkerLogger :
+  logger;
+export default sharedLogger;
+```
+
+<!--SNIPEND-->
+
+You can then import `sharedLogger.ts` from Activities and Workflows.
+
+<!--SNIPSTART typescript-shared-logger-activity-->
+
+[logger-shared/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/activities/index.ts)
+
+```ts
+import logger from '../sharedLogger';
+
+export async function greet(name: string): Promise<string> {
+  logger.info('Log from Activity', { name });
+  return `Hello, ${name}!`;
+}
+```
+
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-shared-logger-workflow-->
+
+[logger-shared/src/workflows/index.ts](https://github.com/temporalio/samples-typescript/blob/master/logger-shared/src/workflows/index.ts)
+
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+import logger from '../sharedLogger';
+import type * as activities from '../activities';
+
+const { greet } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '5 minutes',
+});
+
+export async function logSampleWorkflow(): Promise<void> {
+  const greeting = await greet('Temporal');
+  logger.info('Log from Workflow', { greeting });
+}
+```
+
+<!--SNIPEND-->
+
 **Advanced: Performance considerations and non-blocking Sinks**
 
 The injected sink function contributes to the overall Workflow Task processing duration.
