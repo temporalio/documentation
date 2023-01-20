@@ -12,33 +12,53 @@ In the Temporal Go SDK programming model, an Activity Definition is an exportabl
 
 **Function**
 
-```go
-// basic function signature
-func YourActivityDefinition(ctx context.Context) error {
- // ...
- return nil
-}
+<!--SNIPSTART go-samples-yourapp-your-activity-definition { "selectedLines": ["57-60"] } -->
 
+[yourapp/your_activity_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_activity_definition.go)
+
+```go
+// ...
+// YourSimpleActivityDefinition is a basic Activity Definiton.
+func YourSimpleActivityDefinition(ctx context.Context) error {
+	return nil
+}
+```
+
+<!--SNIPEND-->
+
+```go
 // with parameters and return values
 func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
 
 **Struct method**
 
+<!--SNIPSTART go-samples-yourapp-your-activity-definition { "selectedLines": ["24-29","31-33","47","49-50","55"] } -->
+
+[yourapp/your_activity_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_activity_definition.go)
+
 ```go
-type YourActivityStruct struct {
- ActivityFieldOne string
- ActivityFieldTwo int
+// ...
+// YourActivityObject is the struct that maintains shared state across Activities.
+// If the Worker crashes this Activity object loses its state.
+type YourActivityObject struct {
+	SharedMessageState *string
+	SharedCounterState *int
 }
-
-func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
- // ...
+// ...
+// YourActivityDefinition is your custom Activity Definition.
+// An Activity Definiton is an exportable function.
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+// ...
 }
-
-func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
- // ...
+// ...
+// PrintSharedState is another custom Activity Definition.
+func (a *YourActivityObject) PrintSharedSate(ctx context.Context) error {
+// ...
 }
 ```
+
+<!--SNIPEND-->
 
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:

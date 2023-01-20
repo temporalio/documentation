@@ -11,11 +11,11 @@ tags:
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
 Again, the best practice here is to use a `struct` type to hold all custom values.
 
-<!--SNIPSTART go-samples-your-workflow-definition { "selectedLines":["1-7","14-17","20","45-54"], "highlightedLines": ["9-12","20-24"] } -->
+<!--SNIPSTART go-samples-yourapp-your-workflow-definition { "selectedLines":["1-7","15-19","22","51-57"] } -->
 
 [yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
 
-```go {9-12,20-24}
+```go
 package yourapp
 
 import (
@@ -24,18 +24,16 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 // ...
+// YourWorkflowResultObject is the object returned by the Workflow.
 type YourWorkflowResultObject struct {
 	WFResultFieldX string
 	WFResultFieldY int
 }
 // ...
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
-	if err != nil {
-		return YourWorkflowResultObject{}, err
-	}
 	// Make the results of the Workflow Execution available.
-	workflowResult := YourWorkflowResultObject{
+	workflowResult := &YourWorkflowResultObject{
 		WFResultFieldX: activityResult.ResultFieldX,
 		WFResultFieldY: activityResult.ResultFieldY,
 	}

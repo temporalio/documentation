@@ -602,12 +602,19 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
 
+<!--SNIPSTART go-samples-yourapp-your-workflow-definition {"selectedLines": ["59-62"]} -->
+
+[yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
+
 ```go
-func YourWorkflowDefinition(ctx workflow.Context) error {
-  // ...
-  return nil
+// ...
+// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
+	return nil
 }
 ```
+
+<!--SNIPEND-->
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
@@ -764,7 +771,7 @@ A Workflow Definition may support multiple custom parameters, or none.
 These parameters can be regular type variables or safe pointers.
 However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
 
-<!--SNIPSTART go-samples-your-workflow-definition { "selectedLines":["1-12","20","54"] } -->
+<!--SNIPSTART go-samples-yourapp-your-workflow-definition { "selectedLines":["1-13","22","57"] } -->
 
 [yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
 
@@ -777,12 +784,13 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 
+// YourWorkflowParam is the object passed to the Workflow.
 type YourWorkflowParam struct {
 	WorkflowParamX string
 	WorkflowParamY int
 }
 // ...
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 }
 ```
@@ -904,11 +912,11 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
 Again, the best practice here is to use a `struct` type to hold all custom values.
 
-<!--SNIPSTART go-samples-your-workflow-definition { "selectedLines":["1-7","14-17","20","45-54"], "highlightedLines": ["9-12","20-24"] } -->
+<!--SNIPSTART go-samples-yourapp-your-workflow-definition { "selectedLines":["1-7","15-19","22","51-57"] } -->
 
 [yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
 
-```go {9-12,20-24}
+```go
 package yourapp
 
 import (
@@ -917,18 +925,16 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 // ...
+// YourWorkflowResultObject is the object returned by the Workflow.
 type YourWorkflowResultObject struct {
 	WFResultFieldX string
 	WFResultFieldY int
 }
 // ...
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
-	if err != nil {
-		return YourWorkflowResultObject{}, err
-	}
 	// Make the results of the Workflow Execution available.
-	workflowResult := YourWorkflowResultObject{
+	workflowResult := &YourWorkflowResultObject{
 		WFResultFieldX: activityResult.ResultFieldX,
 		WFResultFieldY: activityResult.ResultFieldY,
 	}
@@ -1031,16 +1037,22 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 - Type: `string`
 - Default: function name
 
+<!--SNIPSTART go-samples-yourapp-your-worker { "selectedLines": ["23","27-31"] } -->
+
+[yourapp/worker/main.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/worker/main.go)
+
 ```go
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := workflow.RegisterOptions{
-  Name: "YourWorkflowName",
-  // ...
-}
-w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 // ...
+	// Use RegisterOptions to set the name of the Workflow Type for example.
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
 ```
+
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
@@ -1269,33 +1281,53 @@ In the Temporal Go SDK programming model, an Activity Definition is an exportabl
 
 **Function**
 
-```go
-// basic function signature
-func YourActivityDefinition(ctx context.Context) error {
- // ...
- return nil
-}
+<!--SNIPSTART go-samples-yourapp-your-activity-definition { "selectedLines": ["57-60"] } -->
 
+[yourapp/your_activity_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_activity_definition.go)
+
+```go
+// ...
+// YourSimpleActivityDefinition is a basic Activity Definiton.
+func YourSimpleActivityDefinition(ctx context.Context) error {
+	return nil
+}
+```
+
+<!--SNIPEND-->
+
+```go
 // with parameters and return values
 func SimpleActivity(ctx context.Context, value string) (string, error)
 ```
 
 **Struct method**
 
+<!--SNIPSTART go-samples-yourapp-your-activity-definition { "selectedLines": ["24-29","31-33","47","49-50","55"] } -->
+
+[yourapp/your_activity_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_activity_definition.go)
+
 ```go
-type YourActivityStruct struct {
- ActivityFieldOne string
- ActivityFieldTwo int
+// ...
+// YourActivityObject is the struct that maintains shared state across Activities.
+// If the Worker crashes this Activity object loses its state.
+type YourActivityObject struct {
+	SharedMessageState *string
+	SharedCounterState *int
 }
-
-func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
- // ...
+// ...
+// YourActivityDefinition is your custom Activity Definition.
+// An Activity Definiton is an exportable function.
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+// ...
 }
-
-func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
- // ...
+// ...
+// PrintSharedState is another custom Activity Definition.
+func (a *YourActivityObject) PrintSharedSate(ctx context.Context) error {
+// ...
 }
 ```
+
+<!--SNIPEND-->
 
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:
@@ -1509,20 +1541,25 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
+<!--SNIPSTART go-samples-yourapp-your-activity-definition { "selectedLines": ["9-14","33","60"] } -->
+
+[yourapp/your_activity_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_activity_definition.go)
+
 ```go
+// ...
+// YourActivityParam is the struct passed to your Activity.
+// Use a struct so that your function signature remains compatible if fields change.
 type YourActivityParam struct {
- ActivityParamFieldOne string
- ActivityParamFieldTwo int
+	ActivityParamX string
+	ActivityParamY int
 }
-
-type YourActivityStruct struct {
- // ...
-}
-
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
- // ...
+// ...
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+// ...
 }
 ```
+
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
@@ -1628,21 +1665,33 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-```go
-type YourActivityResult struct{
-  ActivityResultFieldOne string
-  ActivityResultFieldTwo int
-}
+<!--SNIPSTART go-samples-yourapp-your-activity-definition { "selectedLines": ["16-22","33","40-47"] } -->
 
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResult, error) {
-  // ...
-  result := YourActivityResult {
-    ActivityResultFieldOne: a.ActivityFieldOne,
-    ActivityResultFieldTwo: a.ActivityFieldTwo,
-  }
-  return result, nil
+[yourapp/your_activity_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_activity_definition.go)
+
+```go
+// ...
+// YourActivityResultObject is the struct returned from your Activity.
+// Use a struct so that you can return multiple values of different types.
+// Additionally, your function signature remains compatible if the fields change.
+type YourActivityResultObject struct {
+	ResultFieldX string
+	ResultFieldY int
+}
+// ...
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+// ...
+	result := YourActivityResultObject{
+		ResultFieldX: *a.SharedMessageState,
+		ResultFieldY: *a.SharedCounterState,
+	}
+	// Return the results back to the Workflow Execution.
+	// The results persist within the Event History of the Workflow Execution.
+	return result, nil
 }
 ```
+
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
@@ -1730,16 +1779,22 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 - Type: `string`
 - Default: function name
 
+<!--SNIPSTART go-samples-yourapp-your-worker { "selectedLines": ["23","42-46"] } -->
+
+[yourapp/worker/main.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/worker/main.go)
+
 ```go
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "YourActivityName",
-  // ...
-}
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 // ...
+	// Use RegisterOptions to change the name of the Activity Type for example.
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
 ```
+
+<!--SNIPEND-->
 
 </TabItem>
 <TabItem value="java">
@@ -2438,38 +2493,56 @@ Lastly, call either the `Start()` or the `Run()` method on the instance of the W
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
 
+<!--SNIPSTART go-samples-yourapp-your-worker { "selectedLines": ["1-7","11-26","32-41","47-52"] } -->
+
+[yourapp/worker/main.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/worker/main.go)
+
 ```go
 package main
 
 import (
-   "go.temporal.io/sdk/client"
-   "go.temporal.io/sdk/worker"
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+// ...
+	"github.com/temporalio/samples-go/yourapp"
 )
 
 func main() {
-   c, err := client.Dial(client.Options{})
-   if err != nil {
-       // ...
-   }
-   defer c.Close()
-   w := worker.New(c, "your-task-queue", worker.Options{})
-   w.RegisterWorkflow(YourWorkflowDefinition)
-   w.RegisterActivity(YourActivityDefinition)
-   err = w.Run(worker.InterruptCh())
-   if err != nil {
-       // ...
-   }
- // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
-}
-
-func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
- // ...
+	// Create a Temporal Client
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker.
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	// Register your Workflow Definitions with the Worker.
+	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
+	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
+// ...
+	// Register your Activity Definitons with the Worker.
+	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
+	initialMessageString := "No messages!"
+	initialCounterState := 0
+	activities := &yourapp.YourActivityObject{
+		SharedMessageState: &initialMessageString,
+		SharedCounterState: &initialCounterState,
+	}
+	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
+	yourWorker.RegisterActivity(activities)
+// ...
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
 }
 ```
+
+<!--SNIPEND-->
 
 :::tip
 

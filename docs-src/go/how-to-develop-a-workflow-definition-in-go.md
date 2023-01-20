@@ -10,11 +10,18 @@ tags:
 
 In the Temporal Go SDK programming model, a [Workflow Definition](/concepts/what-is-a-workflow-definition) is an exportable function.
 
+<!--SNIPSTART go-samples-yourapp-your-workflow-definition {"selectedLines": ["59-62"]} -->
+
+[yourapp/your_workflow_definition.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/your_workflow_definition.go)
+
 ```go
-func YourWorkflowDefinition(ctx workflow.Context) error {
-  // ...
-  return nil
+// ...
+// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
+	return nil
 }
 ```
+
+<!--SNIPEND-->
 
 In Go, by default, the Workflow Type name is the same as the function name.

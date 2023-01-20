@@ -13,13 +13,19 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 - Type: `string`
 - Default: function name
 
+<!--SNIPSTART go-samples-yourapp-your-worker { "selectedLines": ["23","27-31"] } -->
+
+[yourapp/worker/main.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/worker/main.go)
+
 ```go
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := workflow.RegisterOptions{
-  Name: "YourWorkflowName",
-  // ...
-}
-w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 // ...
+	// Use RegisterOptions to set the name of the Workflow Type for example.
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
 ```
+
+<!--SNIPEND-->

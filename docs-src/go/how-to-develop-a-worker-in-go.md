@@ -21,38 +21,56 @@ Lastly, call either the `Start()` or the `Run()` method on the instance of the W
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
 
+<!--SNIPSTART go-samples-yourapp-your-worker { "selectedLines": ["1-7","11-26","32-41","47-52"] } -->
+
+[yourapp/worker/main.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/worker/main.go)
+
 ```go
 package main
 
 import (
-   "go.temporal.io/sdk/client"
-   "go.temporal.io/sdk/worker"
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+// ...
+	"github.com/temporalio/samples-go/yourapp"
 )
 
 func main() {
-   c, err := client.Dial(client.Options{})
-   if err != nil {
-       // ...
-   }
-   defer c.Close()
-   w := worker.New(c, "your-task-queue", worker.Options{})
-   w.RegisterWorkflow(YourWorkflowDefinition)
-   w.RegisterActivity(YourActivityDefinition)
-   err = w.Run(worker.InterruptCh())
-   if err != nil {
-       // ...
-   }
- // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
-}
-
-func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
- // ...
+	// Create a Temporal Client
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker.
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	// Register your Workflow Definitions with the Worker.
+	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
+	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
+// ...
+	// Register your Activity Definitons with the Worker.
+	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
+	initialMessageString := "No messages!"
+	initialCounterState := 0
+	activities := &yourapp.YourActivityObject{
+		SharedMessageState: &initialMessageString,
+		SharedCounterState: &initialCounterState,
+	}
+	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
+	yourWorker.RegisterActivity(activities)
+// ...
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
 }
 ```
+
+<!--SNIPEND-->
 
 :::tip
 

@@ -13,13 +13,19 @@ To customize the Activity Type, set the `Name` parameter with `RegisterOptions` 
 - Type: `string`
 - Default: function name
 
+<!--SNIPSTART go-samples-yourapp-your-worker { "selectedLines": ["23","42-46"] } -->
+
+[yourapp/worker/main.go](https://github.com/temporalio/samples-go/blob/yourapp/yourapp/worker/main.go)
+
 ```go
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "YourActivityName",
-  // ...
-}
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 // ...
+	// Use RegisterOptions to change the name of the Activity Type for example.
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
 ```
+
+<!--SNIPEND-->
