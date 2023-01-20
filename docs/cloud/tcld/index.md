@@ -13,15 +13,15 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Cloud CLI (tcld) is a command-line tool that you can use to interact with Temporal Cloud.
 
-- <a class="tdlp" href="#install-tcld">How to install tcld<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install tcld</span><br /><br /><span class="tdlppd">You can install tcld by using Homebrew or building from source.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#install-tcld">Learn more</a></span></span></a>
+- <a class="tdlp" href="#install-tcld">How to install tcld<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to install tcld</p><p class="tdlppd">You can install tcld by using Homebrew or building from source.</p><p class="tdlplm"><a class="tdlplma" href="#install-tcld">Learn more</a></p></div></a>
 
 ### tcld commands
 
 - [tcld account](/cloud/tcld/account)
-- <a class="tdlp" href="/cloud/tcld/login#">tcld login<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld login</span><br /><br /><span class="tdlppd">How to log in to Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/login#">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cloud/tcld/login#">tcld login<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld login</p><p class="tdlppd">How to log in to Temporal Cloud using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/login#">Learn more</a></p></div></a>
 - [tcld namespace](/cloud/tcld/namespace)
 - [tcld request](/cloud/tcld/request)
-- <a class="tdlp" href="/cloud/tcld/version#">tcld version<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld version</span><br /><br /><span class="tdlppd">How to get version information about tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/version#">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cloud/tcld/version#">tcld version<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld version</p><p class="tdlppd">How to get version information about tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/version#">Learn more</a></p></div></a>
 
 ### Global modifiers
 

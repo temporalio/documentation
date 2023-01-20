@@ -11,16 +11,16 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl taskqueue` command enables <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a> operations.
+The `tctl taskqueue` command enables <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a> operations.
 
 Alias: `t`
 
-- <a class="tdlp" href="#describe">tctl taskqueue describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl taskqueue describe</span><br /><br /><span class="tdlppd">How to describe the poller information of a Task Queue using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
-- <a class="tdlp" href="#list-partition">tctl taskqueue list-partition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl taskqueue list-partition</span><br /><br /><span class="tdlppd">How to list Task Queue partitions and the hostname for partitions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-partition">Learn more</a></span></span></a>
+- <a class="tdlp" href="#describe">tctl taskqueue describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl taskqueue describe</p><p class="tdlppd">How to describe the poller information of a Task Queue using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list-partition">tctl taskqueue list-partition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl taskqueue list-partition</p><p class="tdlppd">How to list Task Queue partitions and the hostname for partitions using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#list-partition">Learn more</a></p></div></a>
 
 ## describe
 
-The `tctl taskqueue describe` command describes the poller information of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>.
+The `tctl taskqueue describe` command describes the poller information of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
 
 `tctl taskqueue describe <modifiers> <value>`
 
@@ -30,7 +30,7 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>.
+Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
 
 Alias: `--t`
 
@@ -42,7 +42,7 @@ tctl taskqueue describe --taskqueue <value>
 
 ### --taskqueuetype
 
-Specify the type of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>.
+Specify the type of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a>.
 The type can be `workflow` or `activity`.
 The default is `workflow`.
 
@@ -54,7 +54,7 @@ tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
 
 ## list-partition
 
-The `tctl taskqueue list-partition` command lists the partitions of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a> and the hostname for the partitions.
+The `tctl taskqueue list-partition` command lists the partitions of a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a> and the hostname for the partitions.
 
 `tctl taskqueue list-partition --taskqueue <value>`
 
@@ -64,7 +64,7 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a> description.
+Specify a <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Task Queue?</p><p class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#task-queue">Learn more</a></p></div></a> description.
 
 Alias: `--t`
 

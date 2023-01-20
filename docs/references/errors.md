@@ -19,7 +19,7 @@ Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://ap
 
 ## Bad Cancel Timer Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed while attempting to cancel a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Timer?</span><br /><br /><span class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#timers">Learn more</a></span></span></a>.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed while attempting to cancel a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Timer?</p><p class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#timers">Learn more</a></p></div></a>.
 
 Check your Timer attributes for a missing Timer Id value.
 Add a valid Timer Id and redeploy the code.
@@ -97,7 +97,7 @@ Adjust the size of the received payload to stay within the given size limit.
 
 ## Bad Search Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid <a class="tdlp" href="/application-development/observability#search-attributes">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Search Attributes</span><br /><br /><span class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></span></span></a>.
+This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid <a class="tdlp" href="/application-development/observability#search-attributes">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Search Attributes</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a>.
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.
@@ -122,11 +122,11 @@ This error indicates that the [Workflow Task](/tasks#workflow-task) failed to va
 
 Adjust the input size of the attributes to fall within the system's size limits.
 
-Make sure that <a class="tdlp" href="/application-development/observability#search-attributes">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Search Attributes</span><br /><br /><span class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></span></span></a> validation is performed after unaliasing keys.
+Make sure that <a class="tdlp" href="/application-development/observability#search-attributes">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to use Search Attributes</p><p class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></p></div></a> validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes
 
-This error indicates that the scheduled [Event](/workflows/#event) is missing a <a class="tdlp" href="/application-development/features#timers">Timer Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Timer?</span><br /><br /><span class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#timers">Learn more</a></span></span></a>.
+This error indicates that the scheduled [Event](/workflows/#event) is missing a <a class="tdlp" href="/application-development/features#timers">Timer Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Timer?</p><p class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#timers">Learn more</a></p></div></a>.
 
 Set a valid Timer Id and retry the [Workflow Task](/tasks/#workflow-task).
 
@@ -246,7 +246,7 @@ Enter another Activity Id, and try running the Workflow Task again.
 
 ## Start Timer Duplicate Id
 
-This error indicates that a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Timer?</span><br /><br /><span class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#timers">Learn more</a></span></span></a> with the given Timer Id has already started.
+This error indicates that a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Timer?</p><p class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</p><p class="tdlplm"><a class="tdlplma" href="/application-development/features#timers">Learn more</a></p></div></a> with the given Timer Id has already started.
 
 Try entering a different Timer Id, and retry the [Workflow Task](/tasks/#workflow-task).
 

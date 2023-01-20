@@ -121,7 +121,7 @@ An Activity Worker poll for an Activity Task timed out, and no Activity Task is 
 ### activity_schedule_to_start_latency
 
 The Schedule-To-Start time of an Activity Task in milliseconds.
-A <a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Start Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></span></span></a> can be set when an Activity Execution is spawned.
+A <a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Schedule-To-Start Timeout?</p><p class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</p><p class="tdlplm"><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></p></div></a> can be set when an Activity Execution is spawned.
 This metric is useful for ensuring Activity Tasks are being processed from the queue in a timely manner. Some SDKs may include
 the `activity_type` label, but the metric should not vary by type, as it does not influence the rate at which tasks are pulled
 from the queue.
@@ -180,7 +180,7 @@ Total latency of successfully finished Local Activity Executions (from schedule 
 
 ### local_activity_total
 
-Total number of <a class="tdlp" href="/activities#local-activity">Local Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a>.
+Total number of <a class="tdlp" href="/activities#local-activity">Local Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Local Activity?</p><p class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</p><p class="tdlplm"><a class="tdlplma" href="/activities#local-activity">Learn more</a></p></div></a>.
 
 - Type: Counter
 - Available in: Go, PHP, Java

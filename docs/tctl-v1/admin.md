@@ -25,13 +25,13 @@ The `tctl admin cluster` command runs the administrator-level operations on a gi
 
 `tctl admin cluster command [command modifiers] [arguments...]`
 
-- <a class="tdlp" href="#add_search_attributes">add_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster add_search_attributes</span><br /><br /><span class="tdlppd">Adding custom Search Attributes to a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#add_search_attributes">Learn more</a></span></span></a>
-- <a class="tdlp" href="#remove_search_attributes">remove_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster remove_search_attributes</span><br /><br /><span class="tdlppd">Removing custom search metadat from a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remove_search_attributes">Learn more</a></span></span></a>
-- <a class="tdlp" href="#get_search_attributes">get_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster get_search_attributes</span><br /><br /><span class="tdlppd">Showing existing search attributes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get_search_attributes">Learn more</a></span></span></a>
-- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster describe</span><br /><br /><span class="tdlppd">Displaying Cluster information.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
-- <a class="tdlp" href="#list">list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster list</span><br /><br /><span class="tdlppd">Listing Cluster information.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
-- <a class="tdlp" href="#upsert_remote_cluster">upsert_remote_cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster upsert_remote_cluster</span><br /><br /><span class="tdlppd">How to run admin-level tctl commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></span></span></a>
-- <a class="tdlp" href="#upsert_remote_cluster">remove_remote_cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin cluster upsert_remote_cluster</span><br /><br /><span class="tdlppd">How to run admin-level tctl commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></span></span></a>
+- <a class="tdlp" href="#add_search_attributes">add_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster add_search_attributes</p><p class="tdlppd">Adding custom Search Attributes to a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#add_search_attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#remove_search_attributes">remove_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster remove_search_attributes</p><p class="tdlppd">Removing custom search metadat from a Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#remove_search_attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get_search_attributes">get_search_attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster get_search_attributes</p><p class="tdlppd">Showing existing search attributes.</p><p class="tdlplm"><a class="tdlplma" href="#get_search_attributes">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster describe</p><p class="tdlppd">Displaying Cluster information.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list">list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster list</p><p class="tdlppd">Listing Cluster information.</p><p class="tdlplm"><a class="tdlplma" href="#list">Learn more</a></p></div></a>
+- <a class="tdlp" href="#upsert_remote_cluster">upsert_remote_cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster upsert_remote_cluster</p><p class="tdlppd">How to run admin-level tctl commands.</p><p class="tdlplm"><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></p></div></a>
+- <a class="tdlp" href="#upsert_remote_cluster">remove_remote_cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin cluster upsert_remote_cluster</p><p class="tdlppd">How to run admin-level tctl commands.</p><p class="tdlplm"><a class="tdlplma" href="#upsert_remote_cluster">Learn more</a></p></div></a>
 
 ### add_search_attributes
 
@@ -124,7 +124,7 @@ The name of the remote Cluster to remove.
 The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a Cluster.
 This operation has no effect on Elasticsearch index schema.
 
-Use the following command to remove a <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> from a Cluster's metadata:
+Use the following command to remove a <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Search Attribute?</p><p class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></p></div></a> from a Cluster's metadata:
 
 ```bash
 tctl admin cluster remove-search-attributes --name <SearchAttributeKey>
@@ -165,8 +165,8 @@ The `tctl admin db` command runs administrator-level operations on a given datab
 
 ### Commands
 
-- <a class="tdlp" href="#scan">tctl admin db scan<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin db scan</span><br /><br /><span class="tdlppd">Scanning for corrupted executions in a database</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#scan">Learn more</a></span></span></a>
-- <a class="tdlp" href="#clean">tctl admin db clean<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin db clean</span><br /><br /><span class="tdlppd">How to clean up corrupted Workflows using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#clean">Learn more</a></span></span></a>
+- <a class="tdlp" href="#scan">tctl admin db scan<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db scan</p><p class="tdlppd">Scanning for corrupted executions in a database</p><p class="tdlplm"><a class="tdlplma" href="#scan">Learn more</a></p></div></a>
+- <a class="tdlp" href="#clean">tctl admin db clean<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db clean</p><p class="tdlppd">How to clean up corrupted Workflows using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#clean">Learn more</a></p></div></a>
 
 ### clean
 
@@ -209,7 +209,7 @@ Default: "temporal"
 
 #### --input_directory
 
-The directory which contains the corrupted [Workflow Execution](/workflows/#workflow-executions) files from running <a class="tdlp" href="#scan">`scan`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin db scan</span><br /><br /><span class="tdlppd">Scanning for corrupted executions in a database</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#scan">Learn more</a></span></span></a>.
+The directory which contains the corrupted [Workflow Execution](/workflows/#workflow-executions) files from running <a class="tdlp" href="#scan">`scan`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin db scan</p><p class="tdlppd">Scanning for corrupted executions in a database</p><p class="tdlplm"><a class="tdlplma" href="#scan">Learn more</a></p></div></a>.
 
 #### --lower_shard_bound
 
@@ -388,8 +388,8 @@ The `tctl admin decode` command allows the user to decode payloads sent and rece
 
 `tctl admin decode command [command modifiers] [arguments...]`
 
-- <a class="tdlp" href="#proto">proto<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin decode proto</span><br /><br /><span class="tdlppd">Decoding proto payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#proto">Learn more</a></span></span></a>
-- <a class="tdlp" href="#base64">base64<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin decode base64</span><br /><br /><span class="tdlppd">Decoding Payloads to Base64.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#base64">Learn more</a></span></span></a>
+- <a class="tdlp" href="#proto">proto<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin decode proto</p><p class="tdlppd">Decoding proto payloads.</p><p class="tdlplm"><a class="tdlplma" href="#proto">Learn more</a></p></div></a>
+- <a class="tdlp" href="#base64">base64<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin decode base64</p><p class="tdlppd">Decoding Payloads to Base64.</p><p class="tdlplm"><a class="tdlplma" href="#base64">Learn more</a></p></div></a>
 
 ### base64
 
@@ -429,9 +429,9 @@ The `tctl admin dlq` commands run admin operations on a given dead-letter queue 
 
 `tctl admin dlq command [command modifiers] [arguments...]`
 
-- <a class="tdlp" href="#read">tctl admin dlq read<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin dlq read</span><br /><br /><span class="tdlppd">Reading DLQ messages.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#read">Learn more</a></span></span></a>
-- <a class="tdlp" href="#purge">tctl admin dlq purge<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin dlq purge</span><br /><br /><span class="tdlppd">Deleting DLQ messages.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#purge">Learn more</a></span></span></a>
-- <a class="tdlp" href="#merge">tctl admin dlq merge<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin dlq merge</span><br /><br /><span class="tdlppd">Merging DLQ messages.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#merge">Learn more</a></span></span></a>
+- <a class="tdlp" href="#read">tctl admin dlq read<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq read</p><p class="tdlppd">Reading DLQ messages.</p><p class="tdlplm"><a class="tdlplma" href="#read">Learn more</a></p></div></a>
+- <a class="tdlp" href="#purge">tctl admin dlq purge<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq purge</p><p class="tdlppd">Deleting DLQ messages.</p><p class="tdlplm"><a class="tdlplma" href="#purge">Learn more</a></p></div></a>
+- <a class="tdlp" href="#merge">tctl admin dlq merge<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin dlq merge</p><p class="tdlppd">Merging DLQ messages.</p><p class="tdlplm"><a class="tdlplma" href="#merge">Learn more</a></p></div></a>
 
 ### merge
 
@@ -531,8 +531,8 @@ The `tctl admin history_host` command runs an admin-level operation on the histo
 
 ## Commands
 
-- <a class="tdlp" href="#describe">tctl admin history_host describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin history_host describe</span><br /><br /><span class="tdlppd">Describing the information in a history host</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
-- <a class="tdlp" href="#get_shardid">tctl admin history_host get_shardid<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin history_host get_shardid</span><br /><br /><span class="tdlppd">Providing the shardId on command</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get_shardid">Learn more</a></span></span></a>
+- <a class="tdlp" href="#describe">tctl admin history_host describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin history_host describe</p><p class="tdlppd">Describing the information in a history host</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#get_shardid">tctl admin history_host get_shardid<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin history_host get_shardid</p><p class="tdlppd">Providing the shardId on command</p><p class="tdlplm"><a class="tdlplma" href="#get_shardid">Learn more</a></p></div></a>
 
 ### describe
 
@@ -590,8 +590,8 @@ The `tctl admin membership` command allows admin operations to be run on members
 
 ### Commands
 
-- <a class="tdlp" href="#list_gossip">list_gossip<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin membership list_gossip</span><br /><br /><span class="tdlppd">How to describe ringpop membership items</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list_gossip">Learn more</a></span></span></a>
-- <a class="tdlp" href="#list_db">list_db<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin membership list_db</span><br /><br /><span class="tdlppd">How to describe Cluster membership items</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list_db">Learn more</a></span></span></a>
+- <a class="tdlp" href="#list_gossip">list_gossip<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin membership list_gossip</p><p class="tdlppd">How to describe ringpop membership items</p><p class="tdlplm"><a class="tdlplma" href="#list_gossip">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list_db">list_db<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin membership list_db</p><p class="tdlppd">How to describe Cluster membership items</p><p class="tdlplm"><a class="tdlplma" href="#list_db">Learn more</a></p></div></a>
 
 ### list_db
 
@@ -631,11 +631,11 @@ The `tctl admin shard` commands enable admin-level operations on a specified sha
 
 #### tctl admin shard commands
 
-- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin shard describe</span><br /><br /><span class="tdlppd">Describes Id of shard.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
-- <a class="tdlp" href="#describe_task">describe_task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin shard describe_task</span><br /><br /><span class="tdlppd">displaying information on a Task within a shard</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe_task">Learn more</a></span></span></a>
-- <a class="tdlp" href="#list_tasks">list_tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin shard list_tasks</span><br /><br /><span class="tdlppd">listing tasks for a given shard Id and Task type</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list_tasks">Learn more</a></span></span></a>
-- <a class="tdlp" href="#close_shard">close_shard<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin shard close_shard</span><br /><br /><span class="tdlppd">closing a shard with a given shard Id</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#close_shard">Learn more</a></span></span></a>
-- <a class="tdlp" href="#remove_task">remove_task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin shard remove_task</span><br /><br /><span class="tdlppd">removing a Task with given information</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remove_task">Learn more</a></span></span></a>
+- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin shard describe</p><p class="tdlppd">Describes Id of shard.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
+- <a class="tdlp" href="#describe_task">describe_task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin shard describe_task</p><p class="tdlppd">displaying information on a Task within a shard</p><p class="tdlplm"><a class="tdlplma" href="#describe_task">Learn more</a></p></div></a>
+- <a class="tdlp" href="#list_tasks">list_tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin shard list_tasks</p><p class="tdlppd">listing tasks for a given shard Id and Task type</p><p class="tdlplm"><a class="tdlplma" href="#list_tasks">Learn more</a></p></div></a>
+- <a class="tdlp" href="#close_shard">close_shard<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin shard close_shard</p><p class="tdlppd">closing a shard with a given shard Id</p><p class="tdlplm"><a class="tdlplma" href="#close_shard">Learn more</a></p></div></a>
+- <a class="tdlp" href="#remove_task">remove_task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin shard remove_task</p><p class="tdlppd">removing a Task with given information</p><p class="tdlplm"><a class="tdlplma" href="#remove_task">Learn more</a></p></div></a>
 
 ### close_shard
 
@@ -865,13 +865,13 @@ The `tctl admin workflow` commands enable administrator-level operations on Work
 
 `tctl admin workflow command [modifiers] [arguments...]`
 
-- <a class="tdlp" href="#show">show<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin workflow show</span><br /><br /><span class="tdlppd">Showing Workflow history.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#show">Learn more</a></span></span></a>
+- <a class="tdlp" href="#show">show<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin workflow show</p><p class="tdlppd">Showing Workflow history.</p><p class="tdlplm"><a class="tdlplma" href="#show">Learn more</a></p></div></a>
 
-- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin workflow describe</span><br /><br /><span class="tdlppd">Description of Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
+- <a class="tdlp" href="#describe">describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin workflow describe</p><p class="tdlppd">Description of Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
 
-- <a class="tdlp" href="#refresh_tasks">refresh_tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin workflow refresh_tasks</span><br /><br /><span class="tdlppd">Refreshing Workflow Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#refresh_tasks">Learn more</a></span></span></a>
+- <a class="tdlp" href="#refresh_tasks">refresh_tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin workflow refresh_tasks</p><p class="tdlppd">Refreshing Workflow Tasks.</p><p class="tdlplm"><a class="tdlplma" href="#refresh_tasks">Learn more</a></p></div></a>
 
-- <a class="tdlp" href="#delete">delete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl admin workflow delete</span><br /><br /><span class="tdlppd">Deleting the Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete">Learn more</a></span></span></a>
+- <a class="tdlp" href="#delete">delete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl admin workflow delete</p><p class="tdlppd">Deleting the Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="#delete">Learn more</a></p></div></a>
 
 ### delete
 

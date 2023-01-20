@@ -19,7 +19,7 @@ The batch command is automatically started when the [`--query` modifier](/tctl-n
 
 In tctl version-next, the `tctl batch` commands are used solely to view the status of and terminate the batch jobs.
 
-The `--query` modifier supports a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
+The `--query` modifier supports a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a List Filter?</p><p class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</p><p class="tdlplm"><a class="tdlplma" href="/visibility#list-filter">Learn more</a></p></div></a>.
 The List Filter identifies the set of Workflow Executions to be affected by the command.
 
 A successfully started batch job returns a Job ID.
@@ -33,9 +33,9 @@ Terminating a batch job does not roll back the operations already performed by t
 - [tctl batch describe --job-id](/tctl-next/batch#describe)
 - [tctl batch list](/tctl-next/batch#list)
 - [tctl batch terminate --job_id](/tctl-next/batch#terminate)
-- <a class="tdlp" href="/tctl-next/workflow#signal">tctl workflow signal --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow signal</span><br /><br /><span class="tdlppd">How to Signal a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-next/workflow#signal">Learn more</a></span></span></a>
-- <a class="tdlp" href="/tctl-next/workflow#terminate">tctl workflow terminate --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow terminate</span><br /><br /><span class="tdlppd">How to terminate a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-next/workflow#terminate">Learn more</a></span></span></a>
-- <a class="tdlp" href="/tctl-next/workflow#cancel">tctl workflow cancel --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow cancel</span><br /><br /><span class="tdlppd">How to cancel a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-next/workflow#cancel">Learn more</a></span></span></a>
+- <a class="tdlp" href="/tctl-next/workflow#signal">tctl workflow signal --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow signal</p><p class="tdlppd">How to Signal a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#signal">Learn more</a></p></div></a>
+- <a class="tdlp" href="/tctl-next/workflow#terminate">tctl workflow terminate --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow terminate</p><p class="tdlppd">How to terminate a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#terminate">Learn more</a></p></div></a>
+- <a class="tdlp" href="/tctl-next/workflow#cancel">tctl workflow cancel --query ...<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl workflow cancel</p><p class="tdlppd">How to cancel a Workflow Execution using tctl.</p><p class="tdlplm"><a class="tdlplma" href="/tctl-next/workflow#cancel">Learn more</a></p></div></a>
 
 ## list
 

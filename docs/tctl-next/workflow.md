@@ -170,7 +170,7 @@ tctl workflow list \
 
 ## query
 
-The `tctl workflow query` command sends a <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Query?</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#query">Learn more</a></span></span></a> to a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow query` command sends a <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Query?</p><p class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#query">Learn more</a></p></div></a> to a [Workflow Execution](/workflows#workflow-execution).
 
 Queries can be used to retrieve all or part of the Workflow state with given parameters.
 
@@ -268,7 +268,7 @@ The following modifiers control the behavior of the command.
 
 ## show
 
-The `tctl workflow show` command shows the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> for the specified [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow show` command shows the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Event History?</p><p class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#event-history">Learn more</a></p></div></a> for the specified [Workflow Execution](/workflows#workflow-execution).
 
 `tctl workflow show <modifiers>`
 
@@ -289,7 +289,7 @@ The following modifiers control the behavior of the command.
 
 ## signal
 
-The `tctl workflow signal` command <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> a [Workflow Execution](/workflows#workflow-execution).
+The `tctl workflow signal` command <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Signal?</p><p class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#signal">Learn more</a></p></div></a> a [Workflow Execution](/workflows#workflow-execution).
 
 The use of the [`--query` modifier](/tctl-next/modifiers#--query) (`tctl workflow signal --query ...`) starts a [batch job](/tctl-next/batch) that sends a Signal to the Workflow Executions according to the List Filter provided.
 
