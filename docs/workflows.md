@@ -349,6 +349,10 @@ In the case of <a class="tdlp" href="#temporal-cron-job">Temporal Cron Jobs<span
 
 - [How to Continue-As-New](/application-development/features#continue-as-new)
 
+### Reset
+
+A Reset terminates a [Workflow Execution](/workflows#workflow-execution), removes the progress in the [Event History](/workflows#event-history) up to the reset point, and then creates a new Workflow Execution with the same [Workflow Type](/workflows#workflow-type) and [Id](/workflows#workflow-id) to continue.
+
 ### Run Id
 
 A Run Id is a globally unique, platform-level identifier for a [Workflow Execution](/workflows#workflow-execution).
