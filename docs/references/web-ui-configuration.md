@@ -164,11 +164,11 @@ codec:
 
 Prevents the user from executing Workflow Actions on the Web UI.
 
-This option affects Bulk Actions for Recent Workflows as well as Workflow Actions.
+This option affects Bulk Actions for Recent Workflows as well as Workflow Actions on the Workflow Details page.
 
 :::note 
 `disableWriteActions` overrides the configuration values of each individual Workflow Action. 
-Setting this variable to `true` will disable all options on the Web UI. 
+Setting this variable to `true` will disable all Workflow Actions on the Web UI. 
 :::
 
 ## workflowTerminatedDisabled
