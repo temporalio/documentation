@@ -170,11 +170,11 @@ A Temporal Application is scalable because the Temporal Platform is capable of s
 
 A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
 
+For more information, see <a class="tdlp" href="#deterministic-constraints">Deterministic constraints<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#deterministic-constraints">Learn more</a></span></span></a>.
+
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-To accomplish this, the Replay retries the Workflow Execution function and expects a response. If the corresponding response was recorded in the Event History, the Replay process continues to the next function. If a response wasn't recorded in the Event History, the Replay _retries_ that function and records the response in the Event History. This process repeats often.
-
-You can use Replay APIs from any of the Temporal SDKs to control this behavior.
+- <a class="tdlp" href="/application-development/testing#replay">How to use Replay APIs to test Workflow Definitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Replay a Workflow Execution</span><br /><br /><span class="tdlppd">Replay recreates the exact state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/testing#replay">Learn more</a></span></span></a>
 
 ### Commands and awaitables
 
