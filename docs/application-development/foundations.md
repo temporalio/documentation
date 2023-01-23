@@ -1226,7 +1226,8 @@ Content is currently unavailable.
 ## Develop Activities
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
-Activities are normal function/method executions that can interact with the world.
+An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
+An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
 For the Workflow to be able to execute the Activity, we must define the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
 
 <Tabs
