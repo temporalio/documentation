@@ -25,11 +25,10 @@ Temporal recommends that Activities be idempotent.
 
 An Activity is idempotent if multiple [Activity Task Executions](/concepts/what-is-an-activity-task-execution) do not change the state of the system beyond the first Activity Task Execution.
 
-An Activity can be tried more than once even if the Retry Policy says it shouldn't.
-Because of that behavior, you might need to use idempotency keys for critical side effects.
+We recommend using idempotency keys for critical side effects.
 
 The lack of idempotency might affect the correctness of your application but does not affect the Temporal Platform.
-(In other words, lack of idempotency does not lead to a platform error.)
+In other words, lack of idempotency does not lead to a platform error.
 
 In some cases, whether something is idempotent does not affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
