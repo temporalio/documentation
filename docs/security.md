@@ -76,13 +76,13 @@ To restrict access to specific users, authentication and authorization is perfor
 #### Authorization
 
 :::note
-Information regarding <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="#authorizer-plugin">Learn more</a></p></div></a> and <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a ClaimMapper Plugin?</p><p class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</p><p class="tdlplm"><a class="tdlplma" href="#claim-mapper">Learn more</a></p></div></a> has been moved to another location.
+Information regarding <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#authorizer-plugin">Learn more</a></span></span></a> and <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#claim-mapper">Learn more</a></span></span></a> has been moved to another location.
 :::
 
 Temporal offers two plugin interfaces for implementing API call authorization:
 
-- <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a ClaimMapper Plugin?</p><p class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</p><p class="tdlplm"><a class="tdlplma" href="#claim-mapper">Learn more</a></p></div></a>
-- <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is an Authorizer Plugin?</p><p class="tdlppd">undefined</p><p class="tdlplm"><a class="tdlplma" href="#authorizer-plugin">Learn more</a></p></div></a>
+- <a class="tdlp" href="#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#claim-mapper">Learn more</a></span></span></a>
+- <a class="tdlp" href="#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#authorizer-plugin">Learn more</a></span></span></a>
 
 The authorization and claim mapping logic is customizable, making it available to a variety of use cases and identity schemes.
 When these are provided the frontend invokes the implementation of these interfaces before executing the requested operation.
@@ -107,7 +107,7 @@ A Data Converter is a Temporal SDK component that encodes and decodes data enter
 - TypeScript: [Data Converters](https://legacy-documentation-sdks.temporal.io/typescript/data-converters)
 - Go: [Create a custom Data Converter](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-custom-data-converter-in-go)
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" height="1240" width="2300" /></div></div>
 
 Data is encoded before it is sent to a Temporal Server, and it is decoded when it is received from a Temporal Server.
 
@@ -222,11 +222,11 @@ You can make a custom Failure Converter, but if you use multiple SDKs, you'd hav
 
 ## Codec Server
 
-A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [Web UI](/web-ui) through a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codec">Learn more</a></p></div></a>.
+A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [Web UI](/web-ui) through a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>.
 
-- <a class="tdlp" href="#codec-server">How to set up a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set up a Codec Server</p><p class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</p><p class="tdlplm"><a class="tdlplma" href="#codec-server">Learn more</a></p></div></a>
+- <a class="tdlp" href="#codec-server">How to set up a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up a Codec Server</span><br /><br /><span class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#codec-server">Learn more</a></span></span></a>
 
-By default, tctl and the Web UI use the <a class="tdlp" href="#default-data-converter">Default Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#default-data-converter">Learn more</a></p></div></a> without a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codec">Learn more</a></p></div></a>.
+By default, tctl and the Web UI use the <a class="tdlp" href="#default-data-converter">Default Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#default-data-converter">Learn more</a></span></span></a> without a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>.
 If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed).
 In order to convert the data to its original format, you can configure the Web UI/tctl to use a Codec Server that uses your Payload Codec.
 
@@ -245,7 +245,7 @@ tctl workflow showid <workflowID>
 
 With a Codec Server, Payloads that are part of the Event History will be sent to the Codec Server to be decoded before being deserialized by the Default Data Converter and displayed in your terminal.
 
-- <a class="tdlp" href="#configure-tctl">How to configure tctl with a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set up a Codec Server</p><p class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</p><p class="tdlplm"><a class="tdlplma" href="#configure-tctl">Learn more</a></p></div></a>
+- <a class="tdlp" href="#configure-tctl">How to configure tctl with a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up a Codec Server</span><br /><br /><span class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#configure-tctl">Learn more</a></span></span></a>
 
 ## Use case: Web UI
 
@@ -255,21 +255,22 @@ Without a Codec Server, this information remains encoded.
 
 Passing these Payloads through a Codec Server returns decoded results to the Web UI.
 
-- <a class="tdlp" href="#configure-the-web-ui">How to configure the Web UI with a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">How to set up a Codec Server</p><p class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</p><p class="tdlplm"><a class="tdlplma" href="#configure-the-web-ui">Learn more</a></p></div></a>
+- <a class="tdlp" href="#configure-the-web-ui">How to configure the Web UI with a Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up a Codec Server</span><br /><br /><span class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#configure-the-web-ui">Learn more</a></span></span></a>
 
 ### Codec Server
 
-To use a <a class="tdlp" href="#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Codec Server?</p><p class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</p><p class="tdlplm"><a class="tdlplma" href="#codec-server">Learn more</a></p></div></a>, first run it with your Payload Codec and then configure [tctl](/tctl-v1) and the [Web UI](/web-ui) to use it.
+To use a <a class="tdlp" href="#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#codec-server">Learn more</a></span></span></a>, first run it with your Payload Codec and then configure [tctl](/tctl-v1) and the [Web UI](/web-ui) to use it.
 
 ### Run the server
 
-A Codec Server is an HTTP server that implements two endpoints:
+A Codec Server is an HTTP server that follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
+It implements two endpoints:
 
 - `POST /encode`
 - `POST /decode`
 
 Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of Payloads.
-The endpoints run the Payloads through a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Data Converter?</p><p class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</p><p class="tdlplm"><a class="tdlplma" href="#payload-codec">Learn more</a></p></div></a> before returning them.
+The endpoints run the Payloads through a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a> before returning them.
 
 Sample Codec Servers:
 
@@ -291,7 +292,7 @@ Once the Codec Server is started, there are two ways to provide it to the Web UI
 
 #### In the UI
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Data Encoder icon</p></div><div class="tdiiw"><img class="tdi" src="/img/docs/data-encoder-button.png" alt="Data Encoder icon" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Data Encoder icon</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/docs/data-encoder-button.png" alt="Data Encoder icon" height="304" width="406" /></div></div>
 
 Select the icon with an up-down arrow on the bottom left of the screen.
 This action displays the codec endpoint dialog.
@@ -490,16 +491,16 @@ Temporal Server provides a [default implementation of JWT authentication](/secur
 **Example**
 
 ```java
-  AuthorizationTokenSupplier tokenSupplier =
-    //your implementation of token supplier
-    () -> "Bearer <Base64 url-encoded value of the token for default JWT ClaimMapper>";
-  WorkflowServiceStubsOptions serviceStubOptions =
-    WorkflowServiceStubsOptions.newBuilder()
-      //other service stub options
-      .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
-      .build();
-  WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
-  WorkflowClient client = WorkflowClient.newInstance(service);
+AuthorizationTokenSupplier tokenSupplier =
+  //your implementation of token supplier
+  () -> "Bearer <Base64 url-encoded value of the token for default JWT ClaimMapper>";
+WorkflowServiceStubsOptions serviceStubOptions =
+  WorkflowServiceStubsOptions.newBuilder()
+    //other service stub options
+    .addGrpcMetadataProvider(new AuthorizationGrpcMetadataProvider(tokenSupplier))
+    .build();
+WorkflowServiceStubs service = WorkflowServiceStubs.newServiceStubs(serviceStubOptions);
+WorkflowClient client = WorkflowClient.newInstance(service);
 ```
 
 Related read:

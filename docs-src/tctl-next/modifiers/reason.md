@@ -7,4 +7,4 @@ tags:
   - tctl
 ---
 
-Specify a reason for terminating the [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Specify a reason for terminating the [Workflow Execution](/workflows#workflow-execution).
