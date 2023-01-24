@@ -11,17 +11,18 @@ tags:
 
 :::info SDK metrics
 
-The information on this page is relevant to <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal SDK?</p><p class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</p><p class="tdlplm"><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></p></div></a>.
+The information on this page is relevant to <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a>.
 
-See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by Temporal Cloud.
+See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a>.
 
-See [Cluster metrics](/references/sdk-metrics) for metrics emitted by the <a class="tdlp" href="/clusters#">OSS Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a>.
+See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the <a class="tdlp" href="/clusters#">OSS Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 
 :::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
-To set up metrics, see [Dev guide ▶️ Observability ▶️ Metrics](/application-development/observability#metrics).
-To make changes to your Worker deployments based on these metrics, see [Dev guide ▶️ Worker performance](/application-development/worker-performance).
+
+- <a class="tdlp" href="/application-development/observability#metrics">How to get started emitting metrics from your SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#metrics">Learn more</a></span></span></a>
+- [How to tune Worker performance based on metrics](/application-development/worker-performance)
 
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)

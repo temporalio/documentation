@@ -11,15 +11,16 @@ tags:
 
 :::info OSS Cluster metrics
 
-The information on this page is relevant to open source <a class="tdlp" href="/clusters#">Temporal Cluster deployments<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a>.
+The information on this page is relevant to open source <a class="tdlp" href="/clusters#">Temporal Cluster deployments<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 
-See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by Temporal Cloud.
+See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a>.
 
-See [SDK metrics](/references/sdk-metrics) for metrics emitted by the SDKs.
+See [SDK metrics](/references/sdk-metrics) for metrics emitted by the <a class="tdlp" href="/temporal#temporal-sdk">SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a>.
 
 :::
 
 A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
+
 All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).
 
 For details on setting up metrics in your Cluster configuration, see [Temporal Cluster](/references/configuration#global).
