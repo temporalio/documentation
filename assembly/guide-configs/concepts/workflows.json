@@ -43,6 +43,10 @@
     },
     {
       "type": "h3",
+      "id": "concepts/what-is-a-reset"
+    },
+    {
+      "type": "h3",
       "id": "concepts/what-is-a-run-id"
     },
     {
@@ -73,7 +77,6 @@
       "type": "h2",
       "id": "concepts/what-is-a-signal"
     },
-
     {
       "type": "h2",
       "id": "concepts/what-is-a-query"
