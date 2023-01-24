@@ -25,7 +25,7 @@ However, always configure your connection and Namespace when [deploying to produ
 The following example, creates a Client, connects to an account, and declares your Namespace.
 
 ```typescript
-import { Connection, Client } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 
 const connection = await Connection.connect({
   address: '<Namespace_ID>.tmprl.cloud',
