@@ -57,4 +57,4 @@ test('workflowFoo', async () => {
 ```
 
 This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result.
-The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
+The Workflow is executed using `testEnv.client.workflow`, which is connected to the test server.

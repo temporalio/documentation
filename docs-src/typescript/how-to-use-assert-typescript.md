@@ -43,6 +43,6 @@ const worker = await Worker.create({
 });
 
 await worker.runUntil(
-  testEnv.workflowClient.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
+  testEnv.client.workflow.execute(functionToTest, workflowOptions), // throws WorkflowFailedError
 );
 ```

@@ -12,12 +12,12 @@ tags:
 [`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { joinSignal, yourWorkflow } from './workflows';
 
-const client = new WorkflowClient();
+const client = new Client();
 
-await client.signalWithStart(yourWorkflow, {
+await client.workflow.signalWithStart(yourWorkflow, {
   workflowId: 'workflow-id-123',
   args: [{ foo: 1 }],
   signal: joinSignal,

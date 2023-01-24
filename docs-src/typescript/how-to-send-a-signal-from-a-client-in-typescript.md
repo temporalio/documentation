@@ -12,12 +12,12 @@ tags:
 [`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
 
 ```typescript
-import { WorkflowClient } from '@temporalio/client';
+import { Client } from '@temporalio/client';
 import { joinSignal } from './workflows';
 
-const client = new WorkflowClient();
+const client = new Client();
 
-const handle = client.getHandle('workflow-id-123');
+const handle = client.workflow.getHandle('workflow-id-123');
 
 await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
 ```

@@ -56,11 +56,11 @@ run().catch((err) => {
 When scheduling a Workflow, a `taskQueue` must be specified.
 
 ```ts
-import { Connection, WorkflowClient } from '@temporalio/client';
+import { Client, Connection } from '@temporalio/client';
 // This is the code that is used to start a workflow.
 const connection = await Connection.create();
-const client = new WorkflowClient({ connection });
-const result = await client.execute(yourWorkflow, {
+const client = new Client({ connection });
+const result = await client.workflow.execute(yourWorkflow, {
   // required
   taskQueue: 'your-task-queue',
   // required
