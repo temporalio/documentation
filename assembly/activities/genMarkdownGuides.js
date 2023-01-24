@@ -26,18 +26,22 @@ async function generateGuide(config, guideCfg) {
     switch (section.type) {
       case "h2":
         guideStr = `${guideStr}## ${section.node.label}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h3":
         guideStr = `${guideStr}### ${section.node.label}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h4":
         guideStr = `${guideStr}#### ${section.node.label}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "p":
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         break;
       case "langtabs":
         const tabStr = await generateLangTabs(section.langtabs);
@@ -53,6 +57,18 @@ async function generateGuide(config, guideCfg) {
   return guideCfg;
 }
 
+function ssdi(ssdi) {
+  let infoStr = "";
+  if(ssdi.length > 0) {
+    infoStr = `:::tip Support, stability, and dependency info\n`;
+    for (const item of ssdi) {
+        infoStr = `${infoStr}- ${item}\n`;
+    }
+    infoStr = `${infoStr}\n:::\n\n`;
+  }
+  return infoStr;
+}
+
 async function generateLangTabs(langtabs) {
   let tabStr = `<Tabs\n`;
   const unavailable = "Content is not available";
@@ -66,6 +82,7 @@ async function generateLangTabs(langtabs) {
     } else if (tab.id == "na") {
       tabStr = `${tabStr}Not applicable to this SDK.\n\n`;
     } else {
+      tabStr = `${tabStr}${ssdi(tab.node.ssdi)}`;
       tabStr = `${tabStr}${tab.node.markdown_content}\n\n`;
     }
     tabStr = `${tabStr}</TabItem>\n`;

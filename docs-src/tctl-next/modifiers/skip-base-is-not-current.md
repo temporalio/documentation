@@ -7,4 +7,4 @@ tags:
   - tctl
 ---
 
-Indicate that a [Workflow Execution](/concepts/what-is-a-workflow-execution) should be skipped if the base Run is not the current Run.
+Indicate that a [Workflow Execution](/workflows#workflow-execution) should be skipped if the base Run is not the current Run.

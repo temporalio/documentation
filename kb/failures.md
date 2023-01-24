@@ -17,7 +17,6 @@ There are different types of Failures, and each has a different type in the SDKs
 
 <!-- truncate -->
 
-
 ## Temporal Failure
 
 Most SDKs have a base class that the other Failures extend:

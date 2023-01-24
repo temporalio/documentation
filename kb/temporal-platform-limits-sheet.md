@@ -9,7 +9,10 @@ date: 2022-06-07T00:00:00Z
 ---
 
 Running into limits can cause unexpected failures, so be mindful when you design your systems.
+
 Here is a list of many hard (error) or soft (warn) limits that you could encounter while using the Temporal Platform.
+
+Unless otherwise stated, Event limits apply to all Events occurring simultaneously on a system.
 
 <!-- truncate -->
 
@@ -29,16 +32,12 @@ Here is a list of many hard (error) or soft (warn) limits that you could encount
   - We error at 50 MB: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
 - **History total count limit** (leading to a terminated Workflow Execution):
-
   - We warn at 10,000 Events: `history size exceeds warn limit.`
   - We error at 50,000 Events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
-
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
-
   - We fail the following Commands at 50,000 Events for OSS and 2,000 Events for Cloud:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)

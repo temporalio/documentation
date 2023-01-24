@@ -1,18 +1,19 @@
 ---
 id: namespaces
-title: How to create Namespaces
+title: How to create and manage Namespaces
 sidebar_label: Namespaces
-description: A Namespace is a unit of isolation within the Temporal Platform.
+description: You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..
 tags:
   - guide-context
 ---
 
-A [Namespace](/concepts/what-is-a-namespace) is a unit of isolation within the Temporal Platform.
+You can create, update, deprecate or delete your [Namespaces](/concepts/what-is-a-namespace) using either tctl or SDK APIs.
 
-You can use Namespaces to match the development lifecycle; for example, having separate `dev` and `prod` Namespaces.
-Or you could use them to ensure Workflow Executions between different teams never communicate; such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
+Use Namespaces to isolate your Workflow Executions according to your needs.
+For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
+You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create and manage Namespaces.
+On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
 On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 

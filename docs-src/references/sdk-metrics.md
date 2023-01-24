@@ -7,10 +7,21 @@ tags:
   - reference
 ---
 
-> For Cluster metrics, see [Cluster ▶️ Production deployment ▶️ Scaling and Metrics](/server/production-deployment/#scaling-and-metrics).
-> For Cloud metrics, see [Temporal Cloud ▶️ Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics).
+:::info SDK metrics
+
+The information on this page is relevant to [Temporal SDKs](/concepts/what-is-a-temporal-sdk).
+
+See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by [Temporal Cloud](/concepts/what-is-temporal-cloud).
+
+See [Cluster metrics](/references/cluster-metrics) for metrics emitted by the [OSS Cluster](/concepts/what-is-a-temporal-cluster).
+
+:::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
+
+- [How to get started emitting metrics from your SDK](/app-dev-context/metrics)
+- [How to tune Worker performance based on metrics](/application-development/worker-performance)
+
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)
 Currently, some metrics are specific to certain SDKs.
