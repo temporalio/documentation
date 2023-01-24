@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 The Temporal Platform explained.
 
-Temporal is a scalable and reliable runtime for Reentrant Processes called <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)
@@ -23,14 +23,14 @@ Any sufficiently complex distributed system contains an ad-hoc, informally-speci
 :::
 -->
 
-<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal System</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-system-simple.svg" alt="The Temporal System" height="740" width="1140" /></div></div>
 
 ## Temporal Platform
 
-The Temporal Platform consists of a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Process?</p><p class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-process">Learn more</a></p></div></a>.
+The Temporal Platform consists of a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
 Together these components create a runtime for Workflow Executions.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="tdi" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" height="740" width="1140" /></div></div>
 
 The Temporal Cluster is open source and can be operated by you.
 The Temporal Cloud is a set of Clusters operated by us.
@@ -40,7 +40,7 @@ They communicate with a Temporal Cluster via gRPC.
 
 ## Temporal Application
 
-A Temporal Application is a set of <a class="tdlp" href="/workflows#workflow-execution">Temporal Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Execution?</p><p class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></p></div></a>.
+A Temporal Application is a set of [Temporal Workflow Executions](/workflows#workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.
@@ -55,15 +55,15 @@ A Temporal Workflow Execution is a Reentrant Process. A Reentrant Process is re
 - Recoverable: Ability of a process to continue execution after execution was suspended on a _failure_.
 - Reactive: Ability of a process to react to external events.
 
-Therefore, a Temporal Workflow Execution executes a <a class="tdlp" href="/workflows#workflow-definition">Temporal Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></p></div></a>, also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
+Therefore, a Temporal Workflow Execution executes a <a class="tdlp" href="/workflows#workflow-definition">Temporal Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>, also called a Temporal Workflow Function, your application code, exactly once and to completion—whether your code executes for seconds or years, in the presence of arbitrary load and arbitrary failures.
 
 ## Temporal SDK
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
 
-1. Construct and use a <a class="tdlp" href="#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Client</p><p class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</p><p class="tdlplm"><a class="tdlplma" href="#temporal-client">Learn more</a></p></div></a>
-2. Develop <a class="tdlp" href="/workflows#workflow-definition">Workflow Definitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></p></div></a>
-3. Develop <a class="tdlp" href="/workers#worker-program">Worker Programs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Worker Program?</p><p class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</p><p class="tdlplm"><a class="tdlplma" href="/workers#worker-program">Learn more</a></p></div></a>
+1. Construct and use a <a class="tdlp" href="#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-client">Learn more</a></span></span></a>
+2. Develop <a class="tdlp" href="/workflows#workflow-definition">Workflow Definitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>
+3. Develop <a class="tdlp" href="/workers#worker-program">Worker Programs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Program?</span><br /><br /><span class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-program">Learn more</a></span></span></a>
 
 A Temporal SDK enables you to write your application code using the full power of the programming language, while the Temporal Platform handles the durability, reliability, and scalability of the application.
 
@@ -81,6 +81,24 @@ See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
 ### Auth
 
 Temporal offers methods of authenticating and authorizing client API calls within our SDKs.
+
+### Sandbox environment
+
+Some SDKs support running Workflows inside a sandbox environment.
+
+<Tabs>
+  <TabItem value="python" label="Python">
+
+The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
+The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
+
+By default, Workflows run in a sandbox environment.
+If a Workflow Execution performs a non-deterministic event, an exception is thrown, which results in failing the Workflow Task.
+The Workflow will not progress until the code is fixed.
+
+For more information, see the knowledge base article on [Python sandbox environments](/kb/python-sandbox-environment).
+</TabItem>
+</Tabs>
 
 ### SDKs in development
 
@@ -100,7 +118,7 @@ The following third-party SDKs exist but are not supported in the [Developer's g
 
 ### Temporal Client
 
-A Temporal Client is available in each SDK and provides a set of APIs to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a>.
+A Temporal Client is available in each SDK and provides a set of APIs to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 
 The most common operations that a Temporal Client enables you to perform are the following:
 

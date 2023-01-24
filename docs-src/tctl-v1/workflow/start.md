@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).
+The `tctl workflow start` command starts a new [Workflow Execution](/workflows#workflow-execution).
 Unlike `run`, this command returns the Workflow Id and Run Id immediately after starting the Workflow.
 
 `tctl workflow start <modifiers>`
@@ -62,7 +62,7 @@ tctl workflow start --workflow_type <name>
 
 ### --execution_timeout
 
-Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/concepts/what-is-a-workflow-execution) in seconds.
+Specify the [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout) of the [Workflow Execution](/workflows#workflow-execution) in seconds.
 The default value is 0.
 
 **Example**
@@ -84,7 +84,7 @@ tctl workflow start --workflow_task_timeout <seconds>
 
 ### --cron
 
-Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job/#cron-schedules).
+Specify a [Cron Schedule](/concepts/what-is-a-temporal-cron-job#cron-schedules).
 
 **Example**
 
@@ -95,13 +95,13 @@ tctl workflow start --cron <string>
 ### --workflowidreusepolicy
 
 Specify a [Workflow Id Reuse Policy](/concepts/what-is-a-workflow-id-reuse-policy).
-Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Configure if the same [Workflow Id](/concepts/what-is-a-workflow-id) is allowed for use in new [Workflow Execution](/workflows#workflow-execution).
 
 There are three allowed values:
 
-- [**AllowDuplicateFailedOnly:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**AllowDuplicate:**](/concepts/what-is-a-workflow-id-reuse-policy)
-- [**RejectDuplicate:**] (/concepts/what-is-a-workflow-id-reuse-policy)
+- [AllowDuplicateFailedOnly](/concepts/what-is-a-workflow-id-reuse-policy)
+- [AllowDuplicate](/concepts/what-is-a-workflow-id-reuse-policy)
+- [RejectDuplicate] (/concepts/what-is-a-workflow-id-reuse-policy)
 
 **Examples**
 

@@ -1,13 +1,17 @@
+import svgParser from 'svg-parser';
+import sizeOf from 'image-size';
 import fs from "fs-extra";
 import path from "path";
 
 const docsLinkRegex =
-  "\\[([a-zA-Z0-9-_#.&`\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
+  "\\[([a-zA-Z0-9-_#.&`',\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)(#[a-zA-Z0-9-_.]+)?\\)";
 const linkRegex = RegExp(docsLinkRegex, "gm");
 const docsImageRegex = "!\\[([a-zA-Z0-9-_#.&\\s]+)\\]\\(([a-zA-Z0-9-_/.]+)\\)";
 const imageRegex = RegExp(docsImageRegex, "gm");
+let rootDir = "";
 
 export async function linkMagic(config) {
+  rootDir = config.root_dir;
   console.log("replacing links in guide content...");
   const matchedGuidesPath = path.join(
     config.root_dir,
@@ -122,7 +126,8 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
     const image = imageRegex.exec(line);
     let matchLinks = true;
     if (image !== null) {
-      line = centeredImage(image);
+      const dimensions = getImageDimensions(image[2]);
+      line = centeredImage(image, dimensions);
       matchLinks = false;
     }
     if (matchLinks) {
@@ -154,12 +159,25 @@ async function parseAndReplace(raw_content, link_index, current_guide_id) {
   return raw_content;
 }
 
-function centeredImage(image) {
-  return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="tdi" src="${image[2]}" alt="${image[1]}" /></div></div>`;
+function centeredImage(image, dimensions) {
+  return `<div class="tdiw"><div class="tditw"><p class="tdit">${image[1]}</p></div><div class="tdiiw"><img class="img_ev3q" src="${image[2]}" alt="${image[1]}" height="${dimensions.height}" width="${dimensions.width}" /></div></div>`;
 }
 
 function linkPreview(newPath, linkText, nodeTitle, description) {
-  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">${nodeTitle}</p><p class="tdlppd">${description}</p><p class="tdlplm"><a class="tdlplma" href="${newPath}">Learn more</a></p></div></a>`;
+  return `<a class="tdlp" href="${newPath}">${linkText}<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">${nodeTitle}</span><br /><br /><span class="tdlppd">${description}</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="${newPath}">Learn more</a></span></span></a>`;
+}
+
+function getImageDimensions(imgPath) {
+  const ext = path.extname(imgPath)
+  const filePath = path.join(rootDir, "static", imgPath);
+  if (ext == 'svg') {
+    const svgFile = fs.readFileSync(`${filePath}`, 'utf8');
+    const svg = svgParser.parse(svgFile);
+    return {width: svg.children[0].properties.width, height: svg.children[0].properties.height};
+  } else {
+    const dimensions = sizeOf(filePath);
+    return {width: dimensions.width, height: dimensions.height}
+  }
 }
 
 async function replaceLinks(line, match, link, current_guide_id) {

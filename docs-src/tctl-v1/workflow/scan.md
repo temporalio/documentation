@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow scan` command lists [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The `tctl workflow scan` command lists [Workflow Executions](/workflows#workflow-execution).
 It is faster than the `tctl workflow listall` command, but the results are not sorted.
 
 By default, this command lists a maximum of 2000 Workflow Executions.
@@ -81,7 +81,7 @@ tctl workflow scan --print_json
 
 ### --pagesize
 
-Specify the maximum number of [Workflow Execution](/concepts/what-is-a-workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Execution](/workflows#workflow-execution) to list on a page.
 (By default, the `tctl workflow scan` command lists 2000 Workflow Executions per page.)
 
 **Example**

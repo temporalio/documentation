@@ -79,6 +79,12 @@ a:hover {
   text-decoration: underline;
 }
 
+.alert {
+  border-radius: 3px !important;
+  border-width: 1px;
+  border-style: solid;
+}
+
 /* If we scope things with .intro we can attach to the tailwind styles on only the intro page */
 .tailwindcss .flex {
   display: flex;
@@ -683,7 +689,6 @@ h1 {
 }
 
 .tdiw {
-  width: 100%;
   margin-top: 0;
   margin-bottom: 10px;
   margin-left: auto;

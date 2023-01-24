@@ -11,11 +11,11 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a> operations.
+The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> operations.
 
-- <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster health</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#health">Learn more</a></p></div></a>
-- <a class="tdlp" href="#describe">tctl cluster describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster describe</p><p class="tdlppd">How to show information about the Cluster using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#describe">Learn more</a></p></div></a>
-- <a class="tdlp" href="#system">tctl cluster system<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tctl cluster system</p><p class="tdlppd">How to check the health of the Frontend Service using tctl.</p><p class="tdlplm"><a class="tdlplma" href="#system">Learn more</a></p></div></a>
+- <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl cluster health</span><br /><br /><span class="tdlppd">How to check the health of the Frontend Service using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#health">Learn more</a></span></span></a>
+- <a class="tdlp" href="#describe">tctl cluster describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl cluster describe</span><br /><br /><span class="tdlppd">How to show information about the Cluster using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
+- <a class="tdlp" href="#system">tctl cluster system<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl cluster system</span><br /><br /><span class="tdlppd">How to check the health of the Frontend Service using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#system">Learn more</a></span></span></a>
 
 ## describe
 
@@ -27,7 +27,7 @@ The command has no modifiers.
 
 ## health
 
-The `tctl cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-temporal-cluster/#frontend-service).
+The `tctl cluster health` command checks the health of the <a class="tdlp" href="/clusters#frontend-service">Frontend Service<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#frontend-service">Learn more</a></span></span></a>.
 
 `tctl cluster health`
 

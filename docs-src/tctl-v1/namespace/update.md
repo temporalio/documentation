@@ -15,7 +15,7 @@ The following modifiers control the behavior of the command.
 
 ### --active_cluster
 
-Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+Specify the name of the active [Temporal Cluster](/concepts/what-is-a-temporal-cluster) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 **Example**
 
@@ -25,7 +25,7 @@ tctl namespace update --active_cluster <name>
 
 ### --add_bad_binary
 
-Add a binary checksum to use when resetting a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Add a binary checksum to use when resetting a [Workflow Execution](/workflows#workflow-execution).
 Temporal will not dispatch any [Commands](/concepts/what-is-a-command) to the given binary.
 
 See also [`--remove_bad_binary`](#--remove_bad_binary).
@@ -38,7 +38,7 @@ tctl namespace update --add_bad_binary <value>
 
 ### --clusters
 
-Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster/) when updating a [Namespace](/concepts/what-is-a-namespace).
+Specify a list of [Temporal Clusters](/concepts/what-is-a-temporal-cluster) when updating a [Namespace](/concepts/what-is-a-namespace).
 
 The list contains the names of Clusters (separated by spaces) to which the Namespace can fail over.
 
@@ -126,7 +126,7 @@ tctl namespace update --remove_bad_binary <value>
 
 ### --retention
 
-Specify the number of days to retain [Workflow Executions](/concepts/what-is-a-workflow-execution).
+Specify the number of days to retain [Workflow Executions](/workflows#workflow-execution).
 
 **Example**
 

@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow stack` command queries [Workflow Execution](/concepts/what-is-a-workflow-execution) with `--stack-trace` as the query type.
+The `tctl workflow stack` command queries [Workflow Execution](/workflows#workflow-execution) with `--stack-trace` as the query type.
 
 `tctl workflow stack <modifiers>`
 
