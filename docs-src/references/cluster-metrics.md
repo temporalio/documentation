@@ -1,16 +1,21 @@
 ---
 id: cluster-metrics
-title: Temporal Cluster metrics reference
+title: Temporal OSS Cluster metrics reference
 description: The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.
 sidebar_label: Cluster metrics
 tags:
   - reference
 ---
 
-> This page is for deployments of the open-source Cluster.
-> For metrics emitted by Temporal Cloud, see [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics).
+:::info OSS Cluster metrics
 
-> See also: [SDK metrics](/references/sdk-metrics).
+The information on this page is relevant to open source [Temporal Cluster deployments](/concepts/what-is-a-temporal-cluster).
+
+See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by Temporal Cloud.
+
+See [SDK metrics](/references/sdk-metrics) for metrics emitted by the SDKs.
+
+:::
 
 A Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and to set up alerts.
 All metrics emitted by the Cluster are listed in [defs.go](https://github.com/temporalio/temporal/blob/master/common/metrics/defs.go).

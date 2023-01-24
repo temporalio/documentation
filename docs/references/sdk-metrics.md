@@ -9,7 +9,15 @@ tags:
 
 <!-- This file is generated. Do not edit it directly. -->
 
-> See also: [References ▶️ Cluster metrics](/references/cluster-metrics).
+:::info SDK metrics
+
+The information on this page is relevant to <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDKs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal SDK?</p><p class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</p><p class="tdlplm"><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></p></div></a>.
+
+See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by Temporal Cloud.
+
+See [Cluster metrics](/references/sdk-metrics) for metrics emitted by the <a class="tdlp" href="/clusters#">OSS Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Temporal Cluster?</p><p class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#">Learn more</a></p></div></a>.
+
+:::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 To set up metrics, see [Dev guide ▶️ Observability ▶️ Metrics](/application-development/observability#metrics).
@@ -47,7 +55,7 @@ Each metric may have some combination of the following keys attached to them:
 Some keys may not be available in every SDK, and Histogram metrics may have different buckets in each SDK.
 
 | Metric name                                                                             | Emitted by     | Metric type | Availability                      |
-|-----------------------------------------------------------------------------------------|----------------|-------------|-----------------------------------|
+| --------------------------------------------------------------------------------------- | -------------- | ----------- | --------------------------------- |
 | [activity_execution_cancelled](#activity_execution_cancelled)                           | Worker         | Counter     | Java                              |
 | [activity_execution_failed](#activity_execution_failed)                                 | Worker         | Counter     | TypeScript, Python, Go, PHP, Java |
 | [activity_execution_latency](#activity_execution_latency)                               | Worker         | Histogram   | TypeScript, Python, Go, PHP, Java |

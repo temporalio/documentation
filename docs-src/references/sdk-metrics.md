@@ -7,7 +7,15 @@ tags:
   - reference
 ---
 
-> See also: [References ▶️ Cluster metrics](/references/cluster-metrics).
+:::info SDK metrics
+
+The information on this page is relevant to [Temporal SDKs](/concepts/what-is-a-temporal-sdk).
+
+See [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) for metrics emitted by Temporal Cloud.
+
+See [Cluster metrics](/references/sdk-metrics) for metrics emitted by the [OSS Cluster](/concepts/what-is-a-temporal-cluster).
+
+:::
 
 The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Processes.
 To set up metrics, see [Dev guide ▶️ Observability ▶️ Metrics](/application-development/observability#metrics).
