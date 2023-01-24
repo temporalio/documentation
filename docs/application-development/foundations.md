@@ -252,10 +252,14 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
 
+- Short link: [`t.mp/go-api`](https://t.mp/go-api)
+
 </TabItem>
 <TabItem value="java">
 
 The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
+
+- Short link: [`t.mp/java-api`](https://t.mp/java-api)
 
 </TabItem>
 <TabItem value="php">
