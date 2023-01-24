@@ -504,7 +504,7 @@ Some important features of the [InjectedSinkFunction](https://typescript.tempora
 
 **Shared logger interface**
 
-Instead of explicitly calling `proxySinks()` to create a logger sink in your Workflow, you can also create a `sharedLogger.ts` file that handles calling `proxySinks()` for you.
+If you want to call the same logger in your Workflow and Activity code, then you can only use `proxySinks()` if the code is running in Workflow context:
 
 <!--SNIPSTART typescript-shared-logger-->
 
