@@ -142,16 +142,18 @@ Explicitly declaring a Sink's interface is optional, but is useful for ensuring 
 
 <!--SNIPSTART typescript-logger-sink-interface-->
 
-[packages/test/src/workflows/definitions.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/definitions.ts)
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import type { Sinks } from '@temporalio/workflow';
+import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
 
-export interface LoggerSinks extends Sinks {
-  logger: {
-    info(message: string): void;
+export interface AlertSinks extends Sinks {
+  alerter: {
+    alert(message: string): void;
   };
 }
+
+export type MySinks = AlertSinks & LoggerSinks;
 ```
 
 <!--SNIPEND-->
@@ -193,13 +195,10 @@ message: ${message}`);
   console.log('Worker gracefully shutdown');
 }
 
-main().then(
-  () => void process.exit(0),
-  (err) => {
-    console.error(err);
-    process.exit(1);
-  },
-);
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
 ```
 
 <!--SNIPEND-->
@@ -211,16 +210,15 @@ main().then(
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
 
-[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/log-sample.ts)
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import * as wf from '@temporalio/workflow';
-import { LoggerSinks } from './definitions';
+const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
 
-const { logger } = wf.proxySinks<LoggerSinks>();
-
-export async function logSampleWorkflow(): Promise<void> {
-  logger.info('Workflow execution started');
+export async function sinkWorkflow(): Promise<string> {
+  defaultWorkerLogger.info('default logger: Workflow Execution started', {});
+  alerter.alert('alerter: Workflow Execution started');
+  return 'Hello, Temporal!';
 }
 ```
 
