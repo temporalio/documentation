@@ -186,42 +186,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To cancel a Workflow in Temporal, you can use the [`WorkflowHandle.cancel()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#cancel) method, which will send a cancellation request to the running Workflow.
-
-```python
-import asyncio
-import uuid
-from temporalio.client import Client
-from temporalio.worker import Worker
-
-# Import your Workflow definition
-from hello.hello_cancellation import CancellationWorkflow
-
-async def test_cancel_workflow(client: Client):
-    task_queue_name = str(uuid.uuid4())
-    async with Worker(
-        client,
-        task_queue=task_queue_name,
-        workflows=[CancellationWorkflow],
-    ):
-        # Start your Workflow 
-        handle = await client.start_workflow(
-            CancellationWorkflow.run,
-            id=(str(uuid.uuid4())),
-            task_queue=task_queue_name,
-        )
-
-        # Wait for the Activity to start
-        await asyncio.sleep(5)
-
-        # Cancel the workflow
-        await handle.cancel()
-
-        # Assert that the workflow has been canceled
-        assert (await handle.describe()).status == WorkflowExecutionStatus.CANCELED
-```
-
-The async `cancel()` method sends a cancellation request to the running Workflow. If the Workflow is running an, it will cancel the Activity.
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -514,11 +479,7 @@ temporal-test-server
 </TabItem>
 <TabItem value="python">
 
-To set up a time skipping environment, import [`WorkflowEnvironment`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html) from the [`testing`](https://python.temporal.io/temporalio.testing.html) module.
-
-```python
-from temporalio.testing import WorkflowEnvironment
-```
+Content is currently unavailable.
 
 </TabItem>
 <TabItem value="typescript">
@@ -992,7 +953,7 @@ For information about assert statements in Python, see [`assert`](https://docs.p
 
 The Node.js [`assert`](https://nodejs.org/api/assert.html) module is included in Workflow bundles.
 
-By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Task?</p><p class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></p></div></a> to fail and be indefinitely retried.
+By default, a failed `assert` statement throws `AssertionError`, which causes a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> to fail and be indefinitely retried.
 
 To prevent this behavior, use [`workflowInterceptorModules`](https://typescript.temporal.io/api/namespaces/testing/#workflowinterceptormodules) from `@temporalio/testing`.
 These interceptors catch an `AssertionError` and turn it into an `ApplicationFailure` that fails the entire Workflow Execution (not just the Workflow Task).
@@ -1085,7 +1046,7 @@ TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://m
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.
 
-Replay succeeds only if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is a Workflow Definition?</p><p class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</p><p class="tdlplm"><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></p></div></a> is compatible with the provided history from a deterministic point of view.
+Replay succeeds only if the <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is compatible with the provided history from a deterministic point of view.
 
 When you test changes to your Workflow Definitions, we recommend doing the following as part of your CI checks:
 
