@@ -20,6 +20,7 @@
   "dependencies": {
     "@docusaurus/core": "^2.1.0",
     "@docusaurus/preset-classic": "^2.1.0",
+    "@docusaurus/theme-mermaid": "^2.2.0",
     "@mdx-js/react": "^1.5.8",
     "beautiful-react-diagrams": "^0.5.1",
     "chart.js": "3.7.1",
