@@ -10,7 +10,7 @@ tags:
   - visibility
 ---
 
-A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
 If a [Temporal Cluster](/concepts/what-is-a-temporal-cluster) does not have [Elasticsearch integrated](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster), but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
 However, you won't be able to use [Advanced Visibility](/concepts/what-is-advanced-visibility) List APIs and List Filters to find and list the Workflow Execution.

@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow listall` command lists all open or closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The `tctl workflow listall` command lists all open or closed [Workflow Executions](/workflows#workflow-execution).
 
 By default, this command lists all closed Workflow Executions.
 To list open Workflow Executions, use the `--open` option.
@@ -80,7 +80,7 @@ tctl workflow listall --print_json
 
 ### --open
 
-List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
+List open [Workflow Executions](/workflows#workflow-execution).
 (By default, the `tctl workflow listall` command lists closed Workflow Executions.)
 
 **Example**
@@ -173,7 +173,7 @@ tctl workflow listall --workflow_type <name>
 
 ### --status
 
-Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Specify the status of a [Workflow Execution](/workflows#workflow-execution).
 Supported values are as follows:
 
 - `completed`

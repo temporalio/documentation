@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-A Temporal Application is a set of [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
+A Temporal Application is a set of [Temporal Workflow Executions](/workflows#workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
 
 A Temporal Application can consist of millions to billions of Workflow Executions.

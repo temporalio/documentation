@@ -22,7 +22,7 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Upgrade Server
 
-If a newer version of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">What is the Temporal Server?</p><p class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</p><p class="tdlplm"><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></p></div></a> is available, a notification appears in the Temporal Web UI.
+If a newer version of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> is available, a notification appears in the Temporal Web UI.
 
 :::info
 
@@ -71,7 +71,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/temporal/versioned
-
 ```
 
 **Example visibility schema upgrade:**
@@ -87,7 +86,6 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --timeout 120 \
    update \
    --schema-dir ./schema/cassandra/visibility/versioned
-
 ```
 
 ### Upgrade MySQL / PostgreSQL schema

@@ -7,5 +7,5 @@ tags:
   - tctl
 ---
 
-Simulate a reset without resetting any [Workflow Executions](/concepts/what-is-a-workflow-execution).
+Simulate a reset without resetting any [Workflow Executions](/workflows#workflow-execution).
 Output is logged to `stdout`.

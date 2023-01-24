@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/concepts/what-is-a-workflow-execution).
+Temporal is a scalable and reliable runtime for Reentrant Processes called [Temporal Workflow Executions](/workflows#workflow-execution).
 
 <!-- TODO content more appropriate for blog
 :::note [Temporal's tenth rule](https://en.wikipedia.org/wiki/Greenspun%27s_tenth_rule)

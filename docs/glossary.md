@@ -45,6 +45,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Namespace](/namespaces#)
 - [Parent Close Policy](/workflows#parent-close-policy)
 - [Query](/workflows#query)
+- [Reset](/workflows#reset)
 - [Retention Period](/clusters#retention-period)
 - [Retry Policy](/retry-policies#)
 - [Run Id](/workflows#run-id)

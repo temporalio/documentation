@@ -9,6 +9,10 @@
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "sections": [
+    {
+      "type": "h2",
+      "id": "clusters/how-to-set-up-health-checks"
+    }
   ]
 }
   
