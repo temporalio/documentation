@@ -10,14 +10,14 @@ Since our last change log in November 2022, we published the following content:
   Temporal Cloud and SDKs emit metrics that can be used to monitor performance and troubleshoot errors.
   Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
-- [A reference of Temporal Platform failure types](/kb/failures)
+- [A reference of Temporal Platform failure types](/kb/failures).
   Each type of Failure has a different type in the SDKs and different information in the protobuf messages (which are used to communicate with the Temporal Cluster and appear in Event History).
 
-- [A reference of Workflow Task errors](/references/errors)
+- [A reference of Workflow Task errors](/references/errors).
   This reference lists possible Workflow Task errors, a subset of a type of Temporal Platform failure.
   Each of the errors corresponds with a `WorkflowTaskFailedCause`, which appears in Events under the `workflow_task_failed_event_attributes` field.
 
-- [How the Python SDK uses a sandbox](/kb/python-sandbox-environment)
+- [How the Python SDK uses a sandbox](/kb/python-sandbox-environment).
   The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
   The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
 
