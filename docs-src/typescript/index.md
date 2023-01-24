@@ -13,7 +13,7 @@ tags:
 
 This project requires Node.js 14.18 or later.
 
-**Create a new project**
+**Create a project**
 
 ```bash
 npx @temporalio/create@latest ./your-app
