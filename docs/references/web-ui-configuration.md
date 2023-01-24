@@ -160,6 +160,29 @@ codec:
   passAccessToken: false
 ```
 
-# disableWriteActions
+## disableWriteActions
 
-Prevents the user from terminating or canceling Workflow Executions from the Web UI.
+Prevents the user from executing Workflow Actions on the Web UI.
+
+This option affects Bulk Actions for Recent Workflows as well as Workflow Actions on the Workflow Details page.
+
+:::note
+`disableWriteActions` overrides the configuration values of each individual Workflow Action.
+Setting this variable to `true` will disable all Workflow Actions on the Web UI.
+:::
+
+## workflowTerminatedDisabled
+
+Prevents the user from terminating Workflow Executions from the Web UI.
+
+## workflowCancelDisabled
+
+Prevents the user from canceling Workflow Executions from the Web UI.
+
+## workflowSignalDisabled
+
+When enabled, prevents the Workflow from sending or receiving Signals from the Web UI.
+
+## workflowResetDisabled
+
+Prevents the user from resetting Workflows from the Web UI.
