@@ -5,8 +5,8 @@
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
-
+ /* You can override the default Infima variables here. */
+ 
 :root {
   /* --ifm-color-primary: #f2633f;
   --ifm-color-primary-dark: #111827; */
@@ -466,12 +466,6 @@ h1 {
   display: flex;
   align-items: center;
   vertical-align: middle;
-}
-
-.landing-card-list-item code {
-  margin-left: 15px;
-  display: inline-block; /* needed to allow text-decoration to take effect */
-  text-decoration: none;
 }
 
 .new-guide {

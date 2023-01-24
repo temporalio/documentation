@@ -283,25 +283,21 @@ const appDevGuideLinks = {
       exit: true,
       path: "https://pkg.go.dev/go.temporal.io/sdk",
       name: "Go SDK API reference",
-      shortlink: "t.mp/go-api",
     },
     {
       exit: true,
       path: "https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html",
       name: "Java SDK API reference",
-      shortlink: "t.mp/java-api",
     },
     {
       exit: true,
       path: "https://typescript.temporal.io/",
       name: "TypeScript SDK API reference",
-      shortlink: "t.mp/ts-api",
     },
     {
       exit: true,
       path: "https://python.temporal.io",
       name: "Python SDK API reference",
-      shortlink: "t.mp/py-api",
     },
   ],
 };
@@ -474,7 +470,6 @@ const displayLinks = (links) => {
             className="hover:underline font-normal"
           >
             {link.name}
-            {link.shortlink && <code>{link.shortlink}</code>}
           </Link>
         </div>
       </li>
