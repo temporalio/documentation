@@ -8,11 +8,11 @@ tags:
 date: 2022-06-07T00:00:00Z
 ---
 
-Running into limits can cause unexpected failures, so be mindful when you design your systems.
+Running into limits can cause unexpected failures.
+Knowing Temporal's limits can prevent that.
 
-Here is a list of many hard (error) or soft (warn) limits that you could encounter while using the Temporal Platform.
-
-Unless otherwise stated, Event limits apply to all Events occurring simultaneously on a system.
+This page details many of the hard and soft limits that are coded into the Temporal Platform.
+Hard limits will fail with an error; soft limits will warn the user about the limit to be exceeded.
 
 <!-- truncate -->
 
@@ -37,4 +37,5 @@ Unless otherwise stated, Event limits apply to all Events occurring simultaneous
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
+  - The platform can run up to 2,000 Events concurrently.
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
