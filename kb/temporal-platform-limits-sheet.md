@@ -37,5 +37,5 @@ Hard limits will fail with an error; soft limits will warn the user about the li
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-  - The platform can run up to 2,000 Events concurrently.
+  - The platform can run up to 2,000 Events of the same type concurrently.
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
