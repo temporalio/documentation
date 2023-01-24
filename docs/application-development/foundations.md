@@ -216,7 +216,7 @@ pip install temporalio
 
 [![NPM](https://img.shields.io/npm/v/temporalio.svg?style=for-the-badge)](https://www.npmjs.com/search?q=author%3Atemporal-sdk-team)
 
-This project requires Node.js 14 or later.
+This project requires Node.js 14.18 or later.
 
 **Create a new project**
 
