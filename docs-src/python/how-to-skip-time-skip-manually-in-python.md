@@ -2,7 +2,7 @@
 id: how-to-skip-time-skip-manually-in-python
 title: How to skip time manually in Python
 sidebar_label: Skip time manually
-description: Skip time from the test server manually.
+description: To implement time skipping, use the `start_time_skipping()` static method.
 tags:
   - python
   - how-to

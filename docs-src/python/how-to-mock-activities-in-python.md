@@ -16,7 +16,7 @@ import uuid
 from temporalio.client import Client
 from temporalio.worker import Worker
 
-# Import your Activity definition and real implementation
+# Import your Activity Definition and real implementation
 from hello.hello_activity import (
     ComposeGreetingInput,
     GreetingWorkflow,
