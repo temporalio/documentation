@@ -221,6 +221,8 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -368,7 +370,7 @@ async def test_mock_activity(client: Client):
         )
 ```
 
-The mocked Activity implementation should have the same signature as the real implementation, including the input and output types, and the same name. So that when the Workflow invokes the Activity, it will invoke the mocked implementation instead of the real one, allowing you to test your Workflow in isolation.
+The mocked Activity implementation should have the same signature as the real implementation, including the input and output types, and the same name. So that when the Workflow invokes the Activity, it will invoke the mocked implementation instead of the real one, allowing you to test your Workflow isolated.
 
 </TabItem>
 <TabItem value="typescript">
@@ -1285,3 +1287,4 @@ await Worker.runReplayHistory(
 
 </TabItem>
 </Tabs>
+
