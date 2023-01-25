@@ -172,7 +172,7 @@ disableWriteActions: false
 
 :::note
 `disableWriteActions` overrides the configuration values of each individual Workflow Action.
-Setting this variable to `true` will disable all Workflow Actions on the Web UI.
+Setting this variable to `true` disables all Workflow Actions on the Web UI.
 :::
 
 ## workflowTerminatedDisabled
@@ -193,7 +193,7 @@ workflowCancelDisabled: false
 
 ## workflowSignalDisabled
 
-When enabled, prevents the user from signaling Workflow Executions from the Web UI.
+Prevents the user from signaling Workflow Executions from the Web UI.
 
 ```yaml
 workflowSignalDisabled: false

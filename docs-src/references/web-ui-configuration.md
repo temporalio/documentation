@@ -191,7 +191,7 @@ workflowCancelDisabled: false
 
 ## workflowSignalDisabled
 
-When enabled, prevents the user from signaling Workflow Executions from the Web UI.
+Prevents the user from signaling Workflow Executions from the Web UI.
 
 ```yaml
 workflowSignalDisabled: false
