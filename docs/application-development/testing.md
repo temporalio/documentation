@@ -54,9 +54,9 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To run an Activity in a test, you can use the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class.
+To run an Activity in a test, use the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class.
 
-This class allows you to run any callable inside an activity context, and you can use it to test the behavior of your code under different conditions.
+This class allows you to run any callable inside an Activity context. Use it to test the behavior of your code under different conditions.
 
 </TabItem>
 <TabItem value="typescript">
@@ -113,7 +113,7 @@ Content is currently unavailable.
 </TabItem>
 <TabItem value="python">
 
-To test a Heartbeat in an Activity, you can use the `on_heartbeat()` property of the `ActivityEnvironment` class. This property allows you to set a custom function that will be called every time the `activity.heartbeat()` function is called within the Activity.
+To test a Heartbeat in an Activity, use the [`on_heartbeat()`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html#on_heartbeat) property of the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class. This property sets a custom function that will be called every time the `activity.heartbeat()` function is called within the Activity.
 
 ```python
 @activity.defn
