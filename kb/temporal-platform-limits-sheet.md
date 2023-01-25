@@ -12,7 +12,7 @@ Running into limits can cause unexpected failures.
 Knowing Temporal's limits can prevent that.
 
 This page details many of the hard and soft limits that are coded into the Temporal Platform.
-Hard limits will fail with an error; soft limits will warn the user about the limit to be exceeded.
+Hard limits will fail with an error; soft limits will produce a warning log on the server side.
 
 <!-- truncate -->
 
@@ -31,10 +31,10 @@ Hard limits will fail with an error; soft limits will warn the user about the li
   - We warn at 10,000 Events: `history size exceeds warn limit.`
   - We error at 50,000 Events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
-  - We fail the following Commands at 50,000 Events for OSS and 2,000 Events for Cloud:
-    - `ScheduleActivityTask`
-    - `SignalExternalWorkflowExecution`
-    - `RequestCancelExternalWorkflowExecution`
-    - `StartChildWorkflowExecution`
-  - Temporal Cloud can run up to 2,000 Events of the same type concurrently. OSS currently has no limit on concurrently running Events.
+- We fail the following Commands at 50,000 Events for OSS and 2,000 Events for Cloud:
+  - `ScheduleActivityTask`
+  - `SignalExternalWorkflowExecution`
+  - `RequestCancelExternalWorkflowExecution`
+  - `StartChildWorkflowExecution`
+- Temporal Cloud can run up to 2,000 Actions of the same type concurrently. OSS currently has no limit on concurrently running Actions.
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
