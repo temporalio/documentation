@@ -23,7 +23,7 @@ env = ActivityEnvironment()
 heartbeats = []
 # Set the `on_heartbeat` property to a callback function that will be called for each Heartbeat sent by the Activity.
 env.on_heartbeat = lambda *args: heartbeats.append(args[0])
-# Use the run method to start the activity, passing in the function that contains the Heartbeats and any necessary parameters.
+# Use the run method to start the Activity, passing in the function that contains the Heartbeats and any necessary parameters.
 await env.run(activity_with_heartbeats, "test")
 # Verify that the expected Heartbeats are received by the callback function.
 assert heartbeats == ["param: test", "second heartbeat"]
