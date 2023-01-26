@@ -32,9 +32,10 @@ Hard limits will fail with an error; soft limits will produce a warning log on t
   - We error at 50,000 Events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
   - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Concurrent Action limit**
-  - We fail the following Commands at 50,000 Events for OSS and 2,000 concurrent Actions for Cloud:
+  - We fail the following action Commands on Cloud if the concurrent running count exceeds 2,000:
     - `ScheduleActivityTask`
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
+      OSS does not have a default limit, but you can use dynamic configuration can set a limit.
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
