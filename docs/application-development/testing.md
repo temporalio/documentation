@@ -127,7 +127,7 @@ env = ActivityEnvironment()
 heartbeats = []
 # Set the `on_heartbeat` property to a callback function that will be called for each Heartbeat sent by the Activity.
 env.on_heartbeat = lambda *args: heartbeats.append(args[0])
-# Use the run method to start the activity, passing in the function that contains the Heartbeats and any necessary parameters.
+# Use the run method to start the Activity, passing in the function that contains the Heartbeats and any necessary parameters.
 await env.run(activity_with_heartbeats, "test")
 # Verify that the expected Heartbeats are received by the callback function.
 assert heartbeats == ["param: test", "second heartbeat"]
@@ -370,7 +370,8 @@ async def test_mock_activity(client: Client):
         )
 ```
 
-The mocked Activity implementation should have the same signature as the real implementation, including the input and output types, and the same name. So that when the Workflow invokes the Activity, it will invoke the mocked implementation instead of the real one, allowing you to test your Workflow isolated.
+The mocked Activity implementation should have the same signature as the real implementation (including the input and output types) and the same name.
+When the Workflow invokes the Activity, it invokes the mocked implementation instead of the real one, allowing you to test your Workflow isolated.
 
 </TabItem>
 <TabItem value="typescript">
@@ -569,7 +570,7 @@ Content is currently unavailable.
 
 Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to start a test server process and skip time automatically.
 
-Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal server.
+Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal Server.
 
 Use the [`from_client()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal Server.
 
