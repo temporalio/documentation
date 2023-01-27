@@ -9,15 +9,19 @@ tags:
   - typescript
 ---
 
-In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment. The code is bundled on Worker creation using Webpack, and any package can be imported as long as it does not reference Node or DOM APIs.
+In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment.
+The code is bundled on Worker creation using Webpack, and any package can be imported as long as it does not reference Node or DOM APIs.
 
-Since the Workflow sandbox can only run deterministic code, [Side Effects](/workflows#side-effect) and access to external state must be done through Activities. This limitation also means that Workflow code cannot directly import the Activity Definition. Activity Types may be imported, so they can be invoked in a type safe manner.
+Because the Workflow sandbox can run only deterministic code, [Side Effects](/workflows#side-effect) and access to external state must be done through Activities.
+This limitation also means that Workflow code cannot directly import the Activity Definition.
+Activity Types can be imported, so they can be invoked in a type-safe manner.
 
 The Workflow runtime is completely deterministic, with functions like `Math.random()`, `Date`, and `setTimeout()` being replaced by deterministic versions, like [`uuid4()`](https://typescript.temporal.io/api/namespaces/workflow#uuid4), [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow#sleep), [`new Date()`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#now), and [`Date.now()`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#now).
 
-<!-- [`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), and [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is non deterministic. -->
+<!-- [`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), and [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic. -->
 
-The only way Workflows should interact with the outside world is through Activities. When an Activity completes, its result is stored in the Event History to be replayed in case of a restored Workflow.
+The only way Workflows should interact with the outside world is through Activities.
+When an Activity completes, its result is stored in the Event History to be replayed in case of a restored Workflow.
 
 The use of the `Date.now()` function in the countdown timer example shows how date is deterministic in the Workflow.
 
