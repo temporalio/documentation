@@ -37,5 +37,9 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-      OSS does not have a default limit, but you can use dynamic configuration can set a limit.
+  - The open-source Temporal Cluster does not have a default limit, but you can set them in the dynamic configuration using these variables:
+    - `NumPendingActivitiesLimitError`
+    - `NumPendingSignalsLimitError` 
+    - `NumPendingCancelRequestsLimitError`
+    - `NumPendingChildExecutionsLimitError`
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
