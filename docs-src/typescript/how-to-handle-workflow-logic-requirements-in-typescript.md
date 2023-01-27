@@ -10,7 +10,7 @@ tags:
 ---
 
 In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment.
-The code is bundled on Worker creation using Webpack, and any package can be imported as long as it does not reference Node.js or DOM APIs.
+The code is bundled on Worker creation using Webpack, and can import any package as long as it does not reference Node.js or DOM APIs.
 
 Because the Workflow sandbox can run only deterministic code, [Side Effects](/workflows#side-effect) and access to external state must be done through Activities.
 This limitation also means that Workflow code cannot directly import the Activity Definition.
