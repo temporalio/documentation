@@ -12,7 +12,7 @@ Running into limits can cause unexpected failures.
 Knowing Temporal's limits can prevent that.
 
 This page details many of the hard and soft limits that are coded into the Temporal Platform.
-Hard limits will fail with an error; soft limits will produce a warning log on the server side.
+Hard limits fail with an error; soft limits produce a warning log on the server side.
 
 <!-- truncate -->
 
