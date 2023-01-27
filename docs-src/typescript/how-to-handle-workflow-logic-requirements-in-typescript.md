@@ -16,7 +16,7 @@ Because the Workflow sandbox can run only deterministic code, [Side Effects](/wo
 This limitation also means that Workflow code cannot directly import the Activity Definition.
 Activity Types can be imported, so they can be invoked in a type-safe manner.
 
-The Workflow runtime is completely deterministic, with functions like `Math.random()`, `Date`, and `setTimeout()` being replaced by deterministic versions, like [`uuid4()`](https://typescript.temporal.io/api/namespaces/workflow#uuid4), [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow#sleep), [`new Date()`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#now), and [`Date.now()`](https://typescript.temporal.io/api/interfaces/workflow.UnsafeWorkflowInfo#now).
+To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
 
 <!-- [`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), and [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic. -->
 
