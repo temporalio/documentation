@@ -39,7 +39,7 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `StartChildWorkflowExecution`
   - The open-source Temporal Cluster does not have a default limit, but you can set them in the dynamic configuration using these variables:
     - `NumPendingActivitiesLimitError`
-    - `NumPendingSignalsLimitError` 
+    - `NumPendingSignalsLimitError`
     - `NumPendingCancelRequestsLimitError`
     - `NumPendingChildExecutionsLimitError`
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
