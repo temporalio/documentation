@@ -78,7 +78,7 @@ async function generateLangTabs(langtabs) {
   for (const tab of langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
     if (tab.id == 'none') {
-      tabStr = `${tabStr}[Content is currently unavailable](/application-development#under-development).\n\n`;
+      tabStr = `${tabStr}Content is planned but not yet available.\n\n`;
     } else if (tab.id == 'na') {
       tabStr = `${tabStr}Not applicable to this SDK.\n\n`;
     } else {

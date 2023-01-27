@@ -489,7 +489,7 @@ See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img
 </TabItem>
 <TabItem value="python">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="typescript">
@@ -1282,7 +1282,7 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 </TabItem>
 <TabItem value="php">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="python">
@@ -3556,7 +3556,7 @@ public void execute() {
 </TabItem>
 <TabItem value="php">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="python">
@@ -3606,12 +3606,12 @@ if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&numbe
 </TabItem>
 <TabItem value="java">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="php">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="python">
@@ -3720,17 +3720,17 @@ To update your Namespace, use the [`UpdateNamespace` API](/application-developme
 </TabItem>
 <TabItem value="php">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="python">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="typescript">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 </Tabs>
@@ -3927,17 +3927,17 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 </TabItem>
 <TabItem value="php">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="python">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 <TabItem value="typescript">
 
-[Content is currently unavailable](/application-development#under-development).
+Content is planned but not yet available.
 
 </TabItem>
 </Tabs>
