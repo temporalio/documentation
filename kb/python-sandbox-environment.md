@@ -38,7 +38,7 @@ Upon the start of a Workflow, the file in which the Workflow is defined is impor
 
 If a module is imported by the file, a known set, which includes all of Python's standard library, is _passed through_ from outside the sandbox.
 
-These modules are expected to be free of [Side Effects](/workflows#side-effect) and have their non-deterministic aspects restricted.
+These modules are expected to be free of side effects and have their non-deterministic aspects restricted.
 
 For a full list of modules imported, see [Customize the Sandbox](#customize-the-sandbox).
 
