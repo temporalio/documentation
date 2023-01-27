@@ -39,17 +39,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
@@ -99,17 +99,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
@@ -173,22 +173,22 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="typescript">
@@ -236,12 +236,12 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
@@ -426,12 +426,12 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
@@ -482,7 +482,7 @@ temporal-test-server
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="typescript">
@@ -553,17 +553,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
@@ -626,17 +626,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
@@ -721,22 +721,22 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="typescript">
@@ -868,7 +868,7 @@ Not applicable to this SDK.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1008,17 +1008,17 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
@@ -1174,7 +1174,7 @@ You can choose to wait until all histories have been replayed with `replayWorkfl
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">

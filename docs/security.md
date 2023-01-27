@@ -471,7 +471,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="java">
@@ -510,17 +510,17 @@ Related read:
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 </Tabs>

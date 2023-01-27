@@ -260,7 +260,7 @@ The Temporal Java SDK API reference is published on [javadoc.io](https://www.jav
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 <TabItem value="python">
@@ -1218,7 +1218,7 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+[Content is currently unavailable](/application-development#under-development).
 
 </TabItem>
 </Tabs>
