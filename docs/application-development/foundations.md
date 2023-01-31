@@ -262,6 +262,8 @@ The Temporal Java SDK API reference is published on [javadoc.io](https://www.jav
 
 Content is planned but not yet available.
 
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
 </TabItem>
 <TabItem value="python">
 
@@ -1219,6 +1221,8 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 <TabItem value="typescript">
 
 Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>

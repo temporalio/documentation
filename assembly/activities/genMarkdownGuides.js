@@ -1,5 +1,8 @@
 import fs from 'fs-extra';
 import path from 'path';
+const plannedText = `Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).`;
 
 export async function genMarkdownGuides(config) {
   console.log(`generating the full markdown for all guides...`);
@@ -78,7 +81,7 @@ async function generateLangTabs(langtabs) {
   for (const tab of langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
     if (tab.id == 'none') {
-      tabStr = `${tabStr}Content is planned but not yet available.\n\n`;
+      tabStr = `${tabStr}${plannedText}\n\n`;
     } else if (tab.id == 'na') {
       tabStr = `${tabStr}Not applicable to this SDK.\n\n`;
     } else {
