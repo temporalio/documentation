@@ -21,7 +21,7 @@ They communicate with a Temporal Cluster via gRPC.
 
 ![Basic component topology of the Temporal Platform](/diagrams/temporal-platform-component-topology.svg)
 
-### Temporal vs traditional
+### Temporal versus traditional
 
 In a traditional system, the service exists to spawn function executions.
 The Temporal Platform exists to facilitate [Workflow Executions](/workflows#workflow-execution).
@@ -34,7 +34,8 @@ Although the two systems seem similar at first glance, they differ in several si
 
 With a traditional system, a service function execution is both volatile and short-lived.
 
-- If a function execution fails, it's not resumable because all execution state is lost. The longer a function execution awaits, the higher the chance of failure.
+- If a function execution fails, it's not resumable because all execution state is lost.
+  The longer a function execution awaits, the higher the chance of failure.
 - A traditional function execution typically has a limited lifespan, often measured in minutes.
 
 With Temporal, a Workflow Execution is resumable.
@@ -48,7 +49,8 @@ With a traditional system, stoppage or failure means that all execution state is
 Your application (or a supporting component) must monitor the service's response to initiate a retry of the service execution.
 A retry starts from its _initial_ state.
 
-With Temporal, computation resumes from its _latest_ state. All progress is retained.
+With Temporal, computation resumes from its _latest_ state.
+All progress is retained.
 
 **Communication**
 
@@ -71,6 +73,7 @@ The Temporal Platform addresses both platform-level failures and application-lev
 
 A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system.
 This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application and can be detected and mitigated at a platform level.
+
 Temporal is made to insulate your application from platform-level failures.
 In Temporal, platform-level failures include network issues, process crashes, hardware failures, and transient errors in downstream services or third-party APIs.
 
@@ -78,6 +81,7 @@ In Temporal, platform-level failures include network issues, process crashes, ha
 
 Conversely, an application-level failure refers to a failure that occurs within the application itself.
 This type of failure is directly visible to the user or application and must be detected and mitigated at the application level.
+
 Temporal cannot mitigate application-level failures for you, but Temporal greatly simplifies handling failures and debugging your application.
 An example of an application-level failure could be an error in the application's code or a problem with the input data being used by the application.
 
