@@ -9,9 +9,9 @@ tags:
   - python
 ---
 
-To send a Signal from the Client, use the [`signal()`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) function on the Workflow handle.
+To send a Signal from the Client, use the [signal()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) function on the Workflow handle.
 
-Use the [`get_workflow_handle()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) method or the [`get_workflow_handle_for()`](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) method to get a type safe Workflow handle by its Workflow Id.
+Use the [get_workflow_handle()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) method or the [get_workflow_handle_for()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) method to get a type-safe Workflow handle by its Workflow Id.
 
 ```python
 async def your_function():
