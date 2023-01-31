@@ -38,6 +38,16 @@ Scalability is responsiveness in the presence of load.
 A single Workflow Execution is limited in size and throughput but is scalable because it can [Continue-As-New](/concepts/what-is-continue-as-new) in response to load.
 A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) and [Worker Processes](/concepts/what-is-a-worker-process).
 
+### Replays
+
+A Replay is the method by which a Workflow Execution resumes making progress. During a Replay the Commands that are generated are checked against an existing Event History. Replays are necessary and often happen to give the effect that Workflow Executions are resumable, reliable, and durable.
+
+For more information, see [Deterministic constraints](/concepts/what-is-a-workflow-definition#deterministic-constraints).
+
+If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
+
+- [How to use Replay APIs to test Workflow Definitions](/app-dev-context/replays)
+
 ### Commands and awaitables
 
 A Workflow Execution does two things:

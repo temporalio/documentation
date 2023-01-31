@@ -41,6 +41,7 @@ import { example } from './workflows';
 
 async function run() {
   // Connect to the default Server location (localhost:7233)
+  console.log(Date.now());
   const connection = await Connection.connect();
   // In production, pass options to configure TLS and other settings:
   // {
@@ -48,6 +49,7 @@ async function run() {
   //   tls: {}
   // }
 
+  console.log(Date.now());
   const client = new Client({
     connection,
     // namespace: 'foo.bar', // connects to 'default' namespace if not specified
@@ -60,10 +62,8 @@ async function run() {
     // in practice, use a meaningful business ID, like customerId or transactionId
     workflowId: 'workflow-' + nanoid(),
   });
-  console.log(`Started workflow ${handle.workflowId}`);
-
-  // optional: wait for client result
-  console.log(await handle.result()); // Hello, Temporal!
+  await handle.result();
+  console.log(Date.now());
 }
 
 run().catch((err) => {

@@ -96,7 +96,9 @@ For details on configuring a Prometheus scrape endpoint with Micrometer, see the
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -218,7 +220,9 @@ For more information, see the Temporal [OpenTracing module](https://github.com/t
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -342,7 +346,9 @@ Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEna
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -415,16 +421,18 @@ Explicitly declaring a Sink's interface is optional, but is useful for ensuring 
 
 <!--SNIPSTART typescript-logger-sink-interface-->
 
-[packages/test/src/workflows/definitions.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/definitions.ts)
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import type { Sinks } from '@temporalio/workflow';
+import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
 
-export interface LoggerSinks extends Sinks {
-  logger: {
-    info(message: string): void;
+export interface AlertSinks extends Sinks {
+  alerter: {
+    alert(message: string): void;
   };
 }
+
+export type MySinks = AlertSinks & LoggerSinks;
 ```
 
 <!--SNIPEND-->
@@ -481,16 +489,15 @@ main().catch((err) => {
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
 
-[packages/test/src/workflows/log-sample.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/log-sample.ts)
+[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
 
 ```ts
-import * as wf from '@temporalio/workflow';
-import { LoggerSinks } from './definitions';
+const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
 
-const { logger } = wf.proxySinks<LoggerSinks>();
-
-export async function logSampleWorkflow(): Promise<void> {
-  logger.info('Workflow execution started');
+export async function sinkWorkflow(): Promise<string> {
+  defaultWorkerLogger.info('default logger: Workflow Execution started', {});
+  alerter.alert('alerter: Workflow Execution started');
+  return 'Hello, Temporal!';
 }
 ```
 
@@ -559,7 +566,9 @@ To set a custom logger, supply your own logging implementation and configuration
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -662,17 +671,23 @@ Use [`Client.ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
