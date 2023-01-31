@@ -71,5 +71,17 @@ The preceding code also prints the logs in the terminal.
 The following is a sample result.
 
 ```json
-{"emit_time":"2022-11-14T07:56:55Z","level":"LOG_LEVEL_INFO","user_email":"zhengbo@temporal.io","operation":"DeleteUser","details":{"target_users":["d7dca96f-adcc-417d-aaec-e8f5d2ba9fe1"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{
+  "emit_time": "2022-11-14T07:56:55Z",
+  "level": "LOG_LEVEL_INFO",
+  "user_email": "zhengbo@temporal.io",
+  "operation": "DeleteUser",
+  "details": {
+    "target_users": ["d7dca96f-adcc-417d-aaec-e8f5d2ba9fe1"],
+    "search_attribute_update": {},
+    "additional_message": "finished unary call with code OK"
+  },
+  "status": "OK",
+  "category": "LOG_CATEGORY_ADMIN"
+}
 ```
