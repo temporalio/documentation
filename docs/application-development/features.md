@@ -1297,7 +1297,9 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -3571,7 +3573,9 @@ public void execute() {
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -3621,12 +3625,16 @@ if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&numbe
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -3735,17 +3743,23 @@ To update your Namespace, use the [`UpdateNamespace` API](/application-developme
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -3942,17 +3956,23 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
