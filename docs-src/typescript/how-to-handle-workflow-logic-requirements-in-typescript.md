@@ -21,7 +21,7 @@ If you **must** use a library that references a Node.js or DOM API and you are c
 The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
 
 This limitation also means that Workflow code cannot directly import the [Activity Definition](/concepts/what-is-an-activity-definition).
-[Activity Types](/concepts/what-is-an-activity-definition#activity-type) _can_ be imported, so they can be invoked in a type-safe manner.
+[Activity Types](/concepts/what-is-an-activity-definition#activity-type) **can** be imported, so they can be invoked in a type-safe manner.
 
 To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
 

@@ -1223,18 +1223,18 @@ The code is bundled on Worker creation using Webpack, and can import any package
 
 :::note
 
-If you **must** use a library that references a Node.js or DOM API and you are certain that those APIs are not used at runtime, add that module to the [`ignoreModules`](https://typescript.temporal.io/api/interfaces/worker.BundleOptions#ignoremodules) list.
+If you **must** use a library that references a Node.js or DOM API and you are certain that those APIs are not used at runtime, add that module to the [ignoreModules](https://typescript.temporal.io/api/interfaces/worker.BundleOptions#ignoremodules) list.
 
 :::
 
-Because the Workflow sandbox can run only deterministic code, side effects and access to external state must be done through Activities as Activity outputs are recorded in the Event History, and can read deterministically by the Workflow.
+The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
 
 This limitation also means that Workflow code cannot directly import the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
-<a class="tdlp" href="/activities#activity-type">Activity Types<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-type">Learn more</a></span></span></a> _can_ be imported, so they can be invoked in a type-safe manner.
+<a class="tdlp" href="/activities#activity-type">Activity Types<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-type">Learn more</a></span></span></a> **can** be imported, so they can be invoked in a type-safe manner.
 
 To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
 
-[`FinalizationRegistry`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), and [`WeakRef`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic.
+[FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic.
 
 <details><summary>Expand to see the implications of the deterministic Date API</summary>
 
