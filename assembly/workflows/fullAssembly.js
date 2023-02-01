@@ -17,6 +17,10 @@ export async function fullAssembly(params) {
 
   await activities.createTempDir(config);
 
+  if (params.cli) {
+    await activities.genCLIDocs(config);
+  }
+
   await activities.genSourceObjects(config);
 
   await deterministicActivities.attachSourceToGuides(config);

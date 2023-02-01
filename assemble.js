@@ -8,6 +8,7 @@ async function run() {
   let cloud = false;
   let coverage = false;
   let debug = false;
+  let cli = false;
 
   for (const arg of args) {
     if (arg == "--cloud") {
@@ -19,6 +20,8 @@ async function run() {
     if (arg == "--debug") {
       debug = true;
     }
+    if (arg == "--cli-reference")
+      cli = true;
   }
 
   const rootDir = path.resolve();
@@ -27,6 +30,7 @@ async function run() {
     assemblyDir: "assembly",
     runCoverageUpdate: coverage,
     debug: debug,
+    cli: cli,
   };
 
   let result = "";
