@@ -27,7 +27,7 @@ The following example shows the contents of an Audit Log.
 **********
 {"emit_time":"2023-10-25T21:16:42Z","level":"LOG_LEVEL_INFO","user_email":"alex@example.com","operation":"DeleteUser","details":{"target_users":["0b741c47-e093-47d1-9b74-f2359129f78f"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
 **********
-{"emit_time":"2023-11-03T19:31:45Z","level":"LOG_LEVEL_INFO","user_email":"matt@example.com","operation":"InviteUsers","details":{"target_users":["matthkim@gmail.com"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
+{"emit_time":"2023-11-03T19:31:45Z","level":"LOG_LEVEL_INFO","user_email":"matt@example.com","operation":"InviteUsers","details":{"target_users":["matt@example.net"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
 **********
 {"emit_time":"2023-11-08T08:06:40Z","level":"LOG_LEVEL_INFO","user_email":"zhengbo@example.com","operation":"UpdateUser","details":{"target_users":["zhengbo@example.net"],"search_attribute_update":{},"additional_message":"finished unary call with code OK"},"status":"OK","category":"LOG_CATEGORY_ADMIN"}
 **********
@@ -72,12 +72,12 @@ The following is a sample result.
 
 ```json
 {
-  "emit_time": "2022-11-14T07:56:55Z",
+  "emit_time": "2023-11-14T07:56:55Z",
   "level": "LOG_LEVEL_INFO",
-  "user_email": "zhengbo@temporal.io",
+  "user_email": "zhengbo@example.com",
   "operation": "DeleteUser",
   "details": {
-    "target_users": ["d7dca96f-adcc-417d-aaec-e8f5d2ba9fe1"],
+    "target_users": ["d7dca96f-adcc-417d-aafc-e8f5d2ba9fe1"],
     "search_attribute_update": {},
     "additional_message": "finished unary call with code OK"
   },
