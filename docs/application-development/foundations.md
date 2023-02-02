@@ -53,7 +53,7 @@ It supports persistence to disk and in-memory mode through SQLite.
 
 **Prerequisites**
 
-Temporalite requires Go 1.18 or later.
+Temporalite requires [Go 1.18 or later](https://go.dev/dl/).
 
 **Build and start Temporalite**
 
@@ -128,7 +128,7 @@ An SDK provides you with the following:
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -245,7 +245,7 @@ Each SDK has its own API reference. Select a programming language and follow the
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -260,7 +260,9 @@ The Temporal Java SDK API reference is published on [javadoc.io](https://www.jav
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -283,7 +285,7 @@ Additionally, several of the [Tutorials](https://learn.temporal.io) are backed b
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -366,7 +368,7 @@ For more information about configuring TLS to secure inter and intra network com
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -595,7 +597,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -738,7 +740,7 @@ All Workflow Definition parameters must be serializable.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -882,7 +884,7 @@ However, Temporal APIs that must be used to get the result of a Workflow Executi
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -992,7 +994,7 @@ The following examples demonstrate how to set a custom name for your Workflow Ty
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1107,7 +1109,7 @@ However, each Temporal SDK provides a set of APIs that can be used inside your W
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1218,7 +1220,42 @@ All API safe for Workflows used in the [`temporalio.workflow`](https://python.te
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+In the Temporal TypeScript SDK, Workflows run in a deterministic sandboxed environment.
+The code is bundled on Worker creation using Webpack, and can import any package as long as it does not reference Node.js or DOM APIs.
+
+:::note
+
+If you **must** use a library that references a Node.js or DOM API and you are certain that those APIs are not used at runtime, add that module to the [ignoreModules](https://typescript.temporal.io/api/interfaces/worker.BundleOptions#ignoremodules) list.
+
+:::
+
+The Workflow sandbox can run only deterministic code, so side effects and access to external state must be done through Activities because Activity outputs are recorded in the Event History and can read deterministically by the Workflow.
+
+This limitation also means that Workflow code cannot directly import the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
+<a class="tdlp" href="/activities#activity-type">Activity Types<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-type">Learn more</a></span></span></a> can be imported, so they can be invoked in a type-safe manner.
+
+To make the Workflow runtime deterministic, functions like `Math.random()`, `Date`, and `setTimeout()` are replaced by deterministic versions.
+
+[FinalizationRegistry](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) and [WeakRef](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) are removed because v8's garbage collector is not deterministic.
+
+<details><summary>Expand to see the implications of the deterministic Date API</summary>
+
+```typescript
+import { sleep } from '@temporalio/workflow';
+
+// this prints the *exact* same timestamp repeatedly
+for (let x = 0; x < 10; ++x) {
+  console.log(Date.now());
+}
+
+// this prints timestamps increasing roughly 1s each iteration
+for (let x = 0; x < 10; ++x) {
+  await sleep('1 second');
+  console.log(Date.now());
+}
+```
+
+</details>
 
 </TabItem>
 </Tabs>
@@ -1232,7 +1269,7 @@ For the Workflow to be able to execute the Activity, we must define the <a class
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1470,7 +1507,7 @@ This is so that you can change what data is passed to the Activity without break
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1592,7 +1629,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1692,7 +1729,7 @@ The following examples demonstrate how to set a custom name for your Activity Ty
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1841,7 +1878,7 @@ Otherwise, no additional limitations exist on Activity implementations.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2193,7 +2230,7 @@ Workflow Executions can either block progress until the result is available thro
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2393,7 +2430,7 @@ A Worker Entity contains both a Workflow Worker and an Activity Worker so that i
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2728,7 +2765,7 @@ However, the failure of the Task does not cause the associated Workflow Executio
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2966,7 +3003,7 @@ The Temporal Cluster then creates the first Workflow Task, resulting in the firs
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3285,7 +3322,7 @@ For any code to execute, a Worker Process must be running that contains a Worker
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3523,7 +3560,7 @@ Although it is not required, we recommend providing your own <a class="tdlp" hre
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3644,7 +3681,7 @@ In the Temporal Platform, it's also acceptable to use Queries as the preferred m
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
