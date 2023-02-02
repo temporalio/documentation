@@ -70,6 +70,7 @@ module.exports = {
             "cloud/tcld/version",
           ],
         },
+        "cloud/how-to-create-a-ticket-for-temporal-support",
         {
           type: "link",
           label: "Release notes",

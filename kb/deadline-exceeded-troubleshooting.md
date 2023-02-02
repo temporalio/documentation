@@ -22,7 +22,7 @@ The following sections discuss the nature of this error and how to troubleshoot 
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, check your Workflow History for error messages and create a [support ticket](https://support.temporal.io/) with Temporal.
+If you're using Temporal Cloud, check your Workflow History for error messages and create a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
 Provide the full error message in your ticket.
 
 :::
@@ -110,4 +110,4 @@ If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring
 
 ---
 
-If you were unable to resolve your issue, check for similar questions and possible solutions on our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
+If you were unable to resolve your issue, check for similar questions and possible solutions on our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack), or file a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
