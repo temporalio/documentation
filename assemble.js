@@ -20,7 +20,7 @@ async function run() {
     if (arg == "--debug") {
       debug = true;
     }
-    if (arg == "--cli-reference")
+    if (arg == "--cli")
       cli = true;
   }
 
