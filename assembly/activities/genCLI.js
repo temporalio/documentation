@@ -6,6 +6,7 @@ import { finished } from 'stream/promises';
 import fetch from 'node-fetch';
 import zlib from 'zlib';
 import tar from 'tar-fs';
+import { mkdirp } from 'fs-extra';
 
 export async function genCLI(config) {
 
@@ -21,11 +22,32 @@ export async function genCLI(config) {
         'https://github.com/temporalio/cli/tree/auto-generate-cli-docs',
       ).then((response) => response.json());
 
-    // set destination for both the executable
-    // and the documents we're generating
+    let platform = process.platform;
+    let arch = process.arch;
+
+    if (arch === 'x64') arch = 'amd64';
+
+    let downloadUrl;
+
+    const isCorrectDownloadLink = (asset) => {
+    if (!asset.name.includes(platform)) return false;
+    if (!asset.name.includes(arch)) return false;
+    return true;
+    };
+
+    for (const asset of latestRelease.assets) {
+        if (isCorrectDownloadLink(asset))
+        downloadUrl = new URL(asset.browser_download_url);
+    }
+
+    if (!downloadUrl) {
+        console.log(`A valid download link for your platform (${platform}) and architecture (${arch}) could not be found.`)
+    }
+
+    await mkdirp(FilePathCLI);
 
     await finished(
-      response.body.pipe(zlib.createGunzip()).pipe(tar.extract(destination)),
+      response.body.pipe(zlib.createGunzip()).pipe(tar.extract(FilePathCLI)),
     );
   
     await chmod(FilePathCLI, 0o755);
