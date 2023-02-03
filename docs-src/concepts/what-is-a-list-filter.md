@@ -36,7 +36,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 - To search for a specific token, set a custom Search Attribute of type `Text` that has the value of the token(s) separated by spaces or punctuation. In the example provided below, the Query will run after setting the custom Search Attribute to "type1":
 
   ```
-  tctl workflow list --query "mySearchAttribute = "\type1\""
+  tctl workflow list --query "mySearchAttribute = \"type1\""
   ```
   Any Workflow Ids that contain this token will be returned.
 
