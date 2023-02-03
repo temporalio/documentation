@@ -33,17 +33,12 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   - **ORDER BY**
   - **LIKE**
 
-- Wildcards ('\*', '%', etc.) are supported for string-type List Filter Search Attributes.
-  Use wildcards with the **LIKE** operator to query possible values:
+- To search for a specific token, set a custom Search Attribute of type `Text` that has the value of the token(s) separated by spaces or punctuation. In the example provided below, the Query will run after setting the custom Search Attribute to "type1":
 
-  ```bash
-  // Create a "ProductId" custom Search Attribute of type String
-  tctl admin cluster add-search-attributes --name ProductId --type String
-  // Match values that start with "book"
-  ProductId LIKE "book%"
-  // Match values that contain "favorite"
-  ProductId LIKE "%favorite%"
   ```
+  tctl workflow list --query "mySearchAttribute = "\type1\""
+  ```
+  Any Workflow Ids that contain this token will be returned.
 
 - A List Filter applies to a single Namespace.
 
