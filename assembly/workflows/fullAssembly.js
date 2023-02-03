@@ -17,11 +17,11 @@ export async function fullAssembly(params) {
 
   await activities.createTempDir(config);
 
+  await activities.genSourceObjects(config);
+
   if (params.cli) {
     await activities.genCLI(config);
   }
-
-  await activities.genSourceObjects(config);
 
   await deterministicActivities.attachSourceToGuides(config);
 
