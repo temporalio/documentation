@@ -11,7 +11,7 @@ The first release of Audit Logging supports Admin Operation events.
 
 ### Admin Operation events
 
-Temporal logs operations at the account, user, and Namespace levels to ensure that your organization can audit and report changes to admin operations, when those changes occurred, and who made them.
+The following list specifies both the supported events and the Temporal APIs that emit the logs.
 
 - Account
   - Configure Audit Logging: `UpdateAccount`

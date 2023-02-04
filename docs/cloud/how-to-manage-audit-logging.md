@@ -25,7 +25,7 @@ The first release of Audit Logging supports Admin Operation events.
 
 ### Admin Operation events
 
-Temporal logs operations at the account, user, and Namespace levels to ensure that your organization can audit and report changes to admin operations, when those changes occurred, and who made them.
+The following list specifies both the supported events and the Temporal APIs that emit the logs.
 
 - Account
   - Configure Audit Logging: `UpdateAccount`
@@ -85,10 +85,13 @@ For more information, see [Why is my Kinesis data stream throttling?](https://aw
 1. In **Role name**, provide a name for a new IAM Role.
 1. In **Select an AWS region**, select the appropriate region for your Kinesis stream.
 
-If you chose the Auto access method, select **Save and launch stack**.
-The Audit Log sink is configured and ready to use.
+If you chose the **Auto** access method, continue with the following steps:
 
-If you chose the Manual access method, continue with the following steps:
+1. Select **Save and launch stack**.
+1. In **Stack name** in the AWS CloudFormation console, specify a name for the stack.
+1. In the lower-right corner of the page, select **Create stack**.
+
+If you chose the **Manual** access method, continue with the following steps:
 
 1. Select **Save and download template**.
 1. Open the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
@@ -97,7 +100,6 @@ If you chose the Manual access method, continue with the following steps:
 1. Select **Choose file** and specify the template you generated in step 1.
 1. Select **Next** on this page and on the next two pages.
 1. On the **Review** page, select **Create stack**.
-   The Audit Log sink is configured and ready to use.
 
 ## Consume an Audit Log
 
