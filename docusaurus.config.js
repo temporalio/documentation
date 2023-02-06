@@ -319,7 +319,7 @@ module.exports = {
         sitemap: {
           // Per v2.0.0-alpha.72 cacheTime is now deprecated
           //cacheTime: 600 * 1000, // 600 sec - cache purge period
-          changefreq: 'weekly',
+          changefreq: 'daily',
           priority: 0.5,
           filename: 'sitemap.xml',
         },
