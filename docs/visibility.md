@@ -54,14 +54,12 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
   - **BETWEEN ... AND**
   - **IN**
   - **ORDER BY**
-  - **LIKE**
 
-- To search for a specific token, set a custom Search Attribute of type `Text` that has the value of the token(s) separated by spaces or punctuation. In the example provided below, the Query will run after setting the custom Search Attribute to "type1":
+  The last operator (**ORDER BY**) is only supported with Elasticsearch as a Visibility store.
+  Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-  ``` 
-  tctl workflow list --query "mySearchAttribute = "\type1\""
-  ```
-  Any Workflow Ids that contain this token will be returned.
+- To search for a specific word, <a class="tdlp" href="/application-development/observability#custom-search-attributes">set a custom Search Attribute of type `Text`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> to a phrase that contains that word.
+  Any command run with that Search Attribute set to it will return any Workflows that contain that word.
 
 - A List Filter applies to a single Namespace.
 
