@@ -44,6 +44,7 @@ module.exports = {
       //   },
       // },
     },
+    metadata: [{name: 'robots', content: 'follow, index'}],
     prism: {
       theme: require('prism-react-renderer/themes/nightOwlLight'),
       darkTheme: require('prism-react-renderer/themes/dracula'),
