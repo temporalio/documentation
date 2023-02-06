@@ -35,7 +35,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   The last operator (**ORDER BY**) is only supported with Elasticsearch as a Visibility store.
   Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-- To search for a specific word, [set a custom Search Attribute of type `Text`](/app-dev-context/observability#custom-search-attributes) to a phrase that contains that word. 
+- To search for a specific word, [set a custom Search Attribute of type `Text`](/app-dev-context/observability#custom-search-attributes) to a phrase that contains that word.
   Any command run with that Search Attribute set to it will return any Workflows that contain that word.
 
 - A List Filter applies to a single Namespace.
