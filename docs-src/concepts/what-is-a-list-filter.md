@@ -42,7 +42,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   ```
   tctl workflow list --query "mySearchAttribute = \"type1\""
   ```
-  Any Workflow Ids that contain this token will be returned.
+  All Workflows that contain this token will be returned.
 
 - A List Filter applies to a single Namespace.
 
