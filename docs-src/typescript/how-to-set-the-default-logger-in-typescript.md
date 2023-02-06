@@ -17,8 +17,10 @@ The following is an example of setting the `DefaultLogger` to `'Debug'`.
 Runtime.install({
   logger: new DefaultLogger('DEBUG'),
   telemetryOptions: {
-    tracingFilter: 'temporal_sdk_core=DEBUG',
-    logging: { forward: { level: 'DEBUG' } },
+    logging: {
+      forward: {},
+      filter: makeTelemetryFilterString({ core: 'DEBUG', other: 'DEBUG' }),
+    },
   },
 });
 ```
@@ -37,8 +39,8 @@ async function main() {
     Runtime.install({
       logger: new DefaultLogger('DEBUG'),
       telemetryOptions: {
-        tracingFilter: 'temporal_sdk_core=DEBUG',
-        logging: { forward: { level: 'DEBUG' } },
+        forward: {},
+        filter: makeTelemetryFilterString({ core: 'DEBUG', other: 'DEBUG' }),
       },
     });
   }

@@ -138,7 +138,10 @@ telemetryOptions: {
     metrics: {
       prometheus: { bindAddress: '0.0.0.0:9464' },
     },
-    logging: { forward: { level: 'DEBUG' } },
+    logging: {
+      forward: {},
+      filter: makeTelemetryFilterString({ core: 'INFO', other: 'WARN' })
+    },
   },
 ```
 
@@ -275,7 +278,7 @@ To extend the default ([Trace Context](https://github.com/open-telemetry/opentel
         new W3CBaggagePropagator(),
         new JaegerPropagator(),
       ],
-    }),
+    })
   );
   ```
 
@@ -341,7 +344,7 @@ To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLo
 private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
 ```
 
-Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
+Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)>) method is set to true.
 
 </TabItem>
 <TabItem value="php">
@@ -752,7 +755,7 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 </TabItem>
 <TabItem value="java">
 
-To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
+To set a custom Search Attribute, call the [`setSearchAttributes()`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)>) method.
 
 ```java
 WorkflowOptions workflowOptions =
@@ -884,7 +887,7 @@ map[string]interface{}{
 </TabItem>
 <TabItem value="java">
 
-In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
+In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)>) method.
 
 ```java
  Map<String, Object> attr1 = new HashMap<>();

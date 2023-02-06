@@ -120,10 +120,12 @@ import {
   Worker,
 } from '@temporalio/worker';
 
-const logger = new DefaultLogger('DEBUG');
 Runtime.install({
-  logger,
-  telemetryOptions: { logForwardingLevel: 'INFO' },
+  logger: new DefaultLogger('DEBUG'),
+  logging: {
+    forward: {},
+    filter: makeTelemetryFilterString({ core: 'INFO' }),
+  },
 });
 const connection = await NativeConnection.connect({
   address: 'temporal.myorg.io',
@@ -242,7 +244,7 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
       const downloadPath = `/tmp/${uuid4()}`;
       await activities.downloadFileToWorkerFileSystem(
         'https://temporal.io',
-        downloadPath,
+        downloadPath
       );
       try {
         await activities.workOnFileInWorkerFileSystem(downloadPath);

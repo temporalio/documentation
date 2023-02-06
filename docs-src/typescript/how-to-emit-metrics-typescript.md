@@ -21,6 +21,9 @@ telemetryOptions: {
     metrics: {
       prometheus: { bindAddress: '0.0.0.0:9464' },
     },
-    logging: { forward: { level: 'DEBUG' } },
+    logging: {
+      forward: {},
+      filter: makeTelemetryFilterString({ core: 'INFO', other: 'WARN' })
+     },
   },
 ```
