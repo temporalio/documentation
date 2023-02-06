@@ -31,18 +31,12 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   - **BETWEEN ... AND**
   - **IN**
   - **ORDER BY**
-  - **LIKE**
 
-  The last two operators, **ORDER BY** and **LIKE**, are only supported with Elasticsearch as a Visibility store.
+  The last operator (**ORDER BY**) is only supported with Elasticsearch as a Visibility store.
+  Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-- To search for a specific token, [set a custom Search Attribute of type `Text`](/app-dev-context/observability#custom-search-attributes) that has the value of the token.
-  To search for multiple tokens, separate them by spaces or punctuation.
-  In the following example for [`tctl-next`](/tctl-next/workflow#list), the Query runs after setting the custom Search Attribute to `type1`:
-
-  ```
-  tctl workflow list --query "mySearchAttribute = \"type1\""
-  ```
-  All Workflows that contain this token will be returned.
+- To search for a specific word, [set a custom Search Attribute of type `Text`](/app-dev-context/observability#custom-search-attributes) to a phrase that contains that word. 
+  Any command run with that Search Attribute set to it will return any Workflows that contain that word.
 
 - A List Filter applies to a single Namespace.
 
