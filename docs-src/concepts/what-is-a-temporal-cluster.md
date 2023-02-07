@@ -33,7 +33,8 @@ The database stores the following types of data:
   For production environments, we recommend using Elasticsearch.
 
 An Elasticsearch database must be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility) on Temporal Server versions 1.19.1 and earlier.
-With Temporal Server version 1.20 and later, Advanced Visibility is available on SQL databases like MySQL (version 8 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
+
+With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8 and later) and PostgreSQL (version 12 and later), and Elasticsearch.
 
 #### Dependency versions
 
