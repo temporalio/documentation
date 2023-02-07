@@ -8,19 +8,26 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
-- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
-- Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
-- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
+  - Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
+  - Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
+  - Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
+  - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
 ---
 
-[Advanced Visibility](/concepts/what-is-advanced-visibility) features depend on an integration with Elasticsearch.
+Use Elasticsearch to implement [Advanced Visibility](/concepts/what-is-advanced-visibility) features on your Temporal Cluster.
+
+While all versions of Temporal Server support integration with Elasticsearch for Advanced Visibility, Temporal Server version 1.20 and later also supports Advanced Visibility features on MySQL (version 8 and later) and PostgreSQL (version 12 and later). To use Advanced Visibility features with the SQL databases, ensure that you have done the following:
+
+- [Upgrade your Temporal Server](/cluster-deployment-guide#upgrade-server) to version 1.20.
+- Update your SQL to version 8 or later or PostgreSQL version to 12 or later.
+
+If using Temporal Server versions 1.19.1 or earlier, Advanced Visibility features are only available with Elasticsearch integration.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
 :::note
 
-These steps are needed only if you have a "plain" [Temporal Server Docker image](https://hub.docker.com/r/temporalio/server).
+The following steps are needed only if you have a "plain" [Temporal Server Docker image](https://hub.docker.com/r/temporalio/server).
 
 If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
 [Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
