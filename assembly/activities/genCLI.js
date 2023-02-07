@@ -19,15 +19,18 @@ export async function genCLI(config) {
 
     );
 
-    // TODO: have some kind of check to append files or delete and start anew
-
-
+    // TODO: have an alternative link in place until new release comes out
 
     // get executables
 
-    const latestRelease = await fetch(
+    /*const latestRelease = await fetch(
         'https://api.github.com/repos/temporalio/cli/releases/latest',
-      ).then((response) => response.json());
+      ).then((response) => response.json());*/
+   
+    const mainBranch = exec(
+        'git clone https://github.com/temporalio/cli.git',
+      );
+    console.log ("git repo cloned.");
 
     // find correct one
     let platform = process.platform;
@@ -37,36 +40,35 @@ export async function genCLI(config) {
     
     let downloadUrl;
     
-    const isCorrectDownloadLink = (asset) => {
-      if (!asset.name.includes(platform)) return false;
-      if (!asset.name.includes(arch)) return false;
-      return true;
-    };
+   // const isCorrectDownloadLink = (asset) => {
+   //   if (!asset.name.includes(platform)) return false;
+   //   if (!asset.name.includes(arch)) return false;
+   //   return true;
+   // };
     
-    for (const asset of latestRelease.assets) {
-      if (isCorrectDownloadLink(asset))
-        downloadUrl = new URL(asset.browser_download_url);
-    }
+   // for (const asset of mainBranch.assets) {
+    //  if (isCorrectDownloadLink(asset))
+   //     downloadUrl = new URL(asset.browser_download_url);
+   // }
     
-    if (!downloadUrl) {
-      reportError(
-        `A valid download link for your platform (${platform}) and architecture (${arch}) could not be found.`,
-      );
-    }
+    //if (!downloadUrl) {
+     // reportError(
+    //    `A valid download link for your platform (${platform}) and architecture (${arch}) could not be found.`,
+    //  );
+   // }
 
-    const response = await fetch(downloadUrl.href);
+   // const response = await fetch(downloadUrl.href);
 
-    await finished(
-      response.body.pipe(zlib.createGunzip()).pipe(tar.extract(FilePathCLI)),
-    );
-
+   // await finished(
+    //  response.body.pipe(zlib.createGunzip()).pipe(tar.extract(FilePathCLI)),
+   // );
 
     // extract file
     await mkdirp(FilePathCLI);
 
 
     // TODO: change to reflect docs (temporal to doc)
-     exec('temporal', (err, stdout, stderr) => {
+     exec('go run ./cmd/doc', (err, stdout, stderr) => {
         if (err) {
             // node couldn't execute the command
             console.log("Error: could not execute binary.")
