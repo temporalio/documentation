@@ -55,11 +55,11 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
   - **IN**
   - **ORDER BY**
 
-  The last operator (**ORDER BY**) is only supported with Elasticsearch integration.
+  The last operator (**ORDER BY**) is supported only with Elasticsearch as a Visibility store.
   Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-- To search for a specific word, <a class="tdlp" href="/application-development/observability#custom-search-attributes">set a custom Search Attribute of type `Text`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> to a phrase that contains that word.
-  Any command run with that Search Attribute set to it will return any Workflows that contain that word.
+- To search for a specific word, set a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` to a phrase that contains that word.
+  Any command run with that Search Attribute returns any Workflows that contain that word.
 
 - A List Filter applies to a single Namespace.
 
