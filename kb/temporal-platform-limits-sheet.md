@@ -50,8 +50,14 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
   - Namespaces: 10
   - Prometheus endpoint Retention Period: 1 month
 - **Namespace level**
-  - Actions per second: 200
+  - Actions per second (peak): 200
   - Certificates: 32-KB payload or 16 certificates, whichever is smaller
-  - Concurrent Task pollers: 2,000 (configurable to a maximum of 100,000)
-  - Custom Search Attributes: 20; maximum of 5 for text
-  - Retention Period: 7 days (configurable to a maximum of 90 days)
+  - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
+  - Custom Search Attributes (maximum per type)
+    - bool: 20
+    - double: 20
+    - datetime: 20
+    - int: 20
+    - keyword: 20
+    - text: 5
+  - Retention Period: 7 days (configurable; range of 1–90 days)
