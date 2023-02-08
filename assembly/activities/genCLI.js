@@ -7,6 +7,7 @@ import { mkdirp } from 'fs-extra';
 import fetch from 'node-fetch';
 import tar from 'tar-fs';
 import zlib from 'zlib';
+import { chdir } from 'process';
 
 export async function genCLI(config) {
 
@@ -16,15 +17,12 @@ export async function genCLI(config) {
         config.root_dir,
         config.content_write_dir,
         "cli"
-
     );
 
     // get executables
     const latestRelease = await fetch(
         'https://api.github.com/repos/temporalio/cli/releases/latest',
       ).then((response) => response.json());
-   
-    console.log ("git repo cloned.");
 
     // find correct one
     let platform = process.platform;
@@ -58,21 +56,30 @@ export async function genCLI(config) {
     );
 
     // extract file
-    await mkdirp(FilePathCLI);
-
-
-    // TODO: change to reflect docs (temporal to doc)
-     exec('temporal-doc-gen', (err, stdout, stderr) => {
+    mkdirp(FilePathCLI);
+    chmod(FilePathCLI, 0o755);
+    chdir(FilePathCLI);
+    exec('./temporal-doc-gen', (err, stdout, stderr) => {
         if (err) {
             // node couldn't execute the command
             console.log("Error: could not execute binary.")
             return;
         }   
     }); 
-    console.log("Executed.")
-
-    await chmod(FilePathCLI, 0o755);
 
     // delete everything except documentation
+    RemoveFiles('rm -v LICENSE');
+    RemoveFiles('rm -v README.md');
+    RemoveFiles('rm -v temporal-doc-gen');
+    
+}
+
+async function RemoveFiles(pathFunc) {
+  exec(pathFunc, (err, stdout, stderr) => {
+    if (err) {
+      console.log("Couldn't delete a file.")
+      return;
+    }
+  });
 }
 
