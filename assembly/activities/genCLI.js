@@ -71,6 +71,14 @@ export async function genCLI(config) {
     RemoveFiles('rm -v LICENSE');
     RemoveFiles('rm -v README.md');
     RemoveFiles('rm -v temporal-doc-gen');
+
+    chdir(path.join(FilePathCLI, "docs"));
+    exec('mv * /cli', (err, stdout, stderr) => {
+      if (err) {
+        console.log("Couldn't move files.")
+        return;
+      }
+    });
     
 }
 
