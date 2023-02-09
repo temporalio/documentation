@@ -55,11 +55,16 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
   - **IN**
   - **ORDER BY**
 
-  The last operator (**ORDER BY**) is supported only with Elasticsearch as a Visibility store.
+  The last operator (**ORDER BY**) is supported only with Elasticsearch as the Visibility store.
   Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-- To search for a specific word, set a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` to a phrase that contains that word.
-  Any command run with that Search Attribute returns any Workflows that contain that word.
+- To use a partial string match (i.e. specific word), create a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` and set it value to a phrase that contains that word. 
+
+- The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+
+- If a `Description` Search Attribute of `Text` type is set to a phrase, List Filters containing words within that phrase will return the Workflow.
+  For example, `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
+  However, `Description="qui"` or `Description="laz"` would not return the Workflow, since [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
 - A List Filter applies to a single Namespace.
 

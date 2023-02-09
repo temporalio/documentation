@@ -35,8 +35,13 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
   The last operator (**ORDER BY**) is supported only with Elasticsearch as the Visibility store.
   Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-- To search for a specific word, set a [custom Search Attribute](/app-dev-context/observability#custom-search-attributes) of type `Text` to a phrase that contains that word.
-  Any command run with that Search Attribute returns any Workflows that contain that word.
+- To use a partial string match (i.e. specific word), create a [custom Search Attribute](/app-dev-context/observability#custom-search-attributes) of type `Text` and set it value to a phrase that contains that word.
+
+- The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+
+- If a `Description` Search Attribute of `Text` type is set to a phrase, List Filters containing words within that phrase will return the Workflow.
+  For example, `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
+  However, `Description="qui"` or `Description="laz"` would not return the Workflow, since [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
 - A List Filter applies to a single Namespace.
 
