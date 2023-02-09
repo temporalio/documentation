@@ -22,6 +22,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Advanced Visibility](/visibility#advanced-visibility)
 - [Archival](/clusters#archival)
 - [Asynchronous Activity Completion](/activities#asynchronous-activity-completion)
+- [Audit Logging](/cloud/how-to-manage-audit-logging#)
 - [Authorizer Plugin](/security#authorizer-plugin)
 - [Child Workflow](/workflows#child-workflow)
 - [Claim Mapper](/security#claim-mapper)
