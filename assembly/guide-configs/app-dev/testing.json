@@ -15,6 +15,35 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/testing-frameworks"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-use-test-frameworks-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-use-test-frameworks-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/testing-activities"
     },
     {
@@ -312,35 +341,6 @@
         {
           "lang": "typescript",
           "id": "typescript/how-to-use-assert-typescript"
-        }
-      ]
-    },
-    {
-      "type": "h2",
-      "id": "app-dev-context/testing-frameworks"
-    },
-    {
-      "type": "langtabs",
-      "langtabs": [
-        {
-          "lang": "go",
-          "id": "none"
-        },
-        {
-          "lang": "java",
-          "id": "none"
-        },
-        {
-          "lang": "php",
-          "id": "none"
-        },
-        {
-          "lang": "python",
-          "id": "python/how-to-use-test-frameworks-in-python"
-        },
-        {
-          "lang": "typescript",
-          "id": "typescript/how-to-use-test-frameworks-in-typescript"
         }
       ]
     },
