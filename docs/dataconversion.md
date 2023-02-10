@@ -67,9 +67,9 @@ Custom Data Converters are not applied to all data:
 
 A custom Data Converter can have thee following three components:
 
-- [Payload Converter]()
-- [Failure Converter]()
-- [Payload Codec]()
+- <a class="tdlp" href="#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter converts values to Payload and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="#failure-converter">Failure Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Failure Converter?</span><br /><br /><span class="tdlppd">A Failure Converter converts error objects to proto Failures and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#failure-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>
 
 ## Payload Converter
 

@@ -25,6 +25,6 @@ Custom Data Converters are not applied to all data:
 
 A custom Data Converter can have thee following three components:
 
-- [Payload Converter]()
-- [Failure Converter]()
-- [Payload Codec]()
+- [Payload Converter](/concepts/what-is-a-payload-converter)
+- [Failure Converter](/concepts/what-is-a-failure-converter)
+- [Payload Codec](/concepts/what-is-a-payload-codec)
