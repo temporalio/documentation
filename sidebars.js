@@ -20,6 +20,7 @@ module.exports = {
         "visibility",
         "clusters",
         "namespaces",
+        "dataconversion"
       ],
     },
     {
@@ -79,6 +80,22 @@ module.exports = {
       ],
     },
     "cluster-deployment-guide",
+    {
+      type: "category",
+      label: "Production readiness guide",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "production-readiness/index",
+      },
+      items: [
+        "production-readiness/bootstrap",
+        "production-readiness/develop",
+        "production-readiness/prepare",
+        "production-readiness/run",
+      ],
+    },
     "security",
     {
       type: "category",

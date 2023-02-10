@@ -107,11 +107,11 @@ You can also create a remote HTTP server (called Codec Server) to run encryption
 If running your custom `PayloadCodec` through a remote data encoder, set the the custom `PayloadCodec` per Namespace, as shown in the following example:
 
 ```go
-	// Set codecs per namespace here.
-	// Only handle codecs for the default namespace in this example.
-	codecs := map[string][]converter.PayloadCodec{
-		"default": {codecserver.NewPayloadCodec()},
-	}
+// Set codecs per namespace here.
+// Only handle codecs for the default namespace in this example.
+codecs := map[string][]converter.PayloadCodec{
+	"default": {codecserver.NewPayloadCodec()},
+}
 ```
 
 See the following samples for examples:
@@ -154,17 +154,17 @@ Use `CodecDataConverter` with an instance of a Data Converter and the custom `Pa
 For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use:
 
 ```java
-  WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-    // client that can be used to start and signal workflows
-    WorkflowClient client =
-        WorkflowClient.newInstance(
-            service,
-            WorkflowClientOptions.newBuilder()
-                .setDataConverter(
-                    new CodecDataConverter(
-                        DefaultDataConverter.newDefaultInstance(),
-                        Collections.singletonList(new YourCustomPayloadCodec())))
-                .build());
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+  // client that can be used to start and signal workflows
+  WorkflowClient client =
+      WorkflowClient.newInstance(
+          service,
+          WorkflowClientOptions.newBuilder()
+              .setDataConverter(
+                  new CodecDataConverter(
+                      DefaultDataConverter.newDefaultInstance(),
+                      Collections.singletonList(new YourCustomPayloadCodec())))
+              .build());
 ```
 
 See the following samples for example implementations:
