@@ -80,6 +80,7 @@ module.exports = {
       ],
     },
     "cluster-deployment-guide",
+    "security",
     {
       type: "category",
       label: "Production readiness guide",
@@ -96,7 +97,6 @@ module.exports = {
         "production-readiness/run",
       ],
     },
-    "security",
     {
       type: "category",
       label: "CLI - tctl v1.17",
