@@ -32,8 +32,8 @@ Note that the order of your `PayloadConverters` is important here because during
 The last `PayloadConverter` should always serialize the value (JSONPayloadConverter is good candidate for it).
 
 ```go
-  //need a better example here
-	c, err := client.NewClient(client.Options{
-		DataConverter: converter.NewCompositeDataConverter(converter.GetDefaultDataConverter(), YourCustomPayloadConverter()),
-        //...
+ //need a better example here
+c, err := client.NewClient(client.Options{
+	DataConverter: converter.NewCompositeDataConverter(converter.GetDefaultDataConverter(), YourCustomPayloadConverter()),
+       //...
 ```

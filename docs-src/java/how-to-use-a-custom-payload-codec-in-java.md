@@ -40,17 +40,17 @@ Use `CodecDataConverter` with an instance of a Data Converter and the custom `Pa
 For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use:
 
 ```java
-  WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-    // client that can be used to start and signal workflows
-    WorkflowClient client =
-        WorkflowClient.newInstance(
-            service,
-            WorkflowClientOptions.newBuilder()
-                .setDataConverter(
-                    new CodecDataConverter(
-                        DefaultDataConverter.newDefaultInstance(),
-                        Collections.singletonList(new YourCustomPayloadCodec())))
-                .build());
+WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+  // client that can be used to start and signal workflows
+  WorkflowClient client =
+      WorkflowClient.newInstance(
+          service,
+          WorkflowClientOptions.newBuilder()
+              .setDataConverter(
+                  new CodecDataConverter(
+                      DefaultDataConverter.newDefaultInstance(),
+                      Collections.singletonList(new YourCustomPayloadCodec())))
+              .build());
 ```
 
 See the following samples for example implementations:

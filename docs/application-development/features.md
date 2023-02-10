@@ -4018,10 +4018,10 @@ Note that the order of your `PayloadConverters` is important here because during
 The last `PayloadConverter` should always serialize the value (JSONPayloadConverter is good candidate for it).
 
 ```go
-  //need a better example here
-	c, err := client.NewClient(client.Options{
-		DataConverter: converter.NewCompositeDataConverter(converter.GetDefaultDataConverter(), YourCustomPayloadConverter()),
-        //...
+ //need a better example here
+c, err := client.NewClient(client.Options{
+	DataConverter: converter.NewCompositeDataConverter(converter.GetDefaultDataConverter(), YourCustomPayloadConverter()),
+       //...
 ```
 
 </TabItem>
@@ -4065,14 +4065,14 @@ You can also use the following implementation classes provided in the Java SDK:
 For example, to create a custom `JacksonJsonPayloadConverter`, use:
 
 ```java
-  private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    // your custom conversion logic
-    return new JacksonJsonPayloadConverter(objectMapper);
-  }
+private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
+  ObjectMapper objectMapper = new ObjectMapper();
+  // your custom conversion logic
+  return new JacksonJsonPayloadConverter(objectMapper);
+}
 ```
 
-To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)>) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
 The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
 
@@ -4083,7 +4083,6 @@ DefaultDataConverter ddc =
 
     WorkflowClientOptions workflowClientOptions =
         WorkflowClientOptions.newBuilder().setDataConverter(ddc).build();
-
 ```
 
 </TabItem>
@@ -4109,4 +4108,3 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 </TabItem>
 </Tabs>
-

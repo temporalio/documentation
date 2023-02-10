@@ -73,11 +73,11 @@ You can also create a remote HTTP server (called Codec Server) to run encryption
 If running your custom `PayloadCodec` through a remote data encoder, set the the custom `PayloadCodec` per Namespace, as shown in the following example:
 
 ```go
-	// Set codecs per namespace here.
-	// Only handle codecs for the default namespace in this example.
-	codecs := map[string][]converter.PayloadCodec{
-		"default": {codecserver.NewPayloadCodec()},
-	}
+// Set codecs per namespace here.
+// Only handle codecs for the default namespace in this example.
+codecs := map[string][]converter.PayloadCodec{
+	"default": {codecserver.NewPayloadCodec()},
+}
 ```
 
 See the following samples for examples:

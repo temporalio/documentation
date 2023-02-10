@@ -46,14 +46,14 @@ You can also use the following implementation classes provided in the Java SDK:
 For example, to create a custom `JacksonJsonPayloadConverter`, use:
 
 ```java
-  private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    // your custom conversion logic
-    return new JacksonJsonPayloadConverter(objectMapper);
-  }
+private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
+  ObjectMapper objectMapper = new ObjectMapper();
+  // your custom conversion logic
+  return new JacksonJsonPayloadConverter(objectMapper);
+}
 ```
 
-To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)>) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
 The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
 
@@ -64,5 +64,4 @@ DefaultDataConverter ddc =
 
     WorkflowClientOptions workflowClientOptions =
         WorkflowClientOptions.newBuilder().setDataConverter(ddc).build();
-
 ```
