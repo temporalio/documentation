@@ -14,7 +14,7 @@ The default Failure Converter copies error messages and stack traces as plain te
 - [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.21.0/converter#FailureConverter)
 - [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/FailureConverter.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.FailureConverter)
-- [Python](https://python.temporal.io/temporalio.converter.FailureConverter.html
+- [Python](https://python.temporal.io/temporalio.converter.FailureConverter.html)
 
 You can make a custom Failure Converter, but if you use multiple SDKs, you will have to implement the same logic in each.
 Custom/customizable failure converter is not yet supported in Java.

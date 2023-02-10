@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-#### Create a custom Payload Codec
+**Create a custom Payload Codec**
 
 Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a `CodecDataConverter` to set a custom Data Converter.
 
@@ -33,7 +33,7 @@ public class YourCustomCodec implements PayloadCodec {
 
 You can also create a remote HTTP server (called Codec Server) to run the encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
 
-#### Set Data Converter to use custom Payload Codec
+**Set Data Converter to use custom Payload Codec**
 
 Use `CodecDataConverter` with an instance of a Data Converter and the custom `PayloadCodec` in the `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 

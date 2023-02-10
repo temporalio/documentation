@@ -39,3 +39,5 @@ The following samples use encryption (AES GCM with 256-bit key) in a custom Data
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
+
+See [Data encryption](/production-readiness/develop#data-encryption) for details.

@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-#### Create a custom Payload Codec
+**Create a custom Payload Codec**
 
 Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
 
@@ -53,7 +53,7 @@ func (*Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) 
 
 You can also create a remote HTTP server (called Codec Server) to run the encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
 
-#### Set Data Converter to use custom Payload Codec
+**Set Data Converter to use custom Payload Codec**
 
 Set your custom `PaylaodCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client for your Worker process and to start Workflow Executions.
 
