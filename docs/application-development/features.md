@@ -3977,7 +3977,7 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 </Tabs>
 
-## Custom logger
+## Custom Payload Conversion
 
 By default Temporal uses the `JacksonJsonPayloadConverter` for serialization and deserialization of arguments.
 
@@ -4108,3 +4108,4 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 </TabItem>
 </Tabs>
+

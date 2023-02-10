@@ -2,7 +2,7 @@
 id: custom-payload-conversion
 title: How to use custom payload-conversion
 description:
-sidebar_label: Custom logger
+sidebar_label: Custom Payload Conversion
 tags:
   - guide-context
 ---

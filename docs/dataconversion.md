@@ -88,7 +88,7 @@ When your Workflow Execution starts, this data input is serialized and passed as
 
 You can set multiple custom PayloadConverters to run your conversions. However, the order in which encoding payload converters are applied is important because during serialization, each encoding Payload Converter is tried in order until one properly serializes the value.
 
-See <a class="tdlp" href="/application-development/features#custom-logger">Custom Payload Conversion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload-conversion</span><br /><br /><span class="tdlppd">null</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#custom-logger">Learn more</a></span></span></a> for details on how to use the Payload Converter for custom data types.
+See <a class="tdlp" href="/application-development/features#custom-payload-conversion">Custom Payload Conversion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload-conversion</span><br /><br /><span class="tdlppd">null</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#custom-payload-conversion">Learn more</a></span></span></a> for details on how to use the Payload Converter for custom data types.
 
 ## Failure Converter
 
