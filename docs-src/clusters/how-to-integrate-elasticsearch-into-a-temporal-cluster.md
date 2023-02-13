@@ -14,9 +14,9 @@ ssdi:
   - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
 ---
 
-You can set up [Advanced Visibility](/concepts/what-is-advanced-visibility) by integrating your Temporal Cluster with ElasticSearch.
+You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load. Elasticsearch is recommended for large-scale operations on the Temporal Cluster, and is required if you use Cassandra as your [Persistence store](/concepts/what-is-a-temporal-cluster#persistence).
 
-Note that if you use MySQL or PostgreSQL as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8 and later) and PostgreSQL (version 12 and later).
+Note that if you use MySQL or PostgreSQL as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later).
 To enable Advanced Visibility on your SQL databases, ensure that you do the following:
 
 - Upgrade your Temporal Server to version 1.20.
