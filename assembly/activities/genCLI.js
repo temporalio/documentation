@@ -65,12 +65,10 @@ export async function genCLI(config) {
             console.log("Error: could not execute binary.")
             return;
         }   
+        RemoveFiles('rm -fv LICENSE README.md temporal-doc-gen')
     }); 
 
-    // delete everything except documentation
-    RemoveFiles('rm -v LICENSE');
-    RemoveFiles('rm -v README.md');
-    RemoveFiles('rm -v temporal-doc-gen');
+    
 }
 
 async function RemoveFiles(pathFunc) {
