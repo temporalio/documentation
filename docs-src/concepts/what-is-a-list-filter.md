@@ -48,7 +48,7 @@ Paginate the results with the `ListWorkflow` API by using the page token to retr
 
 #### List Filter examples
 
-The following is a List Filter set with [`tctl`](/tctl-v1-workflow#list):
+The following is a List Filter set with [`tctl`](/tctl-v1/workflow/list):
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") order by StartTime desc

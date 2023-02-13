@@ -42,22 +42,25 @@ The range of a List Filter timestamp (StartTime, CloseTime, ExecutionTime) canno
 ### Supported operators
 
 A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and the following supported operators:
-  - **=, !=, >, >=, <, <=**
-  - **AND, OR, ()**
-  - **BETWEEN ... AND**
-  - **IN**
-  - **ORDER BY**
+
+- **=, !=, >, >=, <, <=**
+- **AND, OR, ()**
+- **BETWEEN ... AND**
+- **IN**
+- **ORDER BY**
 
 The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
 The **ORDER BY** operator is supported only with <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>.
 
 ### Partial string match
+
 If a `Description` Search Attribute of `Text` type is set to a phrase, List Filters containing words within that phrase will return the Workflow.
 Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
-  - `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
-  - `Description="qui"` or `Description="laz"` would not return the Workflow. 
+
+- `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
+- `Description="qui"` or `Description="laz"` would not return the Workflow.
   [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
-  - To use a partial string match (i.e. specific word), create a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` and set it value to a phrase that contains that word.
+- To use a partial string match (i.e. specific word), create a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` and set it value to a phrase that contains that word.
 
 ### Efficient API usage
 
@@ -68,15 +71,17 @@ Paginate the results with the `ListWorkflow` API by using the page token to retr
 
 #### List Filter examples
 
-The following is a List Filter set with [`tctl`](/tctl-v1-workflow#list):
+The following is a List Filter set with <a class="tdlp" href="/tctl-v1/workflow#list">`tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow list</span><br /><br /><span class="tdlppd">How to list open or closed Workflow Executions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></span></span></a>:
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") order by StartTime desc
-``` 
+```
+
 When used, a list of Workflows that meet the following conditions are returned, ordered by `StartTime` in descending order:
- - The Workflow Type is set to `main.YourWorkflowDefinition`.
- - The Workflow isn't running.
- - The Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
+
+- The Workflow Type is set to `main.YourWorkflowDefinition`.
+- The Workflow isn't running.
+- The Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
 
 More List Filter examples have been provided below.
 
