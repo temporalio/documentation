@@ -34,54 +34,51 @@ Elasticsearch takes on the Visibility request load, relieving potential performa
 ## List Filter
 
 A List Filter is the SQL-like string that is provided as the parameter to an <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#advanced-visibility">Learn more</a></span></span></a> List API.
+List Filter names are case sensitive, and apply to a single <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> each.
 
-- [How to use a List Filter using tctl](/tctl-v1/workflow#list)
+A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7.
+The range of a List Filter timestamp (StartTime, CloseTime, ExecutionTime) cannot exceed 9223372036854775807 (that is, maxInt64 - 1001).
 
-The following is an example List Filter:
+### Supported operators
 
-```
-WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") order by StartTime desc
-```
-
-[More example List Filters](#example-list-filters)
-
-A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and Operators.
-
-- The following operators are supported in List Filters:
-
+A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and the following supported operators:
   - **=, !=, >, >=, <, <=**
   - **AND, OR, ()**
   - **BETWEEN ... AND**
   - **IN**
   - **ORDER BY**
 
-  The last operator (**ORDER BY**) is supported only with Elasticsearch as the Visibility store.
-  Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
+The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+The **ORDER BY** operator is supported only with <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>.
 
-- To use a partial string match (i.e. specific word), create a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` and set it value to a phrase that contains that word. 
+### Partial string match
+If a `Description` Search Attribute of `Text` type is set to a phrase, List Filters containing words within that phrase will return the Workflow.
+Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
+  - `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
+  - `Description="qui"` or `Description="laz"` would not return the Workflow. 
+  [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
+  - To use a partial string match (i.e. specific word), create a <a class="tdlp" href="/application-development/observability#custom-search-attributes">custom Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Observability features</span><br /><br /><span class="tdlppd">The observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view which Workflow Executions are tracked by the Temporal Platform and the state of any specified Workflow Execution, either currently or at points of an execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a> of type `Text` and set it value to a phrase that contains that word.
 
-- The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+### Efficient API usage
 
-- If a `Description` Search Attribute of `Text` type is set to a phrase, List Filters containing words within that phrase will return the Workflow.
-  For example, `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
-  However, `Description="qui"` or `Description="laz"` would not return the Workflow, since [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
+An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10 million, for instance).
 
-- A List Filter applies to a single Namespace.
+Use the `CountWorkflow` API to efficiently count the number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
+Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
 
-- The range of a List Filter timestamp (StartTime, CloseTime, ExecutionTime) cannot exceed 9223372036854775807 (that is, maxInt64 - 1001).
+#### List Filter examples
 
-- A List Filter that uses a time range has a resolution of 1 ms on Elasticsearch 6 and 1 ns on Elasticsearch 7.
+The following is a List Filter set with [`tctl`](/tctl-v1-workflow#list):
 
-- List Filter Search Attribute names are case sensitive.
+```
+WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") order by StartTime desc
+``` 
+When used, a list of Workflows that meet the following conditions are returned, ordered by `StartTime` in descending order:
+ - The Workflow Type is set to `main.YourWorkflowDefinition`.
+ - The Workflow isn't running.
+ - The Workflow either started after "2021-06-07T16:46:34.236-08:00" or closed after "2021-06-07T16:46:34-08:00".
 
-- An Advanced List Filter API may take longer than expected if it is retrieving a large number of Workflow Executions (more than 10 million).
-
-- A `ListWorkflow` API supports pagination.
-  Use the page token in the following call to retrieve the next page; continue until the page token is `null`/`nil`.
-
-- To efficiently count the number of Workflow Executions, use the `CountWorkflow` API.
-
-#### Example List Filters
+More List Filter examples have been provided below.
 
 ```sql
 WorkflowId = '<workflow-id>'
