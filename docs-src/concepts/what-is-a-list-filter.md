@@ -11,7 +11,7 @@ tags:
 ---
 
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
-List Filter names are case sensitive, and apply to a single [Namespace](/concepts/what-is-a-namespace) each.
+List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive. List Filter applies to a single [Namespace](/concepts/what-is-a-namespace).
 
 A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7.
 The range of a List Filter timestamp (StartTime, CloseTime, ExecutionTime) cannot exceed 9223372036854775807 (that is, maxInt64 - 1001).
