@@ -154,6 +154,13 @@ This command runs snipsync, runs the Assembly Workflow, runs dPrint formatting, 
 Any build issues are logged to your console.
 Fix all build issues before submitting a PR.
 
+## Retrieving documents from the CLI repository
+
+The `cli` repository contains a tool that automatically generates the reference documents for this feature. 
+These documents will be updated per CLI release.
+
+To get the documents, run `yarn assemble --cli`.
+
 ## When you submit a Pull Request
 
 A deployment preview is available for each build in the Pull Request.
