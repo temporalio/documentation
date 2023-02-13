@@ -131,7 +131,7 @@ The Paylod Codec does byte to byte conversion, and must be set with a Data Conve
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 
 ```java
-public class YourCustomCodec implements PayloadCodec {
+public class YourCustomPayloadCodec implements PayloadCodec {
      @NotNull
     @Override
     public List<Payload> encode(@NotNull List<Payload> payloads) {
@@ -169,7 +169,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
 
 See the following samples for example implementations:
 
-- [Encryptd Payloads](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
+- [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
 
 </TabItem>
