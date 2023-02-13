@@ -27,10 +27,9 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
 
-- With Temporal Cluster version 1.20 and later, Advanced Visibility is available on SQL databases like MySQL (version 8 and later) and PostgreSQL (version 12 and later), in addition to supporting Elasticsearch.
+- With Temporal Cluster version 1.20 and later, Advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to supporting Elasticsearch.
 - For Temporal Server versions 1.19.1 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate with ElasticSearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use Advanced Visibility.
-  We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
-  Elasticsearch takes on the Visibility request load, relieving potential performance issues.
+  Elasticsearch takes on the Visibility request load, relieving potential performance issues. We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 
 ## List Filter
 

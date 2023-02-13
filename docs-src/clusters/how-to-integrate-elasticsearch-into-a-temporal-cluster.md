@@ -20,7 +20,7 @@ Note that if you use MySQL or PostgreSQL as your Visibility store, Temporal Serv
 To enable Advanced Visibility on your SQL databases, ensure that you do the following:
 
 - Upgrade your Temporal Server to version 1.20.
-- Update your MySQL to version 8 (or later) or PostgreSQL version 12 (or later).
+- Update your MySQL to version 8.0.17 (or later) or PostgreSQL version 12 (or later).
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
