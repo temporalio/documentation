@@ -2646,6 +2646,62 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 </TabItem>
 </Tabs>
 
+## List Workflows
+
+A List Workflow is a method to retrieve Workflow Executions based on a Query or Filter, allowing you to find and view a list of relevant Workflows.
+
+You can use a Query to include one or more conditions to specify a Workflow Execution’s characteristics, such as Workflow Id, Type, or start and end time.
+
+The Workflow Executions retrieved from a List Workflow query can be sorted by a specific property in either ascending or descending order. Depending on the query, the Workflow Executions may be sorted by `StartTime` in descending order when listing open Workflows, and sorted by `CloseTime` in descending order for other queries.
+
+For advanced query functionality, an ElasticSearch-based visibility feature must be used as of the 1.18 server release.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method and pass a [List Filter](/tctl-v1/workflow#list) as an argument to add conditions to filter the listed Workflows.
+
+```python
+client = await Client.connect("localhost:7233")
+client.list_workflows('TaskQueue="your-activity-task-queue"')
+client.list_workflows('WorkflowId="your-activity-workflow-id"')
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
 ## Child Workflows
 
 A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.

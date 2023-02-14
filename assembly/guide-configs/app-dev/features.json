@@ -462,6 +462,35 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/list-workflows"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-list-workflows-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/child-workflows"
     },
     {
