@@ -13,7 +13,7 @@ There are seven Activity-related [Events](/workflows#event) that are added to Hi
 There are two important things to note when matching Activity Execution lifecycle to Activity Events:
 
 - In Event names, "ActivityTask" refers to an [Activity Execution](/activities#activity-execution), not an [Activity Task](/tasks#activity-task).
-- While the Activity is running and retrying, [ActivityTaskScheduled](/references/events#activitytaskscheduled) is the only Activity-related event in History: [ActivityTaskStarted](/references/events#activitytaskstarted) is written along with [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed).
+- While the Activity is running and retrying, [ActivityTaskScheduled](/references/events#activitytaskscheduled) is the only Activity-related event in History: [ActivityTaskStarted](/references/events#activitytaskstarted) is written along with a terminal event like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed).
 
 The Activity-related Events and points at which they're added to History are:
 
