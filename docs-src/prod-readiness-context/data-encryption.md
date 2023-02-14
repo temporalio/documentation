@@ -22,7 +22,7 @@ Encrypting this data at your application-level ensures that all your sensitive a
 
 To encrypt your data, configure your custom encryption logic with a [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter) in your Client options.
 
-A [`PayloadCodec`](/concepts/what-is-a-payload-codec) transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-paylaod-converter):
+A [`PayloadCodec`](/concepts/what-is-a-payload-codec) transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
 ```bash
 Temporal Server <--> Wire <--> Payload Codec <--> Payload Converter <--> User code
