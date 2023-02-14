@@ -124,6 +124,19 @@ module.exports = {
         "tctl-next/modifiers",
       ],
     },
+    {
+      type: "category",
+      label: "Temporal CLI",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "cli/index",
+      },
+      items: [
+        
+      ],
+    },
     "web-ui",
     {
       type: "category",
