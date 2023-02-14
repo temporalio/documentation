@@ -13,17 +13,17 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Activities.
 
-In day-to-day conversations, the term _Activity_ frequently denotes either an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>, an <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Type?</span><br /><br /><span class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-type">Learn more</a></span></span></a>, or an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>.
+In day-to-day conversation, the term _Activity_ denotes an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>, <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Type?</span><br /><br /><span class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-type">Learn more</a></span></span></a>, or <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>.
 Temporal documentation aims to be explicit and differentiate between them.
 
-An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
+Activity code may be non-deterministic.
 
 Workflow code orchestrates the execution of Activities, persisting the results.
-If an Activity Function Execution fails, any future execution starts from initial state (except Heartbeats).
-Therefore, an Activity function is allowed to contain any code without restrictions.
+If an Activity Function Execution fails, any future execution starts from initial state (except [Heartbeats](/activities#activity-heartbeat)).
 
 Activity Functions are executed by Worker Processes.
-When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the `ActivityTaskCompleted` Event.
+When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the [`ActivityTaskCompleted` Event](/references/events#activitytaskcompleted).
 The Event is added to the Workflow Execution's Event History.
 
 ## Activity Definition
@@ -315,6 +315,27 @@ Consider using <a class="tdlp" href="/workflows#signal">Signals<span class="tdlp
 The reason is that a human in the loop means multiple steps in the process.
 The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
 If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
+
+### Activity Events
+
+There are seven Activity-related [Events](/workflows#event) that are added to History at different points in an Activity Execution.
+
+There are two important things to note when matching Activity Execution lifecycle to Activity Events:
+
+- In Event names, "ActivityTask" refers to an [Activity Execution](/activities#activity-execution), not an [Activity Task](/tasks#activity-task).
+- While the Activity is running and retrying, [ActivityTaskScheduled](/references/events#activitytaskscheduled) is the only Activity-related event in History: [ActivityTaskStarted](/references/events#activitytaskstarted) is written along with [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed).
+
+The Activity-related Events and points at which they're added to History are:
+
+- Once a <a class="tdlp" href="/tasks#activity-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a> reaches a line of code that starts/executes an Activity, the Worker sends the Activity type and arguments to the Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskcompleted) Event to History.
+- When ActivityTaskScheduled is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
+- The Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
+- If the Activity function returns, then the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to History.
+- If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), then the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to History.
+- If the Activity function throws an Error or retryable Failure, the Cluster will schedule an Activity Task retry to be added to the Task Queue (unless you’ve reached the [Retry Policy](/retry-policies)’s Maximum Attempts, in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to History).
+- If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Cluster will schedule a retry.
+- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster will write [ActivityTaskTimedOut](/references/events#activitytasktimedout) to History.
+- If the Activity is [Cancelled](/activities#cancellation), the Cluster will write [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to History, and if the Activity accepts Cancellation, the Cluster will write [ActivityTaskCanceled](/references/events#activitytaskcanceled).
 
 #### Task Token
 
