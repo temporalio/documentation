@@ -104,18 +104,6 @@
   transform: scale(1.1);
 }
 
-.cloudWaitlistSubmit {
-  margin-top: 15px;
-  color: var(--ifm-color-primary);
-  border-color: var(--ifm-color-primary);
-  border-style: solid;
-  border-width: 1px;
-}
-
-.cloudWaitlistSubmit:hover {
-  background-color: var(--ifm-color-primary);
-}
-
 .justifyLeft {
   text-align: left;
 }
