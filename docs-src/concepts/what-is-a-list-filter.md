@@ -13,7 +13,7 @@ tags:
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
 List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive, and each List Filter is scoped by a single [Namespace](/concepts/what-is-a-namespace).
 
-A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+.
+A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+ and 1 ms for SQL.
 
 ### Supported operators
 

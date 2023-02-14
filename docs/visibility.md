@@ -36,7 +36,7 @@ Elasticsearch takes on the Visibility request load, relieving potential performa
 A List Filter is the SQL-like string that is provided as the parameter to an <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#advanced-visibility">Learn more</a></span></span></a> List API.
 List Filter <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names are case sensitive, and each List Filter is scoped by a single <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
 
-A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+.
+A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+ and 1 ms for SQL.
 
 ### Supported operators
 
@@ -54,7 +54,7 @@ The `=` operator works like **CONTAINS** to find Workflows with Search Attribute
 The **ORDER BY** operator is supported only with <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>.
 
 For example, if you have a Search Attribute `Description` with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
-However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow. 
+However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
 :::note
@@ -67,6 +67,7 @@ Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
 
 <!-- Use the `CountWorkflow` API to efficiently count the number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>. -->
+
 Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
 
 #### List Filter examples
@@ -74,7 +75,7 @@ Paginate the results with the `ListWorkflow` API by using the page token to retr
 The following is a List Filter set with <a class="tdlp" href="/tctl-v1/workflow#list">`tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow list</span><br /><br /><span class="tdlppd">How to list open or closed Workflow Executions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></span></span></a>:
 
 ```
-WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") 
+WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
 ```
 
 When used, a list of Workflows that meet the following conditions are returned:
