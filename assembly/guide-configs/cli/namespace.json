@@ -1,0 +1,37 @@
+{
+  "file_name": "namespace.md",
+  "file_dir": "tctl-next",
+  "id": "namespace",
+  "title": "tctl version-next namespace command reference",
+  "sidebar_label": "namespace",
+  "description": "How to use the tctl version-next namespace command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/namespace/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/namespace/delete"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/namespace/describe"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/namespace/list"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/namespace/register"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/namespace/update"
+    }
+  ]
+}

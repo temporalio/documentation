@@ -1,0 +1,21 @@
+{
+  "file_name": "data-converter.md",
+  "file_dir": "tctl-next",
+  "id": "data-converter",
+  "title": "tctl version-next data-converter command reference",
+  "sidebar_label": "data-converter",
+  "description": "How to use the tctl version-next data-converter command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "tctl-next/data-converter/index"
+    },
+    {
+      "type": "h2",
+      "id": "tctl-next/data-converter/web"
+    }
+  ]
+}
