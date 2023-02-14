@@ -15,8 +15,7 @@ export async function genCLI(config) {
 
     const FilePathCLI = path.join(
         config.root_dir,
-        config.content_write_dir,
-        "cli"
+        config.content_source_dirs[0]
     );
 
     // get executables
