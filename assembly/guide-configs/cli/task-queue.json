@@ -1,25 +1,25 @@
 {
   "file_name": "task-queue.md",
-  "file_dir": "tctl-next",
+  "file_dir": "cli",
   "id": "task-queue",
-  "title": "tctl version-next task-queue command reference",
+  "title": "Temporal CLI task-queue command reference",
   "sidebar_label": "task-queue",
-  "description": "How to use the tctl version-next task-queue command",
+  "description": "How to use the Temporal CLI task-queue command",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "sections": [
     {
       "type": "p",
-      "id": "tctl-next/task-queue/index"
+      "id": "cli/task-queue/index"
     },
     {
       "type": "h2",
-      "id": "tctl-next/task-queue/describe"
+      "id": "cli/task-queue/describe"
     },
     {
       "type": "h2",
-      "id": "tctl-next/task-queue/list-partition"
+      "id": "cli/task-queue/list-partition"
     }
   ]
 }
