@@ -66,8 +66,6 @@ export async function genCLI(config) {
         }   
         RemoveFiles('rm -fv LICENSE README.md temporal-doc-gen')
     }); 
-    //move docs to cli folder lever
-    MoveFiles(' mv docs/* docs/.* .')
 }
 
 async function RemoveFiles(pathFunc) {
@@ -79,12 +77,4 @@ async function RemoveFiles(pathFunc) {
   });
 }
 
-async function MoveFiles(pathFunc) {
-  exec(pathFunc, (err, stdout, stderr) => {
-    if (err) {
-      console.log("Couldn't move files.")
-      return;
-    }
-  });
-}
 
