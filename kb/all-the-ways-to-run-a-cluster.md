@@ -14,6 +14,41 @@ This article aims to maintain a comprehensive list of all the ways we know of.
 
 <!-- truncate -->
 
+### Temporal CLI
+
+Temporal CLI is a distribution of Temporal that runs as a single process with zero runtime dependencies.
+It supports persistence to disk and in-memory mode through SQLite.
+
+**Prerequisites**
+
+To run the Temporal CLI locally requires [Go 1.19 or later](https://go.dev/dl/).
+
+**Build and start the Temporal CLI**
+
+The following steps start and run a Temporal Cluster.
+
+1. Choose one of the following install methods.
+   1. curl
+   ```bash
+   curl -sSf https://temporal.download/cli.sh | sh
+   ```
+   2. Homebrew
+   ```bash
+   brew install temporal
+   ```
+2. Start Temporal Server by using the `start-dev` command.
+   ```bash
+   temporal server start-dev
+   ```
+
+To customize the pre-registered [Namespace Name](/namespaces), start the server with the `--namespace` command.
+
+```bash
+temporal server start-dev --namespace your-custom-namespace
+```
+
+**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
+
 ## Temporalite
 
 [Temporalite](https://github.com/temporalio/temporalite/cmd/temporalite) is a complete, but minimal, Temporal Cluster distribution (four Temporal Server services and a database) that runs as a single process with zero runtime dependencies.
