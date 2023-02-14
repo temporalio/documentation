@@ -11,10 +11,9 @@ tags:
 ---
 
 A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
-List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive. List Filter applies to a single [Namespace](/concepts/what-is-a-namespace).
+List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive, and each List Filter is scoped by a single [Namespace](/concepts/what-is-a-namespace).
 
 A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+.
-The range of a List Filter timestamp (StartTime, CloseTime, ExecutionTime) cannot exceed 9223372036854775807 (that is, maxInt64 - 1001).
 
 ### Supported operators
 
@@ -26,24 +25,26 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 - **IN**
 - **ORDER BY**
 
+### Partial string match
+
 The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
 The **ORDER BY** operator is supported only with [Advanced Visibility](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
 
-### Partial string match
+For example, if you have a Search Attribute `Description` with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
+However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
+This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
-If a `Description` Search Attribute of `Text` type is set to a phrase, List Filters containing words within that phrase will return the Workflow.
+:::note
 Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
-- `Description="quick"` or `Description="fox"` would both return a Workflow with the Description Search Attribute set to "The quick brown fox jumps over the lazy dog."
-- `Description="qui"` or `Description="laz"` would not return the Workflow.
-  [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
-- To use a partial string match (i.e. specific word), create a [custom Search Attribute](/app-dev-context/observability#custom-search-attributes) of type `Text` and set it value to a phrase that contains that word.
+:::
 
 ### Efficient API usage
 
-An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10 million, for instance).
+An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
 
-Use the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution).
+<!-- Use the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution). -->
+
 Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
 
 #### List Filter examples
@@ -51,10 +52,10 @@ Paginate the results with the `ListWorkflow` API by using the page token to retr
 The following is a List Filter set with [`tctl`](/tctl-v1/workflow/list):
 
 ```
-WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00") order by StartTime desc
+WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
 ```
 
-When used, a list of Workflows that meet the following conditions are returned, ordered by `StartTime` in descending order:
+When used, a list of Workflows that meet the following conditions are returned:
 
 - The Workflow Type is set to `main.YourWorkflowDefinition`.
 - The Workflow isn't running.
