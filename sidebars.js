@@ -134,7 +134,15 @@ module.exports = {
         id: "cli/index",
       },
       items: [
-        
+        "cli/activity",
+        "cli/batch",
+        "cli/env",
+        "cli/operator",
+        "cli/schedule",
+        "cli/server",
+        "cli/task-queue",
+        "cli/workflow",
+        "cli/cmd=options",
       ],
     },
     "web-ui",
