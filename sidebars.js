@@ -142,7 +142,7 @@ module.exports = {
         "cli/server",
         "cli/task-queue",
         "cli/workflow",
-        "cli/cmd=options",
+        "cli/cmd-options",
       ],
     },
     "web-ui",
