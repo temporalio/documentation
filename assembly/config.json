@@ -1,5 +1,6 @@
 {
   "content_source_dirs": [
+    "docs-src/cli",
     "docs-src/cloud-context",
     "docs-src/cloud",
     "docs-src/app-dev-context",
