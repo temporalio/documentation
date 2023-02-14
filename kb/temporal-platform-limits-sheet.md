@@ -16,6 +16,9 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
 
 <!-- truncate -->
 
+- **Identifiers**: By default, the maximum length for identifiers (like Workflow Id, Workflow Type, and Task Queue name) is 1000 characters.
+  - This is configurable with the `limit.maxIDLength` dynamic config, which is set to 255 in [our SQL example](https://github.com/temporalio/docker-compose/blob/93d382ef9133e4cde8ce311de5153cd0cc9fbd0c/dynamicconfig/development-sql.yaml#L1-L2).
+  - The character format is UTF-8.
 - **gRPC**: gRPC has a limit of 4 MB for [each message received](https://github.com/grpc/grpc/blob/v1.36.2/include/grpc/impl/codegen/grpc_types.h#L466).
 - **Event batch size**: The `DefaultTransactionSizeLimit` limit is [4 MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for Event Histories to be persisted.
