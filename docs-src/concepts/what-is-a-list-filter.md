@@ -28,7 +28,9 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 ### Partial string match
 
 The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
-The **ORDER BY** operator is supported only with [Advanced Visibility](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+The **ORDER BY** operator is supported only for Elasticsearch used as [Advanced Visibility](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+
+<!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
 For example, if you have a Search Attribute `Description` with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
