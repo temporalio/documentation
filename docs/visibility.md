@@ -48,16 +48,20 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
 - **IN**
 - **ORDER BY**
 
+The **ORDER BY** operator is supported only for Elasticsearch used as <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>.
+
 ### Partial string match
 
 The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
-The **ORDER BY** operator is supported only for Elasticsearch used as <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>.
+
+<!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
 For example, if you have a Search Attribute `Description` with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
 :::note
+
 Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
 
 :::
