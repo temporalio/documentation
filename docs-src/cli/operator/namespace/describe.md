@@ -8,13 +8,8 @@ tags:
 ---
 
 ---
-id: namespace
-title: temporal operator namespace
-sidebar_label: namespace
-description: The `temporal operator namespace describe` command provides a description of a [Namespace](/concepts/what-is-a-namespace).
-tags:
-	- cli
----
+
+## id: namespacetitle: temporal operator namespacesidebar_label: namespacedescription: The `temporal operator namespace describe` command provides a description of a [Namespace](/concepts/what-is-a-namespace).tags:- cli
 
 Namespaces can be identified by name or Namespace ID.
 
@@ -49,4 +44,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

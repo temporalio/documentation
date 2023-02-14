@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule describe` command shows the current [Schedule](/concepts/what-is-a-schedule) configuration.
 This command also provides information about past, current, and future [Workflow Runs](/concepts/what-is-a-run-id).
 
@@ -50,4 +49,3 @@ Use the options below to change this command's output.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

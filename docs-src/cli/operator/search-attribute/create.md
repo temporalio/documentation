@@ -8,13 +8,8 @@ tags:
 ---
 
 ---
-id: search-attribute
-title: temporal operator search-attribute
-sidebar_label: search-attribute
-description: The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/concepts/what-is-a-search-attribute).
-tags:
-	- cli
----
+
+## id: search-attributetitle: temporal operator search-attributesidebar_label: search-attributedescription: The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/concepts/what-is-a-search-attribute).tags:- cli
 
 These Search Attributes can be used to [filter a list](/concepts/whaat-is-a-list-filter) of [Workflow Executions](/concepts/what-is-a-workflow-execution) that contain the given Search Attributes in their metadata.
 
@@ -53,4 +48,3 @@ Make sure to write the command as follows:
 - [--type](/cmd-options/type)
 
 - [--yes](/cmd-options/yes)
-

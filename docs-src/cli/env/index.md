@@ -6,5 +6,3 @@ description: Manage environmental configurations on Temporal Client.
 tags:
 	- cli
 ---
-
-

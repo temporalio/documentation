@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: cluster
-title: temporal operator cluster
-sidebar_label: cluster
-description: The `temporal operator cluster remove` command removes a remote [Cluster](/concepts/what-is-a-temporal-cluster) from the system.
-tags:
-	- cli
----
 
+## id: clustertitle: temporal operator clustersidebar_label: clusterdescription: The `temporal operator cluster remove` command removes a remote [Cluster](/concepts/what-is-a-temporal-cluster) from the system.tags:- cli
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
@@ -48,4 +42,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

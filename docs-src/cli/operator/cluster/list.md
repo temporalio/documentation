@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: cluster
-title: temporal operator cluster
-sidebar_label: cluster
-description: The `temporal operator cluster list` command prints a list of all remote [Clusters](/concepts/what-is-a-temporal-cluster) on the system.
-tags:
-	- cli
----
 
+## id: clustertitle: temporal operator clustersidebar_label: clusterdescription: The `temporal operator cluster list` command prints a list of all remote [Clusters](/concepts/what-is-a-temporal-cluster) on the system.tags:- cli
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
@@ -46,7 +40,7 @@ Make sure to write the command as follows:
 - [--output](/cmd-options/output)
 
 - [--pager](/cmd-options/pager)
-Options: less, more, favoritePager.
+  Options: less, more, favoritePager.
 
 - [--time-format](/cmd-options/time-format)
 
@@ -59,4 +53,3 @@ Options: less, more, favoritePager.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

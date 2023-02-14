@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal env get` command prints the environmental properties for the environment in use.
 
 Use the options listed below to change the command's behavior.
@@ -39,4 +38,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

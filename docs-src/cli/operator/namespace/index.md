@@ -6,5 +6,3 @@ description: Operations applying to Namespaces.
 tags:
 	- cli
 ---
-
-

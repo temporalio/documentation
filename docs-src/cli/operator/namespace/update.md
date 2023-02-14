@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: namespace
-title: temporal operator namespace
-sidebar_label: namespace
-description: The `temporal operator namespace update` command updates a given [Namespace](/concepts-what-is-a-namespace).
-tags:
-	- cli
----
 
+## id: namespacetitle: temporal operator namespacesidebar_label: namespacedescription: The `temporal operator namespace update` command updates a given [Namespace](/concepts-what-is-a-namespace).tags:- cli
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
@@ -70,4 +64,3 @@ Make sure to write the command as follows:
 - [--visibility-archival-state](/cmd-options/visibility-archival-state)
 
 - [--visibility-uri](/cmd-options/visibility-uri)
-

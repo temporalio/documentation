@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
 
 Use the command options listed below to change the information returned by this command.
@@ -47,4 +46,3 @@ Make sure to write the command in this format:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

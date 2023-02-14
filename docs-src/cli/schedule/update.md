@@ -7,10 +7,10 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule update` command updates an existing [Schedule](/concepts/what-is-a-schedule).
 
 Like `temporal schedule create`, updated Schedules need to follow a certain format:
+
 ```
 temporal schedule update 			\
 --sid 'your-schedule-id' 	\
@@ -50,11 +50,11 @@ Use the options provided below to change the command's behavior.
 - [--grpc-meta](/cmd-options/grpc-meta)
 
 - [--input](/cmd-options/input)
-Pass "null" for null values.
+  Pass "null" for null values.
 
 - [--input-file](/cmd-options/input-file)
-If there are multiple JSON files, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+  If there are multiple JSON files, concatenate them and separate by space or newline.
+  Input from the command line will overwrite file input.
 
 - [--interval](/cmd-options/interval)
 
@@ -105,4 +105,3 @@ Input from the command line will overwrite file input.
 - [--workflow-id](/cmd-options/workflow-id)
 
 - [--workflow-type](/cmd-options/workflow-type)
-

@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule list` command lists all [Schedule](/concepts/what-is-a-schedule) configurations.
 Listing Schedules in [Standard Visibility](/concepts/what-is-standard-visibility) will only provide Schedule IDs.
 
@@ -40,7 +39,7 @@ Use the options below to change the behavior of this command.
 - [--output](/cmd-options/output)
 
 - [--pager](/cmd-options/pager)
-Options: less, more, favoritePager.
+  Options: less, more, favoritePager.
 
 - [--time-format](/cmd-options/time-format)
 
@@ -53,4 +52,3 @@ Options: less, more, favoritePager.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

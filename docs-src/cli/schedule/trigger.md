@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/concepts/what-is-a-schedule).
 By default, this action is subject to the Overlap Policy of the Schedule.
 
@@ -48,4 +47,3 @@ Use the options provided below to change this command's behavior.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

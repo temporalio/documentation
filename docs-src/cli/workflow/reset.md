@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow reset` command resets a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 A reset allows the Workflow to be resumed from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
 
@@ -52,4 +51,3 @@ Make sure to write the command as follows:
 - [--type](/cmd-options/type)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

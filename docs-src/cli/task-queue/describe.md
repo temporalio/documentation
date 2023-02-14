@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal task-queue describe` command provides [poller](/application-development/worker-performance#poller-count) information for a given [Task Queue](/concepts/what-is-a-task-queue).
 
 The [Server](/concepts/what-is-the-temporal-server) records the last time of each poll request.
@@ -53,4 +52,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

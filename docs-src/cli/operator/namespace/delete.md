@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: namespace
-title: temporal operator namespace
-sidebar_label: namespace
-description: The `temporal operator namespace delete` command deletes a given [Namespace](/concepts-what-is-a-namespace) from the system.
-tags:
-	- cli
----
 
+## id: namespacetitle: temporal operator namespacesidebar_label: namespacedescription: The `temporal operator namespace delete` command deletes a given [Namespace](/concepts-what-is-a-namespace) from the system.tags:- cli
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
@@ -48,4 +42,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--yes](/cmd-options/yes)
-

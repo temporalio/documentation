@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: namespace
-title: temporal operator namespace
-sidebar_label: namespace
-description: The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-server).
-tags:
-	- cli
----
 
+## id: namespacetitle: temporal operator namespacesidebar_label: namespacedescription: The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-server).tags:- cli
 
 Use the options listed below to change the command's output.
 Make sure to write the command as follows:
@@ -46,4 +40,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

@@ -6,5 +6,3 @@ description: Operations that can be performed on Workflow Activities.
 tags:
 	- cli
 ---
-
-

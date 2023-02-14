@@ -6,5 +6,3 @@ description: Commands for managing the Temporal Server.
 tags:
 	- cli
 ---
-
-

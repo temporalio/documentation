@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: search-attribute
-title: temporal operator search-attribute
-sidebar_label: search-attribute
-description: The `temporal operator search-attrbute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in ` temporal workflow list --query`.
-tags:
-	- cli
----
 
+## id: search-attributetitle: temporal operator search-attributesidebar_label: search-attributedescription: The `temporal operator search-attrbute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in `temporal workflow list --query`.tags:- cli
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
@@ -48,4 +42,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

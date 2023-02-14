@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow list` command provides a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that meet the criteria of a given [Query](/concepts/what-is-a-query).
 By default, this command returns a list of up to 10 closed Workflow Executions.
 
@@ -18,7 +17,7 @@ Make sure to write the command as follows:
 - [--address](/cmd-options/address)
 
 - [--archived](/cmd-options/archived)
-Currently an experimental feature.
+  Currently an experimental feature.
 
 - [--codec-auth](/cmd-options/codec-auth)
 
@@ -43,7 +42,7 @@ Currently an experimental feature.
 - [--output](/cmd-options/output)
 
 - [--pager](/cmd-options/pager)
-Options: less, more, favoritePager.
+  Options: less, more, favoritePager.
 
 - [--query](/cmd-options/query)
 
@@ -58,4 +57,3 @@ Options: less, more, favoritePager.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

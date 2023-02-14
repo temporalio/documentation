@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal env delete` command deletes a given environment or environmental property.
 
 Use the options listed below to change the command's behavior.
@@ -39,4 +38,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

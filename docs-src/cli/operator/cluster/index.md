@@ -6,5 +6,3 @@ description: Operations for running a Temporal Cluster.
 tags:
 	- cli
 ---
-
-

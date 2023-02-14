@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow reset-batch` command resets a batch of [Workflow Executions](/concepts/what-is-a-workflow-execution) by `resetType`.
 Resetting a [Workflow](/concepts/what-is-a-workflow) allows the process to resume from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
 
@@ -62,4 +61,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--type](/cmd-options/type)
-

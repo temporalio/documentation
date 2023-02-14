@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 - [--config](/cmd-options/config)
 
 - [--db-filename](/cmd-options/db-filename)
@@ -37,4 +36,3 @@ tags:
 - [--ui-ip](/cmd-options/ui-ip)
 
 - [--ui-port](/cmd-options/ui-port)
-

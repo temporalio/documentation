@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Use the options listed below to change the command's behavior.
@@ -43,4 +42,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

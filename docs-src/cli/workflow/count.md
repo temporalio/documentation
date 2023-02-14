@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow count` command returns a count of [Workflow Executions](/concepts/what-is-a-workflow-execution).
 This command requires Elasticsearch to be enabled.
 
@@ -42,4 +41,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

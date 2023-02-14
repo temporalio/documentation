@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Queries can retrieve all or part of the Workflow state within given parameters.
@@ -34,8 +33,8 @@ Make sure to write the command as follows:
 - [--input](/cmd-options/input)
 
 - [--input-file](/cmd-options/input-file)
-If there are multiple JSON, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+  If there are multiple JSON, concatenate them and separate by space or newline.
+  Input from the command line will overwrite file input.
 
 - [--namespace](/cmd-options/namespace)
 
@@ -56,4 +55,3 @@ Input from the command line will overwrite file input.
 - [--type](/cmd-options/type)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

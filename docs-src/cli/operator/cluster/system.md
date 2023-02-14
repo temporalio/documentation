@@ -8,14 +8,8 @@ tags:
 ---
 
 ---
-id: cluster
-title: temporal operator cluster
-sidebar_label: cluster
-description: The `temporal operator cluster system` command provides information about the system the Cluster is running on.
-tags:
-	- cli
----
 
+## id: clustertitle: temporal operator clustersidebar_label: clusterdescription: The `temporal operator cluster system` command provides information about the system the Cluster is running on.tags:- cli
 
 Use the options listed below to change this command's output.
 Make sure to write the command as follows:
@@ -50,4 +44,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

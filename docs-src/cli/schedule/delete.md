@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule delete` command deletes a [Schedule](/concepts/what-is-a-schedule).
 Deleting a Schedule does not affect any [Workflows](/concepts/what-is-a-workflow) started by the Schedule.
 
@@ -45,4 +44,3 @@ Use the options below to change the behavior of this command.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

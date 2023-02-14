@@ -7,11 +7,11 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
 Schedules need to follow a format like the example shown here:
+
 ```
 temporal schedule create \
 --sid 'your-schedule-id' \
@@ -51,11 +51,11 @@ Use the options provided below to change the command's behavior.
 - [--grpc-meta](/cmd-options/grpc-meta)
 
 - [--input](/cmd-options/input)
-Pass "null" for null values.
+  Pass "null" for null values.
 
 - [--input-file](/cmd-options/input-file)
-If there are multiple JSON files, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+  If there are multiple JSON files, concatenate them and separate by space or newline.
+  Input from the command line will overwrite file input.
 
 - [--interval](/cmd-options/interval)
 
@@ -106,4 +106,3 @@ Input from the command line will overwrite file input.
 - [--workflow-id](/cmd-options/workflow-id)
 
 - [--workflow-type](/cmd-options/workflow-type)
-

@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).
 When invoked successfully, the Workflow and Run ID are returned immediately after starting the [Workflow](/concepts/what-is-a-workflow).
 
@@ -26,13 +25,14 @@ Make sure to write the command in this format:
 - [--context-timeout](/cmd-options/context-timeout)
 
 - [--cron](/cmd-options/cron)
-┌───────────── minute (0 - 59)
-│ ┌───────────── hour (0 - 23)
-│ │ ┌───────────── day of the month (1 - 31)
-│ │ │ ┌───────────── month (1 - 12)
-│ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
-│ │ │ │ │
-* * * * *
+  ┌───────────── minute (0 - 59)
+  │ ┌───────────── hour (0 - 23)
+  │ │ ┌───────────── day of the month (1 - 31)
+  │ │ │ ┌───────────── month (1 - 12)
+  │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+  │ │ │ │ │
+
+---
 
 - [--env](/cmd-options/env)
 
@@ -45,11 +45,11 @@ Make sure to write the command in this format:
 - [--id-reuse-policy](/cmd-options/id-reuse-policy)
 
 - [--input](/cmd-options/input)
-Pass "null" for null values.
+  Pass "null" for null values.
 
 - [--input-file](/cmd-options/input-file)
-If there are multiple JSON files, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+  If there are multiple JSON files, concatenate them and separate by space or newline.
+  Input from the command line will overwrite file input.
 
 - [--limit](/cmd-options/limit)
 
@@ -66,7 +66,7 @@ Input from the command line will overwrite file input.
 - [--output](/cmd-options/output)
 
 - [--pager](/cmd-options/pager)
-Options: less, more, favoritePager.
+  Options: less, more, favoritePager.
 
 - [--run-timeout](/cmd-options/run-timeout)
 
@@ -91,4 +91,3 @@ Options: less, more, favoritePager.
 - [--type](/cmd-options/type)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

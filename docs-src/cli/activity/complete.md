@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal activity complete` command completes an [Activity Execution](/concepts/what-is-an-activity-execution).
 
 Use the options listed below to change the behavior of this command.
@@ -49,4 +48,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

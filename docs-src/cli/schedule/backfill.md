@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal schedule backfill` command executes Actions ahead of their specified time range.
 Backfilling can be used to fill in [Workflow Runs](/concepts/what-is-a-run-id) from a time period when the Schedule was paused, or from before the Schedule was created.
 
@@ -53,4 +52,3 @@ Use the options provided below to change this command's behavior.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

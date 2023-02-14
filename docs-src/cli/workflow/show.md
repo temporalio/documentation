@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow show` command provides the [Event History](/concepts/what-is-an-event-history) for a specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Use the options listed below to change the command's behavior.
@@ -45,7 +44,7 @@ Make sure to write the command as follows:
 - [--output-filename](/cmd-options/output-filename)
 
 - [--pager](/cmd-options/pager)
-Options: less, more, favoritePager.
+  Options: less, more, favoritePager.
 
 - [--reset-points](/cmd-options/reset-points)
 
@@ -64,4 +63,3 @@ Options: less, more, favoritePager.
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

@@ -7,6 +7,4 @@ tags:
 	- cli
 ---
 
-
 source <(temporal completion bash)
-

@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow describe` command shows information about a given [Workflow Execution](/concepts/what-is-a-workflow-execution).
 This information can be used to locate Workflow Executions that weren't able to run successfully.
 
@@ -48,4 +47,3 @@ Make sure to write the command in this format:
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

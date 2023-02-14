@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
 
 Use the command options listed below to change the behavior of this command.
@@ -43,4 +42,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

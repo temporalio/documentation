@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal task-queue list-partition` command displays the partitions of a [Task Queue](/concepts/what-is-a-task-queue), along with the matching node they are assigned to.
 
 Use the options listed below to change the command's behavior.
@@ -43,4 +42,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

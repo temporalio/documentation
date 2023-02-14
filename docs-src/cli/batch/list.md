@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 When used, `temporal batch list` returns all Batch jobs.
 
 Use the command options listed below to change the information returned by this command.
@@ -39,7 +38,7 @@ Make sure to write the command in this format:
 - [--output](/cmd-options/output)
 
 - [--pager](/cmd-options/pager)
-Options: less, more, favoritePager.
+  Options: less, more, favoritePager.
 
 - [--time-format](/cmd-options/time-format)
 
@@ -52,4 +51,3 @@ Options: less, more, favoritePager.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 Batch commands allow you to change multiple [Workflow Executions](/concepts/what-is-a-workflow-execution) without having to repeat yourself on the command line.
 In order to do this, you provide the command with a [List Filter](/concepts/what-is-visibility) and the type of Batch job to execute.
 
@@ -19,4 +18,3 @@ Running Signal, Terminate, or Cancel with the `--query` modifier will start a Ba
 
 A successfully started Batch job will return a Job ID.
 Use this Job ID to execute other actions on the Batch job.
-

@@ -8,13 +8,8 @@ tags:
 ---
 
 ---
-id: search-attribute
-title: temporal operator search-attribute
-sidebar_label: search-attribute
-description: The `temporal operator search-attribute remove` command removes custom [Search Attribute](/concepts/what-is-a-search-attribute) metadata.
-tags:
-	- cli
----
+
+## id: search-attributetitle: temporal operator search-attributesidebar_label: search-attributedescription: The `temporal operator search-attribute remove` command removes custom [Search Attribute](/concepts/what-is-a-search-attribute) metadata.tags:- cli
 
 This command does not remove custom Search Attributes from Elasticsearch.
 The index schema is not modified.
@@ -52,4 +47,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--yes](/cmd-options/yes)
-

@@ -7,7 +7,6 @@ tags:
 	- cli
 ---
 
-
 The `temporal workflow stack` command queries a [Workflow Execution](/concepts/what-is-a-workflow-execution) with `--stack-trace` as the [Query](/concepts/what-is-a-query#stack-trace-query) type.
 Returning the stack trace of all the threads owned by a Workflow Execution can be great for troubleshooting in production.
 
@@ -32,8 +31,8 @@ Make sure to write the command as follows:
 - [--input](/cmd-options/input)
 
 - [--input-file](/cmd-options/input-file)
-If there are multiple JSON, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+  If there are multiple JSON, concatenate them and separate by space or newline.
+  Input from the command line will overwrite file input.
 
 - [--namespace](/cmd-options/namespace)
 
@@ -52,4 +51,3 @@ Input from the command line will overwrite file input.
 - [--tls-server-name](/cmd-options/tls-server-name)
 
 - [--workflow-id](/cmd-options/workflow-id)
-
