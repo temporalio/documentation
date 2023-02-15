@@ -17,6 +17,12 @@ A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7
 
 ### Supported operators
 
+:::note
+
+Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
+
+:::
+
 A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and the following supported operators:
 
 - **=, !=, >, >=, <, <=**
@@ -37,11 +43,6 @@ For example, if you have a Search Attribute `Description` of `Text` type with th
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
-:::note
-
-Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
-
-:::
 
 ### Efficient API usage
 
