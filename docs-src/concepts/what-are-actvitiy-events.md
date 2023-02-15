@@ -19,7 +19,7 @@ The Activity-related Events and points at which they're added to History are:
 
 - Once a [Workflow Task Execution](/concepts/what-is-an-activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity type and arguments to the Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskcompleted) Event to History.
 - When ActivityTaskScheduled is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
-- The Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
+- A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, then the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to History.
 - If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), then the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to History.
 - If the Activity function throws an Error or retryable Failure, the Cluster will schedule an Activity Task retry to be added to the Task Queue (unless you’ve reached the [Retry Policy](/retry-policies)’s Maximum Attempts, in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to History).
