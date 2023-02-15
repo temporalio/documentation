@@ -20,7 +20,7 @@ For example, any data that is persisted in the following contexts is stored in t
 
 Encrypting this data at your application-level ensures that all your sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-To encrypt your data, configure your custom encryption logic with a [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter) in your Client options.
+To encrypt your data, configure your custom encryption logic with a [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
 
 A [`PayloadCodec`](/concepts/what-is-a-payload-codec) transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
@@ -28,7 +28,7 @@ A [`PayloadCodec`](/concepts/what-is-a-payload-codec) transforms your payloads, 
 Temporal Server <--> Wire <--> Payload Codec <--> Payload Converter <--> User code
 ```
 
-A `PayloadCodec` implementation is applied with a custom Data Converter in your Client that you use with Workers and to start Workflow Executions.
+A `PayloadCodec` implementation is applied with a custom Data Converter in your Client options.
 
 You can run your `PayloadCodec` [remotely](/concepts/what-is-remote-data-encoding) with a [Codec Server](/concepts/what-is-a-codec-server), and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted paylods locally.
 
