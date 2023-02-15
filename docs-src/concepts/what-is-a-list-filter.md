@@ -25,7 +25,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 - **IN**
 - **ORDER BY**
 
-The **ORDER BY** operator is supported only for Elasticsearch used as [Advanced Visibility](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster).
+The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
 
 ### Partial string match
 
