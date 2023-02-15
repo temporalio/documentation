@@ -43,7 +43,6 @@ For example, if you have a Search Attribute `Description` of `Text` type with th
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
-
 ### Efficient API usage
 
 An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
