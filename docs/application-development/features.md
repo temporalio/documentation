@@ -2646,6 +2646,102 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 </TabItem>
 </Tabs>
 
+## Cancel an Activity
+
+Cancelling an Activity requires that the Activity is Heartbeating. If the Heartbeat Timeout is not set, then the Activity cannot receive a cancellation request.
+
+When an Activity is cancelled, an error will be raised in the Activity at the next opportunity.
+It is recommended to catch the error and perform clean-up logic to complete the task.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+To cancel an activity in Temporal's Python SDK, you can call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that was returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+
+```python
+@activity.defn
+async def cancel_activity(input: ComposeArgsInput) -> NoReturn:
+    try:
+        while True:
+            print("Heartbeating cancel activity")
+            await asyncio.sleep(10)
+            activity.heartbeat("some details")
+    except asyncio.CancelledError:
+        print("Activity cancelled")
+        raise
+
+
+@activity.defn
+async def run_activity(input: ComposeArgsInput):
+    print("Executing activity")
+    return input.arg1 + input.arg2
+
+@workflow.defn
+ class GreetingWorkflow:
+     @workflow.run
+     async def run(self, input: ComposeArgsInput):
+         workflow.logger.info("Running workflow with parameter %s" % input.arg2)
+         try:
+             activity_handle = workflow.execute_activity(
+                 cancel_activity,
+                 ComposeArgsInput(input.arg1, input.arg2),
+                 start_to_close_timeout=timedelta(seconds=10),
+                 heartbeat_timeout=timedelta(seconds=1),
+             )
+
+             task = asyncio.create_task(activity_handle)
+             await asyncio.sleep(3)
+             return task.cancel()
+         finally:
+             await asyncio.sleep(5)
+             activity_handle = workflow.execute_activity(
+                 run_activity,
+                 ComposeArgsInput(input.arg1, input.arg2),
+                 start_to_close_timeout=timedelta(seconds=10),
+             )
+             return await activity_handle
+```
+
+:::note
+
+The Activity handle is a Python task, so calling `cancel()`, you're essentially cancelling the task.
+:::
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
 ## Child Workflows
 
 A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
