@@ -17,7 +17,7 @@ There are two important things to note when matching Activity Execution lifecycl
 
 The Activity-related Events and points at which they're added to History are:
 
-- Once a [Workflow Task Execution](/concepts/what-is-an-activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity type and arguments to the Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskcompleted) Event to History.
+- After a [Workflow Task Execution](/concepts/what-is-an-activity-task-execution) reaches a line of code that starts/executes an Activity, the Worker sends the Activity type and arguments to the Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to History.
 - When ActivityTaskScheduled is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, then the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to History.
