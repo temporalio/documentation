@@ -317,27 +317,6 @@ The reason is that a human in the loop means multiple steps in the process.
 The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
 If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
 
-### Activity Events
-
-There are seven Activity-related [Events](/workflows#event) that are added to History at different points in an Activity Execution.
-
-There are two important things to note when matching Activity Execution lifecycle to Activity Events:
-
-- In Event names, "ActivityTask" refers to an [Activity Execution](/activities#activity-execution), not an [Activity Task](/tasks#activity-task).
-- While the Activity is running and retrying, [ActivityTaskScheduled](/references/events#activitytaskscheduled) is the only Activity-related event in History: [ActivityTaskStarted](/references/events#activitytaskstarted) is written along with a terminal event like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed).
-
-The Activity-related Events and points at which they're added to History are:
-
-- After a <a class="tdlp" href="/tasks#activity-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a> reaches a line of code that starts/executes an Activity, the Worker sends the Activity type and arguments to the Cluster, and the Cluster adds an [ActivityTaskScheduled](/references/events#activitytaskscheduled) Event to History.
-- When ActivityTaskScheduled is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
-- A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
-- If the Activity function returns, then the Worker reports completion to the Cluster, and the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskCompleted](/references/events#activitytaskcompleted) to History.
-- If the Activity function throws a [non-retryable Failure](/kb/failures#non-retryable), then the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to History.
-- If the Activity function throws an Error or retryable Failure, the Cluster will schedule an Activity Task retry to be added to the Task Queue (unless you’ve reached the [Retry Policy](/retry-policies)’s Maximum Attempts, in which case the Cluster adds [ActivityTaskStarted](/references/events#activitytaskstarted) and [ActivityTaskFailed](/references/events#activitytaskfailed) to History).
-- If the Activity’s [Start-to-Close Timeout](/activities#start-to-close-timeout) passes before the Activity function returns or throws, the Cluster will schedule a retry.
-- If the Activity’s [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) passes before Activity Execution is complete, or if [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout) passes before a Worker gets the Activity Task, the Cluster will write [ActivityTaskTimedOut](/references/events#activitytasktimedout) to History.
-- If the Activity is [Cancelled](/activities#cancellation), the Cluster will write [ActivityTaskCancelRequested](/references/events#activitytaskcancelrequested) to History, and if the Activity accepts Cancellation, the Cluster will write [ActivityTaskCanceled](/references/events#activitytaskcanceled).
-
 #### Task Token
 
 A Task Token is a unique identifier for an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a>.

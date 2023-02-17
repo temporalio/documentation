@@ -13,7 +13,6 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 
 - [Activity](/activities#)
 - [Activity Definition](/activities#activity-definition)
-- [Activity Events](/activities#activity-events)
 - [Activity Execution](/activities#activity-execution)
 - [Activity Heartbeat](/activities#activity-heartbeat)
 - [Activity Id](/activities#activity-id)

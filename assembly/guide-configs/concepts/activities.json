@@ -54,10 +54,6 @@
       "id": "concepts/what-is-asynchronous-activity-completion"
     },
     {
-      "type": "h3",
-      "id": "concepts/what-are-activity-events"
-    },
-    {
       "type": "h4",
       "id": "concepts/what-is-a-task-token"
     },
