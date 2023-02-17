@@ -21,3 +21,4 @@ If an Activity Function Execution fails, any future execution starts from initia
 Activity Functions are executed by Worker Processes.
 When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the [`ActivityTaskCompleted` Event](/references/events#activitytaskcompleted).
 The Event is added to the Workflow Execution's Event History.
+For other Activity-related Events, see [Activity Events](/workflows#activity-events).
