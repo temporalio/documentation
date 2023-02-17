@@ -2648,10 +2648,15 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 ## Cancel an Activity
 
-Cancelling an Activity requires that the Activity is Heartbeating. If the Heartbeat Timeout is not set, then the Activity cannot receive a cancellation request.
+Cancelling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats. If the Heartbeat is not set, the Activity cannot receive a cancellation request. To avoid this issue, Temporal recommends setting a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> when executing an Activity to ensure that it remains responsive to the cancellation request.
 
-When an Activity is cancelled, an error will be raised in the Activity at the next opportunity.
-It is recommended to catch the error and perform clean-up logic to complete the task.
+When an Activity is cancelled, an error is raised in the Activity at the next available opportunity. Temporal recommends catching the error and perform clean-up logic to ensure that the task is properly completed.
+
+:::note
+
+Unlike regular Activities, Core-based <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> do not require Heartbeats to be cancelled. This is because they are handled locally and all the information needed to handle the cancellation logic is available in the same Worker process. As a result, Local Activities can be cancelled without the need for Heartbeats.
+
+:::
 
 <Tabs
 defaultValue="go"
@@ -2681,7 +2686,7 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To cancel an activity in Temporal's Python SDK, you can call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that was returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+To cancel an Activity from a Workflow Execution, call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
 
 ```python
 @activity.defn
@@ -2718,7 +2723,7 @@ async def run_activity(input: ComposeArgsInput):
              await asyncio.sleep(3)
              return task.cancel()
          finally:
-             await asyncio.sleep(5)
+             await asyncio.sleep(3)
              activity_handle = workflow.execute_activity(
                  run_activity,
                  ComposeArgsInput(input.arg1, input.arg2),
@@ -2729,7 +2734,8 @@ async def run_activity(input: ComposeArgsInput):
 
 :::note
 
-The Activity handle is a Python task, so calling `cancel()`, you're essentially cancelling the task.
+The Activity handle is a Python task, by calling `cancel()`, you're essentially requesting the task to be cancelled.
+
 :::
 
 </TabItem>

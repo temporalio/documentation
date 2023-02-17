@@ -9,7 +9,7 @@ tags:
   - python
 ---
 
-To cancel an activity in Temporal's Python SDK, you can call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that was returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+To cancel an Activity from a Workflow Execution, call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
 
 ```python
 @activity.defn
@@ -33,7 +33,6 @@ async def run_activity(input: ComposeArgsInput):
  class GreetingWorkflow:
      @workflow.run
      async def run(self, input: ComposeArgsInput):
-         workflow.logger.info("Running workflow with parameter %s" % input.arg2)
          try:
              activity_handle = workflow.execute_activity(
                  cancel_activity,
@@ -46,7 +45,7 @@ async def run_activity(input: ComposeArgsInput):
              await asyncio.sleep(3)
              return task.cancel()
          finally:
-             await asyncio.sleep(5)
+             await asyncio.sleep(3)
              activity_handle = workflow.execute_activity(
                  run_activity,
                  ComposeArgsInput(input.arg1, input.arg2),
@@ -57,5 +56,6 @@ async def run_activity(input: ComposeArgsInput):
 
 :::note
 
-The Activity handle is a Python task, so calling `cancel()`, you're essentially cancelling the task.
+The Activity handle is a Python task, by calling `cancel()`, you're essentially requesting the task to be cancelled.
+
 :::
