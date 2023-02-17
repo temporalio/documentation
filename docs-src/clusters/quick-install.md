@@ -22,7 +22,7 @@ It supports persistence to disk and in-memory mode through SQLite.
 
 **Prerequisites**
 
-Temporalite requires Go 1.18 or later.
+Temporalite requires [Go 1.18 or later](https://go.dev/dl/).
 
 **Build and start Temporalite**
 
@@ -36,7 +36,7 @@ The following steps start and run a Temporal Cluster.
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
-   temporalite start --namespace default
+   ./temporalite start --namespace default
    ```
    Replace `default` with your [Namespace Name](/namespaces).
 
