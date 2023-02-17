@@ -9,10 +9,9 @@ tags:
   - python
 ---
 
-Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method and pass a [List Filter](/concepts/what-is-a-list-filter) as an argument to filter the listed Workflows.
+Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a [List Filter](/concepts/what-is-a-list-filter) as an argument to filter the listed Workflows.
 
 ```python
-client = await Client.connect("localhost:7233")
-client.list_workflows('TaskQueue="your-activity-task-queue"')
-client.list_workflows('WorkflowId="your-activity-workflow-id"')
+async for workflow in client.list_workflows('WorkflowType="MyWorkflowClass"'):
+    print(f"Workflow: {workflow.id}")
 ```
