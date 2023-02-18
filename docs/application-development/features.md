@@ -4071,7 +4071,7 @@ private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter
 }
 ```
 
-To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)>) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
 The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
 
@@ -4107,4 +4107,3 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 </TabItem>
 </Tabs>
-
