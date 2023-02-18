@@ -4,7 +4,7 @@
     "file_dir": "/",
     "title": "Data conversion",
     "sidebar_label": "Data conversion",
-    "description": "This guide provides a comprehensive overview of data handling with the Temporal Platform.",
+    "description": "This guide provides an overview of data handling using a Data Converter on the Temporal Platform.",
     "use_description": true,
     "toc_max_heading_level": 4,
     "add_tabs_support": false,

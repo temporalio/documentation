@@ -9,15 +9,15 @@ tags:
 ---
 
 Each Temporal SDK includes and uses a default Data Converter.
-The default Data Converter converts objects into bytes using a series of Payload Converters.
-In most SDKs, the default converter supports binary, JSON, and Protobufs and encodes values in the following order:
+The default Data Converter converts objects to bytes using a series of Payload Converters.
+In most SDKs, the default converter supports binary, Protobufs, and JSON and encodes values in the following order:
 
 - Null
 - Binary
 - Protobuf JSON
 - JSON
 
-In SDKs that cannot determine parameter types at runtime—like TypeScript—Protobufs aren't included in the default converter.
+In SDKs that cannot determine parameter types at runtime (for example, TypeScript) Protobufs aren't included in the default converter.
 
 For example:
 

@@ -12,38 +12,45 @@ This guide explains what you need to develop to use Temporal in your production 
 
 ## Data Encryption
 
-Temporal stores and persists the data handled in your Workflow Execution.
-For example, any data that is persisted in the following contexts is stored in the Workflow Execution Event History:
+Temporal Server stores and persists the data handled in your Workflow Execution.
+For example, any following objects are persisted in the Workflow Execution Event History:
 
-- inputs to your Workflows, Activities, and Child Workflows
+- inputs and outputs/results in your Workflows, Activities, and Child Workflows
 - inputs to your Signals
 - metadata information
 - results of Local Activities, Side Effects
 - Search Attributes
 - Application Errors and Failures.
 
-Encrypting this data at your application-level ensures that all your sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
+You can encrypt this data (except for Search Attributes and metadata) to ensure that any sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-To encrypt your data, configure your custom encryption logic with a <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> and set it with a <a class="tdlp" href="/dataconversion#custom-data-converter">custom Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a custom Data Converter?</span><br /><br /><span class="tdlppd">A custom Data Converter is an implementation of the Data Converter with custom logic for payload conversion and payload encryption.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-data-converter">Learn more</a></span></span></a>.
+To encrypt your data, configure your custom encryption logic with a <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> and set it with a <a class="tdlp" href="/dataconversion#custom-data-converter">custom Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a custom Data Converter?</span><br /><br /><span class="tdlppd">A custom Data Converter uses custom logic for payload conversion or payload encryption to customize the default Data Converter.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-data-converter">Learn more</a></span></span></a>.
 
-A <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the <a class="tdlp" href="/dataconversion#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter converts values to Payload and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a>:
+A <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the <a class="tdlp" href="/dataconversion#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects/values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a>:
 
 ```bash
-Temporal Server <--> Wire <--> Payload Codec <--> Payload Converter <--> User code
+User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
 A `PayloadCodec` implementation is applied with a custom Data Converter in your Client options.
 
-You can run your `PayloadCodec` <a class="tdlp" href="/dataconversion#remote-data-encoding">remotely<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#remote-data-encoding">Learn more</a></span></span></a> with a <a class="tdlp" href="/security#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#codec-server">Learn more</a></span></span></a>, and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted paylods locally.
+You can run your `PayloadCodec` with a <a class="tdlp" href="/security#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#codec-server">Learn more</a></span></span></a>, and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted payloads locally. See [Decoding payloads on the Web UI and tctl](/convepts/dataconversion#decoding-payloads-on-the-web-ui-and-tctl) for details.
 
-However, if you plan on setting up remote data encoding for all your payloads, ensure that you consider all security implications of running encryptions remotely before implementing it.
+However, if you plan on setting up remote data encoding for your data, ensure that you consider all security implications of running encryptions remotely before implementing it.
 
-In codec implementations, we recommend running the function (whether it be compressing, encrypting, etc) on the entire input Payload, and putting the result in a new Payload's data field. That way, the input Payload's headers are preserved.
+In codec implementations, we recommend running the function (whether it be compressing, encrypting, etc) on the entire input Payload, and putting the result in a new Payload's data field with a different `encoding` metadata field. That way, the input Payload's metadata is preserved.
+
+Examples for implementing encryption:
+
+- [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
+- [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
+- [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
+- [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 
 Examples for implementing compression:
 
-- [ZlibCodec in Go](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105)
-- [Encryption Data Converter](https://github.com/temporalio/samples-go/blob/15be864c80d4d983ebb8a8fbd3fa5263bcef6930/encryption/data_converter.go#L100-L126) in Go's encryption sample.
+- [Go](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105)
+- [Java](https://github.com/temporalio/sdk-java/blob/2c29eda4558f4063804c816481a9f9acf132f65c/temporal-sdk/src/main/java/io/temporal/payload/codec/ZlibPayloadCodec.java#L41)
 
 <Tabs
 defaultValue="go"
@@ -83,13 +90,13 @@ Implement your encryption and compression logic in the `encode` function, and th
 type Codec struct{}
 
 // Encode implements converter.PayloadCodec.Encode.
-func (e *Codec) Encode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
+func (Codec) Encode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 	//your encryption/compression logic
 	return result, nil
 }
 
 // Decode implements converter.PayloadCodec.Decode.
-func (*Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
+func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 	//your decryption/decompression logic
 	return result, nil
 }
@@ -101,7 +108,7 @@ You can also create a remote HTTP server (called Codec Server) to run the encryp
 
 Set your custom `PaylaodCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client for your Worker process and to start Workflow Executions.
 
-The following example shows how to set a custom `PayloadCodec` implementation called `codecserver` in the client options.
+The following example shows how to set your custom Data Converter from a package called `codecserver`.
 
 ```go
 //...
@@ -114,20 +121,11 @@ c, err := client.Dial(client.Options{
 ```
 
 You can also create a remote HTTP server (called Codec Server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
-If running your custom `PayloadCodec` through a remote data encoder, set the the custom `PayloadCodec` per Namespace, as shown in the following example:
-
-```go
-// Set codecs per namespace here.
-// Only handle codecs for the default namespace in this example.
-codecs := map[string][]converter.PayloadCodec{
-	"default": {codecserver.NewPayloadCodec()},
-}
-```
 
 See the following samples for examples:
 
-- [codec-server](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/codec-server)
-- [encryption](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/encryption)
+- [Codec server](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/codec-server)
+- [Encryption](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/encryption)
 
 </TabItem>
 <TabItem value="java">
@@ -142,7 +140,7 @@ Define custom encryption/compression logic in your `encode` method, and decrypti
 
 ```java
 public class YourCustomPayloadCodec implements PayloadCodec {
-     @NotNull
+    @NotNull
     @Override
     public List<Payload> encode(@NotNull List<Payload> payloads) {
         //your encryption/compression logic
@@ -153,6 +151,8 @@ public class YourCustomPayloadCodec implements PayloadCodec {
     public List<Payload> decode(@NotNull List<Payload> payloads) {
         //your decryption/decompression logic
     }
+    //...
+}
 ```
 
 You can also create a remote HTTP server (called Codec Server) to run the encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.

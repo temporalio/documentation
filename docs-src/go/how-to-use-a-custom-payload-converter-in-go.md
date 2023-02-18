@@ -28,9 +28,6 @@ A custom `PayloadConverter` must implement functions `FromPayload` (for a single
 
 To set your custom `PaylaodConverter`, use the [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) to set it with the `DefaultDataConverter` in the Client that you use with your Worker and to start your Workflow Executions.
 
-Note that the order of your `PayloadConverters` is important here because during serialization, `DataConverter` tries `PayloadsConverters` in that order until `PayloadConverter` returns non nil payload.
-The last `PayloadConverter` should always serialize the value (JSONPayloadConverter is good candidate for it).
-
 ```go
  //need a better example here
 c, err := client.NewClient(client.Options{

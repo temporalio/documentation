@@ -13,26 +13,22 @@ A Payload Codec transforms an array of Payloads (for example, a list of Workflow
 The Payload Codec is an optional step that happens between the wire and the Payload Converter:
 
 ```bash
-Temporal Server <--> Wire <--> Payload Codec <--> Payload Converter <--> User code
+User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
-When serializing to Payloads:
+A Payload Codec encodes and decodes data. When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs. The codecs are applied last to first, which means that the earlier encoders wrap the later ones.
 
-- Data Converter is applied first, followed by the chain of codecs.
-- Codecs are applied last to first meaning the earlier encoders wrap the later ones.
+When deserializing from Payloads, codecs are applied first to last to reverse the effect, followed by the Data Converter.
 
-When deserializing from Payloads:
-
-- Codecs are applied first to last to reverse the effect, followed by the Data Converter.
-- Data Converter is applied last.
-
-Use a Payload Codec to transform your payloads, for example by implementing compression and/or encryption and decryption.
+Use a custom Payload Codec to transform your payloads, for example by implementing compression and/or encryption and decryption.
 
 #### Encryption​ and Decryption
 
-Using encryption in your custom Data Converter ensures that all your sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
+Using end-to-end encryption in your custom Data Converter ensures that all your sensitive application data is secure when handled by the Temporal Server.
+You can apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
+You maintain all the encryption keys, and the Temporal Server sees only encrypted data.
+Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-You can implement encryption and decryption in your Payload Codec.
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)

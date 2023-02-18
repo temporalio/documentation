@@ -18,7 +18,7 @@ Define custom encryption/compression logic in your `encode` method, and decrypti
 
 ```java
 public class YourCustomPayloadCodec implements PayloadCodec {
-     @NotNull
+    @NotNull
     @Override
     public List<Payload> encode(@NotNull List<Payload> payloads) {
         //your encryption/compression logic
@@ -29,6 +29,8 @@ public class YourCustomPayloadCodec implements PayloadCodec {
     public List<Payload> decode(@NotNull List<Payload> payloads) {
         //your decryption/decompression logic
     }
+    //...
+}
 ```
 
 You can also create a remote HTTP server (called Codec Server) to run the encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.

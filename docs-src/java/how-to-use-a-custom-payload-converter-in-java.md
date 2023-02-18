@@ -14,23 +14,25 @@ The `PayloadConverter` is used to serialize/deserialize method parameters that n
 You can create a custom implementation of the `PayloadConverter` for custom formats, for example:
 
 ```java
-/** Payload converter specific to CloudEvents format */
+/** Payload converter specific to your custom object*/
 public class YourCustomPayloadConverter implements PayloadConverter {
  //....
   @Override
   public String getEncodingType() {
-    return "json/plain";
+    return "json/plain"; //the encoding type is used to determine what default conversion behavior to override
   }
 
   @Override
   public Optional<Payload> toData(Object value) throws DataConverterException {
-      //your convert-tologic here
+      //your convert-to logic here
   }
 
   @Override
   public <T> T fromData(Payload content, Class<T> valueClass, Type valueType)
       throws DataConverterException {
     //your convert-from logic here.
+  }
+//...
 }
 ```
 
@@ -53,7 +55,7 @@ private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter
 }
 ```
 
-To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`withPayloadConverterOverrides`](<https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)>) with a new instance of the `DefaultDataConverter` to override default behavior with the custom `PayloadConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
 The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
 

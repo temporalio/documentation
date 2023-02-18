@@ -2,13 +2,13 @@
 id: what-is-a-data-converter
 title: What is a Data Converter?
 sidebar_label: Data Converter
-description: A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.
+description: A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.
 tags:
   - term
   - explanation
 ---
 
-A Data Converter is a Temporal SDK component that encodes and decodes data entering, stored on, and exiting a Temporal Cluster.
+A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.
 It is used by the Temporal SDK framework to serialize/deserialize input and output of Activities and Workflows that need to be sent over the wire to the Temporal Cluster.
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
@@ -25,4 +25,4 @@ The main pieces of data that run through the Data Converter are arguments and re
   - Encodes Workflow and Query return values.
   - Decodes and encodes Activity arguments and return values.
 
-Each piece of data (like a single argument or return value) is encoded as a Payload Protobuf message, which consists of binary data and key-value metadata.
+Each piece of data (like a single argument or return value) is encoded as a [Payload](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) Protobuf message, which consists of binary data and key-value metadata.

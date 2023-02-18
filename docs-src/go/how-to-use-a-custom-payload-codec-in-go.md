@@ -39,13 +39,13 @@ Implement your encryption and compression logic in the `encode` function, and th
 type Codec struct{}
 
 // Encode implements converter.PayloadCodec.Encode.
-func (e *Codec) Encode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
+func (Codec) Encode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 	//your encryption/compression logic
 	return result, nil
 }
 
 // Decode implements converter.PayloadCodec.Decode.
-func (*Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
+func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 	//your decryption/decompression logic
 	return result, nil
 }
@@ -57,7 +57,7 @@ You can also create a remote HTTP server (called Codec Server) to run the encryp
 
 Set your custom `PaylaodCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client for your Worker process and to start Workflow Executions.
 
-The following example shows how to set a custom `PayloadCodec` implementation called `codecserver` in the client options.
+The following example shows how to set your custom Data Converter from a package called `codecserver`.
 
 ```go
 //...
@@ -70,17 +70,8 @@ c, err := client.Dial(client.Options{
 ```
 
 You can also create a remote HTTP server (called Codec Server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
-If running your custom `PayloadCodec` through a remote data encoder, set the the custom `PayloadCodec` per Namespace, as shown in the following example:
-
-```go
-// Set codecs per namespace here.
-// Only handle codecs for the default namespace in this example.
-codecs := map[string][]converter.PayloadCodec{
-	"default": {codecserver.NewPayloadCodec()},
-}
-```
 
 See the following samples for examples:
 
-- [codec-server](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/codec-server)
-- [encryption](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/encryption)
+- [Codec server](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/codec-server)
+- [Encryption](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/encryption)

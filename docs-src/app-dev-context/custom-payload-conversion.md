@@ -7,10 +7,10 @@ tags:
   - guide-context
 ---
 
-Define your custom `PayloadConverter` with your custom logic and set the `DefaultDataConverter` with your custom `PayloadConverter` in your Client options.
+Most SDKs provide a `PayloadConverter` that can be customized to convert custom data types to bytes and back.
 
-By default Temporal uses the `JacksonJsonPayloadConverter` for serialization and deserialization of arguments.
+Note that creating a custom Payload Converter is optional, and only needed if the default Data Converter does not support your custom values.
 
-Most SDKs provide a `PayloadConverter` that can be customized to convert custom data types to values and back.
+Create your [custom `PayloadConverter`](/concepts/what-is-a-payload-converter#custom-payload-conversion) and set it with the default `DataConverter` in your Client options.
 
-You can set multiple custom `PayloadConverters` to run your conversions.
+The order in which your Payload Converters are applied depend on the encoding type that each handles. You can set multiple custom payload converters to run your conversions.
