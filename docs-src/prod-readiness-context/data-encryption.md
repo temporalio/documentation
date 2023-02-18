@@ -30,7 +30,7 @@ User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Serv
 
 A `PayloadCodec` implementation is applied with a custom Data Converter in your Client options.
 
-You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server), and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted payloads locally. See [Decoding payloads on the Web UI and tctl](/concepts/dataconversion#decoding-payloads-on-the-web-ui-and-tctl) for details.
+You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server), and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted payloads locally. See [Decoding payloads on the Web UI and tctl](/concepts/what-is-remote-data-encoding#decoding-payloads-on-the-web-ui-and-tctl) for details.
 
 However, if you plan on setting up remote data encoding for your data, ensure that you consider all security implications of running encryptions remotely before implementing it.
 
