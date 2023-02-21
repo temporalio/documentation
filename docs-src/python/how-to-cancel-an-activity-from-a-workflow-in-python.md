@@ -33,23 +33,15 @@ async def run_activity(input: ComposeArgsInput):
  class GreetingWorkflow:
      @workflow.run
      async def run(self, input: ComposeArgsInput) -> None:
-         try:
-             activity_handle = workflow.start_activity(
-                 cancel_activity,
-                 ComposeArgsInput(input.arg1, input.arg2),
-                 start_to_close_timeout=timedelta(minutes=5),
-                 heartbeat_timeout=timedelta(seconds=30),
-             )
-
-             await asyncio.sleep(3)
-             task.cancel()
-         finally:
-             await asyncio.sleep(3)
-             await workflow.execute_activity(
-                 run_activity,
-                 ComposeArgsInput(input.arg1, input.arg2),
-                 start_to_close_timeout=timedelta(seconds=10),
-             )
+        activity_handle = workflow.start_activity(
+            cancel_activity,
+            ComposeArgsInput(input.arg1, input.arg2),
+            start_to_close_timeout=timedelta(minutes=5),
+            heartbeat_timeout=timedelta(seconds=30),
+        )
+    
+        await asyncio.sleep(3)
+        task.cancel()
 ```
 
 :::note

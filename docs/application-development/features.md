@@ -2648,13 +2648,13 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 ## Cancel an Activity
 
-Cancelling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats. If the Heartbeat is not set, the Activity cannot receive a cancellation request. To avoid this issue, Temporal recommends setting a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> when executing an Activity to ensure that it remains responsive to the cancellation request.
+Cancelling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. Users should set Heartbeat and set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> when executing any non-immediate Activity to ensure the server knows it is still working.
 
 When an Activity is cancelled, an error is raised in the Activity at the next available opportunity. Temporal recommends catching the error and perform clean-up logic to ensure that the task is properly completed.
 
 :::note
 
-Unlike regular Activities, Core-based <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> do not require Heartbeats to be cancelled. This is because they are handled locally and all the information needed to handle the cancellation logic is available in the same Worker process. As a result, Local Activities can be cancelled without the need for Heartbeats.
+Unlike regular Activities, <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> do not require Heartbeats to be cancelled. This is because they are handled locally and all the information needed to handle the cancellation logic is available in the same Worker process. As a result, Local Activities can be cancelled without the need for Heartbeats.
 
 :::
 
@@ -2690,11 +2690,11 @@ To cancel an Activity from a Workflow Execution, call the [cancel()](https://doc
 
 ```python
 @activity.defn
-async def cancel_activity(input: ComposeArgsInput) -> NoReturn:
+async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
     try:
         while True:
             print("Heartbeating cancel activity")
-            await asyncio.sleep(10)
+            await asyncio.sleep(0.5)
             activity.heartbeat("some details")
     except asyncio.CancelledError:
         print("Activity cancelled")
@@ -2709,27 +2709,16 @@ async def run_activity(input: ComposeArgsInput):
 @workflow.defn
  class GreetingWorkflow:
      @workflow.run
-     async def run(self, input: ComposeArgsInput):
-         workflow.logger.info("Running workflow with parameter %s" % input.arg2)
-         try:
-             activity_handle = workflow.execute_activity(
-                 cancel_activity,
-                 ComposeArgsInput(input.arg1, input.arg2),
-                 start_to_close_timeout=timedelta(seconds=10),
-                 heartbeat_timeout=timedelta(seconds=1),
-             )
-
-             task = asyncio.create_task(activity_handle)
-             await asyncio.sleep(3)
-             return task.cancel()
-         finally:
-             await asyncio.sleep(3)
-             activity_handle = workflow.execute_activity(
-                 run_activity,
-                 ComposeArgsInput(input.arg1, input.arg2),
-                 start_to_close_timeout=timedelta(seconds=10),
-             )
-             return await activity_handle
+     async def run(self, input: ComposeArgsInput) -> None:
+        activity_handle = workflow.start_activity(
+            cancel_activity,
+            ComposeArgsInput(input.arg1, input.arg2),
+            start_to_close_timeout=timedelta(minutes=5),
+            heartbeat_timeout=timedelta(seconds=30),
+        )
+    
+        await asyncio.sleep(3)
+        task.cancel()
 ```
 
 :::note
