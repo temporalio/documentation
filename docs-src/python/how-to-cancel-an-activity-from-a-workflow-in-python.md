@@ -41,7 +41,7 @@ async def run_activity(input: ComposeArgsInput):
         )
     
         await asyncio.sleep(3)
-        task.cancel()
+        activity_handle.cancel()
 ```
 
 :::note
