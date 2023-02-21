@@ -13,11 +13,11 @@ To cancel an Activity from a Workflow Execution, call the [cancel()](https://doc
 
 ```python
 @activity.defn
-async def cancel_activity(input: ComposeArgsInput) -> NoReturn:
+async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
     try:
         while True:
             print("Heartbeating cancel activity")
-            await asyncio.sleep(10)
+            await asyncio.sleep(0.5)
             activity.heartbeat("some details")
     except asyncio.CancelledError:
         print("Activity cancelled")
@@ -32,26 +32,24 @@ async def run_activity(input: ComposeArgsInput):
 @workflow.defn
  class GreetingWorkflow:
      @workflow.run
-     async def run(self, input: ComposeArgsInput):
+     async def run(self, input: ComposeArgsInput) -> None:
          try:
-             activity_handle = workflow.execute_activity(
+             activity_handle = workflow.start_activity(
                  cancel_activity,
                  ComposeArgsInput(input.arg1, input.arg2),
-                 start_to_close_timeout=timedelta(seconds=10),
-                 heartbeat_timeout=timedelta(seconds=1),
+                 start_to_close_timeout=timedelta(minutes=5),
+                 heartbeat_timeout=timedelta(seconds=30),
              )
 
-             task = asyncio.create_task(activity_handle)
              await asyncio.sleep(3)
-             return task.cancel()
+             task.cancel()
          finally:
              await asyncio.sleep(3)
-             activity_handle = workflow.execute_activity(
+             await workflow.execute_activity(
                  run_activity,
                  ComposeArgsInput(input.arg1, input.arg2),
                  start_to_close_timeout=timedelta(seconds=10),
              )
-             return await activity_handle
 ```
 
 :::note
