@@ -2650,7 +2650,7 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 Cancelling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. Users should set Heartbeat and set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> when executing any non-immediate Activity to ensure the server knows it is still working.
 
-When an Activity is cancelled, an error is raised in the Activity at the next available opportunity. Temporal recommends catching the error and perform clean-up logic to ensure that the task is properly completed.
+When an Activity is cancelled, an error is raised in the Activity at the next available opportunity. If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error, but in order for the Activity to appear cancelled the exception needs to be re-raised.
 
 :::note
 
@@ -2718,7 +2718,7 @@ async def run_activity(input: ComposeArgsInput):
         )
     
         await asyncio.sleep(3)
-        task.cancel()
+        activity_handle.cancel()
 ```
 
 :::note
