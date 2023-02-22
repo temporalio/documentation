@@ -235,7 +235,7 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 
 ### ActivityTaskStarted
 
-This [Event](/concepts/what-is-an-event) type indicates that an [Activity Task](/concepts/what-is-an-activity-task) execution was started.
+This [Event](/concepts/what-is-an-event) type indicates that an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) was started.
 The SDK Worker picked up the Activity Task and started processing the [Activity](/concepts/what-is-an-activity) invocation.
 Note, however, that this Event is not written to History until the terminal Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)) occurs.
 
