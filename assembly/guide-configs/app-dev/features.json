@@ -578,6 +578,35 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/schedules"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "na"
+        },
+        {
+          "lang": "php",
+          "id": "na"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-set-a-schedule-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "typescript/how-to-set-a-schedule-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/cron-jobs"
     },
     {

@@ -3337,6 +3337,118 @@ export async function sleepWorkflow(): Promise<void> {
 </TabItem>
 </Tabs>
 
+## Schedules
+
+A <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> contains instructions for starting a Workflow Execution at specific times. Schedules provide a more flexible and user-friendly approach than Temporal Cron Jobs.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="php">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="python">
+
+Use the [create_schedule()](https://python.temporal.io/temporalio.client.Client.html#create_schedule) method available in the [Client](https://python.temporal.io/temporalio.client.Client.html) class to create a new Schedule for a Workflow Execution
+
+Define the parameters of the Schedule, then call the `create_schedule()` method on the Client object and pass in the Workflow Id for the Workflow you want to schedule, as well as the Schedule object you created.
+
+```python
+# define the schedule parameters
+spec=ScheduleSpec(
+            calendars=[
+                ScheduleCalendarSpec(
+                    second=(ScheduleRange(1, step=1),),
+                    minute=(ScheduleRange(2, 3),),
+                    hour=(ScheduleRange(4, 5, 6),),
+                    day_of_month=(ScheduleRange(7),),
+                    month=(ScheduleRange(9),),
+                    year=(ScheduleRange(2080),),
+                )
+            ],
+            intervals=[
+                ScheduleIntervalSpec(
+                    every=timedelta(days=10),
+                    offset=timedelta(days=2),
+                )
+            ],
+            cron_expressions=["0 12 * * MON"],
+            skip=[ScheduleCalendarSpec(year=(ScheduleRange(2050),))],
+schedule_handle = await client.create_schedule(
+    "workflow-schedule-id",
+    spec,
+    memo={"memo_key": "memo_value"},
+    )
+```
+
+</TabItem>
+<TabItem value="typescript">
+
+Use the [client.schedule.create()](https://typescript.temporal.io/api/classes/client.ScheduleClient#create) method to schedule a Workflow Execution.
+
+```typescript
+async function run() {
+  const client = new Client({
+    connection: await Connection.connect(),
+  });
+
+  // https://typescript.temporal.io/api/classes/client.ScheduleClient#create
+  const schedule = await client.schedule.create({
+    action: {
+      type: 'startWorkflow',
+      workflowType: reminder,
+      args: ['♻️ Dear future self, please take out the recycling tonight. Sincerely, past you ❤️'],
+      taskQueue: 'schedules',
+    },
+    scheduleId: 'sample-schedule',
+    policies: {
+      catchupWindow: '1 day',
+      overlap: ScheduleOverlapPolicy.ALLOW_ALL,
+    },
+    spec: {
+      intervals: [{ every: '10s' }],
+      // or periodic calendar times:
+      // calendars: [
+      //   {
+      //     comment: 'every wednesday at 8:30pm',
+      //     dayOfWeek: 'WEDNESDAY',
+      //     hour: 20,
+      //     minute: 30,
+      //   },
+      // ],
+      // or a single datetime:
+      // calendars: [
+      //   {
+      //     comment: '1/1/23 at 9am',
+      //     year: 2023,
+      //     month: 1,
+      //     dayOfMonth: 1,
+      //     hour: 9,
+      //   },
+      // ],
+    },
+  });
+```
+
+</TabItem>
+</Tabs>
+
 ## Temporal Cron Jobs
 
 A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a> is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.

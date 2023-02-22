@@ -9,7 +9,7 @@ tags:
   - how-to
 ---
 
-Use the [create()](https://typescript.temporal.io/api/classes/client.ScheduleClient#create) method on the [ScheduleClient](https://typescript.temporal.io/api/classes/client.ScheduleClient) class to schedule a Workflow Execution.
+Use the [client.schedule.create()](https://typescript.temporal.io/api/classes/client.ScheduleClient#create) method to schedule a Workflow Execution.
 
 ```typescript
 async function run() {

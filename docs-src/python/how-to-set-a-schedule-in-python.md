@@ -9,9 +9,12 @@ tags:
   - how-to
 ---
 
-Schedule a Workflow to run at a specific time from the Client.
+Use the [create_schedule()](https://python.temporal.io/temporalio.client.Client.html#create_schedule) method available in the [Client](https://python.temporal.io/temporalio.client.Client.html) class to create a new Schedule for a Workflow Execution
+
+Define the parameters of the Schedule, then call the `create_schedule()` method on the Client object and pass in the Workflow Id for the Workflow you want to schedule, as well as the Schedule object you created.
 
 ```python
+# define the schedule parameters
 spec=ScheduleSpec(
             calendars=[
                 ScheduleCalendarSpec(
@@ -31,4 +34,9 @@ spec=ScheduleSpec(
             ],
             cron_expressions=["0 12 * * MON"],
             skip=[ScheduleCalendarSpec(year=(ScheduleRange(2050),))],
+schedule_handle = await client.create_schedule(
+    "workflow-schedule-id",
+    spec,
+    memo={"memo_key": "memo_value"},
+    )
 ```
