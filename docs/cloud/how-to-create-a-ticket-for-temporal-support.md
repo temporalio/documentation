@@ -10,7 +10,7 @@ tags:
 :::info
 
 This procedure applies only to Temporal Cloud customers whose contracts include paid support.
-If you need assistance and don't have paid support, post your request in the [Temporal Community Forum](https://community.temporal.io) or the [Temporal workspace](https://t.mp/slack) in Slack.
+If you need assistance and don't have paid support, post your request in the [Temporal Community Forum](https://community.temporal.io) or the `#support-cloud` channel of the [Temporal workspace](https://t.mp/slack) in Slack.
 
 :::
 
