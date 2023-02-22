@@ -37,6 +37,6 @@ spec=ScheduleSpec(
 schedule_handle = await client.create_schedule(
     "workflow-schedule-id",
     spec,
-    memo={"memo_key": "memo_value"},
+    # memo={"memo_key": "memo_value"},
     )
 ```
