@@ -2646,6 +2646,103 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 </TabItem>
 </Tabs>
 
+## Cancel an Activity
+
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
+If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.
+When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> to ensure that the server knows it is still working.
+
+When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
+If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.
+However, for the Activity to appear canceled the exception needs to be re-raised.
+
+:::note
+
+Unlike regular Activities, <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> can be canceled if they don't send Heartbeats.
+Local Activities are handled locally, and all the information needed to handle the cancellation logic is available in the same Worker process.
+
+:::
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+To cancel an Activity from a Workflow Execution, call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+
+```python
+@activity.defn
+async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
+    try:
+        while True:
+            print("Heartbeating cancel activity")
+            await asyncio.sleep(0.5)
+            activity.heartbeat("some details")
+    except asyncio.CancelledError:
+        print("Activity cancelled")
+        raise
+
+
+@activity.defn
+async def run_activity(input: ComposeArgsInput):
+    print("Executing activity")
+    return input.arg1 + input.arg2
+
+@workflow.defn
+ class GreetingWorkflow:
+     @workflow.run
+     async def run(self, input: ComposeArgsInput) -> None:
+        activity_handle = workflow.start_activity(
+            cancel_activity,
+            ComposeArgsInput(input.arg1, input.arg2),
+            start_to_close_timeout=timedelta(minutes=5),
+            heartbeat_timeout=timedelta(seconds=30),
+        )
+    
+        await asyncio.sleep(3)
+        activity_handle.cancel()
+```
+
+:::note
+
+The Activity handle is a Python task.
+By calling `cancel()`, you're essentially requesting the task to be canceled.
+
+:::
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
 ## Child Workflows
 
 A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
