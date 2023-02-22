@@ -36,7 +36,7 @@ The following steps start and run a Temporal Cluster.
    ```
 2. Start Temporalite by using the `start` command.
    ```bash
-   temporalite start --namespace default
+   ./temporalite start --namespace default
    ```
    Replace `default` with your [Namespace Name](/namespaces).
 
