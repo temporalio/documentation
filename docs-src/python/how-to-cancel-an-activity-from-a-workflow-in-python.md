@@ -2,7 +2,7 @@
 id: how-to-cancel-an-activity-from-a-workflow-in-python
 title: How to Cancel an Activity from a Workflow in Python
 sidebar_label: Cancel an Activity from a Workflow
-description: To cancel an Activity from a Workflow in Python, use the `cancel()` on the Task.
+description: To cancel an Activity from a Workflow in Python, use `cancel()` on the Task.
 tags:
   - developer-guide
   - sdk
@@ -46,6 +46,7 @@ async def run_activity(input: ComposeArgsInput):
 
 :::note
 
-The Activity handle is a Python task, by calling `cancel()`, you're essentially requesting the task to be cancelled.
+The Activity handle is a Python task.
+By calling `cancel()`, you're essentially requesting the task to be canceled.
 
 :::

@@ -2648,13 +2648,18 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 ## Cancel an Activity
 
-Cancelling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout. If the Heartbeat is not invoked, the Activity cannot receive a cancellation request. Users should set Heartbeat and set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> when executing any non-immediate Activity to ensure the server knows it is still working.
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
+If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.
+When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> to ensure that the server knows it is still working.
 
-When an Activity is cancelled, an error is raised in the Activity at the next available opportunity. If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error, but in order for the Activity to appear cancelled the exception needs to be re-raised.
+When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
+If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.
+However, for the Activity to appear canceled the exception needs to be re-raised.
 
 :::note
 
-Unlike regular Activities, <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> do not require Heartbeats to be cancelled. This is because they are handled locally and all the information needed to handle the cancellation logic is available in the same Worker process. As a result, Local Activities can be cancelled without the need for Heartbeats.
+Unlike regular Activities, <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> can be canceled if they don't send Heartbeats.
+Local Activities are handled locally, and all the information needed to handle the cancellation logic is available in the same Worker process.
 
 :::
 
@@ -2723,7 +2728,8 @@ async def run_activity(input: ComposeArgsInput):
 
 :::note
 
-The Activity handle is a Python task, by calling `cancel()`, you're essentially requesting the task to be cancelled.
+The Activity handle is a Python task.
+By calling `cancel()`, you're essentially requesting the task to be canceled.
 
 :::
 
