@@ -23,7 +23,7 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
 - **Event batch size**: The `DefaultTransactionSizeLimit` limit is [4 MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for Event Histories to be persisted.
 - **Blob size limit** for Payloads (including Workflow context and each Workflow and Activity argument and return value; _[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)_):
-  - We warn at 512 KB: [Blob size exceeds limit.](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
+  - We warn at 256 KB: [Blob size exceeds limit.](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
   - We error at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
   - This is configurable with [BlobSizeLimitError and BlobSizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
 - **History total size limit** (leading to a terminated Workflow Execution):
@@ -53,7 +53,7 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
   - Namespaces: 10
   - Prometheus endpoint Retention Period: 1 month
 - **Namespace level**
-  - Actions per second (peak): 200
+  - Actions per second: 200 (with spikes to 400)
   - Certificates: 32-KB payload or 16 certificates, whichever is smaller
   - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
   - Custom Search Attributes (maximum per type)
@@ -63,4 +63,4 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - int: 20
     - keyword: 20
     - text: 5
-  - Retention Period: 7 days (configurable; range of 1–90 days)
+  - Retention Period: 30 days (configurable; range of 1–90 days)
