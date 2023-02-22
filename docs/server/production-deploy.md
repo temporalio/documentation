@@ -52,7 +52,6 @@ The information in this page is being dispersed into [Knowledge base articles](/
 
 Kubernetes is not required for Temporal, but it is a popular deployment platform anyway.
 We do maintain [a Helm chart](https://github.com/temporalio/helm-charts) you can use as a reference, but you are responsible for customizing it to your needs.
-We also [hosted a YouTube discussion](https://www.youtube.com/watch?v=11I87HKS_NM) on how we think about the Kubernetes ecosystem in relation to Temporal.
 
 ## Configuration
 
