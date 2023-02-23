@@ -23,17 +23,17 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
 - **Event batch size**: The `DefaultTransactionSizeLimit` limit is [4 MB](https://github.com/temporalio/temporal/pull/1363).
   This is the largest transaction size we allow for Event Histories to be persisted.
 - **Blob size limit** for Payloads (including Workflow context and each Workflow and Activity argument and return value; _[source](https://github.com/temporalio/temporal/blob/v1.7.0/service/frontend/service.go#L133-L134)_):
-  - We warn at 512 KB: [`Blob size exceeds limit.`](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
+  - We warn at 512 KB: [Blob size exceeds limit.](https://github.com/temporalio/temporal/blob/fee1c43823699e90b330680a8efeb9d8dbee8cf3/common/util.go#L568)
   - We error at 2 MB: `ErrBlobSizeExceedsLimit: Blob data size exceeds limit.`
-  - This is configurable with [`BlobSizeLimitError` and `BlobSizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
+  - This is configurable with [BlobSizeLimitError and BlobSizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L378-L379), if you know what you are doing.
 - **History total size limit** (leading to a terminated Workflow Execution):
-  - We warn at 10 MB: `history size exceeds warn limit.`
-  - We error at 50 MB: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
-  - This is configurable with [`HistorySizeLimitError` and `HistorySizeLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
+  - We warn at 10 MB: `history size exceeds warn limit`.
+  - We error at 50 MB: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
+  - This is configurable with [HistorySizeLimitError and HistorySizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
 - **History total count limit** (leading to a terminated Workflow Execution):
-  - We warn at 10,000 Events: `history size exceeds warn limit.`
-  - We error at 50,000 Events: [`history size exceeds error limit.`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204)
-  - This is configurable with [`HistoryCountLimitError` and `HistoryCountLimitWarn`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
+  - We warn at 10,000 Events: `history size exceeds warn limit`.
+  - We error at 50,000 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
+  - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Concurrent Action limit**
   - We fail the following action Commands on Cloud if the concurrent running count exceeds 2,000:
     - `ScheduleActivityTask`
@@ -46,3 +46,21 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
 - [Search Attributes maximums](/visibility/#search-attributes-maximums)
+
+**Default limits for Temporal Cloud**
+
+- **Account level**
+  - Namespaces: 10
+  - Prometheus endpoint Retention Period: 1 month
+- **Namespace level**
+  - Actions per second (peak): 200
+  - Certificates: 32-KB payload or 16 certificates, whichever is smaller
+  - Concurrent Task pollers: 2,000 (configurable; maximum of 100,000)
+  - Custom Search Attributes (maximum per type)
+    - bool: 20
+    - double: 20
+    - datetime: 20
+    - int: 20
+    - keyword: 20
+    - text: 5
+  - Retention Period: 7 days (configurable; range of 1–90 days)

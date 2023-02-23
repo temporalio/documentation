@@ -241,7 +241,7 @@ When execution is finished, Archival occurs.
 You can retrieve archived Event Histories by copying the `workflowId` and `runId` of the completed Workflow from the log output and running the following command:
 
 ```bash
-./temporal --ns samples-namespace wf show --wid <workflowId> --rid <runId>
+./tctl --ns samples-namespace wf show --wid <workflowId> --rid <runId>
 ```
 
 ### Custom Archiver
