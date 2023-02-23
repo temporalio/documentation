@@ -17,12 +17,6 @@ A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7
 
 ### Supported operators
 
-:::note
-
-Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
-
-:::
-
 A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and the following supported operators:
 
 - **=, !=, >, >=, <, <=**
