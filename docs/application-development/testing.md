@@ -23,6 +23,59 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
+## Test frameworks
+
+Some SDKs have support or examples for popular test frameworks, runners, or libraries.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parameterized tests.
+
+</TabItem>
+<TabItem value="typescript">
+
+TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://mochajs.org/).
+
+**Jest**
+
+- Minimum Jest version: `27.0.0`
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
+- [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string); `testEnvironment: 'jsdom'` is not supported)
+
+**Mocha**
+
+- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/mocha/workflows.test.ts)
+- Test coverage library: [`@temporalio/nyc-test-coverage`](https://github.com/temporalio/sdk-typescript/tree/main/packages/nyc-test-coverage)
+
+</TabItem>
+</Tabs>
+
 ## Test Activities
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
@@ -34,22 +87,28 @@ If an Activity references its context, you need to mock that context when testin
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -94,22 +153,28 @@ When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in y
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -168,27 +233,35 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -231,17 +304,21 @@ When integration testing Workflows with a Worker, you can mock Activities by pro
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -421,17 +498,21 @@ Learn to set up the time-skipping test framework in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -482,7 +563,9 @@ temporal-test-server
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -548,22 +631,28 @@ For example, in the time-skipping mode, Timers, which include sleeps and conditi
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -621,22 +710,28 @@ Learn to skip time manually in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -716,27 +811,35 @@ Learn to skip time in Activities in the SDK of your choice.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -848,7 +951,7 @@ In Python, we allow testing of Workflows only and not generic Workflow-related c
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -868,7 +971,9 @@ Not applicable to this SDK.
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -929,7 +1034,7 @@ The `assert` method is available in Python and TypeScript.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -997,53 +1102,6 @@ await worker.runUntil(
 </TabItem>
 </Tabs>
 
-## Test frameworks
-
-Some SDKs have support or examples for popular test frameworks, runners, or libraries.
-
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="java">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="php">
-
-Content is currently unavailable.
-
-</TabItem>
-<TabItem value="python">
-
-One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parameterized tests.
-
-</TabItem>
-<TabItem value="typescript">
-
-TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://mochajs.org/).
-
-**Jest**
-
-- Minimum Jest version: `27.0.0`
-- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/workflows.test.ts)
-- [`jest.config.js`](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/jest.config.js) (must use [`testEnvironment: 'node'`](https://jestjs.io/docs/configuration#testenvironment-string); `testEnvironment: 'jsdom'` is not supported)
-
-**Mocha**
-
-- [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/mocha/workflows.test.ts)
-- Test coverage library: [`@temporalio/nyc-test-coverage`](https://github.com/temporalio/sdk-typescript/tree/main/packages/nyc-test-coverage)
-
-</TabItem>
-</Tabs>
-
 ## Replay
 
 Replay recreates the exact state of a Workflow Execution.
@@ -1062,7 +1120,7 @@ The following are examples of fetching and replaying Event Histories:
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1174,7 +1232,9 @@ You can choose to wait until all histories have been replayed with `replayWorkfl
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">

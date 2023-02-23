@@ -52,7 +52,7 @@ A Signal has a name and can have arguments.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -217,7 +217,7 @@ Workflows listen for Signals by the Signal's name.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -403,7 +403,7 @@ When a Signal is sent successfully from the Temporal Client, the [WorkflowExecut
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -489,7 +489,22 @@ See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+To send a Signal from the Client, use the [signal()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) function on the Workflow handle.
+
+To get the Workflow handle, you can use any of the following options.
+
+- Use the [get_workflow_handle()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) method.
+- Use the [get_workflow_handle_for()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) method to get a type-safe Workflow handle by its Workflow Id.
+- Use the [start_workflow()](https://python.temporal.io/temporalio.client.Client.html#start_workflow) to start a Workflow and return its handle.
+
+```python
+async def your_function():
+    client = await Client.connect("localhost:7233")
+    handle = client.get_workflow_handle_for(
+        "your-workflow-id",
+    )
+    await handle.signal()
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -521,7 +536,7 @@ When an External Signal is sent:
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -637,7 +652,7 @@ If there's a Workflow running with the given Workflow Id, it will be signaled. I
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -788,7 +803,7 @@ A Query has a name and can have arguments.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -942,7 +957,7 @@ Including such logic causes unexpected behavior.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1212,7 +1227,7 @@ Queries are sent from a Temporal Client.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1282,7 +1297,9 @@ For example, the following Client code calls a Query method `queryGreeting()` de
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1331,7 +1348,7 @@ Workflow timeouts are set when <a class="tdlp" href="#workflow-timeouts">startin
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1514,7 +1531,7 @@ Workflow Executions do not retry by default, and Retry Policies should be used w
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1641,7 +1658,7 @@ An Activity Execution must have either the Start-To-Close or the Schedule-To-Clo
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1803,7 +1820,7 @@ Activity Executions are automatically associated with a default <a class="tdlp" 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -1982,7 +1999,7 @@ If an Activity gets retried, the Activity can access the `details` from the last
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2180,7 +2197,7 @@ A <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span cl
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2344,7 +2361,7 @@ There are three steps to follow:
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2629,6 +2646,103 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 </TabItem>
 </Tabs>
 
+## Cancel an Activity
+
+Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
+If the Heartbeat is not invoked, the Activity cannot receive a cancellation request.
+When any non-immediate Activity is executed, the Activity Execution should send Heartbeats and set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> to ensure that the server knows it is still working.
+
+When an Activity is canceled, an error is raised in the Activity at the next available opportunity.
+If cleanup logic needs to be performed, it can be done in a `finally` clause or inside a caught cancel error.
+However, for the Activity to appear canceled the exception needs to be re-raised.
+
+:::note
+
+Unlike regular Activities, <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> can be canceled if they don't send Heartbeats.
+Local Activities are handled locally, and all the information needed to handle the cancellation logic is available in the same Worker process.
+
+:::
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+To cancel an Activity from a Workflow Execution, call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+
+```python
+@activity.defn
+async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
+    try:
+        while True:
+            print("Heartbeating cancel activity")
+            await asyncio.sleep(0.5)
+            activity.heartbeat("some details")
+    except asyncio.CancelledError:
+        print("Activity cancelled")
+        raise
+
+
+@activity.defn
+async def run_activity(input: ComposeArgsInput):
+    print("Executing activity")
+    return input.arg1 + input.arg2
+
+@workflow.defn
+ class GreetingWorkflow:
+     @workflow.run
+     async def run(self, input: ComposeArgsInput) -> None:
+        activity_handle = workflow.start_activity(
+            cancel_activity,
+            ComposeArgsInput(input.arg1, input.arg2),
+            start_to_close_timeout=timedelta(minutes=5),
+            heartbeat_timeout=timedelta(seconds=30),
+        )
+    
+        await asyncio.sleep(3)
+        activity_handle.cancel()
+```
+
+:::note
+
+The Activity handle is a Python task.
+By calling `cancel()`, you're essentially requesting the task to be canceled.
+
+:::
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
 ## Child Workflows
 
 A <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a> is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.
@@ -2644,7 +2758,7 @@ Then get the value of an object that acts as a proxy for a result that is initia
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -2953,7 +3067,7 @@ The default Parent Close Policy option is set to terminate the Child Workflow Ex
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3118,7 +3232,7 @@ The Workflow Execution spawned from the use of Continue-As-New has the same Work
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3252,7 +3366,7 @@ Sleeping is a resource-light operation: it does not tie up the process, and you 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3328,7 +3442,7 @@ A Cron Schedule is provided as an option when the call to spawn a Workflow Execu
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3452,7 +3566,7 @@ You shouldn’t modify the Workflow state inside a Side Effect function, because
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3556,7 +3670,9 @@ public void execute() {
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -3590,7 +3706,7 @@ During a Replay, Mutable Side Effects will not execute the function again. Inste
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3606,12 +3722,16 @@ if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&numbe
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -3654,7 +3774,7 @@ Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3720,17 +3840,23 @@ To update your Namespace, use the [`UpdateNamespace` API](/application-developme
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -3749,7 +3875,7 @@ You must register a Namespace with the Temporal Cluster before setting it in the
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -3927,17 +4053,23 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>

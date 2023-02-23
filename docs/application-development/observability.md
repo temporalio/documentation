@@ -45,7 +45,7 @@ Temporal also provides a dashboard you can integrate with graphing services like
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -96,7 +96,9 @@ For details on configuring a Prometheus scrape endpoint with Micrometer, see the
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -155,7 +157,7 @@ For information about how to configure exporters and instrument your code, see [
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -218,7 +220,9 @@ For more information, see the Temporal [OpenTracing module](https://github.com/t
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -288,7 +292,7 @@ The SDK core uses `WARN` for its default logging level.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -342,7 +346,9 @@ Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEna
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -519,7 +525,7 @@ Use a custom logger for logging.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -560,7 +566,9 @@ To set a custom logger, supply your own logging implementation and configuration
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -653,7 +661,7 @@ Here is how to query Workflow Executions:
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -663,17 +671,26 @@ Use [`Client.ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.
 </TabItem>
 <TabItem value="java">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
 
-Content is currently unavailable.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
 
-Content is currently unavailable.
+Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> as an argument to filter the listed Workflows.
+
+```python
+async for workflow in client.list_workflows('WorkflowType="MyWorkflowClass"'):
+    print(f"Workflow: {workflow.id}")
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -700,7 +717,7 @@ After you've created custom Search Attributes in your Cluster (using `tctl searc
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -829,7 +846,7 @@ You can upsert Search Attributes to add or update Search Attributes from within 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -965,7 +982,7 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
