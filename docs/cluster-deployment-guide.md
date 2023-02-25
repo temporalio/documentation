@@ -62,7 +62,7 @@ The following databases are supported as Visibility stores:
 :::
 
 You can set MySQL as your Visibility store with any other <a class="tdlp" href="/clusters#dependency-versions">supported Persistence databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dependency-versions">Learn more</a></span></span></a>.
-Verify [supported versions](#supported-versions) before you proceed.
+Verify supported versions before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, you must register your Search Attributes with a Namespace. See [Search Attributes](/application-development/observability#visibility) for details.
 
@@ -151,7 +151,7 @@ Note that the script uses the [`temporal-sql-tool`](https://github.com/temporali
 
 You can set PostgreSQL as your Visibility store with any other <a class="tdlp" href="/clusters#dependency-versions">supported Persistence databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dependency-versions">Learn more</a></span></span></a>.
 
-Verify [supported versions](#supported-versions) before you proceed.
+Verify supported versions before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, you must register your Search Attributes with a Namespace. See [Search Attributes](/application-development/observability#visibility) for details.
 
@@ -225,13 +225,13 @@ Note that the script uses the [`temporal-sql-tool`](https://github.com/temporali
 ### SQLite
 
 :::tip Support, stability, and dependency info
-- SQLite v3.31.0 and later.
+- SQLite v3.31.0 and later
 
 :::
 
 You can set SQLite as your Visibility store with any other <a class="tdlp" href="/clusters#dependency-versions">supported Persistence databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dependency-versions">Learn more</a></span></span></a>.
 
-Verify [supported versions](#supported-versions) before you proceed.
+Verify supported versions before you proceed.
 
 **Persistence configuration**
 

@@ -8,12 +8,12 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - SQLite v3.31.0 and later.
+  - SQLite v3.31.0 and later
 ---
 
 You can set SQLite as your Visibility store with any other [supported Persistence databases](/concepts/what-is-a-temporal-cluster#dependency-versions).
 
-Verify [supported versions](#supported-versions) before you proceed.
+Verify supported versions before you proceed.
 
 **Persistence configuration**
 

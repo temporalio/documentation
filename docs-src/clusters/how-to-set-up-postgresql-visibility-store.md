@@ -14,7 +14,7 @@ ssdi:
 
 You can set PostgreSQL as your Visibility store with any other [supported Persistence databases](/concepts/what-is-a-temporal-cluster#dependency-versions).
 
-Verify [supported versions](#supported-versions) before you proceed.
+Verify supported versions before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, you must register your Search Attributes with a Namespace. See [Search Attributes](/application-development/observability#visibility) for details.
 
