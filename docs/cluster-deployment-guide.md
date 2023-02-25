@@ -62,7 +62,7 @@ The following databases are supported as Visibility stores:
 :::
 
 You can set MySQL as your Visibility store with any other <a class="tdlp" href="/clusters#dependency-versions">supported Persistence databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dependency-versions">Learn more</a></span></span></a>.
-Verify [supported versions](#supported-versions)) before you proceed.
+Verify [supported versions](#supported-versions) before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, you must register your Search Attributes with a Namespace. See [Search Attributes](/application-development/observability#visibility) for details.
 
@@ -95,21 +95,22 @@ persistence:
 #...
 ```
 
-To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later. See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> for details on how to upgrade your Temporal Server and database schemas.
+For details on the configuration parameters and values, see [Cluster configuration](/references/configuration#sql).
 
-See [Cluster configuration](/references/configuration#sql) for details.
+To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later. See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> on how to upgrade your Temporal Server and database schemas.
 
 Example configuration templates:
 
-- [MySql Visibility](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml)
+- [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml)
 
 **Database schema and setup**
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here:
 
-- [MySQL v5.7 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v57/visibility) -[MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v8/visibility)
+- [MySQL v5.7 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v57/visibility)
+- [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v8/visibility)
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to setup your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up your Visibility store.
 
 ```bash
 #...
@@ -343,7 +344,6 @@ setup_cassandra_schema() {
     temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${VISIBILITY_KEYSPACE}" update-schema -d "${VISIBILITY_SCHEMA_DIR}"
   #...
 }
-
 ```
 
 ### Elasticsearch
