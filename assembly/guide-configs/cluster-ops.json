@@ -15,6 +15,26 @@
     },
     {
       "type": "h2",
+      "id": "clusters/how-to-set-up-visibility-in-a-temporal-cluster"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-mysql-visibility-store"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-postgresql-visibility-store"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-sqlite-visibility-store"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-cassandra-visibility-store"
+    },
+    {
+      "type": "h3",
       "id": "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
     },
     {

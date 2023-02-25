@@ -16,12 +16,6 @@ ssdi:
 
 You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load. Elasticsearch is recommended for large-scale operations on the Temporal Cluster, and is required if you use Cassandra as your [Persistence store](/concepts/what-is-a-temporal-cluster#persistence).
 
-Note that if you use MySQL or PostgreSQL as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later).
-To enable Advanced Visibility on your SQL databases, ensure that you do the following:
-
-- Upgrade your Temporal Server to version 1.20.
-- Update your MySQL to version 8.0.17 (or later) or PostgreSQL version 12 (or later).
-
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
 :::note
@@ -95,6 +89,6 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 This step is optional.
 
-Here we are adding custom Search Attributes to your Cluster.
+<!---You can add custom [Search Attributes](/concepts/what-is-a-custom-search-attribute) to your Workflow Executions metadata, and use them to filter your Workflow Executions by the custom values.-->
 
 Run the following command to create search attributes: `tctl search-attribute create`
