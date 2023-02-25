@@ -76,5 +76,4 @@ setup_cassandra_schema() {
     temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${VISIBILITY_KEYSPACE}" update-schema -d "${VISIBILITY_SCHEMA_DIR}"
   #...
 }
-
 ```
