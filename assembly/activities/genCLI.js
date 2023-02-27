@@ -1,6 +1,5 @@
 import {exec} from 'child_process';
 import path from "path";
-import { chmod } from 'fs/promises';
 import { finished } from 'stream/promises';
 import { mkdirp } from 'fs-extra';
 
