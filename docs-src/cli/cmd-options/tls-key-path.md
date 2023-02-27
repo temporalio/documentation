@@ -6,4 +6,5 @@ description: Definition for the tls-key-path command option.
 tags:
 	- cli
 ---
+
 Path to private certificate key.

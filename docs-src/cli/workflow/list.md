@@ -17,7 +17,7 @@ Make sure to write the command as follows:
 - [--address](/cmd-options/address)
 
 - [--archived](/cmd-options/archived)
-Currently an experimental feature.
+  Currently an experimental feature.
 
 - [--codec-auth](/cmd-options/codec-auth)
 
@@ -56,4 +56,3 @@ Currently an experimental feature.
 - [--tls-key-path](/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cmd-options/tls-server-name)
-

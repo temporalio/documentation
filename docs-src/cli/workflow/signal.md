@@ -54,4 +54,3 @@ Make sure to write the command as follows:
 - [--workflow-id](/cmd-options/workflow-id)
 
 - [--yes](/cmd-options/yes)
-

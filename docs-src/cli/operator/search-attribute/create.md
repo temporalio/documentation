@@ -45,4 +45,3 @@ Make sure to write the command as follows:
 - [--type](/cmd-options/type)
 
 - [--yes](/cmd-options/yes)
-

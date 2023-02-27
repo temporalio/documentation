@@ -31,11 +31,11 @@ Make sure to write the command as follows:
 - [--grpc-meta](/cmd-options/grpc-meta)
 
 - [--input](/cmd-options/input)
-For multiple parameters, concatenate them and separate by space.
+  For multiple parameters, concatenate them and separate by space.
 
 - [--input-file](/cmd-options/input-file)
-If there are multiple JSON, concatenate them and separate by space or newline.
-Input from the command line will overwrite file input.
+  If there are multiple JSON, concatenate them and separate by space or newline.
+  Input from the command line will overwrite file input.
 
 - [--namespace](/cmd-options/namespace)
 
@@ -56,4 +56,3 @@ Input from the command line will overwrite file input.
 - [--type](/cmd-options/type)
 
 - [--workflow-id](/cmd-options/workflow-id)
-

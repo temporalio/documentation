@@ -8,4 +8,3 @@ tags:
 ---
 
 Activity commands enable operations on [Activity Executions](/concepts/what-is-an-activity-execution).
-

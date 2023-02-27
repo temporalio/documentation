@@ -6,6 +6,7 @@ description: Definition for the cron command option.
 tags:
 	- cli
 ---
+
 Optional Cron Schedule for the Workflow. Cron spec is formatted as:
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)

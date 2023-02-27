@@ -10,6 +10,7 @@ tags:
 The `temporal schedule update` command updates an existing [Schedule](/concepts/what-is-a-schedule).
 
 Like `temporal schedule create`, updated Schedules need to follow a certain format:
+
 ```
 temporal schedule update 			\
 --sid 'your-schedule-id' 	\
@@ -39,8 +40,9 @@ Use the options provided below to change the command's behavior.
 - [--context-timeout](/cmd-options/context-timeout)
 
 - [--cron](/cmd-options/cron)
-│ │ │ │ │
-* * * * *
+  │ │ │ │ │
+
+---
 
 - [--end-time](/cmd-options/end-time)
 
@@ -103,4 +105,3 @@ Use the options provided below to change the command's behavior.
 - [--workflow-id](/cmd-options/workflow-id)
 
 - [--workflow-type](/cmd-options/workflow-type)
-

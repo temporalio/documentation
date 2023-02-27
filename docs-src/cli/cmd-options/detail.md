@@ -6,4 +6,5 @@ description: Definition for the detail command option.
 tags:
 	- cli
 ---
+
 Detail to fail the Activity.

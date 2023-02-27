@@ -6,4 +6,5 @@ description: Definition for the context-timeout command option.
 tags:
 	- cli
 ---
+
 An optional timeout for the context of an RPC call (in seconds). (default: 5)

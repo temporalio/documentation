@@ -6,4 +6,5 @@ description: Definition for the data command option.
 tags:
 	- cli
 ---
+
 Namespace data in a format key=value

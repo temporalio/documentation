@@ -62,4 +62,3 @@ Make sure to write the command as follows:
 - [--visibility-archival-state](/cmd-options/visibility-archival-state)
 
 - [--visibility-uri](/cmd-options/visibility-uri)
-

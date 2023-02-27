@@ -6,4 +6,5 @@ description: Definition for the notes command option.
 tags:
 	- cli
 ---
+
 Initial value of notes field.

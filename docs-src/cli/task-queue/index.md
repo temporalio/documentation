@@ -8,4 +8,3 @@ tags:
 ---
 
 Task Queue commands allow operations to be performed on [Task Queues](/concepts/what-is-a-task-queue).
-

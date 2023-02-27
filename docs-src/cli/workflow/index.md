@@ -8,4 +8,3 @@ tags:
 ---
 
 Workflow commands allow operations to be performed on [Workflow Executions](/concepts/what-is-a-workflow-execution).
-
