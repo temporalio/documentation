@@ -50,14 +50,17 @@ export async function genCLI(config) {
 
     // extract file
     mkdirp(FilePathCLI);
-    chmod(FilePathCLI, 0o755);
     chdir(FilePathCLI);
+
+    // remove executable, etc.
+    cmdLineFiles('mv docs/* .')
+    cmdLineFiles('rm -rf docgen LICENSE docs')
 }
 
-async function RemoveFiles(pathFunc) {
+async function cmdLineFiles(pathFunc) {
   exec(pathFunc, (err, stdout, stderr) => {
     if (err) {
-      console.log("Couldn't delete a file.")
+      console.log("Couldn't move or delete a file.")
       return;
     }
   });
