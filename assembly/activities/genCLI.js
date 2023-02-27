@@ -24,16 +24,10 @@ export async function genCLI(config) {
       ).then((response) => response.json());
 
     // find correct one
-    let platform = process.platform;
-    let arch = process.arch;
-    
-    if (arch === 'x64') arch = 'amd64';
-    
     let downloadUrl;
     
     const isCorrectDownloadLink = (asset) => {
-      if (!asset.name.includes(platform)) return false;
-      if (!asset.name.includes(arch)) return false;
+      if (!asset.name.includes("documentation")) return false;
       return true;
     };
     
@@ -44,7 +38,7 @@ export async function genCLI(config) {
     
     if (!downloadUrl) {
       reportError(
-        `A valid download link for your platform (${platform}) and architecture (${arch}) could not be found.`,
+        `A valid download link for CLI documentation could not be found.`,
       );
     }
 
@@ -58,14 +52,6 @@ export async function genCLI(config) {
     mkdirp(FilePathCLI);
     chmod(FilePathCLI, 0o755);
     chdir(FilePathCLI);
-    exec('./temporal-doc-gen', (err, stdout, stderr) => {
-        if (err) {
-            // node couldn't execute the command
-            console.log("Error: could not execute binary.")
-            return;
-        }   
-        RemoveFiles('rm -fv LICENSE README.md temporal-doc-gen')
-    }); 
 }
 
 async function RemoveFiles(pathFunc) {
