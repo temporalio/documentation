@@ -23,10 +23,6 @@ To enable Advanced Visibility on your SQL databases, ensure that you do the foll
 - [Upgrade your Temporal Server](/clusters/how-to-upgrade-the-temporal-server-version) to version 1.20.
 - [Update your database schemas](/clusters/how-to-upgrade-the-temporal-server-version#upgrade-mysql-or-postgresql-schema) for MySQL to version 8.0.17 (or later), PostgreSQL version 12 (or later), or SQLite to v3.31.0 (or later).
 
-<!--- _Remove if repetitive_
-Set your Visibility store with `visibilityStore` in your [Persistence configuration](/references/configuration#persistence).
-If using Elasticsearch specifically for [Advanced Visibility](/concepts/what-is-advanced-visibility), set it with `advancedVisibilityStore` in your [Persistence configuration](/references/configuration#persistence).--->
-
 **Supported databases**
 
 The following databases are supported as Visibility stores:

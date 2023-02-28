@@ -10,10 +10,13 @@ tags:
   - visibility
 ---
 
-A List Filter is the SQL-like string that is provided as the parameter to an [Advanced Visibility](/concepts/what-is-advanced-visibility) List API.
+A List Filter is the SQL-like string that is provided as the parameter to [Visibility](/concepts/what-is-visibility) List API.
+
+A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and [operators](#supported-operators) to pull a filtered list of Workflow Executions from the Visibility store.
+
 List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive, and each List Filter is scoped by a single [Namespace](/concepts/what-is-a-namespace).
 
-A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+ and 1 µs for SQL.
+A List Filter that uses a time range has a resolution of 1 ns on [Elasticsearch (v7 and later)](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) and 1 µs for [SQL databases](/clusters/how-to-set-up-visibility-in-a-temporal-cluster).
 
 ### Supported operators
 
@@ -34,7 +37,7 @@ The `=` operator works like **CONTAINS** to find Workflows with Search Attribute
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
-For example, if you have a Search Attribute `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
+For example, if you have a custom Search Attribute named `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
@@ -42,7 +45,7 @@ This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elas
 
 An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
 
-<!-- Use the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution). -->
+With Temporal Server v1.20 and later, you can use the `CountWorkflow` API to efficiently count the number of [Workflow Executions](/concepts/what-is-a-workflow-execution).
 
 Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
 

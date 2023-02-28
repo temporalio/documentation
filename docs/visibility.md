@@ -33,10 +33,13 @@ Advanced Visibility, within the Temporal Platform, is the subsystem and APIs tha
 
 ## List Filter
 
-A List Filter is the SQL-like string that is provided as the parameter to an <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#advanced-visibility">Learn more</a></span></span></a> List API.
+A List Filter is the SQL-like string that is provided as the parameter to <a class="tdlp" href="#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a> List API.
+
+A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and [operators](#supported-operators) to pull a filtered list of Workflow Executions from the Visibility store.
+
 List Filter <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names are case sensitive, and each List Filter is scoped by a single <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>.
 
-A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7+ and 1 µs for SQL.
+A List Filter that uses a time range has a resolution of 1 ns on [Elasticsearch (v7 and later)](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) and 1 µs for <a class="tdlp" href="/cluster-deployment-guide#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#visibility-store">Learn more</a></span></span></a>.
 
 ### Supported operators
 
@@ -57,7 +60,7 @@ The `=` operator works like **CONTAINS** to find Workflows with Search Attribute
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
-For example, if you have a Search Attribute `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
+For example, if you have a custom Search Attribute named `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
@@ -65,7 +68,7 @@ This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elas
 
 An Advanced List Filter API may take longer to respond if it is retrieving a large number of Workflow Executions (over 10,000).
 
-<!-- Use the `CountWorkflow` API to efficiently count the number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>. -->
+With Temporal Server v1.20 and later, you can use the `CountWorkflow` API to efficiently count the number of <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
 
 Paginate the results with the `ListWorkflow` API by using the page token to retrieve the next page; continue until the page token is `null`/`nil`.
 
@@ -135,24 +138,49 @@ order by CustomIntField asc
 
 ## Search Attribute
 
-A Search Attribute is an indexed field used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a> to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+Search Attributes are indexed fields used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a> to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-If a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> does not have <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">Elasticsearch integrated<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>, but a Workflow Execution is spawned and tagged with Search Attributes, no errors occur.
-However, you won't be able to use <a class="tdlp" href="#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#advanced-visibility">Learn more</a></span></span></a> List APIs and List Filters to find and list the Workflow Execution.
+A Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
+
+Temporal provides [default Search Attributes](#default-search-attributes) out-of-the-box.
+You can create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store, and assign values in a Workflow Execution.
+
+Search Attribute values are assigned to a specific Workflow Execution, and are available for that execution only up to the Namespace <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retention Period?</span><br /><br /><span class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#retention-period">Learn more</a></span></span></a> specified.
 
 When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attributes are carried over to the new Workflow Run by default.
 
-#### Search Attributes maximums
-
-Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.
+#### Search Attributes limits
 
 <!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
 
-Default single Search Attribute **value** size limit is 2 KB.
+The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
+
+| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL(v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
+| --------------------- | :-----------------------: | :-----------------------: | :------------------------: | :------------: |
+| Keyword               |            10             |            10             |             10             |       20       |
+| Keywordlist           |            10             |            10             |             10             |       20       |
+| Text                  |             3             |             3             |             3              |       5        |
+| Datetime              |             3             |             3             |             3              |       20       |
+| Int                   |             3             |             3             |             3              |       20       |
+| Double                |             3             |             3             |             3              |       20       |
+| Bool                  |             3             |             3             |             3              |       20       |
+
+Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
+Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
+
+After you create a custom Search Attribute, you can use it any number of times in your Workflows.
+
+Size limits for Search Attribute:
+
+<!--
+_This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
+Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.-->
+
+- The default single Search Attribute **value** size limit is 2 KB.
 
 <!-- TODO - [How to configure Search Attribute value size limit](#) -->
 
-Total Search Attribute size: 40 KB
+- Total Search Attribute size: 40 KB
 
 <!-- TODO - [How to configure total Search Attribute size limite](#) -->
 
@@ -162,7 +190,7 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 
 #### Default Search Attributes
 
-A Temporal Cluster that is integrated with Elasticsearch has a set of default Search Attributes already available.
+A Temporal Cluster has a set of default Search Attributes already available.
 These Search Attributes are created when the initial index is created.
 
 | NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |
@@ -186,33 +214,39 @@ These Search Attributes are created when the initial index is created.
 - All default Search Attributes are reserved and read-only.
   (You cannot create a custom one with the same name or alter the existing one.)
 
-- ExecutionStatus values correspond to Workflow Execution Statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
+- `ExecutionStatus` values correspond to Workflow Execution Statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
 
 - StartTime, CloseTime, and ExecutionTime are stored as dates but are supported by queries that use either EpochTime in nanoseconds or a string in [RFC3339Nano format](https://pkg.go.dev/time#pkg-constants) (such as "2006-01-02T15:04:05.999999999Z07:00").
 
-- ExecutionDuration is stored in nanoseconds but is supported by queries that use integers in nanoseconds, [Golang duration format](https://pkg.go.dev/time#ParseDuration), or "hh:mm:ss" format.
+- `ExecutionDuration` is stored in nanoseconds but is supported by queries that use integers in nanoseconds, [Golang duration format](https://pkg.go.dev/time#ParseDuration), or "hh:mm:ss" format.
 
-- CloseTime, HistoryLength, StateTransitionCount, and ExecutionDuration are present only in a Closed Workflow Execution.
+- `CloseTime`, `HistoryLength`, `StateTransitionCount`, and `ExecutionDuration` are present only in a Closed Workflow Execution.
 
-- ExecutionTime can differ from StartTime in retry and cron use cases.
+- `ExecutionTime` can differ from `StartTime` in retry and cron use cases.
+
+You can use the default Search Attributes in a List Filter to get a list of specific Workflow Executions under the following conditions:
+
+- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType =
+'YourWorkflow'"`.
+- With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions. For example: `tctl workflow list -q "WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime < "2021-06-08T16:46:34-08:00")"`
 
 #### Custom Search Attributes
 
-Custom Search Attributes can be added to a Temporal Cluster by using `tctl search-attribute create`.
-Adding a Search Attribute makes it available to use with Workflow Executions within that Cluster.
+You can create custom Search Attributes with unique key names that are relevant to your business needs, using [`tctl search-attribute create`](/tctl-next/search-attribute#create).
 
-There is no hard limit on the number of attributes you can add.
-However, we recommend enforcing the following limits:
+Adding a custom Search Attribute to your Visibility store makes it available to use with Workflow Executions within that Cluster. With Temporal Server v1.20, your custom Search Attributes must be associated with a Namespace within your Temporal Cluster.
 
-- Number of Search Attributes: 100 per Workflow
-- Size of each value: 2 KB per value
-- Total size of names and values: 40 KB per Workflow
+Use your custom Search Attributes in a List Filter, say in your WebUI or with the `tctl workflow list` commands, with the following conditions:
+
+- Without Advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
+- With Advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get specific Workflow Executions list. For example: `tctl workflow list -q "WorkflowType = "main.YourWorkflowDefinition" and YourCustomSA = "YourCustomSAValue" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime < "2021-06-08T16:46:34-08:00")"`
+  - With Temporal Server v1.19 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use custom Search Attributes with List Filters.
+  - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
+
+See [Search Attribute limits](#search-attribute-limits) for limits on the number and size of custom Search Attributes you can create.
 
 :::note
-
-Due to Elasticsearch limitations, you can only add Search Attributes.
-It is not possible to rename Search Attributes or remove them from the index schema.
-
+You can only add and remove custom Search Attributes. Renaming a custom Search Attributes is not supported.
 :::
 
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
@@ -234,6 +268,7 @@ Search Attributes must be one of the following types:
 - Double
 - Int
 - Keyword
+- Keywordlist
 - Text
 
 Note:
