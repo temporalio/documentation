@@ -13,7 +13,7 @@ tags:
 
 Visibility store is required in a Temporal Cluster setup as it is used by Temporal WebUI and `tctl` to pull Workflow Execution data, and enables features like batch operations on a group of Workflow Executions.
 
-The Visibility store enables using [List Filters](/concepts/what-is-a-list-filter) with [Search Attributes](/concepts/what-is-a-search-attribute) to list and filter Workflow Executions that you want to retrieve.
+With the Visibility store, you can use [List Filters](/concepts/what-is-a-list-filter) with [Search Attributes](/concepts/what-is-a-search-attribute) to list and filter Workflow Executions that you want to review.
 Setting up Advanced Visibility enables access to creating and using multiple custom Search Attributes with your List Filters. See [Search Attributes](/concepts/what-is-a-search-attribute) for details.
 
 Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite (v3.31.0 and later).

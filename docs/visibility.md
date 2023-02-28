@@ -142,55 +142,16 @@ Search Attributes are indexed fields used in a <a class="tdlp" href="#list-filte
 
 A Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
 
-Temporal provides [default Search Attributes](#default-search-attributes) out-of-the-box.
-You can create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store, and assign values in a Workflow Execution.
+Temporal provides some [default Search Attributes](#default-search-attributes).
+You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store, and assign values in a Workflow Execution.
 
 Search Attribute values are assigned to a specific Workflow Execution, and are available for that execution only up to the Namespace <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retention Period?</span><br /><br /><span class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#retention-period">Learn more</a></span></span></a> specified.
 
 When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attributes are carried over to the new Workflow Run by default.
 
-#### Search Attributes limits
-
-<!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
-
-The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
-
-| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
-| --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
-| Keyword               |            10             |             10             |             10             |       20       |
-| Keywordlist           |            10             |             10             |             10             |       20       |
-| Text                  |             3             |             3              |             3              |       5        |
-| Datetime              |             3             |             3              |             3              |       20       |
-| Int                   |             3             |             3              |             3              |       20       |
-| Double                |             3             |             3              |             3              |       20       |
-| Bool                  |             3             |             3              |             3              |       20       |
-
-Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
-Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
-
-After you create a custom Search Attribute, you can use it any number of times in your Workflows.
-
-Size limits for Search Attribute:
-
-<!--
-_This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
-Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.-->
-
-- The default single Search Attribute **value** size limit is 2 KB.
-
-<!-- TODO - [How to configure Search Attribute value size limit](#) -->
-
-- Total Search Attribute size: 40 KB
-
-<!-- TODO - [How to configure total Search Attribute size limite](#) -->
-
-<!-- temp keeping for reference
-This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
--->
-
 #### Default Search Attributes
 
-A Temporal Cluster has a set of default Search Attributes already available.
+A Temporal Cluster has a set of default Search Attributes already available. Default Search Attribtues are set globally across Namespaces.
 These Search Attributes are created when the initial index is created.
 
 | NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |
@@ -211,52 +172,43 @@ These Search Attributes are created when the initial index is created.
 | BatcherNamespace      | Keyword  | Used by internal batcher to indicate the Namespace where batch operation was applied to.                                                                                     |
 | BatcherUser           | Keyword  | Used by internal batcher to indicate the user who started the batch operation.                                                                                               |
 
-- All default Search Attributes are reserved and read-only.
-  (You cannot create a custom one with the same name or alter the existing one.)
+- All default Search Attributes are reserved and read-only. You cannot create a custom one with the same name or alter the existing one.
 
-- `ExecutionStatus` values correspond to Workflow Execution Statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
+- ExecutionStatus values correspond to Workflow Execution statuses: Running, Completed, Failed, Canceled, Terminated, ContinuedAsNew, TimedOut.
 
 - StartTime, CloseTime, and ExecutionTime are stored as dates but are supported by queries that use either EpochTime in nanoseconds or a string in [RFC3339Nano format](https://pkg.go.dev/time#pkg-constants) (such as "2006-01-02T15:04:05.999999999Z07:00").
 
-- `ExecutionDuration` is stored in nanoseconds but is supported by queries that use integers in nanoseconds, [Golang duration format](https://pkg.go.dev/time#ParseDuration), or "hh:mm:ss" format.
+- ExecutionDuration is stored in nanoseconds but is supported by queries that use integers in nanoseconds, [Golang duration format](https://pkg.go.dev/time#ParseDuration), or "hh:mm:ss" format.
 
-- `CloseTime`, `HistoryLength`, `StateTransitionCount`, and `ExecutionDuration` are present only in a Closed Workflow Execution.
+- CloseTime, HistoryLength, StateTransitionCount, and ExecutionDuration are present only in a closed Workflow Execution.
 
-- `ExecutionTime` can differ from `StartTime` in retry and cron use cases.
+- ExecutionTime can differ from StartTime in retry and cron use cases.
 
-You can use the default Search Attributes in a List Filter to get a list of specific Workflow Executions under the following conditions:
+You can use the default Search Attributes in a List Filter, say in your WebUI or with the `tctl workflow list` commands, under the following conditions:
 
 - Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType = 'YourWorkflow'"`.
 - With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions. For example: `tctl workflow list -q "WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime < "2021-06-08T16:46:34-08:00")"`
 
 #### Custom Search Attributes
 
-You can create custom Search Attributes with unique key names that are relevant to your business needs, using [`tctl search-attribute create`](/tctl-next/search-attribute#create).
+You can create custom Search Attributes with unique key names that are relevant to your business needs.
 
-Adding a custom Search Attribute to your Visibility store makes it available to use with Workflow Executions within that Cluster. With Temporal Server v1.20, your custom Search Attributes must be associated with a Namespace within your Temporal Cluster.
-
-Use your custom Search Attributes in a List Filter, say in your WebUI or with the `tctl workflow list` commands, with the following conditions:
+Use custom Search Attributes in a List Filter, say in your WebUI or with the `tctl workflow list` commands, with the following conditions:
 
 - Without Advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
 - With Advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get specific Workflow Executions list. For example: `tctl workflow list -q "WorkflowType = "main.YourWorkflowDefinition" and YourCustomSA = "YourCustomSAValue" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime < "2021-06-08T16:46:34-08:00")"`
   - With Temporal Server v1.19 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use custom Search Attributes with List Filters.
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
-See [Search Attribute limits](#search-attribute-limits) for limits on the number and size of custom Search Attributes you can create.
+If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces. However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20, your custom Search Attributes will be associated with a specific Namespace, and can be used for Workflow Executions in that Namespace.
 
-:::note
-You can only add and remove custom Search Attributes. Renaming a custom Search Attributes is not supported.
-:::
+See [Search Attribute limits](#search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
-The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
-Their names indicate their types:
+To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifier. For example, to create a Search Attribute called `CustomSA` of type `Text`, run:
 
-- CustomBoolField
-- CustomDatetimeField
-- CustomDoubleField
-- CustomIntField
-- CustomKeywordField
-- CustomTextField
+`tctl search-attribute create --name "CustomSA" --type Text`
+
+You can only create and remove custom Search Attribute keys in your Visibility store. Renaming a custom Search Attribute is not supported.
 
 #### Types
 
@@ -283,12 +235,62 @@ Note:
   - As a **Text** it would be matched by `ProductId = 2dd8`, which could cause unwanted matches.
 - The **Text** type cannot be used in the "Order By" clause.
 
-- [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
+#### Search Attributes limits
 
-#### Search Attributes as Workflow Execution metadata
+<!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
 
+The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
+
+| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
+| --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
+| Keyword               |            10             |             10             |             10             |       20       |
+| Keywordlist           |            10             |             10             |             10             |       20       |
+| Text                  |             3             |             3              |             3              |       5        |
+| Datetime              |             3             |             3              |             3              |       20       |
+| Int                   |             3             |             3              |             3              |       20       |
+| Double                |             3             |             3              |             3              |       20       |
+| Bool                  |             3             |             3              |             3              |       20       |
+
+Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
+Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
+
+Size limits for Search Attribute:
+
+<!--
+_This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
+Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.-->
+
+- The default single Search Attribute **value** size limit is 2 KB.
+
+<!-- TODO - [How to configure Search Attribute value size limit](#) -->
+
+- Total Search Attribute size: 40 KB
+
+<!-- TODO - [How to configure total Search Attribute size limite](#) -->
+
+<!-- temp keeping for reference
+This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
+-->
+
+#### Usage
+
+Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>, Search Attributes must be added to a Workflow Execution as metadata.
-How to do this entirely depends on the method by which you spawn the Workflow Execution:
 
-- <a class="tdlp" href="/application-development/observability#custom-search-attributes">How to set Search Attributes as Workflow Execution metadata<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set custom Search Attributes</span><br /><br /><span class="tdlppd">After you've created custom Search Attributes in your Cluster (using `tctl` or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#custom-search-attributes">Learn more</a></span></span></a>
+- To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes with your SDK](/application-development/observability#custom-search-attributes).
+- To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes](/application-development/observability#upsert-search-attributes)
+- To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute)
+- To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
+
+After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter
+
+The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
+Their names indicate their types:
+
+- CustomBoolField
+- CustomDatetimeField
+- CustomDoubleField
+- CustomIntField
+- CustomKeywordField
+- CustomTextField
 
