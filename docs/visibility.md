@@ -40,12 +40,6 @@ A List Filter that uses a time range has a resolution of 1 ns on Elasticsearch 7
 
 ### Supported operators
 
-:::note
-
-Custom Search Attributes of `Text` type cannot be used in **ORDER BY** clauses.
-
-:::
-
 A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and the following supported operators:
 
 - **=, !=, >, >=, <, <=**
@@ -55,6 +49,7 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
 - **ORDER BY**
 
 The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
+Additionally, custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
 
 ### Partial string match
 
@@ -65,7 +60,6 @@ The `=` operator works like **CONTAINS** to find Workflows with Search Attribute
 For example, if you have a Search Attribute `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
 However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
-
 
 ### Efficient API usage
 
