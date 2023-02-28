@@ -16,7 +16,7 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 
 List Filter [Search Attribute](/concepts/what-is-a-search-attribute) names are case sensitive, and each List Filter is scoped by a single [Namespace](/concepts/what-is-a-namespace).
 
-A List Filter that uses a time range has a resolution of 1 ns on [Elasticsearch (v7 and later)](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) and 1 µs for [SQL databases](/clusters/how-to-set-up-visibility-in-a-temporal-cluster).
+A List Filter that uses a time range has a resolution of 1 ns on [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) and 1 µs for [SQL databases](/clusters/how-to-set-up-visibility-in-a-temporal-cluster).
 
 ### Supported operators
 
