@@ -21,6 +21,9 @@ Add reminders to your calendar to issue new CA certificates well before the expi
 When updating CA certificates, it's important to follow a rollover process.
 Doing so enables your Namespace to serve both CA certificates for a period of time until traffic to your old CA certificate ceases.
 
+Be aware that the subject of the existing certificate and the subject of the new certificate must not be identical.
+One way to meet this requirement is to add a version or a date to the common name (CN).
+
 <!--- How to update certificates in Temporal Cloud using Temporal Cloud UI --->
 
 ### Update certificates using Temporal Cloud UI
