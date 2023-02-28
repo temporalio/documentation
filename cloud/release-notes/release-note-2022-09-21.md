@@ -37,12 +37,12 @@ To update account-level Roles and Namespace-level permissions, a dedicated Tempo
 1. Click **Edit**.
 1. Under **Email**, add the user email address and select the appropriate [Namespace-level permission](/cloud/#namespace-level-permissions).
 
-You can also open a support ticket with us to do a bulk update of Roles and permissions on your behalf.
+You can also open a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support) with us to do a bulk update of Roles and permissions on your behalf.
 
 ### Namespace regions and Retention Periods
 
 The region and Retention Period for a Namespace can be configured only when the Namespace is created.
-If you need to change the Retention Period of a Namespace and can't create a separate one, open a support ticket.
+If you need to change the Retention Period of a Namespace and can't create a separate one, open a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
 
 ### Namespace deletion
 
@@ -51,4 +51,4 @@ Namespace deletion isn't supported at this time. The feature is in active develo
 ### Namespace quota
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a support ticket.
+If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
