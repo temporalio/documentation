@@ -155,15 +155,15 @@ When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<spa
 
 The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
 
-| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL(v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
-| --------------------- | :-----------------------: | :-----------------------: | :------------------------: | :------------: |
-| Keyword               |            10             |            10             |             10             |       20       |
-| Keywordlist           |            10             |            10             |             10             |       20       |
-| Text                  |             3             |             3             |             3              |       5        |
-| Datetime              |             3             |             3             |             3              |       20       |
-| Int                   |             3             |             3             |             3              |       20       |
-| Double                |             3             |             3             |             3              |       20       |
-| Bool                  |             3             |             3             |             3              |       20       |
+| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
+| --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
+| Keyword               |            10             |             10             |             10             |       20       |
+| Keywordlist           |            10             |             10             |             10             |       20       |
+| Text                  |             3             |             3              |             3              |       5        |
+| Datetime              |             3             |             3              |             3              |       20       |
+| Int                   |             3             |             3              |             3              |       20       |
+| Double                |             3             |             3              |             3              |       20       |
+| Bool                  |             3             |             3              |             3              |       20       |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
 Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
@@ -226,8 +226,7 @@ These Search Attributes are created when the initial index is created.
 
 You can use the default Search Attributes in a List Filter to get a list of specific Workflow Executions under the following conditions:
 
-- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType =
-'YourWorkflow'"`.
+- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType = 'YourWorkflow'"`.
 - With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions. For example: `tctl workflow list -q "WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime < "2021-06-08T16:46:34-08:00")"`
 
 #### Custom Search Attributes

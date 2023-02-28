@@ -27,15 +27,15 @@ When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal C
 
 The following table lists the maximum number of custom Search Attributes you can create per Namespace by supported Visibility database.
 
-| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL(v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
-| --------------------- | :-----------------------: | :-----------------------: | :------------------------: | :------------: |
-| Keyword               |            10             |            10             |             10             |       20       |
-| Keywordlist           |            10             |            10             |             10             |       20       |
-| Text                  |             3             |             3             |             3              |       5        |
-| Datetime              |             3             |             3             |             3              |       20       |
-| Int                   |             3             |             3             |             3              |       20       |
-| Double                |             3             |             3             |             3              |       20       |
-| Bool                  |             3             |             3             |             3              |       20       |
+| Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
+| --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
+| Keyword               |            10             |             10             |             10             |       20       |
+| Keywordlist           |            10             |             10             |             10             |       20       |
+| Text                  |             3             |             3              |             3              |       5        |
+| Datetime              |             3             |             3              |             3              |       20       |
+| Int                   |             3             |             3              |             3              |       20       |
+| Double                |             3             |             3              |             3              |       20       |
+| Bool                  |             3             |             3              |             3              |       20       |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
 Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
