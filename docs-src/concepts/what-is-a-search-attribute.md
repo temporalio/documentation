@@ -98,8 +98,7 @@ These Search Attributes are created when the initial index is created.
 
 You can use the default Search Attributes in a List Filter to get a list of specific Workflow Executions under the following conditions:
 
-- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType =
-'YourWorkflow'"`.
+- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType = 'YourWorkflow'"`.
 - With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions. For example: `tctl workflow list -q "WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime < "2021-06-08T16:46:34-08:00")"`
 
 #### Custom Search Attributes
