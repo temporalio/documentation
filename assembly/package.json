@@ -13,6 +13,7 @@
     "path": "^0.12.7",
     "readdirp": "^3.6.0",
     "svg-parser": "^2.0.4",
+    "tar-fs": "^2.1.1",
     "temporalio": "^1.1.0"
   }
 }

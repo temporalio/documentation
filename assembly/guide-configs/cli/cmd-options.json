@@ -1,9 +1,9 @@
 {
-  "file_name": "command-options.md",
+  "file_name": "cmd-options.md",
   "file_dir": "cli",
-  "id": "command-options",
+  "id": "cmd-options",
   "title": "Temporal CLI command options reference",
-  "sidebar_label": "command-options",
+  "sidebar_label": "cmd options",
   "description": "How to use the Temporal CLI command options",
   "use_description": false,
   "toc_max_heading_level": 4,

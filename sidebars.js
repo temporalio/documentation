@@ -104,7 +104,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Temporal CLI",
+      label: "CLI (temporal)",
       collapsible: true,
       collapsed: true,
       link: {
@@ -117,7 +117,6 @@ module.exports = {
         "cli/env",
         "cli/operator",
         "cli/schedule",
-        "cli/server",
         "cli/task-queue",
         "cli/workflow",
         "cli/cmd-options",
