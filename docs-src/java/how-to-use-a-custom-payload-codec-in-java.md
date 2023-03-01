@@ -10,9 +10,9 @@ tags:
 
 **Create a custom Payload Codec**
 
-Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a `CodecDataConverter` to set a custom Data Converter.
+Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
 
-The Paylod Codec does byte to byte conversion, and must be set with a Data Converter to do the conversion to bytes and values.
+The Payload Codec does byte to byte conversion, and must be set with a Data Converter to do the conversion to bytes and values.
 
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 

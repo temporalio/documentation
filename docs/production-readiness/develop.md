@@ -63,7 +63,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
 
-The `PayloadCodec` converts bytes to bytes. It must be used in an instance of a `CodecDataConverter` that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
+The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes. It must be used in an instance of a [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
 
 The following example shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 
@@ -102,7 +102,7 @@ func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 }
 ```
 
-You can also create a remote HTTP server (called Codec Server) to run the encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
+See <a class="tdlp" href="/security#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#codec-server">Learn more</a></span></span></a> for remote data encoding/decoding.
 
 **Set Data Converter to use custom Payload Codec**
 
@@ -132,9 +132,9 @@ See the following samples for examples:
 
 **Create a custom Payload Codec**
 
-Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a `CodecDataConverter` to set a custom Data Converter.
+Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
 
-The Paylod Codec does byte to byte conversion, and must be set with a Data Converter to do the conversion to bytes and values.
+The Payload Codec does byte to byte conversion, and must be set with a Data Converter to do the conversion to bytes and values.
 
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 

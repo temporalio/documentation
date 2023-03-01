@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Most SDKs provide a `PayloadConverter` that can be customized to convert custom data types to bytes and back.
+Most SDKs provide a [`PayloadConverter`](/concepts/what-is-a-payload-converter) that can be customized to convert custom data types to bytes and back.
 
 Note that creating a custom Payload Converter is optional, and only needed if the default Data Converter does not support your custom values.
 
