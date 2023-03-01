@@ -50,4 +50,3 @@ Make sure to write the command in this format:
 - [--tls-key-path](/cli/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
-

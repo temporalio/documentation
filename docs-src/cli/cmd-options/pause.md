@@ -6,4 +6,5 @@ description: Definition for the pause command option.
 tags:
 	- cli
 ---
+
 Pauses the Schedule.

@@ -6,4 +6,5 @@ description: Definition for the result command option.
 tags:
 	- cli
 ---
+
 Set the result value of Activity completion.

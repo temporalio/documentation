@@ -6,6 +6,7 @@ description: Start Temporal development server.
 tags:
 	- cli
 ---
+
 - [--config](/cli/cmd-options/config)
 
 - [--db-filename](/cli/cmd-options/db-filename)
@@ -35,4 +36,3 @@ tags:
 - [--ui-ip](/cli/cmd-options/ui-ip)
 
 - [--ui-port](/cli/cmd-options/ui-port)
-

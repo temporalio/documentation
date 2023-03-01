@@ -27,8 +27,9 @@ Make sure to write the command in this format:
 - [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--cron](/cli/cmd-options/cron)
-│ │ │ │ │
-* * * * *
+  │ │ │ │ │
+
+---
 
 - [--env](/cli/cmd-options/env)
 
@@ -49,7 +50,7 @@ Make sure to write the command in this format:
 - [--max-field-length](/cli/cmd-options/max-field-length)
 
 - [--memo](/cli/cmd-options/memo)
-Use valid JSON formats for value.
+  Use valid JSON formats for value.
 
 - [--memo-file](/cli/cmd-options/memo-file)
 
@@ -84,4 +85,3 @@ Use valid JSON formats for value.
 - [--type](/cli/cmd-options/type)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
-

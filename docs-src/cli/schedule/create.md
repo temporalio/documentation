@@ -11,6 +11,7 @@ The `temporal schedule create` command creates a new [Schedule](/concepts/what-i
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
 Schedules need to follow a format like the example shown here:
+
 ```
 temporal schedule create \
 --sid 'your-schedule-id' \
@@ -40,8 +41,9 @@ Use the options provided below to change the command's behavior.
 - [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--cron](/cli/cmd-options/cron)
-│ │ │ │ │
-* * * * *
+  │ │ │ │ │
+
+---
 
 - [--end-time](/cli/cmd-options/end-time)
 
@@ -104,4 +106,3 @@ Use the options provided below to change the command's behavior.
 - [--workflow-id](/cli/cmd-options/workflow-id)
 
 - [--workflow-type](/cli/cmd-options/workflow-type)
-

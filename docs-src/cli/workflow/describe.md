@@ -47,4 +47,3 @@ Make sure to write the command in this format:
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
-

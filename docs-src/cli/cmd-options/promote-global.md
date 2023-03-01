@@ -6,4 +6,5 @@ description: Definition for the promote-global command option.
 tags:
 	- cli
 ---
+
 Promote local namespace to global namespace

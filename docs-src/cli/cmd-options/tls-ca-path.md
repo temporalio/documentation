@@ -6,4 +6,5 @@ description: Definition for the tls-ca-path command option.
 tags:
 	- cli
 ---
+
 Path to server CA certificate.

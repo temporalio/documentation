@@ -6,5 +6,6 @@ description: Definition for the yes command option.
 tags:
 	- cli
 ---
+
 Alias: **-y**: Confirm all prompts.
 Confirm all prompts.

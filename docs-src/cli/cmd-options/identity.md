@@ -6,4 +6,5 @@ description: Definition for the identity command option.
 tags:
 	- cli
 ---
+
 Specify operator's identity.

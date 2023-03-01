@@ -6,4 +6,5 @@ description: Definition for the sqlite-pragma command option.
 tags:
 	- cli
 ---
+
 Specify sqlite pragma statements in pragma=value format. Pragma options: ["journal_mode" "synchronous"].

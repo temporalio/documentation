@@ -44,4 +44,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--yes](/cli/cmd-options/yes)
-

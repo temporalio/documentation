@@ -51,4 +51,3 @@ Make sure to write the command as follows:
 - [--type](/cli/cmd-options/type)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
-

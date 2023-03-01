@@ -6,4 +6,5 @@ description: Definition for the reapply-type command option.
 tags:
 	- cli
 ---
+
 Event types to reapply after the reset point: , Signal, None. (default: All)

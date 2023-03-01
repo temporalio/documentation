@@ -7,7 +7,7 @@ tags:
 	- cli
 ---
 
-The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/concepts/what-is-a-workflow-execution) and any  [Child Workflows](/concepts/what-is-a-child-workflow) it generates.
+The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/concepts/what-is-a-workflow-execution) and any [Child Workflows](/concepts/what-is-a-child-workflow) it generates.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
@@ -50,4 +50,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)
-

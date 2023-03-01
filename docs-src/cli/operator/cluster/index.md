@@ -8,4 +8,3 @@ tags:
 ---
 
 Cluster commands enabled operations on [Temporal Clusters](/concepts/what-is-a-cluster).
-

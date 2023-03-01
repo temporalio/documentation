@@ -6,5 +6,6 @@ description: Definition for the config command option.
 tags:
 	- cli
 ---
+
 Alias: **-c**
 Path to config directory.

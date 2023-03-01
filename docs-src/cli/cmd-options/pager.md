@@ -6,4 +6,5 @@ description: Definition for the pager command option.
 tags:
 	- cli
 ---
+
 Sets the pager for Temporal CLI to use (options: less, more, favoritePager).

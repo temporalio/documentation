@@ -6,4 +6,5 @@ description: Definition for the task-queue-type command option.
 tags:
 	- cli
 ---
+
 Task Queue type [workflow|activity] (default: workflow)

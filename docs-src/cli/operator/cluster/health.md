@@ -38,4 +38,3 @@ Make sure to write the command as follows:
 - [--tls-key-path](/cli/cmd-options/tls-key-path)
 
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
-

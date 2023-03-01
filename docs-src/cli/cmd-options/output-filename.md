@@ -6,4 +6,5 @@ description: Definition for the output-filename command option.
 tags:
 	- cli
 ---
+
 Serializes Event History to a file.
