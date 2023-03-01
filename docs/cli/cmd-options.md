@@ -153,7 +153,7 @@ Flag to indicate whether namespace is a global namespace
 
 ## grpc-meta
 
-Contains gRPC metadata to send with requests (Format: key=value). Values must be in a valid JSON format.
+Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
 
 ## headless
 
@@ -173,7 +173,7 @@ Specify operator's identity.
 
 ## id-reuse-policy
 
-Allows the same Workflow Id to be used in a new Workflow Execution. Options: AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning.
+Allows the same Workflow Id to be used in a new Workflow Execution (AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning).
 
 ## input-file
 
@@ -226,7 +226,7 @@ Maximum length for each attribute field. (default: 0)
 
 ## memo
 
-Set a memo on a schedule. Format: key=value. Use valid JSON formats for value.
+Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
 
 ## memo-file
 
@@ -277,11 +277,11 @@ format output as: table, json, card. (default: table)
 
 ## overlap-policy
 
-Overlap policy: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
+Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).
 
 ## pager
 
-Sets the pager for Temporal CLI to use. Options: less, more, favoritePager.
+Sets the pager for Temporal CLI to use (options: less, more, favoritePager).
 
 ## pause-on-failure
 

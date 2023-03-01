@@ -16,9 +16,11 @@ These actions are performed through subcommands for each Operator area.
 
 To run an Operator command, run `temporal operator [command] [subcommand] [command options] [arguments]`.
 
+
 ## operator cluster
 
 Cluster commands enabled operations on [Temporal Clusters](/concepts/what-is-a-cluster).
+
 
 ### describe
 
@@ -28,35 +30,36 @@ Use the options listed below to change the output of this command.
 Make sure to write the command as follows:
 `temporal operator cluster describe [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--fields](/cmd-options/fields)
+- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  fields</span><br /><br /><span class="tdlppd">Definition for the fields command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--output](/cmd-options/output)
+- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  output</span><br /><br /><span class="tdlppd">Definition for the output command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### health
 
@@ -66,31 +69,32 @@ Use the options listed below to change the behavior and output of this command.
 Make sure to write the command as follows:
 `temporal operator cluster health [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### list
 
@@ -100,43 +104,44 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator cluster list [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--fields](/cmd-options/fields)
+- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  fields</span><br /><br /><span class="tdlppd">Definition for the fields command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--limit](/cmd-options/limit)
+- <a class="tdlp" href="/cli/cmd-options#limit">--limit<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  limit</span><br /><br /><span class="tdlppd">Definition for the limit command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#limit">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--no-pager](/cmd-options/no-pager)
+- <a class="tdlp" href="/cli/cmd-options#no-pager">--no-pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  no-pager</span><br /><br /><span class="tdlppd">Definition for the no-pager command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#no-pager">Learn more</a></span></span></a>
 
-- [--output](/cmd-options/output)
+- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  output</span><br /><br /><span class="tdlppd">Definition for the output command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
 
-- [--pager](/cmd-options/pager)
+- <a class="tdlp" href="/cli/cmd-options#pager">--pager<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  pager</span><br /><br /><span class="tdlppd">Definition for the pager command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#pager">Learn more</a></span></span></a>
 
-- [--time-format](/cmd-options/time-format)
+- <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  time-format</span><br /><br /><span class="tdlppd">Definition for the time-format command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### remove
 
@@ -146,33 +151,34 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator cluster remove [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--name](/cmd-options/name)
+- <a class="tdlp" href="/cli/cmd-options#name">--name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  name</span><br /><br /><span class="tdlppd">Definition for the name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#name">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### system
 
@@ -182,35 +188,36 @@ Use the options listed below to change this command's output.
 Make sure to write the command as follows:
 `temporal operator cluster system [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--fields](/cmd-options/fields)
+- <a class="tdlp" href="/cli/cmd-options#fields">--fields<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  fields</span><br /><br /><span class="tdlppd">Definition for the fields command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#fields">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--output](/cmd-options/output)
+- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  output</span><br /><br /><span class="tdlppd">Definition for the output command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### upsert
 
@@ -220,39 +227,41 @@ Use the options listed below to change the behavior of this command.
 Make sure to write the command as follows:
 `temporal operator cluster upsert [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--enable-connection](/cmd-options/enable-connection)
+- <a class="tdlp" href="/cli/cmd-options#enable-connection">--enable-connection<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  enable-connection</span><br /><br /><span class="tdlppd">Definition for the enable-connection command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#enable-connection">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--frontend-address](/cmd-options/frontend-address)
+- <a class="tdlp" href="/cli/cmd-options#frontend-address">--frontend-address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  frontend-address</span><br /><br /><span class="tdlppd">Definition for the frontend-address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#frontend-address">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ## operator namespace
 
 Namespace commands allow <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> oeprations to be performed on the [Temporal Cluster](/concepts/what-is-a-cluster).
+
 
 ### create
 
@@ -262,53 +271,54 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator namespace create [command options] [arguments]`
 
-- [--active-cluster](/cmd-options/active-cluster)
+- <a class="tdlp" href="/cli/cmd-options#active-cluster">--active-cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  active-cluster</span><br /><br /><span class="tdlppd">Definition for the active-cluster command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#active-cluster">Learn more</a></span></span></a>
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--cluster](/cmd-options/cluster)
+- <a class="tdlp" href="/cli/cmd-options#cluster">--cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  cluster</span><br /><br /><span class="tdlppd">Definition for the cluster command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#cluster">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--data](/cmd-options/data)
+- <a class="tdlp" href="/cli/cmd-options#data">--data<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  data</span><br /><br /><span class="tdlppd">Definition for the data command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#data">Learn more</a></span></span></a>
 
-- [--description](/cmd-options/description)
+- <a class="tdlp" href="/cli/cmd-options#description">--description<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  description</span><br /><br /><span class="tdlppd">Definition for the description command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#description">Learn more</a></span></span></a>
 
-- [--email](/cmd-options/email)
+- <a class="tdlp" href="/cli/cmd-options#email">--email<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  email</span><br /><br /><span class="tdlppd">Definition for the email command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#email">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--global](/cmd-options/global)
+- <a class="tdlp" href="/cli/cmd-options#global">--global<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  global</span><br /><br /><span class="tdlppd">Definition for the global command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#global">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--history-archival-state](/cmd-options/history-archival-state)
+- <a class="tdlp" href="/cli/cmd-options#history-archival-state">--history-archival-state<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  history-archival-state</span><br /><br /><span class="tdlppd">Definition for the history-archival-state command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#history-archival-state">Learn more</a></span></span></a>
 
-- [--history-uri](/cmd-options/history-uri)
+- <a class="tdlp" href="/cli/cmd-options#history-uri">--history-uri<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  history-uri</span><br /><br /><span class="tdlppd">Definition for the history-uri command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#history-uri">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--retention](/cmd-options/retention)
+- <a class="tdlp" href="/cli/cmd-options#retention">--retention<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  retention</span><br /><br /><span class="tdlppd">Definition for the retention command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#retention">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-- [--visibility-archival-state](/cmd-options/visibility-archival-state)
+- <a class="tdlp" href="/cli/cmd-options#visibility-archival-state">--visibility-archival-state<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  visibility-archival-state</span><br /><br /><span class="tdlppd">Definition for the visibility-archival-state command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#visibility-archival-state">Learn more</a></span></span></a>
 
-- [--visibility-uri](/cmd-options/visibility-uri)
+- <a class="tdlp" href="/cli/cmd-options#visibility-uri">--visibility-uri<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  visibility-uri</span><br /><br /><span class="tdlppd">Definition for the visibility-uri command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#visibility-uri">Learn more</a></span></span></a>
+
 
 ### delete
 
@@ -318,33 +328,34 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator namespace delete [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-- [--yes](/cmd-options/yes)
+- <a class="tdlp" href="/cli/cmd-options#yes">--yes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  yes</span><br /><br /><span class="tdlppd">Definition for the yes command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#yes">Learn more</a></span></span></a>
+
 
 ### describe
 
@@ -355,33 +366,34 @@ Use the options listed below to change the command's output.
 Make sure to write the command as follows:
 `temporal operator namespace describe [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--namespace-id](/cmd-options/namespace-id)
+- <a class="tdlp" href="/cli/cmd-options#namespace-id">--namespace-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace-id</span><br /><br /><span class="tdlppd">Definition for the namespace-id command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace-id">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### list
 
@@ -391,31 +403,32 @@ Use the options listed below to change the command's output.
 Make sure to write the command as follows:
 `temporal operator namespace list [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### update
 
@@ -425,59 +438,61 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator namespace update [command options] [arguments]`
 
-- [--active-cluster](/cmd-options/active-cluster)
+- <a class="tdlp" href="/cli/cmd-options#active-cluster">--active-cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  active-cluster</span><br /><br /><span class="tdlppd">Definition for the active-cluster command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#active-cluster">Learn more</a></span></span></a>
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--cluster](/cmd-options/cluster)
+- <a class="tdlp" href="/cli/cmd-options#cluster">--cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  cluster</span><br /><br /><span class="tdlppd">Definition for the cluster command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#cluster">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--data](/cmd-options/data)
+- <a class="tdlp" href="/cli/cmd-options#data">--data<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  data</span><br /><br /><span class="tdlppd">Definition for the data command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#data">Learn more</a></span></span></a>
 
-- [--description](/cmd-options/description)
+- <a class="tdlp" href="/cli/cmd-options#description">--description<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  description</span><br /><br /><span class="tdlppd">Definition for the description command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#description">Learn more</a></span></span></a>
 
-- [--email](/cmd-options/email)
+- <a class="tdlp" href="/cli/cmd-options#email">--email<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  email</span><br /><br /><span class="tdlppd">Definition for the email command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#email">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--history-archival-state](/cmd-options/history-archival-state)
+- <a class="tdlp" href="/cli/cmd-options#history-archival-state">--history-archival-state<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  history-archival-state</span><br /><br /><span class="tdlppd">Definition for the history-archival-state command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#history-archival-state">Learn more</a></span></span></a>
 
-- [--history-uri](/cmd-options/history-uri)
+- <a class="tdlp" href="/cli/cmd-options#history-uri">--history-uri<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  history-uri</span><br /><br /><span class="tdlppd">Definition for the history-uri command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#history-uri">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--promote-global](/cmd-options/promote-global)
+- <a class="tdlp" href="/cli/cmd-options#promote-global">--promote-global<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  promote-global</span><br /><br /><span class="tdlppd">Definition for the promote-global command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#promote-global">Learn more</a></span></span></a>
 
-- [--reason](/cmd-options/reason)
+- <a class="tdlp" href="/cli/cmd-options#reason">--reason<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  reason</span><br /><br /><span class="tdlppd">Definition for the reason command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#reason">Learn more</a></span></span></a>
 
-- [--retention](/cmd-options/retention)
+- <a class="tdlp" href="/cli/cmd-options#retention">--retention<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  retention</span><br /><br /><span class="tdlppd">Definition for the retention command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#retention">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-- [--visibility-archival-state](/cmd-options/visibility-archival-state)
+- <a class="tdlp" href="/cli/cmd-options#visibility-archival-state">--visibility-archival-state<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  visibility-archival-state</span><br /><br /><span class="tdlppd">Definition for the visibility-archival-state command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#visibility-archival-state">Learn more</a></span></span></a>
 
-- [--visibility-uri](/cmd-options/visibility-uri)
+- <a class="tdlp" href="/cli/cmd-options#visibility-uri">--visibility-uri<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  visibility-uri</span><br /><br /><span class="tdlppd">Definition for the visibility-uri command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#visibility-uri">Learn more</a></span></span></a>
+
 
 ## operator search-attribute
 
 Search Attribute commands enable operations for the creation, listing, and removal of <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>.
+
 
 ### create
 
@@ -488,73 +503,75 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator search-attribute create [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--name](/cmd-options/name)
+- <a class="tdlp" href="/cli/cmd-options#name">--name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  name</span><br /><br /><span class="tdlppd">Definition for the name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#name">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-- [--type](/cmd-options/type)
+- <a class="tdlp" href="/cli/cmd-options#type">--type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  type</span><br /><br /><span class="tdlppd">Definition for the type command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#type">Learn more</a></span></span></a>
 
-- [--yes](/cmd-options/yes)
+- <a class="tdlp" href="/cli/cmd-options#yes">--yes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  yes</span><br /><br /><span class="tdlppd">Definition for the yes command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#yes">Learn more</a></span></span></a>
+
 
 ### list
 
-The `temporal operator search-attrbute list` command displays a list of all <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> that can be used in `temporal workflow list --query`.
+The `temporal operator search-attrbute list` command displays a list of all <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> that can be used in ` temporal workflow list --query`.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator search-attribute list [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--output](/cmd-options/output)
+- <a class="tdlp" href="/cli/cmd-options#output">--output<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  output</span><br /><br /><span class="tdlppd">Definition for the output command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#output">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 
 ### remove
 
@@ -566,33 +583,34 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator search-attribute remove [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
-- [--codec-auth](/cmd-options/codec-auth)
+- <a class="tdlp" href="/cli/cmd-options#codec-auth">--codec-auth<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-auth</span><br /><br /><span class="tdlppd">Definition for the codec-auth command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-auth">Learn more</a></span></span></a>
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- <a class="tdlp" href="/cli/cmd-options#codec-endpoint">--codec-endpoint<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  codec-endpoint</span><br /><br /><span class="tdlppd">Definition for the codec-endpoint command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#codec-endpoint">Learn more</a></span></span></a>
 
-- [--color](/cmd-options/color)
+- <a class="tdlp" href="/cli/cmd-options#color">--color<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  color</span><br /><br /><span class="tdlppd">Definition for the color command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#color">Learn more</a></span></span></a>
 
-- [--context-timeout](/cmd-options/context-timeout)
+- <a class="tdlp" href="/cli/cmd-options#context-timeout">--context-timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  context-timeout</span><br /><br /><span class="tdlppd">Definition for the context-timeout command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#context-timeout">Learn more</a></span></span></a>
 
-- [--env](/cmd-options/env)
+- <a class="tdlp" href="/cli/cmd-options#env">--env<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  env</span><br /><br /><span class="tdlppd">Definition for the env command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#env">Learn more</a></span></span></a>
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- <a class="tdlp" href="/cli/cmd-options#grpc-meta">--grpc-meta<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  grpc-meta</span><br /><br /><span class="tdlppd">Definition for the grpc-meta command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#grpc-meta">Learn more</a></span></span></a>
 
-- [--name](/cmd-options/name)
+- <a class="tdlp" href="/cli/cmd-options#name">--name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  name</span><br /><br /><span class="tdlppd">Definition for the name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#name">Learn more</a></span></span></a>
 
-- [--namespace](/cmd-options/namespace)
+- <a class="tdlp" href="/cli/cmd-options#namespace">--namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  namespace</span><br /><br /><span class="tdlppd">Definition for the namespace command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#namespace">Learn more</a></span></span></a>
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-ca-path">--tls-ca-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-ca-path</span><br /><br /><span class="tdlppd">Definition for the tls-ca-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-ca-path">Learn more</a></span></span></a>
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-cert-path">--tls-cert-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-cert-path</span><br /><br /><span class="tdlppd">Definition for the tls-cert-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-cert-path">Learn more</a></span></span></a>
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- <a class="tdlp" href="/cli/cmd-options#tls-disable-host-verification">--tls-disable-host-verification<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-disable-host-verification</span><br /><br /><span class="tdlppd">Definition for the tls-disable-host-verification command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-disable-host-verification">Learn more</a></span></span></a>
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-- [--yes](/cmd-options/yes)
+- <a class="tdlp" href="/cli/cmd-options#yes">--yes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  yes</span><br /><br /><span class="tdlppd">Definition for the yes command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#yes">Learn more</a></span></span></a>
+
 

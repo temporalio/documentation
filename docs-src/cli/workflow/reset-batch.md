@@ -2,7 +2,7 @@
 id: reset-batch
 title: temporal workflow reset-batch
 sidebar_label: reset-batch
-description: Reset a batch of Workflow Executions by reset type: LastContinuedAsNew, FirstWorkflowTask, LastWorkflowTask
+description: Reset a batch of Workflow Executions by reset type (LastContinuedAsNew, FirstWorkflowTask, LastWorkflowTask).
 tags:
 	- cli
 ---
