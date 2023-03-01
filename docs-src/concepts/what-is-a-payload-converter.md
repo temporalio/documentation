@@ -2,13 +2,13 @@
 id: what-is-a-payload-converter
 title: What is a Payload Converter?
 sidebar_label: Payload Converter
-description: A Payload Converter serializes data, converting objects/values to bytes and back.
+description: A Payload Converter serializes data, converting objects or values to bytes and back.
 tags:
   - term
   - explanation
 ---
 
-A Payload Converter serializes data, converting objects/values to bytes and back.
+A Payload Converter serializes data, converting objects or values to bytes and back.
 
 When you request a Workflow Execution through your Client and pass a data input, the input is deserialized using the default Data Converter that runs it through a set of Payload Converters.
 When your Workflow Execution starts, this data input is serialized and passed as input to your Workflow.

@@ -10,7 +10,7 @@ tags:
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.
 
-Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-webui-and-tctl)
+Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-web-ui-and-tctl)
 
 To run data encoding/decoding remotely, use a [Codec Server](/concepts/what-is-a-codec-server). A Codec Server is an HTTP server that is configured to use your custom Payload Codec with encryption/compression and decryption/decompression logic.
 
@@ -23,7 +23,7 @@ Before you use a remote data encoder to encode your payloads and allowing decryp
 
 If you use custom encryption/encoding with your custom Data Converter, all the data handled by the Temporal Cluster is encrypted/encoded. Since the WebUI uses the [Visibility](/concepts/what-is-visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your WebUI or tctl is encoded/encrypted.
 
-To see the original format of data in your WebUI and tctl, create a Codec Server with a remote data encoder and use the Payload Codec to decode your data locally.
+To see the original format of data in your WebUI and tctl, create a [Codec Server](/concepts/what-is-a-codec-server) with a remote data encoder and use the Payload Codec to decode your data locally.
 
 Note that an encryption/decryption remote data encoder is a separate system with access to your encryption keys and exposes APIs to encode and decode any payloads that are encrypted with the Payload Codec used. Evaluate and ensure that your remote data encoder endpoints are secured and only authorized users have access to them.
 

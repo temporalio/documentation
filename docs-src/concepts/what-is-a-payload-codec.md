@@ -29,11 +29,11 @@ You can apply your encryption logic in a custom Payload Codec and use it locally
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data.
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
+See [Data encryption](/production-readiness/develop#data-encryption) for details.
+
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
-
-See [Data encryption](/production-readiness/develop#data-encryption) for details.

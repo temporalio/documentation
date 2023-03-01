@@ -45,5 +45,5 @@ Examples for implementing encryption:
 
 Examples for implementing compression:
 
-- [Go](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105)
-- [Java](https://github.com/temporalio/sdk-java/blob/2c29eda4558f4063804c816481a9f9acf132f65c/temporal-sdk/src/main/java/io/temporal/payload/codec/ZlibPayloadCodec.java#L41)
+- [Go sample](https://github.com/temporalio/sdk-go/blob/706516c7077ba2e9b40304aeddbed47e25b2a68f/converter/codec.go#L77-L105)
+- [Java sample](https://github.com/temporalio/sdk-java/blob/2c29eda4558f4063804c816481a9f9acf132f65c/temporal-sdk/src/main/java/io/temporal/payload/codec/ZlibPayloadCodec.java#L41)

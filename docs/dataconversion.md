@@ -67,7 +67,7 @@ Custom Data Converters are not applied to all data:
 
 A customized Data Converter can have the following three components:
 
-- <a class="tdlp" href="#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects/values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-converter">Learn more</a></span></span></a>
 - <a class="tdlp" href="#failure-converter">Failure Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Failure Converter?</span><br /><br /><span class="tdlppd">A Failure Converter converts error objects to proto Failures and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#failure-converter">Learn more</a></span></span></a>
 - <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>
 
@@ -77,7 +77,7 @@ For details on how to implement custom encryption and compression in your SDK, s
 
 ## Payload Converter
 
-A Payload Converter serializes data, converting objects/values to bytes and back.
+A Payload Converter serializes data, converting objects or values to bytes and back.
 
 When you request a Workflow Execution through your Client and pass a data input, the input is deserialized using the default Data Converter that runs it through a set of Payload Converters.
 When your Workflow Execution starts, this data input is serialized and passed as input to your Workflow.
@@ -136,6 +136,8 @@ You can apply your encryption logic in a custom Payload Codec and use it locally
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data.
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
+See [Data encryption](/production-readiness/develop#data-encryption) for details.
+
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
@@ -143,13 +145,11 @@ The following samples use encryption (AES GCM with 256-bit key) in a custom Data
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 
-See [Data encryption](/production-readiness/develop#data-encryption) for details.
-
 ## Remote data encoding
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.
 
-Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-webui-and-tctl)
+Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-web-ui-and-tctl)
 
 To run data encoding/decoding remotely, use a <a class="tdlp" href="/security#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#codec-server">Learn more</a></span></span></a>. A Codec Server is an HTTP server that is configured to use your custom Payload Codec with encryption/compression and decryption/decompression logic.
 
@@ -162,7 +162,7 @@ Before you use a remote data encoder to encode your payloads and allowing decryp
 
 If you use custom encryption/encoding with your custom Data Converter, all the data handled by the Temporal Cluster is encrypted/encoded. Since the WebUI uses the <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your WebUI or tctl is encoded/encrypted.
 
-To see the original format of data in your WebUI and tctl, create a Codec Server with a remote data encoder and use the Payload Codec to decode your data locally.
+To see the original format of data in your WebUI and tctl, create a <a class="tdlp" href="/security#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#codec-server">Learn more</a></span></span></a> with a remote data encoder and use the Payload Codec to decode your data locally.
 
 Note that an encryption/decryption remote data encoder is a separate system with access to your encryption keys and exposes APIs to encode and decode any payloads that are encrypted with the Payload Codec used. Evaluate and ensure that your remote data encoder endpoints are secured and only authorized users have access to them.
 
@@ -228,6 +228,7 @@ The endpoints run the Payloads through a <a class="tdlp" href="/security#payload
 Sample Codec Servers:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
+- [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 

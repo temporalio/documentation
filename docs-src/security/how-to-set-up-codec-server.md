@@ -24,6 +24,7 @@ The endpoints run the Payloads through a [Payload Codec](/concepts/what-is-a-dat
 Sample Codec Servers:
 
 - [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
+- [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
 - [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
 - [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 
