@@ -160,7 +160,6 @@ The `cli` repository contains a tool that automatically generates the reference 
 These documents will be updated per CLI release.
 
 To get the documents, run `yarn assemble --cli`.
-Move the documents from /cli/docs to /cli, and delete any duplicate files.
 
 ## When you submit a Pull Request
 
