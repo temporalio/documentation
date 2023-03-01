@@ -7,7 +7,7 @@ tags:
 	- cli
 ---
 
-The `temporal operator namespace update` command updates a given [Namespace](/concepts-what-is-a-namespace).
+The `temporal operator namespace update` command updates a given [Namespace](/concepts/what-is-a-namespace).
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:

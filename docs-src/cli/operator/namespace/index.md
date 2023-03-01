@@ -7,4 +7,4 @@ tags:
 	- cli
 ---
 
-Namespace commands allow [Namespace](/concepts/what-is-a-namespace) oeprations to be performed on the [Temporal Cluster](/concepts/what-is-a-cluster).
+Namespace commands allow [Namespace](/concepts/what-is-a-namespace) oeprations to be performed on the [Temporal Cluster](/concepts/what-is-a-temporal-cluster).

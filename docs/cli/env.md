@@ -13,7 +13,6 @@ import TabItem from '@theme/TabItem';
 
 Environment (or 'env') commands allow the user to configure the properties for the environment in use.
 
-
 ## get
 
 The `temporal env get` command prints the environmental properties for the environment in use.
@@ -47,7 +46,6 @@ Make sure to write the command as follows:
 - <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
-
 
 ## set
 
@@ -83,7 +81,6 @@ Make sure to write the command as follows:
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
-
 ## delete
 
 The `temporal env delete` command deletes a given environment or environmental property.
@@ -117,5 +114,4 @@ Make sure to write the command as follows:
 - <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
-
 

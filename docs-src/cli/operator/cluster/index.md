@@ -7,4 +7,4 @@ tags:
 	- cli
 ---
 
-Cluster commands enabled operations on [Temporal Clusters](/concepts/what-is-a-cluster).
+Cluster commands enabled operations on [Temporal Clusters](/concepts/what-is-a-temporal-cluster).

@@ -7,7 +7,7 @@ tags:
 	- cli
 ---
 
-The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-server).
+The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-service).
 
 Use the options listed below to change the command's output.
 Make sure to write the command as follows:

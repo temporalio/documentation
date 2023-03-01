@@ -8,7 +8,7 @@ tags:
 ---
 
 The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/concepts/what-is-a-search-attribute).
-These Search Attributes can be used to [filter a list](/concepts/whaat-is-a-list-filter) of [Workflow Executions](/concepts/what-is-a-workflow-execution) that contain the given Search Attributes in their metadata.
+These Search Attributes can be used to [filter a list](/concepts/what-is-a-list-filter) of [Workflow Executions](/concepts/what-is-a-workflow-execution) that contain the given Search Attributes in their metadata.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:

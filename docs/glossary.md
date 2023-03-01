@@ -93,5 +93,5 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Workflow Task Execution](/tasks#workflow-task-execution)
 - [Workflow Task Timeout](/workflows#workflow-task-timeout)
 - [Workflow Type](/workflows#workflow-type)
-- [tctl](/concepts/what-is-tctl-next)
+- [cli](/concepts/what-is-temporal-cli)
 - [tctl](/tctl-v1#)
