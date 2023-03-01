@@ -6,5 +6,4 @@ description: Definition for the time-zone command option.
 tags:
 	- cli
 ---
-
 Time zone (IANA name).

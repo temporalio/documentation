@@ -2,7 +2,7 @@
 id: reset-batch
 title: temporal workflow reset-batch
 sidebar_label: reset-batch
-description: Reset a batch of Workflow Executions by reset type LastContinuedAsNew, FirstWorkflowTask, LastWorkflowTask
+description: Reset a batch of Workflow Executions by reset type: LastContinuedAsNew, FirstWorkflowTask, LastWorkflowTask
 tags:
 	- cli
 ---
@@ -14,50 +14,51 @@ Use the options listed below to change reset behavior.
 Make sure to write the command as follows:
 `temporal workflow reset-batch [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--dry-run](/cmd-options/dry-run)
+- [--dry-run](/cli/cmd-options/dry-run)
 
-- [--env](/cmd-options/env)
+- [--env](/cli/cmd-options/env)
 
-- [--exclude-file](/cmd-options/exclude-file)
+- [--exclude-file](/cli/cmd-options/exclude-file)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--input-file](/cmd-options/input-file)
+- [--input-file](/cli/cmd-options/input-file)
 
-- [--input-parallelism](/cmd-options/input-parallelism)
+- [--input-parallelism](/cli/cmd-options/input-parallelism)
 
-- [--input-separator](/cmd-options/input-separator)
+- [--input-separator](/cli/cmd-options/input-separator)
 
-- [--namespace](/cmd-options/namespace)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--non-deterministic](/cmd-options/non-deterministic)
+- [--non-deterministic](/cli/cmd-options/non-deterministic)
 
-- [--query](/cmd-options/query)
+- [--query](/cli/cmd-options/query)
 
-- [--reason](/cmd-options/reason)
+- [--reason](/cli/cmd-options/reason)
 
-- [--skip-base-is-not-current](/cmd-options/skip-base-is-not-current)
+- [--skip-base-is-not-current](/cli/cmd-options/skip-base-is-not-current)
 
-- [--skip-current-open](/cmd-options/skip-current-open)
+- [--skip-current-open](/cli/cmd-options/skip-current-open)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--type](/cmd-options/type)
+- [--type](/cli/cmd-options/type)
+

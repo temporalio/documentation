@@ -6,5 +6,4 @@ description: Definition for the remaining-actions command option.
 tags:
 	- cli
 ---
-
 Total number of actions allowed. (default: 0)

@@ -6,5 +6,4 @@ description: Definition for the ui-codec-endpoint command option.
 tags:
 	- cli
 ---
-
 UI Remote data converter HTTP endpoint.

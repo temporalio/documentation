@@ -18,32 +18,33 @@ The Overlap Policy of the Schedule can be overridden as well.
 
 Use the options provided below to change this command's behavior.
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--env](/cmd-options/env)
+- [--env](/cli/cmd-options/env)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--namespace](/cmd-options/namespace)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--overlap-policy](/cmd-options/overlap-policy)
+- [--overlap-policy](/cli/cmd-options/overlap-policy)
 
-- [--schedule-id](/cmd-options/schedule-id)
+- [--schedule-id](/cli/cmd-options/schedule-id)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
+

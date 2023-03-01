@@ -6,5 +6,4 @@ description: Definition for the cluster command option.
 tags:
 	- cli
 ---
-
 Cluster name

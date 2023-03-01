@@ -16,43 +16,44 @@ Use the command options listed below to change the information returned by this 
 Make sure to write the command as follows:
 `temporal workflow query [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--env](/cmd-options/env)
+- [--env](/cli/cmd-options/env)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--input](/cmd-options/input)
-  For multiple parameters, concatenate them and separate by space.
+- [--input](/cli/cmd-options/input)
+For multiple parameters, concatenate them and separate by space.
 
-- [--input-file](/cmd-options/input-file)
-  If there are multiple JSON, concatenate them and separate by space or newline.
-  Input from the command line will overwrite file input.
+- [--input-file](/cli/cmd-options/input-file)
+If there are multiple JSON, concatenate them and separate by space or newline.
+Input from the command line will overwrite file input.
 
-- [--namespace](/cmd-options/namespace)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--reject-condition](/cmd-options/reject-condition)
+- [--reject-condition](/cli/cmd-options/reject-condition)
 
-- [--run-id](/cmd-options/run-id)
+- [--run-id](/cli/cmd-options/run-id)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--type](/cmd-options/type)
+- [--type](/cli/cmd-options/type)
 
-- [--workflow-id](/cmd-options/workflow-id)
+- [--workflow-id](/cli/cmd-options/workflow-id)
+

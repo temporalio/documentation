@@ -6,5 +6,4 @@ description: Definition for the archived command option.
 tags:
 	- cli
 ---
-
 List archived Workflow Executions.

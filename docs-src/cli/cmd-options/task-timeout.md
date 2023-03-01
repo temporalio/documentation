@@ -6,5 +6,4 @@ description: Definition for the task-timeout command option.
 tags:
 	- cli
 ---
-
 Start-to-close timeout for a Workflow Task (in seconds). (default: 10)

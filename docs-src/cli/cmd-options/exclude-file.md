@@ -6,5 +6,4 @@ description: Definition for the exclude-file command option.
 tags:
 	- cli
 ---
-
 Input file that specifies Workflow Executions to exclude from resetting.

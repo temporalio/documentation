@@ -11,3 +11,4 @@ Operator commands enable actions on [Namespaces](/concepts/what-is-a-namespace),
 These actions are performed through subcommands for each Operator area.
 
 To run an Operator command, run `temporal operator [command] [subcommand] [command options] [arguments]`.
+

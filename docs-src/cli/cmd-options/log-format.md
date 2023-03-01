@@ -6,5 +6,4 @@ description: Definition for the log-format command option.
 tags:
 	- cli
 ---
-
 Set the log formatting. Options: ["json", "pretty"]. (default: json)

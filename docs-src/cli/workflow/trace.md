@@ -7,46 +7,47 @@ tags:
 	- cli
 ---
 
-The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/concepts/what-is-a-workflow-execution) and any [Child Workflows](/concepts/what-is-a-child-workflow) it generates.
+The `temporal workflow trace` command tracks the progress of a [Workflow Execution](/concepts/what-is-a-workflow-execution) and any  [Child Workflows](/concepts/what-is-a-child-workflow) it generates.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal workflow trace [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--concurrency](/cmd-options/concurrency)
+- [--concurrency](/cli/cmd-options/concurrency)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--depth](/cmd-options/depth)
+- [--depth](/cli/cmd-options/depth)
 
-- [--env](/cmd-options/env)
+- [--env](/cli/cmd-options/env)
 
-- [--fold](/cmd-options/fold)
+- [--fold](/cli/cmd-options/fold)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--namespace](/cmd-options/namespace)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--no-fold](/cmd-options/no-fold)
+- [--no-fold](/cli/cmd-options/no-fold)
 
-- [--run-id](/cmd-options/run-id)
+- [--run-id](/cli/cmd-options/run-id)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--workflow-id](/cmd-options/workflow-id)
+- [--workflow-id](/cli/cmd-options/workflow-id)
+

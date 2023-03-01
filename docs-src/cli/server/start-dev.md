@@ -6,33 +6,33 @@ description: Start Temporal development server.
 tags:
 	- cli
 ---
+- [--config](/cli/cmd-options/config)
 
-- [--config](/cmd-options/config)
+- [--db-filename](/cli/cmd-options/db-filename)
 
-- [--db-filename](/cmd-options/db-filename)
+- [--dynamic-config-value](/cli/cmd-options/dynamic-config-value)
 
-- [--dynamic-config-value](/cmd-options/dynamic-config-value)
+- [--headless](/cli/cmd-options/headless)
 
-- [--headless](/cmd-options/headless)
+- [--ip](/cli/cmd-options/ip)
 
-- [--ip](/cmd-options/ip)
+- [--log-format](/cli/cmd-options/log-format)
 
-- [--log-format](/cmd-options/log-format)
+- [--log-level](/cli/cmd-options/log-level)
 
-- [--log-level](/cmd-options/log-level)
+- [--metrics-port](/cli/cmd-options/metrics-port)
 
-- [--metrics-port](/cmd-options/metrics-port)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--namespace](/cmd-options/namespace)
+- [--port](/cli/cmd-options/port)
 
-- [--port](/cmd-options/port)
+- [--sqlite-pragma](/cli/cmd-options/sqlite-pragma)
 
-- [--sqlite-pragma](/cmd-options/sqlite-pragma)
+- [--ui-asset-path](/cli/cmd-options/ui-asset-path)
 
-- [--ui-asset-path](/cmd-options/ui-asset-path)
+- [--ui-codec-endpoint](/cli/cmd-options/ui-codec-endpoint)
 
-- [--ui-codec-endpoint](/cmd-options/ui-codec-endpoint)
+- [--ui-ip](/cli/cmd-options/ui-ip)
 
-- [--ui-ip](/cmd-options/ui-ip)
+- [--ui-port](/cli/cmd-options/ui-port)
 
-- [--ui-port](/cmd-options/ui-port)

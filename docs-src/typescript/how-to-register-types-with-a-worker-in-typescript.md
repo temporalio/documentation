@@ -12,9 +12,7 @@ tags:
 In development, use [`workflowsPath`](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#workflowspath):
 
 <!--SNIPSTART typescript-worker-create -->
-
 [snippets/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/worker.ts)
-
 ```ts
 import { Worker } from '@temporalio/worker';
 import * as activities from './activities';
@@ -29,7 +27,6 @@ async function run() {
   await worker.run();
 }
 ```
-
 <!--SNIPEND-->
 
 In this snippet, the Worker bundles the Workflow code at runtime.
@@ -37,9 +34,7 @@ In this snippet, the Worker bundles the Workflow code at runtime.
 In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](https://legacy-documentation-sdks.temporal.io/typescript/workers#prebuilt-workflow-bundles):
 
 <!--SNIPSTART typescript-bundle-workflow -->
-
 [production/src/scripts/build-workflow-bundle.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/scripts/build-workflow-bundle.ts)
-
 ```ts
 import { bundleWorkflowCode } from '@temporalio/worker';
 import { writeFile } from 'fs/promises';
@@ -55,23 +50,20 @@ async function bundle() {
   console.log(`Bundle written to ${codePath}`);
 }
 ```
-
 <!--SNIPEND-->
 
 Then the bundle can be passed to the Worker:
 
 <!--SNIPSTART typescript-production-worker-->
-
 [production/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/production/src/worker.ts)
-
 ```ts
 const workflowOption = () =>
   process.env.NODE_ENV === 'production'
     ? {
-      workflowBundle: {
-        codePath: require.resolve('../workflow-bundle.js'),
-      },
-    }
+        workflowBundle: {
+          codePath: require.resolve('../workflow-bundle.js'),
+        },
+      }
     : { workflowsPath: require.resolve('./workflows') };
 
 async function run() {
@@ -84,5 +76,4 @@ async function run() {
   await worker.run();
 }
 ```
-
 <!--SNIPEND-->

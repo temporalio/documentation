@@ -22,13 +22,11 @@ Activities are _simply functions_.
 Below is a simple Activity that accepts a string parameter and returns a string:
 
 <!--SNIPSTART typescript-hello-activity {"enable_source_link": false}-->
-
 ```ts
 export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
-
 <!--SNIPEND-->
 
 ## How to import and use Activities in a Workflow
@@ -37,7 +35,6 @@ You must first retrieve an Activity from an "Activity Handle" before you can cal
 Note that we only import the type of our activities, the TypeScript compiler will drop the import statement on compilation.
 
 <!--SNIPSTART typescript-hello-workflow {"enable_source_link": false}-->
-
 ```ts
 import { proxyActivities } from '@temporalio/workflow';
 // Only import the activity types
@@ -52,7 +49,6 @@ export async function example(name: string): Promise<string> {
   return await greet(name);
 }
 ```
-
 <!--SNIPEND-->
 
 :::danger Wrong way to import activities
@@ -222,9 +218,7 @@ This is a helpful pattern for using closures to:
 - injecting secret keys (such as environment variables) from the Worker to the Activity
 
 <!--SNIPSTART typescript-activity-with-deps-->
-
 [activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/activities.ts)
-
 ```ts
 export interface DB {
   get(key: string): Promise<string>;
@@ -241,7 +235,6 @@ export const createActivities = (db: DB) => ({
   },
 });
 ```
-
 <!--SNIPEND-->
 
 <details>
@@ -250,7 +243,6 @@ export const createActivities = (db: DB) => ({
 When you register these in the Worker, pass your shared dependencies accordingly:
 
 <!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
-
 ```ts
 import { createActivities } from './activities';
 
@@ -276,26 +268,20 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 Since Activities are always referenced by name, inside the Workflow they can be proxied as normal, though the types need some adjustment:
 
 <!--SNIPSTART typescript-activity-deps-workflow-->
-
 [activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/workflows.ts)
-
 ```ts
 import type { createActivities } from './activities';
 
 // Note usage of ReturnType<> generic since createActivities is a factory function
-const { greet, greet_es } = proxyActivities<
-  ReturnType<typeof createActivities>
->({
+const { greet, greet_es } = proxyActivities<ReturnType<typeof createActivities>>({
   startToCloseTimeout: '30 seconds',
 });
 ```
-
 <!--SNIPEND-->
 
 </details>
@@ -430,9 +416,7 @@ There are 3 ways to handle Activity cancellation:
 The [`sleep`](https://typescript.temporal.io/api/classes/activity.Context#sleep) method exposed in `Context.current()` is comparable to a standard `sleep` function: `new Promise(resolve => setTimeout(resolve, sleepMS));` except that it also rejects if the Activity is cancelled.
 
 <!--SNIPSTART typescript-activity-fake-progress-->
-
 [activities-cancellation-heartbeating/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-cancellation-heartbeating/src/activities.ts)
-
 ```ts
 import { CancelledFailure, Context } from '@temporalio/activity';
 
@@ -457,7 +441,6 @@ export async function fakeProgress(sleepIntervalMs = 1000): Promise<void> {
   }
 }
 ```
-
 <!--SNIPEND-->
 
 #### Example: Activity that makes a cancellable HTTP request with cancellationSignal
@@ -465,17 +448,13 @@ export async function fakeProgress(sleepIntervalMs = 1000): Promise<void> {
 The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/classes/activity.Context#cancellationsignal) returns an `AbortSignal` that is typically used by the `node_fetch` and `child_process` libraries but is supported by a few other libraries as well as the Web-standard [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController/signal).
 
 <!--SNIPSTART typescript-activity-cancellable-fetch-->
-
 [activities-examples/src/activities/cancellable-fetch.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/cancellable-fetch.ts)
-
 ```ts
-import { Context } from '@temporalio/activity';
 import fetch from 'node-fetch';
+import { Context } from '@temporalio/activity';
 
 export async function cancellableFetch(url: string): Promise<Uint8Array> {
-  const response = await fetch(url, {
-    signal: Context.current().cancellationSignal,
-  });
+  const response = await fetch(url, { signal: Context.current().cancellationSignal });
   const contentLengthHeader = response.headers.get('Content-Length');
   if (contentLengthHeader === null) {
     throw new Error('expected Content-Length header to be set');
@@ -495,7 +474,6 @@ export async function cancellableFetch(url: string): Promise<Uint8Array> {
   return Buffer.concat(chunks);
 }
 ```
-
 <!--SNIPEND-->
 
 ## Advanced Features

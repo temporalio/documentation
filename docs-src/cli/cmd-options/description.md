@@ -6,5 +6,4 @@ description: Definition for the description command option.
 tags:
 	- cli
 ---
-
 Namespace description

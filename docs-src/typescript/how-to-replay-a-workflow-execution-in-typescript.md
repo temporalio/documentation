@@ -48,37 +48,29 @@ await Worker.runReplayHistory(
 Here, we show downloading a history and replaying it separately:
 
 <!--SNIPSTART typescript-history-get-workflowhistory-->
-
 [replay-history/src/replayer.ts](https://github.com/temporalio/samples-typescript/blob/master/replay-history/src/replayer.ts)
-
 ```ts
-const conn = await Connection.connect(
-  /* { address: 'temporal.prod.company.com' } */
-);
-const { history } = await conn.workflowService.getWorkflowExecutionHistory({
-  namespace: 'default',
-  execution: {
-    workflowId: 'calc',
-  },
-});
+  const conn = await Connection.connect(/* { address: 'temporal.prod.company.com' } */);
+  const { history } = await conn.workflowService.getWorkflowExecutionHistory({
+    namespace: 'default',
+    execution: {
+      workflowId: 'calc',
+    },
+  });
 ```
-
 <!--SNIPEND-->
 
 Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes/worker.worker/#runreplayhistory).
 
 <!--SNIPSTART typescript-history-replay-->
-
 [replay-history/src/replayer.ts](https://github.com/temporalio/samples-typescript/blob/master/replay-history/src/replayer.ts)
-
 ```ts
-await Worker.runReplayHistory(
-  {
-    workflowsPath: require.resolve('./workflows'),
-    replayName: 'calc',
-  },
-  history,
-);
+  await Worker.runReplayHistory(
+    {
+      workflowsPath: require.resolve('./workflows'),
+      replayName: 'calc',
+    },
+    history
+  );
 ```
-
 <!--SNIPEND-->

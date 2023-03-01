@@ -11,7 +11,6 @@ The `temporal schedule create` command creates a new [Schedule](/concepts/what-i
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
 Schedules need to follow a format like the example shown here:
-
 ```
 temporal schedule create \
 --sid 'your-schedule-id' \
@@ -26,83 +25,83 @@ Actions will be executed at any time specified in the Schedule.
 
 Use the options provided below to change the command's behavior.
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--calendar](/cmd-options/calendar)
+- [--calendar](/cli/cmd-options/calendar)
 
-- [--catchup-window](/cmd-options/catchup-window)
+- [--catchup-window](/cli/cmd-options/catchup-window)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--cron](/cmd-options/cron)
-  │ │ │ │ │
+- [--cron](/cli/cmd-options/cron)
+│ │ │ │ │
+* * * * *
 
----
+- [--end-time](/cli/cmd-options/end-time)
 
-- [--end-time](/cmd-options/end-time)
+- [--env](/cli/cmd-options/env)
 
-- [--env](/cmd-options/env)
+- [--execution-timeout](/cli/cmd-options/execution-timeout)
 
-- [--execution-timeout](/cmd-options/execution-timeout)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--input](/cli/cmd-options/input)
 
-- [--input](/cmd-options/input)
+- [--input-file](/cli/cmd-options/input-file)
 
-- [--input-file](/cmd-options/input-file)
+- [--interval](/cli/cmd-options/interval)
 
-- [--interval](/cmd-options/interval)
+- [--jitter](/cli/cmd-options/jitter)
 
-- [--jitter](/cmd-options/jitter)
+- [--max-field-length](/cli/cmd-options/max-field-length)
 
-- [--max-field-length](/cmd-options/max-field-length)
+- [--memo](/cli/cmd-options/memo)
 
-- [--memo](/cmd-options/memo)
+- [--memo-file](/cli/cmd-options/memo-file)
 
-- [--memo-file](/cmd-options/memo-file)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--namespace](/cmd-options/namespace)
+- [--notes](/cli/cmd-options/notes)
 
-- [--notes](/cmd-options/notes)
+- [--overlap-policy](/cli/cmd-options/overlap-policy)
 
-- [--overlap-policy](/cmd-options/overlap-policy)
+- [--pause](/cli/cmd-options/pause)
 
-- [--pause](/cmd-options/pause)
+- [--pause-on-failure](/cli/cmd-options/pause-on-failure)
 
-- [--pause-on-failure](/cmd-options/pause-on-failure)
+- [--remaining-actions](/cli/cmd-options/remaining-actions)
 
-- [--remaining-actions](/cmd-options/remaining-actions)
+- [--run-timeout](/cli/cmd-options/run-timeout)
 
-- [--run-timeout](/cmd-options/run-timeout)
+- [--schedule-id](/cli/cmd-options/schedule-id)
 
-- [--schedule-id](/cmd-options/schedule-id)
+- [--search-attribute](/cli/cmd-options/search-attribute)
 
-- [--search-attribute](/cmd-options/search-attribute)
+- [--start-time](/cli/cmd-options/start-time)
 
-- [--start-time](/cmd-options/start-time)
+- [--task-queue](/cli/cmd-options/task-queue)
 
-- [--task-queue](/cmd-options/task-queue)
+- [--task-timeout](/cli/cmd-options/task-timeout)
 
-- [--task-timeout](/cmd-options/task-timeout)
+- [--time-zone](/cli/cmd-options/time-zone)
 
-- [--time-zone](/cmd-options/time-zone)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--workflow-id](/cli/cmd-options/workflow-id)
 
-- [--workflow-id](/cmd-options/workflow-id)
+- [--workflow-type](/cli/cmd-options/workflow-type)
 
-- [--workflow-type](/cmd-options/workflow-type)

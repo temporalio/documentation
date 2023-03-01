@@ -6,5 +6,4 @@ description: Definition for the concurrency command option.
 tags:
 	- cli
 ---
-
 Request concurrency. (default: 10)

@@ -13,52 +13,53 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal operator namespace update [command options] [arguments]`
 
-- [--active-cluster](/cmd-options/active-cluster)
+- [--active-cluster](/cli/cmd-options/active-cluster)
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--cluster](/cmd-options/cluster)
+- [--cluster](/cli/cmd-options/cluster)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--data](/cmd-options/data)
+- [--data](/cli/cmd-options/data)
 
-- [--description](/cmd-options/description)
+- [--description](/cli/cmd-options/description)
 
-- [--email](/cmd-options/email)
+- [--email](/cli/cmd-options/email)
 
-- [--env](/cmd-options/env)
+- [--env](/cli/cmd-options/env)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--history-archival-state](/cmd-options/history-archival-state)
+- [--history-archival-state](/cli/cmd-options/history-archival-state)
 
-- [--history-uri](/cmd-options/history-uri)
+- [--history-uri](/cli/cmd-options/history-uri)
 
-- [--namespace](/cmd-options/namespace)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--promote-global](/cmd-options/promote-global)
+- [--promote-global](/cli/cmd-options/promote-global)
 
-- [--reason](/cmd-options/reason)
+- [--reason](/cli/cmd-options/reason)
 
-- [--retention](/cmd-options/retention)
+- [--retention](/cli/cmd-options/retention)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--visibility-archival-state](/cmd-options/visibility-archival-state)
+- [--visibility-archival-state](/cli/cmd-options/visibility-archival-state)
 
-- [--visibility-uri](/cmd-options/visibility-uri)
+- [--visibility-uri](/cli/cmd-options/visibility-uri)
+

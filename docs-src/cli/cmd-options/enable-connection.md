@@ -6,5 +6,4 @@ description: Definition for the enable-connection command option.
 tags:
 	- cli
 ---
-
 Enable cross-cluster connection.

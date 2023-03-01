@@ -6,5 +6,4 @@ description: Definition for the time-format command option.
 tags:
 	- cli
 ---
-
 Format time as: relative, iso, raw. (default: relative)

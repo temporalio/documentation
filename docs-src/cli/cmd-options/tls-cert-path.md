@@ -6,5 +6,4 @@ description: Definition for the tls-cert-path command option.
 tags:
 	- cli
 ---
-
 Path to x509 certificate.

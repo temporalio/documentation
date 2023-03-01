@@ -11,13 +11,10 @@ tags:
 This Activity takes a single `name` parameter of type `string`.
 
 <!--SNIPSTART typescript-activity-fn -->
-
 [snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
-
 ```ts
 export async function greet(name: string): Promise<string> {
   return `👋 Hello, ${name}!`;
 }
 ```
-
 <!--SNIPEND-->

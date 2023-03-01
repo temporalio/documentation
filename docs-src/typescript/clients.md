@@ -31,13 +31,11 @@ For more information, see [Workers and Task Queues in TypeScript](/typescript/wo
 The following code is a `WorkflowClient` example, from our Hello World sample:
 
 <!--SNIPSTART typescript-hello-client -->
-
 [hello-world/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/hello-world/src/client.ts)
-
 ```ts
-import { Client, Connection } from '@temporalio/client';
-import { nanoid } from 'nanoid';
+import { Connection, Client } from '@temporalio/client';
 import { example } from './workflows';
+import { nanoid } from 'nanoid';
 
 async function run() {
   // Connect to the default Server location (localhost:7233)
@@ -71,7 +69,6 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 The rest of this document explains each step in detail with practical usage tips.
@@ -322,36 +319,33 @@ Under the hood of a `WorkflowClient`, the `Connection` is actually powered by a 
 This Service is capable of making a wider range of introspection calls.
 
 <!--SNIPSTART typescript-grpc-call-basic-->
-
 [grpc-calls/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/grpc-calls/src/client.ts)
-
 ```ts
-const connection = await Connection.connect();
+  const connection = await Connection.connect();
 
-// // normal way of starting a Workflow, with a Client
-// const client = new Client({ connection });
-// await client.workflow.start(/* etc */);
+  // // normal way of starting a Workflow, with a Client
+  // const client = new Client({ connection });
+  // await client.workflow.start(/* etc */);
 
-const payload = defaultPayloadConverter.toPayload('Temporal');
-if (payload == null) {
-  // This should not happen with standard inputs and the defaultPayloadConverter.
-  throw new TypeError('Could not convert string to payload');
-}
-// equivalent grpc call to client.start()
-await connection.workflowService.startWorkflowExecution({
-  namespace: 'default',
-  workflowId,
-  requestId,
-  taskQueue: { name: 'grpc-calls' },
-  workflowType: { name: 'example' },
-  input: {
-    // Client passes data through Data Converter to convert to Payloads; with gRPC calls have to do it yourself
-    // import { defaultPayloadConverter, toPayloads } from '@temporalio/common';
-    payloads: [payload],
-  },
-});
+  const payload = defaultPayloadConverter.toPayload('Temporal');
+  if (payload == null) {
+    // This should not happen with standard inputs and the defaultPayloadConverter.
+    throw new TypeError('Could not convert string to payload');
+  }
+  // equivalent grpc call to client.start()
+  await connection.workflowService.startWorkflowExecution({
+    namespace: 'default',
+    workflowId,
+    requestId,
+    taskQueue: { name: 'grpc-calls' },
+    workflowType: { name: 'example' },
+    input: {
+      // Client passes data through Data Converter to convert to Payloads; with gRPC calls have to do it yourself
+      // import { defaultPayloadConverter, toPayloads } from '@temporalio/common';
+      payloads: [payload],
+    },
+  });
 ```
-
 <!--SNIPEND-->
 
 Using gRPC calls is often the only way to access some of the more advanced queries you can make from Temporal Server.
@@ -362,18 +356,15 @@ We highlight some queries of interest here:
 </summary>
 
 <!--SNIPSTART typescript-grpc-call-getWorkflowExecutionHistory-->
-
 [grpc-calls/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/grpc-calls/src/client.ts)
-
 ```ts
-// no equivalent call in client, this is only available as an SDK call
-const res = await connection.workflowService.getWorkflowExecutionHistory({
-  execution: { workflowId },
-  namespace: 'default',
-});
-console.log(res.history);
+  // no equivalent call in client, this is only available as an SDK call
+  const res = await connection.workflowService.getWorkflowExecutionHistory({
+    execution: { workflowId },
+    namespace: 'default',
+  });
+  console.log(res.history);
 ```
-
 <!--SNIPEND-->
 
 Outputs something like:
@@ -413,18 +404,15 @@ Outputs something like:
 </summary>
 
 <!--SNIPSTART typescript-grpc-call-listWorkflowExecutions-->
-
 [grpc-calls/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/grpc-calls/src/client.ts)
-
 ```ts
-// no equivalent call in client, this is only available as an SDK call
-// requires ElasticSearch
-const results = await connection.workflowService.listWorkflowExecutions({
-  namespace: 'default',
-});
-console.table(results.executions);
+  // no equivalent call in client, this is only available as an SDK call
+  // requires ElasticSearch
+  const results = await connection.workflowService.listWorkflowExecutions({
+    namespace: 'default',
+  });
+  console.table(results.executions);
 ```
-
 <!--SNIPEND-->
 
 Outputs something like:

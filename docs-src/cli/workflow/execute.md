@@ -16,72 +16,72 @@ Use the command options listed below to change how the Workflow Execution behave
 Make sure to write the command in this format:
 `temporal workflow execute [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--cron](/cmd-options/cron)
-  │ │ │ │ │
+- [--cron](/cli/cmd-options/cron)
+│ │ │ │ │
+* * * * *
 
----
+- [--env](/cli/cmd-options/env)
 
-- [--env](/cmd-options/env)
+- [--execution-timeout](/cli/cmd-options/execution-timeout)
 
-- [--execution-timeout](/cmd-options/execution-timeout)
+- [--fields](/cli/cmd-options/fields)
 
-- [--fields](/cmd-options/fields)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--id-reuse-policy](/cli/cmd-options/id-reuse-policy)
 
-- [--id-reuse-policy](/cmd-options/id-reuse-policy)
+- [--input](/cli/cmd-options/input)
 
-- [--input](/cmd-options/input)
+- [--input-file](/cli/cmd-options/input-file)
 
-- [--input-file](/cmd-options/input-file)
+- [--limit](/cli/cmd-options/limit)
 
-- [--limit](/cmd-options/limit)
+- [--max-field-length](/cli/cmd-options/max-field-length)
 
-- [--max-field-length](/cmd-options/max-field-length)
+- [--memo](/cli/cmd-options/memo)
+Use valid JSON formats for value.
 
-- [--memo](/cmd-options/memo)
-  Use valid JSON formats for value.
+- [--memo-file](/cli/cmd-options/memo-file)
 
-- [--memo-file](/cmd-options/memo-file)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--namespace](/cmd-options/namespace)
+- [--no-pager](/cli/cmd-options/no-pager)
 
-- [--no-pager](/cmd-options/no-pager)
+- [--output](/cli/cmd-options/output)
 
-- [--output](/cmd-options/output)
+- [--pager](/cli/cmd-options/pager)
 
-- [--pager](/cmd-options/pager)
+- [--run-timeout](/cli/cmd-options/run-timeout)
 
-- [--run-timeout](/cmd-options/run-timeout)
+- [--search-attribute](/cli/cmd-options/search-attribute)
 
-- [--search-attribute](/cmd-options/search-attribute)
+- [--task-queue](/cli/cmd-options/task-queue)
 
-- [--task-queue](/cmd-options/task-queue)
+- [--task-timeout](/cli/cmd-options/task-timeout)
 
-- [--task-timeout](/cmd-options/task-timeout)
+- [--time-format](/cli/cmd-options/time-format)
 
-- [--time-format](/cmd-options/time-format)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--type](/cli/cmd-options/type)
 
-- [--type](/cmd-options/type)
+- [--workflow-id](/cli/cmd-options/workflow-id)
 
-- [--workflow-id](/cmd-options/workflow-id)

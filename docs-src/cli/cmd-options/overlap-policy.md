@@ -6,5 +6,4 @@ description: Definition for the overlap-policy command option.
 tags:
 	- cli
 ---
-
-Overlap policy: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll.
+Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).

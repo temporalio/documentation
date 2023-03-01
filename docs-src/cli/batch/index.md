@@ -18,3 +18,4 @@ Running Signal, Terminate, or Cancel with the `--query` modifier will start a Ba
 
 A successfully started Batch job will return a Job ID.
 Use this Job ID to execute other actions on the Batch job.
+

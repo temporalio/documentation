@@ -6,5 +6,4 @@ description: Definition for the skip-base-is-not-current command option.
 tags:
 	- cli
 ---
-
 Skip a Workflow Execution if the base Run is not the current Run.

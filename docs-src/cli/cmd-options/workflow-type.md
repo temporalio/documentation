@@ -6,5 +6,4 @@ description: Definition for the workflow-type command option.
 tags:
 	- cli
 ---
-
 Workflow type name.

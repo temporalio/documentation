@@ -6,5 +6,4 @@ description: Definition for the dry-run command option.
 tags:
 	- cli
 ---
-
 Simulate reset without resetting any Workflow Executions.

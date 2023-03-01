@@ -6,5 +6,4 @@ description: Definition for the activity-id command option.
 tags:
 	- cli
 ---
-
 Identifies the Activity Execution.

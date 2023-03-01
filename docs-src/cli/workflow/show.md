@@ -13,52 +13,53 @@ Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
 `temporal workflow show [command options] [arguments]`
 
-- [--address](/cmd-options/address)
+- [--address](/cli/cmd-options/address)
 
-- [--codec-auth](/cmd-options/codec-auth)
+- [--codec-auth](/cli/cmd-options/codec-auth)
 
-- [--codec-endpoint](/cmd-options/codec-endpoint)
+- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
 
-- [--color](/cmd-options/color)
+- [--color](/cli/cmd-options/color)
 
-- [--context-timeout](/cmd-options/context-timeout)
+- [--context-timeout](/cli/cmd-options/context-timeout)
 
-- [--env](/cmd-options/env)
+- [--env](/cli/cmd-options/env)
 
-- [--fields](/cmd-options/fields)
+- [--fields](/cli/cmd-options/fields)
 
-- [--follow](/cmd-options/follow)
+- [--follow](/cli/cmd-options/follow)
 
-- [--grpc-meta](/cmd-options/grpc-meta)
+- [--grpc-meta](/cli/cmd-options/grpc-meta)
 
-- [--limit](/cmd-options/limit)
+- [--limit](/cli/cmd-options/limit)
 
-- [--max-field-length](/cmd-options/max-field-length)
+- [--max-field-length](/cli/cmd-options/max-field-length)
 
-- [--namespace](/cmd-options/namespace)
+- [--namespace](/cli/cmd-options/namespace)
 
-- [--no-pager](/cmd-options/no-pager)
+- [--no-pager](/cli/cmd-options/no-pager)
 
-- [--output](/cmd-options/output)
+- [--output](/cli/cmd-options/output)
 
-- [--output-filename](/cmd-options/output-filename)
+- [--output-filename](/cli/cmd-options/output-filename)
 
-- [--pager](/cmd-options/pager)
+- [--pager](/cli/cmd-options/pager)
 
-- [--reset-points](/cmd-options/reset-points)
+- [--reset-points](/cli/cmd-options/reset-points)
 
-- [--run-id](/cmd-options/run-id)
+- [--run-id](/cli/cmd-options/run-id)
 
-- [--time-format](/cmd-options/time-format)
+- [--time-format](/cli/cmd-options/time-format)
 
-- [--tls-ca-path](/cmd-options/tls-ca-path)
+- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
 
-- [--tls-cert-path](/cmd-options/tls-cert-path)
+- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
 
-- [--tls-disable-host-verification](/cmd-options/tls-disable-host-verification)
+- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
 
-- [--tls-key-path](/cmd-options/tls-key-path)
+- [--tls-key-path](/cli/cmd-options/tls-key-path)
 
-- [--tls-server-name](/cmd-options/tls-server-name)
+- [--tls-server-name](/cli/cmd-options/tls-server-name)
 
-- [--workflow-id](/cmd-options/workflow-id)
+- [--workflow-id](/cli/cmd-options/workflow-id)
+
