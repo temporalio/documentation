@@ -316,4 +316,3 @@ The `tcld account metrics disable` command disables the metrics endpoint for the
 `tcld account metrics disable`
 
 The command has no modifiers.
-
