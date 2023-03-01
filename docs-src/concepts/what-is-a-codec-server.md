@@ -12,7 +12,7 @@ A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [We
 - [How to set up a Codec Server](/security/how-to-set-up-codec-server)
 
 By default, tctl and the Web UI use the [Default Data Converter](/concepts/what-is-a-data-converter#default-data-converter) without a [Payload Codec](/concepts/what-is-a-data-converter#payload-codec).
-If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed).
+If you use a Payload Codec with your SDK, the Payload data displayed in the Web UI/tctl will be encoded (for example, it may be encrypted or compressed).
 In order to convert the data to its original format, you can configure the Web UI/tctl to use a Codec Server that uses your Payload Codec.
 
 ![](/img/tctl-diagram-codec-server.svg)

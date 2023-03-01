@@ -92,10 +92,7 @@ module.exports = {
         id: "production-readiness/index",
       },
       items: [
-        "production-readiness/bootstrap",
         "production-readiness/develop",
-        "production-readiness/prepare",
-        "production-readiness/run",
       ],
     },
     {
