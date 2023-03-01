@@ -156,7 +156,7 @@ Fix all build issues before submitting a PR.
 
 ## Retrieving documents from the CLI repository
 
-The `cli` repository contains a tool that automatically generates the reference documents for this feature. 
+The `cli` repository contains a tool that automatically generates the reference documents. 
 These documents will be updated per CLI release.
 
 To get the documents, run `yarn assemble --cli`.
