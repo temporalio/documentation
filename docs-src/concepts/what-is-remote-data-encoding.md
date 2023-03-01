@@ -10,7 +10,7 @@ tags:
 
 Remote data encoding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.
 
-Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-web-ui-and-tctl)
+Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-web-ui-and-tctl).
 
 To run data encoding/decoding remotely, use a [Codec Server](/concepts/what-is-a-codec-server). A Codec Server is an HTTP server that is configured to use your custom Payload Codec with encryption/compression and decryption/decompression logic.
 
