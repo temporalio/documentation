@@ -1,8 +1,8 @@
 ---
-id: schedule
-title: Temporal CLI schedule command reference
-sidebar_label: schedule
-description: How to use the Temporal CLI schedule command
+id: server
+title: Temporal CLI server command reference
+sidebar_label: server
+description: How to use the Temporal CLI server command
 toc_max_heading_level: 4
 ---
 
@@ -11,9 +11,14 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+Server commands allow you to start and manage the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> from the command line.
 
+Currently, `cli` server functionality extends to starting the Server.
 
 ## start-dev
+
+The `temporal server start-dev` command starts the Temporal Server on `localhost:7233`.
+The results of any command run on the Server can be viewed at http://localhost:7233.
 
 - <a class="tdlp" href="/cli/cmd-options#config">--config<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  config</span><br /><br /><span class="tdlppd">Definition for the config command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#config">Learn more</a></span></span></a>
 
@@ -44,5 +49,4 @@ import TabItem from '@theme/TabItem';
 - <a class="tdlp" href="/cli/cmd-options#ui-ip">--ui-ip<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  ui-ip</span><br /><br /><span class="tdlppd">Definition for the ui-ip command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-ip">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#ui-port">--ui-port<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  ui-port</span><br /><br /><span class="tdlppd">Definition for the ui-port command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-port">Learn more</a></span></span></a>
-
 

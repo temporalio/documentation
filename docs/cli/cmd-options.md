@@ -73,7 +73,8 @@ Optional Cron Schedule for the Workflow. Cron spec is formatted as:
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
-* * * * *
+
+---
 
 ## data
 
