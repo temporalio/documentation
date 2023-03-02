@@ -14,7 +14,7 @@ For example, any following objects are persisted in the Workflow Execution Event
 - inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
 - inputs to your [Signal](/concepts/what-is-a-signal)
 - metadata information
-- results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concept/what-is-a-side-effect)
+- results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
 - [Search Attributes](/concepts/what-is-a-search-attribute)
 - [Application errors and failures](/kb/failures).
 
