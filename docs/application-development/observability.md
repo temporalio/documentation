@@ -936,7 +936,7 @@ class GreetingWorkflow implements GreetingWorkflowInterface
 </TabItem>
 <TabItem value="python">
 
-To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function and set it to an empty list.
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method.
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
