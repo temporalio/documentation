@@ -15,7 +15,6 @@ Schedules need to follow a format like the example shown here:
 ```
 temporal schedule create \
 --sid 'your-schedule-id' \
---cron '3 11 * * Fri' \
 --wid 'your-workflow-id' \
 --tq 'your-task-queue' \
 --type 'YourWorkflowType'

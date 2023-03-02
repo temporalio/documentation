@@ -47,7 +47,6 @@ Make sure to write the command in this format:
 - [--max-field-length](/cli/cmd-options/max-field-length)
 
 - [--memo](/cli/cmd-options/memo)
-  Use valid JSON formats for value.
 
 - [--memo-file](/cli/cmd-options/memo-file)
 

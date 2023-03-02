@@ -25,7 +25,7 @@ The host and port (formatted as host:port) for the Temporal Frontend Service.
 
 ## archived
 
-List archived Workflow Executions.
+List archived Workflow Executions. Currently an experimental feature.
 
 ## calendar
 
@@ -72,6 +72,8 @@ Optional Cron Schedule for the Workflow. Cron spec is formatted as:
 │ │ ┌───────────── day of the month (1 - 31)
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
+│ │ │ │ │
+* * * * *
 
 ## data
 
@@ -177,11 +179,7 @@ Allows the same Workflow Id to be used in a new Workflow Execution (AllowDuplica
 
 ## input-file
 
-Passes optional input for the Workflow from a JSON file. 
-If there are multiple JSON files, concatenate them and separate by space or newline. 
-Input from the command line will overwrite file input.
-
-
+Passes optional input for the Workflow from a JSON file. If there are multiple JSON files, concatenate them and separate by space or newline. Input from the command line will overwrite file input.
 
 ## input-parallelism
 
@@ -194,10 +192,7 @@ Separator for the input file. The default is a tab (	). (default: 	)
 ## input
 
 Alias: **-i**
-
 Optional JSON input to provide to the Workflow. Pass "null" for null values.
-
-For multiple parameters, concatenate them and separate by space.
 
 ## interval
 
@@ -233,8 +228,7 @@ Maximum length for each attribute field. (default: 0)
 
 ## memo
 
-Set a memo on a schedule (format: key=value). 
-Use valid JSON formats for value.
+Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
 
 ## memo-file
 
@@ -361,7 +355,7 @@ Schedule Id
 
 ## search-attribute
 
-Set Search Attribute on a schedule. Format: key=value. Use valid JSON formats for value.
+Set Search Attribute on a schedule (format: key=value). Use valid JSON formats for value.
 
 ## skip-base-is-not-current
 

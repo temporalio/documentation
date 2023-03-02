@@ -8,7 +8,4 @@ tags:
 ---
 
 Alias: **-i**
-
 Optional JSON input to provide to the Workflow. Pass "null" for null values.
-
-For multiple parameters, concatenate them and separate by space.

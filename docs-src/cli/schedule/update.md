@@ -14,7 +14,6 @@ Like `temporal schedule create`, updated Schedules need to follow a certain form
 ```
 temporal schedule update 			\
 --sid 'your-schedule-id' 	\
---cron '3 11 * * Fri' 		\
 --wid 'your-workflow-id' 	\
 --tq 'your-task-queue' 		\
 --type 'YourWorkflowType'

@@ -6,7 +6,3 @@ description: Commands for managing the Temporal Server.
 tags:
 	- cli
 ---
-
-Server commands allow you to start and manage the [Temporal Server](/concepts/what-is-a-temporal-server) from the command line.
-
-Currently, `cli` server functionality extends to starting the Server.

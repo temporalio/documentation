@@ -11,14 +11,9 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Server commands allow you to start and manage the [Temporal Server](/concepts/what-is-a-temporal-server) from the command line.
 
-Currently, `cli` server functionality extends to starting the Server. 
 
 ## start-dev
-
-The `temporal server start-dev` command starts the Temporal Server on `localhost:7233`.
-The results of any command run on the Server can be viewed at http://localhost:7233.
 
 - <a class="tdlp" href="/cli/cmd-options#config">--config<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  config</span><br /><br /><span class="tdlppd">Definition for the config command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#config">Learn more</a></span></span></a>
 

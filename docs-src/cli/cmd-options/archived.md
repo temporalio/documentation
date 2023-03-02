@@ -7,4 +7,4 @@ tags:
 	- cli
 ---
 
-List archived Workflow Executions.
+List archived Workflow Executions. Currently an experimental feature.

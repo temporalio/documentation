@@ -225,7 +225,6 @@ Make sure to write the command in this format:
 - <a class="tdlp" href="/cli/cmd-options#max-field-length">--max-field-length<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  max-field-length</span><br /><br /><span class="tdlppd">Definition for the max-field-length command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#max-field-length">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#memo">--memo<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  memo</span><br /><br /><span class="tdlppd">Definition for the memo command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#memo">Learn more</a></span></span></a>
-Use valid JSON formats for value.
 
 - <a class="tdlp" href="/cli/cmd-options#memo-file">--memo-file<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  memo-file</span><br /><br /><span class="tdlppd">Definition for the memo-file command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#memo-file">Learn more</a></span></span></a>
 

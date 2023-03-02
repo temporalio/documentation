@@ -7,5 +7,4 @@ tags:
 	- cli
 ---
 
-Set a memo on a schedule (format: key=value).
-Use valid JSON formats for value.
+Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
