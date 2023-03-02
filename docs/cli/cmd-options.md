@@ -177,7 +177,11 @@ Allows the same Workflow Id to be used in a new Workflow Execution (AllowDuplica
 
 ## input-file
 
-Passes optional input for the Workflow from a JSON file. If there are multiple JSON files, concatenate them and separate by space or newline. Input from the command line will overwrite file input.
+Passes optional input for the Workflow from a JSON file. 
+If there are multiple JSON files, concatenate them and separate by space or newline. 
+Input from the command line will overwrite file input.
+
+
 
 ## input-parallelism
 
@@ -190,7 +194,10 @@ Separator for the input file. The default is a tab (	). (default: 	)
 ## input
 
 Alias: **-i**
+
 Optional JSON input to provide to the Workflow. Pass "null" for null values.
+
+For multiple parameters, concatenate them and separate by space.
 
 ## interval
 
@@ -226,7 +233,8 @@ Maximum length for each attribute field. (default: 0)
 
 ## memo
 
-Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
+Set a memo on a schedule (format: key=value). 
+Use valid JSON formats for value.
 
 ## memo-file
 

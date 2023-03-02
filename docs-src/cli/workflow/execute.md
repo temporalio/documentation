@@ -27,9 +27,6 @@ Make sure to write the command in this format:
 - [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--cron](/cli/cmd-options/cron)
-  │ │ │ │ │
-
----
 
 - [--env](/cli/cmd-options/env)
 

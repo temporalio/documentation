@@ -40,9 +40,6 @@ Use the options provided below to change the command's behavior.
 - [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--cron](/cli/cmd-options/cron)
-  │ │ │ │ │
-
----
 
 - [--end-time](/cli/cmd-options/end-time)
 

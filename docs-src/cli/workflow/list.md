@@ -17,7 +17,6 @@ Make sure to write the command as follows:
 - [--address](/cli/cmd-options/address)
 
 - [--archived](/cli/cmd-options/archived)
-  Currently an experimental feature.
 
 - [--codec-auth](/cli/cmd-options/codec-auth)
 
