@@ -11,12 +11,12 @@ tags:
 Temporal Server stores and persists the data handled in your Workflow Execution.
 For example, any following objects are persisted in the Workflow Execution Event History:
 
-- inputs and outputs/results in your Workflows, Activities, and Child Workflows
-- inputs to your Signals
+- inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
+- inputs to your [Signal](/concepts/what-is-a-signal)
 - metadata information
-- results of Local Activities, Side Effects
-- Search Attributes
-- Application Errors and Failures.
+- results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concept/what-is-a-side-effect)
+- [Search Attributes](/concepts/what-is-a-search-attribute)
+- [Application errors and failures](/kb/failures).
 
 You can encrypt this data (except for Search Attributes and metadata) to ensure that any sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
