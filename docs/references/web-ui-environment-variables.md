@@ -182,7 +182,7 @@ Because of this, TLS operates a go-between server.
 
 ## `TEMPORAL_CODEC_ENDPOINT`
 
-The endpoint for the <a class="tdlp" href="/security#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#codec-server">Learn more</a></span></span></a>, if configured.
+The endpoint for the <a class="tdlp" href="/dataconversion#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#codec-server">Learn more</a></span></span></a>, if configured.
 
 ## `TEMPORAL_CODEC_PASS_ACCESS_TOKEN`
 

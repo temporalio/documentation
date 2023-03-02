@@ -48,7 +48,7 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
-- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>.
+- The arguments must be <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
 
 <Tabs
 defaultValue="go"
@@ -799,7 +799,7 @@ A <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/i
 A Query has a name and can have arguments.
 
 - The name, also called a Query type, is a string.
-- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>.
+- The arguments must be <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
 
 <Tabs
 defaultValue="go"
@@ -4076,7 +4076,7 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 ## Custom Payload Conversion
 
-Most SDKs provide a <a class="tdlp" href="/dataconversion#payload-converter"> `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a> that can be customized to convert custom data types to bytes and back.
+Most SDKs provide a <a class="tdlp" href="/dataconversion#payload-converter">`PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a> that can be customized to convert custom data types to bytes and back.
 
 Note that creating a custom Payload Converter is optional, and only needed if the default Data Converter does not support your custom values.
 
@@ -4204,3 +4204,4 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 </TabItem>
 </Tabs>
+
