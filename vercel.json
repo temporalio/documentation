@@ -1050,11 +1050,11 @@
     },
     {
       "source": "/security#codec-server",
-      "destination":"/dataconversion"
+      "destination": "/dataconversion"
     },
     {
       "source": "/security#codec-server",
-      "destination" : "/dataconversion#codec-server"
+      "destination": "/dataconversion#codec-server"
     }
   ]
 }
