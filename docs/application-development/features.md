@@ -1445,9 +1445,9 @@ handle = await client.start_workflow(
     task_queue="your-task-queue",
     start_signal="your-signal-name",
     # Set Workflow Timeout duration
-    execution_timeout="timedelta(seconds=2)",
-    # run_timeout="timedelta(seconds=2)",
-    # task_timeout="timedelta(seconds=2)",
+    execution_timeout=timedelta(seconds=2),
+    # run_timeout=timedelta(seconds=2),
+    # task_timeout=timedelta(seconds=2),
 )
 ```
 
@@ -1459,9 +1459,9 @@ handle = await client.execute_workflow(
     task_queue="your-task-queue",
     start_signal="your-signal-name",
     # Set Workflow Timeout duration
-    execution_timeout="timedelta(seconds=2)",
-    # run_timeout="timedelta(seconds=2)",
-    # task_timeout="timedelta(seconds=2)",
+    execution_timeout=timedelta(seconds=2),
+    # run_timeout=timedelta(seconds=2),
+    # task_timeout=timedelta(seconds=2),
 )
 ```
 
