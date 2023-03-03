@@ -27,7 +27,7 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 :::tip
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a support ticket.
+If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
 
 :::
 
@@ -55,7 +55,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
-   (If you need to change this value later, contact Temporal Support.)
+   (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Click **Create Namespace**.
 
