@@ -13,7 +13,7 @@ ssdi:
   - Support for PostgreSQL v9.6 to v11 will be deprecated by Temporal Server v1.21; We recommend upgrading to PostgreSQL 12+.
 ---
 
-You can set PostgreSQL as your [Visibility store](/concepts/visibility).
+You can set PostgreSQL as your [Visibility store](/concepts/what-is-visibility).
 Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.

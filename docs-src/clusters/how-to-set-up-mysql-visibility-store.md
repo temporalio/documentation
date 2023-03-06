@@ -13,7 +13,7 @@ ssdi:
   - With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later
 ---
 
-You can set MySQL as your [Visibility store](/concepts/visibility).
+You can set MySQL as your [Visibility store](/concepts/what-is-visibility).
 Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
