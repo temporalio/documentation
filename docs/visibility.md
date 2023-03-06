@@ -149,7 +149,7 @@ Search Attribute values are assigned to a specific Workflow Execution, and are a
 
 When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attributes are carried over to the new Workflow Run by default.
 
-#### Default Search Attributes
+### Default Search Attributes
 
 A Temporal Cluster has a set of default Search Attributes already available. Default Search Attribtues are set globally across Namespaces.
 These Search Attributes are created when the initial index is created.
@@ -189,7 +189,7 @@ You can use the default Search Attributes in a List Filter, say in your WebUI or
 - Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter. For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType = 'YourWorkflow'"`.
 - With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions. For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and ExecutionStatus != 'Running' and (StartTime > '2021-06-07T16:46:34.236-08:00' or CloseTime < '2021-06-08T16:46:34-08:00')"`
 
-#### Custom Search Attributes
+### Custom Search Attributes
 
 You can create custom Search Attributes with unique key names that are relevant to your business needs.
 
@@ -205,9 +205,9 @@ However, if using any of the [supported SQL databases](/cluster-deployment-guide
 
 See [Search Attribute limits](#search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
-#### Types
+#### Supported types
 
-Search Attributes must be one of the following types:
+Custom Search Attributes must be one of the following types:
 
 - Bool
 - Datetime
@@ -232,7 +232,7 @@ Note:
 - With Temporal Server v1.20 and later, the **Keyword** type will only support a single value. To store a list of values, use **KeywordList**.
 - The **Text** type cannot be used in the "Order By" clause.
 
-#### Search Attributes limits
+#### Custom Search Attributes limits
 
 <!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
 
@@ -241,7 +241,7 @@ The following table lists the maximum number of custom Search Attributes you can
 | Search Attribute Type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
 | --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
 | Keyword               |            10             |             10             |             10             |       20       |
-| KeywordList           |             3             |             10             |             10             |       20       |
+| KeywordList           |             3             |             3              |             3              |       20       |
 | Text                  |             3             |             3              |             3              |       5        |
 | Datetime              |             3             |             3              |             3              |       20       |
 | Int                   |             3             |             3              |             3              |       20       |
@@ -269,7 +269,7 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
 
-#### Usage
+### Usage
 
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>, Search Attributes must be added to a Workflow Execution as metadata.
