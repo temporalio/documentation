@@ -10,13 +10,13 @@ tags:
 ssdi:
   - PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later
   - With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later
+  - Support for PostgreSQL v9.6 to v11 will be deprecated by Temporal Server v1.21; We recommend upgrading to PostgreSQL 12+.
 ---
 
-You can set PostgreSQL as your Visibility store with any other [supported Persistence databases](/concepts/what-is-a-temporal-cluster#dependency-versions).
+You can set PostgreSQL as your [Visibility store](/concepts/visibility).
+Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
-Verify supported versions before you proceed.
-
-If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, you must register your Search Attributes with a Namespace. See [Search Attributes](/application-development/observability#visibility) for details.
+If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
 
 **Persistence configuration**
 

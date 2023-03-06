@@ -37,8 +37,8 @@ The `=` operator works like **CONTAINS** to find Workflows with Search Attribute
 
 <!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
 
-For example, if you have a custom Search Attribute named `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description=quick` or `Description=fox` will successfully return the Workflow.
-However, partial word searches such as `Description=qui` or `Description=laz` will not return the Workflow.
+For example, if you have a custom Search Attribute named `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description='quick'` or `Description='fox'` will successfully return the Workflow.
+However, partial word searches such as `Description='qui'` or `Description='laz'` will not return the Workflow.
 This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
 
 ### Efficient API usage

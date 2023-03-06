@@ -14,7 +14,7 @@ ssdi:
   - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
 ---
 
-You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load. Elasticsearch is recommended for large-scale operations on the Temporal Cluster, and is required if you use Cassandra as your [Persistence store](/concepts/what-is-a-temporal-cluster#persistence).
+You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load. Elasticsearch is recommended for large-scale operations on the Temporal Cluster.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 

@@ -2,7 +2,7 @@
 id: how-to-set-up-mysql-visibility-store
 title: How to set up MySQL Visibility store
 sidebar_label: MySQL
-description: You can set MySQL as your Visibility store with any other supported Persistence databases.
+description: You can set MySQL (v5.7 and later) as your Visibility store.
 tags:
   - operation-guide
   - filtered-lists
@@ -10,13 +10,13 @@ tags:
 ssdi:
   - MySQL v5.7 and later
   - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20
-  - With Temporal Cluster version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later
+  - With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later
 ---
 
-You can set MySQL as your Visibility store with any other [supported Persistence databases](/concepts/what-is-a-temporal-cluster#dependency-versions).
-Verify supported versions before you proceed.
+You can set MySQL as your [Visibility store](/concepts/visibility).
+Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
-If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, you must register your Search Attributes with a Namespace. See [Search Attributes](/application-development/observability#visibility) for details.
+If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
 
 **Persistence configuration**
 
@@ -82,12 +82,13 @@ The following example shows how the [auto-setup.sh](https://github.com/temporali
 setup_mysql_schema() {
     #...
     # use valid schema for the version of the database you want to set up for Visibility.
-    VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/mysql/v57/visibility/versioned
+    VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/mysql/${MYSQL_VERSION_DIR}/visibility/versioned
     if [[ ${SKIP_DB_CREATE} != true ]]; then
         temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" create
     fi
+    temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" setup-schema -v 0.0
     temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" update-schema -d "${VISIBILITY_SCHEMA_DIR}"
-  #...
+#...
 }
 ```
 

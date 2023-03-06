@@ -11,9 +11,14 @@ ssdi:
   - SQLite v3.31.0 and later
 ---
 
-You can set SQLite as your Visibility store with any other [supported Persistence databases](/concepts/what-is-a-temporal-cluster#dependency-versions).
+You can set SQLite as your [Visibility store](/concepts/visibility).
+Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
-Verify supported versions before you proceed.
+Temporal only support in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
+
+You can change the configuration to use file-based database so that it is preserved when Temporal Server stops. However, note that if using a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you will have to delete the database and create it again to upgrade.
+
+If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
 
 **Persistence configuration**
 
@@ -50,6 +55,8 @@ persistence:
           enableHostVerification: false
           serverName: ''
 ```
+
+SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
 
 **Database schema and setup**
 
