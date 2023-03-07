@@ -447,7 +447,14 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 ### Custom Search Attributes
 
-You can create and remove custom Search Attribute keys in your Visibility store. However, with <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> for Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table. Removing a custom Search Attribute removes this mapping with the database field name, but does not remove the data. If you remove a custom Search Attribute and add a new one, it is possible that the new custom Search Attribute is mapped to the database field of the one that was recently removed. This may cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute. These constraints do not apply if you use Elasticsearch.
+You can create and remove custom Search Attribute keys in your Visibility store.
+
+However, with <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> for Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table.
+Removing a custom Search Attribute removes this mapping with the database field name, but does not remove the data.
+If you remove a custom Search Attribute and add a new one, it is possible that the new custom Search Attribute is mapped to the database field of the one that was recently removed.
+This may cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
+
+These constraints do not apply if you use Elasticsearch.
 
 Renaming a custom Search Attribute is not supported.
 
@@ -459,11 +466,13 @@ To create custom Search Attributes in your Visibility store, use [`tctl search-a
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run:
 
-`tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
+`tctl search-attribute create --name CustomSA --type Keyword`
+
+Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute. For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
 
 You can also create a list of custom Search Attributes at the time of setting up your Visibility store.
 
-For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates a list of custom Search Attributes in the Visibility store (that are handy for testing locally), as shown in the following code snippet from the script.
+For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates a list of custom Search Attributes in the Visibility store, as shown in the following code snippet from the script (for SQL databases).
 
 ```bash
 add_custom_search_attributes() {
@@ -486,20 +495,14 @@ add_custom_search_attributes() {
 }
 ```
 
-Note that this script has been updated for Temporal Server v1.20, which requires associating every custom Search Attribute with a Namespace.
+Note that this script has been updated for Temporal Server v1.20, which requires associating every custom Search Attribute with a Namespace when using a SQL database.
 
-For Temporal Server v1.19 and earlier, you can create custom Search Attributes without a Namespace association, as shown in the following example.
+For Temporal Server v1.19 and earlier, or if using Elasticsearch for Advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
 
 ```bash
 add_custom_search_attributes() {
-    until temporal operator search-attribute list --namespace "${DEFAULT_NAMESPACE}"; do
-      echo "Waiting for namespace cache to refresh..."
-      sleep 1
-    done
-    echo "Namespace cache refreshed."
-
-    echo "Adding Custom*Field search attributes."
-tctl --auto_confirm admin cluster add-search-attributes \
+       echo "Adding Custom*Field search attributes."
+       tctl --auto_confirm admin cluster add-search-attributes \
            --name CustomKeywordField --type Keyword \
            --name CustomStringField --type Text \
            --name CustomTextField --type Text \
@@ -507,6 +510,7 @@ tctl --auto_confirm admin cluster add-search-attributes \
            --name CustomDatetimeField --type Datetime \
            --name CustomDoubleField --type Double \
            --name CustomBoolField --type Bool
+ }
 ```
 
 Once your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.
@@ -515,11 +519,11 @@ Once your Visibility store is set up and running, these custom Search Attributes
 
 To remove a Search Attribute key from your Visibility store, use the command `tctl search-attribute remove`.
 
-For example, to remove a custom Search Attribute called `CustomSA` of type Keyword, use the following command:
+For example, if using Elasticsearch for Advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
 `tctl search-attribute remove --name CustomSA`
 
-With Temporal Server v1.20, you will need to specify the Namespace in your command, as shown in the following command:
+With Temporal Server v1.20, if using a SQL database for Advanced Visibility, you will need to specify the Namespace in your command, as shown in the following command:
 
 `tctl  --ns yournamespace search-attribute remove --name CustomSA`
 
