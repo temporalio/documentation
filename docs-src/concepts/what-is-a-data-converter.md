@@ -13,7 +13,9 @@ It is used by the Temporal SDK framework to serialize/deserialize input and outp
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
 
-The Data Converter encodes all data from your application before it is sent to the Temporal Cluster in the Client call. When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the data for processing within your application. This ensures that all your sensitive data exists in its original format only on hosts that you control.
+The Data Converter encodes all data from your application before it is sent to the Temporal Cluster in the Client call.
+When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the data for processing within your application.
+This technique ensures that all your sensitive data exists in its original format only on hosts that you control.
 
 The main pieces of data that run through the Data Converter are arguments and return values:
 

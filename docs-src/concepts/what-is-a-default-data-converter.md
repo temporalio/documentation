@@ -17,11 +17,12 @@ In most SDKs, the default converter supports binary, Protobufs, and JSON and enc
 - Protobuf JSON
 - JSON
 
-In SDKs that cannot determine parameter types at runtime (for example, TypeScript) Protobufs aren't included in the default converter.
+In SDKs that cannot determine parameter types at runtime (for example, TypeScript), Protobufs aren't included in the default converter.
 
 For example:
 
-- If a value is an instance of a Protobuf message, it will be encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
-- If a value isn't null, binary, or a Protobuf, it will be encoded as JSON. If any part of it is not serializable as JSON (for example, a Date—see JSON data types), an error will be thrown.
+- If a value is an instance of a Protobuf message, it is encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
+- If a value isn't null, binary, or a Protobuf, it is encoded as JSON.
+  If any part of it is not serializable as JSON (for example, a Date—see JSON data types), an error is thrown.
 
 The default converter also supports decoding binary Protobufs.

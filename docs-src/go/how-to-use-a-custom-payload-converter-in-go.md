@@ -21,12 +21,13 @@ The following type-specific Payload Converters are available in the Go SDK, list
 - [`NewProtoPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/proto_payload_converter.go#L50)
 - [`NewJSONPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/json_payload_converter.go#L39)
 
-The order in which the `PayloadConverters` are applied is important because during serialization, `DataConverter` will try the `PayloadsConverters` in that specific order until the `PayloadConverter` returns non-nil payload.
-Last `PayloadConverter` should always serialize the value. The `JSONPayloadConverter` is a good candidate for this.
+The order in which the `PayloadConverters` are applied is important because during serialization, `DataConverter` tries the `PayloadsConverters` in that specific order until a `PayloadConverter` returns a non-nil payload.
+The last `PayloadConverter` should always serialize the value.
+(The `JSONPayloadConverter` is a good candidate.)
 
 A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to payload.
 
-To set your custom `PaylaodConverter`, use the [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) to set it with the `DefaultDataConverter` in the Client that you use with your Worker and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) to set it with the `DefaultDataConverter` in the Client that you use with your Worker and to start your Workflow Executions.
 
 ```go
  //need a better example here

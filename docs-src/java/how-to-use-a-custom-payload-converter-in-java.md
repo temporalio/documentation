@@ -10,13 +10,13 @@ tags:
 
 Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and set it with `withPayloadConverterOverrides` to override specific default Data Converter behavior.
 
-The `PayloadConverter` is used to serialize/deserialize method parameters that need to be sent over the wire.
-You can create a custom implementation of the `PayloadConverter` for custom formats, for example:
+The `PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
+You can create a custom implementation of the `PayloadConverter` for custom formats, as shown in the following example:
 
 ```java
-/** Payload converter specific to your custom object*/
+/** Payload Converter specific to your custom object */
 public class YourCustomPayloadConverter implements PayloadConverter {
- //....
+ //...
   @Override
   public String getEncodingType() {
     return "json/plain"; //the encoding type is used to determine what default conversion behavior to override
@@ -45,7 +45,7 @@ You can also use the following implementation classes provided in the Java SDK:
 - [ProtobufJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ProtobufJsonPayloadConverter.html)
 - [ProtobufPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ProtobufPayloadConverter.html)
 
-For example, to create a custom `JacksonJsonPayloadConverter`, use:
+For example, to create a custom `JacksonJsonPayloadConverter`, use the following:
 
 ```java
 private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {

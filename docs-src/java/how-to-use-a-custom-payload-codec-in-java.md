@@ -2,7 +2,7 @@
 id: how-to-use-a-custom-payload-codec-in-java
 title: How to use a custom Payload Codec in Java
 sidebar_label: Custom Payload Codec
-description: Create a custom implementation of the `PayloadCodec` and use it in a `CodecDataConverter` to set a custom Data Converter.
+description: Create a custom implementation of `PayloadCodec` and use it in `CodecDataConverter` to set a custom Data Converter.
 tags:
   - Java
   - developer-guide
@@ -10,9 +10,9 @@ tags:
 
 **Create a custom Payload Codec**
 
-Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
+Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
 
-The Payload Codec does byte to byte conversion, and must be set with a Data Converter to do the conversion to bytes and values.
+The Payload Codec does byte-to-byte conversion and must be set with a Data Converter to do the conversion to bytes and values.
 
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 
@@ -39,11 +39,11 @@ You can also create a remote HTTP server (called Codec Server) to run the encryp
 
 Use `CodecDataConverter` with an instance of a Data Converter and the custom `PayloadCodec` in the `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
-For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use:
+For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use the following code:
 
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-  // client that can be used to start and signal workflows
+  // Client that can be used to start and signal Workflows
   WorkflowClient client =
       WorkflowClient.newInstance(
           service,

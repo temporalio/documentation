@@ -1,7 +1,7 @@
 ---
 id: data-encryption
 title: How to encrypt data using a custom Data Converter
-description: Using encryption in your custom Data Converter ensures that all your sensitive application data is secure when handled by the Temporal Server.
+description: Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.
 sidebar_label: Data Encryption
 tags:
   - guide-context
@@ -9,20 +9,21 @@ tags:
 ---
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
-For example, any following objects are persisted in the Workflow Execution Event History:
+For example, the following objects are persisted in the Workflow Execution Event History:
 
-- inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
-- inputs to your [Signal](/concepts/what-is-a-signal)
-- metadata information
-- results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
+- Inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
+- Inputs to your [Signal](/concepts/what-is-a-signal)
+- Metadata information
+- Results of [Local Activity](/concepts/what-is-a-local-activity) [Side Effects](/concepts/what-is-a-side-effect)
 - [Search Attributes](/concepts/what-is-a-search-attribute)
 - [Application errors and failures](/kb/failures).
 
-You can encrypt this data (except for Search Attributes and metadata) to ensure that any sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
+You can encrypt this data (except for Search Attributes and metadata) to ensure that any sensitive application data is secure when handled by the Temporal Server.
+This technique also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-To encrypt your data, configure your custom encryption logic with a [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
+To encrypt your data, configure your custom encryption logic with [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
 
-A [`PayloadCodec`](/concepts/what-is-a-payload-codec) transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
+A [`PayloadCodec`](/concepts/what-is-a-payload-codec) transforms your payloads (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
 ```bash
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
@@ -30,11 +31,13 @@ User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Serv
 
 A `PayloadCodec` implementation is applied with a custom Data Converter in your Client options.
 
-You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server), and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted payloads locally. See [Decoding payloads on the Web UI and tctl](/concepts/what-is-remote-data-encoding#decoding-payloads-on-the-web-ui-and-tctl) for details.
+You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted payloads locally.
+For details, see [Decoding payloads on the Web UI and tctl](/concepts/what-is-remote-data-encoding#decoding-payloads-on-the-web-ui-and-tctl).
 
-However, if you plan on setting up remote data encoding for your data, ensure that you consider all security implications of running encryptions remotely before implementing it.
+However, if you plan to set up remote data encoding for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
-In codec implementations, we recommend running the function (whether it be compressing, encrypting, etc) on the entire input Payload, and putting the result in a new Payload's data field with a different `encoding` metadata field. That way, the input Payload's metadata is preserved.
+In codec implementations, we recommend running the function (such as compressing or encrypting) on the entire input payload, and putting the result in the data field of a new payload with a different `encoding` metadata field.
+That way, the input payload's metadata is preserved.
 
 Examples for implementing encryption:
 

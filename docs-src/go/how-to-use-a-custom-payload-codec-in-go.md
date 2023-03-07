@@ -12,21 +12,22 @@ tags:
 
 Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
 
-The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes. It must be used in an instance of a [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
+The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes.
+It must be used in an instance of [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
 
 The following example shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 
 ```go
-// Create a new instance of Data Converter
+// Create an instance of Data Converter.
 var DataConverter = NewDataConverter(converter.GetDefaultDataConverter())
 
-// NewDataConverter creates a new data converter that wraps the given data
-// converter with snappy compression, using the custom PayloadCodec called NewPayloadCodec.
+// NewDataConverter creates a Data Converter that wraps the specified Data
+// Converter with snappy compression, using the custom PayloadCodec called NewPayloadCodec.
 func NewDataConverter(underlying converter.DataConverter) converter.DataConverter {
 	return converter.NewCodecDataConverter(underlying, NewPayloadCodec())
 }
 
-// Create a new instance of PaylodCodec
+// Create an instance of PaylodCodec.
 func NewPayloadCodec() converter.PayloadCodec {
 	return &Codec{}
 }
@@ -69,7 +70,7 @@ c, err := client.Dial(client.Options{
 //...
 ```
 
-You can also create a remote HTTP server (called Codec Server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
+You can also create a remote HTTP server (called a codec server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with Web UI and tctl to see decrypted data.
 
 See the following samples for examples:
 
