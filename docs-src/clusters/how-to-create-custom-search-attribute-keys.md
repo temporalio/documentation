@@ -11,6 +11,8 @@ tags:
 
 Before you create [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attribute), verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports Advanced Visibility features.
 
+Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow visibility](/application-development/observability#search-attributes) and [List Filters](/concepts/what-is-a-list-filter).
+
 To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifier.
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run:
