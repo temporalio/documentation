@@ -14,7 +14,7 @@ tags:
 Visibility store is required in a Temporal Cluster setup as it is used by Temporal WebUI and `tctl` to pull Workflow Execution data, and enables features like batch operations on a group of Workflow Executions.
 
 With the Visibility store, you can use [List Filters](/concepts/what-is-a-list-filter) with [Search Attributes](/concepts/what-is-a-search-attribute) to list and filter Workflow Executions that you want to review.
-Setting up Advanced Visibility enables access to creating and using multiple custom Search Attributes with your List Filters. See [Search Attributes](/concepts/what-is-a-search-attribute) for details.
+Setting up [Advanced Visibility](/concepts/what-is-advanced-visibility) enables access to creating and using multiple custom Search Attributes with your List Filters. See [Search Attributes](/concepts/what-is-a-search-attribute) for details.
 
 Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
@@ -27,11 +27,11 @@ To enable Advanced Visibility on your SQL databases, ensure that you do the foll
 
 The following databases are supported as Visibility stores:
 
-- MySQL v5.7 and later. Use v8.0.17 (or later) with Temporal Server v1.20 or later.
-- PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
-- SQLite v3.31.0 and later.
-- Cassandra
-- Elasticsearch [supported versions](/concepts/what-is-a-temporal-cluster#visibility)
+- [MySQL](/clusters/how-to-set-up-mysql-visibility-store) v5.7 and later. Use v8.0.17 (or later) with Temporal Server v1.20 or later.
+- [PostgreSQL](/clusters/how-to-set-up-postgresql-visibility-store) v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
+- [SQLite](/clusters/how-to-set-up-sqlite-visibility-store) v3.31.0 and later.
+- [Cassandra](/clusters/how-to-set-up-cassandra-visibility-store)
+- [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) supported versions
   - We recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than a few Workflow Executions.
   - You can set Elasticsearch as your Visibility store or set it is specifically for Advanced Visibility with a different Visibility store.
 

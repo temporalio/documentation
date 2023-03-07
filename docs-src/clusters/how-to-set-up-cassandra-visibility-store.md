@@ -9,11 +9,12 @@ tags:
   - visibility
 ---
 
-You can set Cassandra as your Visibility store with any other [supported Persistence databases](/concepts/what-is-a-temporal-cluster#dependency-versions).
+You can set Cassandra as your [Visibility store](/concepts/what-is-visibility).
 
 Verify [supported versions](#supported-versions) before you proceed.
 
-Note that when using Cassandra as your Visibility store, you must integrate with Elasticsearch to enable Advanced Visibility features.
+Advanced Visibility is not supported with Cassandra. To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch as your .
+We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions, as it takes on the request load on the Visibility store and helps optimize performance.
 
 **Persistence configuration**
 
@@ -26,6 +27,7 @@ The following example shows how to set a Visibility store `cass-visibility` and 
 persistence:
   #...
   visibilityStore: cass-visibility
+  advancedVisibilityStore: es-visibility
   #...
   datastores:
     default:
@@ -34,11 +36,21 @@ persistence:
       cassandra:
         hosts: '127.0.0.1'
         keyspace: 'temporal_visibility'
+    es-visibility:
+      elasticsearch:
+        version: 'v7'
+        logLevel: 'error'
+        url:
+          scheme: 'http'
+          host: '127.0.0.1:9200'
+        indices:
+          visibility: temporal_visibility_v1_dev_other
+          # secondary_visibility: temporal_visibility_v2_dev
+        closeIdleConnectionsInterval: 15s
 #...
 ```
 
-To enable Advanced Visibility features with your Cassandra Visibility store, you must integrate with Elasticsearch.
-Using Elasticsearch is reccommended for any Temporal Cluster setup that handles more than a few Workflow Executions, as it takes on the request load on the Visibility store and helps optimize performance.
+In this example, we also set Elasticsearch for Advanced Visibility with Cassandra as the Visibility store.
 
 **Database schema and setup**
 

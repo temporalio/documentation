@@ -27,7 +27,7 @@ Legacy production deployment information is available [here](/server/production-
 Visibility store is required in a Temporal Cluster setup as it is used by Temporal WebUI and `tctl` to pull Workflow Execution data, and enables features like batch operations on a group of Workflow Executions.
 
 With the Visibility store, you can use <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to list and filter Workflow Executions that you want to review.
-Setting up Advanced Visibility enables access to creating and using multiple custom Search Attributes with your List Filters. See <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> for details.
+Setting up <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> enables access to creating and using multiple custom Search Attributes with your List Filters. See <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> for details.
 
 Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
@@ -40,11 +40,11 @@ To enable Advanced Visibility on your SQL databases, ensure that you do the foll
 
 The following databases are supported as Visibility stores:
 
-- MySQL v5.7 and later. Use v8.0.17 (or later) with Temporal Server v1.20 or later.
-- PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
-- SQLite v3.31.0 and later.
-- Cassandra
-- Elasticsearch <a class="tdlp" href="/clusters#visibility">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a>
+- <a class="tdlp" href="#mysql">MySQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up MySQL Visibility store</span><br /><br /><span class="tdlppd">You can set MySQL (v5.7 and later) as your Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#mysql">Learn more</a></span></span></a> v5.7 and later. Use v8.0.17 (or later) with Temporal Server v1.20 or later.
+- <a class="tdlp" href="#postgresql">PostgreSQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up PostgreSQL Visibility store</span><br /><br /><span class="tdlppd">You can set PostgreSQL as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#postgresql">Learn more</a></span></span></a> v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
+- <a class="tdlp" href="#sqlite">SQLite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up SQLite Visibility store</span><br /><br /><span class="tdlppd">You can set SQLite as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#sqlite">Learn more</a></span></span></a> v3.31.0 and later.
+- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>
+- <a class="tdlp" href="#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#elasticsearch">Learn more</a></span></span></a> supported versions
   - We recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than a few Workflow Executions.
   - You can set Elasticsearch as your Visibility store or set it is specifically for Advanced Visibility with a different Visibility store.
 
@@ -228,7 +228,7 @@ Note that the script uses the [`temporal-sql-tool`](https://github.com/temporali
 
 :::
 
-You can set SQLite as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>).
+You can set SQLite as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>.
 Verify <a class="tdlp" href="#supported-databases">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> before you proceed.
 
 Temporal only support in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
@@ -283,11 +283,12 @@ See [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go)
 
 ### Cassandra
 
-You can set Cassandra as your Visibility store with any other <a class="tdlp" href="/clusters#dependency-versions">supported Persistence databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dependency-versions">Learn more</a></span></span></a>.
+You can set Cassandra as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>.
 
 Verify [supported versions](#supported-versions) before you proceed.
 
-Note that when using Cassandra as your Visibility store, you must integrate with Elasticsearch to enable Advanced Visibility features.
+Advanced Visibility is not supported with Cassandra. To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch as your .
+We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions, as it takes on the request load on the Visibility store and helps optimize performance.
 
 **Persistence configuration**
 
@@ -300,6 +301,7 @@ The following example shows how to set a Visibility store `cass-visibility` and 
 persistence:
   #...
   visibilityStore: cass-visibility
+  advancedVisibilityStore: es-visibility
   #...
   datastores:
     default:
@@ -308,11 +310,21 @@ persistence:
       cassandra:
         hosts: '127.0.0.1'
         keyspace: 'temporal_visibility'
+    es-visibility:
+      elasticsearch:
+        version: 'v7'
+        logLevel: 'error'
+        url:
+          scheme: 'http'
+          host: '127.0.0.1:9200'
+        indices:
+          visibility: temporal_visibility_v1_dev_other
+          # secondary_visibility: temporal_visibility_v2_dev
+        closeIdleConnectionsInterval: 15s
 #...
 ```
 
-To enable Advanced Visibility features with your Cassandra Visibility store, you must integrate with Elasticsearch.
-Using Elasticsearch is reccommended for any Temporal Cluster setup that handles more than a few Workflow Executions, as it takes on the request load on the Visibility store and helps optimize performance.
+In this example, we also set Elasticsearch for Advanced Visibility with Cassandra as the Visibility store.
 
 **Database schema and setup**
 
@@ -375,7 +387,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 :::
 
-#### Edit persistence
+#### Persistence configuration
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
    The [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file in the `temporalio/temporal` repo is a working example.
@@ -405,7 +417,7 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-#### Create index schema and index
+#### Index schema and index
 
 Run the following commands to create the index schema and index:
 
@@ -432,14 +444,6 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 - **Custom Search Attributes**
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
-
-#### Add custom Search Attributes (optional)
-
-This step is optional.
-
-<!---You can add custom [Search Attributes](/concepts/what-is-a-custom-search-attribute) to your Workflow Executions metadata, and use them to filter your Workflow Executions by the custom values.-->
-
-Run the following command to create search attributes: `tctl search-attribute create`
 
 ## Archival
 

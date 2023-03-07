@@ -27,7 +27,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 :::
 
-#### Edit persistence
+#### Persistence configuration
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
    The [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file in the `temporalio/temporal` repo is a working example.
@@ -57,7 +57,7 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-#### Create index schema and index
+#### Index schema and index
 
 Run the following commands to create the index schema and index:
 
@@ -84,11 +84,3 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 - **Custom Search Attributes**
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
-
-#### Add custom Search Attributes (optional)
-
-This step is optional.
-
-<!---You can add custom [Search Attributes](/concepts/what-is-a-custom-search-attribute) to your Workflow Executions metadata, and use them to filter your Workflow Executions by the custom values.-->
-
-Run the following command to create search attributes: `tctl search-attribute create`

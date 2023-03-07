@@ -251,7 +251,7 @@ The following table lists the maximum number of custom Search Attributes you can
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
 Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
 
-Size limits for Search Attribute:
+Size limits for a custom Search Attribute:
 
 <!--
 _This refers to the SA key you create in the visibility store with `tctl search-attribute create`. this value is no longer applicable so commenting out for ref later_
@@ -290,8 +290,9 @@ Renaming a custom Search Attribute is not supported.
 - To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute). Also verify Visibility setup constraints listed in the [Custom Search Attributes](#custom-search-sttributes) section.
 - To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
 
-After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter
+After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
 
+<!-- commenting out this part. added this detail in how to create a custom search attribute under clusters.
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
@@ -301,4 +302,5 @@ Their names indicate their types:
 - CustomIntField
 - CustomKeywordField
 - CustomTextField
+-->
 

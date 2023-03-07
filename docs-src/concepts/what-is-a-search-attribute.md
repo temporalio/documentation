@@ -162,8 +162,9 @@ Renaming a custom Search Attribute is not supported.
 - To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute). Also verify Visibility setup constraints listed in the [Custom Search Attributes](#custom-search-sttributes) section.
 - To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
 
-After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter
+After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
 
+<!-- commenting out this part. added this detail in how to create a custom search attribute under clusters.
 The [temporalio/auto-setup](https://hub.docker.com/r/temporalio/auto-setup) Docker image uses a pre-defined set of custom Search Attributes that are handy for testing.
 Their names indicate their types:
 
@@ -173,3 +174,4 @@ Their names indicate their types:
 - CustomIntField
 - CustomKeywordField
 - CustomTextField
+-->

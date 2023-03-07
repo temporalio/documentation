@@ -11,7 +11,7 @@ ssdi:
   - SQLite v3.31.0 and later
 ---
 
-You can set SQLite as your [Visibility store](/concepts/what-is-visibility)).
+You can set SQLite as your [Visibility store](/concepts/what-is-visibility).
 Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
 Temporal only support in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
