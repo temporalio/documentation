@@ -2,7 +2,7 @@
 id: manage-custom-search-attributes
 title: Managing custom Search Attributes
 description: You can create and remove custom Search Attributes.
-sidebar_label: Archival
+sidebar_label: Custom Search Attributes
 tags:
   - guide-context
 ---

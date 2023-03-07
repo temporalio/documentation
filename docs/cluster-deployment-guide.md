@@ -445,7 +445,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
 
-### Archival
+### Custom Search Attributes
 
 You can create and remove custom Search Attribute keys in your Visibility store. However, with <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> for Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table. Removing a custom Search Attribute removes this mapping with the database field name, but does not remove the data. If you remove a custom Search Attribute and add a new one, it is possible that the new custom Search Attribute is mapped to the database field of the one that was recently removed. This may cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute. These constraints do not apply if you use Elasticsearch.
 
