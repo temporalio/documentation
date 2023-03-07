@@ -445,6 +445,70 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
 
+### Create custom Search Attributes
+
+Before you create <a class="tdlp" href="/visibility#custom-search-attribute">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attribute">Learn more</a></span></span></a>, verify whether your <a class="tdlp" href="#supported-databases">Visibility database<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> version supports Advanced Visibility features.
+
+You can create and remove custom Search Attribute keys in your Visibility store. However, with <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> for Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table. Removing a custom Search Attribute removes this mapping with the database field name, but does not remove the data. If you remove a custom Search Attribute and add a new one, it is possible that the new custom Search Attribute is mapped to the database field of the one that was recently removed. This may cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute. These constraints do not apply if you use Elasticsearch.
+
+Renaming a custom Search Attribute is not supported.
+
+To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifier.
+
+For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run:
+
+`tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
+
+You can also create a list of custom Search Attributes at the time of setting up your Visibility store.
+
+For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates a list of custom Search Attributes in the Visibility store (that are handy for testing locally), as shown in the following code snippet from the script.
+
+```bash
+add_custom_search_attributes() {
+    until temporal operator search-attribute list --namespace "${DEFAULT_NAMESPACE}"; do
+      echo "Waiting for namespace cache to refresh..."
+      sleep 1
+    done
+    echo "Namespace cache refreshed."
+
+    echo "Adding Custom*Field search attributes."
+
+    temporal operator search-attribute create --namespace "${DEFAULT_NAMESPACE}" --yes \
+        --name CustomKeywordField --type Keyword \
+        --name CustomStringField --type Text \
+        --name CustomTextField --type Text \
+        --name CustomIntField --type Int \
+        --name CustomDatetimeField --type Datetime \
+        --name CustomDoubleField --type Double \
+        --name CustomBoolField --type Bool
+}
+```
+
+Note that this script has been updated for Temporal Server v1.20, which requires associating every custom Search Attribute with a Namespace.
+
+For Temporal Server v1.19 and earlier, you can create custom Search Attributes without a Namespace association, as shown in the following example.
+
+```bash
+add_custom_search_attributes() {
+    until temporal operator search-attribute list --namespace "${DEFAULT_NAMESPACE}"; do
+      echo "Waiting for namespace cache to refresh..."
+      sleep 1
+    done
+    echo "Namespace cache refreshed."
+
+    echo "Adding Custom*Field search attributes."
+tctl --auto_confirm admin cluster add-search-attributes \
+           --name CustomKeywordField --type Keyword \
+           --name CustomStringField --type Text \
+           --name CustomTextField --type Text \
+           --name CustomIntField --type Int \
+           --name CustomDatetimeField --type Datetime \
+           --name CustomDoubleField --type Double \
+           --name CustomBoolField --type Bool
+```
+
+Once your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.
+
 ## Archival
 
 <a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> is a feature that automatically backs up Workflow Execution Event Histories and Visibility data from Temporal Cluster persistence to a custom blob store.

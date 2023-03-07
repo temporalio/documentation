@@ -191,7 +191,7 @@ You can use the default Search Attributes in a List Filter, say in your WebUI or
 
 ### Custom Search Attributes
 
-You can [create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys) with unique key names that are relevant to your business needs.
+You can <a class="tdlp" href="/cluster-deployment-guide#create-custom-search-attributes">create custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create custom Search Attributes</span><br /><br /><span class="tdlppd">Add custom Search Attributes to your Visibility store using `tctl`.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#create-custom-search-attributes">Learn more</a></span></span></a> with unique key names that are relevant to your business needs.
 
 Use custom Search Attributes in a List Filter, say in your WebUI or with the `tctl workflow list` commands, with the following conditions:
 
@@ -274,7 +274,7 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>, Search Attributes must be added to a Workflow Execution as metadata.
 
-- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys)
+- To create custom Search Attributes in your Visibility store, see <a class="tdlp" href="/cluster-deployment-guide#create-custom-search-attributes">Create custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create custom Search Attributes</span><br /><br /><span class="tdlppd">Add custom Search Attributes to your Visibility store using `tctl`.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#create-custom-search-attributes">Learn more</a></span></span></a>
 - To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes with your SDK](/application-development/observability#custom-search-attributes).
 - To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes](/application-development/observability#upsert-search-attributes)
 - To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute). Also verify Visibility setup constraints listed in the [Custom Search Attributes](#custom-search-sttributes) section.
