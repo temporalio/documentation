@@ -191,7 +191,7 @@ You can use the default Search Attributes in a List Filter, say in your WebUI or
 
 ### Custom Search Attributes
 
-You can create custom Search Attributes with unique key names that are relevant to your business needs.
+You can [create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys) with unique key names that are relevant to your business needs.
 
 Use custom Search Attributes in a List Filter, say in your WebUI or with the `tctl workflow list` commands, with the following conditions:
 
@@ -274,17 +274,7 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>, Search Attributes must be added to a Workflow Execution as metadata.
 
-**Creating Search Attributes**
-To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifier. For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run:
-
-`tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
-
-You can create and remove custom Search Attribute keys in your Visibility store. However, with <a class="tdlp" href="/cluster-deployment-guide#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#visibility-store">Learn more</a></span></span></a> for Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table. Removing a custom Search Attribute removes this mapping with the database field name, but does not remove the data. If you remove a custom Search Attribute and add a new one, it is possible that the new custom Search Attribute is mapped to the database field of the one that was recently removed. This may cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute. These constraints do not apply if you use Elasticsearch.
-
-Renaming a custom Search Attribute is not supported.
-
-**Using default and custom Search Attributes in your Workflow**
-
+- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys)
 - To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes with your SDK](/application-development/observability#custom-search-attributes).
 - To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes](/application-development/observability#upsert-search-attributes)
 - To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute). Also verify Visibility setup constraints listed in the [Custom Search Attributes](#custom-search-sttributes) section.
