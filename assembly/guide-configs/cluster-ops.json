@@ -39,7 +39,15 @@
     },
     {
       "type": "h3",
+      "id": "cluster-ops-context/manage-custom-search-attributes"
+    },
+    {
+      "type": "h4",
       "id": "clusters/how-to-create-custom-search-attribute-keys"
+    },
+    {
+      "type": "h4",
+      "id": "clusters/how-to-remove-a-custom-search-attribute-key"
     },
     {
       "type": "h2",

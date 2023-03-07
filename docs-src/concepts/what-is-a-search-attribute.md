@@ -150,6 +150,7 @@ To actually have results from the use of a [List Filter](/concepts/what-is-a-lis
 - To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes with your SDK](/application-development/observability#custom-search-attributes).
 - To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes](/application-development/observability#upsert-search-attributes)
 - To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute). Also verify Visibility setup constraints listed in the [Custom Search Attributes](#custom-search-sttributes) section.
+- To remove a Search Attribute from the Visbility store, see [Remove custom Search Attributes](/clusters/how-to-remove-a-custom-search-attribute-key)
 - To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes)
 
 After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
