@@ -8,6 +8,8 @@ tags:
   - go
 ---
 
+In Go, by default, the Workflow Type name is the same as the function name.
+
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
 - Type: `string`
