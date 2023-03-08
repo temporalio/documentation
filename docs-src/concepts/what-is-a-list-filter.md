@@ -10,7 +10,7 @@ tags:
   - visibility
 ---
 
-A List Filter is the SQL-like string that is provided as the parameter to [Visibility](/concepts/what-is-visibility) List API.
+A List Filter is the SQL-like string that is provided as the parameter to a [Visibility](/concepts/what-is-visibility) List API.
 
 A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) names, Search Attribute values, and [operators](#supported-operators) to pull a filtered list of Workflow Executions from the Visibility store.
 

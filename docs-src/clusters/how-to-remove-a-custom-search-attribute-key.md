@@ -15,7 +15,7 @@ For example, if using Elasticsearch for Advanced Visibility, to remove a custom 
 
 `tctl search-attribute remove --name CustomSA`
 
-With Temporal Server v1.20, if using a SQL database for Advanced Visibility, you will need to specify the Namespace in your command, as shown in the following command:
+With Temporal Server v1.20, if using a SQL database for Advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
 
 `tctl  --ns yournamespace search-attribute remove --name CustomSA`
 

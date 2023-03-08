@@ -105,7 +105,7 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
 ```
 
-If you're upgrading your PostgreSQL to v12 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run the `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
+If you're upgrading PostgreSQL to v12 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
 
 ```bash
 ./temporal-sql-tool \
@@ -143,7 +143,7 @@ If you're upgrading your PostgreSQL to v12 or later to enable Advanced Visibilit
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
-If you're upgrading your MySQL to v8.0.17 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run the `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
+If you're upgrading MySQL to v8.0.17 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
 
 ```bash
 ./temporal-sql-tool \

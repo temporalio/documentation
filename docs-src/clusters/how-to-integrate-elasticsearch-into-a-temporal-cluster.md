@@ -8,13 +8,14 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
-  - Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
-  - Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
-  - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
+  - Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0.
+  - Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0.
+  - Elasticsearch v6.8 is supported through Temporal Server version 1.17._x_.
+  - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch.
 ---
 
-You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load. Elasticsearch is recommended for large-scale operations on the Temporal Cluster.
+You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load.
+We recommend using Elasticsearch for large-scale operations on the Temporal Cluster.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 

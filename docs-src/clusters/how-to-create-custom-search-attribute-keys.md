@@ -13,15 +13,16 @@ Before you create [custom Search Attributes](/concepts/what-is-a-search-attribut
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow visibility](/application-development/observability#search-attributes) and [List Filters](/concepts/what-is-a-list-filter).
 
-To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifier.
+To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifiers.
 
-For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run:
+For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
 
 `tctl search-attribute create --name CustomSA --type Keyword`
 
-Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute. For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
+Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
+For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
 
-You can also create a list of custom Search Attributes at the time of setting up your Visibility store.
+You can also create a list of custom Search Attributes when you set up your Visibility store.
 
 For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates a list of custom Search Attributes in the Visibility store, as shown in the following code snippet from the script (for SQL databases).
 
@@ -64,4 +65,4 @@ add_custom_search_attributes() {
  }
 ```
 
-Once your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.
+When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.

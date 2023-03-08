@@ -8,17 +8,19 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - SQLite v3.31.0 and later
+  - SQLite v3.31.0 and later.
 ---
 
 You can set SQLite as your [Visibility store](/concepts/what-is-visibility).
 Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
-Temporal only support in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
+Temporal supports only an in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
 
-You can change the configuration to use file-based database so that it is preserved when Temporal Server stops. However, note that if using a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you will have to delete the database and create it again to upgrade.
+You can change the configuration to use a file-based database so that it is preserved when Temporal Server stops.
+However, if you use a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
 
-If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
+If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
+For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -60,6 +62,6 @@ SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here: https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
 
-See [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup for example on how to set up the SQLite schema.
+For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup .

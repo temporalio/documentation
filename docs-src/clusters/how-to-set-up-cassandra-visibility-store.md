@@ -10,11 +10,11 @@ tags:
 ---
 
 You can set Cassandra as your [Visibility store](/concepts/what-is-visibility).
+Verify [supported versions](#supported-databases) before you proceed.
 
-Verify [supported versions](#supported-versions) before you proceed.
-
-Advanced Visibility is not supported with Cassandra. To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch as your .
-We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions, as it takes on the request load on the Visibility store and helps optimize performance.
+Advanced Visibility is not supported with Cassandra.
+To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Advanced Visibility store.
+We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize performance.
 
 **Persistence configuration**
 
@@ -54,9 +54,9 @@ In this example, we also set Elasticsearch for Advanced Visibility with Cassandr
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here: https://github.com/temporalio/temporal/tree/master/schema/cassandra/visibility.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/master/schema/cassandra/visibility.
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to setup your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to set up your Visibility store.
 
 ```bash
 #...
@@ -79,7 +79,7 @@ The following example shows how the [auto-setup.sh](https://github.com/temporali
 # set up Cassandra schema
 setup_cassandra_schema() {
   #...
-  # use valid schema for the version of the database you want to set up for Visibility.
+  # use valid schema for the version of the database you want to set up for Visibility
     VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/cassandra/visibility/versioned
     if [[ ${SKIP_DB_CREATE} != true ]]; then
         temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" create -k "${VISIBILITY_KEYSPACE}" --rf "${CASSANDRA_REPLICATION_FACTOR}"

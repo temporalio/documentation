@@ -8,15 +8,16 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later
-  - With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later
-  - Support for PostgreSQL v9.6 to v11 will be deprecated by Temporal Server v1.21; We recommend upgrading to PostgreSQL 12+.
+  - PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
+  - With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later.
+  - Support for PostgreSQL v9.6 through v11 will be deprecated for all Temporal Server versions after v1.20; we recommend upgrading to PostgreSQL 12 or later.
 ---
 
 You can set PostgreSQL as your [Visibility store](/concepts/what-is-visibility).
 Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) before you proceed.
 
-If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
+If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
+For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -35,10 +36,10 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: 'postgres' # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities.
+        pluginName: 'postgres' # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities
         databaseName: 'temporal_visibility'
-        connectAddr: ' ' # remote address of this database; for example 127.0.0.0:5432
-        connectProtocol: ' ' #protocol example: tcp
+        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:5432
+        connectProtocol: ' ' # protocol example: tcp
         user: 'username_for_auth'
         password: 'password_for_auth'
         maxConns: 2
@@ -47,16 +48,17 @@ persistence:
 #...
 ```
 
-To enable Advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later. See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) for details on how to upgrade your Temporal Server and database schemas.
+To enable Advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later.
+See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) for details on how to upgrade your Temporal Server and database schemas.
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here:
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in the following:
 
 - [PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v12/visibility)
 - [PostgreSQL v9.6 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v96/visibility)
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to setup your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to set up your Visibility store.
 
 ```bash
 #...
@@ -73,7 +75,7 @@ The following example shows how the [auto-setup.sh](https://github.com/temporali
 setup_postgres_schema() {
     #...
 
-    # use valid schema for the version of the database you want to set up for Visibility.
+    # use valid schema for the version of the database you want to set up for Visibility
     VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/visibility/versioned
     if [[ ${VISIBILITY_DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
         temporal-sql-tool --plugin postgres --ep "${POSTGRES_SEEDS}" -u "${POSTGRES_USER}" -p "${DB_PORT}" --db "${VISIBILITY_DBNAME}" create
@@ -83,4 +85,4 @@ setup_postgres_schema() {
 }
 ```
 
-Note that the script uses the [`temporal-sql-tool`](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
+Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
