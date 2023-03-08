@@ -1027,18 +1027,33 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
 
-- Type: `string`
-- Default: function name
+<a class="dacx-source-link" href="https:/github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
 
 ```go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"documentation-samples-go/yourapp"
+)
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := workflow.RegisterOptions{
-  Name: "YourWorkflowName",
-  // ...
+func main() {
+// ...
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+// ...
+	// Use RegisterOptions to set the name of the Workflow Type for example.
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
+// ...
 }
-w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
-// ...
 ```
 
 </TabItem>
@@ -2484,49 +2499,67 @@ Lastly, call either the `Start()` or the `Run()` method on the instance of the W
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
 
-```go
-package main
-
-import (
-   "go.temporal.io/sdk/client"
-   "go.temporal.io/sdk/worker"
-)
-
-func main() {
-   c, err := client.Dial(client.Options{})
-   if err != nil {
-       // ...
-   }
-   defer c.Close()
-   w := worker.New(c, "your-task-queue", worker.Options{})
-   w.RegisterWorkflow(YourWorkflowDefinition)
-   w.RegisterActivity(YourActivityDefinition)
-   err = w.Run(worker.InterruptCh())
-   if err != nil {
-       // ...
-   }
- // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
-}
-
-func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
- // ...
-}
-```
-
 :::tip
 
 If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
 
 ```bash
 go install github.com/mitranim/gow@latest
-gow run worker/main.go # automatically reload when file changed
+gow run worker/main.go # automatically reloads when file changes
 ```
 
 :::
+
+<a class="dacx-source-link" href="https:/github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
+
+```go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"documentation-samples-go/yourapp"
+)
+
+
+func main() {
+	// Create a Temporal Client
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker.
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	// Register your Workflow Definitions with the Worker.
+	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
+	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
+// ...
+	// Register your Activity Definitons with the Worker.
+	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
+	initialMessageString := "No messages!"
+	initialCounterState := 0
+	activities := &yourapp.YourActivityObject{
+		SharedMessageState: &initialMessageString,
+		SharedCounterState: &initialCounterState,
+	}
+	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
+	yourWorker.RegisterActivity(activities)
+// ...
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
+}
+// ...
+```
 
 </TabItem>
 <TabItem value="java">
