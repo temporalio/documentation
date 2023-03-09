@@ -5,8 +5,11 @@ tags:
   - cluster
   - server
   - how-to
-date: 2022-10-20T00:00:00Z
+date: 2023-03-09T00:00:00Z
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 There are many ways to run a [Temporal Cluster](/clusters) on your own.
 However, the right way for you depends entirely on your use case and where you plan to run it.
@@ -19,29 +22,56 @@ This article aims to maintain a comprehensive list of all the ways we know of.
 Temporal CLI is a distribution of Temporal that runs as a single process with zero runtime dependencies.
 It supports persistence to disk and in-memory mode through SQLite.
 
-**Prerequisites**
-
-To run the Temporal CLI locally requires [Go 1.19 or later](https://go.dev/dl/).
-
-**Build and start the Temporal CLI**
+**Install and start the Temporal CLI**
 
 The following steps start and run a Temporal Cluster.
 
 1. Choose one of the following install methods.
-   1. curl
-   ```bash
-   curl -sSf https://temporal.download/cli.sh | sh
-   ```
-   2. Homebrew
-   ```bash
-   brew install temporal
-   ```
+   1. Install the Temporal CLI with Homebrew.
+
+      ```bash
+      brew install temporal
+      ```
+
+   2. Install the Temporal CLI with cURL.
+
+      ```bash
+      curl -sSf https://temporal.download/cli.sh | sh
+      ```
+
+   3. Install the Temporal CLI for Windows.
+      1. Download and run the installer for the [latest release](https://github.com/temporalio/cli/releases/latest/).
+      2. Add the `temporal.exe` binary to your PATH.
+   4. Install the Temporal CLI from CDN.
+      1. Select the platform and architecture needed and add the binary to your PATH.
+         <Tabs>
+         <TabItem value="darwin-amd64" label="Darwin amd64">
+         <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
+         </TabItem>
+         <TabItem value="darwin-arm64" label="Darwin arm64">
+         <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
+         </TabItem>
+         <TabItem value="linux-amd64" label="Linux amd64">
+         <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
+         </TabItem>
+         <TabItem value="linux-arm64" label="Linux arm64">
+         <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
+         </TabItem>
+         <TabItem value="windows-amd64" label="Windows amd64">
+         <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
+         </TabItem>
+         <TabItem value="windows-arm64" label="Windows arm64">
+         <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
+         </TabItem>
+         </Tabs>
+
 2. Start Temporal Server by using the `start-dev` command.
+
    ```bash
    temporal server start-dev
    ```
 
-To customize the pre-registered [Namespace Name](/namespaces), start the server with the `--namespace` command.
+To customize the [Namespace Name](/namespaces), start the server with the `--namespace` command.
 
 ```bash
 temporal server start-dev --namespace your-custom-namespace
