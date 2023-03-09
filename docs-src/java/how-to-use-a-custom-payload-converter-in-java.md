@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and set it with `withPayloadConverterOverrides` to override specific default Data Converter behavior.
+Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with the [`DefaultDataConverter].
 
 The `PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
 You can create a custom implementation of the `PayloadConverter` for custom formats, as shown in the following example:
@@ -36,14 +36,7 @@ public class YourCustomPayloadConverter implements PayloadConverter {
 }
 ```
 
-You can also use the following implementation classes provided in the Java SDK:
-
-- [ByteArrayPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ByteArrayPayloadConverter.html)
-- [GsonJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/GsonJsonPayloadConverter.html)
-- [JacksonJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/JacksonJsonPayloadConverter.html)
-- [NullPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/NullPayloadConverter.html)
-- [ProtobufJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ProtobufJsonPayloadConverter.html)
-- [ProtobufPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ProtobufPayloadConverter.html)
+You can also use [specific implementation classes](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/package-summary.html) provided in the Java SDK.
 
 For example, to create a custom `JacksonJsonPayloadConverter`, use the following:
 

@@ -13,20 +13,21 @@ This guide explains what you need to develop to use Temporal in your production 
 ## Data Encryption
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
-For example, any following objects are persisted in the Workflow Execution Event History:
+Encrypting this data to ensures that any sensitive application data is secure when handled by the Temporal Server.
 
-- inputs and outputs/results in your <a class="tdlp" href="/workflows#workflow-execution">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>, <a class="tdlp" href="/activities#activity-execution">Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, and <a class="tdlp" href="/workflows#child-workflow">Child Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a>
-- inputs to your <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a>
-- metadata information
-- results of <a class="tdlp" href="/activities#local-activity">Local Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a>, <a class="tdlp" href="/workflows#side-effect">Side Effects<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Side Effect?</span><br /><br /><span class="tdlppd">A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#side-effect">Learn more</a></span></span></a>
-- <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>
+For example, if you have sensitive information passed in the following objects that are persisted in the Workflow Execution Event History, use encryption to secure it:
+
+- Inputs and outputs/results in your <a class="tdlp" href="/workflows#workflow-execution">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>, <a class="tdlp" href="/activities#activity-execution">Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, and <a class="tdlp" href="/workflows#child-workflow">Child Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a>
+- Inputs to your <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a>
+- <a class="tdlp" href="/workflows#memo">Memo<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a>
+- Results of <a class="tdlp" href="/activities#local-activity">Local Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a>, <a class="tdlp" href="/workflows#side-effect">Side Effects<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Side Effect?</span><br /><br /><span class="tdlppd">A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#side-effect">Learn more</a></span></span></a>
 - [Application errors and failures](/kb/failures).
 
-You can encrypt this data (except for Search Attributes and metadata) to ensure that any sensitive application data is secure when handled by the Temporal Server. It also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
+Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-To encrypt your data, configure your custom encryption logic with a <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> and set it with a <a class="tdlp" href="/dataconversion#custom-data-converter">custom Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a custom Data Converter?</span><br /><br /><span class="tdlppd">A custom Data Converter uses custom logic for payload conversion or payload encryption to customize the default Data Converter.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-data-converter">Learn more</a></span></span></a>.
+To encrypt your data, configure your custom encryption logic with <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> and set it with a <a class="tdlp" href="/dataconversion#custom-data-converter">custom Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a custom Data Converter?</span><br /><br /><span class="tdlppd">A custom Data Converter uses custom logic for payload conversion or payload encryption to customize the default Data Converter.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-data-converter">Learn more</a></span></span></a>.
 
-A <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> transforms your payloads, for example by implementing compression and/or encryption and decryption, and is an optional step that happens between the wire and the <a class="tdlp" href="/dataconversion#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a>:
+A <a class="tdlp" href="/dataconversion#payload-codec">`PayloadCodec`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> transforms your payloads (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the <a class="tdlp" href="/dataconversion#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a>:
 
 ```bash
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
@@ -34,11 +35,13 @@ User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Serv
 
 A `PayloadCodec` implementation is applied with a custom Data Converter in your Client options.
 
-You can run your `PayloadCodec` with a <a class="tdlp" href="/dataconversion#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#codec-server">Learn more</a></span></span></a>, and use the Codec Server endpoints in your WebUI and tctl to decode your encrypted payloads locally. See <a class="tdlp" href="/dataconversion#decoding-payloads-on-the-web-ui-and-tctl">Decoding payloads on the Web UI and tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#decoding-payloads-on-the-web-ui-and-tctl">Learn more</a></span></span></a> for details.
+You can run your `PayloadCodec` with a <a class="tdlp" href="/dataconversion#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#codec-server">Learn more</a></span></span></a> and use the Codec Server endpoints in Web UI and tctl to decode your encrypted payloads locally.
+For details, see <a class="tdlp" href="/dataconversion#decoding-payloads-on-the-web-ui-and-tctl">Decoding payloads on the Web UI and tctl<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#decoding-payloads-on-the-web-ui-and-tctl">Learn more</a></span></span></a>.
 
-However, if you plan on setting up remote data encoding for your data, ensure that you consider all security implications of running encryptions remotely before implementing it.
+However, if you plan to set up remote data encoding for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
-In codec implementations, we recommend running the function (whether it be compressing, encrypting, etc) on the entire input Payload, and putting the result in a new Payload's data field with a different `encoding` metadata field. That way, the input Payload's metadata is preserved.
+In codec implementations, we recommend running the function (such as compression or encryption) on the entire input payload, and putting the result in the data field of a new payload with a different `encoding` metadata field.
+That way, the input payload's metadata is preserved, and when the encoded payload is sent to be decoded, you can verify the metadata field before applying the decryption.
 
 Examples for implementing encryption:
 
@@ -63,21 +66,22 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
 
-The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes. It must be used in an instance of a [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
+The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes.
+It must be used in an instance of [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
 
 The following example shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 
 ```go
-// Create a new instance of Data Converter
+// Create an instance of Data Converter.
 var DataConverter = NewDataConverter(converter.GetDefaultDataConverter())
 
-// NewDataConverter creates a new data converter that wraps the given data
-// converter with snappy compression, using the custom PayloadCodec called NewPayloadCodec.
+// NewDataConverter creates a Data Converter that wraps the specified Data
+// Converter with snappy compression, using the custom PayloadCodec called NewPayloadCodec.
 func NewDataConverter(underlying converter.DataConverter) converter.DataConverter {
 	return converter.NewCodecDataConverter(underlying, NewPayloadCodec())
 }
 
-// Create a new instance of PaylodCodec
+// Create an instance of PaylodCodec.
 func NewPayloadCodec() converter.PayloadCodec {
 	return &Codec{}
 }
@@ -120,7 +124,7 @@ c, err := client.Dial(client.Options{
 //...
 ```
 
-You can also create a remote HTTP server (called Codec Server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
+You can also create a remote HTTP server (called a codec server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with Web UI and tctl to see decrypted data.
 
 See the following samples for examples:
 
@@ -132,9 +136,9 @@ See the following samples for examples:
 
 **Create a custom Payload Codec**
 
-Create a custom implementation of the [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in a [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
+Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
 
-The Payload Codec does byte to byte conversion, and must be set with a Data Converter to do the conversion to bytes and values.
+The Payload Codec does byte-to-byte conversion and must be set with a Data Converter to do the conversion to bytes and values.
 
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 
@@ -161,11 +165,11 @@ You can also create a remote HTTP server (called Codec Server) to run the encryp
 
 Use `CodecDataConverter` with an instance of a Data Converter and the custom `PayloadCodec` in the `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
-For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use:
+For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use the following code:
 
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
-  // client that can be used to start and signal workflows
+  // Client that can be used to start and signal Workflows
   WorkflowClient client =
       WorkflowClient.newInstance(
           service,

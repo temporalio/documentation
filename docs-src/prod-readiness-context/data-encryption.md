@@ -9,17 +9,17 @@ tags:
 ---
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
-For example, the following objects are persisted in the Workflow Execution Event History:
+Encrypting this data to ensures that any sensitive application data is secure when handled by the Temporal Server.
+
+For example, if you have sensitive information passed in the following objects that are persisted in the Workflow Execution Event History, use encryption to secure it:
 
 - Inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
 - Inputs to your [Signal](/concepts/what-is-a-signal)
-- Metadata information
-- Results of [Local Activity](/concepts/what-is-a-local-activity) [Side Effects](/concepts/what-is-a-side-effect)
-- [Search Attributes](/concepts/what-is-a-search-attribute)
+- [Memo](/concepts/what-is-a-memo)
+- Results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
 - [Application errors and failures](/kb/failures).
 
-You can encrypt this data (except for Search Attributes and metadata) to ensure that any sensitive application data is secure when handled by the Temporal Server.
-This technique also ensures that your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
+Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
 To encrypt your data, configure your custom encryption logic with [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
 
@@ -36,8 +36,8 @@ For details, see [Decoding payloads on the Web UI and tctl](/concepts/what-is-re
 
 However, if you plan to set up remote data encoding for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
-In codec implementations, we recommend running the function (such as compressing or encrypting) on the entire input payload, and putting the result in the data field of a new payload with a different `encoding` metadata field.
-That way, the input payload's metadata is preserved.
+In codec implementations, we recommend running the function (such as compression or encryption) on the entire input payload, and putting the result in the data field of a new payload with a different `encoding` metadata field.
+That way, the input payload's metadata is preserved, and when the encoded payload is sent to be decoded, you can verify the metadata field before applying the decryption.
 
 Examples for implementing encryption:
 

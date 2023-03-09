@@ -4074,15 +4074,17 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 </Tabs>
 
-## Custom Payload Conversion
+## Custom payload conversion
 
 Most SDKs provide a <a class="tdlp" href="/dataconversion#payload-converter"> `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a> that can be customized to convert custom data types to bytes and back.
 
-Note that creating a custom Payload Converter is optional, and only needed if the default Data Converter does not support your custom values.
+Creating a custom Payload Converter is optional.
+It's needed only if the default Data Converter does not support your custom values.
 
 Create your <a class="tdlp" href="/dataconversion#custom-payload-conversion">custom `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-payload-conversion">Learn more</a></span></span></a> and set it with the default `DataConverter` in your Client options.
 
-The order in which your Payload Converters are applied depend on the encoding type that each handles. You can set multiple custom payload converters to run your conversions.
+The order in which your Payload Converters are applied depend on the encoding type that each handles.
+You can set multiple custom Payload Converters to run your conversions.
 
 <Tabs
 defaultValue="go"
@@ -4104,12 +4106,13 @@ The following type-specific Payload Converters are available in the Go SDK, list
 - [`NewProtoPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/proto_payload_converter.go#L50)
 - [`NewJSONPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/json_payload_converter.go#L39)
 
-The order in which the `PayloadConverters` are applied is important because during serialization, `DataConverter` will try the `PayloadsConverters` in that specific order until the `PayloadConverter` returns non-nil payload.
-Last `PayloadConverter` should always serialize the value. The `JSONPayloadConverter` is a good candidate for this.
+The order in which the `PayloadConverters` are applied is important because during serialization, `DataConverter` tries the `PayloadsConverters` in that specific order until a `PayloadConverter` returns a non-nil payload.
+The last `PayloadConverter` should always serialize the value.
+(The `JSONPayloadConverter` is a good candidate.)
 
 A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to payload.
 
-To set your custom `PaylaodConverter`, use the [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) to set it with the `DefaultDataConverter` in the Client that you use with your Worker and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) to set it with the `DefaultDataConverter` in the Client that you use with your Worker and to start your Workflow Executions.
 
 ```go
  //need a better example here
@@ -4121,15 +4124,15 @@ c, err := client.NewClient(client.Options{
 </TabItem>
 <TabItem value="java">
 
-Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and set it with `withPayloadConverterOverrides` to override specific default Data Converter behavior.
+Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with the [`DefaultDataConverter].
 
-The `PayloadConverter` is used to serialize/deserialize method parameters that need to be sent over the wire.
-You can create a custom implementation of the `PayloadConverter` for custom formats, for example:
+The `PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
+You can create a custom implementation of the `PayloadConverter` for custom formats, as shown in the following example:
 
 ```java
-/** Payload converter specific to your custom object*/
+/** Payload Converter specific to your custom object */
 public class YourCustomPayloadConverter implements PayloadConverter {
- //....
+ //...
   @Override
   public String getEncodingType() {
     return "json/plain"; //the encoding type is used to determine what default conversion behavior to override
@@ -4149,16 +4152,9 @@ public class YourCustomPayloadConverter implements PayloadConverter {
 }
 ```
 
-You can also use the following implementation classes provided in the Java SDK:
+You can also use [specific implementation classes](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/package-summary.html) provided in the Java SDK.
 
-- [ByteArrayPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ByteArrayPayloadConverter.html)
-- [GsonJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/GsonJsonPayloadConverter.html)
-- [JacksonJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/JacksonJsonPayloadConverter.html)
-- [NullPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/NullPayloadConverter.html)
-- [ProtobufJsonPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ProtobufJsonPayloadConverter.html)
-- [ProtobufPayloadConverter](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/ProtobufPayloadConverter.html)
-
-For example, to create a custom `JacksonJsonPayloadConverter`, use:
+For example, to create a custom `JacksonJsonPayloadConverter`, use the following:
 
 ```java
 private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {

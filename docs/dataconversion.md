@@ -15,7 +15,9 @@ It is used by the Temporal SDK framework to serialize/deserialize input and outp
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Data Converter encodes and decodes data</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/default-data-converter.svg" alt="Data Converter encodes and decodes data" height="1240" width="2300" /></div></div>
 
-The Data Converter encodes all data from your application before it is sent to the Temporal Cluster in the Client call. When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the data for processing within your application. This ensures that all your sensitive data exists in its original format only on hosts that you control.
+The Data Converter encodes all data from your application before it is sent to the Temporal Cluster in the Client call.
+When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the data for processing within your application.
+This technique ensures that all your sensitive data exists in its original format only on hosts that you control.
 
 The main pieces of data that run through the Data Converter are arguments and return values:
 
@@ -40,12 +42,13 @@ In most SDKs, the default converter supports binary, Protobufs, and JSON and enc
 - Protobuf JSON
 - JSON
 
-In SDKs that cannot determine parameter types at runtime (for example, TypeScript) Protobufs aren't included in the default converter.
+In SDKs that cannot determine parameter types at runtime (for example, TypeScript), Protobufs aren't included in the default converter.
 
 For example:
 
-- If a value is an instance of a Protobuf message, it will be encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
-- If a value isn't null, binary, or a Protobuf, it will be encoded as JSON. If any part of it is not serializable as JSON (for example, a Date—see JSON data types), an error will be thrown.
+- If a value is an instance of a Protobuf message, it is encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
+- If a value isn't null, binary, or a Protobuf, it is encoded as JSON.
+  If any part of it is not serializable as JSON (for example, a Date—see JSON data types), an error is thrown.
 
 The default converter also supports decoding binary Protobufs.
 
@@ -53,27 +56,29 @@ The default converter also supports decoding binary Protobufs.
 
 A custom Data Converter uses custom logic for payload conversion or payload encryption to customize the default <a class="tdlp" href="#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a>.
 
-You can create a custom Data Converter to alter formats (for example using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
+You can create a custom Data Converter to alter formats (for example, using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
 
 You can customize the default Data Converter behavior in two ways:
 
-- A Payload Converter serializes data, converting objects to bytes and back. To convert custom objects or data types to payloads and back, use a custom `PayloadConverter` and set it to alter the default Data Converter.
-- A Payload Codec encodes and decodes data, with bytes to bytes conversion. To use custom encryption and/or compression logic, create a custom `PayloadCodec` with your encryption/compression logic in the `encode` function, and your decryption/decompression logic in your `decode` function.
+- A Payload Converter serializes data, converting objects to bytes and back.
+  To convert custom objects or data types to payloads and back, use a custom `PayloadConverter` and set it to alter the default Data Converter.
+- A Payload Codec encodes and decodes data, with bytes-to-bytes conversion.
+  To use custom encryption and/or compression logic, create a custom `PayloadCodec` with your encryption/compression logic in the `encode` function, and your decryption/decompression logic in your `decode` function.
 
 Custom Data Converters are not applied to all data:
 
 - Search Attributes are simple values and are persisted unencoded.
-- Headers are not encoded by the SDK (the one exception will be—when implemented—the SDK [running OTel baggage through custom Codecs](https://github.com/temporalio/sdk-typescript/issues/514)).
+- Headers are not encoded by the SDK. (The one exception—when implemented—will be the SDK [running OTel baggage through custom codecs](https://github.com/temporalio/sdk-typescript/issues/514).)
 
 A customized Data Converter can have the following three components:
 
 - <a class="tdlp" href="#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-converter">Learn more</a></span></span></a>
 - <a class="tdlp" href="#failure-converter">Failure Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Failure Converter?</span><br /><br /><span class="tdlppd">A Failure Converter converts error objects to proto Failures and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#failure-converter">Learn more</a></span></span></a>
-- <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>
+- <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>
 
-For details on how to implement custom Payload Converters in your SDK, see <a class="tdlp" href="/application-development/features#custom-payload-conversion">Custom Payload Conversion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload-conversion</span><br /><br /><span class="tdlppd">Define your custom `PayloadConverter` with your custom logic and set the `DefaultDataConverter` with your custom `PayloadConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#custom-payload-conversion">Learn more</a></span></span></a>.
+For details on how to implement custom Payload Converters in your SDK, see <a class="tdlp" href="/application-development/features#custom-payload-conversion">Custom payload conversion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Define your custom `PayloadConverter` with your custom logic and set the `DefaultDataConverter` with your custom `PayloadConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#custom-payload-conversion">Learn more</a></span></span></a>.
 
-For details on how to implement custom encryption and compression in your SDK, see <a class="tdlp" href="//production-readiness/develop#data-encryption">Data Encryption<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to encrypt data using a custom Data Converter</span><br /><br /><span class="tdlppd">Using encryption in your custom Data Converter ensures that all your sensitive application data is secure when handled by the Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//production-readiness/develop#data-encryption">Learn more</a></span></span></a>.
+For details on how to implement custom encryption and compression in your SDK, see <a class="tdlp" href="//production-readiness/develop#data-encryption">Data Encryption<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to encrypt data using a custom Data Converter</span><br /><br /><span class="tdlppd">Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//production-readiness/develop#data-encryption">Learn more</a></span></span></a>.
 
 ## Payload Converter
 
@@ -82,7 +87,7 @@ A Payload Converter serializes data, converting objects or values to bytes and b
 When you request a Workflow Execution through your Client and pass a data input, the input is deserialized using the default Data Converter that runs it through a set of Payload Converters.
 When your Workflow Execution starts, this data input is serialized and passed as input to your Workflow.
 
-Some SDKs have a Payload Converter as a part of the Data Converter, that does the conversion from a value to a bytes and back.
+Some SDKs have a Payload Converter as a part of the Data Converter, which does the conversion from a value to a bytes and back.
 See the API reference for more information.
 
 - [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadConverter)
@@ -90,28 +95,30 @@ See the API reference for more information.
 - [TypeScript](https://typescript.temporal.io/api/classes/common.DefaultPayloadConverter#converters)
 - [Python](https://python.temporal.io/temporalio.converter.PayloadConverter.html)
 
-#### Custom Payload Conversion
+#### Custom payload conversion
 
 If you use custom objects or types that are not supported by the Payload Converters provided in the SDKs, you can create a custom Payload Converter and use it with the default Data Converter to run the specific conversions.
 
-You can set multiple custom Payload Converters to run your conversions. However, the order in which encoding payload converters are applied is important because during serialization, each encoding Payload Converter is tried in order until one properly serializes the value.
+You can set multiple custom Payload Converters to run your conversions.
+However, the order in which encoding payload converters are applied is important because during serialization, each encoding Payload Converter is tried in sequence until one properly serializes the value.
 
-See <a class="tdlp" href="/application-development/features#custom-payload-conversion">Custom Payload Conversion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload-conversion</span><br /><br /><span class="tdlppd">Define your custom `PayloadConverter` with your custom logic and set the `DefaultDataConverter` with your custom `PayloadConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#custom-payload-conversion">Learn more</a></span></span></a> for details on how to use the Payload Converter for custom data types.
+See <a class="tdlp" href="/application-development/features#custom-payload-conversion">Custom Payload Conversion<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Define your custom `PayloadConverter` with your custom logic and set the `DefaultDataConverter` with your custom `PayloadConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#custom-payload-conversion">Learn more</a></span></span></a> for details on how to use the Payload Converter for custom data types.
 
 ## Failure Converter
 
 A Failure Converter converts error objects to proto Failures and back.
-The default Failure Converter copies error messages and stack traces as plain text. See the API reference for details.
+The default Failure Converter copies error messages and stack traces as plain text.
+See the API reference for details.
 
 - [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.21.0/converter#FailureConverter)
 - [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/FailureConverter.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.FailureConverter)
 - [Python](https://python.temporal.io/temporalio.converter.FailureConverter.html)
 
-You can make a custom Failure Converter, but if you use multiple SDKs, you will have to implement the same logic in each.
-Custom/customizable failure converter is not yet supported in Java.
+You can make a custom Failure Converter, but if you use multiple SDKs, you must implement the same logic in each.
+Creating a custom Failure Converter is not yet supported in Java.
 
-If your errors may contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your Payload Codec, in which case it will move your `message` and `stack_trace` fields to a payload that's run through your codec.
+If your errors might contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your Payload Codec, in which case it moves your `message` and `stack_trace` fields to a payload that's run through your codec.
 
 ## Payload Codec
 
@@ -123,13 +130,14 @@ The Payload Codec is an optional step that happens between the wire and the Payl
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
-A Payload Codec encodes and decodes data. When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs. The codecs are applied last to first, which means that the earlier encoders wrap the later ones.
+A Payload Codec encodes and decodes data.
+When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs. The codecs are applied last to first, which means that the earlier encoders wrap the later ones.
 
 When deserializing from Payloads, codecs are applied first to last to reverse the effect, followed by the Data Converter.
 
-Use a custom Payload Codec to transform your payloads, for example by implementing compression and/or encryption and decryption.
+Use a custom Payload Codec to transform your payloads, such as by implementing compression and/or encryption and decryption.
 
-#### Encryption​ and Decryption
+#### Encryption​ and decryption
 
 Using end-to-end encryption in your custom Data Converter ensures that all your sensitive application data is secure when handled by the Temporal Server.
 You can apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
@@ -181,7 +189,7 @@ A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [We
 
 By default, tctl and the Web UI use the <a class="tdlp" href="#default-data-converter">Default Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#default-data-converter">Learn more</a></span></span></a> without a <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>.
 If you use a Payload Codec with your SDK, the Payload data displayed in the Web UI/tctl will be encoded (for example, it may be encrypted or compressed).
-In order to convert the data to its original format, you can configure the Web UI/tctl to use a Codec Server that uses your Payload Codec.
+To convert the data to its original format, you can configure the Web UI/tctl to use a Codec Server that uses your Payload Codec.
 
 ![](/img/tctl-diagram-codec-server.svg)
 
