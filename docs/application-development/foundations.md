@@ -106,13 +106,15 @@ Start Temporal Server by using the `start-dev` command.
 temporal server start-dev
 ```
 
-To customize the [Namespace Name](/namespaces), start the server with the `--namespace` command.
+This command uses the default [Namespace Name](/namespaces), `default`, to start and connect to the Temporal Server.
+
+To connect to the Temporal Server with a custom Namespace Name, use the `--namespace` command.
 
 ```bash
 temporal server start-dev --namespace your-custom-namespace
 ```
 
-**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
+**Results**: You should have access to the Temporal Server running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
 
 ## Install a Temporal SDK
 
