@@ -1,8 +1,15 @@
-# Temporal Cloud Namespace Naming Considerations
-
-March, 9 2023
+---
+slug: cloud-namespace-naming-considerations
+title: Temporal Cloud Namespace naming considerations
+tags:
+  - cloud
+  - namespaces
+date: 2023-03-10T00:00:00Z
+---
 
 This document provides general guidance for organizing namespaces across use cases, services, applications or domains. Temporal Cloud provides namespace–as-a-service and as such the namespace is the end point. Customers should consider not only a namespace naming convention but also how to group or isolate workloads using the namespace as a boundary.
+
+<!-- truncate -->
 
 ## Constraints and Limitations
 
