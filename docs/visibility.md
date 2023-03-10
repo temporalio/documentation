@@ -144,15 +144,15 @@ When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<spa
 
 #### Search Attributes maximums
 
-Default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.
+The default total maximum number of Search Attribute **keys** per Temporal Cluster is 100.
 
 <!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
 
-Default single Search Attribute **value** size limit is 2 KB.
+The default single Search Attribute **value** size is limited 2 KB.
 
 <!-- TODO - [How to configure Search Attribute value size limit](#) -->
 
-Total Search Attribute size: 40 KB
+The total Search Attribute size is limited to 40 KB.
 
 <!-- TODO - [How to configure total Search Attribute size limite](#) -->
 
