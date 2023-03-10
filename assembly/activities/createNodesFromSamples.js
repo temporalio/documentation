@@ -157,14 +157,15 @@ function isDACX(str) {
 }
 
 function parseURL(repoPath, file) {
+  console.log(repoPath);
   const parts = file.directory.split("/");
   const dirParts = parts.slice(1);
   const directory = dirParts.join(...dirParts);
-  const sourceURL = path.join(
-    repoPath,
+  const sourceURL = repoPath + path.join(
     directory,
     file.name,
   );
+  console.log(sourceURL);
   return sourceURL;
 }
 
