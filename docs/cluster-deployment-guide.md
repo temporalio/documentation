@@ -22,12 +22,13 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Visibility store
 
-<a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> storage is set up as a part of your [Persistence store](/concept/what-is-a-temporal-cluster#persistence) to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.
+A <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> store is set up as a part of your [Persistence store](/concept/what-is-a-temporal-cluster#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
-Visibility store is required in a Temporal Cluster setup as it is used by Temporal WebUI and `tctl` to pull Workflow Execution data, and enables features like batch operations on a group of Workflow Executions.
+A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and `tctl` to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
 With the Visibility store, you can use <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to list and filter Workflow Executions that you want to review.
-Setting up <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> enables access to creating and using multiple custom Search Attributes with your List Filters. See <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> for details.
+Setting up <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> enables access to creating and using multiple custom Search Attributes with your List Filters.
+For details, see <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>.
 
 Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
@@ -40,13 +41,15 @@ To enable Advanced Visibility on your SQL databases, ensure that you do the foll
 
 The following databases are supported as Visibility stores:
 
-- <a class="tdlp" href="#mysql">MySQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up MySQL Visibility store</span><br /><br /><span class="tdlppd">You can set MySQL (v5.7 and later) as your Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#mysql">Learn more</a></span></span></a> v5.7 and later. Use v8.0.17 (or later) with Temporal Server v1.20 or later.
-- <a class="tdlp" href="#postgresql">PostgreSQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up PostgreSQL Visibility store</span><br /><br /><span class="tdlppd">You can set PostgreSQL as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#postgresql">Learn more</a></span></span></a> v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
+- <a class="tdlp" href="#mysql">MySQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up MySQL Visibility store</span><br /><br /><span class="tdlppd">You can set MySQL (v5.7 and later) as your Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#mysql">Learn more</a></span></span></a> v5.7 and later.
+  Use v8.0.17 (or later) with Temporal Server v1.20 or later.
+- <a class="tdlp" href="#postgresql">PostgreSQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up PostgreSQL Visibility store</span><br /><br /><span class="tdlppd">You can set PostgreSQL as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#postgresql">Learn more</a></span></span></a> v9.6 and later.
+  Use v12 (or later) with Temporal Server v1.20 or later.
 - <a class="tdlp" href="#sqlite">SQLite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up SQLite Visibility store</span><br /><br /><span class="tdlppd">You can set SQLite as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#sqlite">Learn more</a></span></span></a> v3.31.0 and later.
-- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>
-- <a class="tdlp" href="#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#elasticsearch">Learn more</a></span></span></a> supported versions
+- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>.
+- <a class="tdlp" href="#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#elasticsearch">Learn more</a></span></span></a> supported versions.
   - We recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than a few Workflow Executions.
-  - You can set Elasticsearch as your Visibility store or set it is specifically for Advanced Visibility with a different Visibility store.
+  - You can set Elasticsearch as your Visibility store or set it specifically for Advanced Visibility with a different Visibility store.
 
 You can use any combination of the supported databases for your Persistence and Visibility stores.
 
@@ -62,7 +65,8 @@ You can use any combination of the supported databases for your Persistence and 
 You can set MySQL as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>.
 Verify <a class="tdlp" href="#supported-databases">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> before you proceed.
 
-If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
+If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
+For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -81,10 +85,10 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: 'mysql' # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities.
+        pluginName: 'mysql' # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities
         databaseName: 'temporal_visibility'
-        connectAddr: ' ' # remote address of this database; for example 127.0.0.0:3306
-        connectProtocol: ' ' #protocol example: tcp
+        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:3306
+        connectProtocol: ' ' # protocol example: tcp
         user: 'username_for_auth'
         password: 'password_for_auth'
         maxConns: 2
@@ -95,15 +99,14 @@ persistence:
 
 For details on the configuration parameters and values, see [Cluster configuration](/references/configuration#sql).
 
-To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later. See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> on how to upgrade your Temporal Server and database schemas.
+To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
+See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> on how to upgrade your Temporal Server and database schemas.
 
-Example configuration templates:
-
-- [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml)
+For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here:
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in the following:
 
 - [MySQL v5.7 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v57/visibility)
 - [MySQL v8.0.17 and later](https://github.com/temporalio/temporal/tree/master/schema/mysql/v8/visibility)
@@ -127,7 +130,7 @@ The following example shows how the [auto-setup.sh](https://github.com/temporali
 # set up MySQL schema
 setup_mysql_schema() {
     #...
-    # use valid schema for the version of the database you want to set up for Visibility.
+    # use valid schema for the version of the database you want to set up for Visibility
     VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/mysql/${MYSQL_VERSION_DIR}/visibility/versioned
     if [[ ${SKIP_DB_CREATE} != true ]]; then
         temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" create
@@ -138,21 +141,22 @@ setup_mysql_schema() {
 }
 ```
 
-Note that the script uses the [`temporal-sql-tool`](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
+Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
 
 ### PostgreSQL
 
 :::tip Support, stability, and dependency info
-- PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later
-- With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later
-- Support for PostgreSQL v9.6 to v11 will be deprecated by Temporal Server v1.21; We recommend upgrading to PostgreSQL 12+.
+- PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
+- With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later.
+- Support for PostgreSQL v9.6 through v11 will be deprecated for all Temporal Server versions after v1.20; we recommend upgrading to PostgreSQL 12 or later.
 
 :::
 
 You can set PostgreSQL as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>.
 Verify <a class="tdlp" href="#supported-databases">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> before you proceed.
 
-If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
+If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
+For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -171,10 +175,10 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: 'postgres' # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities.
+        pluginName: 'postgres' # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities
         databaseName: 'temporal_visibility'
-        connectAddr: ' ' # remote address of this database; for example 127.0.0.0:5432
-        connectProtocol: ' ' #protocol example: tcp
+        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:5432
+        connectProtocol: ' ' # protocol example: tcp
         user: 'username_for_auth'
         password: 'password_for_auth'
         maxConns: 2
@@ -183,16 +187,17 @@ persistence:
 #...
 ```
 
-To enable Advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later. See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> for details on how to upgrade your Temporal Server and database schemas.
+To enable Advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later.
+See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> for details on how to upgrade your Temporal Server and database schemas.
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here:
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in the following:
 
 - [PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v12/visibility)
 - [PostgreSQL v9.6 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v96/visibility)
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to setup your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to set up your Visibility store.
 
 ```bash
 #...
@@ -209,7 +214,7 @@ The following example shows how the [auto-setup.sh](https://github.com/temporali
 setup_postgres_schema() {
     #...
 
-    # use valid schema for the version of the database you want to set up for Visibility.
+    # use valid schema for the version of the database you want to set up for Visibility
     VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/postgresql/${POSTGRES_VERSION_DIR}/visibility/versioned
     if [[ ${VISIBILITY_DBNAME} != "${POSTGRES_USER}" && ${SKIP_DB_CREATE} != true ]]; then
         temporal-sql-tool --plugin postgres --ep "${POSTGRES_SEEDS}" -u "${POSTGRES_USER}" -p "${DB_PORT}" --db "${VISIBILITY_DBNAME}" create
@@ -219,23 +224,25 @@ setup_postgres_schema() {
 }
 ```
 
-Note that the script uses the [`temporal-sql-tool`](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
+Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temporal/blob/3b982585bf0124839e697952df4bba01fe4d9543/tools/sql/main.go) to run the setup.
 
 ### SQLite
 
 :::tip Support, stability, and dependency info
-- SQLite v3.31.0 and later
+- SQLite v3.31.0 and later.
 
 :::
 
 You can set SQLite as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>.
 Verify <a class="tdlp" href="#supported-databases">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> before you proceed.
 
-Temporal only support in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
+Temporal supports only an in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
 
-You can change the configuration to use file-based database so that it is preserved when Temporal Server stops. However, note that if using a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you will have to delete the database and create it again to upgrade.
+You can change the configuration to use a file-based database so that it is preserved when Temporal Server stops.
+However, if you use a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
 
-If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster. See [Search Attributes](/application-development/observability#visibility) for details.
+If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
+For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -277,18 +284,18 @@ SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here: https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
 
-See [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup for example on how to set up the SQLite schema.
+For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup .
 
 ### Cassandra
 
 You can set Cassandra as your <a class="tdlp" href="/visibility#">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a>.
+Verify [supported versions](#supported-databases) before you proceed.
 
-Verify [supported versions](#supported-versions) before you proceed.
-
-Advanced Visibility is not supported with Cassandra. To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch as your .
-We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions, as it takes on the request load on the Visibility store and helps optimize performance.
+Advanced Visibility is not supported with Cassandra.
+To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Advanced Visibility store.
+We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize performance.
 
 **Persistence configuration**
 
@@ -328,9 +335,9 @@ In this example, we also set Elasticsearch for Advanced Visibility with Cassandr
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by suported versions) here: https://github.com/temporalio/temporal/tree/master/schema/cassandra/visibility.
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/master/schema/cassandra/visibility.
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to setup your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to set up your Visibility store.
 
 ```bash
 #...
@@ -353,7 +360,7 @@ The following example shows how the [auto-setup.sh](https://github.com/temporali
 # set up Cassandra schema
 setup_cassandra_schema() {
   #...
-  # use valid schema for the version of the database you want to set up for Visibility.
+  # use valid schema for the version of the database you want to set up for Visibility
     VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/cassandra/visibility/versioned
     if [[ ${SKIP_DB_CREATE} != true ]]; then
         temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" create -k "${VISIBILITY_KEYSPACE}" --rf "${CASSANDRA_REPLICATION_FACTOR}"
@@ -367,14 +374,15 @@ setup_cassandra_schema() {
 ### Elasticsearch
 
 :::tip Support, stability, and dependency info
-- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0
-- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0
-- Elasticsearch v6.8 is supported through Temporal Server version 1.17.x
-- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch
+- Elasticsearch v8 is supported beginning with Temporal Server version 1.18.0.
+- Elasticsearch v7.10 is supported beginning with Temporal Server version 1.17.0.
+- Elasticsearch v6.8 is supported through Temporal Server version 1.17._x_.
+- Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch.
 
 :::
 
-You can integrate Elasticsearch with your Temporal Cluster for <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> to take on the Visibility request load. Elasticsearch is recommended for large-scale operations on the Temporal Cluster.
+You can integrate Elasticsearch with your Temporal Cluster for <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> to take on the Visibility request load.
+We recommend using Elasticsearch for large-scale operations on the Temporal Cluster.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
 
@@ -447,32 +455,41 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 ### Custom Search Attributes
 
-You can create and remove custom Search Attribute keys in your Visibility store.
+To manage your custom Search Attributes on Temporal Cloud, use `tcld`. With Temporal Cloud, you can create and rename custom Search Attributes.
 
-However, with <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> for Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table.
-Removing a custom Search Attribute removes this mapping with the database field name, but does not remove the data.
-If you remove a custom Search Attribute and add a new one, it is possible that the new custom Search Attribute is mapped to the database field of the one that was recently removed.
-This may cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
-
+To manage your custom Search Attributes on self-hosted Temporal Clusters, use `tctl`. With self-hosted Temporal Cluster, you can create and remove custom Search Attributes.
+Note that if you use <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> with Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table.
+Removing a custom Search Attribute removes this mapping with the database field name but does not remove the data.
+If you remove a custom Search Attribute and add a new one, the new custom Search Attribute might be mapped to the database field of the one that was recently removed.
+This might cause unexpected results when you use the List API to retrieve results using the new custom Search Attribute.
 These constraints do not apply if you use Elasticsearch.
-
-Renaming a custom Search Attribute is not supported.
 
 #### Create custom Search Attributes
 
-Before you create <a class="tdlp" href="/visibility#custom-search-attribute">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attribute">Learn more</a></span></span></a>, verify whether your <a class="tdlp" href="#supported-databases">Visibility database<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> version supports Advanced Visibility features.
+Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.
+
+**On Temporal Cloud**
+
+To create custom Search Attributes on Temporal Cloud, use [`tcld namespace search-attributes add`](/cloud/tcld/namespace#search-attributes).
+For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud Namespace "YourNamespace", run the following command.
+`tcld namespace search-attributes add --namespace YourNamespace --search-attribute "CustomSA"`
+
+**On self-hosted Temporal Cluster**
+
+If you're self-hosting your Temporal Cluster, verify whether your <a class="tdlp" href="#supported-databases">Visibility database<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> version supports Advanced Visibility features.
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow visibility](/application-development/observability#search-attributes) and <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
 
-To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifier.
+To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifiers.
 
-For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run:
+For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
 
 `tctl search-attribute create --name CustomSA --type Keyword`
 
-Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute. For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
+Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
+For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
 
-You can also create a list of custom Search Attributes at the time of setting up your Visibility store.
+You can also create a list of custom Search Attributes when you set up your Visibility store.
 
 For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates a list of custom Search Attributes in the Visibility store, as shown in the following code snippet from the script (for SQL databases).
 
@@ -515,17 +532,17 @@ add_custom_search_attributes() {
  }
 ```
 
-Once your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.
+When your Visibility store is set up and running, these custom Search Attributes are available to use in your Workflow code.
 
 #### Remove custom Search Attributes
 
-To remove a Search Attribute key from your Visibility store, use the command `tctl search-attribute remove`.
+To remove a Search Attribute key from your self-hosted Temporal Cluster Visibility store, use the command `tctl search-attribute remove`.
 
 For example, if using Elasticsearch for Advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
 `tctl search-attribute remove --name CustomSA`
 
-With Temporal Server v1.20, if using a SQL database for Advanced Visibility, you will need to specify the Namespace in your command, as shown in the following command:
+With Temporal Server v1.20, if using a SQL database for Advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
 
 `tctl  --ns yournamespace search-attribute remove --name CustomSA`
 
@@ -873,7 +890,7 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
 ```
 
-If you're upgrading your PostgreSQL to v12 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run the `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
+If you're upgrading PostgreSQL to v12 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
 
 ```bash
 ./temporal-sql-tool \
@@ -911,7 +928,7 @@ If you're upgrading your PostgreSQL to v12 or later to enable Advanced Visibilit
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
-If you're upgrading your MySQL to v8.0.17 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run the `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
+If you're upgrading MySQL to v8.0.17 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
 
 ```bash
 ./temporal-sql-tool \

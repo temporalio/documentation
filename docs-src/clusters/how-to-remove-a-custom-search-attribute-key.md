@@ -2,14 +2,14 @@
 id: how-to-remove-a-custom-search-attribute-key
 title: How to remove custom Search Attributes
 sidebar_label: Remove custom Search Attributes
-description: Remove custom Search Attributes from your Visibility store using `tctl`.
+description: Remove custom Search Attributes from your self-hosted Temporal Cluster Visibility store using `tctl`.
 tags:
   - operation-guide
   - filtered-lists
   - visibility
 ---
 
-To remove a Search Attribute key from your Visibility store, use the command `tctl search-attribute remove`.
+To remove a Search Attribute key from your self-hosted Temporal Cluster Visibility store, use the command `tctl search-attribute remove`.
 
 For example, if using Elasticsearch for Advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 

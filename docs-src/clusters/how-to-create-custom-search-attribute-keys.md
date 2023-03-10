@@ -2,18 +2,28 @@
 id: how-to-create-custom-search-attribute-keys
 title: How to create custom Search Attributes
 sidebar_label: Create custom Search Attributes
-description: Add custom Search Attributes to your Visibility store using `tctl`.
+description: Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.
 tags:
   - operation-guide
   - filtered-lists
   - visibility
 ---
 
-Before you create [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attribute), verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports Advanced Visibility features.
+Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.
+
+**On Temporal Cloud**
+
+To create custom Search Attributes on Temporal Cloud, use [`tcld namespace search-attributes add`](/cloud/tcld/namespace#search-attributes).
+For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud Namespace "YourNamespace", run the following command.
+`tcld namespace search-attributes add --namespace YourNamespace --search-attribute "CustomSA"`
+
+**On self-hosted Temporal Cluster**
+
+If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports Advanced Visibility features.
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow visibility](/application-development/observability#search-attributes) and [List Filters](/concepts/what-is-a-list-filter).
 
-To create custom Search Attributes in your Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifiers.
+To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifiers.
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
 
