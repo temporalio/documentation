@@ -159,7 +159,7 @@ function parseURL(repoPath, file) {
   const parts = file.directory.split("/");
   const dirParts = parts.slice(1);
   const directory = dirParts.join(...dirParts);
-  const sourceURL = repoPath + path.join(
+  const sourceURL = repoPath + "/" + path.join(
     directory,
     file.name,
   );
