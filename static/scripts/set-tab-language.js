@@ -1,5 +1,5 @@
 (function () {
-  const platform = navigator.platform.toLowerCase();
+  const platform = navigator.userAgentData.toLowerCase();
   let activeTab = null;
 
   if (platform.includes('mac')) {
