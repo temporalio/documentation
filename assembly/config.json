@@ -7,6 +7,7 @@
     "docs-src/clusters",
     "docs-src/concept-context",
     "docs-src/concepts",
+    "docs-src/go-new",
     "docs-src/go",
     "docs-src/java",
     "docs-src/security",
@@ -18,12 +19,16 @@
     "docs-src/tctl-next"
   ],
   "content_write_dir": "docs",
+  "docs_src": "docs-src",
   "secure_config_dir": "assembly/secure",
   "notion_creds_file_name": "notion-creds.json",
   "temp_write_dir": "assembly/temp",
+  "temp_archive_dir": "archive",
   "source_info_nodes_file_name": "source-info-nodes.json",
   "guide_configs_path": "assembly/guide-configs",
   "guide_configs_with_attached_nodes_file_name": "matched-guides.json",
   "notion_store_file_name": "notion-questions.json",
-  "glossary_file_name": "glossary.md"
+  "glossary_file_name": "glossary.md",
+  "samples_file_paths_filename": "samples-file-paths.json",
+  "documentation_samples_repos": []
 }
