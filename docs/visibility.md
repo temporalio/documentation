@@ -148,7 +148,7 @@ The default total maximum number of Search Attribute **keys** per Temporal Clust
 
 <!-- TODO - [How to configure maximum number of Search Attribute keys per Cluster](#) -->
 
-The default single Search Attribute **value** size is limited 2 KB.
+The default single Search Attribute **value** size is limited to 2 KB.
 
 <!-- TODO - [How to configure Search Attribute value size limit](#) -->
 
