@@ -20,7 +20,6 @@ export async function createNodesFromSamples(config) {
       const lang = ext.slice(1);
       if (isDACX(file.name) && isSupportedExtension(ext)) {
         const sourceURL = parseURL(repoPaths.source_url, file);
-        console.log(sourceURL);
         await createNodes(config, file, lang, sourceURL)
       }
     }
@@ -157,7 +156,6 @@ function isDACX(str) {
 }
 
 function parseURL(repoPath, file) {
-  console.log(repoPath);
   const parts = file.directory.split("/");
   const dirParts = parts.slice(1);
   const directory = dirParts.join(...dirParts);
@@ -165,7 +163,6 @@ function parseURL(repoPath, file) {
     directory,
     file.name,
   );
-  console.log(sourceURL);
   return sourceURL;
 }
 

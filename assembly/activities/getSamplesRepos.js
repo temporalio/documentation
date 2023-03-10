@@ -40,7 +40,6 @@ export async function getSamplesRepos(config) {
         "blob",
         ref,
       );
-      console.log(sourceURL);
       samplesFilePaths.push({
         source_url: sourceURL,
         repo_files: fileData.files
