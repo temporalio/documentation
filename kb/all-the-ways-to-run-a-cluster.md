@@ -26,50 +26,78 @@ It supports persistence to disk and in-memory mode through SQLite.
 
 The following steps start and run a Temporal Cluster.
 
-1. Choose one of the following install methods.
-   1. Install the Temporal CLI with Homebrew.
+<Tabs>
+<TabItem value="macOS" label="macOS">
 
-      ```bash
-      brew install temporal
-      ```
+- Install the Temporal CLI with Homebrew.
 
-   2. Install the Temporal CLI with cURL.
+  ```bash
+  brew install temporal
+  ```
 
-      ```bash
-      curl -sSf https://temporal.download/cli.sh | sh
-      ```
+- Install the Temporal CLI with cURL.
 
-   3. Install the Temporal CLI for Windows.
-      1. Download and run the installer for the [latest release](https://github.com/temporalio/cli/releases/latest/).
-      2. Add the `temporal.exe` binary to your PATH.
-   4. Install the Temporal CLI from CDN.
-      1. Select the platform and architecture needed and add the binary to your PATH.
-         <Tabs>
-         <TabItem value="darwin-amd64" label="Darwin amd64">
-         <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
-         </TabItem>
-         <TabItem value="darwin-arm64" label="Darwin arm64">
-         <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
-         </TabItem>
-         <TabItem value="linux-amd64" label="Linux amd64">
-         <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
-         </TabItem>
-         <TabItem value="linux-arm64" label="Linux arm64">
-         <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
-         </TabItem>
-         <TabItem value="windows-amd64" label="Windows amd64">
-         <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
-         </TabItem>
-         <TabItem value="windows-arm64" label="Windows arm64">
-         <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
-         </TabItem>
-         </Tabs>
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
 
-2. Start Temporal Server by using the `start-dev` command.
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
 
-   ```bash
-   temporal server start-dev
-   ```
+- Install the Temporal CLI from GitHub.
+  1. Download the [latest release](https://github.com/temporalio/cli/releases/latest/) for your platform and architecture.
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+</TabItem>
+<TabItem value="Linux" label="Linux">
+
+- Install the Temporal CLI with cURL.
+
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+- Install the Temporal CLI from GitHub.
+  1. Download the [latest release](https://github.com/temporalio/cli/releases/latest/) for your platform and architecture.
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+</TabItem>
+<TabItem value="Windows" label="Windows">
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed and download the binary.
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal.exe` binary to your PATH.
+- Install the Temporal CLI from GitHub.
+  1. Download the [latest release](https://github.com/temporalio/cli/releases/latest/) for your platform and architecture.
+  2. Extract the downloaded archive.
+  3. Add the `temporal.exe` binary to your PATH.
+
+</TabItem>
+</Tabs>
+
+**Start the Temporal Server**
+
+Start Temporal Server by using the `start-dev` command.
+
+```bash
+temporal server start-dev
+```
 
 To customize the [Namespace Name](/namespaces), start the server with the `--namespace` command.
 
@@ -85,7 +113,7 @@ temporal server start-dev --namespace your-custom-namespace
 It supports persistence to disk and in-memory mode through SQLite.
 
 Temporalite is great for local testing and development purposes.
-It offers great performace in terms of processing Workflow Executions per second.
+It offers great performance in terms of processing Workflow Executions per second.
 Although it does currently default to one History Shard, we plan to make this setting configurable at start time, and you can adjust the setting by cloning the repository.
 In theory, performance at this point is limited to your machine's processing capabilities, SQLite capacity, and SQLite read/write speeds.
 
@@ -117,7 +145,7 @@ If you have Docker and Docker Compose installed, all you need to do is clone the
 The `temporalio/docker-compose` repo comes loaded with a variety of configuration templates that enable you to try all three databases that the Temporal Platform supports (PostgreSQL, MySQL, Cassandra).
 It also enables you to try [Advanced Visibility](/visibility/#advanced-visibility) using [Search Attributes](/visibility/#search-attribute), emit metrics, and even play with the [Archival](/clusters/#archival) feature.
 The Docker images in this repo are produced using the Temporal Server [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script.
-This script defaults to creating images that run all of the Temporal Server services in a single process.
+This script defaults to creating images that run all the Temporal Server services in a single process.
 You can use this script as a starting point for producing your own images.
 
 Running your Cluster in Docker is convenient and enables you to play with features.
@@ -148,7 +176,7 @@ Doing this requires [Go v1.18+](https://github.com/temporalio/temporal/blob/mast
 ## Temporal Server as a binary
 
 You can run the Temporal Server as a single Go binary, or you can run each service within the Server separately.
-For example, if you are using Kubernetes, you could have one service per pod so they can be scaled independently in future.
+For example, if you are using Kubernetes, you could have one service per pod, so they can be scaled independently in future.
 
 In Docker, you could run each service in its own container, using the `SERVICES` flag to specify the service:
 

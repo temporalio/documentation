@@ -5,38 +5,75 @@ sidebar_label: Run a development Cluster
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
-The following section describes how to deploy your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs and [tctl](/tctl-v1) commands to test and develop applications.
+The following section describes how to deploy your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs, [Web UI](/web-ui), and [tctl](/tctl-next) commands to test and develop applications.
 
-**For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](/cloud) documentation.**
-
-### Temporal CLI
+**For information on deploying a [production environment](/cluster-deployment-guide), see the [Temporal Cloud](/cloud) documentation.**
 
 Temporal CLI is a distribution of Temporal that runs as a single process with zero runtime dependencies.
 It supports persistence to disk and in-memory mode through SQLite.
 
-**Install and start the Temporal CLI**
+**Install the Temporal CLI**
 
-1. Choose one of the following install methods.
-   1. Install the Temporal CLI with Homebrew.
+Choose one of the following install methods to install the Temporal CLI.
 
-      ```bash
-      brew install temporal
-      ```
+<Tabs>
+<TabItem value="macOS" label="macOS">
 
-   2. Install the Temporal CLI with cURL.
+- Install the Temporal CLI with Homebrew.
 
-      ```bash
-      curl -sSf https://temporal.download/cli.sh | sh
-      ```
+  ```bash
+  brew install temporal
+  ```
 
-   3. Install the Temporal CLI for Windows.
-      1. Download and run the installer for the [latest release](https://github.com/temporalio/cli/releases/latest/).
-      2. Add the `temporal.exe` binary to your PATH.
-2. Start Temporal Server by using the `start-dev` command.
+- Install the Temporal CLI with cURL.
 
-   ```bash
-   temporal server start-dev
-   ```
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+</TabItem>
+<TabItem value="Linux" label="Linux">
+
+- Install the Temporal CLI with cURL.
+
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
+
+</TabItem>
+<TabItem value="Windows" label="Windows">
+
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed and download the binary.
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal.exe` binary to your PATH.
+
+</TabItem>
+</Tabs>
+
+**Start the Temporal Server**
+
+Start Temporal Server by using the `start-dev` command.
+
+```bash
+temporal server start-dev
+```
 
 To customize the [Namespace Name](/namespaces), start the server with the `--namespace` command.
 
