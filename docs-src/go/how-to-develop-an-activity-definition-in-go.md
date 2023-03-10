@@ -2,44 +2,11 @@
 id: how-to-develop-an-activity-definition-in-go
 title: How to develop an Activity Definition in Go
 sidebar_label: Activity Definition
-description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.
-tags:
-  - developer-guide
-  - go
+description: In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
 ---
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
-
-**Function**
-
-```go
-// basic function signature
-func YourActivityDefinition(ctx context.Context) error {
- // ...
- return nil
-}
-
-// with parameters and return values
-func SimpleActivity(ctx context.Context, value string) (string, error)
-```
-
-**Struct method**
-
-```go
-type YourActivityStruct struct {
- ActivityFieldOne string
- ActivityFieldTwo int
-}
-
-func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
- // ...
-}
-
-func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
- // ...
-}
-```
-
+Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:
 
@@ -49,3 +16,35 @@ Activities written as struct methods can use shared struct variables, such as:
 - any other expensive resources that you only want to initialize once per process
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
+
+<a class="dacx-source-link" href="https:/github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+
+```go
+package yourapp
+
+import (
+	"context"
+
+	"go.temporal.io/sdk/activity"
+)
+
+// ...
+
+// YourSimpleActivityDefinition is a basic Activity Definiton.
+func YourSimpleActivityDefinition(ctx context.Context) error {
+	return nil
+}
+
+// YourActivityObject is the struct that maintains shared state across Activities.
+// If the Worker crashes this Activity object loses its state.
+type YourActivityObject struct {
+	SharedMessageState *string
+	SharedCounterState *int
+}
+
+// YourActivityDefinition is your custom Activity Definition.
+// An Activity Definiton is an exportable function.
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+// ...
+}
+```
