@@ -235,8 +235,9 @@ This Event type contains Activity inputs, as well as Activity Timeout configurat
 
 ### ActivityTaskStarted
 
-This [Event](/concepts/what-is-an-event) type indicates that the [Activity Task](/concepts/what-is-an-activity-task) has started executing.
-The SDK client has picked up the Activity Task and is processing the [Activity](/concepts/what-is-an-activity) invocation.
+This [Event](/concepts/what-is-an-event) type indicates that an [Activity Task Execution](/concepts/what-is-an-activity-task-execution) was started.
+The SDK Worker picked up the Activity Task and started processing the [Activity](/concepts/what-is-an-activity) invocation.
+Note, however, that this Event is not written to History until the terminal Event (like [ActivityTaskCompleted](/references/events#activitytaskcompleted) or [ActivityTaskFailed](/references/events#activitytaskfailed)) occurs.
 
 | Field              | Description                                                                                                          |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------- |
@@ -274,7 +275,7 @@ This Event type contains [Activity Execution](/concepts/what-is-an-activity-exec
 
 ### ActivityTaskTimedOut
 
-This [Event](/concepts/what-is-an-event) type indicates that the Activity has timed out according to the [Temporal Server](/concepts/what-is-the-temporal-server) , due to the [Activity](/concepts/what-is-an-activity) having not completed within the timeout settings.
+This [Event](/concepts/what-is-an-event) type indicates that the Activity has timed out according to the [Temporal Server](/concepts/what-is-the-temporal-server), due to one of these [Activity](/concepts/what-is-an-activity) timeouts: [Schedule-to-Close Timeout](/activities#schedule-to-close-timeout) and [Schedule-to-Start Timeout](/activities#schedule-to-start-timeout).
 
 | Field              | Description                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -285,8 +286,7 @@ This [Event](/concepts/what-is-an-event) type indicates that the Activity has ti
 
 ### ActivityTaskCancelRequested
 
-This [Event](/concepts/what-is-an-event) type indicates that a request to cancel the [Activity](/concepts/what-is-an-activity) has occurred.
-The SDK client will be able to confirm cancelation of an Activity during an Activity heartbeat.
+This [Event](/concepts/what-is-an-event) type indicates that a request to [cancel](/activities#cancellation) the [Activity](/concepts/what-is-an-activity) has occurred.
 
 | Field                            | Description                                                                                                |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -295,7 +295,7 @@ The SDK client will be able to confirm cancelation of an Activity during an Acti
 
 ### ActivityTaskCanceled
 
-This [Event](/concepts/what-is-an-event) type indicates that the [Activity](/concepts/what-is-an-activity) has been canceled.
+This [Event](/concepts/what-is-an-event) type indicates that the [Activity](/concepts/what-is-an-activity) has been [canceled](/activities#cancellation).
 
 | Field                            | Description                                                                                                                |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
