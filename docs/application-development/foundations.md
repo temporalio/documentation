@@ -606,6 +606,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
+In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
+Below is an example of a basic Workflow Definition.
+
 <a class="dacx-source-link" href="https:/github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
@@ -617,6 +620,7 @@ import (
 	"go.temporal.io/sdk/workflow"
 )
 // ...
+
 // YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
 func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 	// ...
@@ -1316,8 +1320,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
-Below is an example of a basic exportable function.
-Below is an example of an Activity defined as a Struct method.
+Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:
 
@@ -1345,7 +1348,6 @@ import (
 func YourSimpleActivityDefinition(ctx context.Context) error {
 	return nil
 }
-
 
 // YourActivityObject is the struct that maintains shared state across Activities.
 // If the Worker crashes this Activity object loses its state.

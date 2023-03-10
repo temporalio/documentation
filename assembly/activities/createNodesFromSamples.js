@@ -1,13 +1,9 @@
 import fs from "fs-extra";
 import path from "path";
 import rangeParser from "parse-numeric-range";
-import { write, writeFile } from "fs";
-import { dir } from "console";
 
-const docsAsSourceRegex = "(?:\\/\\*)(?: @dac\\n)(id:.*)(?:\n)(title:.*)(?:\\n)(label:.*)(?:\\n)(description:.*)(?:\\n)(lines:.*)(?:\\n@dac \\*\\/)";
+const docsAsSourceRegex = "(?:\\/\\*)(?: @dacx\\n)(id:.*)(?:\n)(title:.*)(?:\\n)(label:.*)(?:\\n)(description:.*)(?:\\n)(lines:.*)(?:\\n@dacx \\*\\/)";
 const docsAsSource = RegExp(docsAsSourceRegex, "gm");
-const testRegex =  "(\/\* @dac\n.*)";
-const testR = RegExp(testRegex, "gm");
 const codeBlocks = '```';
 
 export async function createNodesFromSamples(config) {

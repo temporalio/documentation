@@ -6,8 +6,7 @@ description: In the Temporal Go SDK programming model, an Activity Definition is
 ---
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
-Below is an example of a basic exportable function.
-Below is an example of an Activity defined as a Struct method.
+Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:
 
@@ -35,7 +34,6 @@ import (
 func YourSimpleActivityDefinition(ctx context.Context) error {
 	return nil
 }
-
 
 // YourActivityObject is the struct that maintains shared state across Activities.
 // If the Worker crashes this Activity object loses its state.
