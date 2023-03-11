@@ -19,11 +19,11 @@ type YourActivityResultObject struct {
 	ResultFieldY int
 }
 // ...
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
-	result := YourActivityResultObject{
-		ResultFieldX: *a.SharedMessageState,
-		ResultFieldY: *a.SharedCounterState,
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
 	}
 	// Return the results back to the Workflow Execution.
 	// The results persist within the Event History of the Workflow Execution.

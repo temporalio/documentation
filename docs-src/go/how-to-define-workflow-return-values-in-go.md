@@ -33,6 +33,9 @@ type YourWorkflowResultObject struct {
 // YourWorkflowDefinition is your custom Workflow Definition.
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
+	if err != nil {
+		return nil, err
+	}
 	// Make the results of the Workflow Execution available.
 	workflowResult := &YourWorkflowResultObject{
 		WFResultFieldX: activityResult.ResultFieldX,

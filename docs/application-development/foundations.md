@@ -935,6 +935,9 @@ type YourWorkflowResultObject struct {
 // YourWorkflowDefinition is your custom Workflow Definition.
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
+	if err != nil {
+		return nil, err
+	}
 	// Make the results of the Workflow Execution available.
 	workflowResult := &YourWorkflowResultObject{
 		WFResultFieldX: activityResult.ResultFieldX,
@@ -1341,7 +1344,6 @@ import (
 
 	"go.temporal.io/sdk/activity"
 )
-
 // ...
 
 // YourSimpleActivityDefinition is a basic Activity Definiton.
@@ -1352,13 +1354,13 @@ func YourSimpleActivityDefinition(ctx context.Context) error {
 // YourActivityObject is the struct that maintains shared state across Activities.
 // If the Worker crashes this Activity object loses its state.
 type YourActivityObject struct {
-	SharedMessageState *string
-	SharedCounterState *int
+	Message *string
+	Number *int
 }
 
 // YourActivityDefinition is your custom Activity Definition.
 // An Activity Definiton is an exportable function.
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
 ```
@@ -1575,7 +1577,7 @@ type YourActivityParam struct {
 	ActivityParamY int
 }
 // ...
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
 ```
@@ -1695,11 +1697,11 @@ type YourActivityResultObject struct {
 	ResultFieldY int
 }
 // ...
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
-	result := YourActivityResultObject{
-		ResultFieldX: *a.SharedMessageState,
-		ResultFieldY: *a.SharedCounterState,
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
 	}
 	// Return the results back to the Workflow Execution.
 	// The results persist within the Event History of the Workflow Execution.
@@ -2545,11 +2547,11 @@ func main() {
 // ...
 	// Register your Activity Definitons with the Worker.
 	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
-	initialMessageString := "No messages!"
-	initialCounterState := 0
+	message := "This could be a connection string or endpoint details"
+	number := 100
 	activities := &yourapp.YourActivityObject{
-		SharedMessageState: &initialMessageString,
-		SharedCounterState: &initialCounterState,
+		Message: &message,
+		Number: &number,
 	}
 	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
 	yourWorker.RegisterActivity(activities)

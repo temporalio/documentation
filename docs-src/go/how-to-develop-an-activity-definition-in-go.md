@@ -27,7 +27,6 @@ import (
 
 	"go.temporal.io/sdk/activity"
 )
-
 // ...
 
 // YourSimpleActivityDefinition is a basic Activity Definiton.
@@ -38,13 +37,13 @@ func YourSimpleActivityDefinition(ctx context.Context) error {
 // YourActivityObject is the struct that maintains shared state across Activities.
 // If the Worker crashes this Activity object loses its state.
 type YourActivityObject struct {
-	SharedMessageState *string
-	SharedCounterState *int
+	Message *string
+	Number *int
 }
 
 // YourActivityDefinition is your custom Activity Definition.
 // An Activity Definiton is an exportable function.
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
 ```

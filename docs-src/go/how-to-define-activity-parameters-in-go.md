@@ -1,6 +1,6 @@
 ---
 id: how-to-define-activity-parameters-in-go
-title: How to do define Activity parameters in Go
+title: How to define Activity parameters in Go
 sidebar_label: Activity parameters
 description: The only required parameter is `context.Context`, but Activities can support many custom parameters.
 ---
@@ -21,7 +21,7 @@ type YourActivityParam struct {
 	ActivityParamY int
 }
 // ...
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResultObject, error) {
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
 ```

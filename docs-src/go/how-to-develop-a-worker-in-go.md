@@ -61,11 +61,11 @@ func main() {
 // ...
 	// Register your Activity Definitons with the Worker.
 	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
-	initialMessageString := "No messages!"
-	initialCounterState := 0
+	message := "This could be a connection string or endpoint details"
+	number := 100
 	activities := &yourapp.YourActivityObject{
-		SharedMessageState: &initialMessageString,
-		SharedCounterState: &initialCounterState,
+		Message: &message,
+		Number: &number,
 	}
 	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
 	yourWorker.RegisterActivity(activities)
