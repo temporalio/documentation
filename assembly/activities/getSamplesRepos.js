@@ -34,14 +34,14 @@ export async function getSamplesRepos(config) {
       )
       const fileData = await anzip(archiveWritePath, { outputPath: unzipPath });
       await fs.unlink(archiveWritePath);
+      const sourceURL = "https://github.com/" + path.join(
+        owner,
+        repo,
+        "blob",
+        ref,
+      );
       samplesFilePaths.push({
-        source_url: path.join(
-          "https://github.com",
-          owner,
-          repo,
-          "blob",
-          ref,
-        ),
+        source_url: sourceURL,
         repo_files: fileData.files
       });
   }
