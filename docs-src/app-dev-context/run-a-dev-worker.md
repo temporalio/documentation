@@ -1,8 +1,8 @@
 ---
-id: run-worker-processes
+id: run-a-dev-worker
 title: How to run Worker Processes
 description: The Worker Process is where Workflow Functions and Activity Functions are executed.
-sidebar_label: Run Worker Processes
+sidebar_label: Run a dev Worker
 tags:
   - guide-context
 ---

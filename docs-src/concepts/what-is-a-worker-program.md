@@ -10,6 +10,5 @@ tags:
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-**Implementation guide:**
-
-- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
+- [How to run a development Worker](/app-dev-context/run-a-dev-worker)
+- [How to run a Temporal Cloud Worker](/app-dev-context/run-a-temporal-cloud-worker)
