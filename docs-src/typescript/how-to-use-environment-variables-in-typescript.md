@@ -41,7 +41,7 @@ const createActivities = (envVars: { apiKey: string }) => ({
 
 **Getting into Workflow**
 
-If you need environment variables in our Workflow, use a Local Activity:
+If you need environment variables in your Workflow, use a Local Activity:
 
 ```ts
 const worker = await Worker.create({
