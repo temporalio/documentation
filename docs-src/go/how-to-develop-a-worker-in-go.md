@@ -2,11 +2,7 @@
 id: how-to-develop-a-worker-in-go
 title: How to develop a Worker in Go
 sidebar_label: Develop Worker
-description: Develop an instance of a Worker by calling `worker.New()`, available via the `go.temporal.io/sdk/worker` package.
-tags:
-  - developer-guide
-  - go
-  - workers
+description: Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.
 ---
 
 Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available through the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
@@ -21,46 +17,64 @@ Lastly, call either the `Start()` or the `Run()` method on the instance of the W
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
 
-```go
-package main
-
-import (
-   "go.temporal.io/sdk/client"
-   "go.temporal.io/sdk/worker"
-)
-
-func main() {
-   c, err := client.Dial(client.Options{})
-   if err != nil {
-       // ...
-   }
-   defer c.Close()
-   w := worker.New(c, "your-task-queue", worker.Options{})
-   w.RegisterWorkflow(YourWorkflowDefinition)
-   w.RegisterActivity(YourActivityDefinition)
-   err = w.Run(worker.InterruptCh())
-   if err != nil {
-       // ...
-   }
- // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
-}
-
-func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
- // ...
-}
-```
-
 :::tip
 
 If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
 
 ```bash
 go install github.com/mitranim/gow@latest
-gow run worker/main.go # automatically reload when file changed
+gow run worker/main.go # automatically reloads when file changes
 ```
 
 :::
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
+
+```go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"documentation-samples-go/yourapp"
+)
+
+
+func main() {
+	// Create a Temporal Client
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker.
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	// Register your Workflow Definitions with the Worker.
+	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
+	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
+// ...
+	// Register your Activity Definitons with the Worker.
+	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
+	message := "This could be a connection string or endpoint details"
+	number := 100
+	activities := &yourapp.YourActivityObject{
+		Message: &message,
+		Number: &number,
+	}
+	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
+	yourWorker.RegisterActivity(activities)
+// ...
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
+}
+// ...
+```
