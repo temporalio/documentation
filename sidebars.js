@@ -82,6 +82,26 @@ module.exports = {
     },
     "cluster-deployment-guide",
     "security",
+    // {
+    //   type: "category",
+    //   label: "CLI (temporal)",
+    //   collapsible: true,
+    //   collapsed: true,
+    //   link: {
+    //     type: "doc",
+    //     id: "cli/index",
+    //   },
+    //   items: [
+    //     "cli/activity",
+    //     "cli/batch",
+    //     "cli/env",
+    //     "cli/operator",
+    //     "cli/schedule",
+    //     "cli/task-queue",
+    //     "cli/workflow",
+    //     "cli/cmd-options",
+    //   ],
+    // },
     {
       type: "category",
       label: "CLI - tctl v1.17",
@@ -101,29 +121,6 @@ module.exports = {
         "tctl-v1/schedule",
         "tctl-v1/taskqueue",
         "tctl-v1/workflow",
-      ],
-    },
-    {
-      type: "category",
-      label: "CLI - tctl next",
-      collapsible: true,
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "tctl-next/index",
-      },
-      items: [
-        "tctl-next/activity",
-        "tctl-next/batch",
-        "tctl-next/cluster",
-        "tctl-next/config",
-        "tctl-next/data-converter",
-        "tctl-next/namespace",
-        "tctl-next/schedule",
-        "tctl-next/search-attribute",
-        "tctl-next/task-queue",
-        "tctl-next/workflow",
-        "tctl-next/modifiers",
       ],
     },
     "web-ui",
@@ -196,4 +193,26 @@ module.exports = {
       ],
     },
   ],
+  sidebarCLI: [
+    {
+      type: "category",
+      label: "CLI (temporal)",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "cli/index",
+      },
+      items: [
+        "cli/activity",
+        "cli/batch",
+        "cli/env",
+        "cli/operator",
+        "cli/schedule",
+        "cli/task-queue",
+        "cli/workflow",
+        "cli/cmd-options",
+      ],
+    },
+  ]
 };
