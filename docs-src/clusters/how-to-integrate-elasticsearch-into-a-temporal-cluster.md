@@ -28,7 +28,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 :::
 
-#### Persistence configuration
+**Persistence configuration**
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
    The [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file in the `temporalio/temporal` repo is a working example.
@@ -58,7 +58,7 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-#### Index schema and index
+**Index schema and index**
 
 Run the following commands to create the index schema and index:
 
@@ -74,7 +74,7 @@ curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content
 curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
 ```
 
-#### Set Elasticsearch privileges
+**Set Elasticsearch privileges**
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 

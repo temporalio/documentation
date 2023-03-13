@@ -9,7 +9,7 @@ tags:
   - visibility
 ---
 
-A [Visibility](/concepts/what-is-visibility) store is set up as a part of your [Persistence store](/concept/what-is-a-temporal-cluster#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+A [Visibility](/concepts/what-is-visibility) store is set up as a part of your [Persistence store](/concepts/what-is-a-temporal-cluster#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and `tctl` to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 

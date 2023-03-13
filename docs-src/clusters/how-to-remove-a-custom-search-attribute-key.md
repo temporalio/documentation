@@ -10,6 +10,7 @@ tags:
 ---
 
 To remove a Search Attribute key from your self-hosted Temporal Cluster Visibility store, use the command `tctl search-attribute remove`.
+Removing Search Attributes is currently not supported on Temporal Cloud.
 
 For example, if using Elasticsearch for Advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 

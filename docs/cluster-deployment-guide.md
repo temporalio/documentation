@@ -22,7 +22,7 @@ Legacy production deployment information is available [here](/server/production-
 
 ## Visibility store
 
-A <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> store is set up as a part of your [Persistence store](/concept/what-is-a-temporal-cluster#persistence) to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+A <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> store is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and `tctl` to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
@@ -395,7 +395,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 :::
 
-#### Persistence configuration
+**Persistence configuration**
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
    The [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file in the `temporalio/temporal` repo is a working example.
@@ -425,7 +425,7 @@ persistence:
           visibility: temporal_visibility_v1_dev
 ```
 
-#### Index schema and index
+**Index schema and index**
 
 Run the following commands to create the index schema and index:
 
@@ -441,7 +441,7 @@ curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content
 curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
 ```
 
-#### Set Elasticsearch privileges
+**Set Elasticsearch privileges**
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 
@@ -537,6 +537,7 @@ When your Visibility store is set up and running, these custom Search Attributes
 #### Remove custom Search Attributes
 
 To remove a Search Attribute key from your self-hosted Temporal Cluster Visibility store, use the command `tctl search-attribute remove`.
+Removing Search Attributes is currently not supported on Temporal Cloud.
 
 For example, if using Elasticsearch for Advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
