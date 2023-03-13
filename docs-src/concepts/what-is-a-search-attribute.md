@@ -153,10 +153,9 @@ Search Attributes available in your Visibility store can be used with Workflow E
 To actually have results from the use of a [List Filter](/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
 - To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys)
-- To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes with your SDK](/application-development/observability#custom-search-attributes).
-- To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes](/application-development/observability#upsert-search-attributes)
-- To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute](/application-development/observability#remove-search-attribute).
-  Also verify Visibility setup constraints listed in the [Custom Search Attributes](#custom-search-sttributes) section.
+- To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes value with your SDK](/application-development/observability#custom-search-attributes).
+- To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes value](/application-development/observability#upsert-search-attributes)
+- To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute value](/application-development/observability#remove-search-attribute).
 - To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/clusters/how-to-remove-a-custom-search-attribute-key). Removing custom Search Attributes is not supported on Temporal Cloud.
 - To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace#rename).
 - To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes).
