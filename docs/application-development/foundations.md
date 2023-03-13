@@ -1034,7 +1034,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-worker-processes">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-worker-processes">Learn more</a></span></span></a>.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -1795,7 +1795,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 func main() {
@@ -2516,7 +2516,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
