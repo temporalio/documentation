@@ -366,13 +366,13 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which are the ports of the development Cluster.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Cluster.
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourappyourappgateway/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -399,18 +399,21 @@ func main() {
 		log.Fatalln("Unable to create Temporal Client", err)
 	}
 	defer temporalClient.Close()
-	// Start an HTTP server and listen on /start
-	http.HandleFunc("/start", func(w http.ResponseWriter, r *http.Request) {
-		startWorkflowHandler(w, r, temporalClient)
-	})
-	err = http.ListenAndServe(":8091", nil)
-	if err != nil {
-		log.Fatalln("Unable to run http server", err)
-	}
-}
-
-func startWorkflowHandler(w http.ResponseWriter, r *http.Request, temporalClient client.Client) {
 // ...
+	// Set the options for the Workflow Execution.
+	// A Task Queue must be specified.
+	// A custom Workflow Id is highly recommended.
+	workflowOptions := client.StartWorkflowOptions{
+		ID:        "your-workflow-id",
+		TaskQueue: "your-custom-task-queue-name",
+	}
+	// Use an object as your Workflow Function parameter.
+	// Objects enable your Function signature to remain compatible if fields change.
+	workflowParams := yourapp.YourWorkflowParam{
+		WorkflowParamX: "Hello World!",
+		WorkflowParamY: 999,
+	}
+	// Make the call to the Temporal Cluster to start the Workflow Execution.
 	workflowExecution, err := temporalClient.ExecuteWorkflow(
 		context.Background(),
 		workflowOptions,
@@ -630,19 +633,19 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To connect to and run Workflows through Temporal Cloud you will need the following:
+To connect to and run Workflows through Temporal Cloud, you need the following:
 
-- A compatible mTLS CA certificate and mTLS private key, that has been added to your Namespace.
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
   See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
-- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique id 5 digit id that is appended to it.
-  This can be found in the url of your Namespace, for example: https://cloud.temporal.io/namespaces/yournamespace.a2fx6/.
-  The Namespace value must include the id: yournamespace.a2fx6
+- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
-For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloudcloudclient/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -684,6 +687,8 @@ func main() {
 		log.Fatalln("Unable to connect to Temporal Cloud.", err)
 	}
 	defer temporalClient.Close()
+// ...
+}
 ```
 
 </TabItem>
@@ -915,7 +920,7 @@ type YourWorkflowParam struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 // ...
 }
 ```
@@ -1055,7 +1060,7 @@ type YourWorkflowResultObject struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 // ...
 	if err != nil {
 		return nil, err
@@ -1156,7 +1161,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-a-dev-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -1304,6 +1309,11 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+
+```go
+```
 
 </TabItem>
 <TabItem value="java">
@@ -1912,20 +1922,22 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
-
-- Type: `string`
-- Default: function name
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
+func main() {
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "YourActivityName",
-  // ...
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+// ...
+	// Use RegisterOptions to change the name of the Activity Type for example.
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+// ...
 }
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
-// ...
 ```
 
 </TabItem>
@@ -2063,42 +2075,37 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
-
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/workflow"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  yourActivityParam := YourActivityParam{
-    // ...
-  }
-  var activities *YourActivityStruct
-  future := workflow.ExecuteActivity(ctx, activities.YourActivityDefinition, yourActivityParam)
-  // ...
-}
-
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
-  // ...
-}
-```
-
 The Activity function name can be provided as a variable object (no quotations) or as a string.
+The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+	// Set the options for the Activity Execution.
+	// Either StartToClose Timeout OR ScheduleToClose is required.
+	// Not specifying a Task Queue will default to the parent Workflow Task Queue.
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+	}
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+	activityParam := YourActivityParam{
+		ActivityParamX: param.WorkflowParamX,
+		ActivityParamY: param.WorkflowParamY,
+	}
+	// Use a nil struct pointer to call Activities that are part of a struct.
+	var a *YourActivityObject
+	// Execute the Activity and wait for the result.
+	var activityResult *YourActivityResultObject
+	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
+	if err != nil {
+		return nil, err
+	}
 // ...
-  future := workflow.ExecuteActivity(ctx, "YourActivityDefinition", yourActivityParam)
-// ...
+}
 ```
-
-The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-
-The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
 </TabItem>
 <TabItem value="java">
@@ -2636,7 +2643,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -2971,19 +2978,19 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To run a Worker that talks to Temporal Cloud you will need the following:
+To run a Worker that talks to Temporal Cloud, you need the following:
 
-- A compatible mTLS CA certificate and mTLS private key, that has been added to your Namespace.
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
   See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
-- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique id 5 digit id that is appended to it.
-  This can be found in the url of your Namespace, for example: https://cloud.temporal.io/namespaces/yournamespace.a2fx6/.
-  The Namespace value must include the id: yournamespace.a2fx6
+- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
-For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloudcloudworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -3026,6 +3033,8 @@ func main() {
 	defer temporalClient.Close()
 	// Create a new Worker.
 	yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
+// ...
+}
 ```
 
 </TabItem>

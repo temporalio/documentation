@@ -2,24 +2,23 @@
 id: how-to-customize-activity-type-in-go
 title: How to customize Activity Type in Go
 sidebar_label: Customize Activity Type
-description: To customize the Workflow Type set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
-tags:
-  - developer-guide
-  - go
+description: To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.
 ---
 
-To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
-
-- Type: `string`
-- Default: function name
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
+func main() {
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "YourActivityName",
-  // ...
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+// ...
+	// Use RegisterOptions to change the name of the Activity Type for example.
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+// ...
 }
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
-// ...
 ```
