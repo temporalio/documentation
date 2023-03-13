@@ -8,7 +8,7 @@ description: A Go-based Activity Definition can return either just an `error` or
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityResultObject is the struct returned from your Activity.

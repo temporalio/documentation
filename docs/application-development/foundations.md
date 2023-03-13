@@ -609,7 +609,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
 Below is an example of a basic Workflow Definition.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -774,7 +774,7 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -793,7 +793,7 @@ type YourWorkflowParam struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 // ...
 }
 ```
@@ -914,7 +914,7 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -933,7 +933,7 @@ type YourWorkflowResultObject struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 // ...
 	if err != nil {
 		return nil, err
@@ -1034,7 +1034,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-worker-processes">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-worker-processes">Learn more</a></span></span></a>.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourappyourappworker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -1182,6 +1182,11 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_workflow_definition_dacx.go">View source code</a>
+
+```go
+```
 
 </TabItem>
 <TabItem value="java">
@@ -1334,7 +1339,7 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -1567,7 +1572,7 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityParam is the struct passed to your Activity.
@@ -1686,7 +1691,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityResultObject is the struct returned from your Activity.
@@ -1790,20 +1795,22 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
-
-- Type: `string`
-- Default: function name
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourappyourappworker/main_dacx.go">View source code</a>
 
 ```go
+func main() {
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "YourActivityName",
-  // ...
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+// ...
+	// Use RegisterOptions to change the name of the Activity Type for example.
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+// ...
 }
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
-// ...
 ```
 
 </TabItem>
@@ -1941,42 +1948,37 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
-
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/workflow"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  yourActivityParam := YourActivityParam{
-    // ...
-  }
-  var activities *YourActivityStruct
-  future := workflow.ExecuteActivity(ctx, activities.YourActivityDefinition, yourActivityParam)
-  // ...
-}
-
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
-  // ...
-}
-```
-
 The Activity function name can be provided as a variable object (no quotations) or as a string.
+The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+	// Set the options for the Activity Execution.
+	// Either StartToClose Timeout OR ScheduleToClose is required.
+	// Not specifying a Task Queue will default to the parent Workflow Task Queue.
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+	}
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+	activityParam := YourActivityParam{
+		ActivityParamX: param.WorkflowParamX,
+		ActivityParamY: param.WorkflowParamY,
+	}
+	// Use a nil struct pointer to call Activities that are part of a struct.
+	var a *YourActivityObject
+	// Execute the Activity and wait for the result.
+	var activityResult *YourActivityResultObject
+	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
+	if err != nil {
+		return nil, err
+	}
 // ...
-  future := workflow.ExecuteActivity(ctx, "YourActivityDefinition", yourActivityParam)
-// ...
+}
 ```
-
-The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-
-The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
 </TabItem>
 <TabItem value="java">
@@ -2514,7 +2516,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourappyourappworker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourappyourappworker/main_dacx.go">View source code</a>
 
 ```go
 package main

@@ -12,7 +12,7 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/foundations/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -31,7 +31,7 @@ type YourWorkflowResultObject struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 // ...
 	if err != nil {
 		return nil, err
