@@ -14,7 +14,7 @@ Search Attributes are indexed fields used in a [List Filter](/concepts/what-is-a
 
 A Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
 
-Temporal provides some [default Search Attributes](#default-search-attributes).
+Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
 
 Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only up to the Namespace [Retention Period](/concepts/what-is-a-retention-period) specified.
@@ -24,7 +24,7 @@ When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal C
 ### Default Search Attributes
 
 A Temporal Cluster has a set of default Search Attributes already available.
-Default Search Attributes are set globally across Namespaces.
+Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
 | NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |

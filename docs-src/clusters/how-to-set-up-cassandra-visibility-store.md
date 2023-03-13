@@ -34,23 +34,10 @@ persistence:
     #...
     cass-visibility:
       cassandra:
-        hosts: '127.0.0.1'
-        keyspace: 'temporal_visibility'
-    es-visibility:
-      elasticsearch:
-        version: 'v7'
-        logLevel: 'error'
-        url:
-          scheme: 'http'
-          host: '127.0.0.1:9200'
-        indices:
-          visibility: temporal_visibility_v1_dev_other
-          # secondary_visibility: temporal_visibility_v2_dev
-        closeIdleConnectionsInterval: 15s
+        hosts: "127.0.0.1"
+        keyspace: "temporal_visibility"
 #...
 ```
-
-In this example, we also set Elasticsearch for Advanced Visibility with Cassandra as the Visibility store.
 
 **Database schema and setup**
 

@@ -8,9 +8,9 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - MySQL v5.7 and later
-  - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20
-  - With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later
+  - MySQL v5.7 and later.
+  - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20.
+  - With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later.
 ---
 
 You can set MySQL as your [Visibility store](/concepts/what-is-visibility).
@@ -36,15 +36,15 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: 'mysql' # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities
-        databaseName: 'temporal_visibility'
-        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:3306
-        connectProtocol: ' ' # protocol example: tcp
-        user: 'username_for_auth'
-        password: 'password_for_auth'
+        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities
+        databaseName: "temporal_visibility"
+        connectAddr: " " # remote address of this database; for example, 127.0.0.0:3306
+        connectProtocol: " " # protocol example: tcp
+        user: "username_for_auth"
+        password: "password_for_auth"
         maxConns: 2
         maxIdleConns: 2
-        maxConnLifetime: '1h'
+        maxConnLifetime: "1h"
 #...
 ```
 

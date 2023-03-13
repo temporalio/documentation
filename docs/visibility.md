@@ -143,7 +143,7 @@ Search Attributes are indexed fields used in a <a class="tdlp" href="#list-filte
 
 A Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
 
-Temporal provides some [default Search Attributes](#default-search-attributes).
+Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
 
 Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only up to the Namespace <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retention Period?</span><br /><br /><span class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#retention-period">Learn more</a></span></span></a> specified.
@@ -153,7 +153,7 @@ When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<spa
 ### Default Search Attributes
 
 A Temporal Cluster has a set of default Search Attributes already available.
-Default Search Attributes are set globally across Namespaces.
+Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
 | NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |

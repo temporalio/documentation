@@ -11,6 +11,8 @@ tags:
 
 Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.
 
+Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow metadata](/application-development/observability#search-attributes) and [List Filters](/concepts/what-is-a-list-filter).
+
 **On Temporal Cloud**
 
 To create custom Search Attributes on Temporal Cloud, use [`tcld namespace search-attributes add`](/cloud/tcld/namespace#search-attributes).
@@ -21,8 +23,6 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports Advanced Visibility features.
 
-Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow visibility](/application-development/observability#search-attributes) and [List Filters](/concepts/what-is-a-list-filter).
-
 To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifiers.
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
@@ -32,9 +32,9 @@ For example, to create a Search Attribute called `CustomSA` of type `Keyword`, r
 Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
 For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
 
-You can also create a list of custom Search Attributes when you set up your Visibility store.
+You can also create multiple custom Search Attributes when you set up your Visibility store.
 
-For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates a list of custom Search Attributes in the Visibility store, as shown in the following code snippet from the script (for SQL databases).
+For example, the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script that is used to set up your local [docker-compose Temporal Cluster](https://github.com/temporalio/docker-compose) creates custom Search Attributes in the Visibility store, as shown in the following code snippet from the script (for SQL databases).
 
 ```bash
 add_custom_search_attributes() {

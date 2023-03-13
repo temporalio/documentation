@@ -8,7 +8,7 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - PostgreSQL v9.6 and later. Use v12 (or later) with Temporal Server v1.20 or later.
+  - PostgreSQL v9.6 and later.
   - With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later.
   - Support for PostgreSQL v9.6 through v11 will be deprecated for all Temporal Server versions after v1.20; we recommend upgrading to PostgreSQL 12 or later.
 ---
@@ -36,15 +36,15 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: 'postgres' # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities
-        databaseName: 'temporal_visibility'
-        connectAddr: ' ' # remote address of this database; for example, 127.0.0.0:5432
-        connectProtocol: ' ' # protocol example: tcp
-        user: 'username_for_auth'
-        password: 'password_for_auth'
+        pluginName: "postgres" # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities
+        databaseName: "temporal_visibility"
+        connectAddr: " " # remote address of this database; for example, 127.0.0.0:5432
+        connectProtocol: " " # protocol example: tcp
+        user: "username_for_auth"
+        password: "password_for_auth"
         maxConns: 2
         maxIdleConns: 2
-        maxConnLifetime: '1h'
+        maxConnLifetime: "1h"
 #...
 ```
 

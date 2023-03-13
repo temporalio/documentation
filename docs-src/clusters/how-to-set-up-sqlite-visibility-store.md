@@ -37,25 +37,25 @@ persistence:
     # ...
     sqlite-visibility:
       sql:
-        user: 'username_for_auth'
-        password: 'password_for_auth'
-        pluginName: 'sqlite'
-        databaseName: 'default'
-        connectAddr: 'localhost'
-        connectProtocol: 'tcp'
+        user: "username_for_auth"
+        password: "password_for_auth"
+        pluginName: "sqlite"
+        databaseName: "default"
+        connectAddr: "localhost"
+        connectProtocol: "tcp"
         connectAttributes:
-          mode: 'memory'
-          cache: 'private'
+          mode: "memory"
+          cache: "private"
         maxConns: 1
         maxIdleConns: 1
-        maxConnLifetime: '1h'
+        maxConnLifetime: "1h"
         tls:
           enabled: false
-          caFile: ''
-          certFile: ''
-          keyFile: ''
+          caFile: ""
+          certFile: ""
+          keyFile: ""
           enableHostVerification: false
-          serverName: ''
+          serverName: ""
 ```
 
 SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
@@ -64,4 +64,4 @@ SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/blob/master/schema/sqlite/v3/visibility/schema.sql.
 
-For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup .
+For an example of setting up the SQLite schema, see [Temporalite](https://github.com/temporalio/temporalite/blob/main/server.go) setup.
