@@ -25,14 +25,16 @@ If you can't find what you are looking for in the Developer's guide, it could be
 
 In this section you can find the following:
 
-- [How to run a dev Cluster](#run-a-dev-cluster)
-- [How to add your SDK](#add-your-sdk)
-- [How to create a Temporal Client](#connect-to-a-cluster)
-- [How to develop a Workflow](#develop-workflows)
-- [How to develop an Activity](#develop-activities)
-- [How to start an Activity Execution](#activity-execution)
-- [How to run a Worker Process](#run-worker-processes)
-- [How to start a Workflow Execution](#start-workflow-execution)
+- <a class="tdlp" href="#run-a-development-cluster">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-cluster">Learn more</a></span></span></a>
+- <a class="tdlp" href="#install-a-temporal-sdk">Install your SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#install-a-temporal-sdk">Learn more</a></span></span></a>
+- <a class="tdlp" href="#connect-to-a-dev-cluster">Connect to a dev Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</span><br /><br /><span class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>
+- <a class="tdlp" href="#connect-to-temporal-cloud">Connect to Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-temporal-cloud">Learn more</a></span></span></a>
+- <a class="tdlp" href="#develop-workflows">Develop a Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-workflows">Learn more</a></span></span></a>
+- <a class="tdlp" href="#develop-activities">Develop an Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Activity</span><br /><br /><span class="tdlppd">One of the primary things that Workflows do is orchestrate the execution of Activities.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a>
+- <a class="tdlp" href="#activity-execution">Start an Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>
+- <a class="tdlp" href="#run-a-dev-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
 ## Run a development Cluster
 
@@ -338,7 +340,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 </TabItem>
 </Tabs>
 
-## Connect to a Cluster
+## Connect to a dev Cluster
 
 A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -359,17 +361,6 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 When you are running a Cluster locally (such as <a class="tdlp" href="#temporalite">Temporalite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporalite">Learn more</a></span></span></a>), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and <a class="tdlp" href="#docker-compose">Docker Compose<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#docker-compose">Learn more</a></span></span></a> serve (`127.0.0.1:7233`).
 
-When you are connecting to a production Cluster (such as [Temporal Cloud](/cloud)), you will likely need to provide additional connection and client options that might include, but aren't limited to, the following:
-
-- An address and port number.
-- A <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> Name (like a Temporal Cloud Namespace: `<Namespace_ID>.tmprl.cloud`).
-- mTLS CA certificate.
-- mTLS private key.
-
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
-
-For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
 <Tabs
 defaultValue="go"
 queryString="lang"
@@ -377,34 +368,40 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a new [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`.
+If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Cluster.
 
-Set a custom Namespace name in the Namespace field on an instance of the Client Options.
+If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-Use the [`ConnectionOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#ConnectionOptions) API to connect a Client with mTLS.
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
 
 ```go
-import (
-  // ...
+package main
 
-  "go.temporal.io/sdk/client"
+import (
+	"context"
+	"encoding/json"
+	"log"
+	"net/http"
+
+	"documentation-samples-go/yourapp"
+
+	"go.temporal.io/sdk/client"
 )
+
+
 func main() {
-    cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-    if err != nil {
-        return err
-    }
-    client, err := client.Dial(client.Options{
-        HostPort:  "your-custom-namespace.tmprl.cloud:7233",
-        Namespace: "your-custom-namespace",
-        ConnectionOptions: client.ConnectionOptions{
-            TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-        },
-    }
-    defer temporalClient.Close()
-  // ...
+	// Create a Temporal Client to communicate with the Temporal Cluster.
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{
+		HostPort: client.DefaultHostPort,
+	})
+	if err != nil {
+		log.Fatalln("Unable to create Temporal Client", err)
+	}
+	defer temporalClient.Close()
+// ...
 }
 ```
 
@@ -591,6 +588,114 @@ run().catch((err) => {
   process.exit(1);
 });
 ```
+
+</TabItem>
+</Tabs>
+
+## Connect to Temporal Cloud
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To connect to and run Workflows through Temporal Cloud, you need the following:
+
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
+  See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
+- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go">View source code</a>
+
+```go
+package main
+
+import (
+	"context"
+	"crypto/tls"
+	"encoding/json"
+	"log"
+
+	"documentation-samples-go/cloud"
+
+	"go.temporal.io/sdk/client"
+)
+
+
+func main() {
+	// Get the key and cert from your env or local machine
+	clientKeyPath := "./secrets/yourkey.key"
+	clientCertPath := "./secrets/yourcert.pem"
+	// Specify the host and port of your Temporal Cloud Namespace
+	// Host and port format: namespace.unique_id.tmprl.cloud:port
+	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
+	namespace := "<yournamespace>.<id>"
+	// Use the crypto/tls package to create a cert object
+	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+	if err != nil {
+		log.Fatalln("Unable to load cert and key pair.", err)
+	}
+	// Add the cert to the tls certificates in the ConnectionOptions of the Client
+	temporalClient, err := client.Dial(client.Options{
+		HostPort:  hostPort,
+		Namespace: namespace,
+		ConnectionOptions: client.ConnectionOptions{
+			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+		},
+	})
+	if err != nil {
+		log.Fatalln("Unable to connect to Temporal Cloud.", err)
+	}
+	defer temporalClient.Close()
+// ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1032,7 +1137,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-worker-processes">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-worker-processes">Learn more</a></span></span></a>.
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-a-dev-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
@@ -1991,7 +2096,7 @@ Note that before an Activity Execution is invoked:
 - Activity options (either <a class="tdlp" href="/activities#start-to-close-timeout"> `setStartToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or <a class="tdlp" href="/activities#schedule-to-close-timeout"> `ScheduleToCloseTimeout`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></span></span></a> are required) must be set for the Activity.
   For details, see [Set Activity Options](https://legacy-documentation-sdks.temporal.io/java/how-to-set-activityoptions-in-java) and [Activity Options reference](https://legacy-documentation-sdks.temporal.io/java/reference-activityoptions).
 - The Activity must be registered with a Worker.
-  See <a class="tdlp" href="#run-worker-processes">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker Program in Java</span><br /><br /><span class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-worker-processes">Learn more</a></span></span></a>
+  See <a class="tdlp" href="#run-a-dev-worker">Worker Program<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker Program in Java</span><br /><br /><span class="tdlppd">Use the `newWorker` method on an instance of a `WorkerFactory` to create a new Worker in Java.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - Activity code must be thread-safe.
 
 Activities should only be instantiated using stubs from within a Workflow.
@@ -2471,7 +2576,7 @@ The `proxyActivities()` returns an object that calls the Activities in the funct
 </TabItem>
 </Tabs>
 
-## Run Worker Processes
+## Run a dev Worker
 
 The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
@@ -2832,6 +2937,115 @@ This is a selected subset of options you are likely to use. Even more advanced o
 </TabItem>
 </Tabs>
 
+## Run a Temporal Cloud Worker
+
+To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To run a Worker that talks to Temporal Cloud, you need the following:
+
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
+  See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
+- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
+
+```go
+package main
+
+import (
+	"crypto/tls"
+	"log"
+
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+
+	"documentation-samples-go/cloud"
+)
+
+
+func main() {
+	// Get the key and cert from your env or local machine
+	clientKeyPath := "./secrets/yourkey.key"
+	clientCertPath := "./secrets/yourcert.pem"
+	// Specify the host and port of your Temporal Cloud Namespace
+	// Host and port format: namespace.unique_id.tmprl.cloud:port
+	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
+	namespace := "<yournamespace>.<id>"
+	// Use the crypto/tls package to create a cert object
+	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
+	if err != nil {
+		log.Fatalln("Unable to load cert and key pair.", err)
+	}
+	// Add the cert to the tls certificates in the ConnectionOptions of the Client
+	temporalClient, err := client.Dial(client.Options{
+		HostPort:  hostPort,
+		Namespace: namespace,
+		ConnectionOptions: client.ConnectionOptions{
+			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
+		},
+	})
+	if err != nil {
+		log.Fatalln("Unable to connect to Temporal Cloud.", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker.
+	yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
+// ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
 ### Register types
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
@@ -3152,7 +3366,7 @@ You can use a typed or untyped `WorkflowStub` in the client code.
 - An untyped `WorkflowStub` does not use the Workflow interface, and is not type safe. It is more flexible because it has methods from the `WorkflowStub` interface, such as `start`, `signalWithStart`, `getResults` (sync and async), `query`, `signal`, `cancel` and `terminate`.
   Note that the Temporal Java SDK also provides typed `WorkflowStub` versions for these methods.
   When using untyped `WorkflowStub`, we rely on the Workflow Type, Activity Type, Child Workflow Type, as well as Query and Signal names.
-  For details, see <a class="tdlp" href="#connect-to-a-cluster">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Temporal Client in Java</span><br /><br /><span class="tdlppd">To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-cluster">Learn more</a></span></span></a>.
+  For details, see <a class="tdlp" href="#connect-to-a-dev-cluster">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Temporal Client in Java</span><br /><br /><span class="tdlppd">To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>.
 
 A Workflow Execution can be started either synchronously or asynchronously.
 

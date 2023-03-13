@@ -1,0 +1,441 @@
+{
+  "file_name": "cmd-options.md",
+  "file_dir": "cli",
+  "id": "cmd-options",
+  "title": "Temporal CLI command options reference",
+  "sidebar_label": "cmd options",
+  "description": "How to use the Temporal CLI command options",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/active-cluster"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/activity-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/address"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/archived"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/calendar"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/catchup-window"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/cluster"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/codec-auth"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/codec-endpoint"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/color"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/concurrency"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/config"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/context-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/cron"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/data"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/db-filename"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/depth"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/description"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/detail"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/dry-run"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/dynamic-config-value"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/email"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/enable-connection"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/end-time"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/env"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/event-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/exclude-file"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/execution-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/fields"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/fold"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/follow"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/frontend-address"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/global"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/grpc-meta"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/headless"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/history-archival-state"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/history-uri"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/identity"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/id-reuse-policy"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/input-file"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/input-parallelism"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/input-separator"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/input"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/interval"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/ip"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/jitter"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/job-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/limit"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/log-format"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/log-level"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/max-field-length"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/memo"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/memo-file"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/metrics-port"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/name"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/namespace"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/namespace-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/no-fold"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/no-pager"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/non-deterministic"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/notes"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/output-filename"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/output"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/overlap-policy"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/pager"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/pause-on-failure"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/pause"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/port"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/promote-global"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/query"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/raw"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/reapply-type"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/reason"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/reject-condition"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/remaining-actions"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/reset-points"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/result"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/retention"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/run-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/run-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/schedule-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/search-attribute"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/skip-base-is-not-current"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/skip-current-open"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/sqlite-pragma"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/start-time"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/task-queue-type"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/task-queue"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/task-timeout"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/time-format"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/time-zone"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/tls-ca-path"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/tls-cert-path"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/tls-disable-host-verification"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/tls-key-path"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/tls-server-name"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/type"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/ui-asset-path"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/ui-codec-endpoint"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/ui-ip"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/ui-port"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/unpause"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/visibility-archival-state"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/visibility-uri"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/workflow-id"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/workflow-type"
+    },
+    {
+      "type": "h2",
+      "id": "cli/cmd-options/yes"
+    }
+  ]
+}

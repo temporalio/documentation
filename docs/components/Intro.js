@@ -392,8 +392,8 @@ const devTools = {
     },
     {
       cli: true,
-      path: "/tctl-next",
-      name: `tctl next`,
+      path: "/cli",
+      name: `Temporal CLI`,
     },
   ],
   listTwo: [
