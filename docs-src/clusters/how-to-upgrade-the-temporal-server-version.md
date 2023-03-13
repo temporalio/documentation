@@ -73,7 +73,7 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --schema-dir ./schema/cassandra/visibility/versioned
 ```
 
-### Upgrade MySQL or PostgreSQL schema
+### Upgrade PostgreSQL or MySQL schema
 
 If you are using MySQL or PostgreSQL use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-tool`.
 

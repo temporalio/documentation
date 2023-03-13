@@ -10,14 +10,14 @@ tags:
   - visibility
 ---
 
-Search Attributes are indexed fields used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
+A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-A Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
+Each Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
 
 Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
 
-Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only up to the Namespace [Retention Period](/concepts/what-is-a-retention-period) specified.
+Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only for the duration of the specified Namespace [Retention Period](/concepts/what-is-a-retention-period).
 
 When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
 
@@ -78,7 +78,7 @@ Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
-However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
+However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
 
 See [Search Attribute limits](#search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
@@ -118,13 +118,13 @@ The following table lists the maximum number of custom Search Attributes you can
 
 | Search Attribute type | MySQL (v8.0.17 and later) | PostgreSQL (v12 and later) | SQLite (v3.31.0 and later) | Temporal Cloud |
 | --------------------- | :-----------------------: | :------------------------: | :------------------------: | :------------: |
+| Bool                  |             3             |             3              |             3              |       20       |
+| Datetime              |             3             |             3              |             3              |       20       |
+| Double                |             3             |             3              |             3              |       20       |
+| Int                   |             3             |             3              |             3              |       20       |
 | Keyword               |            10             |             10             |             10             |       20       |
 | KeywordList           |             3             |             3              |             3              |       20       |
 | Text                  |             3             |             3              |             3              |       5        |
-| Datetime              |             3             |             3              |             3              |       20       |
-| Int                   |             3             |             3              |             3              |       20       |
-| Double                |             3             |             3              |             3              |       20       |
-| Bool                  |             3             |             3              |             3              |       20       |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
 Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.

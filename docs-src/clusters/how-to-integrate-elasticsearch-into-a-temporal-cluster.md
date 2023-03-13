@@ -74,7 +74,7 @@ curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content
 curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
 ```
 
-**Set Elasticsearch privileges**
+**Elasticsearch privileges**
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 

@@ -428,7 +428,7 @@ curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content
 curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
 ```
 
-**Set Elasticsearch privileges**
+**Elasticsearch privileges**
 
 Ensure that the following privileges are granted for the Elasticsearch Temporal index:
 
@@ -852,7 +852,7 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --schema-dir ./schema/cassandra/visibility/versioned
 ```
 
-### Upgrade MySQL or PostgreSQL schema
+### Upgrade PostgreSQL or MySQL schema
 
 If you are using MySQL or PostgreSQL use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-tool`.
 
