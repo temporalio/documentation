@@ -27,7 +27,6 @@ The following example shows how to set a Visibility store `cass-visibility` and 
 persistence:
   #...
   visibilityStore: cass-visibility
-  advancedVisibilityStore: es-visibility
   #...
   datastores:
     default:
