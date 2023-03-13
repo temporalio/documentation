@@ -14,17 +14,10 @@ Metrics in Python are configured globally; therefore, you should set a Prometheu
 The following example exposes a Prometheus endpoint on port `9000`.
 
 ```python
-from temporalio.bridge.telemetry import (
-    init_telemetry,
-    TelemetryConfig,
-    PrometheusMetricsConfig,
-)
+from temporalio.runtime import Runtime, TelemetryConfig, PrometheusConfig
 
-init_telemetry(
-    TelemetryConfig(
-        prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")
-    )
-)
+# Create a new runtime that has telemetry enabled. Create this first to avoid
+# the default Runtime from being lazily created.
+new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_address="0.0.0.0:9000")))
+my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
-
-<!-- https://github.com/temporalio/sdk-python/issues/125 -->
