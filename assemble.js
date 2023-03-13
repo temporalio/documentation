@@ -9,6 +9,7 @@ async function run() {
   let coverage = false;
   let debug = false;
   let cli = false;
+  let samples = false;
 
   for (const arg of args) {
     if (arg == "--cloud") {
@@ -20,8 +21,12 @@ async function run() {
     if (arg == "--debug") {
       debug = true;
     }
-    if (arg == "--cli")
+    if (arg == "--cli"){
       cli = true;
+    }
+    if (arg == "--samples") {
+      samples = true;
+    }
   }
 
   const rootDir = path.resolve();
@@ -31,6 +36,7 @@ async function run() {
     runCoverageUpdate: coverage,
     debug: debug,
     cli: cli,
+    samples: samples,
   };
 
   let result = "";
