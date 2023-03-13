@@ -39,29 +39,5 @@ func main() {
 	}
 	defer temporalClient.Close()
 // ...
-	// Set the options for the Workflow Execution.
-	// A Task Queue must be specified.
-	// A custom Workflow Id is highly recommended.
-	workflowOptions := client.StartWorkflowOptions{
-		ID:        "your-workflow-id",
-		TaskQueue: "your-custom-task-queue-name",
-	}
-	// Use an object as your Workflow Function parameter.
-	// Objects enable your Function signature to remain compatible if fields change.
-	workflowParams := yourapp.YourWorkflowParam{
-		WorkflowParamX: "Hello World!",
-		WorkflowParamY: 999,
-	}
-	// Make the call to the Temporal Cluster to start the Workflow Execution.
-	workflowExecution, err := temporalClient.ExecuteWorkflow(
-		context.Background(),
-		workflowOptions,
-		yourapp.YourWorkflowDefinition,
-		workflowParams,
-	)
-	if err != nil {
-		log.Fatalln("Unable to execute the Workflow", err)
-	}
-// ...
 }
 ```
