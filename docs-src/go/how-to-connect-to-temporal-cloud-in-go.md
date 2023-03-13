@@ -59,4 +59,6 @@ func main() {
 		log.Fatalln("Unable to connect to Temporal Cloud.", err)
 	}
 	defer temporalClient.Close()
+// ...
+}
 ```

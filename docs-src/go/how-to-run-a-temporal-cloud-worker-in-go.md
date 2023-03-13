@@ -60,4 +60,6 @@ func main() {
 	defer temporalClient.Close()
 	// Create a new Worker.
 	yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
+// ...
+}
 ```
