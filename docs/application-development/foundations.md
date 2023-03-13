@@ -607,15 +607,26 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
+Below is an example of a basic Workflow Definition.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-func YourWorkflowDefinition(ctx workflow.Context) error {
-  // ...
-  return nil
+package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+// ...
+
+// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
+func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
+	// ...
+	return nil
 }
 ```
-
-In Go, by default, the Workflow Type name is the same as the function name.
 
 </TabItem>
 <TabItem value="java">
@@ -749,40 +760,43 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type, as it is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
+The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
+It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
 It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
-
-```go
-import (
-   "go.temporal.io/sdk/workflow"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, param string) error {
- // ...
-}
-```
 
 The `workflow.Context` entity operates similarly to the standard `context.Context` entity provided by Go.
 The only difference between `workflow.Context` and `context.Context` is that the `Done()` function, provided by `workflow.Context`, returns `workflow.Channel` instead of the standard Go `chan`.
 
-The second parameter, `string`, is a custom parameter that is passed to the Workflow when it is invoked.
+Additional parameters can be passed to the Workflow when it is invoked.
 A Workflow Definition may support multiple custom parameters, or none.
 These parameters can be regular type variables or safe pointers.
 However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
 
-```go
-type YourWorkflowParam struct {
- WorkflowParamFieldOne string
- WorkflowParamFieldTwo int
-}
+All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
- // ...
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+
+```go
+package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+
+
+// YourWorkflowParam is the object passed to the Workflow.
+type YourWorkflowParam struct {
+	WorkflowParamX string
+	WorkflowParamY int
+}
+// ...
+// YourWorkflowDefinition is your custom Workflow Definition.
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+// ...
 }
 ```
-
-All Workflow Definition parameters must be serializable, regardless of whether pointers or regular type values are used.
-Parameters can’t be channels, functions, variadic, or unsafe pointers.
 
 </TabItem>
 <TabItem value="java">
@@ -895,30 +909,43 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
 Again, the best practice here is to use a `struct` type to hold all custom values.
-
-```go
-type YourWorkflowResponse struct{
- WorkflowResultFieldOne string
- WorkflowResultFieldTwo int
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
- if err != nil {
-   return "", err
- }
- responseVar := YourWorkflowResponse {
-   FieldOne: "super",
-   FieldTwo: 1,
- }
- return responseVar, nil
-}
-```
-
 A Workflow Definition written in Go can return both a custom value and an error.
 However, it's not possible to receive both a custom value and an error in the calling process, as is normal in Go.
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+
+```go
+package yourapp
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+// ...
+
+// YourWorkflowResultObject is the object returned by the Workflow.
+type YourWorkflowResultObject struct {
+	WFResultFieldX string
+	WFResultFieldY int
+}
+// ...
+// YourWorkflowDefinition is your custom Workflow Definition.
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+// ...
+	if err != nil {
+		return nil, err
+	}
+	// Make the results of the Workflow Execution available.
+	workflowResult := &YourWorkflowResultObject{
+		WFResultFieldX: activityResult.ResultFieldX,
+		WFResultFieldY: activityResult.ResultFieldY,
+	}
+	return workflowResult, nil
+}
+```
 
 </TabItem>
 <TabItem value="java">
@@ -1003,20 +1030,37 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a Worker.
+In Go, by default, the Workflow Type name is the same as the function name.
 
-- Type: `string`
-- Default: function name
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-worker-processes">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-worker-processes">Learn more</a></span></span></a>.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"documentation-samples-go/yourapp"
+)
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := workflow.RegisterOptions{
-  Name: "YourWorkflowName",
-  // ...
+func main() {
+// ...
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+// ...
+	// Use RegisterOptions to set the name of the Workflow Type for example.
+	registerWFOptions := workflow.RegisterOptions{
+		Name: "JustAnotherWorkflow",
+	}
+	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
+// ...
 }
-w.RegisterWorkflowWithOptions(YourWorkflowDefinition, registerOptions)
-// ...
 ```
 
 </TabItem>
@@ -1138,6 +1182,11 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+
+```go
+```
 
 </TabItem>
 <TabItem value="java">
@@ -1279,37 +1328,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 <TabItem value="go">
 
 In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
-
-**Function**
-
-```go
-// basic function signature
-func YourActivityDefinition(ctx context.Context) error {
- // ...
- return nil
-}
-
-// with parameters and return values
-func SimpleActivity(ctx context.Context, value string) (string, error)
-```
-
-**Struct method**
-
-```go
-type YourActivityStruct struct {
- ActivityFieldOne string
- ActivityFieldTwo int
-}
-
-func(a *YourActivityStruct) YourActivityDefinition(ctx context.Context) error {
- // ...
-}
-
-func(a *YourActivityStruct) YourActivityDefinitionTwo(ctx context.Context) error {
- // ...
-}
-```
-
+Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
 An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
 Activities written as struct methods can use shared struct variables, such as:
 
@@ -1320,10 +1339,41 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+
+```go
+package yourapp
+
+import (
+	"context"
+
+	"go.temporal.io/sdk/activity"
+)
+// ...
+
+// YourSimpleActivityDefinition is a basic Activity Definiton.
+func YourSimpleActivityDefinition(ctx context.Context) error {
+	return nil
+}
+
+// YourActivityObject is the struct that maintains shared state across Activities.
+// If the Worker crashes this Activity object loses its state.
+type YourActivityObject struct {
+	Message *string
+	Number *int
+}
+
+// YourActivityDefinition is your custom Activity Definition.
+// An Activity Definiton is an exportable function.
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
+// ...
+}
+```
+
 </TabItem>
 <TabItem value="java">
 
-An <a class="tdlp" href="/activities#">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Activity" frequently denotes either an Activity Type, an Activity Definition, or an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#">Learn more</a></span></span></a> is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
+An <a class="tdlp" href="/activities#">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity?</span><br /><br /><span class="tdlppd">In day-to-day conversation, the term "Activity" denotes an Activity Type, Activity Definition, or Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#">Learn more</a></span></span></a> is a combination of the Temporal Java SDK [Activity](https://www.javadoc.io/static/io.temporal/temporal-sdk/0.19.0/io/temporal/activity/Activity.html) Class implementing a specially annotated interface.
 
 An Activity interface is annotated with `@ActivityInterface` and an Activity implementation implements this Activity interface.
 To handle Activity types that do not have an explicitly registered handler, you can directly implement a dynamic Activity.
@@ -1522,18 +1572,18 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
+
 ```go
+// YourActivityParam is the struct passed to your Activity.
+// Use a struct so that your function signature remains compatible if fields change.
 type YourActivityParam struct {
- ActivityParamFieldOne string
- ActivityParamFieldTwo int
+	ActivityParamX string
+	ActivityParamY int
 }
-
-type YourActivityStruct struct {
- // ...
-}
-
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
- // ...
+// ...
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
+// ...
 }
 ```
 
@@ -1641,19 +1691,26 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-```go
-type YourActivityResult struct{
-  ActivityResultFieldOne string
-  ActivityResultFieldTwo int
-}
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResult, error) {
-  // ...
-  result := YourActivityResult {
-    ActivityResultFieldOne: a.ActivityFieldOne,
-    ActivityResultFieldTwo: a.ActivityFieldTwo,
-  }
-  return result, nil
+```go
+// YourActivityResultObject is the struct returned from your Activity.
+// Use a struct so that you can return multiple values of different types.
+// Additionally, your function signature remains compatible if the fields change.
+type YourActivityResultObject struct {
+	ResultFieldX string
+	ResultFieldY int
+}
+// ...
+func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
+// ...
+	result := &YourActivityResultObject{
+		ResultFieldX: "Success",
+		ResultFieldY: 1,
+	}
+	// Return the results back to the Workflow Execution.
+	// The results persist within the Event History of the Workflow Execution.
+	return result, nil
 }
 ```
 
@@ -1738,20 +1795,22 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
-
-- Type: `string`
-- Default: function name
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
+func main() {
 // ...
-w := worker.New(temporalClient, "your_task_queue_name", worker.Options{})
-registerOptions := activity.RegisterOptions{
-  Name: "YourActivityName",
-  // ...
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+// ...
+	// Use RegisterOptions to change the name of the Activity Type for example.
+	registerAOptions := activity.RegisterOptions{
+		Name: "JustAnotherActivity",
+	}
+	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+// ...
 }
-w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
-// ...
 ```
 
 </TabItem>
@@ -1889,42 +1948,37 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
-
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-
-```go
-import (
-  // ...
-
-  "go.temporal.io/sdk/workflow"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-  yourActivityParam := YourActivityParam{
-    // ...
-  }
-  var activities *YourActivityStruct
-  future := workflow.ExecuteActivity(ctx, activities.YourActivityDefinition, yourActivityParam)
-  // ...
-}
-
-func (a *YourActivityStruct) YourActivityDefinition(ctx context.Context, param YourActivityParam) error {
-  // ...
-}
-```
-
 The Activity function name can be provided as a variable object (no quotations) or as a string.
+The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+	// Set the options for the Activity Execution.
+	// Either StartToClose Timeout OR ScheduleToClose is required.
+	// Not specifying a Task Queue will default to the parent Workflow Task Queue.
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: 10 * time.Second,
+	}
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+	activityParam := YourActivityParam{
+		ActivityParamX: param.WorkflowParamX,
+		ActivityParamY: param.WorkflowParamY,
+	}
+	// Use a nil struct pointer to call Activities that are part of a struct.
+	var a *YourActivityObject
+	// Execute the Activity and wait for the result.
+	var activityResult *YourActivityResultObject
+	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
+	if err != nil {
+		return nil, err
+	}
 // ...
-  future := workflow.ExecuteActivity(ctx, "YourActivityDefinition", yourActivityParam)
-// ...
+}
 ```
-
-The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-
-The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
 </TabItem>
 <TabItem value="java">
@@ -2451,49 +2505,67 @@ Lastly, call either the `Start()` or the `Run()` method on the instance of the W
 Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
 Otherwise, the `Stop()` method must be called to stop the Worker.
 
-```go
-package main
-
-import (
-   "go.temporal.io/sdk/client"
-   "go.temporal.io/sdk/worker"
-)
-
-func main() {
-   c, err := client.Dial(client.Options{})
-   if err != nil {
-       // ...
-   }
-   defer c.Close()
-   w := worker.New(c, "your-task-queue", worker.Options{})
-   w.RegisterWorkflow(YourWorkflowDefinition)
-   w.RegisterActivity(YourActivityDefinition)
-   err = w.Run(worker.InterruptCh())
-   if err != nil {
-       // ...
-   }
- // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
-}
-
-func YourActivityDefinition(ctx context.Context, param YourActivityParam) (YourActivityResponse, error) {
- // ...
-}
-```
-
 :::tip
 
 If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
 
 ```bash
 go install github.com/mitranim/gow@latest
-gow run worker/main.go # automatically reload when file changed
+gow run worker/main.go # automatically reloads when file changes
 ```
 
 :::
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
+
+```go
+package main
+
+import (
+	"log"
+
+	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/client"
+	"go.temporal.io/sdk/worker"
+	"go.temporal.io/sdk/workflow"
+
+	"documentation-samples-go/yourapp"
+)
+
+
+func main() {
+	// Create a Temporal Client
+	// A Temporal Client is a heavyweight object that should be created just once per process.
+	temporalClient, err := client.Dial(client.Options{})
+	if err != nil {
+		log.Fatalln("Unable to create client", err)
+	}
+	defer temporalClient.Close()
+	// Create a new Worker.
+	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
+	// Register your Workflow Definitions with the Worker.
+	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
+	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
+// ...
+	// Register your Activity Definitons with the Worker.
+	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
+	message := "This could be a connection string or endpoint details"
+	number := 100
+	activities := &yourapp.YourActivityObject{
+		Message: &message,
+		Number: &number,
+	}
+	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
+	yourWorker.RegisterActivity(activities)
+// ...
+	// Run the Worker
+	err = yourWorker.Run(worker.InterruptCh())
+	if err != nil {
+		log.Fatalln("Unable to start Worker", err)
+	}
+}
+// ...
+```
 
 </TabItem>
 <TabItem value="java">
@@ -2778,7 +2850,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per <a class="tdlp" href="#develop-activities">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or `stuct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a> best practices, you might have an Activity struct that has multiple methods and fields.
+Per <a class="tdlp" href="#develop-activities">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a> best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
