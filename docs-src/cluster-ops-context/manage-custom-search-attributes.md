@@ -8,7 +8,8 @@ tags:
   - guide-context
 ---
 
-To manage your custom Search Attributes on Temporal Cloud, use `tcld`. With Temporal Cloud, you can create and rename custom Search Attributes.
+To manage your custom Search Attributes on Temporal Cloud, use `tcld`.
+With Temporal Cloud, you can create and rename custom Search Attributes.
 
 To manage your custom Search Attributes on self-hosted Temporal Clusters, use `tctl`. With self-hosted Temporal Cluster, you can create and remove custom Search Attributes.
 Note that if you use [SQL databases](/clusters/how-to-set-up-visibility-in-a-temporal-cluster) with Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table.
