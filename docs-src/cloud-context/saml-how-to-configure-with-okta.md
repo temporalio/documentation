@@ -48,4 +48,4 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section, [Finish your SAML configuration](#finish-your-saml-configuration).
+To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML configuration](#finish-saml-configuration).

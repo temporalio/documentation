@@ -46,9 +46,9 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    Near the top of the pane, select **Save**.
 1. In the **Attributes & Claims** section, select **Edit**.
 1. We require the user's full email address when connecting to Temporal.
-   In **Required claim** section, verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
+   In the **Required claim** section, verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
 1. Collect the information you need to send to us:
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see [Finish your SAML configuration](#finish-your-saml-configuration).
+To finish setting up Azure AD as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
