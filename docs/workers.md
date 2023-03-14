@@ -20,9 +20,8 @@ Temporal documentation aims to be explicit and differentiate between them.
 
 A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.
 
-**Implementation guide:**
-
-- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
+- <a class="tdlp" href="/application-development/foundations#run-a-dev-worker">How to run a development Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#run-a-dev-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="/application-development/foundations#run-a-temporal-cloud-worker">How to run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
 
 ## Worker Entity
 

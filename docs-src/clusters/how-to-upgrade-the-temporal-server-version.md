@@ -34,14 +34,14 @@ Also be aware that each upgrade requires the History Service to load all Shards 
 
 Use one of the upgrade tools to upgrade your database schema to be compatible with the Temporal Server version being upgraded to.
 
-If you are using a schema tools version prior to 1.8.0, we strongly recommend _never_ using the "dryrun" (`-y`, or `--dryrun`) options in any of your schema update commands.
+If you are using a schema tools version prior to Temporal Server v1.8.0, we strongly recommend _never_ using the "dryrun" (`-y`, or `--dryrun`) options in any of your schema update commands.
 Using this option might lead to potential loss of data, as when using it will create a new database and drop your
 existing one.
 This flag was removed in the 1.8.0 release.
 
 ### Upgrade Cassandra schema
 
-If you are using Cassandra for your Cluster's persistence, use the `temporal-cassandra-tool` to upgrade both the default and visibility schemas.
+If you are using Cassandra for your Cluster's persistence, use the `temporal-cassandra-tool` to upgrade both the default Persistence and Visibility schemas.
 
 **Example default schema upgrade:**
 
@@ -73,7 +73,7 @@ temporal_v1.2.1 $ temporal-cassandra-tool \
    --schema-dir ./schema/cassandra/visibility/versioned
 ```
 
-### Upgrade MySQL / PostgreSQL schema
+### Upgrade PostgreSQL or MySQL schema
 
 If you are using MySQL or PostgreSQL use the `temporal-sql-tool`, which works similarly to the `temporal-cassandra-tool`.
 
@@ -105,6 +105,18 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
 ```
 
+If you're upgrading PostgreSQL to v12 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres12 --db temporal_visibility update-schema -d ./schema/postgresql/v12/visibility/versioned
+```
+
 #### MySQL
 
 **Example default schema upgrade:**
@@ -129,6 +141,18 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 	--tls-key-file <path to your client key> \
 	--tls-ca-file <path to your CA> \
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
+```
+
+If you're upgrading MySQL to v8.0.17 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
+
+```bash
+./temporal-sql-tool \
+	--tls \
+	--tls-enable-host-verification \
+	--tls-cert-file <path to your client cert> \
+	--tls-key-file <path to your client key> \
+	--tls-ca-file <path to your CA> \
+	--ep localhost -p 5432 -u temporal -pw temporal --pl mysql8 --db temporal_visibility update-schema -d ./schema/mysql/v8/visibility/versioned.
 ```
 
 ### Roll-out technique
