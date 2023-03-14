@@ -1,7 +1,7 @@
 ---
 id: saml-how-to-configure-with-azure-ad
 title: How to configure SAML with Azure AD
-sidebar_label: Azure AD
+sidebar_label: Configure SAML with Azure AD
 description: To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 tags:
   - guide-context
@@ -51,4 +51,4 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see [How to finish your SAML configuration](#how-to-finish-your-saml-configuration).
+To finish setting up Azure AD as your SAML IdP, see [Finish your SAML configuration](#finish-your-saml-configuration).

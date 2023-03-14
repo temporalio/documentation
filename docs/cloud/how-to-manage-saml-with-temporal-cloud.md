@@ -13,18 +13,18 @@ To authenticate the users of your Temporal Cloud account, you can connect a Secu
 If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
 Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 
-### How to integrate SAML with your Temporal Cloud account
+## Integrate SAML with your Temporal Cloud account
 
 1. Locate your <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a>.
    One way to do so is to sign in to Temporal Cloud and find your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>.
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
-   - [Microsoft Azure Active Directory (Azure AD)](#how-to-configure-saml-with-azure-ad)
-   - [Okta](#how-to-configure-saml-with-okta)
-1. [Share your connection information with us and test your connection.](#how-to-finish-your-saml-configuration)
+   - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
+   - [Okta](#configure-saml-with-okta)
+1. [Share your connection information with us and test your connection.](#finish-your-saml-configuration)
 
-## Azure AD
+## Configure SAML with Azure AD
 
 To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
@@ -70,9 +70,9 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see [How to finish your SAML configuration](#how-to-finish-your-saml-configuration).
+To finish setting up Azure AD as your SAML IdP, see [Finish your SAML configuration](#finish-your-saml-configuration).
 
-## Azure AD
+## Configure SAML with Okta
 
 To use Okta as your SAML IdP, configure a new Okta application integration.
 
@@ -115,7 +115,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    - Copy the IdP settings.
    - Download the active certificate.
 
-To finish setting up Okta as your SAML IdP, see the next section, [How to finish your SAML configuration](#how-to-finish-your-saml-configuration).
+To finish setting up Okta as your SAML IdP, see the next section, [Finish your SAML configuration](#finish-your-saml-configuration).
 
 ## Finish SAML configuration
 
