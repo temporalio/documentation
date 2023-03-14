@@ -5,7 +5,7 @@ sidebar_label: Run a development Cluster
 description: There are four ways to quickly install and run a Temporal Cluster.
 ---
 
-The following section describes how to deploy your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs, [Web UI](/web-ui), and [tctl](/tctl-next) commands to test and develop applications.
+The following section describes how to deploy your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs, [Web UI](/web-ui), and [CLI](/cli) commands to test and develop applications.
 
 **For information on deploying a [production environment](/cluster-deployment-guide), see the [Temporal Cloud](/cloud) documentation.**
 
