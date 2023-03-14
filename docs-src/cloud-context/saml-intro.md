@@ -14,8 +14,8 @@ Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 
 ### How to integrate SAML with your Temporal Cloud account
 
-1. Locate your [Temporal Cloud Account Id](/concepts/what-is-a-temporal-cloud-account-id).
-   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/concepts/what-is-a-temporal-cloud-namespace-id).
+1. Locate your [Temporal Cloud Account Id](/concepts/what-is-a-cloud-account-id).
+   One way to do so is to sign in to Temporal Cloud and find your [Namespace Id](/concepts/what-is-a-cloud-namespace-id).
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
