@@ -2,18 +2,18 @@
 id: saml-how-to-configure-with-azure-ad
 title: How to configure SAML with Azure AD
 sidebar_label: Azure AD
-description: To use Azure AD as your SAML IdP, create a new Azure AD Enterprise application.
+description: To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 tags:
   - guide-context
 ---
 
-To use Azure AD as your SAML IdP, create a new Azure AD Enterprise application.
+To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
 1. Sign in to the [Microsoft Azure AD portal](https://portal.azure.com/).
 1. On the home page under **Manage Azure Active Directory**, select **View**.
 1. On the **Overview** page near the top, select **Add > Enterprise application**.
 1. On the **Browse Azure AD Gallery** page near the top, select **Create your own application**.
-1. In the **Create your own application** pane, provide a name for your application and select **Integrate any other application you don't find in the gallery**.
+1. In the **Create your own application** pane, provide a name for your application (such as `temporal-cloud`) and select **Integrate any other application you don't find in the gallery**.
 1. Select **Save**.
 1. In the **Getting Started** section, select **2. Set up single sign on**.
 1. On the **Single sign-on** page, select **SAML**.
@@ -49,6 +49,6 @@ To use Azure AD as your SAML IdP, create a new Azure AD Enterprise application.
    In **Required claim** section, verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
 1. Collect the information you need to send to us:
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
-   - In the **Set up APPLICATION_NAME** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
+   - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see [How to finish your SAML configuration](/cloud/how-to-manage-saml-with-temporal-cloud/#how-to-finish-your-saml-configuration).
+To finish setting up Azure AD as your SAML IdP, see [How to finish your SAML configuration](#how-to-finish-your-saml-configuration).
