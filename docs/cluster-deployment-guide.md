@@ -441,7 +441,8 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 ### Custom Search Attributes
 
-To manage your custom Search Attributes on Temporal Cloud, use `tcld`. With Temporal Cloud, you can create and rename custom Search Attributes.
+To manage your custom Search Attributes on Temporal Cloud, use `tcld`.
+With Temporal Cloud, you can create and rename custom Search Attributes.
 
 To manage your custom Search Attributes on self-hosted Temporal Clusters, use `tctl`. With self-hosted Temporal Cluster, you can create and remove custom Search Attributes.
 Note that if you use <a class="tdlp" href="#visibility-store">SQL databases<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility-store">Learn more</a></span></span></a> with Temporal Server v1.20 and later, creating a custom Search Attribute creates a mapping with a database field name in the Visibility store `custom_search_attributes` table.
@@ -452,7 +453,7 @@ These constraints do not apply if you use Elasticsearch.
 
 #### Create custom Search Attributes
 
-Add custom Search Attributes to your Visibility store using `tctl` for self-hosted Temporal Cluster, and `tcld` for Temporal Cloud.
+Add custom Search Attributes to your Visibility store using `tctl` for a self-hosted Temporal Cluster and `tcld` for Temporal Cloud.
 
 Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow metadata](/application-development/observability#search-attributes) and <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
 
