@@ -466,7 +466,7 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 If you're self-hosting your Temporal Cluster, verify whether your <a class="tdlp" href="#supported-databases">Visibility database<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> version supports Advanced Visibility features.
 
-To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use [`tctl search-attribute create`](/tctl-next/search-attribute#create) with `--name` and `--type` modifiers.
+To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `tctl search-attribute create` with `--name` and `--type` modifiers.
 
 For example, to create a Search Attribute called `CustomSA` of type `Keyword`, run the following command:
 
