@@ -28,7 +28,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
    ```bash
    urn:auth0:prod-tmprl:f45a2-saml
-   ```   
+   ```
 
 1. In **Reply URL (Assertion Consumer Service URL)**, enter the following callback URL, including your Account Id where indicated:
 
@@ -40,7 +40,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
-   ```   
+   ```
 
 1. You can leave the other fields blank.
    Near the top of the pane, select **Save**.

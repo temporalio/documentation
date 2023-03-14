@@ -9,8 +9,9 @@ tags:
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
 To do that, send the following information to us:
-  - The sign-in URL from your application
-  - The SAML sign-in certificate
+
+- The sign-in URL from your application
+- The SAML sign-in certificate
 
 When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud.
 This time, though, enter your email address in **Enterprise identity** and select **Continue**.

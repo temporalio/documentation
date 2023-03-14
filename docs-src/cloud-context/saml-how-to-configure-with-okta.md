@@ -24,7 +24,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
-   ```   
+   ```
 1. In **Audience URI (SP Entity ID)**, enter the following entity identifier, including your Account Id where indicated:
 
    ```bash
@@ -35,7 +35,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
 
    ```bash
    urn:auth0:prod-tmprl:f45a2-saml
-   ```   
+   ```
 
 1. We require the user's full email address when connecting to Temporal.
    In **Name ID format**, select `EmailAddress`.
