@@ -5,17 +5,17 @@ sidebar_label: Run a Cloud Worker
 description: Use a certificate key pair and your Temporal Cloud Namespace to connect to Temporal Cloud.
 ---
 
-To run a Worker that talks to Temporal Cloud you will need the following:
+To run a Worker that talks to Temporal Cloud, you need the following:
 
-- A compatible mTLS CA certificate and mTLS private key, that has been added to your Namespace.
+- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
   See [certificate requirements](/cloud-context/certificates-requirements).
-- Your [Temporal Cloud Namespace](/concepts/what-is-a-cloud-namespace-name) and the unique id 5 digit id that is appended to it.
-  This can be found in the url of your Namespace, for example: https://cloud.temporal.io/namespaces/yournamespace.a2fx6/.
-  The Namespace value must include the id: yournamespace.a2fx6
+- Your [Temporal Cloud Namespace Id](/concepts/what-is-a-cloud-namespace-id), which includes your [Temporal Cloud Namespace Name](/concepts/what-is-a-cloud-namespace-name) and the unique five- or six-digit [Temporal Cloud Account Id](/concepts/what-is-a-cloud-account-id) that is appended to it.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
-For more information about configuring TLS to secure inter and intra network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
 
@@ -60,4 +60,6 @@ func main() {
 	defer temporalClient.Close()
 	// Create a new Worker.
 	yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
+// ...
+}
 ```

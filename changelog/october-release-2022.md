@@ -14,6 +14,6 @@ During the past month, the following content has been added or improved:
 
 - We added a [reference of metrics](/references/cluster-metrics) that are emitted from a Temporal Cluster.
 
-- We published the [“next version” of Temporal’s CLI](/tctl-next/).
+- We published the “next version” of Temporal’s CLI.
   The future name of the CLI is yet to be determined, but the functionality is available to use as tctl v2.0.0-beta.
   Both [tctl v1.17](/tctl-v1/) and tctl version-next docs are available.

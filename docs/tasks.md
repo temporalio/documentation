@@ -100,7 +100,8 @@ There are four places where the name of the Task Queue can be set by the develop
 
 2. A Task Queue name must be set when creating a Worker Entity and when running a Worker Process:
 
-- [How to develop a Worker Program](/application-development/foundations#run-worker-processes)
+- <a class="tdlp" href="/application-development/foundations#run-a-dev-worker">How to run a development Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#run-a-dev-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="/application-development/foundations#run-a-temporal-cloud-worker">How to run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
 
 Note that all Worker Entities listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 

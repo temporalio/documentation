@@ -16,7 +16,7 @@
         "docs-src/typescript",
         "docs-src/references",
         "docs-src/tctl-v1",
-        "docs-src/tctl-next"
+        "docs-src/cli"
     ],
     "content_write_dir": "docs",
     "docs_src": "docs-src",

@@ -17,9 +17,15 @@ export async function fullAssembly(params) {
 
   await activities.createTempDir(config);
 
-  await activities.getSamplesRepos(config);
+  if (params.samples) {
+    await activities.getSamplesRepos(config);
 
-  await activities.createNodesFromSamples(config);
+    await activities.createNodesFromSamples(config);
+  }
+
+  if (params.cli) {
+    await activities.genCLI(config);
+  }
 
   await activities.genSourceObjects(config);
 
