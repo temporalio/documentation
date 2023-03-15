@@ -65,6 +65,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Task Token](/activities#task-token)
 - [Temporal](/temporal#)
 - [Temporal Application](/temporal#temporal-application)
+- [Temporal CLI](/cli#)
 - [Temporal Client](/temporal#temporal-client)
 - [Temporal Cloud](/cloud#)
 - [Temporal Cloud Account Id](/cloud#temporal-cloud-account-id)
@@ -93,5 +94,4 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Workflow Task Execution](/tasks#workflow-task-execution)
 - [Workflow Task Timeout](/workflows#workflow-task-timeout)
 - [Workflow Type](/workflows#workflow-type)
-- [cli](/cli#)
 - [tctl](/tctl-v1#)
