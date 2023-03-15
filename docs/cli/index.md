@@ -11,10 +11,10 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This documentation reflects the release of single-binary Temporal CLI.
+This documentation reflects the release of the [single-binary Temporal CLI](https://github.com/temporalio/cli).
 This tool was formerly known as `tctl next`.
 
-The Temporal CLI (cli) is a command-line tool that you can use to interact with a Temporal Cluster.
+The Temporal CLI is a command-line tool that you can use to interact with a Temporal Cluster.
 It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> operations (such as start
 Workflow, show Workflow History, and Signal Workflow).
 

@@ -81,26 +81,26 @@ module.exports = {
     },
     "cluster-deployment-guide",
     "security",
-    // {
-    //   type: "category",
-    //   label: "CLI (temporal)",
-    //   collapsible: true,
-    //   collapsed: true,
-    //   link: {
-    //     type: "doc",
-    //     id: "cli/index",
-    //   },
-    //   items: [
-    //     "cli/activity",
-    //     "cli/batch",
-    //     "cli/env",
-    //     "cli/operator",
-    //     "cli/schedule",
-    //     "cli/task-queue",
-    //     "cli/workflow",
-    //     "cli/cmd-options",
-    //   ],
-    // },
+    {
+      type: "category",
+      label: "CLI (temporal)",
+      collapsible: true,
+      collapsed: true,
+      link: {
+        type: "doc",
+        id: "cli/index",
+      },
+      items: [
+        "cli/activity",
+        "cli/batch",
+        "cli/env",
+        "cli/operator",
+        "cli/schedule",
+        "cli/task-queue",
+        "cli/workflow",
+        "cli/cmd-options",
+      ],
+    },
     {
       type: "category",
       label: "CLI - tctl v1.17",
@@ -192,26 +192,4 @@ module.exports = {
       ],
     },
   ],
-  sidebarCLI: [
-    {
-      type: "category",
-      label: "CLI (temporal)",
-      collapsible: true,
-      collapsed: true,
-      link: {
-        type: "doc",
-        id: "cli/index",
-      },
-      items: [
-        "cli/activity",
-        "cli/batch",
-        "cli/env",
-        "cli/operator",
-        "cli/schedule",
-        "cli/task-queue",
-        "cli/workflow",
-        "cli/cmd-options",
-      ],
-    },
-  ]
 };
