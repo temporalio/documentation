@@ -4,16 +4,13 @@ title: How to install Temporal CLI and run a development server
 sidebar_label: Run a development server
 ---
 
-The following section describes how to install the [Temporal CLI](/cli) and start a development server that you can
-interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs, [Web UI](/web-ui), and [CLI](/cli)
-commands to test and develop applications.
+This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
+The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
 
-**For information on deploying a [production environment](/cluster-deployment-guide), see the [Temporal Cloud](/cloud)
-documentation.**
+For information on deploying and running a production Cluster, see the [Cluster deployment guide](/cluster-deployment-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
 
-Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and web
-UI that runs as a single process with zero runtime dependencies. It supports persistence to disk and in-memory mode
-through SQLite.
+Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
+This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
 
 **Install the Temporal CLI**
 
@@ -78,11 +75,12 @@ Start the Temporal Development Server by using the `server start-dev` command.
 temporal server start-dev
 ```
 
-This command starts the server listening on `localhost:7233`, the web UI on
-[http://localhost:8233](http://localhost:8233), automatically create the `default` [Namespace](/namespaces), and use an
-in-memory SQLite database for persistence.
+This command automatically starts the Web UI, creates the default [Namespace](/namespaces), and uses an in-memory database.
 
-The server's startup configuration can be customized using command line options. For a full list of options, run:
+The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [`http://localhost:8233`](http://localhost:8233/).
+
+The server's startup configuration can be customized using command line options.
+For a full list of options, run:
 
 ```bash
 temporal server start-dev --help

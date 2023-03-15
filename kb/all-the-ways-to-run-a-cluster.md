@@ -5,7 +5,7 @@ tags:
   - cluster
   - server
   - how-to
-date: 2023-03-09T00:00:00Z
+date: 2023-03-16T00:00:00Z
 ---
 
 import Tabs from '@theme/Tabs';
@@ -86,11 +86,12 @@ Start the Temporal Development Server by using the `server start-dev` command.
 temporal server start-dev
 ```
 
-This command starts the server listening on `localhost:7233`, the web UI on
-[http://localhost:8233](http://localhost:8233), automatically create the `default` [Namespace](/namespaces), and use an
-in-memory SQLite database for persistence.
+This command automatically starts the Web UI, creates the default [Namespace](/namespaces), and uses an in-memory database.
 
-The server's startup configuration can be customized using command line options. For a full list of options, run:
+The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [`http://localhost:8233`](http://localhost:8233/).
+
+The server's startup configuration can be customized using command line options.
+For a full list of options, run:
 
 ```bash
 temporal server start-dev --help
