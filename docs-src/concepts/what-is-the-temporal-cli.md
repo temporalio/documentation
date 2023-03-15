@@ -2,7 +2,7 @@
 id: what-is-the-temporal-cli
 title: What is the Temporal CLI?
 description: The Temporal CLI is the most recent version of Temporal's command-line tool.
-sidebar_label: cli
+sidebar_label: Temporal CLI
 tags:
   - term
   - cli
