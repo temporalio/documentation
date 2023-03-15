@@ -11,6 +11,16 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::success Temporal CLI is now available!
+
+The new [Temporal CLI](/cli) is available for use.
+
+tctl v1.17 can still be used with Temporal Server version 1.20 and is expected to be compatible with Temporal Server version 1.21.
+
+tctl is expected to be fully deprecated by Temporal Server version 1.22
+
+:::
+
 The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> operations.
 
 - <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl cluster health</span><br /><br /><span class="tdlppd">How to check the health of the Frontend Service using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#health">Learn more</a></span></span></a>
