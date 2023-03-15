@@ -1,16 +1,19 @@
 ---
-id: quick-install
-title: How to install a Temporal Cluster quickly for testing and local development
-sidebar_label: Run a development Cluster
-description: There are four ways to quickly install and run a Temporal Cluster.
+id: how-to-install-temporal-cli
+title: How to install Temporal CLI and run a development server
+sidebar_label: Run a development server
 ---
 
-The following section describes how to deploy your [Temporal Clusters](/concepts/what-is-a-temporal-cluster) locally so that you can use and interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs, [Web UI](/web-ui), and [CLI](/cli) commands to test and develop applications.
+The following section describes how to install the [Temporal CLI](/cli) and start a development server that you can
+interact with the [Temporal Client](/concepts/what-is-a-temporal-client) APIs, [Web UI](/web-ui), and [CLI](/cli)
+commands to test and develop applications.
 
-**For information on deploying a [production environment](/cluster-deployment-guide), see the [Temporal Cloud](/cloud) documentation.**
+**For information on deploying a [production environment](/cluster-deployment-guide), see the [Temporal Cloud](/cloud)
+documentation.**
 
-Temporal CLI is a distribution of Temporal that runs as a single process with zero runtime dependencies.
-It supports persistence to disk and in-memory mode through SQLite.
+Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and web
+UI that runs as a single process with zero runtime dependencies. It supports persistence to disk and in-memory mode
+through SQLite.
 
 **Install the Temporal CLI**
 
@@ -67,20 +70,20 @@ Choose one of the following install methods to install the Temporal CLI.
 </TabItem>
 </Tabs>
 
-**Start the Temporal Server**
+**Start the Temporal Development Server**
 
-Start Temporal Server by using the `start-dev` command.
+Start the Temporal Development Server by using the `server start-dev` command.
 
 ```bash
 temporal server start-dev
 ```
 
-This command uses the default [Namespace Name](/namespaces), `default`, to start and connect to the Temporal Server.
+This command starts the server listening on `localhost:7233`, the web UI on
+[http://localhost:8233](http://localhost:8233), automatically create the `default` [Namespace](/namespaces), and use an
+in-memory SQLite database for persistence.
 
-To connect to the Temporal Server with a custom Namespace Name, use the `--namespace` command.
+The server's startup configuration can be customized using command line options. For a full list of options, run:
 
 ```bash
-temporal server start-dev --namespace your-custom-namespace
+temporal server start-dev --help
 ```
-
-**Results**: You should have access to the Temporal Server running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).

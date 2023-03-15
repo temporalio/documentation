@@ -19,12 +19,13 @@ This article aims to maintain a comprehensive list of all the ways we know of.
 
 ### Temporal CLI
 
-Temporal CLI is a distribution of Temporal that runs as a single process with zero runtime dependencies.
-It supports persistence to disk and in-memory mode through SQLite.
+Temporal CLI is a tool for interacting with Temporal from the command line and a distribution of Temporal server and web
+UI that runs as a single process with zero runtime dependencies. It supports persistence to disk and in-memory mode
+through SQLite.
 
-**Install and start the Temporal CLI**
+**Install the Temporal CLI**
 
-The following steps start and run a Temporal Cluster.
+Choose one of the following install methods to install the Temporal CLI.
 
 <Tabs>
 <TabItem value="macOS" label="macOS">
@@ -48,11 +49,6 @@ The following steps start and run a Temporal Cluster.
   2. Extract the downloaded archive.
   3. Add the `temporal` binary to your PATH.
 
-- Install the Temporal CLI from GitHub.
-  1. Download the [latest release](https://github.com/temporalio/cli/releases/latest/) for your platform and architecture.
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
-
 </TabItem>
 <TabItem value="Linux" label="Linux">
 
@@ -69,11 +65,6 @@ The following steps start and run a Temporal Cluster.
   2. Extract the downloaded archive.
   3. Add the `temporal` binary to your PATH.
 
-- Install the Temporal CLI from GitHub.
-  1. Download the [latest release](https://github.com/temporalio/cli/releases/latest/) for your platform and architecture.
-  2. Extract the downloaded archive.
-  3. Add the `temporal` binary to your PATH.
-
 </TabItem>
 <TabItem value="Windows" label="Windows">
 
@@ -83,60 +74,27 @@ The following steps start and run a Temporal Cluster.
      - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
   2. Extract the downloaded archive.
   3. Add the `temporal.exe` binary to your PATH.
-- Install the Temporal CLI from GitHub.
-  1. Download the [latest release](https://github.com/temporalio/cli/releases/latest/) for your platform and architecture.
-  2. Extract the downloaded archive.
-  3. Add the `temporal.exe` binary to your PATH.
 
 </TabItem>
 </Tabs>
 
-**Start the Temporal Server**
+**Start the Temporal Development Server**
 
-Start Temporal Server by using the `start-dev` command.
+Start the Temporal Development Server by using the `server start-dev` command.
 
 ```bash
 temporal server start-dev
 ```
 
-This command uses the default [Namespace Name](/namespaces), `default`, to start and connect to the Temporal Server.
+This command starts the server listening on `localhost:7233`, the web UI on
+[http://localhost:8233](http://localhost:8233), automatically create the `default` [Namespace](/namespaces), and use an
+in-memory SQLite database for persistence.
 
-To connect to the Temporal Server with a custom Namespace Name, use the `--namespace` command.
-
-```bash
-temporal server start-dev --namespace your-custom-namespace
-```
-
-**Results**: You should have access to the Temporal Server running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
-
-## Temporalite
-
-[Temporalite](https://github.com/temporalio/temporalite/cmd/temporalite) is a complete, but minimal, Temporal Cluster distribution (four Temporal Server services and a database) that runs as a single process with zero runtime dependencies.
-It supports persistence to disk and in-memory mode through SQLite.
-
-Temporalite is great for local testing and development purposes.
-It offers great performance in terms of processing Workflow Executions per second.
-Although it does currently default to one History Shard, we plan to make this setting configurable at start time, and you can adjust the setting by cloning the repository.
-In theory, performance at this point is limited to your machine's processing capabilities, SQLite capacity, and SQLite read/write speeds.
-
-One drawback is that Temporalite does not yet support [Advanced Visibility](/visibility/#advanced-visibility), or other Cluster features such as Archival.
-However, work is in progress to bring Advanced Visibility to SQLite as a built-in feature.
-
-Temporalite also requires that you have Go 1.18 or later installed.
-
-To build and start Temporalite, run the following commands:
+The server's startup configuration can be customized using command line options. For a full list of options, run:
 
 ```bash
-git clone https://github.com/temporalio/temporalite.git
-cd temporalite
-go build ./cmd/temporalite
+temporal server start-dev --help
 ```
-
-For macOS users, if you receive the error `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db: no such file or directory`, create the `temporalite/db` directories in your `Application Support` library and run the `start` command again.
-
-Replace `default` with your custom [Namespace](/namespaces) name.
-
-Local Temporal Clients and Workers can connect to Temporalite at 127.0.0.1:7233 (default Client connection for most SDKs) and the Temporal Web UI at 127.0.0.1:8233.
 
 ## Docker & Docker Compose
 
