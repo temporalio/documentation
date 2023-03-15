@@ -8,6 +8,16 @@ tags:
   - tctl
 ---
 
+:::success Temporal CLI is now available!
+
+The new [Temporal CLI](/cli) is available for use.
+
+tctl v1.17 can still be used with Temporal Server version 1.20 and is expected to be compatible with Temporal Server version 1.21.
+
+tctl is expected to be fully deprecated by Temporal Server version 1.22
+
+:::
+
 :::note
 
 This documentation reflects tctl version 1.17

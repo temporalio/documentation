@@ -32,7 +32,9 @@ The database stores the following types of data:
 - Visibility data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch.
 
-An Elasticsearch database can be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility).
+An Elasticsearch database must be added to enable [Advanced Visibility](/concepts/what-is-advanced-visibility) on Temporal Server versions 1.19.1 and earlier.
+
+With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
 
 #### Dependency versions
 

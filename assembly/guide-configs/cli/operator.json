@@ -1,0 +1,85 @@
+{
+    "file_name": "operator.md",
+    "file_dir": "cli",
+    "id": "operator",
+    "title": "Temporal CLI operator command reference",
+    "sidebar_label": "operator",
+    "description": "How to use the Temporal CLI operator commands",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cli/operator/index"
+        },
+        {
+            "type": "h2",
+            "id": "cli/operator/cluster/index"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/cluster/describe"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/cluster/health"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/cluster/list"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/cluster/remove"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/cluster/system"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/cluster/upsert"
+        },
+        {
+            "type": "h2",
+            "id": "cli/operator/namespace/index"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/namespace/create"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/namespace/delete"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/namespace/describe"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/namespace/list"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/namespace/update"
+        },
+        {
+            "type": "h2",
+            "id": "cli/operator/search-attribute/index"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/search-attribute/create"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/search-attribute/list"
+        },
+        {
+            "type": "h3",
+            "id": "cli/operator/search-attribute/remove"
+        }
+    ]
+}
