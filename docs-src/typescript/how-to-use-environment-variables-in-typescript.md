@@ -41,7 +41,7 @@ const createActivities = (envVars: { apiKey: string }) => ({
 
 **Getting into Workflow**
 
-If we needed environment variables in our Workflow, here's how we'd use a Local Activity:
+If you need environment variables in your Workflow, use a Local Activity:
 
 ```ts
 const worker = await Worker.create({
@@ -88,3 +88,5 @@ async function yourWorkflow() {
   await sendNotificationEmail(envVars.apiKey);
 }
 ```
+
+If your environment variables are sensitive, use a [custom Data Converter](https://legacy-documentation-sdks.temporal.io/typescript/data-converters#encryption) to encrypt Activity return values and parameters.
