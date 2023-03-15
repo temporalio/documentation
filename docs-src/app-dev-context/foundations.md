@@ -21,7 +21,7 @@ If you can't find what you are looking for in the Developer's guide, it could be
 
 In this section you can find the following:
 
-- [Run a development Cluster](/kb/all-the-ways-to-run-a-cluster)
+- [Run a development Cluster](/clusters/how-to-install-temporal-cli)
 - [Install your SDK](/app-dev-context/add-sdk)
 - [Connect to a dev Cluster](/app-dev-context/connect-to-a-dev-cluster)
 - [Connect to Temporal Cloud](/app-dev-context/connect-to-temporal-cloud)
