@@ -11,10 +11,6 @@
   "sections": [
     {
       "type": "p",
-      "id": "cli/release-message"
-    },
-    {
-      "type": "p",
       "id": "concepts/what-is-tctl-v1"
     },
     {
