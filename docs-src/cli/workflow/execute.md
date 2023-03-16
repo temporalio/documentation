@@ -14,7 +14,7 @@ Single quotes('') are used to wrap input as JSON.
 
 Use the command options listed below to change how the Workflow Execution behaves during its run.
 Make sure to write the command in this format:
-`temporal workflow execute [command options] [arguments]`
+`temporal workflow execute [command options]`
 
 - [--address](/cli/cmd-options/address)
 

@@ -11,7 +11,7 @@ The `temporal operator cluster system` command provides information about the sy
 
 Use the options listed below to change this command's output.
 Make sure to write the command as follows:
-`temporal operator cluster system [command options] [arguments]`
+`temporal operator cluster system [command options]`
 
 - [--address](/cli/cmd-options/address)
 

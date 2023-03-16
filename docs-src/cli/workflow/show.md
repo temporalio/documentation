@@ -11,7 +11,7 @@ The `temporal workflow show` command provides the [Event History](/concepts/what
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal workflow show [command options] [arguments]`
+`temporal workflow show [command options]`
 
 - [--address](/cli/cmd-options/address)
 

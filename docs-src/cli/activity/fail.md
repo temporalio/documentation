@@ -11,7 +11,7 @@ The `temporal activity fail` command fails an [Activity Execution](/concepts/wha
 
 Use the options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal activity fail [command options] [arguments]`
+`temporal activity fail [command options]`
 
 - [--activity-id](/cli/cmd-options/activity-id)
 

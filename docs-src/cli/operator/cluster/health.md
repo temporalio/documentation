@@ -11,7 +11,7 @@ The `temporal operator cluster health` command checks the health of the [Fronten
 
 Use the options listed below to change the behavior and output of this command.
 Make sure to write the command as follows:
-`temporal operator cluster health [command options] [arguments]`
+`temporal operator cluster health [command options]`
 
 - [--address](/cli/cmd-options/address)
 

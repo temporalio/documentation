@@ -11,7 +11,7 @@ The `temporal workflow trace` command tracks the progress of a [Workflow Executi
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal workflow trace [command options] [arguments]`
+`temporal workflow trace [command options]`
 
 - [--address](/cli/cmd-options/address)
 

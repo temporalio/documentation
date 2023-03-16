@@ -12,7 +12,7 @@ When invoked successfully, the Workflow and Run ID are returned immediately afte
 
 Use the command options listed below to change how the Workflow Execution behaves upon starting.
 Make sure to write the command in this format:
-`temporal workflow start [command options] [arguments]`
+`temporal workflow start [command options]`
 
 - [--address](/cli/cmd-options/address)
 

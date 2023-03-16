@@ -11,7 +11,7 @@ The `temporal operator search-attrbute list` command displays a list of all [Sea
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal operator search-attribute list [command options] [arguments]`
+`temporal operator search-attribute list [command options]`
 
 - [--address](/cli/cmd-options/address)
 

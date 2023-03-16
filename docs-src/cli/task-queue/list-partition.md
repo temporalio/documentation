@@ -11,7 +11,7 @@ The `temporal task-queue list-partition` command displays the partitions of a [T
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal task-queue list-partition [command options] [arguments]`
+`temporal task-queue list-partition [command options]`
 
 - [--address](/cli/cmd-options/address)
 

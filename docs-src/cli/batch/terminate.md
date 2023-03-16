@@ -11,7 +11,7 @@ The `temporal batch terminate` command terminates a Batch job with the provided 
 
 Use the command options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal batch terminate [command options] [arguments]`
+`temporal batch terminate [command options]`
 
 - [--address](/cli/cmd-options/address)
 

@@ -12,7 +12,7 @@ This command requires Elasticsearch to be enabled.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal workflow count [command options] [arguments]`
+`temporal workflow count [command options]`
 
 - [--address](/cli/cmd-options/address)
 

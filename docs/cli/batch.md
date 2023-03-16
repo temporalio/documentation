@@ -23,13 +23,14 @@ Running Signal, Terminate, or Cancel with the `--query` modifier will start a Ba
 A successfully started Batch job will return a Job ID.
 Use this Job ID to execute other actions on the Batch job.
 
+
 ## list
 
 When used, `temporal batch list` returns all Batch jobs.
 
 Use the command options listed below to change the information returned by this command.
 Make sure to write the command in this format:
-`temporal batch list [command options] [arguments]`
+`temporal batch list [command options] `
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -69,13 +70,14 @@ Make sure to write the command in this format:
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## describe
 
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
 
 Use the command options listed below to change the information returned by this command.
 Make sure to write the command in this format:
-`temporal batch describe [command options] [arguments]`
+`temporal batch describe [command options]`
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -111,13 +113,14 @@ Make sure to write the command in this format:
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## terminate
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
 
 Use the command options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal batch terminate [command options] [arguments]`
+`temporal batch terminate [command options] `
 
 - <a class="tdlp" href="/cli/cmd-options#address">--address<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  address</span><br /><br /><span class="tdlppd">Definition for the address command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#address">Learn more</a></span></span></a>
 
@@ -148,4 +151,5 @@ Make sure to write the command as follows:
 - <a class="tdlp" href="/cli/cmd-options#tls-key-path">--tls-key-path<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-key-path</span><br /><br /><span class="tdlppd">Definition for the tls-key-path command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-key-path">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
+
 

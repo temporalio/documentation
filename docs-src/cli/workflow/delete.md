@@ -11,7 +11,7 @@ The `temporal workflow delete` command deletes the specified [Workflow Execution
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal workflow delete [command options] [arguments]`
+`temporal workflow delete [command options]`
 
 - [--address](/cli/cmd-options/address)
 

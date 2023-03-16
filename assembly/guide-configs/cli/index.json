@@ -12,6 +12,10 @@
     {
       "type": "p",
       "id": "concepts/what-is-the-temporal-cli"
+    },
+    {
+      "type": "h2",
+      "id": "cli/readme"
     }
   ]
 }

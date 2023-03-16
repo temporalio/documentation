@@ -11,7 +11,7 @@ The `temporal env delete` command deletes a given environment or environmental p
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal env delete [command options] [arguments]`
+`temporal env delete [command options]`
 
 - [--address](/cli/cmd-options/address)
 

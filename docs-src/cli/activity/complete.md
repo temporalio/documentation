@@ -11,7 +11,7 @@ The `temporal activity complete` command completes an [Activity Execution](/conc
 
 Use the options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal activity complete [command options] [arguments]`
+`temporal activity complete [command options]`
 
 - [--activity-id](/cli/cmd-options/activity-id)
 

@@ -10,7 +10,7 @@ tags:
 The `temporal schedule list` command lists all [Schedule](/concepts/what-is-a-schedule) configurations.
 Listing Schedules in [Standard Visibility](/concepts/what-is-standard-visibility) will only provide Schedule IDs.
 
-`temporal schedule list [command options] [arguments]`
+`temporal schedule list [command options]`
 
 Use the options below to change the behavior of this command.
 

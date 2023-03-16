@@ -12,7 +12,7 @@ A reset allows the Workflow to be resumed from a certain point without losing yo
 
 Use the options listed below to change reset behavior.
 Make sure to write the command as follows:
-`temporal workflow reset [command options] [arguments]`
+`temporal workflow reset [command options]`
 
 - [--address](/cli/cmd-options/address)
 

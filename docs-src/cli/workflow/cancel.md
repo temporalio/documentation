@@ -14,7 +14,7 @@ A new [Command](/concepts/what-is-a-command) Task will be scheduled, and the Wor
 
 Use the options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal workflow cancel [command options] [arguments]`
+`temporal workflow cancel [command options]`
 
 - [--address](/cli/cmd-options/address)
 

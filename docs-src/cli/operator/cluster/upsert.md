@@ -11,7 +11,7 @@ The `temporal operator cluster upsert` command allows the user to add or update 
 
 Use the options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal operator cluster upsert [command options] [arguments]`
+`temporal operator cluster upsert [command options]`
 
 - [--address](/cli/cmd-options/address)
 

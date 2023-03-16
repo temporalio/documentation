@@ -12,7 +12,7 @@ This information can be used to locate Workflow Executions that weren't able to 
 
 Use the command options listed below to change the information returned by this command.
 Make sure to write the command in this format:
-`temporal workflow describe [command options] [arguments]`
+`temporal workflow describe [command options]`
 
 - [--address](/cli/cmd-options/address)
 

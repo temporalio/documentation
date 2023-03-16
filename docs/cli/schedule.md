@@ -14,7 +14,8 @@ import TabItem from '@theme/TabItem';
 Schedule commands allow the user to create, use, and update <a class="tdlp" href="/workflows#schedule">Schedules<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
 Schedules control when certain Actions for a Workflow Execution are performed, making it a useful tool for automation.
 
-To run a Schedule command, run `temporal schedule [command] [command options] [arguments]`.
+To run a Schedule command, run `temporal schedule [command] [command options]`.
+
 
 ## backfill
 
@@ -64,13 +65,13 @@ Use the options provided below to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## create
 
 The `temporal schedule create` command creates a new <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
 Newly created Schedules return a Schedule ID to be used in other Schedule commands.
 
 Schedules need to follow a format like the example shown here:
-
 ```
 temporal schedule create \
 --sid 'your-schedule-id' \
@@ -162,6 +163,7 @@ Use the options provided below to change the command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#workflow-type">--workflow-type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  workflow-type</span><br /><br /><span class="tdlppd">Definition for the workflow-type command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-type">Learn more</a></span></span></a>
 
+
 ## delete
 
 The `temporal schedule delete` command deletes a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
@@ -170,7 +172,7 @@ Deleting a Schedule does not affect any <a class="tdlp" href="/workflows#">Workf
 <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> started by Schedules can be cancelled or terminated like other Workflow Executions.
 However, Workflow Executions started by a Schedule can be identified by their <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>, making them targetable by batch command for termination.
 
-`temporal schedule delete --sid 'your-schedule-id' [command options] [arguments]`
+`temporal schedule delete --sid 'your-schedule-id' [command options] `
 
 Use the options below to change the behavior of this command.
 
@@ -202,12 +204,13 @@ Use the options below to change the behavior of this command.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## describe
 
 The `temporal schedule describe` command shows the current <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> configuration.
 This command also provides information about past, current, and future <a class="tdlp" href="/workflows#run-id">Workflow Runs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a>.
 
-`temporal schedule describe --sid 'your-schedule-id' [command options] [arguments]`
+`temporal schedule describe --sid 'your-schedule-id' [command options] `
 
 Use the options below to change this command's output.
 
@@ -247,12 +250,13 @@ Use the options below to change this command's output.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## list
 
 The `temporal schedule list` command lists all <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> configurations.
 Listing Schedules in <a class="tdlp" href="/visibility#standard-visibility">Standard Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Standard Visibility?</span><br /><br /><span class="tdlppd">Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#standard-visibility">Learn more</a></span></span></a> will only provide Schedule IDs.
 
-`temporal schedule list [command options] [arguments]`
+`temporal schedule list [command options] `
 
 Use the options below to change the behavior of this command.
 
@@ -294,6 +298,7 @@ Use the options below to change the behavior of this command.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## toggle
 
 The `temporal schedule toggle` command can pause and unpause a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
@@ -302,7 +307,7 @@ Toggling a Schedule requires a reason to be entered on the command line.
 Use `--reason` to note the issue leading to the pause or unpause.
 
 Schedule toggles are passed in this format:
-`temporal schedule toggle --sid 'your-schedule-id' --pause --reason "paused because the database is down"`
+` temporal schedule toggle --sid 'your-schedule-id' --pause --reason "paused because the database is down"`
 `temporal schedule toggle --sid 'your-schedule-id' --unpause --reason "the database is back up"`
 
 Use the options provided below to change this command's behavior.
@@ -340,6 +345,7 @@ Use the options provided below to change this command's behavior.
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#unpause">--unpause<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  unpause</span><br /><br /><span class="tdlppd">Definition for the unpause command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#unpause">Learn more</a></span></span></a>
+
 
 ## trigger
 
@@ -384,12 +390,12 @@ Use the options provided below to change this command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#tls-server-name">--tls-server-name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  tls-server-name</span><br /><br /><span class="tdlppd">Definition for the tls-server-name command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#tls-server-name">Learn more</a></span></span></a>
 
+
 ## update
 
 The `temporal schedule update` command updates an existing <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a>.
 
 Like `temporal schedule create`, updated Schedules need to follow a certain format:
-
 ```
 temporal schedule update 			\
 --sid 'your-schedule-id' 	\
@@ -480,4 +486,5 @@ Use the options provided below to change the command's behavior.
 - <a class="tdlp" href="/cli/cmd-options#workflow-id">--workflow-id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  workflow-id</span><br /><br /><span class="tdlppd">Definition for the workflow-id command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-id">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/cli/cmd-options#workflow-type">--workflow-type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  workflow-type</span><br /><br /><span class="tdlppd">Definition for the workflow-type command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#workflow-type">Learn more</a></span></span></a>
+
 

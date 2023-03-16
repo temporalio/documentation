@@ -12,7 +12,7 @@ Returning the stack trace of all the threads owned by a Workflow Execution can b
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal workflow stack [command options] [arguments]`
+`temporal workflow stack [command options]`
 
 - [--address](/cli/cmd-options/address)
 

@@ -12,7 +12,7 @@ By default, this command returns a list of up to 10 closed Workflow Executions.
 
 Use the command options listed below to change the information returned by this command.
 Make sure to write the command as follows:
-`temporal workflow list [command options] [arguments]`
+`temporal workflow list [command options]`
 
 - [--address](/cli/cmd-options/address)
 

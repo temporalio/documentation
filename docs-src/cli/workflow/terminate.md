@@ -14,7 +14,7 @@ Any further [Command](/concepts/what-is-a-command) Tasks cannot be scheduled aft
 
 Use the options listed below to change termination behavior.
 Make sure to write the command as follows:
-`temporal workflow terminate [command options] [arguments]`
+`temporal workflow terminate [command options]`
 
 - [--address](/cli/cmd-options/address)
 

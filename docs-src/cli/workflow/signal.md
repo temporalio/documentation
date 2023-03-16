@@ -11,7 +11,7 @@ The `temporal workflow signal` command is used to [Signal](/concepts/what-is-a-s
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal workflow signal [command options] [arguments]`
+`temporal workflow signal [command options]`
 
 - [--address](/cli/cmd-options/address)
 

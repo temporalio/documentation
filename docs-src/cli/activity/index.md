@@ -7,4 +7,4 @@ tags:
 	- cli
 ---
 
-Operate on [Activity Executions](/concepts/what-is-an-activity-execution).
+Activity commands operate on [Activity Executions](/concepts/what-is-an-activity-execution).

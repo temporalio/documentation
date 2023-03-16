@@ -15,7 +15,7 @@ Should `LastAccessTime` exceeds one minute, it's likely that the Worker is at ca
 
 Use the options listed below to modify what this command returns.
 Make sure to write the command as follows:
-`temporal task-queue describe [command options] [arguments]`
+`temporal task-queue describe [command options]`
 
 - [--address](/cli/cmd-options/address)
 

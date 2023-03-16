@@ -11,7 +11,7 @@ The `temporal operator cluster describe` command shows information about the [Cl
 
 Use the options listed below to change the output of this command.
 Make sure to write the command as follows:
-`temporal operator cluster describe [command options] [arguments]`
+`temporal operator cluster describe [command options]`
 
 - [--address](/cli/cmd-options/address)
 

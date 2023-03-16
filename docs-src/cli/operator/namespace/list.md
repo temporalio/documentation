@@ -11,7 +11,7 @@ The `temporal operator namespace list` command lists all [Namespaces](/namespace
 
 Use the options listed below to change the command's output.
 Make sure to write the command as follows:
-`temporal operator namespace list [command options] [arguments]`
+`temporal operator namespace list [command options]`
 
 - [--address](/cli/cmd-options/address)
 
