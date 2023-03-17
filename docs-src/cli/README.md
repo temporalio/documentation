@@ -4,7 +4,7 @@ title: temporal readme
 sidebar_label: Install CLI
 description: How to install and configure Temporal CLI.
 tags:
-	- cli
+    - cli
 ---
 
 # Temporal CLI
@@ -36,7 +36,7 @@ Run the following command in a new terminal window to install CLI for macOS.
 
 ### GitHub releases
 
-Download and extract the [latest release](https://github.com/temporalio/cli/releases/latest) from [GitHub releases](https://github.com/temporalio/cli/releases).
+Download and extract the latest release from [GitHub releases](https://github.com/temporalio/cli/releases).
 
 ### CDN
 
@@ -45,7 +45,7 @@ To install the Temporal CLI from CDN:
 1. Select the binary with the corresponding platform and architecture of your system.
 2. Download the binary.
 3. Extract the downloaded archive.
-4. Add the `temporal.exe` binary to your system PATH.
+4. Add the `temporal` binary to your system PATH.
 
 ## Starting the Temporal Server
 
@@ -71,7 +71,7 @@ temporal workflow list
 Use the help flag to see a full list of CLI options:
 
 ```bash
-temporal server start-dev -h
+temporal server start-dev --help
 ```
 
 Configure the environment with `env` commands:
@@ -92,7 +92,7 @@ temporal server start-dev --namespace foo --namespace bar
 You can also register Namespaces with the following command:
 
 ```bash
-temporal operator namespace create foo`
+temporal operator namespace create foo
 ```
 
 ### Persistence modes
