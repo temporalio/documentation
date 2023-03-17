@@ -8,12 +8,12 @@ tags:
   - explanation
 ---
 
-A Payload Converter serializes data, converting objects or values to bytes and back.
+A Payload Converter serializes data, converting values to bytes and back.
 
-When you request a Workflow Execution through your Client and pass a data input, the input is deserialized using the default Data Converter that runs it through a set of Payload Converters.
-When your Workflow Execution starts, this data input is serialized and passed as input to your Workflow.
+When you request a Workflow Execution through your Client and pass a data input, the input is serialized using a Data Converter that runs it through a set of Payload Converters.
+When your Workflow Execution starts, this data input is deserialized and passed as input to your Workflow.
 
-Some SDKs have a Payload Converter as a part of the Data Converter, which does the conversion from a value to a bytes and back.
+SDKs have a Payload Converter as a part of the Data Converter, which does the conversion from a value to a bytes and back.
 See the API reference for more information.
 
 - [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadConverter)

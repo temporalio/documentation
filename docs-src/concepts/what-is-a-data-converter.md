@@ -8,12 +8,12 @@ tags:
   - explanation
 ---
 
-A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.
-It is used by the Temporal SDK framework to serialize/deserialize input and output of Activities and Workflows that need to be sent over the wire to the Temporal Cluster.
+A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.
+It is used by the Temporal SDK framework to serialize/deserialize data such as input and output of Activities and Workflows that need to be sent over the wire to the Temporal Cluster.
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
 
-The Data Converter encodes all data from your application before it is sent to the Temporal Cluster in the Client call.
+The Data Converter encodes data from your application before it is sent to the Temporal Cluster in the Client call.
 When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the data for processing within your application.
 This technique ensures that all your sensitive data exists in its original format only on hosts that you control.
 

@@ -8,20 +8,20 @@ tags:
   - explanation
 ---
 
-Remote data encoding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.
+Remote data encoding is exposing your Payload Codec via HTTP to support remote encoding and decoding.
 
-Running your encoding remotely allows you to use it with `tctl` to encode payloads for `tctl workflow start` and with Temporal WebUI to [decode encrypted payloads](#decoding-payloads-on-the-web-ui-and-tctl).
+Running your encoding remotely allows you to use it with `tctl` to encode/decode data for several commands including `tctl workflow start` and with Temporal WebUI to [decode encoded data](#decoding-payloads-on-the-web-ui-and-tctl).
 
-To run data encoding/decoding remotely, use a [Codec Server](/concepts/what-is-a-codec-server). A Codec Server is an HTTP server that is configured to use your custom Payload Codec with encryption/compression and decryption/decompression logic.
+To run data encoding/decoding remotely, use a [Codec Server](/concepts/what-is-a-codec-server). A Codec Server is an HTTP server that is configured to use your custom Payload Codec.
 
 Note that currently only Go and Java SDKs support setting a remote Payload Codec with a custom Data Converter.
 You can however create a Codec Server in any of the SDKs, and use it to decode payloads on the WebUI and in `tctl`.
 
-Before you use a remote data encoder to encode your payloads and allowing decryption or decoding through a service call, ensure that you consider all the security implications of running encryptions remotely.
+Before you use a remote data encoder to encode your payloads, ensure that you consider all the security implications of running codecs remotely. For example, codecs that perform encryption may need to be secured to prevent decryption by untrusted callers.
 
 #### Decoding payloads on the Web UI and tctl
 
-If you use custom encryption/encoding with your custom Data Converter, all the data handled by the Temporal Cluster is encrypted/encoded. Since the WebUI uses the [Visibility](/concepts/what-is-visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your WebUI or tctl is encoded/encrypted.
+If you use custom encryption/encoding with your custom Data Converter, all the data handled by the Temporal Cluster is encrypted/encoded. Since the Web UI uses the [Visibility](/concepts/what-is-visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI or tctl is encoded/encrypted.
 
 To see the original format of data in your WebUI and tctl, create a [Codec Server](/concepts/what-is-a-codec-server) with a remote data encoder and use the Payload Codec to decode your data locally.
 

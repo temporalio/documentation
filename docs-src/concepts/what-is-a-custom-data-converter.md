@@ -16,13 +16,13 @@ You can create a custom Data Converter to alter formats (for example, using [Mes
 You can customize the default Data Converter behavior in two ways:
 
 - A Payload Converter serializes data, converting objects to bytes and back.
-  To convert custom objects or data types to payloads and back, use a custom `PayloadConverter` and set it to alter the default Data Converter.
+  To convert custom objects or data types to payloads and back, use a custom `PayloadConverter` and set it on a Data Converter.
 - A Payload Codec encodes and decodes data, with bytes-to-bytes conversion.
   To use custom encryption and/or compression logic, create a custom `PayloadCodec` with your encryption/compression logic in the `encode` function, and your decryption/decompression logic in your `decode` function.
 
 Custom Data Converters are not applied to all data:
 
-- Search Attributes are simple values and are persisted unencoded.
+- Search Attributes are simple values and are persisted unencoded so they can be indexed for searching.
 - Headers are not encoded by the SDK. (The one exception—when implemented—will be the SDK [running OTel baggage through custom codecs](https://github.com/temporalio/sdk-typescript/issues/514).)
 
 A customized Data Converter can have the following three components:

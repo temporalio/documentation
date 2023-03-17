@@ -10,7 +10,7 @@ tags:
 
 **Create a custom Payload Codec**
 
-Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `encode` and `decode` functions.
+Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `Encode` and `Decode` functions.
 
 The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes.
 It must be used in an instance of [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
@@ -18,14 +18,11 @@ It must be used in an instance of [`CodecDataConverter`](https://pkg.go.dev/go.t
 The following example shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 
 ```go
-// Create an instance of Data Converter.
-var DataConverter = NewDataConverter(converter.GetDefaultDataConverter())
-
-// NewDataConverter creates a Data Converter that wraps the specified Data
-// Converter with snappy compression, using the custom PayloadCodec called NewPayloadCodec.
-func NewDataConverter(underlying converter.DataConverter) converter.DataConverter {
-	return converter.NewCodecDataConverter(underlying, NewPayloadCodec())
-}
+// Create an instance of Data Converter with your codec.
+var DataConverter = converter.NewCodecDataConverter(
+	converter.GetDefaultDataConverter(),
+	NewPayloadCodec(),
+)
 
 // Create an instance of PaylodCodec.
 func NewPayloadCodec() converter.PayloadCodec {
@@ -33,7 +30,7 @@ func NewPayloadCodec() converter.PayloadCodec {
 }
 ```
 
-Implement your encryption and compression logic in the `encode` function, and the decryption and decompression logic in the `decode` function in your custom `PayloadCodec`, as shown in the following example.
+Implement your encryption and compression logic in the `Encode` function, and the decryption and decompression logic in the `Decode` function in your custom `PayloadCodec`, as shown in the following example.
 
 ```go
 // Codec implements converter.PayloadEncoder for snappy compression.
@@ -56,7 +53,7 @@ See [Codec Server](/concepts/what-is-a-codec-server) for remote data encoding/de
 
 **Set Data Converter to use custom Payload Codec**
 
-Set your custom `PaylaodCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client for your Worker process and to start Workflow Executions.
+Set your custom `PaylaodCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
 
 The following example shows how to set your custom Data Converter from a package called `codecserver`.
 
@@ -72,7 +69,7 @@ c, err := client.Dial(client.Options{
 
 You can also create a remote HTTP server (called a codec server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with Web UI and tctl to see decrypted data.
 
-See the following samples for examples:
+See the following samples:
 
-- [Codec server](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/codec-server)
-- [Encryption](https://github.com/temporalio/samples-go/tree/af2614a728e3dd9640f3a3e95873f96a4e56f81a/encryption)
+- [Codec server](https://github.com/temporalio/samples-go/tree/main/codec-server)
+- [Encryption](https://github.com/temporalio/samples-go/tree/main/encryption)
