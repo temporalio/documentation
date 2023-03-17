@@ -45,4 +45,3 @@ import TabItem from '@theme/TabItem';
 
 - <a class="tdlp" href="/cli/cmd-options#ui-port">--ui-port<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  ui-port</span><br /><br /><span class="tdlppd">Definition for the ui-port command option.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#ui-port">Learn more</a></span></span></a>
 
-
