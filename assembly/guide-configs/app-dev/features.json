@@ -694,6 +694,97 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/worker-sessions"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/enable-worker-sessions"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-enable-sessions-on-a-worker"
+        },
+        {
+          "lang": "java",
+          "id": "na"
+        },
+        {
+          "lang": "php",
+          "id": "na"
+        },
+        {
+          "lang": "python",
+          "id": "na"
+        },
+        {
+          "lang": "typescript",
+          "id": "na"
+        }
+      ]
+    },
+    {
+      "type": "h4",
+      "id": "app-dev-context/max-concurrent-sessions"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-configure-max-concurrent-sessions"
+        },
+        {
+          "lang": "java",
+          "id": "na"
+        },
+        {
+          "lang": "php",
+          "id": "na"
+        },
+        {
+          "lang": "python",
+          "id": "na"
+        },
+        {
+          "lang": "typescript",
+          "id": "na"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/create-a-session"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-create-a-session-from-the-workflow-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "na"
+        },
+        {
+          "lang": "php",
+          "id": "na"
+        },
+        {
+          "lang": "python",
+          "id": "na"
+        },
+        {
+          "lang": "typescript",
+          "id": "na"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/namespaces"
     },
     {

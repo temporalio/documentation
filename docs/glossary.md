@@ -83,6 +83,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Worker Process](/workers#worker-process)
 - [Worker Program](/workers#worker-program)
 - [Worker Service](/clusters#worker-service)
+- [Worker Session](/workers#worker-session)
 - [Workflow](/workflows#)
 - [Workflow Definition](/workflows#workflow-definition)
 - [Workflow Execution](/workflows#workflow-execution)

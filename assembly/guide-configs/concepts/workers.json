@@ -4,7 +4,7 @@
   "file_dir": "/",
   "title": "Workers",
   "sidebar_label": "Workers",
-  "description": "This guide provides a comprehensive overview of Temporal Workers.",
+  "description": "Temporal Task Queues and Worker Processes are tightly coupled components.",
   "use_description": true,
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
@@ -12,6 +12,10 @@
     {
       "type": "p",
       "id": "concepts/what-is-a-worker"
+    },
+    {
+      "type": "p",
+      "id": "concepts/what-is-a-task"
     },
     {
       "type": "h2",
@@ -24,6 +28,38 @@
     {
       "type": "h2",
       "id": "concepts/what-is-a-worker-process"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-task"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-workflow-task-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-activity-task"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-activity-task-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-task-queue"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-sticky-execution"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-task-routing"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-worker-session"
     }
   ]
 }

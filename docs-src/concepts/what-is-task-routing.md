@@ -14,6 +14,9 @@ This could also mean employing multiple Task Queues, each one paired with a Work
 
 Task Routing has many applicable use cases.
 
+Some SDKs provide a [Session API](/concepts/what-is-a-worker-session) that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+It also includes features like **concurrent session limitations** and **worker failure detection**.
+
 ### Flow control
 
 A Worker that consumes from a Task Queue asks for an Activity Task only when it has available capacity, so it is never overloaded by request spikes.
@@ -53,13 +56,6 @@ Code samples:
 - [Go file processing example](https://github.com/temporalio/samples-go/tree/master/fileprocessing)
 - [Java file processing example](https://github.com/temporalio/samples-java/tree/master/src/main/java/io/temporal/samples/fileprocessing)
 - [PHP file processing example](https://github.com/temporalio/samples-php/tree/master/app/src/FileProcessing)
-
-#### Sessions
-
-Some SDKs provide a Session API that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
-It also includes features like **concurrent session limitations** and **worker failure detection**.
-
-- [How to create Worker Sessions in Go](https://legacy-documentation-sdks.temporal.io/go/how-to-create-a-worker-session-in-go)
 
 #### Route Activity Tasks to a specific process
 

@@ -3746,6 +3746,220 @@ Not applicable to this SDK.
 </TabItem>
 </Tabs>
 
+## Worker Sessions
+
+:::tip Support, stability, and dependency info
+
+- This feaure is currently only available in the Go SDK
+
+:::
+
+A Worker Session is a feature that provides a straightforward API for <a class="tdlp" href="/tasks#task-routing">Task Routing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Task Routing?</span><br /><br /><span class="tdlppd">Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-routing">Learn more</a></span></span></a> to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+
+### Enable Sessions
+
+Enable the Worker to use Sessions.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Set `EnableSessionWorker` to `true` in the Worker options.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/worker/main_dacx.go">View source code</a>
+
+```go
+// ...
+func main() {
+// ...
+	// Enable Sessions for this Worker.
+	workerOptions := worker.Options{
+		EnableSessionWorker: true,
+// ...
+	}
+	w := worker.New(temporalClient, "fileprocessing", workerOptions)
+	w.RegisterWorkflow(sessions.SomeFileProcessingWorkflow)
+	w.RegisterActivity(&sessions.FileActivities{})
+	err = w.Run(worker.InterruptCh())
+// ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="php">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="python">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="typescript">
+
+Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
+#### Max concurrent Sessions
+
+You can adjust the maximum concurrent Sessions of a Worker.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.
+By default, this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
+
+If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed. `CreateSession()` will return an error if the session can't be created within `CreationTimeout`.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/worker/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	workerOptions := worker.Options{
+// ...
+		// This configures the maximum allowed concurrent sessions
+		// Only customize this value if you need to.
+		MaxConcurrentSessionExecutionSize: 1000,
+// ...
+}
+// ...
+```
+
+</TabItem>
+<TabItem value="java">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="php">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="python">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="typescript">
+
+Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
+### Create a Session
+
+Within the Workflow code use the Workflow APIs to create a Session with whichever Worker picks up the first Activity Task.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) API to create a Context object that can be passed to calls to spawn Activity Executions.
+
+Pass an instance of `workflow.Context` and [`SessionOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SessionOptions) to the `CreateSession` API call and get a Session Context which contains metadata information of the Session.
+
+Use the Session Context to spawn all Activity Executions that should belong to the Session.
+All associated Activity Tasks are then processed by the same Worker Entity.
+When the `CreateSession` API is called, the Task Queue name that is specified in the `ActivityOptions` is used (or in the `StartWorkflowOptions` if the Task Queue name is not specified in `ActivityOptions`), and a Session is created with one of the Workers polling that Task Queue.
+
+The Session Context is cancelled if the Worker executing this Session dies or `CompleteSession()` is called.
+When using the returned Session Context to spawn Activity Executions, a `workflow.ErrSessionFailed` error may be returned if the Session framework detects that the Worker executing this Session has died.
+The failure of Activity Executions won't affect the state of the Session, so you still need to handle the errors returned from your Activities and call `CompleteSession()` if necessary.
+
+`CreateSession()` will return an error if the context passed in already contains an open Session.
+If all the Workers are currently busy and unable to handle a new Session, the framework will keep retrying until the `CreationTimeout` you specified in `SessionOptions` has passed before returning an error (check the **Concurrent Session Limitation** section for more details).
+
+`CompleteSession()` releases the resources reserved on the Worker, so it's important to call it as soon as you no longer need the Session.
+It will cancel the session context and therefore all the Activity Executions using that Session Context.
+It is safe to call `CompleteSession()` on a failed Session, meaning that you can call it from a `defer` function after the Session is successfully created.
+
+If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
+If not, you will get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/workflow_dacx.go">View source code</a>
+
+```go
+package sessions
+
+import (
+	"time"
+
+	"go.temporal.io/sdk/workflow"
+)
+
+// ...
+// SomeFileProcessingWorkflow is a Workflow Definition
+func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFParam) error {
+	activityOptions := workflow.ActivityOptions{
+		StartToCloseTimeout: time.Minute,
+	}
+	ctx = workflow.WithActivityOptions(ctx, activityOptions)
+// ...
+	sessionOptions := &workflow.SessionOptions{
+		CreationTimeout:  time.Minute,
+		ExecutionTimeout: time.Minute,
+	}
+	// Create a Session with the Worker so that all Activities execute with the same Worker.
+	sessionCtx, err := workflow.CreateSession(ctx, sessionOptions)
+	if err != nil {
+		return err
+	}
+	defer workflow.CompleteSession(sessionCtx)
+// ...
+	err = workflow.ExecuteActivity(sessionCtx, a.DownloadFile, param).Get(sessionCtx, &downloadResult)
+// ...
+	err = workflow.ExecuteActivity(sessionCtx, a.ProcessFile, processParam).Get(sessionCtx, &processResult)
+// ...
+	err = workflow.ExecuteActivity(sessionCtx, a.UploadFile, uploadParam).Get(sessionCtx, nil)
+// ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="php">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="python">
+
+Not applicable to this SDK.
+
+</TabItem>
+<TabItem value="typescript">
+
+Not applicable to this SDK.
+
+</TabItem>
+</Tabs>
+
 ## Namespaces
 
 You can create, update, deprecate or delete your <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> using either tctl or SDK APIs.
