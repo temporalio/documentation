@@ -22,7 +22,7 @@ However, if you can't find what you are looking for there, we recommend checking
   },
 ```
 
-2. [Install and run the Temporal Server](/clusters/quick-install) using `docker compose`.
+2. [Install and run the Temporal Server](/kb/all-the-ways-to-run-a-cluster) using `docker compose`.
 
 ## Tutorials
 
