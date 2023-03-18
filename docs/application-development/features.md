@@ -35,6 +35,7 @@ In this section you can find the following:
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
+- [How to use custom payload conversion](#custom-payload-conversion)
 
 ## Signals
 
@@ -4076,15 +4077,16 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 ## Custom payload conversion
 
-Most SDKs provide a <a class="tdlp" href="/dataconversion#payload-converter"> `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a> that can be customized to convert custom data types to bytes and back.
+Most SDKs provide a <a class="tdlp" href="/dataconversion#payload-converter"> `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a> that can be customized to convert values in custom data types to bytes and back.
 
 Creating a custom Payload Converter is optional.
 It's needed only if the default Data Converter does not support your custom values.
 
-Create your <a class="tdlp" href="/dataconversion#custom-payload-conversion">custom `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-payload-conversion">Learn more</a></span></span></a> and set it with the default `DataConverter` in your Client options.
+Create your <a class="tdlp" href="/dataconversion#custom-payload-conversion">custom `PayloadConverter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-payload-conversion">Learn more</a></span></span></a> and set it on a `DataConverter` in your Client options.
 
-The order in which your Payload Converters are applied depend on the encoding type that each handles.
-You can set multiple custom Payload Converters to run your conversions.
+The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
+You can set multiple custom encoding Payload Converters to run your conversions.
+When converting from a value to a payload, only the first one that handles the data type of the value will apply.
 
 <Tabs
 defaultValue="go"
@@ -4098,33 +4100,30 @@ Use a [`CompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/c
 The `PayloadConverter` converts bytes to values and back.
 
 `NewCompositeDataConverter` creates new instance of `CompositeDataConverter` from an ordered list of type-specific `PayloadConverters`.
-The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the `NewCompositeDataConverter`:
+The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by in the default Data Converter:
 
-- [`NewNilPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/nil_payload_converter.go#L39)
-- [`NewByteSlicePayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/byte_slice_payload_converter.go#L40)
-- [`NewProtoJSONPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/proto_json_payload_converter.go#L59)
-- [`NewProtoPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/proto_payload_converter.go#L50)
-- [`NewJSONPayloadConverter()`](https://github.com/temporalio/sdk-go/blob/92138dd941d0de56367c2da4087845bf18d4bc4b/converter/json_payload_converter.go#L39)
+- [`NewNilPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
+- [`NewByteSlicePayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
+- [`NewProtoJSONPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
+- [`NewProtoPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
+- [`NewJSONPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
 
-The order in which the `PayloadConverters` are applied is important because during serialization, `DataConverter` tries the `PayloadsConverters` in that specific order until a `PayloadConverter` returns a non-nil payload.
-The last `PayloadConverter` should always serialize the value.
-(The `JSONPayloadConverter` is a good candidate.)
+The order in which the Payload Converters are applied is important because during serialization, the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil payload.
 
 A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to payload.
 
-To set your custom `PayloadConverter`, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) to set it with the `DefaultDataConverter` in the Client that you use with your Worker and to start your Workflow Executions.
+To set your custom `PayloadConverter`, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the `DataConverter` in the Client options.
 
-```go
- //need a better example here
-c, err := client.NewClient(client.Options{
-	DataConverter: converter.NewCompositeDataConverter(converter.GetDefaultDataConverter(), YourCustomPayloadConverter()),
+<!--```go
+ //need an example here
+
        //...
-```
+```-->
 
 </TabItem>
 <TabItem value="java">
 
-Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with the [`DefaultDataConverter].
+Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with the `DefaultDataConverter`.
 
 The `PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
 You can create a custom implementation of the `PayloadConverter` for custom formats, as shown in the following example:

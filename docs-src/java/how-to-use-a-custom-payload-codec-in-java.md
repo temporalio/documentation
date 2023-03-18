@@ -16,24 +16,74 @@ The Payload Codec does byte-to-byte conversion and must be set with a Data Conve
 
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 
-```java
-public class YourCustomPayloadCodec implements PayloadCodec {
-    @NotNull
-    @Override
-    public List<Payload> encode(@NotNull List<Payload> payloads) {
-        //your encryption/compression logic
-    }
+The following example from the [Java encryption sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/encryptedpayloads/CryptCodec.java) shows how to implement encryption and decryption logic on your payloads in your `encode` and `decode` methods.
 
-    @NotNull
-    @Override
-    public List<Payload> decode(@NotNull List<Payload> payloads) {
-        //your decryption/decompression logic
+```java
+class YourCustomPayloadCodec implements PayloadCodec {
+  //...
+
+  // See the linked sample for details on the methods called here.
+  @NotNull
+  @Override
+  public List<Payload> encode(@NotNull List<Payload> payloads) {
+    return payloads.stream().map(this::encodePayload).collect(Collectors.toList());
+  }
+
+  @NotNull
+  @Override
+  public List<Payload> decode(@NotNull List<Payload> payloads) {
+    return payloads.stream().map(this::decodePayload).collect(Collectors.toList());
+  }
+
+  private Payload encodePayload(Payload payload) {
+    String keyId = getKeyId();
+    SecretKey key = getKey(keyId);
+
+    byte[] encryptedData;
+    try {
+      encryptedData = encrypt(payload.toByteArray(), key);
+    } catch (Throwable e) {
+      throw new DataConverterException(e);
     }
-    //...
+    // Apply metadata to the encoded payload that you can verify in your decode method before decoding.
+    // See the sample for details on the metadata values set.
+    return Payload.newBuilder()
+        .putMetadata(EncodingKeys.METADATA_ENCODING_KEY, METADATA_ENCODING)
+        .putMetadata(METADATA_ENCRYPTION_CIPHER_KEY, METADATA_ENCRYPTION_CIPHER)
+        .putMetadata(METADATA_ENCRYPTION_KEY_ID_KEY, ByteString.copyFromUtf8(keyId))
+        .setData(ByteString.copyFrom(encryptedData))
+        .build();
+  }
+
+  private Payload decodePayload(Payload payload) {
+    // Verify the incoming encoded payload metadata before applying decryption.
+    if (METADATA_ENCODING.equals(
+        payload.getMetadataOrDefault(EncodingKeys.METADATA_ENCODING_KEY, null))) {
+      String keyId;
+      try {
+        keyId = payload.getMetadataOrThrow(METADATA_ENCRYPTION_KEY_ID_KEY).toString(UTF_8);
+      } catch (Exception e) {
+        throw new PayloadCodecException(e);
+      }
+      SecretKey key = getKey(keyId);
+
+      byte[] plainData;
+      Payload decryptedPayload;
+
+      try {
+        plainData = decrypt(payload.getData().toByteArray(), key);
+        decryptedPayload = Payload.parseFrom(plainData);
+        return decryptedPayload;
+      } catch (Throwable e) {
+        throw new PayloadCodecException(e);
+      }
+    } else {
+      return payload;
+    }
+  }
+  //...
 }
 ```
-
-You can also create a remote HTTP server (called Codec Server) to run the encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with WebUI and tctl to see decrypted data.
 
 **Set Data Converter to use custom Payload Codec**
 

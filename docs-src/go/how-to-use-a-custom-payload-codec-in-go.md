@@ -15,7 +15,7 @@ Create a custom [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk/converter
 The [`PayloadCodec`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#PayloadCodec) converts bytes to bytes.
 It must be used in an instance of [`CodecDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.21.1/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in the `PayloadCodec` to the converted payloads.
 
-The following example shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
+The following example from the [Data Converter sample](https://github.com/temporalio/samples-go/blob/main/codec-server/data_converter.go) shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 
 ```go
 // Create an instance of Data Converter with your codec.
@@ -23,14 +23,14 @@ var DataConverter = converter.NewCodecDataConverter(
 	converter.GetDefaultDataConverter(),
 	NewPayloadCodec(),
 )
-
+//...
 // Create an instance of PaylodCodec.
 func NewPayloadCodec() converter.PayloadCodec {
 	return &Codec{}
 }
 ```
 
-Implement your encryption and compression logic in the `Encode` function, and the decryption and decompression logic in the `Decode` function in your custom `PayloadCodec`, as shown in the following example.
+Implement your encryption/compression logic in the `Encode` function, and the decryption/decompression logic in the `Decode` function in your custom `PayloadCodec`, as shown in the following example.
 
 ```go
 // Codec implements converter.PayloadEncoder for snappy compression.
@@ -38,13 +38,46 @@ type Codec struct{}
 
 // Encode implements converter.PayloadCodec.Encode.
 func (Codec) Encode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
-	//your encryption/compression logic
+	result := make([]*commonpb.Payload, len(payloads))
+	for i, p := range payloads {
+		// Marshal proto
+		origBytes, err := p.Marshal()
+		if err != nil {
+			return payloads, err
+		}
+		// Compress
+		b := snappy.Encode(nil, origBytes)
+		result[i] = &commonpb.Payload{
+			Metadata: map[string][]byte{converter.MetadataEncoding: []byte("binary/snappy")},
+			Data:     b,
+		}
+	}
+
 	return result, nil
 }
 
 // Decode implements converter.PayloadCodec.Decode.
 func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
-	//your decryption/decompression logic
+	result := make([]*commonpb.Payload, len(payloads))
+	for i, p := range payloads {
+		// Decode only if it's our encoding
+		if string(p.Metadata[converter.MetadataEncoding]) != "binary/snappy" {
+			result[i] = p
+			continue
+		}
+		// Uncompress
+		b, err := snappy.Decode(nil, p.Data)
+		if err != nil {
+			return payloads, err
+		}
+		// Unmarshal proto
+		result[i] = &commonpb.Payload{}
+		err = result[i].Unmarshal(b)
+		if err != nil {
+			return payloads, err
+		}
+	}
+
 	return result, nil
 }
 ```
@@ -53,21 +86,19 @@ See [Codec Server](/concepts/what-is-a-codec-server) for remote data encoding/de
 
 **Set Data Converter to use custom Payload Codec**
 
-Set your custom `PaylaodCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
+Set your custom `PayloadCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
 
-The following example shows how to set your custom Data Converter from a package called `codecserver`.
+The following example shows how to set your custom Data Converter from a package called `mycodecpackage`.
 
 ```go
 //...
 c, err := client.Dial(client.Options{
-		// Set DataConverter here to ensure that workflow inputs and results are
+		// Set DataConverter here to ensure that Workflow inputs and results are
 		// encoded as required.
-		DataConverter: codecserver.DataConverter,
+		DataConverter: mycodecpackage.DataConverter,
 	})
 //...
 ```
-
-You can also create a remote HTTP server (called a codec server) to run encryption and decryption through the custom `PayloadCodec`, and expose endpoints that you can use with Web UI and tctl to see decrypted data.
 
 See the following samples:
 

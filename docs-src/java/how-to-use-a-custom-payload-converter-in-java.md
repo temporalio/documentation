@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with the [`DefaultDataConverter].
+Create a custom implementation of a [`PayloadConverter`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with the `DefaultDataConverter`.
 
 The `PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
 You can create a custom implementation of the `PayloadConverter` for custom formats, as shown in the following example:

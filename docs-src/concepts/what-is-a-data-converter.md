@@ -28,3 +28,10 @@ The main pieces of data that run through the Data Converter are arguments and re
   - Decodes and encodes Activity arguments and return values.
 
 Each piece of data (like a single argument or return value) is encoded as a [Payload](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) Protobuf message, which consists of binary data and key-value metadata.
+
+See API reference for details:
+
+- [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#DataConverter)
+- [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html)
+- [Python](https://python.temporal.io/temporalio.converter.DataConverter.html)
+- [TypeScript](https://typescript.temporal.io/api/interfaces/common.DataConverter)

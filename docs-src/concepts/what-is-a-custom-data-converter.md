@@ -2,14 +2,14 @@
 id: what-is-a-custom-data-converter
 title: What is a custom Data Converter?
 sidebar_label: Custom Data Converter
-description: A custom Data Converter uses custom logic for payload conversion or payload encryption to customize the default Data Converter.
+description: A custom Data Converter extends the default Data Converter with custom logic for payload conversion or payload encryption.
 
 tags:
   - term
   - explanation
 ---
 
-A custom Data Converter uses custom logic for payload conversion or payload encryption to customize the default [Data Converter](/concepts/what-is-a-data-converter).
+A custom Data Converter extends the default [Data Converter](/concepts/what-is-a-data-converter) with custom logic for payload conversion or payload encoding.
 
 You can create a custom Data Converter to alter formats (for example, using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
 
@@ -20,10 +20,12 @@ You can customize the default Data Converter behavior in two ways:
 - A Payload Codec encodes and decodes data, with bytes-to-bytes conversion.
   To use custom encryption and/or compression logic, create a custom `PayloadCodec` with your encryption/compression logic in the `encode` function, and your decryption/decompression logic in your `decode` function.
 
-Custom Data Converters are not applied to all data:
+Custom Data Converters are not applied to all data; for example, Search Attributes are simple values and persisted unencoded so they can be indexed for searching.
 
+<!--
+Commenting this bit for reference later; the Headers detail might change.
 - Search Attributes are simple values and are persisted unencoded so they can be indexed for searching.
-- Headers are not encoded by the SDK. (The one exception—when implemented—will be the SDK [running OTel baggage through custom codecs](https://github.com/temporalio/sdk-typescript/issues/514).)
+- Headers are not encoded by the SDK. (The one exception—when implemented—will be the SDK [running OTel baggage through custom codecs](https://github.com/temporalio/sdk-typescript/issues/514).) -->
 
 A customized Data Converter can have the following three components:
 

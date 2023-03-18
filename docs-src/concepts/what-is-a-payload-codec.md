@@ -16,17 +16,23 @@ The Payload Codec is an optional step that happens between the wire and the Payl
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
-A Payload Codec encodes and decodes data.
-When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs. The codecs are applied last to first, which means that the earlier encoders wrap the later ones.
-
+When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs convert bytes to bytes.
 When deserializing from Payloads, codecs are applied first to last to reverse the effect, followed by the Payload Converter.
 
-Use a custom Payload Codec to transform your payloads, such as by implementing compression and/or encryption.
+See the API reference for details.
+
+- [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec)
+- [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/PayloadCodec.html)
+- [Python](https://python.temporal.io/temporalio.converter.PayloadCodec.html)
+- [TypeScript](https://typescript.temporal.io/api/interfaces/common.PayloadCodec)
+
+Use a custom Payload Codec to transform your payloads, for example implementing compression and/or encryption on your Workflow Execution data.
 
 #### Encryption
 
 Using end-to-end encryption in your custom Data Converter ensures that sensitive application data is secure when handled by the Temporal Server.
-You can apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
+
+Apply your encryption logic in a custom Payload Codec and use it locally to encrypt data.
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data.
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
@@ -36,5 +42,5 @@ The following samples use encryption (AES GCM with 256-bit key) in a custom Data
 
 - [Go sample](https://github.com/temporalio/samples-go/tree/main/encryption)
 - [Java sample](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
-- [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
+- [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)

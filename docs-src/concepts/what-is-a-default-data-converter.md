@@ -9,8 +9,8 @@ tags:
 ---
 
 Each Temporal SDK includes and uses a default Data Converter.
-The default Data Converter converts objects to bytes using a series of Payload Converters.
-The default converter supports binary, Protobufs, and JSON and encodes values in the following order:
+The default Data Converter converts objects to bytes using a series of Payload Converters and supports binary, Protobufs, and JSON formats.
+It encodes values in the following order:
 
 - Null
 - Byte array
@@ -23,6 +23,4 @@ For example:
 
 - If a value is an instance of a Protobuf message, it is encoded with [proto3 JSON](https://developers.google.com/protocol-buffers/docs/proto3#json).
 - If a value isn't null, binary, or a Protobuf, it is encoded as JSON.
-  If any part of it is not serializable as JSON (for example, a Date—see JSON data types), an error is thrown.
-
-The default converter also supports decoding binary Protobufs.
+  If any part of it is not serializable as JSON <!--(for example, a Date—see JSON data types)--> an error is thrown.
