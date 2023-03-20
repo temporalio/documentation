@@ -11,15 +11,15 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+> ⚠️ Temporal CLI's API is still subject to change. ⚠️
+
 This documentation reflects the release of the [single-binary Temporal CLI](https://github.com/temporalio/cli).
 This tool was formerly known as `tctl next`.
 
-The Temporal CLI is a command-line tool that you can use to interact with a Temporal Cluster.
-It can perform <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> operations (such as register, update, and describe) and <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> operations (such as start
-Workflow, show Workflow History, and Signal Workflow).
+---
 
-<!-- - [How to install cli]()
-- [Environment variables for tctl](/tctl-next/environment-variables) -->
+The Temporal CLI is a command-line tool that serves as a distribution of the <a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> and <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>.
+The tool runs as a single process with zero runtime dependencies, and supports persistence to disk and in-memory mode through SQLite.
 
 ### Available commands
 
@@ -32,18 +32,6 @@ Workflow, show Workflow History, and Signal Workflow).
 - [temporal task-queue](/cli/task-queue/)
 - [temporal workflow](/cli/workflow/)
 
-## Install CLI
-
-# Temporal CLI
-
-[![Go Reference](https://pkg.go.dev/badge/github.com/temporalio/cli.svg)](https://pkg.go.dev/github.com/temporalio/cli)
-[![ci](https://github.com/temporalio/cli/actions/workflows/ci.yml/badge.svg)](https://github.com/temporalio/cli/actions/workflows/ci.yml)
-
-> ⚠️ Temporal CLI's API is still subject to change. ⚠️
-
-The Temporal CLI is a tool for interacting with Temporal from the command line.
-Temporal CLI functions as a distribution of the Temporal Server and Web UI that runs as a single process with zero runtime dependencies.
-The tool supports persistence to disk and in-memory mode through SQLite.
 
 ## Installation
 
@@ -262,5 +250,8 @@ go test ./...
 
 - When running the executables from the Releases page in macOS you will want to allowlist `temporal` binary in `Security & Privacy` settings:
 
+
+<!-- 
+- [Environment variables for tctl](/tctl-next/environment-variables) -->
 
 
