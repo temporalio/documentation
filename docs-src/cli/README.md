@@ -189,4 +189,3 @@ Enable completion for Temporal by adding the following code to your bash file:
 echo 'source <(temporal completion bash)' >> ~/.bashrc
 source ~/.bashrc
 ```
-
