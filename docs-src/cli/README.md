@@ -163,12 +163,7 @@ apk add bash-completion
 source /etc/profile.d/bash_completion.sh
 ```
 
-Finally, enable completion for Temporal by adding the following code to your bash file:
-
-```
-echo 'source <(temporal completion bash)' >>~/.bashrc
-source ~/.bashrc
-```
+Finally, enable completion for Temporal.
 
 #### macOS installation
 
@@ -183,9 +178,4 @@ Add the provided code snippet to your `~/.bashrc` file:
 
 Verify that `bash-completion` is installed by running `type _init_completion`.
 
-Enable completion for Temporal by adding the following code to your bash file:
-
-```
-echo 'source <(temporal completion bash)' >> ~/.bashrc
-source ~/.bashrc
-```
+Finally, enable completion for Temporal.
