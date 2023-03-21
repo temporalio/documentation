@@ -184,11 +184,6 @@ Install the software with the steps provided [here](https://github.com/scop/bash
 
 #### Linux installation
 
-Use any of the following package managers to install `bash-completion`:
-`apt install bash-completion`
-`pacman -S bash-completion`
-`yum install bash-completion`
-
 Verify that `bash-completion` is installed by running `type _init_completion`.
 
 To install the software on Alpine Linux, run:
