@@ -7,11 +7,6 @@ tags:
     - cli
 ---
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/temporalio/cli.svg)](https://pkg.go.dev/github.com/temporalio/cli)
-[![ci](https://github.com/temporalio/cli/actions/workflows/ci.yml/badge.svg)](https://github.com/temporalio/cli/actions/workflows/ci.yml)
-
-> ⚠️ Temporal CLI's API is still subject to change. ⚠️
-
 The Temporal CLI is a tool for interacting with Temporal from the command line.
 Temporal CLI functions as a distribution of the Temporal Server and Web UI that runs as a single process with zero runtime dependencies.
 The tool supports persistence to disk and in-memory mode through SQLite.
@@ -72,12 +67,6 @@ Use the help flag to see a full list of CLI options:
 temporal server start-dev --help
 ```
 
-Configure the environment with `env` commands:
-
-```bash
-temporal env set [environment options]
-```
-
 ### Namespace registration
 
 Namespaces are pre-registered at startup so they're available to use right away.
@@ -111,20 +100,16 @@ By default, the Temporal UI is started with Temporal CLI. The UI can be disabled
 temporal server start-dev --headless
 ```
 
-To build without static UI assets, use the `headless` build tag when running `go build`.
-
-<!--TODO: add go example -->
-
 ### Dynamic configuration
 
 Advanced configuration of the Temporal CLI requires the use of a dynamic configuration file.
 This file is created outside of the Temporal CLI; it is usually located with the service's config files.
 
 Dynamic configuration values can also be set via `--dynamic-config-value KEY=JSON_VALUE`.
-For example, to disable the search attribute cache, run:
+For example, to enable the search attribute cache, run:
 
 ```bash
-temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=true
+temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
 ```
 
 This setting makes created search attributes immediately available for use.
@@ -205,30 +190,3 @@ echo 'source <(temporal completion bash)' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## Development
-
-The Temporal CLI can be compiled and executed from your system.
-
-To compile the source code into an executable, run:
-
-```bash
-go build -o dist/temporal ./cmd/temporal
-```
-
-To compile the documentation, run:
-
-```bash
-go build -o dist/temporal-docgen ./cmd/temporal-docgen
-```
-
-To run all tests:
-
-```bash
-go test ./...
-```
-
-## Known Issues
-
-- When consuming Temporal as a library in go mod, you may want to replace grpc-gateway with a fork to address URL escaping issue in UI. See <https://github.com/temporalio/temporalite/pull/118>
-
-- When running the executables from the Releases page in macOS you will want to allowlist `temporal` binary in `Security & Privacy` settings:
