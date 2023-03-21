@@ -32,7 +32,6 @@ The tool runs as a single process with zero runtime dependencies, and supports p
 - [temporal task-queue](/cli/task-queue/)
 - [temporal workflow](/cli/workflow/)
 
-
 ## Installation
 
 Temporal CLI can be installed through several different methods. While most of them can be used across all operating systems, please note that Homebrew is macOS-exclusive.
@@ -94,6 +93,24 @@ Configure the environment with `env` commands:
 ```bash
 temporal env set [environment options]
 ```
+
+### Environmental variables
+
+The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
+Use the provided table as a reference for the Temporal CLI environmental variables.
+
+| Variable                                     | Definition                                                                        | Client Option                   |
+| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
+| `TEMPORAL_CLI_ADDRESS`                       | The host and port (formatted as host:port) for the Temporal Frontend Service.     | --address                       |
+| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header on requests to the Codec Server.                    | --codec-auth                    |
+| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for a remote Codec Server.                                               | --codec-endpoint                |
+| `TEMPORAL_CONTEXT_TIMEOUT`                   | An optional timeout for the context of an RPC call (in seconds). Default value: 5 | --context-timeout               |
+| `TEMPORAL_CLI_NAMESPACE`                     | Identifies a Namespace in the Temporal Workflow. Default value: "default".        | --namespace                     |
+| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                                    | --tls-ca-path                   |
+| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                         | --tls-cert-path                 |
+| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification if already enabled. Default value: false.     | --tls-disable-host-verification |
+| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                                  | --tls-key-path                  |
+| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Provides an override for the target TLS server name.                              | --tls-server-name               |
 
 ### Namespace registration
 
@@ -250,8 +267,6 @@ go test ./...
 
 - When running the executables from the Releases page in macOS you will want to allowlist `temporal` binary in `Security & Privacy` settings:
 
-
-<!-- 
+<!--
 - [Environment variables for tctl](/tctl-next/environment-variables) -->
-
 
