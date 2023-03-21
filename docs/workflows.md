@@ -422,9 +422,9 @@ A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to
 It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution.
 An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow Execution already started` error.
 
-A Workflow Id Reuse Policy has the possible values:
+The Workflow Id Reuse Policy can have one of the following values:
 
-- **Allow Duplicate** The Workflow Execution is allowed to exist regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
+- **Allow Duplicate**: The Workflow Execution is allowed to exist regardless of the Closed status of a previous Workflow Execution with the same Workflow Id.
   **This is the default policy, if one is not specified.**
   Use this when it is OK to have a Workflow Execution with the same Workflow Id as a previous, but now Closed, Workflow Execution.
 - **Allow Duplicate Failed Only**: The Workflow Execution is allowed to exist only if a previous Workflow Execution with the same Workflow Id does not have a Completed status.
