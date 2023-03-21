@@ -8,8 +8,6 @@ tags:
   - cli
 ---
 
-> ⚠️ Temporal CLI's API is still subject to change. ⚠️
-
 This documentation reflects the release of the [single-binary Temporal CLI](https://github.com/temporalio/cli).
 This tool was formerly known as `tctl next`.
 
@@ -32,6 +30,8 @@ The tool runs as a single process with zero runtime dependencies, and supports p
 ## Installation
 
 Temporal CLI can be installed through several different methods. While most of them can be used across all operating systems, please note that Homebrew is macOS-exclusive.
+
+For more information, see our guide to [running a Development Cluster](/clusters/how-to-install-temporal-cli).
 
 ### cURL
 
@@ -85,12 +85,6 @@ Use the help flag to see a full list of CLI options:
 temporal server start-dev --help
 ```
 
-Configure the environment with `env` commands:
-
-```bash
-temporal env set [environment options]
-```
-
 ### Environmental variables
 
 The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
@@ -142,20 +136,16 @@ By default, the Temporal UI is started with Temporal CLI. The UI can be disabled
 temporal server start-dev --headless
 ```
 
-To build without static UI assets, use the `headless` build tag when running `go build`.
-
-<!--TODO: add go example -->
-
 ### Dynamic configuration
 
 Advanced configuration of the Temporal CLI requires the use of a dynamic configuration file.
 This file is created outside of the Temporal CLI; it is usually located with the service's config files.
 
 Dynamic configuration values can also be set via `--dynamic-config-value KEY=JSON_VALUE`.
-For example, to disable the search attribute cache, run:
+For example, to enable the search attribute cache, run:
 
 ```bash
-temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=true
+temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
 ```
 
 This setting makes created search attributes immediately available for use.
@@ -209,12 +199,7 @@ apk add bash-completion
 source /etc/profile.d/bash_completion.sh
 ```
 
-Finally, enable completion for Temporal by adding the following code to your bash file:
-
-```
-echo 'source <(temporal completion bash)' >>~/.bashrc
-source ~/.bashrc
-```
+Finally, [enable completion for Temporal in your script](#auto-completion).
 
 #### macOS installation
 
@@ -229,40 +214,4 @@ Add the provided code snippet to your `~/.bashrc` file:
 
 Verify that `bash-completion` is installed by running `type _init_completion`.
 
-Enable completion for Temporal by adding the following code to your bash file:
-
-```
-echo 'source <(temporal completion bash)' >> ~/.bashrc
-source ~/.bashrc
-```
-
-## Development
-
-The Temporal CLI can be compiled and executed from your system.
-
-To compile the source code into an executable, run:
-
-```bash
-go build -o dist/temporal ./cmd/temporal
-```
-
-To compile the documentation, run:
-
-```bash
-go build -o dist/temporal-docgen ./cmd/temporal-docgen
-```
-
-To run all tests:
-
-```bash
-go test ./...
-```
-
-## Known Issues
-
-- When consuming Temporal as a library in go mod, you may want to replace grpc-gateway with a fork to address URL escaping issue in UI. See <https://github.com/temporalio/temporalite/pull/118>
-
-- When running the executables from the Releases page in macOS you will want to allowlist `temporal` binary in `Security & Privacy` settings:
-
-<!--
-- [Environment variables for tctl](/tctl-next/environment-variables) -->
+Finally, [enable completion for Temporal in your script](#auto-completion).
