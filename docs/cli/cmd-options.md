@@ -314,7 +314,8 @@ Print raw data as json (prefer this over -o json for scripting).
 
 ## reapply-type
 
-Event types to reapply after the reset point: Signal, None, . (default: All)
+Event types to reapply after the reset point: All, Signal, None.
+Default is All.
 
 ## reason
 

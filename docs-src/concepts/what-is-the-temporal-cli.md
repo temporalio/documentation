@@ -153,4 +153,3 @@ Bash auto-completion relies on `bash-completion`.
 Install the software with the steps provided [here](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
 
 To view different bash versions, go [here](https://repology.org/project/bash-completion/versions).
-
