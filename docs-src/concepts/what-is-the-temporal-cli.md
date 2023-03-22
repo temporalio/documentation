@@ -94,7 +94,7 @@ Advanced configuration of the Temporal CLI requires the use of a dynamic configu
 This file is created outside the Temporal CLI; it is usually located with the service's config files.
 
 Dynamic configuration values can also be set via `--dynamic-config-value KEY=JSON_VALUE`.
-For example, to enable the search attribute cache (disabled by default), run:
+For example, to enable the Search Attribute cache (disabled by default), run the following:
 
 ```bash
 temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
