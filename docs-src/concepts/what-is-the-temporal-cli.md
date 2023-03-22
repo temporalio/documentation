@@ -57,7 +57,7 @@ temporal server start-dev --help
 
 ### Namespace registration
 
-Namespaces are pre-registered at startup so they're available to use right away.
+Namespaces are pre-registered at startup so they're available to use immediately.
 To customize the pre-registered namespaces, start the server with:
 
 ```bash
