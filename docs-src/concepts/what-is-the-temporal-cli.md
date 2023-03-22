@@ -100,7 +100,7 @@ For example, to enable the Search Attribute cache (disabled by default), run the
 temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
 ```
 
-This setting makes created search attributes immediately available for use.
+This setting makes created Search Attributes immediately available for use.
 
 ## Environmental variables
 
