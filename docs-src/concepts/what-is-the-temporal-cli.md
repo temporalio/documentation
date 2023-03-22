@@ -58,7 +58,7 @@ To install the Temporal CLI from CDN:
 3. Extract the downloaded archive.
 4. Add the `temporal` binary to your system PATH.
 
-## Starting the Temporal Server
+## Starting a local dev Cluster
 
 Run the command provided below to start the Temporal Server.
 This will automatically start the Web UI.
