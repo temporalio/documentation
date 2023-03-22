@@ -22,13 +22,13 @@ tctl --codec-endpoint "http://localhost:8888" --namespace "yourNamespace" workfl
 
 #### Web UI
 
-You can set the codec endpoints either in the Web UI or in the Web UI server configuration file before starting the Web UI server.
+You can set the codec endpoints either in the Web UI or in the [UI server](https://github.com/temporalio/ui-server) configuration file before starting the UI server.
 
 **In the Web UI**
 
 ![Data Encoder icon](/img/docs/data-encoder-button.png)
 
-Select the icon with an up-down arrow on the bottom left of the screen.
+Select the **Data Encoder** icon with an up-down arrow on the bottom left of the screen.
 This action displays the codec endpoint dialog.
 
 Enter the URL and port number for your codec endpoint.
@@ -43,4 +43,4 @@ codec:
     endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
 ```
 
-Start the Web UI server to use this endpoint for decoding data in Workflow Executions in the specified Namespace.
+Start the UI server to use this endpoint for decoding data in Workflow Executions in the specified Namespace.

@@ -13,8 +13,8 @@ It is used by the Temporal SDK framework to serialize/deserialize data such as i
 
 ![Data Converter encodes and decodes data](/diagrams/default-data-converter.svg)
 
-The Data Converter encodes data from your application before it is sent to the Temporal Cluster in the Client call.
-When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the data for processing within your application.
+The Data Converter encodes data from your application to a [Payload](/concepts/what-is-a-payload) before it is sent to the Temporal Cluster in the Client call.
+When the Temporal Server sends the encoded data back to the Worker, the Data Converter decodes the for processing within your application.
 This technique ensures that all your sensitive data exists in its original format only on hosts that you control.
 
 The main pieces of data that run through the Data Converter are arguments and return values:
@@ -27,7 +27,7 @@ The main pieces of data that run through the Data Converter are arguments and re
   - Encodes Workflow and Query return values.
   - Decodes and encodes Activity arguments and return values.
 
-Each piece of data (like a single argument or return value) is encoded as a [Payload](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) Protobuf message, which consists of binary data and key-value metadata.
+Each piece of data (like a single argument or return value) is encoded as a [Payload](/concepts/what-is-a-payload)) Protobuf message, which consists of binary data and key-value metadata.
 
 See API reference for details:
 

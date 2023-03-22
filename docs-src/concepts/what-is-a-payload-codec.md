@@ -8,15 +8,15 @@ tags:
   - explanation
 ---
 
-A Payload Codec transforms an array of Payloads (for example, a list of Workflow arguments) into another array of Payloads.
+A Payload Codec transforms an array of [Payloads](/concepts/what-is-a-payload) (for example, a list of Workflow arguments) into another array of Payloads.
 
-The Payload Codec is an optional step that happens between the wire and the Payload Converter:
+The Payload Codec is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
 ```bash
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
-When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs convert bytes to bytes.
+When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs that convert bytes to bytes.
 When deserializing from Payloads, codecs are applied first to last to reverse the effect, followed by the Payload Converter.
 
 See the API reference for details.
@@ -26,7 +26,7 @@ See the API reference for details.
 - [Python](https://python.temporal.io/temporalio.converter.PayloadCodec.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.PayloadCodec)
 
-Use a custom Payload Codec to transform your payloads, for example implementing compression and/or encryption on your Workflow Execution data.
+Use a custom Payload Codec to transform your Payloads, for example implementing compression and/or encryption on your Workflow Execution data.
 
 #### Encryption
 

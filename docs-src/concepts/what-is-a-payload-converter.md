@@ -15,16 +15,18 @@ When your Workflow Execution starts, this data input is deserialized and passed 
 
 See the API reference for more information.
 
-- [Go](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#PayloadConverter)
+- [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadConverter)
 - [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/PayloadConverter.html)
 - [Python](https://python.temporal.io/temporalio.converter.PayloadConverter.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.PayloadConverter)
 
+See [default Data Converter](/dataconversion#default-data-converter) for supported values.
+
 #### Custom payload conversion
 
-If you use custom objects or types that are not supported by the Payload Converters provided in the SDKs, you can create a custom Payload Converter and use it with a Data Converter to run the specific conversions.
+If you use custom objects or types that are not supported by the Payload Converters provided in the SDKs, you can create a custom Payload Converter and configure the Data Converter with it to run the specific conversions.
 
-You can set multiple custom Payload Converters to run your conversions.
-However, the order in which encoding Payload Converters are applied is important because during serialization, each encoding Payload Converter is tried in sequence until one properly serializes the value.
+You can set multiple encoding Payload Converters to run your conversions.
+When the Data Converter receives a value for conversion, it passes through each `PayloadConverter` in sequence until the converter that handles the data type does the conversion.
 
 See [Custom Payload Conversion](/app-dev-context/custom-payload-conversion) for details on how to use the Payload Converter for custom data types.

@@ -9,18 +9,18 @@ tags:
   - explanation
 ---
 
-A custom Data Converter extends the default [Data Converter](/concepts/what-is-a-data-converter) with custom logic for payload conversion or payload encoding.
+A custom Data Converter extends the default [Data Converter](/concepts/what-is-a-data-converter) with custom logic for [Payload](/concepts/what-is-a-payload) conversion or encoding.
 
 You can create a custom Data Converter to alter formats (for example, using [MessagePack](https://msgpack.org/) instead of JSON) or add compression and encryption.
 
 You can customize the default Data Converter behavior in two ways:
 
 - A Payload Converter serializes data, converting objects to bytes and back.
-  To convert custom objects or data types to payloads and back, use a custom `PayloadConverter` and set it on a Data Converter.
-- A Payload Codec encodes and decodes data, with bytes-to-bytes conversion.
+  To convert custom objects or data types to [Payloads](/concepts/what-is-a-payload) and back, use a custom `PayloadConverter` and set it on a Data Converter.
+- A Payload Codec encodes and decodes [Payloads](/concepts/what-is-a-payload), with bytes-to-bytes conversion.
   To use custom encryption and/or compression logic, create a custom `PayloadCodec` with your encryption/compression logic in the `encode` function, and your decryption/decompression logic in your `decode` function.
 
-Custom Data Converters are not applied to all data; for example, Search Attributes are simple values and persisted unencoded so they can be indexed for searching.
+Custom Data Converters are not applied to all data; for example, [Search Attributes](/concepts/what-is-a-search-attribute) are simple values and persisted unencoded so they can be indexed for searching.
 
 <!--
 Commenting this bit for reference later; the Headers detail might change.

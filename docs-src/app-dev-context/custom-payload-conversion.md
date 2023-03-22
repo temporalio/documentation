@@ -7,13 +7,13 @@ tags:
   - guide-context
 ---
 
-Most SDKs provide a [`PayloadConverter`](/concepts/what-is-a-payload-converter) that can be customized to convert values in custom data types to bytes and back.
+Most SDKs provide a [`PayloadConverter`](/concepts/what-is-a-payload-converter) that can be customized to convert a custom data type to [Payload](/concepts/what-is-a-payload) and back.
 
-Creating a custom Payload Converter is optional.
-It's needed only if the default Data Converter does not support your custom values.
+Implementing custom Payload conversion is optional.
+It is needed only if the [default Data Converter](/concept/what-is-a-default-data-converter) does not support your custom values.
 
-Create your [custom `PayloadConverter`](/concepts/what-is-a-payload-converter#custom-payload-conversion) and set it on a `DataConverter` in your Client options.
+Create your [custom `PayloadConverter`](/concepts/what-is-a-payload-converter#custom-payload-conversion) and configure the `DataConverter` to use it in your Client options.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
-You can set multiple custom encoding Payload Converters to run your conversions.
-When converting from a value to a payload, only the first one that handles the data type of the value will apply.
+You can set multiple encoding Payload Converters to run your conversions.
+When the Data Converter receives a value for conversion, it passes through each `PayloadConverter` in sequence until the converter that handles the data type does the conversion.

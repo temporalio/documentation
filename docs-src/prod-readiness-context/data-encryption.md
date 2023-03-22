@@ -23,23 +23,21 @@ For example, if you have sensitive information passed in the following objects t
 
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-To encrypt your data, configure your custom encryption logic with [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
+By default, your data is serialized to a [Payload](/concepts/what-is-a-payload) by a [Data Converter](/concepts/what-is-a-data-converter). To encrypt your Payload, configure your custom encryption logic with [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
 
-A [`PayloadCodec`](/concepts/what-is-a-payload-codec) does byte-to-byte conversion to transform your serialized data (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
+A [`PayloadCodec`](/concepts/what-is-a-payload-codec) does byte-to-byte conversion to transform your [Payload](/concepts/what-is-a-payload) (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
 ```bash
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
-A `PayloadCodec` implementation is applied with a custom Data Converter in your Client options.
-
-You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted data locally.
-For details, see [Decoding payloads on the Web UI and tctl](/concepts/what-is-remote-data-encoding#decoding-payloads-on-the-web-ui-and-tctl).
+You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted Payload locally.
 
 However, if you plan to set up [remote data encoding](/concepts/what-is-remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
-In codec implementations, we recommend running the function (such as compression or encryption) on the entire input payload, and putting the result in the data field of a new payload with a different `encoding` metadata field.
-Using this technique ensures that the input payload's metadata is preserved, and when the encoded payload is sent to be decoded, you can verify the metadata field before applying the decryption.
+In codec implementations, we recommend running the function (such as compression or encryption) on the entire input [Payload](/concepts/what-is-a-payload), and putting the result in the data field of a new Payload with a different encoding metadata field.
+Using this technique ensures that the input Payload's metadata is preserved, and when the encoded Payload is sent to be decoded, you can verify the metadata field before applying the decryption.
+Note that if your Payload is not encoded, we recommend passing the unencoded data to the decode function instead of failing the conversion.
 
 Examples for implementing encryption:
 

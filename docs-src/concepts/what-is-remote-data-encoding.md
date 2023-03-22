@@ -8,7 +8,7 @@ tags:
   - explanation
 ---
 
-Remote data encoding is exposing your Payload Codec via HTTP to support remote encoding and decoding.
+Remote data encoding is exposing your Payload Codec via HTTP endpoints to support remote encoding and decoding.
 
 Running your encoding remotely allows you to use it with `tctl` to encode/decode data for several commands including `tctl workflow start` and with Temporal Web UI to encode and decode data in your Workflow Execution details view.
 
@@ -23,7 +23,7 @@ Before you use a remote data encoder to encode/decode your data, ensure that you
 
 You can perform some operations on your Workflow Execution using tctl and the Web UI, such as starting or sending a Signal to an active Workflow Execution using tctl or canceling a Workflow Execution from the Web UI, which might require inputs that contain sensitive data.
 
-To encode this data, specify your Codec Server endpoints with the tctl command and configure your Web UI to use the Codec Server endpoints.
+To encode this data, [specify your Codec Server endpoints](/dataconversion#setting-codec-server-endpoints) with the tctl command and configure your Web UI to use the Codec Server endpoints.
 
 #### Decoding data on the Web UI and tctl
 

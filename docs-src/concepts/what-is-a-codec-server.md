@@ -18,10 +18,10 @@ Using a custom Payload Codec in your Codec Server enables encoding and decoding 
 A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
 It implements two endpoints:
 
-- `POST /encode`
-- `POST /decode`
+- `/encode`
+- `/decode`
 
-Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of Payloads.
+Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of [Payloads](/concepts/what-is-a-payload).
 The endpoints run the Payloads through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codec) before returning them.
 
 Most SDKs provide example Codec Server implementation samples, listed here:
@@ -37,14 +37,16 @@ When using tctl or the Web UI to perform some operations on a Workflow Execution
 
 When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server.
 
-For example, the following objects are persisted in your encoded format in the Workflow Execution Event History:
+For example, the following objects are encoded in the Workflow Execution Event History:
 
 - Inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
 - [Signal](/concepts/what-is-a-signal) inputs
 - Results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
 - [Query](/concepts/what-is-a-query) results
 - [Memo](/concepts/what-is-a-memo)
-- [Application errors and failures](/kb/failures).
+- [Application errors and failures](/kb/failures)
+
+  Note that failures are not encoded by default; you must explicitly enable encoding on failures.
 
 Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely. For example, codecs that perform encryption may need to be secured to prevent decryption by untrusted callers.
 

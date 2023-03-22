@@ -10,9 +10,9 @@ tags:
 
 **Create a custom Payload Codec**
 
-Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html)) to set a custom Data Converter.
+Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/PayloadCodec.html) and use it in [`CodecDataConverter`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/CodecDataConverter.html) to set a custom Data Converter.
 
-The Payload Codec does byte-to-byte conversion and must be set with a Data Converter to do the conversion to bytes and values.
+The Payload Codec does byte-to-byte conversion and must be set with a Data Converter.
 
 Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
 
@@ -36,8 +36,8 @@ class YourCustomPayloadCodec implements PayloadCodec {
   }
 
   private Payload encodePayload(Payload payload) {
-    String keyId = getKeyId();
-    SecretKey key = getKey(keyId);
+    String keyId = getKeyId(); // Get a fixed key Id from the getKeyId method. See the sample for details.
+    SecretKey key = getKey(keyId); // Get an AES key defined in the getKey method. See sample for details.
 
     byte[] encryptedData;
     try {
@@ -65,7 +65,7 @@ class YourCustomPayloadCodec implements PayloadCodec {
       } catch (Exception e) {
         throw new PayloadCodecException(e);
       }
-      SecretKey key = getKey(keyId);
+      SecretKey key = getKey(keyId); // Gets the AES key defined in the getKey method which was used for the encryption. See sample for details.
 
       byte[] plainData;
       Payload decryptedPayload;
@@ -101,7 +101,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
               .setDataConverter(
                   new CodecDataConverter(
                       DefaultDataConverter.newDefaultInstance(),
-                      Collections.singletonList(new YourCustomPayloadCodec())))
+                      Collections.singletonList(new YourCustomPayloadCodec()))) // Sets the custom Payload Codec created in the previous example with an instance of the default Data Converter.
               .build());
 ```
 

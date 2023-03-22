@@ -8,7 +8,7 @@ tags:
   - developer-guide
 ---
 
-Use a [`CompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/converter#CompositeDataConverter) to apply custom type-specific `PayloadConverter` in a specified order.
+Use a [`CompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom type-specific `PayloadConverter` in a specified order.
 
 The `PayloadConverter` converts bytes to values and back.
 
@@ -25,10 +25,23 @@ The order in which the Payload Converters are applied is important because durin
 
 A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to payload.
 
-To set your custom `PayloadConverter`, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the `DataConverter` in the Client options.
+To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the `DataConverter` in the Client options.
 
-<!--```go
- //need an example here
+- To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
 
-       //...
-```-->
+  ```go
+  dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
+  ```
+
+- To add your custom type conversion to the default Data Converter, use the following.
+
+  ```go
+  dataConverter := converter.NewCompositeDataConverter(
+    converter.NewNilPayloadConverter(),
+    converter.NewByteSlicePayloadConverter(),
+    converter.NewProtoJSONPayloadConverter(),
+    converter.NewProtoPayloadConverter(),
+    YourCustomPayloadConverter(),
+    converter.NewJSONPayloadConverter(),
+  )
+  ```

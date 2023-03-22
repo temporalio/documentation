@@ -48,6 +48,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Multi-Cluster Replication](/clusters#multi-cluster-replication)
 - [Namespace](/namespaces#)
 - [Parent Close Policy](/workflows#parent-close-policy)
+- [Payload](/dataconversion#payload)
 - [Payload Codec](/dataconversion#payload-codec)
 - [Payload Converter](/dataconversion#payload-converter)
 - [Query](/workflows#query)
