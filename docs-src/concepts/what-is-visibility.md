@@ -19,4 +19,4 @@ For example, the following objects are persisted in the Workflow Execution Event
 - [Search Attributes](/concepts/what-is-a-search-attribute)
 - Results from your [Query](/concepts/what-is-a-query)
 - [Memo](/concepts/what-is-a-memo)
-- [Application errors and failures](/kb/failures).
+- [Application errors and failures](/kb/failures)

@@ -8,24 +8,24 @@ tags:
   - developer-guide
 ---
 
-Use a [`CompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom type-specific `PayloadConverter` in a specified order.
+Use [CompositeDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
 
 The `PayloadConverter` converts bytes to values and back.
 
-`NewCompositeDataConverter` creates new instance of `CompositeDataConverter` from an ordered list of type-specific `PayloadConverters`.
-The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by in the default Data Converter:
+`NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
+The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:
 
-- [`NewNilPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
-- [`NewByteSlicePayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
-- [`NewProtoJSONPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
-- [`NewProtoPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
-- [`NewJSONPayloadConverter()`](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
+- [NewNilPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
+- [NewByteSlicePayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
+- [NewProtoJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
+- [NewProtoPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
+- [NewJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
 
-The order in which the Payload Converters are applied is important because during serialization, the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil payload.
+The order in which the Payload Converters are applied is important because during serialization the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil payload.
 
-A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to payload.
+A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from a Payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to a Payload.
 
-To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the `DataConverter` in the Client options.
+To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the Data Converter in the Client options.
 
 - To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
 

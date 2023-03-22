@@ -2,7 +2,7 @@
     "file_name": "run.md",
     "id": "run",
     "file_dir": "/production-readiness",
-    "title": "Temporal production readiness guide - Running",
+    "title": "Temporal production readiness guide - Run",
     "sidebar_label": "Run",
     "description": "This guide provides a comprehensive overview of the path to a production-ready Temporal use case.",
     "use_description": true,

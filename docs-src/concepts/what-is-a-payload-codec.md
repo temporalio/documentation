@@ -19,14 +19,14 @@ User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Serv
 When serializing to Payloads, the Payload Converter is applied first to convert your objects to bytes, followed by codecs that convert bytes to bytes.
 When deserializing from Payloads, codecs are applied first to last to reverse the effect, followed by the Payload Converter.
 
-See the API reference for details.
+For details, see the API references.
 
 - [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec)
 - [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/PayloadCodec.html)
 - [Python](https://python.temporal.io/temporalio.converter.PayloadCodec.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.PayloadCodec)
 
-Use a custom Payload Codec to transform your Payloads, for example implementing compression and/or encryption on your Workflow Execution data.
+Use a custom Payload Codec to transform your Payloads; for example, implementing compression and/or encryption on your Workflow Execution data.
 
 #### Encryption
 
@@ -36,7 +36,7 @@ Apply your encryption logic in a custom Payload Codec and use it locally to encr
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data.
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-See [Data encryption](/production-readiness/develop#data-encryption) for details.
+For details, see [Data encryption](/production-readiness/develop#data-encryption).
 
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 

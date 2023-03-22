@@ -12,8 +12,8 @@ Most SDKs provide a [`PayloadConverter`](/concepts/what-is-a-payload-converter) 
 Implementing custom Payload conversion is optional.
 It is needed only if the [default Data Converter](/concepts/what-is-a-default-data-converter) does not support your custom values.
 
-Create your [custom `PayloadConverter`](/concepts/what-is-a-payload-converter#custom-payload-conversion) and configure the `DataConverter` to use it in your Client options.
+Create your [custom Payload Converter](/concepts/what-is-a-payload-converter#custom-payload-conversion) and configure the Data Converter to use it in your Client options.
 
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
-When the Data Converter receives a value for conversion, it passes through each `PayloadConverter` in sequence until the converter that handles the data type does the conversion.
+When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.

@@ -14,7 +14,7 @@ Create a custom implementation of [`PayloadCodec`](https://www.javadoc.io/doc/io
 
 The Payload Codec does byte-to-byte conversion and must be set with a Data Converter.
 
-Define custom encryption/compression logic in your `encode` method, and decryption/decompression logic in your `decode` method.
+Define custom encryption/compression logic in your `encode` method and decryption/decompression logic in your `decode` method.
 
 The following example from the [Java encryption sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/encryptedpayloads/CryptCodec.java) shows how to implement encryption and decryption logic on your payloads in your `encode` and `decode` methods.
 
@@ -89,7 +89,7 @@ class YourCustomPayloadCodec implements PayloadCodec {
 
 Use `CodecDataConverter` with an instance of a Data Converter and the custom `PayloadCodec` in the `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
 
-For example, to set a custom `PayloadCodec` implementation with the `DefaultDataConverter`, use the following code:
+For example, to set a custom `PayloadCodec` implementation with `DefaultDataConverter`, use the following code:
 
 ```java
 WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
@@ -105,7 +105,7 @@ WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
               .build());
 ```
 
-See the following samples for example implementations:
+For example implementations, see the following samples:
 
 - [Encrypted Payloads](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/encryptedpayloads)
 - [Remote Data Encoder and Codec Server](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)

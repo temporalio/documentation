@@ -11,7 +11,7 @@ tags:
 A Failure Converter converts error objects to proto Failures and back.
 The default Failure Converter copies error messages and stack traces as plain text.
 
-See the API reference for details.
+For details, see the API references.
 
 - [Go](https://pkg.go.dev/go.temporal.io/sdk/converter#FailureConverter)
 - [Java](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/failure/FailureConverter.html)

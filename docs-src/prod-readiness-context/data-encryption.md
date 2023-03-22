@@ -2,14 +2,14 @@
 id: data-encryption
 title: How to encrypt data using a custom Data Converter
 description: Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.
-sidebar_label: Data Encryption
+sidebar_label: Data encryption
 tags:
   - guide-context
   - production-readiness
 ---
 
 Temporal Server stores and persists the data handled in your Workflow Execution.
-Encrypting this data to ensures that any sensitive application data is secure when handled by the Temporal Server.
+Encrypting this data ensures that any sensitive application data is secure when handled by the Temporal Server.
 
 For example, if you have sensitive information passed in the following objects that are persisted in the Workflow Execution Event History, use encryption to secure it:
 
@@ -21,23 +21,25 @@ For example, if you have sensitive information passed in the following objects t
 - Results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
 - [Application errors and failures](/kb/failures).
 
-Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
+Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 
-By default, your data is serialized to a [Payload](/concepts/what-is-a-payload) by a [Data Converter](/concepts/what-is-a-data-converter). To encrypt your Payload, configure your custom encryption logic with [`PayloadCodec`](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
+By default, your data is serialized to a [Payload](/concepts/what-is-a-payload) by a [Data Converter](/concepts/what-is-a-data-converter).
+To encrypt your Payload, configure your custom encryption logic with a [Payload Codec](/concepts/what-is-a-payload-codec) and set it with a [custom Data Converter](/concepts/what-is-a-custom-data-converter).
 
-A [`PayloadCodec`](/concepts/what-is-a-payload-codec) does byte-to-byte conversion to transform your [Payload](/concepts/what-is-a-payload) (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
+A Payload Codec does byte-to-byte conversion to transform your Payload (for example, by implementing compression and/or encryption and decryption) and is an optional step that happens between the wire and the [Payload Converter](/concepts/what-is-a-payload-converter):
 
 ```bash
 User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Server
 ```
 
-You can run your `PayloadCodec` with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted Payload locally.
+You can run your Payload Codec with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted Payload locally.
 
 However, if you plan to set up [remote data encoding](/concepts/what-is-remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
-In codec implementations, we recommend running the function (such as compression or encryption) on the entire input [Payload](/concepts/what-is-a-payload), and putting the result in the data field of a new Payload with a different encoding metadata field.
-Using this technique ensures that the input Payload's metadata is preserved, and when the encoded Payload is sent to be decoded, you can verify the metadata field before applying the decryption.
-Note that if your Payload is not encoded, we recommend passing the unencoded data to the decode function instead of failing the conversion.
+In codec implementations, we recommend running the function (such as compression or encryption) on the entire input Payload and putting the result in the data field of a new Payload with a different encoding metadata field.
+Using this technique ensures that the input Payload's metadata is preserved.
+When the encoded Payload is sent to be decoded, you can verify the metadata field before applying the decryption.
+If your Payload is _not_ encoded, we recommend passing the unencoded data to the decode function instead of failing the conversion.
 
 Examples for implementing encryption:
 

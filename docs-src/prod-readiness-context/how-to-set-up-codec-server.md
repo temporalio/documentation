@@ -12,9 +12,9 @@ To use a [Codec Server](/concepts/what-is-a-codec-server), first run it with you
 
 #### tctl
 
-Once the Codec Server is started, provide the exposed endpoint to tctl using the `--codec_endpoint` global option.
+After the Codec Server is started, provide the exposed endpoint to tctl using the `--codec_endpoint` global option.
 
-For example, if you are running your Codec Server locally and expose port 8888 as your endpoint, you can run the following command to see the decoded output of "yourWorkflow" Workflow Execution in the Namespace "yourNamespace".
+For example, if you are running your Codec Server locally and expose port 8888 as your endpoint, you can run the following command to see the decoded output of the Workflow Execution "yourWorkflow" in the Namespace "yourNamespace".
 
 ```bash
 tctl --codec-endpoint "http://localhost:8888" --namespace "yourNamespace" workflow show --workflow-id "yourWorkflow"  --run-id "<yourRunId>" --output "table"
@@ -28,10 +28,8 @@ You can set the codec endpoints either in the Web UI or in the [UI server](https
 
 ![Data Encoder icon](/img/docs/data-encoder-button.png)
 
-Select the **Data Encoder** icon with an up-down arrow on the bottom left of the screen.
-This action displays the codec endpoint dialog.
-
-Enter the URL and port number for your codec endpoint.
+In the lower-left corner, select **Data Encoder**.
+In the codec endpoint dialog, enter the URL and port number for your codec endpoint.
 Refresh your Workflow Execution page to see encoded/decoded data.
 
 **In the Web UI server configuration file**

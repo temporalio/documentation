@@ -2,16 +2,16 @@
 id: what-is-a-codec-server
 title: What is a Codec Server?
 sidebar_label: Codec Server
-description: A Codec Server is an HTTP server that is configured to use your custom Payload Codec to run encoding and decoding on your data remotely through endpoints.
+description: A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 tags:
   - term
 ---
 
-A Codec Server is an HTTP server that is configured to use your custom [Payload Codec](/concepts/what-is-a-data-converter#payload-codec) to run encoding and decoding on your data remotely through endpoints.
+A Codec Server is an HTTP server that uses your custom [Payload Codec](/concepts/what-is-a-data-converter#payload-codec) to encode and decode your data remotely through endpoints.
 
 ![](/img/tctl-diagram-codec-server.svg)
 
-You can create a custom [Payload Codec](/prod-readiness-context/data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
+You can [create a custom Payload Codec](/prod-readiness-context/data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
 
 Using a custom Payload Codec in your Codec Server enables encoding and decoding data remotely through the endpoints that you expose on the Codec Server.
 
@@ -48,11 +48,12 @@ For example, the following objects are encoded in the Workflow Execution Event H
 
   Note that failures are not encoded by default; you must explicitly enable encoding on failures.
 
-Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely. For example, codecs that perform encryption may need to be secured to prevent decryption by untrusted callers.
+Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
+For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.
 
 [Configure your Codec Server endpoints](/prod-readiness-context/how-to-set-up-codec-server) to decode the encoded data to its original format when viewed from the Web UI or tctl.
 
-The following samples provide implementation examples for applying authentication on your Codec Server using the GO SDK.
+The following samples provide implementation examples for applying authentication on your Codec Server using the Go SDK.
 
 - [Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [GRPC proxy server](https://github.com/temporalio/samples-go/tree/main/grpc-proxy)

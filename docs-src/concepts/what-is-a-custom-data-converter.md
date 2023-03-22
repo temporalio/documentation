@@ -16,9 +16,9 @@ You can create a custom Data Converter to alter formats (for example, using [Mes
 You can customize the default Data Converter behavior in two ways:
 
 - A Payload Converter serializes data, converting objects to bytes and back.
-  To convert custom objects or data types to [Payloads](/concepts/what-is-a-payload) and back, use a custom `PayloadConverter` and set it on a Data Converter.
+  To convert custom objects or data types to [Payloads](/concepts/what-is-a-payload) and back, use a custom Payload Converter and set it on a Data Converter.
 - A Payload Codec encodes and decodes [Payloads](/concepts/what-is-a-payload), with bytes-to-bytes conversion.
-  To use custom encryption and/or compression logic, create a custom `PayloadCodec` with your encryption/compression logic in the `encode` function, and your decryption/decompression logic in your `decode` function.
+  To use custom encryption and/or compression logic, create a custom Payload Codec with your encryption/compression logic in the `encode` function and your decryption/decompression logic in the `decode` function.
 
 Custom Data Converters are not applied to all data; for example, [Search Attributes](/concepts/what-is-a-search-attribute) are simple values and persisted unencoded so they can be indexed for searching.
 
@@ -35,4 +35,4 @@ A customized Data Converter can have the following three components:
 
 For details on how to implement custom Payload Converters in your SDK, see [Custom payload conversion](/app-dev-context/custom-payload-conversion).
 
-For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/prod-readiness-context/data-encryption).
+For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-readiness/develop#data-encryption).
