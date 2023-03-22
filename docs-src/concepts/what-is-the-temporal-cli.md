@@ -40,7 +40,7 @@ temporal server start-dev
 At this point you should have a server running on `localhost:7233` and a web interface at <http://localhost:8233>.
 A default Namespace has also been created.
 
-Run individual commands to interact with the local Temporal server.
+Run individual commands to interact with the local Temporal Server.
 
 ```bash
 temporal operator namespace list
