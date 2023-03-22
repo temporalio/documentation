@@ -26,11 +26,11 @@ The default value is 5.
 
 ### --data_converter_plugin
 
-Specify the name of the executable for a headers provider plugin.
+Specify the name of the executable for a custom Data Converter plugin.
 
 ### --headers_provider_plugin
 
-Specify the name of the executable for a custom Data Converter plugin.
+Specify the name of the executable for a headers provider plugin.
 
 ### --help
 
