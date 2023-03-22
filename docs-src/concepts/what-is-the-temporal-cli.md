@@ -8,11 +8,6 @@ tags:
   - cli
 ---
 
-This documentation reflects the release of the [single-binary Temporal CLI](https://github.com/temporalio/cli).
-This tool was formerly known as `tctl next`.
-
----
-
 The Temporal CLI is a command-line tool that includes as a distribution of a Temporal Cluster ([Temporal Server](/concepts/what-is-the-temporal-server) , persistence (SQLite) and the [Temporal Web UI](/concepts/what-is-the-temporal-web-ui)).
 The tool runs as a single process with zero runtime dependencies, and supports persistence to disk and in-memory mode through SQLite.
 
@@ -33,32 +28,7 @@ Temporal CLI can be installed through several different methods. While most of t
 
 For more information, see our guide to [running a Development Cluster](/clusters/how-to-install-temporal-cli).
 
-### cURL
-
-Run the following command to install the latest version of Temporal CLI.
-
-`curl -sSf https://temporal.download/cli.sh | sh`
-
-### Homebrew
-
-Run the following command in a new terminal window to install CLI for macOS.
-
-`brew install temporal`
-
-### GitHub releases
-
-Download and extract the latest release from [GitHub releases](https://github.com/temporalio/cli/releases).
-
-### CDN
-
-To install the Temporal CLI from CDN:
-
-1. Select the binary with the corresponding platform and architecture of your system.
-2. Download the binary.
-3. Extract the downloaded archive.
-4. Add the `temporal` binary to your system PATH.
-
-## Starting a local dev Cluster
+## Starting the Temporal Server
 
 Run the command provided below to start the Temporal Server.
 This will automatically start the Web UI.
@@ -84,24 +54,6 @@ Use the help flag to see a full list of CLI options:
 ```bash
 temporal server start-dev --help
 ```
-
-### Environmental variables
-
-The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
-Use the provided table as a reference for the Temporal CLI environmental variables.
-
-| Variable                                     | Definition                                                                        | Client Option                   |
-| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
-| `TEMPORAL_CLI_ADDRESS`                       | The host and port (formatted as host:port) for the Temporal Frontend Service.     | --address                       |
-| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header on requests to the Codec Server.                    | --codec-auth                    |
-| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for a remote Codec Server.                                               | --codec-endpoint                |
-| `TEMPORAL_CONTEXT_TIMEOUT`                   | An optional timeout for the context of an RPC call (in seconds). Default value: 5 | --context-timeout               |
-| `TEMPORAL_CLI_NAMESPACE`                     | Identifies a Namespace in the Temporal Workflow. Default value: "default".        | --namespace                     |
-| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                                    | --tls-ca-path                   |
-| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                         | --tls-cert-path                 |
-| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification if already enabled. Default value: false.     | --tls-disable-host-verification |
-| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                                  | --tls-key-path                  |
-| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Provides an override for the target TLS server name.                              | --tls-server-name               |
 
 ### Namespace registration
 
@@ -150,6 +102,24 @@ temporal server start-dev --dynamic-config-value system.forceSearchAttributesCac
 
 This setting makes created search attributes immediately available for use.
 
+## Environmental variables
+
+The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
+Use the provided table as a reference for the Temporal CLI environmental variables.
+
+| Variable                                     | Definition                                                                        | Client Option                   |
+| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
+| `TEMPORAL_CLI_ADDRESS`                       | The host and port (formatted as host:port) for the Temporal Frontend Service.     | --address                       |
+| `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header on requests to the Codec Server.                    | --codec-auth                    |
+| `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for a remote Codec Server.                                               | --codec-endpoint                |
+| `TEMPORAL_CONTEXT_TIMEOUT`                   | An optional timeout for the context of an RPC call (in seconds). Default value: 5 | --context-timeout               |
+| `TEMPORAL_CLI_NAMESPACE`                     | Identifies a Namespace in the Temporal Workflow. Default value: "default".        | --namespace                     |
+| `TEMPORAL_CLI_TLS_CA`                        | Path to server CA certificate.                                                    | --tls-ca-path                   |
+| `TEMPORAL_CLI_TLS_CERT`                      | Path to x509 certificate.                                                         | --tls-cert-path                 |
+| `TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION` | Disables TLS host name verification if already enabled. Default value: false.     | --tls-disable-host-verification |
+| `TEMPORAL_CLI_TLS_KEY`                       | Path to private certificate key.                                                  | --tls-key-path                  |
+| `TEMPORAL_CLI_TLS_SERVER_NAME`               | Provides an override for the target TLS server name.                              | --tls-server-name               |
+
 ## Auto-completion
 
 The Temporal CLI has the capability to auto-complete commands.
@@ -182,31 +152,5 @@ Bash auto-completion relies on `bash-completion`.
 
 Install the software with the steps provided [here](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
 
-#### Linux installation
+To view different bash versions, go [here](https://repology.org/project/bash-completion/versions).
 
-Verify that `bash-completion` is installed by running `type _init_completion`.
-
-To install the software on Alpine Linux, run:
-
-```bash
-apk update
-apk add bash-completion
-source /etc/profile.d/bash_completion.sh
-```
-
-Finally, [enable completion for Temporal in your script](#auto-completion).
-
-#### macOS installation
-
-Install `bash-completion` through Homebrew:
-`brew install bash-completion@2`
-
-Add the provided code snippet to your `~/.bashrc` file:
-
-```sh
-[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-```
-
-Verify that `bash-completion` is installed by running `type _init_completion`.
-
-Finally, [enable completion for Temporal in your script](#auto-completion).
