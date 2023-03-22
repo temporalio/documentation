@@ -31,7 +31,7 @@ For more information, see our guide to [running a Development Cluster](/clusters
 ## Starting the Temporal Server
 
 Run the following command to start the Temporal Server.
-This will automatically start the Web UI.
+This command also starts the Web UI.
 
 ```bash
 temporal server start-dev
