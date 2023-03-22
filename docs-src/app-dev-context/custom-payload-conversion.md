@@ -10,7 +10,7 @@ tags:
 Most SDKs provide a [`PayloadConverter`](/concepts/what-is-a-payload-converter) that can be customized to convert a custom data type to [Payload](/concepts/what-is-a-payload) and back.
 
 Implementing custom Payload conversion is optional.
-It is needed only if the [default Data Converter](/concept/what-is-a-default-data-converter) does not support your custom values.
+It is needed only if the [default Data Converter](/concepts/what-is-a-default-data-converter) does not support your custom values.
 
 Create your [custom `PayloadConverter`](/concepts/what-is-a-payload-converter#custom-payload-conversion) and configure the `DataConverter` to use it in your Client options.
 
