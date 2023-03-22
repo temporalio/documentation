@@ -13,7 +13,7 @@ This tool was formerly known as `tctl next`.
 
 ---
 
-The Temporal CLI is a command-line tool that serves as a distribution of the [Temporal Server](/concepts/what-is-the-temporal-server) and [Temporal Web UI](/concepts/what-is-the-temporal-web-ui).
+The Temporal CLI is a command-line tool that includes as a distribution of a Temporal Cluster ([Temporal Server](/concepts/what-is-the-temporal-server) , persistence (SQLite) and the [Temporal Web UI](/concepts/what-is-the-temporal-web-ui)).
 The tool runs as a single process with zero runtime dependencies, and supports persistence to disk and in-memory mode through SQLite.
 
 ### Available commands
