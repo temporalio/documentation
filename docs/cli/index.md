@@ -11,8 +11,8 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Temporal CLI is a command-line tool that includes as a distribution of a Temporal Cluster (<a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a> , persistence (SQLite) and the <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>).
-The tool runs as a single process with zero runtime dependencies, and supports persistence to disk and in-memory mode through SQLite.
+The Temporal CLI is a command-line tool that includes a distribution of a Temporal Cluster (<a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a>, persistence (SQLite), and the <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>).
+The tool runs as a single process with zero runtime dependencies and supports persistence to disk and in-memory mode through SQLite.
 
 ### Available commands
 
@@ -33,8 +33,8 @@ For more information, see our guide to <a class="tdlp" href="/application-develo
 
 ## Starting the Temporal Server
 
-Run the command provided below to start the Temporal Server.
-This will automatically start the Web UI.
+Run the following command to start the Temporal Server.
+This command also starts the Web UI.
 
 ```bash
 temporal server start-dev
@@ -43,7 +43,7 @@ temporal server start-dev
 At this point you should have a server running on `localhost:7233` and a web interface at <http://localhost:8233>.
 A default Namespace has also been created.
 
-Run individual commands to interact with the local Temporal server.
+Run individual commands to interact with the local Temporal Server.
 
 ```bash
 temporal operator namespace list
@@ -60,8 +60,8 @@ temporal server start-dev --help
 
 ### Namespace registration
 
-Namespaces are pre-registered at startup so they're available to use right away.
-To customize the pre-registered namespaces, start the server with:
+Namespaces are pre-registered at startup so they're available to use immediately.
+To customize the pre-registered namespaces, start the server with the following:
 
 ```bash
 temporal server start-dev --namespace foo --namespace bar
@@ -94,21 +94,21 @@ temporal server start-dev --headless
 ### Dynamic configuration
 
 Advanced configuration of the Temporal CLI requires the use of a dynamic configuration file.
-This file is created outside of the Temporal CLI; it is usually located with the service's config files.
+This file is created outside the Temporal CLI; it is usually located with the service's config files.
 
 Dynamic configuration values can also be set via `--dynamic-config-value KEY=JSON_VALUE`.
-For example, to enable the search attribute cache (disabled by default), run:
+For example, to enable the Search Attribute cache (disabled by default), run the following:
 
 ```bash
 temporal server start-dev --dynamic-config-value system.forceSearchAttributesCacheRefreshOnRead=false
 ```
 
-This setting makes created search attributes immediately available for use.
+This setting makes created Search Attributes immediately available for use.
 
 ## Environmental variables
 
 The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
-Use the provided table as a reference for the Temporal CLI environmental variables.
+Use the following table as a reference for the Temporal CLI environmental variables.
 
 | Variable                                     | Definition                                                                        | Client Option                   |
 | -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
@@ -127,7 +127,7 @@ Use the provided table as a reference for the Temporal CLI environmental variabl
 
 The Temporal CLI has the capability to auto-complete commands.
 
-Running `temporal completion SHELL` will output the related completion SHELL code.
+Running `temporal completion SHELL` outputs the related completion SHELL code.
 
 ### zsh auto-completion
 
@@ -139,13 +139,13 @@ Add the following code snippet to your `~/.zshrc` file:
 source <(temporal completion zsh)
 ```
 
-If you're running auto-completion from the terminal, run the command below:
+If you're running auto-completion from the terminal, run the following command:
 
 ```sh
 echo 'source <(temporal completion zsh)' >> ~/.zshrc
 ```
 
-After setting the variable, run:
+After setting the variable, run the following command:
 
 `source ~/.zshrc`.
 
@@ -153,8 +153,7 @@ After setting the variable, run:
 
 Bash auto-completion relies on `bash-completion`.
 
-Install the software with the steps provided [here](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
+Install the software with the steps provided in the [bash-completion README](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
 
-To view different bash versions, go [here](https://repology.org/project/bash-completion/versions).
-
+For more information, see [the Bash Completion page on Repology](https://repology.org/project/bash-completion/versions).
 

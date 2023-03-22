@@ -105,7 +105,7 @@ This setting makes created Search Attributes immediately available for use.
 ## Environmental variables
 
 The Temporal CLI hosts a set of Client Options that can be used to configure the system environment.
-Use the provided table as a reference for the Temporal CLI environmental variables.
+Use the following table as a reference for the Temporal CLI environmental variables.
 
 | Variable                                     | Definition                                                                        | Client Option                   |
 | -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
@@ -152,4 +152,4 @@ Bash auto-completion relies on `bash-completion`.
 
 Install the software with the steps provided in the [bash-completion README](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
 
-To view different bash versions, go [here](https://repology.org/project/bash-completion/versions).
+For more information, see [the Bash Completion page on Repology](https://repology.org/project/bash-completion/versions).
