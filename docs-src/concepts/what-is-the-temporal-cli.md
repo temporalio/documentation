@@ -124,7 +124,7 @@ Use the provided table as a reference for the Temporal CLI environmental variabl
 
 The Temporal CLI has the capability to auto-complete commands.
 
-Running `temporal completion SHELL` will output the related completion SHELL code.
+Running `temporal completion SHELL` outputs the related completion SHELL code.
 
 ### zsh auto-completion
 
