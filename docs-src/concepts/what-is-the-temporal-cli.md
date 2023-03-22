@@ -142,7 +142,7 @@ If you're running auto-completion from the terminal, run the following command:
 echo 'source <(temporal completion zsh)' >> ~/.zshrc
 ```
 
-After setting the variable, run:
+After setting the variable, run the following command:
 
 `source ~/.zshrc`.
 
