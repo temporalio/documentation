@@ -136,7 +136,7 @@ Add the following code snippet to your `~/.zshrc` file:
 source <(temporal completion zsh)
 ```
 
-If you're running auto-completion from the terminal, run the command below:
+If you're running auto-completion from the terminal, run the following command:
 
 ```sh
 echo 'source <(temporal completion zsh)' >> ~/.zshrc
