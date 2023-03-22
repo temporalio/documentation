@@ -58,7 +58,7 @@ temporal server start-dev --help
 ### Namespace registration
 
 Namespaces are pre-registered at startup so they're available to use immediately.
-To customize the pre-registered namespaces, start the server with:
+To customize the pre-registered namespaces, start the server with the following:
 
 ```bash
 temporal server start-dev --namespace foo --namespace bar
