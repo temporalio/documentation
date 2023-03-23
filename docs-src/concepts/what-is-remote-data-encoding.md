@@ -2,7 +2,7 @@
 id: what-is-remote-data-encoding
 title: What is remote data encoding?
 sidebar_label: Remote data encoding
-description: Remote data encding is using your custom Data Converter to decode (and encode) your payloads remotely through endpoints.
+description: Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.
 tags:
   - term
   - explanation

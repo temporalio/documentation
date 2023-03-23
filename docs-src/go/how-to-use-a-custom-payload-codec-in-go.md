@@ -13,7 +13,7 @@ tags:
 Create a custom [PayloadCodec](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadCodec) implementation and define your encryption/compression and decryption/decompression logic in the `Encode` and `Decode` functions.
 
 The Payload Codec converts bytes to bytes.
-It must be used in an instance of [CodecDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CodecDataConverter) that wraps a Data Converter to do the payload conversions, and applies the custom encoding and decoding in `PayloadCodec` to the converted payloads.
+It must be used in an instance of [CodecDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CodecDataConverter) that wraps a Data Converter to do the [Payload](/concepts/what-is-a-payload) conversions, and applies the custom encoding and decoding in `PayloadCodec` to the converted Payloads.
 
 The following example from the [Data Converter sample](https://github.com/temporalio/samples-go/blob/main/codec-server/data_converter.go) shows how to create a custom `NewCodecDataConverter` that wraps an instance of a Data Converter with a custom `PayloadCodec`.
 

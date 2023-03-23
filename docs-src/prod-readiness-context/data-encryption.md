@@ -19,7 +19,7 @@ For example, if you have sensitive information passed in the following objects t
 - Headers (verify if applicable to your SDK)
 - [Query](/concepts/what-is-a-query) results
 - Results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
-- [Application errors and failures](/kb/failures).
+- [Application errors and failures](/kb/failures)
 
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 

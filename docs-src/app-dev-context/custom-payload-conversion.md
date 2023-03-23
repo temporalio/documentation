@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Most SDKs provide a [`PayloadConverter`](/concepts/what-is-a-payload-converter) that can be customized to convert a custom data type to [Payload](/concepts/what-is-a-payload) and back.
+Most SDKs provide a [Payload Converter](/concepts/what-is-a-payload-converter) that can be customized to convert a custom data type to [Payload](/concepts/what-is-a-payload) and back.
 
 Implementing custom Payload conversion is optional.
 It is needed only if the [default Data Converter](/concepts/what-is-a-default-data-converter) does not support your custom values.

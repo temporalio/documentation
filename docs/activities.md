@@ -113,7 +113,7 @@ An Activity may receive Cancellation if:
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
 - In some SDKs:
   - The Worker is shutting down.
-  - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering, stored on, and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>. This fails the Activity Task Execution with an Application Failure.
+  - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>. This fails the Activity Task Execution with an Application Failure.
 
 There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
 An Activity may accept or ignore Cancellation:

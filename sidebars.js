@@ -83,7 +83,7 @@ module.exports = {
     "cluster-deployment-guide",
     {
       type: "category",
-      label: "Production readiness guide",
+      label: "Production readiness",
       collapsible: true,
       collapsed: true,
       link: {

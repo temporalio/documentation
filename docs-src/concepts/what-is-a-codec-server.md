@@ -41,7 +41,7 @@ For example, the following objects are encoded in the Workflow Execution Event H
 
 - Inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
 - [Signal](/concepts/what-is-a-signal) inputs
-- Results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
+- Results of [Local Activities](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
 - [Query](/concepts/what-is-a-query) results
 - [Memo](/concepts/what-is-a-memo)
 - [Application errors and failures](/kb/failures)

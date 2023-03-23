@@ -44,7 +44,7 @@ For example, to create a custom `JacksonJsonPayloadConverter`, use the following
 //...
 private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
   ObjectMapper objectMapper = new ObjectMapper();
-  // your custom conversion logic
+  // Add your custom logic here.
   return new JacksonJsonPayloadConverter(objectMapper);
 }
 //...

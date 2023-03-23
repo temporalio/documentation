@@ -2,7 +2,7 @@
    "file_name": "bootstrap.md",
    "id": "bootstrap",
    "file_dir": "/production-readiness",
-   "title": "Temporal production readiness guide - Bootstrapping",
+   "title": "Temporal production readiness - Bootstrap",
    "sidebar_label": "Bootstrap",
    "description": "This guide provides a comprehensive overview of the path to a production-ready Temporal use case.",
    "use_description": true,

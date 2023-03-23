@@ -1,6 +1,6 @@
 ---
 id: run
-title: Temporal production readiness guide - Running
+title: Temporal production readiness - Run
 sidebar_label: Run
 description: This guide provides a comprehensive overview of the path to a production-ready Temporal use case.
 toc_max_heading_level: 4

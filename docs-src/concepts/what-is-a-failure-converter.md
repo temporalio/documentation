@@ -23,4 +23,4 @@ Note that failures are not encoded by default; you must explicitly enable encodi
 You can make a custom Failure Converter, but if you use multiple SDKs, you must implement the same logic in each.
 Creating a custom Failure Converter is not yet supported in Java.
 
-If your errors might contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your encoded attributes, in which case it moves your `message` and `stack_trace` fields to a payload that's run through your [codec](/concepts/what-is-a-payload-codec).
+If your errors might contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your encoded attributes, in which case it moves your `message` and `stack_trace` fields to a Payload that's run through your [codec](/concepts/what-is-a-payload-codec).

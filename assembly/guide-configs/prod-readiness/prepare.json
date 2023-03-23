@@ -2,7 +2,7 @@
     "file_name": "prepare.md",
     "id": "prepare",
     "file_dir": "/production-readiness",
-    "title": "Temporal production readiness guide - Prepare",
+    "title": "Temporal production readiness - Prepare",
     "sidebar_label": "Prepare",
     "description": "This guide provides a comprehensive overview of the path to a production-ready Temporal use case.",
     "use_description": true,

@@ -2,7 +2,7 @@
     "file_name": "develop.md",
     "id": "develop",
     "file_dir": "/production-readiness",
-    "title": "Temporal production readiness guide - Develop",
+    "title": "Temporal production readiness - Develop",
     "sidebar_label": "Develop",
     "description": "This guide explains what you need to develop to use Temporal in your production environment.",
     "use_description": true,
