@@ -4,7 +4,7 @@ title: temporal workflow terminate
 sidebar_label: terminate
 description: Terminate Workflow Execution by Id or List Filter.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal workflow terminate` command terminates a [Workflow Execution](/concepts/what-is-a-workflow-execution)
@@ -14,7 +14,7 @@ Any further [Command](/concepts/what-is-a-command) Tasks cannot be scheduled aft
 
 Use the options listed below to change termination behavior.
 Make sure to write the command as follows:
-`temporal workflow terminate [command options] [arguments]`
+`temporal workflow terminate [command options]`
 
 - [--address](/cli/cmd-options/address)
 

@@ -2,9 +2,9 @@
 id: metrics-port
 title: temporal  metrics-port
 sidebar_label: metrics-port
-description: Definition for the metrics-port command option.
+description: Port for /metrics
 tags:
-	- cli
+    - cli
 ---
 
 Port for /metrics (default: 0)

@@ -1,10 +1,10 @@
 ---
 id: delete
-title: temporal operator delete
+title: temporal operator namespace delete
 sidebar_label: delete
 description: Deletes an existing Namespace.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal operator namespace delete` command deletes a given [Namespace](/concepts/what-is-a-namespace) from the system.

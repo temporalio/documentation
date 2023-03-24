@@ -4,14 +4,14 @@ title: temporal activity fail
 sidebar_label: fail
 description: Fails an Activity.
 tags:
-	- cli
+  - cli
 ---
 
 The `temporal activity fail` command fails an [Activity Execution](/concepts/what-is-an-activity-execution).
 
 Use the options listed below to change the behavior of this command.
 Make sure to write the command as follows:
-`temporal activity fail [command options] [arguments]`
+`temporal activity fail [command options]`
 
 - [--activity-id](/cli/cmd-options/activity-id)
 

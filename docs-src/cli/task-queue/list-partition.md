@@ -4,14 +4,14 @@ title: temporal task-queue list-partition
 sidebar_label: list-partition
 description: Lists the Task Queue's partitions and which matching node they are assigned to.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal task-queue list-partition` command displays the partitions of a [Task Queue](/concepts/what-is-a-task-queue), along with the matching node they are assigned to.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal task-queue list-partition [command options] [arguments]`
+`temporal task-queue list-partition [command options]`
 
 - [--address](/cli/cmd-options/address)
 

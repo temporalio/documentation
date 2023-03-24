@@ -4,7 +4,7 @@ title: temporal workflow start
 sidebar_label: start
 description: Starts a new Workflow Execution.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal workflow start` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution).
@@ -12,7 +12,7 @@ When invoked successfully, the Workflow and Run ID are returned immediately afte
 
 Use the command options listed below to change how the Workflow Execution behaves upon starting.
 Make sure to write the command in this format:
-`temporal workflow start [command options] [arguments]`
+`temporal workflow start [command options]`
 
 - [--address](/cli/cmd-options/address)
 

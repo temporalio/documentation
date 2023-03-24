@@ -2,9 +2,9 @@
 id: yes
 title: temporal  yes
 sidebar_label: yes
-description: Definition for the yes command option.
+description: Confirm all prompts.
 tags:
-	- cli
+    - cli
 ---
 
 Alias: **-y**: Confirm all prompts.
