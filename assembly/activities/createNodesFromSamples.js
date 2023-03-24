@@ -2,8 +2,10 @@ import fs from "fs-extra";
 import path from "path";
 import rangeParser from "parse-numeric-range";
 
-const docsAsSourceRegex = "(?:\\/\\*)(?: @dacx\\n)(id:.*)(?:\n)(title:.*)(?:\\n)(label:.*)(?:\\n)(description:.*)(?:\\n)(lines:.*)(?:\\n@dacx \\*\\/)";
+const docsAsSourceRegex = "(?:@dacx\\n)(id:.*)(?:\n)(title:.*)(?:\\n)(label:.*)(?:\\n)(description:.*)(?:\\n)(lines:.*)(?:\\n@dacx)";
 const docsAsSource = RegExp(docsAsSourceRegex, "gm");
+const docsAsSourceRegexTest = "(?<=\\/\\*\\s*@dacx\\n)(.*:\\s.*)(?=\\n@dacx\\s*\\*\\/)";
+const docsAsSourceTest = RegExp(docsAsSourceRegexTest, "gm");
 const codeBlocks = '```';
 
 export async function createNodesFromSamples(config) {
@@ -141,6 +143,8 @@ function trimUP(str) {
 function isSupportedExtension(ext) {
   switch(ext){
     case ".go":
+      return true;
+    case ".py":
       return true;
     default:
       return false;
