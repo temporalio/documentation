@@ -1,7 +1,7 @@
 ---
 slug: march-release-2023
 title: March 24 2023
-date: 2023-01-23T00:00:00Z
+date: 2023-03-24T00:00:00Z
 ---
 
 Since our last change log in January 2023, we published the following content:
