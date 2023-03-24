@@ -176,7 +176,21 @@ The following example from the [Java encryption sample](https://github.com/tempo
 
 ```java
 class YourCustomPayloadCodec implements PayloadCodec {
-  //...
+
+  static final ByteString METADATA_ENCODING =
+      ByteString.copyFrom("binary/encrypted", StandardCharsets.UTF_8);
+
+  private static final String CIPHER = "AES/GCM/NoPadding";
+
+  // Define constants that you can add to your encoded Payload to create a new Payload.
+  static final String METADATA_ENCRYPTION_CIPHER_KEY = "encryption-cipher";
+
+  static final ByteString METADATA_ENCRYPTION_CIPHER =
+      ByteString.copyFrom(CIPHER, StandardCharsets.UTF_8);
+
+  static final String METADATA_ENCRYPTION_KEY_ID_KEY = "encryption-key-id";
+
+  private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
   // See the linked sample for details on the methods called here.
   @NotNull
@@ -192,16 +206,16 @@ class YourCustomPayloadCodec implements PayloadCodec {
   }
 
   private Payload encodePayload(Payload payload) {
-    String keyId = getKeyId(); // Get a fixed key Id from the getKeyId method. See the sample for details.
-    SecretKey key = getKey(keyId); // Get an AES key defined in the getKey method. See sample for details.
+    String keyId = getKeyId();
+    SecretKey key = getKey(keyId);
 
     byte[] encryptedData;
     try {
-      encryptedData = encrypt(payload.toByteArray(), key);
+      encryptedData = encrypt(payload.toByteArray(), key); // The encrypt method contains your custom encryption logic.
     } catch (Throwable e) {
       throw new DataConverterException(e);
     }
-    // Apply metadata to the encoded payload that you can verify in your decode method before decoding.
+    // Apply metadata to the encoded Payload that you can verify in your decode method before decoding.
     // See the sample for details on the metadata values set.
     return Payload.newBuilder()
         .putMetadata(EncodingKeys.METADATA_ENCODING_KEY, METADATA_ENCODING)
@@ -212,7 +226,7 @@ class YourCustomPayloadCodec implements PayloadCodec {
   }
 
   private Payload decodePayload(Payload payload) {
-    // Verify the incoming encoded payload metadata before applying decryption.
+    // Verify the incoming encoded Payload metadata before applying decryption.
     if (METADATA_ENCODING.equals(
         payload.getMetadataOrDefault(EncodingKeys.METADATA_ENCODING_KEY, null))) {
       String keyId;
@@ -221,13 +235,12 @@ class YourCustomPayloadCodec implements PayloadCodec {
       } catch (Exception e) {
         throw new PayloadCodecException(e);
       }
-      SecretKey key = getKey(keyId); // Gets the AES key defined in the getKey method which was used for the encryption. See sample for details.
-
+      SecretKey key = getKey(keyId);
       byte[] plainData;
       Payload decryptedPayload;
 
       try {
-        plainData = decrypt(payload.getData().toByteArray(), key);
+        plainData = decrypt(payload.getData().toByteArray(), key); // The decrypt method contains your custom decryption logic.
         decryptedPayload = Payload.parseFrom(plainData);
         return decryptedPayload;
       } catch (Throwable e) {
@@ -237,6 +250,22 @@ class YourCustomPayloadCodec implements PayloadCodec {
       return payload;
     }
   }
+
+  private String getKeyId() {
+    // Currently there is no context available to vary which key is used.
+    // Use a fixed key for all payloads.
+    // This still supports key rotation as the key ID is recorded on payloads allowing
+    // decryption to use a previous key.
+
+    return "test-key-test-key-test-key-test!";
+  }
+
+  private SecretKey getKey(String keyId) {
+    // Key must be fetched from KMS or other secure storage.
+    // Hard coded here only for example purposes.
+    return new SecretKeySpec(keyId.getBytes(UTF_8), "AES");
+  }
+
   //...
 }
 ```
