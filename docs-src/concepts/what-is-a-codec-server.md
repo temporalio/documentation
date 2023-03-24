@@ -46,7 +46,7 @@ For example, the following objects are encoded in the Workflow Execution Event H
 - [Memo](/concepts/what-is-a-memo)
 - [Application errors and failures](/kb/failures)
 
-  Note that failures are not encoded by default; you must explicitly enable encoding on failures.
+  Note that failures are not encoded by default; you must explicitly enable encoding of failures.
 
 Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.

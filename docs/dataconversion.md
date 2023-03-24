@@ -255,7 +255,7 @@ For example, the following objects are encoded in the Workflow Execution Event H
 - <a class="tdlp" href="/workflows#memo">Memo<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a>
 - [Application errors and failures](/kb/failures)
 
-  Note that failures are not encoded by default; you must explicitly enable encoding on failures.
+  Note that failures are not encoded by default; you must explicitly enable encoding of failures.
 
 Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.
