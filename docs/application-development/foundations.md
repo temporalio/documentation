@@ -1079,7 +1079,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 
 Related references:
 
-- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1844,7 +1844,7 @@ Activity return values must be serializable and deserializable by the provided [
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
-- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>

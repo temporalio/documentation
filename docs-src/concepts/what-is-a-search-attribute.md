@@ -19,6 +19,8 @@ You can also create [custom Search Attribute](#custom-search-attributes) keys in
 
 Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only for the duration of the specified Namespace [Retention Period](/concepts/what-is-a-retention-period).
 
+Note that Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+
 When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
 
 ### Default Search Attributes

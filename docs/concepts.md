@@ -20,6 +20,7 @@ The concepts, components, and features of the platform are described in detail a
 - [Clusters](/clusters)
 - [Visibility](/visibility)
 - [Namespaces](/namespaces)
+- [Data conversion](/dataconversion)
 
 For the complete list of defined terms, see the [Glossary](/glossary).
 
