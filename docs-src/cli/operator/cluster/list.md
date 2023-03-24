@@ -1,17 +1,17 @@
 ---
 id: list
-title: temporal operator list
+title: temporal operator cluster list
 sidebar_label: list
 description: List all remote Clusters.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal operator cluster list` command prints a list of all remote [Clusters](/concepts/what-is-a-temporal-cluster) on the system.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal operator cluster list [command options] [arguments]`
+`temporal operator cluster list [command options]`
 
 - [--address](/cli/cmd-options/address)
 

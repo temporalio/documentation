@@ -4,7 +4,7 @@ title: temporal env set
 sidebar_label: set
 description: Set environmental properties.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal env set` command sets the value for an environmental property.

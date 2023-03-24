@@ -2,9 +2,9 @@
 id: config
 title: temporal  config
 sidebar_label: config
-description: Definition for the config command option.
+description: Path to config directory.
 tags:
-	- cli
+    - cli
 ---
 
 Alias: **-c**

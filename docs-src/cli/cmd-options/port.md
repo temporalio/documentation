@@ -2,9 +2,9 @@
 id: port
 title: temporal  port
 sidebar_label: port
-description: Definition for the port command option.
+description: Port for the frontend gRPC service. 
 tags:
-	- cli
+    - cli
 ---
 
 Alias: **-p**

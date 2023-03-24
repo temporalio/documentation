@@ -2,9 +2,9 @@
 id: memo
 title: temporal  memo
 sidebar_label: memo
-description: Definition for the memo command option.
+description: Set a memo on a schedule (in key=value format).
 tags:
-	- cli
+    - cli
 ---
 
 Set a memo on a schedule (format: key=value). Use valid JSON formats for value.
