@@ -4,7 +4,7 @@ title: temporal task-queue describe
 sidebar_label: describe
 description: Describes the Workers that have recently polled on this Task Queue.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal task-queue describe` command provides [poller](/application-development/worker-performance#poller-count) information for a given [Task Queue](/concepts/what-is-a-task-queue).

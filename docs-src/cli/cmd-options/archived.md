@@ -2,9 +2,9 @@
 id: archived
 title: temporal  archived
 sidebar_label: archived
-description: Definition for the archived command option.
+description: List archived Workflow Executions.
 tags:
-	- cli
+    - cli
 ---
 
 List archived Workflow Executions. Currently an experimental feature.

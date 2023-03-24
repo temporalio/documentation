@@ -2,9 +2,9 @@
 id: identity
 title: temporal  identity
 sidebar_label: identity
-description: Definition for the identity command option.
+description: Specify operator's identity.
 tags:
-	- cli
+    - cli
 ---
 
 Specify operator's identity.

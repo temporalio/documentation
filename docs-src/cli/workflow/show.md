@@ -4,7 +4,7 @@ title: temporal workflow show
 sidebar_label: show
 description: Show Event History for a Workflow Execution.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal workflow show` command provides the [Event History](/concepts/what-is-an-event-history) for a specified [Workflow Execution](/concepts/what-is-a-workflow-execution).

@@ -4,7 +4,7 @@ title: temporal env delete
 sidebar_label: delete
 description: Delete an environment or environmental property.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal env delete` command deletes a given environment or environmental property.

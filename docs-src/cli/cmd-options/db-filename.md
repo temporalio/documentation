@@ -2,9 +2,9 @@
 id: db-filename
 title: temporal  db-filename
 sidebar_label: db-filename
-description: Definition for the db-filename command option.
+description: File in which to persist Temporal state.
 tags:
-	- cli
+    - cli
 ---
 
 Alias: **-f**

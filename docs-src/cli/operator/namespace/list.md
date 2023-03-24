@@ -1,10 +1,10 @@
 ---
 id: list
-title: temporal operator list
+title: temporal operator namespace list
 sidebar_label: list
 description: List all Namespaces.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal operator namespace list` command lists all [Namespaces](/namespaces) on the [Server](/concepts/what-is-a-frontend-service).
