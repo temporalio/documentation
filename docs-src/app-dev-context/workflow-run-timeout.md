@@ -7,4 +7,4 @@ tags:
   - guide-context
 ---
 
-Use the [Workflow Run Timeout](/concepts/what-is-a-workflow-run-timeout) to restrict the maximum amount of time that a single [Workflow Run](/concepts/what-is-a-workflow-execution/#workflow-execution-chain) can last.
+Use the [Workflow Run Timeout](/concepts/what-is-a-workflow-run-timeout) to restrict the maximum amount of time that a single [Workflow Run](/concepts/what-is-a-workflow-execution#workflow-execution-chain) can last.

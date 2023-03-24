@@ -10,6 +10,8 @@ Temporal Cloud and SDKs emit metrics that can be used to monitor performance and
 
 Temporal Cloud emits metrics through a [Prometheus HTTP API endpoint](https://prometheus.io/docs/prometheus/latest/querying/api/) which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
+<!-- truncate -->
+
 The open-source SDKs require you to set up a Prometheus scrape endpoint for Prometheus to collect and aggregate the Worker and Client metrics.
 
 This article describes how to set up your Temporal Cloud and SDK metrics and use them as data sources in Grafana.
@@ -27,8 +29,6 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See [Connect to a Cluster](application-development/foundations#connect-to-a-cluster) for details.
 - Prometheus and Grafana installed.
-
-<!-- truncate -->
 
 ## Temporal Cloud metrics setup
 

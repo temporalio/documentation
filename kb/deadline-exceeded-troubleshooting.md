@@ -8,7 +8,7 @@ tags:
 date: 2022-11-09T00:00:00Z
 ---
 
-All requests made to the [Temporal Cluster](/concepts/what-is-a-temporal-cluster) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
+All requests made to the [Temporal Cluster](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
 Sometimes, when these frontend requests can't be completed, you'll see this particular error message: `Context: deadline exceeded`.
 Network interruptions, timeouts, server overload, and Query errors are some of the causes of this error.
 
@@ -22,8 +22,7 @@ The following sections discuss the nature of this error and how to troubleshoot 
 
 Cloud users cannot access some of the logs needed to diagnose the source of the error.
 
-If you're using Temporal Cloud, check your Workflow History for error messages and create a [support ticket](https://support.temporal.io/) with Temporal.
-Provide the full error message in your ticket.
+If you're using Temporal Cloud, create a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support) with as much information as possible, including the Namespace Name and the Workflow Ids of some Workflow Executions in which the issue occurs.
 
 :::
 
@@ -33,21 +32,17 @@ For the error to appear, a service pod or container must be up and running.
 OSS users can verify that the Frontend Service is connected and running by using `tctl`.
 
 ```
-
 tctl --address frontendAddress:frontendPort cluster health
-
 ```
 
 Use `grpc-health-probe` to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
 
 ```
-
 ./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService
 
 ./grpc-health-probe -addr=matchingAddress:matchingPort -service=temporal.api.workflowservice.v1.MatchingService
 
 ./grpc-health-probe -addr=historyAddress:historyPort -service=temporal.api.workflowservice.v1.HistoryService
-
 ```
 
 Logs can also be used to find failed Client [Query](/workflows#queries) requests.
@@ -60,9 +55,7 @@ A `resource exhausted` error can cause your client request to fail, which prompt
 Use the following query to check for errors in `RpsLimit`, `ConcurrentLimit` and `SystemOverloaded` on your metrics dashboard.
 
 ```
-
 sum(rate(service_errors_resource_exhausted{}[1m])) by (resource_exhausted_cause)
-
 ```
 
 Look for high latencies, short timeouts, and other abnormal [Cluster metrics](/references/cluster-metrics).
@@ -116,4 +109,7 @@ If you increase `frontend.keepAliveMaxConnectionAge` values, consider monitoring
 
 ---
 
-If you were unable to resolve your issue, check for similar questions and possible solutions on our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack), or file a [support ticket](https://support.temporal.io/).
+Still unable to resolve your issue?
+
+- If you use Temporal Cloud, create a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
+- If you use our open source software or Temporal Cloud, check for similar questions and possible solutions in our [community forum](https://community.temporal.io) or [community Slack](https://temporal.io/slack).

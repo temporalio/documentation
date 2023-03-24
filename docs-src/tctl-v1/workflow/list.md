@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl workflow list` command lists open or closed [Workflow Executions](/concepts/what-is-a-workflow-execution).
+The `tctl workflow list` command lists open or closed [Workflow Executions](/workflows#workflow-execution).
 
 By default, this command lists a maximum of 10 closed Workflow Executions.
 
@@ -83,7 +83,7 @@ tctl workflow list --print_json
 
 ### --open
 
-List open [Workflow Executions](/concepts/what-is-a-workflow-execution).
+List open [Workflow Executions](/workflows#workflow-execution).
 (By default, the `tctl workflow list` command lists closed Workflow Executions.)
 
 **Example**
@@ -176,7 +176,7 @@ tctl workflow list --workflow_type <name>
 
 ### --status
 
-Specify the status of a [Workflow Execution](/concepts/what-is-a-workflow-execution).
+Specify the status of a [Workflow Execution](/workflows#workflow-execution).
 Supported values are as follows:
 
 - `completed`
@@ -250,7 +250,7 @@ tctl workflow list --more
 
 ### --pagesize
 
-Specify the maximum number of [Workflow Executions](/concepts/what-is-a-workflow-execution) to list on a page.
+Specify the maximum number of [Workflow Executions](/workflows#workflow-execution) to list on a page.
 (By default, the `tctl workflow list` command lists 10 Workflow Executions per page.)
 
 **Example**

@@ -7,7 +7,7 @@ tags:
   - tctl
 ---
 
-The `tctl cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-temporal-cluster/#frontend-service).
+The `tctl cluster health` command checks the health of the [Frontend Service](/concepts/what-is-a-temporal-cluster#frontend-service).
 
 `tctl cluster health`
 

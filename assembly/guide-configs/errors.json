@@ -4,10 +4,14 @@
   "file_dir": "references",
   "title": "Errors",
   "sidebar_label": "Errors",
-  "description": "This guide is an overview of the errors that can appear on the Temporal Web UI.",
+  "description": "This reference lists possible Workflow Task errors and how to resolve them.",
   "toc_max_heading_level": 4,
   "add_tabs_support": true,
   "sections": [
+    {
+      "type": "p",
+      "id": "references/strongly-typed-errors/intro"
+    },
     {
       "type": "h2",
       "id": "references/strongly-typed-errors/bad-cancel-timer-attributes"

@@ -96,7 +96,7 @@
         },
         {
           "lang": "python",
-          "id": "none"
+          "id": "python/how-to-send-a-signal-from-a-client-in-python"
         },
         {
           "lang": "typescript",
@@ -462,6 +462,35 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/cancel-activity"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "none"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "python/how-to-cancel-an-activity-from-a-workflow-in-python"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/child-workflows"
     },
     {
@@ -660,6 +689,68 @@
         {
           "lang": "typescript",
           "id": "na"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/namespaces"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/register-namespaces"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-register-namespace-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-register-namespace-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/manage-namespaces"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-manage-namespaces-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "java/how-to-manage-namespaces-in-java"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
         }
       ]
     }

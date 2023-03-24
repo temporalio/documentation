@@ -36,6 +36,10 @@ export async function genSourceObjects(config) {
 
 async function convertGraymatter(filePath, meta) {
   const nodeId = makeId(filePath.fullPath, meta.data.id);
+  let ssdi = [];
+  if (meta.data.ssdi != undefined) {
+    ssdi = meta.data.ssdi;
+  }
   const infoNode = {
     file_name: filePath.path,
     file_path: filePath.fullPath,
@@ -44,6 +48,7 @@ async function convertGraymatter(filePath, meta) {
     description: meta.data.description,
     label: meta.data.sidebar_label,
     tags: meta.data.tags,
+    ssdi: ssdi,
     markdown_content: meta.content,
     is_empty: meta.isEmpty,
   };

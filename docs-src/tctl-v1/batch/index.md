@@ -9,7 +9,7 @@ tags:
 
 **How to run a tctl batch command.**
 
-A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/concepts/what-is-a-workflow-execution) with a single command.
+A `tctl batch` command enables you to affect multiple existing [Workflow Executions](/workflows#workflow-execution) with a single command.
 A batch job runs in the background and affects Workflow Executions one at a time.
 
 Use [tctl batch start](/tctl-v1/batch/start) to start a batch job.

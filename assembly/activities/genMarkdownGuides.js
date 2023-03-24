@@ -1,5 +1,8 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
+const plannedText = `Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).`;
 
 export async function genMarkdownGuides(config) {
   console.log(`generating the full markdown for all guides...`);
@@ -24,27 +27,31 @@ async function generateGuide(config, guideCfg) {
   let guideStr = await frontmatter(guideCfg);
   for (const section of guideCfg.sections) {
     switch (section.type) {
-      case "h2":
+      case 'h2':
         guideStr = `${guideStr}## ${section.node.label}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case "h3":
+      case 'h3':
         guideStr = `${guideStr}### ${section.node.label}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case "h4":
+      case 'h4':
         guideStr = `${guideStr}#### ${section.node.label}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
-      case "p":
+      case 'p':
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
+        guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         break;
-      case "langtabs":
+      case 'langtabs':
         const tabStr = await generateLangTabs(section.langtabs);
         guideStr = `${guideStr}${tabStr}`;
         break;
       default:
-        console.log("unhandled section type...");
+        console.log('unhandled section type...');
         console.log(JSON.stringify(section));
     }
   }
@@ -53,19 +60,32 @@ async function generateGuide(config, guideCfg) {
   return guideCfg;
 }
 
+function ssdi(ssdi) {
+  let infoStr = '';
+  if (ssdi.length > 0) {
+    infoStr = `:::tip Support, stability, and dependency info\n`;
+    for (const item of ssdi) {
+      infoStr = `${infoStr}- ${item}\n`;
+    }
+    infoStr = `${infoStr}\n:::\n\n`;
+  }
+  return infoStr;
+}
+
 async function generateLangTabs(langtabs) {
   let tabStr = `<Tabs\n`;
-  const unavailable = "Content is not available";
+  const unavailable = 'Content is not available';
   tabStr = `${tabStr}defaultValue="go"\n`;
-  tabStr = `${tabStr}groupId="site-lang"\n`;
+  tabStr = `${tabStr}queryString="lang"\n`;
   tabStr = `${tabStr}values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>\n\n`;
   for (const tab of langtabs) {
     tabStr = `${tabStr}<TabItem value="${tab.lang}">\n\n`;
-    if (tab.id == "none") {
-      tabStr = `${tabStr}Content is currently unavailable.\n\n`;
-    } else if (tab.id == "na") {
+    if (tab.id == 'none') {
+      tabStr = `${tabStr}${plannedText}\n\n`;
+    } else if (tab.id == 'na') {
       tabStr = `${tabStr}Not applicable to this SDK.\n\n`;
     } else {
+      tabStr = `${tabStr}${ssdi(tab.node.ssdi)}`;
       tabStr = `${tabStr}${tab.node.markdown_content}\n\n`;
     }
     tabStr = `${tabStr}</TabItem>\n`;
@@ -94,8 +114,8 @@ async function frontmatter(guideCfg) {
 }
 
 async function writeGuide(config, guideCfg) {
-  let writePath = "";
-  if (guideCfg.file_dir != "/") {
+  let writePath = '';
+  if (guideCfg.file_dir != '/') {
     writePath = path.join(
       config.root_dir,
       config.content_write_dir,

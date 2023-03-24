@@ -7,13 +7,29 @@ const simpleActivityOptions = {
 export async function fullAssembly(params) {
   const activities = proxyActivities(simpleActivityOptions);
 
+  // If these Activities fail, we don't want to retry them, as they will continue failing.
+  const deterministicActivities = proxyActivities({
+    ...simpleActivityOptions,
+    retry: {maximumAttempts: 1},
+  });
+
   const config = await activities.getConfig(params);
 
   await activities.createTempDir(config);
 
+  if (params.samples) {
+    await activities.getSamplesRepos(config);
+
+    await activities.createNodesFromSamples(config);
+  }
+
+  if (params.cli) {
+    await activities.genCLI(config);
+  }
+
   await activities.genSourceObjects(config);
 
-  await activities.attachSourceToGuides(config);
+  await deterministicActivities.attachSourceToGuides(config);
 
   await activities.genLinkIndexes(config);
 

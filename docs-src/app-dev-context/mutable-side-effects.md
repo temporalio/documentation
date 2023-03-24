@@ -1,7 +1,7 @@
 ---
 id: mutable-side-effects
 title: Mutable Side Effects
-description: Mutable Side Effects are a method of execution to produce nondeterministic code.
+description: Mutable Side Effects are a method of execution to produce non-deterministic code.
 sidebar_label: Mutable Side Effects
 tags:
   - guide-context

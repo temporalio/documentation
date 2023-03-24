@@ -34,18 +34,52 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 1. In **Certificates**, paste a base64-encoded CA certificate PEM block.
 1. Click **Generate endpoint**.
 
-After the page refreshes, the new metrics endpoint appears below **Endpoint**.
-Use the endpoint to configure your observability tool.
+After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
+Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
+For more information, see [Set up Grafana with Temporal Cloud](/kb/prometheus-grafana-setup-cloud).
+
+You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
+
+```
+https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count
+```
+
+For example:
+
+```
+$ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/prometheus/api/v1/query?query=temporal_cloud_v0_state_transition_count" | jq .
+{
+  "status": "success",
+  "data": {
+    "resultType": "vector",
+    "result": [
+      {
+        "metric": {
+          "__name__": "temporal_cloud_v0_state_transition_count",
+          "__rollup__": "true",
+          "operation": "WorkflowContext",
+          "temporal_account": "a2dd6",
+          "temporal_namespace": "mynamespace.a2dd6",
+          "temporal_service_type": "history"
+        },
+        "value": [
+          1672347471.2,
+          "0"
+        ]
+      },
+      ...
+}
+```
 
 <!--- How to configure a metrics endpoint in Temporal Cloud using tcld --->
 
 ## Configure a metrics endpoint using tcld
 
-To add a certificate to a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#add"> `tcld account metrics accepted-client-ca add`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics accepted-client-ca add</p><p class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/account#add">Learn more</a></p></div></a>.
+To add a certificate to a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#add"> `tcld account metrics accepted-client-ca add`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics accepted-client-ca add</span><br /><br /><span class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#add">Learn more</a></span></span></a>.
 
-To enable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#enable"> `tcld account metrics enable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics enable</p><p class="tdlppd">How to enable the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/account#enable">Learn more</a></p></div></a>.
+To enable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#enable"> `tcld account metrics enable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics enable</span><br /><br /><span class="tdlppd">How to enable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#enable">Learn more</a></span></span></a>.
 
-To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#disable"> `tcld account metrics disable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><div class="tdlpc"><p class="tdlppt">tcld account metrics disable</p><p class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</p><p class="tdlplm"><a class="tdlplma" href="/cloud/tcld/account#disable">Learn more</a></p></div></a>.
+To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#disable"> `tcld account metrics disable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics disable</span><br /><br /><span class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#disable">Learn more</a></span></span></a>.
 
 ## Available performance metrics
 

@@ -15,7 +15,39 @@
     },
     {
       "type": "h2",
+      "id": "clusters/how-to-set-up-visibility-in-a-temporal-cluster"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-mysql-visibility-store"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-postgresql-visibility-store"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-sqlite-visibility-store"
+    },
+    {
+      "type": "h3",
+      "id": "clusters/how-to-set-up-cassandra-visibility-store"
+    },
+    {
+      "type": "h3",
       "id": "clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster"
+    },
+    {
+      "type": "h3",
+      "id": "cluster-ops-context/manage-custom-search-attributes"
+    },
+    {
+      "type": "h4",
+      "id": "clusters/how-to-create-custom-search-attribute-keys"
+    },
+    {
+      "type": "h4",
+      "id": "clusters/how-to-remove-a-custom-search-attribute-key"
     },
     {
       "type": "h2",
@@ -32,6 +64,10 @@
     {
       "type": "h2",
       "id": "clusters/how-to-upgrade-the-temporal-server-version"
+    },
+    {
+      "type": "h2",
+      "id": "clusters/how-to-set-up-health-checks"
     },
     {
       "type": "h2",
