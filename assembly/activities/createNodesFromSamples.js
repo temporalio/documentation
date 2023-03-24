@@ -4,8 +4,6 @@ import rangeParser from "parse-numeric-range";
 
 const docsAsSourceRegex = "(?:@dacx\\n)(id:.*)(?:\n)(title:.*)(?:\\n)(label:.*)(?:\\n)(description:.*)(?:\\n)(lines:.*)(?:\\n@dacx)";
 const docsAsSource = RegExp(docsAsSourceRegex, "gm");
-const docsAsSourceRegexTest = "(?<=\\/\\*\\s*@dacx\\n)(.*:\\s.*)(?=\\n@dacx\\s*\\*\\/)";
-const docsAsSourceTest = RegExp(docsAsSourceRegexTest, "gm");
 const codeBlocks = '```';
 
 export async function createNodesFromSamples(config) {
