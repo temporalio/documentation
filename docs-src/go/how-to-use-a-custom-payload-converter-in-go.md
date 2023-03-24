@@ -33,7 +33,7 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
   dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
   ```
 
-- To add your custom type conversion to the default Data Converter, use the following.
+- To add your custom type conversion to the default Data Converter, use the following to keep the defaults but set yours just before the default JSON fall through.
 
   ```go
   dataConverter := converter.NewCompositeDataConverter(

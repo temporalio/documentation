@@ -27,7 +27,7 @@ To encode this data, [specify your Codec Server endpoints](/dataconversion#setti
 
 #### Decoding data on the Web UI and tctl
 
-If you use custom encoding in your custom Data Converter, all the data handled by the Temporal Cluster is encoded. Since the Web UI uses the [Visibility](/concepts/what-is-visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI or tctl shows in the encoded format.
+If you use custom encoding in your custom Data Converter, Payload data handled by the Temporal Cluster is encoded. Since the Web UI uses the [Visibility](/concepts/what-is-visibility) database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI or tctl shows in the encoded format.
 
 To see the original format of data in your Web UI and tctl, create a [Codec Server](/concepts/what-is-a-codec-server) with a remote data encoder and use the Payload Codec to decode your data locally.
 

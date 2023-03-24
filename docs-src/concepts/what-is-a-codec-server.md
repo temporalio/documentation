@@ -35,18 +35,7 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 When using tctl or the Web UI to perform some operations on a Workflow Execution, you can configure the exposed Codec Server endpoints to remotely encode data sent to the Temporal Server and decode data received from the Temporal Server.
 
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server.
-
-For example, the following objects are encoded in the Workflow Execution Event History:
-
-- Inputs and outputs/results in your [Workflow](/concepts/what-is-a-workflow-execution), [Activity](/concepts/what-is-an-activity-execution), and [Child Workflow](/concepts/what-is-a-child-workflow-execution)
-- [Signal](/concepts/what-is-a-signal) inputs
-- Results of [Local Activities](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
-- [Query](/concepts/what-is-a-query) results
-- [Memo](/concepts/what-is-a-memo)
-- [Application errors and failures](/kb/failures)
-
-  Note that failures are not encoded by default; you must explicitly enable encoding of failures.
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/prod-readiness-context/data-encryption).
 
 Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.

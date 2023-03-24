@@ -17,9 +17,11 @@ For example, if you have sensitive information passed in the following objects t
 - [Signal](/concepts/what-is-a-signal) inputs
 - [Memo](/concepts/what-is-a-memo)
 - Headers (verify if applicable to your SDK)
-- [Query](/concepts/what-is-a-query) results
-- Results of [Local Activity](/concepts/what-is-a-local-activity), [Side Effects](/concepts/what-is-a-side-effect)
+- [Query](/concepts/what-is-a-query) inputs and results
+- Results of [Local Activity](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
 - [Application errors and failures](/kb/failures)
+
+  Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures. For more details, see [Failure Converter](/concepts/what-is-a-failure-converter).
 
 Using encryption ensures that your sensitive data exists unencrypted only on the Client and the Worker Process that is executing the Workflows and Activities, on hosts that you control.
 
@@ -48,7 +50,7 @@ Examples for implementing encryption:
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 
-References for implementing compression:
+Examples for implementing compression:
 
 - [Go sample](https://pkg.go.dev/go.temporal.io/sdk/converter#ZlibCodecOptions)
 - [Java sample](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/payload/codec/ZlibPayloadCodec.html)
