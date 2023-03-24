@@ -4097,8 +4097,6 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Use [CompositeDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
 
-Payload Converters convert your data from values to bytes and back.
-
 `NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
 The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:
 
@@ -4110,7 +4108,7 @@ The following type-specific Payload Converters are available in the Go SDK, list
 
 The order in which the Payload Converters are applied is important because during serialization the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil Payload.
 
-A custom `PayloadConverter` must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from a Payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to a Payload.
+A custom [`PayloadConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadConverter) must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from a Payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to a Payload.
 
 To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the Data Converter in the Client options.
 

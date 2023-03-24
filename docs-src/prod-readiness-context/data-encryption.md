@@ -18,7 +18,7 @@ For example, if you have sensitive information passed in the following objects t
 - [Memo](/concepts/what-is-a-memo)
 - Headers (verify if applicable to your SDK)
 - [Query](/concepts/what-is-a-query) inputs and results
-- Results of [Local Activity](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
+- Results of [Local Activities](/concepts/what-is-a-local-activity) and [Side Effects](/concepts/what-is-a-side-effect)
 - [Application errors and failures](/kb/failures)
 
   Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures. For more details, see [Failure Converter](/concepts/what-is-a-failure-converter).
