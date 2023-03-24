@@ -384,7 +384,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 **Persistence configuration**
 
 1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
-   The [development_es.yaml](https://github.com/temporalio/temporal/blob/master/config/development_es.yaml) file in the `temporalio/temporal` repo is a working example.
+   For example usage, you can look at [several development_es.yaml files](https://github.com/temporalio/temporal/tree/master/config) in the `temporalio/temporal` repo.
    The configuration instructs the Temporal Cluster how and where to connect to Elasticsearch storage.
 
 ```yaml

@@ -4,7 +4,7 @@ title: temporal task-queue describe
 sidebar_label: describe
 description: Describes the Workers that have recently polled on this Task Queue.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal task-queue describe` command provides [poller](/application-development/worker-performance#poller-count) information for a given [Task Queue](/concepts/what-is-a-task-queue).
@@ -15,7 +15,7 @@ Should `LastAccessTime` exceeds one minute, it's likely that the Worker is at ca
 
 Use the options listed below to modify what this command returns.
 Make sure to write the command as follows:
-`temporal task-queue describe [command options] [arguments]`
+`temporal task-queue describe [command options]`
 
 - [--address](/cli/cmd-options/address)
 

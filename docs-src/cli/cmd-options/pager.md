@@ -2,9 +2,9 @@
 id: pager
 title: temporal  pager
 sidebar_label: pager
-description: Definition for the pager command option.
+description: Sets the pager for Temporal CLI to use.
 tags:
-	- cli
+    - cli
 ---
 
 Sets the pager for Temporal CLI to use (options: less, more, favoritePager).

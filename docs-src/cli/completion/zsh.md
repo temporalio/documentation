@@ -4,7 +4,7 @@ title: temporal completion zsh
 sidebar_label: zsh
 description: zsh completion output
 tags:
-	- cli
+    - cli
 ---
 
 source <(temporal completion zsh)

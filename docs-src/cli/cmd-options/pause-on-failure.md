@@ -2,9 +2,9 @@
 id: pause-on-failure
 title: temporal  pause-on-failure
 sidebar_label: pause-on-failure
-description: Definition for the pause-on-failure command option.
+description: Pause schedule after any workflow failure.
 tags:
-	- cli
+    - cli
 ---
 
 Pause schedule after any workflow failure.

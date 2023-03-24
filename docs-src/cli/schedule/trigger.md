@@ -4,7 +4,7 @@ title: temporal schedule trigger
 sidebar_label: trigger
 description: Triggers an immediate action.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/concepts/what-is-a-schedule).

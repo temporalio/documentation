@@ -2,9 +2,9 @@
 id: unpause
 title: temporal  unpause
 sidebar_label: unpause
-description: Definition for the unpause command option.
+description: Unpauses the Schedule.
 tags:
-	- cli
+    - cli
 ---
 
 Unpauses the Schedule.

@@ -2,9 +2,9 @@
 id: notes
 title: temporal  notes
 sidebar_label: notes
-description: Definition for the notes command option.
+description: Initial value of notes field.
 tags:
-	- cli
+    - cli
 ---
 
 Initial value of notes field.

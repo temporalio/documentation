@@ -4,7 +4,7 @@ title: temporal workflow query
 sidebar_label: query
 description: Query a Workflow Execution.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal workflow query` command sends a [Query](/concepts/what-is-a-query) to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
@@ -14,7 +14,7 @@ Queries can also be used on completed [Workflows](/concepts/what-is-a-workflow-e
 
 Use the command options listed below to change the information returned by this command.
 Make sure to write the command as follows:
-`temporal workflow query [command options] [arguments]`
+`temporal workflow query [command options]`
 
 - [--address](/cli/cmd-options/address)
 
