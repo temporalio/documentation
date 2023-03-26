@@ -11,6 +11,10 @@
   "sections": [
     {
       "type": "p",
+      "id": "cli/release-message"
+    },
+    {
+      "type": "p",
       "id": "tctl-v1/activity/index"
     },
     {

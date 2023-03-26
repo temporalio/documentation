@@ -2,9 +2,9 @@
 id: end-time
 title: temporal  end-time
 sidebar_label: end-time
-description: Definition for the end-time command option.
+description: Backfill end time.
 tags:
-	- cli
+    - cli
 ---
 
 Backfill end time.

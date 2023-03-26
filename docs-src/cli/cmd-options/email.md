@@ -2,9 +2,9 @@
 id: email
 title: temporal  email
 sidebar_label: email
-description: Definition for the email command option.
+description: Owner email
 tags:
-	- cli
+    - cli
 ---
 
 Owner email

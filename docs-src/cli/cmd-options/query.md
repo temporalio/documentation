@@ -2,9 +2,9 @@
 id: query
 title: temporal  query
 sidebar_label: query
-description: Definition for the query command option.
+description: Visibility Query of Search Attributes describing the Workflow Executions to reset.
 tags:
-	- cli
+    - cli
 ---
 
 Alias: **-q**

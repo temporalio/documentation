@@ -2,9 +2,9 @@
 id: concurrency
 title: temporal  concurrency
 sidebar_label: concurrency
-description: Definition for the concurrency command option.
+description: Request concurrency. 
 tags:
-	- cli
+    - cli
 ---
 
 Request concurrency. (default: 10)

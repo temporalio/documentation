@@ -2,9 +2,9 @@
 id: input-separator
 title: temporal  input-separator
 sidebar_label: input-separator
-description: Definition for the input-separator command option.
+description: Separator for the input file.
 tags:
-	- cli
+    - cli
 ---
 
-Separator for the input file. The default is a tab (	). (default: 	)
+Separator for the input file. The default is a tab ('\t'). (default: '\t')

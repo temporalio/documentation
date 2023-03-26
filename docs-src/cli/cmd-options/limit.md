@@ -2,9 +2,9 @@
 id: limit
 title: temporal  limit
 sidebar_label: limit
-description: Definition for the limit command option.
+description: Number of items to print. 
 tags:
-	- cli
+    - cli
 ---
 
 Number of items to print. (default: 0)

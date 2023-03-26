@@ -2,9 +2,9 @@
 id: color
 title: temporal  color
 sidebar_label: color
-description: Definition for the color command option.
+description: When to use color
 tags:
-	- cli
+    - cli
 ---
 
 when to use color: auto, always, never. (default: auto)
