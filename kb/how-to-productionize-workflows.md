@@ -7,8 +7,10 @@ tags:
 date: 2023-03-31T00:00:00Z
 ---
 
-You've learned about [Temporal](/temporal), checked out our samples, written a few [Workflows](workflows), and now you're ready to productionize.
+You've learned about [Temporal](/temporal), checked out our samples, written a few [Workflows](/workflows), and now you're ready to productionize.
 In this article, we outline some techniques you can employ to ensure that your Workflows are ready for the future.
+
+<!-- truncate -->
 
 ## Future-proofing your Payloads
 
@@ -72,7 +74,7 @@ Three approaches are available to you at this time: Task Queue–based versionin
 Each approach has merits and demerits.
 (We're also [working toward](https://github.com/temporalio/proposals/blob/master/versioning/worker-versions.md) making Task Queue–based versioning a first-class concept built into Temporal, but that's not quite ready.)
 
-The fundamental recommendation here is to use Task Queue–based versioning whenever you can, and use the Patch and GetVersion APIs if your Workflows live long enough that you cannot afford to wait for them to complete before changing their behavior.
+The fundamental recommendation here is to use [Task Queue–based versioning](#task-queuebased-versioning) whenever you can, and use the [Patch and GetVersion APIs](#patch-and-getversion-apis) if your Workflows live long enough that you cannot afford to wait for them to complete before changing their behavior.
 
 ### Task Queue–based versioning
 
