@@ -18,7 +18,7 @@ The first step is to use one object, struct, or similar for each input and outpu
 For example, rather than defining your Workflow like this—
 
 ```typescript
-export async function myWorkflow(foo: string): Promise<string>
+export async function myWorkflow(foo: string): Promise<string>;
 ```
 
 —define it like this:
@@ -26,7 +26,9 @@ export async function myWorkflow(foo: string): Promise<string>
 ```typescript
 type MyWorkflowInput = { foo: string };
 type MyWorkflowOuptut = { result: string };
-export async function myWorkflow(foo: MyWorkflowInput): Promise<MyWorkflowOutput>
+export async function myWorkflow(
+  foo: MyWorkflowInput,
+): Promise<MyWorkflowOutput>;
 ```
 
 By using this technique, you can add fields in a way that will be compatible with existing [Event Histories](/workflows#event-history) (assuming you use a [Payload Converter](/dataconversion#payload-converter) that can deserialize older [Payloads](/dataconversion#payload), such as JSON).
