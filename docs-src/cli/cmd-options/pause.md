@@ -2,9 +2,9 @@
 id: pause
 title: temporal  pause
 sidebar_label: pause
-description: Definition for the pause command option.
+description: Pauses the Schedule.
 tags:
-	- cli
+    - cli
 ---
 
 Pauses the Schedule.

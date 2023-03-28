@@ -4,7 +4,7 @@ title: temporal workflow execute
 sidebar_label: execute
 description: Start a new Workflow Execution and prints its progress.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal workflow execute` command starts a new [Workflow Execution](/concepts/what-is-a-workflow-execution) and prints its progress.
@@ -14,7 +14,7 @@ Single quotes('') are used to wrap input as JSON.
 
 Use the command options listed below to change how the Workflow Execution behaves during its run.
 Make sure to write the command in this format:
-`temporal workflow execute [command options] [arguments]`
+`temporal workflow execute [command options]`
 
 - [--address](/cli/cmd-options/address)
 

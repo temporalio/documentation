@@ -1210,12 +1210,12 @@
       "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
     },
     {
-      "source": "/application-development/foundations#run-worker-processes",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "source": "/security#codec-server",
+      "destination": "/dataconversion"
     },
     {
-      "source": "/application-development/foundations#connect-to-a-cluster",
-      "destination": "/application-development/foundations#connect-to-a-dev-cluster"
+      "source": "/security#codec-server",
+      "destination": "/dataconversion#codec-server"
     }
   ]
 }

@@ -2,9 +2,9 @@
 id: detail
 title: temporal  detail
 sidebar_label: detail
-description: Definition for the detail command option.
+description: Detail to fail the Activity.
 tags:
-	- cli
+    - cli
 ---
 
 Detail to fail the Activity.
