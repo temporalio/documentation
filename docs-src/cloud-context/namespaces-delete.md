@@ -1,0 +1,29 @@
+---
+id: namespaces-delete
+title: How to delete a Namespace in Temporal Cloud
+sidebar_label: Delete a Namespace
+description: To delete a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.
+tags:
+  - guide-context
+---
+
+:::info
+
+The user who creates a [Namespace](/namespaces) is automatically granted [Namespace Admin](/cloud/#namespace-level-permissions) permission for that Namespace.
+
+To delete a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/#account-level-roles).
+
+:::
+
+### Delete a Namespace using Temporal Cloud UI
+
+1. Go to the Temporal Cloud UI and log in.
+2. On the left side of the window, click **Namespaces**.
+3. On the **Namespaces** page select the Namespace Name you have Developer or Global Admin permission for.
+4. Click **Edit** in the upper-right portion of the window.
+5. In the text box provide, type `DELETE` to confirm the deletion of that Namespace.
+6. Click **Delete**.
+
+### Delete a Namespace using tcld
+
+This functionality is in development.
