@@ -7,12 +7,12 @@ tags:
 date: 2023-03-31T00:00:00Z
 ---
 
-You've learned about [Temporal](/concepts/what-is-temporal), checked out our samples, written a few [Workflows](/concepts/what-is-a-workflow), and now you're ready to productionize.
+You've learned about [Temporal](/temporal), checked out our samples, written a few [Workflows](workflows), and now you're ready to productionize.
 In this article, we outline some techniques you can employ to ensure that your Workflows are ready for the future.
 
 ## Future-proofing your Payloads
 
-One of the easiest things you can do to future-proof your Workflows is to ensure that the inputs and outputs of your Workflows and [Activities](/concepts/what-is-an-activity) are ready for changes.
+One of the easiest things you can do to future-proof your Workflows is to ensure that the inputs and outputs of your Workflows and [Activities](/activities) are ready for changes.
 The first step is to use one object, struct, or similar for each input and output.
 
 For example, rather than defining your Workflow like this—
@@ -29,7 +29,7 @@ type MyWorkflowOuptut = { result: string };
 export async function myWorkflow(foo: MyWorkflowInput): Promise<MyWorkflowOutput>
 ```
 
-By using this technique, you can add fields in a way that will be compatible with existing [Event Histories](/concepts/what-is-an-event-history) (assuming you use a [Payload Converter](/concepts/what-is-a-payload-converter) that can deserialize older [Payloads](/concepts/what-is-a-payload), such as JSON).
+By using this technique, you can add fields in a way that will be compatible with existing [Event Histories](/workflows#event-history) (assuming you use a [Payload Converter](/dataconversion#payload-converter) that can deserialize older [Payloads](/dataconversion#payload), such as JSON).
 We recommend doing this for all your Workflows and Activities in production.
 
 You can go even farther by defining your inputs and outputs using [Protocol Buffers (protobuf)](https://protobuf.dev/) or another interface definition language (IDL).
@@ -37,9 +37,9 @@ We support protobuf with built-in converters.
 
 ## Dealing with very long-lived or very event-heavy Workflows
 
-If you know that your Workflow will live for a very long time or generates a large volume of [Events](/concepts/what-is-an-event), you need to deal with the Event [limits](/workflows#limits) and [Continue-As-New](/concepts/what-is-continue-as-new) at some point.
+If you know that your Workflow will live for a very long time or generates a large volume of [Events](/workflows#event), you need to deal with the Event [limits](/workflows#limits) and [Continue-As-New](/workflows#continue-as-new) at some point.
 
-One technique to prepare for this eventuality (and at the same time make your life easier when you need to make changes to the [Workflow Definition](/concepts/what-is-a-workflow-definition)) is to structure your Workflow as an "entity Workflow."
+One technique to prepare for this eventuality (and at the same time make your life easier when you need to make changes to the [Workflow Definition](/workflows#workflow-definition)) is to structure your Workflow as an "entity Workflow."
 
 ### Make all non-transient state serializable
 
@@ -55,12 +55,12 @@ In practice, this often ends up looking like a state machine.
 
 Set up a mechanism to force your Workflow to Continue-As-New on demand.
 The easiest way to do this is to define a Signal handler that continues the Workflow when received.
-Be sure that all previously received Signals have been processed and that all running [Child Workflows](/concepts/what-is-a-child-workflow) have been waited on or otherwise dealt with.
+Be sure that all previously received Signals have been processed and that all running [Child Workflows](/workflows#child-workflow) have been waited on or otherwise dealt with.
 
 The newly started Workflow then unpacks the state in the input and can "resume" the Workflow according to your business logic.
 
 A huge benefit of this approach is that you avoid making patches to running Workflows.
-Instead, tell them all to continue onto a new [Task Queue](/concepts/what-is-a-task-queue) with [Workers](/concepts/what-is-a-worker) that have the updated Workflow code.
+Instead, tell them all to continue onto a new [Task Queue](/tasks#task-queue) with [Workers](/workers) that have the updated Workflow code.
 
 ## When and how to make changes to your Workflow code
 
