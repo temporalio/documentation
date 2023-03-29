@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday March 29 2023 13:46:59 PM -0400
+Last assembled: Wednesday March 29 2023 13:48:30 PM -0400
 
 55 guide configurations found.
 
@@ -8,7 +8,7 @@ Last assembled: Wednesday March 29 2023 13:46:59 PM -0400
 
 839 information nodes are attached to guides.
 
-The "Link Magic" Activity has transformed the following "information node" identifiers into site paths:
+The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
 concepts/what-is-visibility -> /visibility#
 

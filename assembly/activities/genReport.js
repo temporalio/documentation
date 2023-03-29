@@ -26,7 +26,7 @@ export async function genReport(config) {
   str = `${str}${totalGuides} guide configurations found.\n\n`;
   str = `${str}${sourceObjects.length} information nodes found.\n\n`;
   str = `${str}${totalNodes} information nodes are attached to guides.\n\n`;
-  str = `${str}The "Link Magic" Activity has transformed the following "information node" identifiers into site paths:\n\n`;
+  str = `${str}The "Link Magic" Activity transformed the following "information node" identifiers into site paths:\n\n`;
   const linkMappingPath = path.join(config.root_dir, config.temp_write_dir, config.link_mapping_file_name);
   const linkMappings = await fs.readJSON(linkMappingPath);
   for (const mapping of linkMappings) {
