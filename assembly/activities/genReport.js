@@ -23,14 +23,14 @@ export async function genReport(config) {
       }
     }
   }
-  str = `${str}${totalGuides} guide configurations found.\n`;
-  str = `${str}${sourceObjects.length} information nodes found.\n`;
-  str = `${str}${totalNodes} information nodes are attached to guides.\n`;
-  str = `${str}Link magic has transformed the following node ids into site paths:\n`;
+  str = `${str}${totalGuides} guide configurations found.\n\n`;
+  str = `${str}${sourceObjects.length} information nodes found.\n\n`;
+  str = `${str}${totalNodes} information nodes are attached to guides.\n\n`;
+  str = `${str}The "Link Magic" Activity has transformed the following "information node" identifiers into site paths:\n\n`;
   const linkMappingPath = path.join(config.root_dir, config.temp_write_dir, config.link_mapping_file_name);
   const linkMappings = await fs.readJSON(linkMappingPath);
   for (const mapping of linkMappings) {
-    str = `${str}${mapping.node_id} -> ${mapping.maps_to}\n`;
+    str = `${str}${mapping.node_id} -> ${mapping.maps_to}\n\n`;
   }
   str = `${str}\n`;
   const reportFilePath = path.join(config.root_dir, config.assembly_report_file_name);
