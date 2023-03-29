@@ -3354,6 +3354,52 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 </TabItem>
 </Tabs>
 
+## Schedule a Workflow
+
+Creates a new Schedule. Newly created Schedules return a Schedule ID to be used in other Schedule commands.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="java">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
 ## Timers
 
 A Workflow can set a durable timer for a fixed time period.
@@ -4073,3 +4119,4 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 </TabItem>
 </Tabs>
+

@@ -9,7 +9,7 @@ An Activity Execution can return inputs and other Activity values.
 
 The following example defines an Activity that takes a string as input and returns a string.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dacx-poc/your_app/your_activities_dacx.py">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```py
 // ...

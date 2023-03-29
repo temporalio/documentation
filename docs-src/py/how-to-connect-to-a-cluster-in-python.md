@@ -7,7 +7,7 @@ description: Connect a Temporal Client to a Cluster in the Python SDK.
 
 Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/dacx-poc/your_app/run_workflow_dacx.py">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```py
 // ...
@@ -15,8 +15,8 @@ async def main():
     client = await Client.connect("localhost:7233")
 
     result = await client.execute_workflow(
-        YourWorkflow.run, "your name", id="my-workflow-id", task_queue="my-task-queue"
-    )
-
-    print(f"Result: {result}")
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
 ```

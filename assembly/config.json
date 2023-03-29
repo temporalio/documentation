@@ -37,8 +37,7 @@
         },
         {
             "org": "temporalio",
-            "name": "documentation-samples-python",
-            "ref": "dacx-poc"
+            "name": "documentation-samples-python"
         }
     ]
 }
