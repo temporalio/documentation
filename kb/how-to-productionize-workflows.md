@@ -112,4 +112,4 @@ For details, see the language-specific links in [Workflow Versioning](/workflows
 
 - Conceptually complex.
 - Cognitive burden of needing to understand how both the "old" and "new" code paths work.
-- If used indefinitely on the same workflow definition, can lead to a mess of branching.
+- If used indefinitely on the same Workflow Definition, can lead to a mess of branching.
