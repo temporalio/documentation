@@ -2,9 +2,9 @@
 id: tls-cert-path
 title: temporal  tls-cert-path
 sidebar_label: tls-cert-path
-description: Definition for the tls-cert-path command option.
+description: Path to x509 certificate.
 tags:
-	- cli
+    - cli
 ---
 
 Path to x509 certificate.

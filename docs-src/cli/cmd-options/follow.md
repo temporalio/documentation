@@ -2,9 +2,9 @@
 id: follow
 title: temporal  follow
 sidebar_label: follow
-description: Definition for the follow command option.
+description: Follow the progress of a Workflow Execution.
 tags:
-	- cli
+    - cli
 ---
 
 Alias: **-f**: Follow the progress of a Workflow Execution.

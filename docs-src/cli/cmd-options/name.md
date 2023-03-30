@@ -2,9 +2,9 @@
 id: name
 title: temporal  name
 sidebar_label: name
-description: Definition for the name command option.
+description: Frontend address of the remote Cluster.
 tags:
-	- cli
+    - cli
 ---
 
 Frontend address of the remote Cluster.

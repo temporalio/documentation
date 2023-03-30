@@ -1,17 +1,17 @@
 ---
 id: remove
-title: temporal operator remove
+title: temporal operator cluster remove
 sidebar_label: remove
 description: Remove a remote Cluster.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal operator cluster remove` command removes a remote [Cluster](/concepts/what-is-a-temporal-cluster) from the system.
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal operator cluster remove [command options] [arguments]`
+`temporal operator cluster remove [command options]`
 
 - [--address](/cli/cmd-options/address)
 

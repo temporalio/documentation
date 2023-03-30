@@ -2,9 +2,9 @@
 id: task-queue-type
 title: temporal  task-queue-type
 sidebar_label: task-queue-type
-description: Definition for the task-queue-type command option.
+description: Task Queue type [workflow|activity].
 tags:
-	- cli
+    - cli
 ---
 
 Task Queue type [workflow|activity] (default: workflow)

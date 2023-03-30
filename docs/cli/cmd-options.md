@@ -78,7 +78,7 @@ Optional Cron Schedule for the Workflow. Cron spec is formatted as:
 
 ## data
 
-Namespace data in a format key=value
+Namespace data in a key=value format
 
 ## db-filename
 
@@ -188,7 +188,7 @@ Number of goroutines to run in parallel. Each goroutine processes one line for e
 
 ## input-separator
 
-Separator for the input file. The default is a tab (	). (default: 	)
+Separator for the input file. The default is a tab ('\t'). (default: '\t')
 
 ## input
 
@@ -314,7 +314,7 @@ Print raw data as json (prefer this over -o json for scripting).
 
 ## reapply-type
 
-Event types to reapply after the reset point: , Signal, None. (default: All)
+Event types to reapply after the reset point: Signal, None, . (default: All)
 
 ## reason
 

@@ -1,17 +1,17 @@
 ---
 id: describe
-title: temporal operator describe
+title: temporal operator cluster describe
 sidebar_label: describe
 description: Show information about the Cluster.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal operator cluster describe` command shows information about the [Cluster](/concepts/what-is-a-temporal-cluster).
 
 Use the options listed below to change the output of this command.
 Make sure to write the command as follows:
-`temporal operator cluster describe [command options] [arguments]`
+`temporal operator cluster describe [command options]`
 
 - [--address](/cli/cmd-options/address)
 

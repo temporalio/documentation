@@ -2,9 +2,9 @@
 id: cluster
 title: temporal  cluster
 sidebar_label: cluster
-description: Definition for the cluster command option.
+description: Cluster name
 tags:
-	- cli
+    - cli
 ---
 
 Cluster name
