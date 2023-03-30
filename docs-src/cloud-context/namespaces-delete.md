@@ -9,7 +9,7 @@ tags:
 
 :::info
 
-To delete a Namespace, a user must have the Developer or Global Admin account-level [Role](/cloud/#account-level-roles).
+To delete a Namespace, a user must have Namespace Admin [permission](/cloud/#namespace-level-permissions) for that Namespace.
 
 :::
 
