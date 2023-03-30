@@ -10,27 +10,21 @@ tags:
 The `temporal workflow reset-batch` command resets a batch of [Workflow Executions](/concepts/what-is-a-workflow-execution) by `resetType`.
 Resetting a [Workflow](/concepts/what-is-a-workflow) allows the process to resume from a certain point without losing your parameters or [Event History](/concepts/what-is-an-event-history).
 
+The set of Workflow Executions to reset can be specified in an input file.
+The input file must have a [Workflow ID](/concepts/what-is-a-workflow-id) on each line.
+
+`temporal workflow reset-batch --input-file=MyInput --input-separator="\t"`
+
+Workflow Executions can also be found by [Query](/concepts/what-is-a-query).
+`temporal workflow reset-batch --query=MyQuery
+
 Use the options listed below to change reset behavior.
-Make sure to write the command as follows:
-`temporal workflow reset-batch [command options]`
-
-- [--address](/cli/cmd-options/address)
-
-- [--codec-auth](/cli/cmd-options/codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
-
-- [--color](/cli/cmd-options/color)
-
-- [--context-timeout](/cli/cmd-options/context-timeout)
 
 - [--dry-run](/cli/cmd-options/dry-run)
 
-- [--env](/cli/cmd-options/env)
-
 - [--exclude-file](/cli/cmd-options/exclude-file)
 
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
+- [--fields](/cli/cmd-options/fields)
 
 - [--input-file](/cli/cmd-options/input-file)
 
@@ -38,9 +32,15 @@ Make sure to write the command as follows:
 
 - [--input-separator](/cli/cmd-options/input-separator)
 
-- [--namespace](/cli/cmd-options/namespace)
+- [--limit](/cli/cmd-options/limit)
+
+- [--no-pager](/cli/cmd-options/no-pager)
 
 - [--non-deterministic](/cli/cmd-options/non-deterministic)
+
+- [--output](/cli/cmd-options/output)
+
+- [--pager](/cli/cmd-options/pager)
 
 - [--query](/cli/cmd-options/query)
 
@@ -50,14 +50,6 @@ Make sure to write the command as follows:
 
 - [--skip-current-open](/cli/cmd-options/skip-current-open)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)
 
 - [--type](/cli/cmd-options/type)

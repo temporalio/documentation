@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Promote local namespace to global namespace
+Promote local namespace to global namespace.

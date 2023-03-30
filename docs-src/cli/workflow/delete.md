@@ -10,35 +10,19 @@ tags:
 The `temporal workflow delete` command deletes the specified [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal workflow delete [command options]`
 
-- [--address](/cli/cmd-options/address)
+- [--fields](/cli/cmd-options/fields)
 
-- [--codec-auth](/cli/cmd-options/codec-auth)
+- [--limit](/cli/cmd-options/limit)
 
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+- [--no-pager](/cli/cmd-options/no-pager)
 
-- [--color](/cli/cmd-options/color)
+- [--output](/cli/cmd-options/output)
 
-- [--context-timeout](/cli/cmd-options/context-timeout)
-
-- [--env](/cli/cmd-options/env)
-
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
-
-- [--namespace](/cli/cmd-options/namespace)
+- [--pager](/cli/cmd-options/pager)
 
 - [--run-id](/cli/cmd-options/run-id)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)
 
 - [--workflow-id](/cli/cmd-options/workflow-id)

@@ -7,4 +7,5 @@ tags:
     - cli
 ---
 
-The Event Id for any Event after WorkflowTaskStarted you want to reset to (exclusive). It can be WorkflowTaskCompleted, WorkflowTaskFailed or others.
+The Event Id for any Event after WorkflowTaskStarted you want to reset to (exclusive).
+It can be WorkflowTaskCompleted, WorkflowTaskFailed or others.
