@@ -15,7 +15,6 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -44,6 +43,4 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 	}
 	return workflowResult, nil
 }
-
 ```
-

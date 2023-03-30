@@ -7,4 +7,6 @@ tags:
   - guide-context
 ---
 
-Creates a new Schedule. Newly created Schedules return a Schedule ID to be used in other Schedule commands.
+Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
+
+Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
