@@ -13,18 +13,20 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Activities.
 
-In day-to-day conversations, the term _Activity_ frequently denotes either an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>, an <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Type?</span><br /><br /><span class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-type">Learn more</a></span></span></a>, or an <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>.
+In day-to-day conversation, the term _Activity_ denotes an <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>, <a class="tdlp" href="#activity-type">Activity Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Type?</span><br /><br /><span class="tdlppd">An Activity Type is the mapping of a name to an Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-type">Learn more</a></span></span></a>, or <a class="tdlp" href="#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>.
 Temporal documentation aims to be explicit and differentiate between them.
 
-An Activity is a normal function or object method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
+An Activity is a normal function or method that executes a single, well-defined action (either short or long running), such as calling another service, transcoding a media file, or sending an email message.
+Activity code can be non-deterministic.
+We recommend that it be [idempotent](/activities#idempotency).
 
 Workflow code orchestrates the execution of Activities, persisting the results.
-If an Activity Function Execution fails, any future execution starts from initial state (except Heartbeats).
-Therefore, an Activity function is allowed to contain any code without restrictions.
+If an Activity Function Execution fails, any future execution starts from initial state (except <a class="tdlp" href="#activity-heartbeat">Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-heartbeat">Learn more</a></span></span></a>).
 
 Activity Functions are executed by Worker Processes.
-When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the `ActivityTaskCompleted` Event.
+When the Activity Function returns, the Worker sends the results back to the Temporal Cluster as part of the [ActivityTaskCompleted](/references/events#activitytaskcompleted) Event.
 The Event is added to the Workflow Execution's Event History.
+For other Activity-related Events, see [Activity Events](/workflows#activity-events).
 
 ## Activity Definition
 
@@ -111,7 +113,7 @@ An Activity may receive Cancellation if:
 - The Workflow Run reached a [Closed state](/workflows#status), in which case the Cancelled Failure will have `message: 'NOT_FOUND'`.
 - In some SDKs:
   - The Worker is shutting down.
-  - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>. This fails the Activity Task Execution with an Application Failure.
+  - An Activity sends a Heartbeat but the Heartbeat details can't be converted by the Worker's configured <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>. This fails the Activity Task Execution with an Application Failure.
 
 There are different ways to receive Cancellation depending on the SDK. <!-- TODO link to dev guide -->
 An Activity may accept or ignore Cancellation:

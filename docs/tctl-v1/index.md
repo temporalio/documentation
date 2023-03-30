@@ -11,6 +11,16 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::success Temporal CLI is now available!
+
+The new [Temporal CLI](/cli) is available for use.
+
+tctl v1.17 can still be used with Temporal Server version 1.20 and is expected to be compatible with Temporal Server version 1.21.
+
+tctl is expected to be fully deprecated by Temporal Server version 1.22
+
+:::
+
 :::note
 
 This documentation reflects tctl version 1.17
@@ -86,11 +96,11 @@ The default value is 5.
 
 ### --data_converter_plugin
 
-Specify the name of the executable for a headers provider plugin.
+Specify the name of the executable for a custom Data Converter plugin.
 
 ### --headers_provider_plugin
 
-Specify the name of the executable for a custom Data Converter plugin.
+Specify the name of the executable for a headers provider plugin.
 
 ### --help
 

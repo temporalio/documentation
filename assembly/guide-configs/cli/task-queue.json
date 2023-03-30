@@ -1,0 +1,25 @@
+{
+  "file_name": "task-queue.md",
+  "file_dir": "cli",
+  "id": "task-queue",
+  "title": "Temporal CLI task-queue command reference",
+  "sidebar_label": "task-queue",
+  "description": "How to use the Temporal CLI task-queue command",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cli/task-queue/index"
+    },
+    {
+      "type": "h2",
+      "id": "cli/task-queue/describe"
+    },
+    {
+      "type": "h2",
+      "id": "cli/task-queue/list-partition"
+    }
+  ]
+}

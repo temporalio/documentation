@@ -15,7 +15,7 @@
     },
     {
       "type": "h2",
-      "id": "clusters/quick-install"
+      "id": "clusters/how-to-install-temporal-cli"
     },
     {
       "type": "h2",
@@ -106,14 +106,14 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/connect-to-a-cluster"
+      "id": "app-dev-context/connect-to-a-dev-cluster"
     },
     {
       "type": "langtabs",
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-connect-to-a-cluster-in-go"
+          "id": "go/how-to-connect-to-a-development-cluster-in-go"
         },
         {
           "lang": "java",
@@ -130,6 +130,35 @@
         {
           "lang": "typescript",
           "id": "typescript/how-to-connect-to-a-cluster-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/connect-to-temporal-cloud"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-connect-to-temporal-cloud-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
         }
       ]
     },
@@ -458,7 +487,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/run-worker-processes"
+      "id": "app-dev-context/run-a-dev-worker"
     },
     {
       "type": "langtabs",
@@ -482,6 +511,35 @@
         {
           "lang": "typescript",
           "id": "typescript/how-to-develop-a-worker-program-in-typescript"
+        }
+      ]
+    },
+    {
+      "type": "h2",
+      "id": "app-dev-context/run-a-temporal-cloud-worker"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-run-a-temporal-cloud-worker-in-go"
+        },
+        {
+          "lang": "java",
+          "id": "none"
+        },
+        {
+          "lang": "php",
+          "id": "none"
+        },
+        {
+          "lang": "python",
+          "id": "none"
+        },
+        {
+          "lang": "typescript",
+          "id": "none"
         }
       ]
     },
