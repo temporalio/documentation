@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Temporal SDKs provide a [Data Converter](/concepts/what-is-a-data-converter) that can be customized with a custom [Payload Codec](/concepts/what-is-a-payload-codec) to encode and secure your data.
+Each Temporal SDK provides a [Data Converter](/concepts/what-is-a-data-converter) that can be customized with a custom [Payload Codec](/concepts/what-is-a-payload-codec) to encode and secure your data.
 
 For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/prod-readiness-context/data-encryption).
 
