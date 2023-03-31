@@ -13,8 +13,7 @@ Together these components create a runtime for Workflow Executions; that is-they
 
 ![The Temporal Platform](/diagrams/temporal-platform-simple.svg)
 
-The Temporal Cluster is open source and can be operated by you.
-[Temporal Cloud](/concepts/what-is-temporal-cloud) is a set of Clusters operated by us.
+The Temporal Cluster is open source and can be operated by you. [Temporal Cloud](/concepts/what-is-temporal-cloud) is a set of Clusters operated by us.
 
 Worker Processes are hosted and operated by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.

@@ -32,8 +32,7 @@ Together these components create a runtime for Workflow Executions; that is-they
 
 <div class="tdiw"><div class="tditw"><p class="tdit">The Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-simple.svg" alt="The Temporal Platform" height="740" width="1140" /></div></div>
 
-The Temporal Cluster is open source and can be operated by you.
-<a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a> is a set of Clusters operated by us.
+The Temporal Cluster is open source and can be operated by you. <a class="tdlp" href="/cloud/index#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#">Learn more</a></span></span></a> is a set of Clusters operated by us.
 
 Worker Processes are hosted and operated by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.
