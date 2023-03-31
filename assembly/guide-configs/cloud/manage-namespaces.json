@@ -24,6 +24,10 @@
     {
       "type": "h2",
       "id": "cloud-context/namespaces-manage"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/namespaces-delete"
     }
   ]
 }
