@@ -9,3 +9,6 @@ export {genMarkdownGuides} from "./genMarkdownGuides.js";
 export {genGlossary} from "./genGlossary.js";
 export {getQuestionsFromNotion} from "./getQuestionsFromNotion.js";
 export {updateCoverageBoard} from "./updateCoverageBoard.js";
+export {genCLI} from "./genCLI.js";
+export {getSamplesRepos} from "./getSamplesRepos.js";
+export {createNodesFromSamples} from "./createNodesFromSamples.js";

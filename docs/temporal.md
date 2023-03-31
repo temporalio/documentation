@@ -38,7 +38,7 @@ The Temporal Cluster is open source and can be operated by you.
 Worker Processes are hosted and operated by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.
 
-<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" height="1720" width="1240" /></div></div>
+<div class="tdiw"><div class="tditw"><p class="tdit">Basic component topology of the Temporal Platform</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-platform-component-topology.svg" alt="Basic component topology of the Temporal Platform" height="1440" width="1240" /></div></div>
 
 ### Temporal versus traditional
 
@@ -93,7 +93,7 @@ The Temporal Platform addresses both platform-level failures and application-lev
 A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system.
 This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application and can be detected and mitigated at a platform level.
 
-Temporal is made to insulate your application from platform-level failures.
+Temporal is made to insulate your application from platform-level failures, and any failure that can be handled transparently is pushed into the platform.
 In Temporal, platform-level failures include network issues, process crashes, hardware failures, and transient errors in downstream services or third-party APIs.
 
 #### Application-level failure
@@ -167,10 +167,7 @@ Temporal offers methods of authenticating and authorizing client API calls withi
 
 Some SDKs support running Workflows inside a sandbox environment.
 
-<Tabs>
-  <TabItem value="python" label="Python">
-
-The Temporal Python SDK enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
+The Temporal Python SDK, for example, enables you to run Workflow code in a sandbox environment to help prevent non-determinism errors in your application.
 The Temporal Workflow Sandbox for Python is not completely isolated, and some libraries can internally mutate state, which can result in breaking determinism.
 
 By default, Workflows run in a sandbox environment.
@@ -178,8 +175,6 @@ If a Workflow Execution performs a non-deterministic event, an exception is thro
 The Workflow will not progress until the code is fixed.
 
 For more information, see the knowledge base article on [Python sandbox environments](/kb/python-sandbox-environment).
-</TabItem>
-</Tabs>
 
 ### SDKs in development
 

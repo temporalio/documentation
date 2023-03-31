@@ -45,7 +45,7 @@ Temporal also provides a dashboard you can integrate with graphing services like
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -108,20 +108,13 @@ Metrics in Python are configured globally; therefore, you should set a Prometheu
 The following example exposes a Prometheus endpoint on port `9000`.
 
 ```python
-from temporalio.bridge.telemetry import (
-    init_telemetry,
-    TelemetryConfig,
-    PrometheusMetricsConfig,
-)
+from temporalio.runtime import Runtime, TelemetryConfig, PrometheusConfig
 
-init_telemetry(
-    TelemetryConfig(
-        prometheus_metrics=PrometheusMetricsConfig(bind_address="0.0.0.0:9000")
-    )
-)
+# Create a new runtime that has telemetry enabled. Create this first to avoid
+# the default Runtime from being lazily created.
+new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_address="0.0.0.0:9000")))
+my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
-
-<!-- https://github.com/temporalio/sdk-python/issues/125 -->
 
 </TabItem>
 <TabItem value="typescript">
@@ -157,7 +150,7 @@ For information about how to configure exporters and instrument your code, see [
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -292,7 +285,7 @@ The SDK core uses `WARN` for its default logging level.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -525,7 +518,7 @@ Use a custom logger for logging.
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -642,7 +635,7 @@ You can do this with <a class="tdlp" href="/visibility#search-attribute">Search 
 
 - <a class="tdlp" href="/visibility#default-search-attributes">Default Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#default-search-attributes">Learn more</a></span></span></a> like `WorkflowType`, `StartTime` and `ExecutionStatus` are automatically added to Workflow Executions.
 - _Custom Search Attributes_ can contain their own domain-specific data (like `customerId` or `numItems`).
-  - A few <a class="tdlp" href="/visibility#custom-search-attributes">generic Custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's <a class="tdlp" href="/application-development/foundations#docker-compose">Docker Compose<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#docker-compose">Learn more</a></span></span></a>.
+  - A few <a class="tdlp" href="/visibility#custom-search-attributes">generic Custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> like `CustomKeywordField` and `CustomIntField` are created by default in Temporal's [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker-compose).
 
 The steps to using custom Search Attributes are:
 
@@ -661,7 +654,7 @@ Here is how to query Workflow Executions:
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -685,9 +678,12 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-Content is planned but not yet available.
+Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> as an argument to filter the listed Workflows.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```python
+async for workflow in client.list_workflows('WorkflowType="MyWorkflowClass"'):
+    print(f"Workflow: {workflow.id}")
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -714,7 +710,7 @@ After you've created custom Search Attributes in your Cluster (using `tctl searc
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -843,7 +839,7 @@ You can upsert Search Attributes to add or update Search Attributes from within 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">
@@ -933,7 +929,7 @@ class GreetingWorkflow implements GreetingWorkflowInterface
 </TabItem>
 <TabItem value="python">
 
-To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function and set it to an empty list.
+To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) method.
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
@@ -979,7 +975,7 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 
 <Tabs
 defaultValue="go"
-groupId="site-lang"
+queryString="lang"
 values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
 
 <TabItem value="go">

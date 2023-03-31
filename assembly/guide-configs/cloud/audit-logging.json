@@ -1,0 +1,41 @@
+{
+  "file_name": "how-to-manage-audit-logging.md",
+  "id": "how-to-manage-audit-logging",
+  "file_dir": "cloud",
+  "title": "How to manage Audit Logging in Temporal Cloud",
+  "sidebar_label": "Audit Logging",
+  "description": "Create, consume, and manage Audit Logs.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-audit-logging"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/audit-logging-supported-integrations"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/audit-logging-supported-events"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/how-to-configure-audit-logging"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/how-to-consume-an-audit-log"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/how-to-troubleshoot-audit-logging"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/how-to-delete-an-audit-log-sink"
+    }
+  ]
+}

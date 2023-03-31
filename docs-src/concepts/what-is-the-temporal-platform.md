@@ -74,7 +74,7 @@ The Temporal Platform addresses both platform-level failures and application-lev
 A platform-level failure refers to a failure that occurs within the underlying platform or infrastructure that supports an application or system.
 This type of failure can often be transparent to the application, meaning it is not directly visible to the user or application and can be detected and mitigated at a platform level.
 
-Temporal is made to insulate your application from platform-level failures.
+Temporal is made to insulate your application from platform-level failures, and any failure that can be handled transparently is pushed into the platform.
 In Temporal, platform-level failures include network issues, process crashes, hardware failures, and transient errors in downstream services or third-party APIs.
 
 #### Application-level failure
