@@ -1208,14 +1208,6 @@
     {
       "source": "/java/:path*",
       "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
-    },
-    {
-      "source": "/security#codec-server",
-      "destination": "/dataconversion"
-    },
-    {
-      "source": "/security#codec-server",
-      "destination": "/dataconversion#codec-server"
     }
   ]
 }
