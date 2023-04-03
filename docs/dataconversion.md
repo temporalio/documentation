@@ -221,7 +221,7 @@ A Codec Server is an HTTP server that uses your custom <a class="tdlp" href="#pa
 
 ![](/img/tctl-diagram-codec-server.svg)
 
-You can <a class="tdlp" href="//production-readiness/develop#data-encryption">create a custom Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to encrypt data using a custom Data Converter</span><br /><br /><span class="tdlppd">Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//production-readiness/develop#data-encryption">Learn more</a></span></span></a> with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
+You can [create a custom Payload Codec](/production-readiness/develop#data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
 
 Using a custom Payload Codec in your Codec Server enables encoding and decoding data remotely through the endpoints that you expose on the Codec Server.
 
@@ -245,7 +245,7 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 When using tctl or the Web UI to perform some operations on a Workflow Execution, you can configure the exposed Codec Server endpoints to remotely encode data sent to the Temporal Server and decode data received from the Temporal Server.
 
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see <a class="tdlp" href="//production-readiness/develop#data-encryption">Data encryption<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to encrypt data using a custom Data Converter</span><br /><br /><span class="tdlppd">Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//production-readiness/develop#data-encryption">Learn more</a></span></span></a>.
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/production-readiness/develop#data-encryption).
 
 Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.
