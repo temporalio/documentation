@@ -26,7 +26,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-use-the-go-sdk"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -55,7 +55,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/api-reference-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -84,7 +84,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/code-samples-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -113,7 +113,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-connect-to-a-development-cluster-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -142,7 +142,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-connect-to-temporal-cloud-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -171,7 +171,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-develop-a-workflow-definition-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -200,7 +200,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-define-workflow-parameters-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -229,7 +229,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-define-workflow-return-values-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -258,7 +258,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-customize-workflow-type-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -287,7 +287,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-handle-workflow-logic-requirements-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -316,7 +316,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-develop-an-activity-definition-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -345,7 +345,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-define-activity-parameters-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -374,7 +374,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-define-activity-return-values-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -403,7 +403,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-customize-activity-type-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -432,7 +432,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-spawn-an-activity-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -465,7 +465,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-get-the-result-of-an-activity-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -494,7 +494,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-develop-a-worker-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -523,7 +523,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-run-a-temporal-cloud-worker-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -552,7 +552,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-register-types-with-a-worker-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -581,7 +581,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-spawn-a-workflow-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -610,7 +610,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-workflow-task-queue-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -639,7 +639,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-workflow-id-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -668,7 +668,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-get-the-result-of-a-workflow-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",

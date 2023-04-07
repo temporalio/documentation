@@ -20,7 +20,7 @@ module.exports = {
         "visibility",
         "clusters",
         "namespaces",
-        "dataconversion"
+        "dataconversion",
       ],
     },
     {
@@ -33,6 +33,17 @@ module.exports = {
         id: "application-development/index",
       },
       items: [
+        {
+          type: "category",
+          label: "Golang",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "application-development/golang/index",
+          },
+          items: ["application-development/golang/foundations"],
+        },
         "application-development/foundations",
         "application-development/features",
         "application-development/observability",
@@ -90,9 +101,7 @@ module.exports = {
         type: "doc",
         id: "production-readiness/index",
       },
-      items: [
-        "production-readiness/develop",
-      ],
+      items: ["production-readiness/develop"],
     },
     "security",
     {
@@ -202,9 +211,7 @@ module.exports = {
       label: "Cluster how-tos",
       collapsible: false,
       collapsed: false,
-      items: [
-        "server/production-deployment",
-      ],
+      items: ["server/production-deployment"],
     },
   ],
 };

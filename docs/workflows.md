@@ -403,7 +403,7 @@ For more information, see the following links.
 
 A Workflow Id is a customizable, application-level identifier for a [Workflow Execution](/workflows#workflow-execution) that is unique to an Open Workflow Execution within a [Namespace](/namespaces).
 
-- <a class="tdlp" href="/application-development/foundations#workflow-id">How to set a Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set a custom Workflow Id in Go</span><br /><br /><span class="tdlppd">Create an instance of `StartWorkflowOptions` from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#workflow-id">Learn more</a></span></span></a>
+- [How to set a Workflow Id](/go/how-to-set-a-workflow-id-in-go)
 
 A Workflow Id is meant to be a business-process identifier such as customer identifier or order identifier.
 

@@ -138,19 +138,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-[![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
+Content is planned but not yet available.
 
-Add the [Temporal Go SDK](https://github.com/temporalio/sdk-go) to your project:
-
-```bash
-go get go.temporal.io/sdk
-```
-
-Or clone the Go SDK repo to your preferred location:
-
-```bash
-git clone git@github.com:temporalio/sdk-go.git
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -255,9 +245,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
+Content is planned but not yet available.
 
-- Short link: [`t.mp/go-api`](https://t.mp/go-api)
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -299,15 +289,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-- [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)
-- [Background Check application](https://github.com/temporalio/background-checks): Provides a non-trivial Temporal Application implementation in conjunction with [application documentation](https://learn.temporal.io/examples/go/background-checks/).
-- [Hello world application template in Go](https://github.com/temporalio/hello-world-project-template-go): Provides a quick-start development app for users.
-  This sample works in conjunction with the ["Hello World!" from scratch tutorial in Go](https://learn.temporal.io/getting_started/go/hello_world_in_go/).
-- [Money transfer application template in Go](https://github.com/temporalio/money-transfer-project-template-go): Provides a quick-start development app for users.
-  It demonstrates a basic "money transfer" Workflow Definition and works in conjunction with the [Run your first app tutorial in Go](https://learn.temporal.io/getting_started/go/first_program_in_go/).
-- [Subscription-style Workflow Definition in Go](https://github.com/temporalio/subscription-workflow-project-template-go): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
-- [eCommerce application example in Go](https://github.com/temporalio/temporal-ecommerce): Showcases a per-user shopping cart–style Workflow Definition that includes an API for adding and removing items from the cart as well as a web UI.
-  This application sample works in conjunction with the [eCommerce in Go tutorial](https://temporal.io/blog/build-an-ecommerce-app-with-temporal-part-1).
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -371,42 +355,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`Dial()`](https://pkg.go.dev/go.temporal.io/sdk/client#Dial) API available in the [`go.temporal.io/sdk/client`](https://pkg.go.dev/go.temporal.io/sdk/client) package to create a [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+Content is planned but not yet available.
 
-If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions), the Client defaults the address and port number to `127.0.0.1:7233`, which is the port of the development Cluster.
-
-If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
-
-```go
-package main
-
-import (
-	"context"
-	"encoding/json"
-	"log"
-	"net/http"
-
-	"documentation-samples-go/yourapp"
-
-	"go.temporal.io/sdk/client"
-)
-
-
-func main() {
-	// Create a Temporal Client to communicate with the Temporal Cluster.
-	// A Temporal Client is a heavyweight object that should be created just once per process.
-	temporalClient, err := client.Dial(client.Options{
-		HostPort: client.DefaultHostPort,
-	})
-	if err != nil {
-		log.Fatalln("Unable to create Temporal Client", err)
-	}
-	defer temporalClient.Close()
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -614,63 +565,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To connect to and run Workflows through Temporal Cloud, you need the following:
+Content is planned but not yet available.
 
-- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
-- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
-  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
-
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go">View source code</a>
-
-```go
-package main
-
-import (
-	"context"
-	"crypto/tls"
-	"encoding/json"
-	"log"
-
-	"documentation-samples-go/cloud"
-
-	"go.temporal.io/sdk/client"
-)
-
-
-func main() {
-	// Get the key and cert from your env or local machine
-	clientKeyPath := "./secrets/yourkey.key"
-	clientCertPath := "./secrets/yourcert.pem"
-	// Specify the host and port of your Temporal Cloud Namespace
-	// Host and port format: namespace.unique_id.tmprl.cloud:port
-	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
-	namespace := "<yournamespace>.<id>"
-	// Use the crypto/tls package to create a cert object
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		log.Fatalln("Unable to load cert and key pair.", err)
-	}
-	// Add the cert to the tls certificates in the ConnectionOptions of the Client
-	temporalClient, err := client.Dial(client.Options{
-		HostPort:  hostPort,
-		Namespace: namespace,
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-	if err != nil {
-		log.Fatalln("Unable to connect to Temporal Cloud.", err)
-	}
-	defer temporalClient.Close()
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -714,27 +611,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
-Below is an example of a basic Workflow Definition.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-```go
-package yourapp
-
-import (
-	"time"
-
-	"go.temporal.io/sdk/workflow"
-)
-// ...
-
-// YourSimpleWorkflowDefintiion is the most basic Workflow Defintion.
-func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
-	// ...
-	return nil
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -868,43 +747,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
-It is used by the Temporal Go SDK to pass around Workflow Execution context, and virtually all the Go SDK APIs that are callable from the Workflow require it.
-It is acquired from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package.
+Content is planned but not yet available.
 
-The `workflow.Context` entity operates similarly to the standard `context.Context` entity provided by Go.
-The only difference between `workflow.Context` and `context.Context` is that the `Done()` function, provided by `workflow.Context`, returns `workflow.Channel` instead of the standard Go `chan`.
-
-Additional parameters can be passed to the Workflow when it is invoked.
-A Workflow Definition may support multiple custom parameters, or none.
-These parameters can be regular type variables or safe pointers.
-However, the best practice is to pass a single parameter that is of a `struct` type, so there can be some backward compatibility if new parameters are added.
-
-All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-```go
-package yourapp
-
-import (
-	"time"
-
-	"go.temporal.io/sdk/workflow"
-)
-
-
-// YourWorkflowParam is the object passed to the Workflow.
-type YourWorkflowParam struct {
-	WorkflowParamX string
-	WorkflowParamY int
-}
-// ...
-// YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1015,45 +860,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-A Go-based Workflow Definition can return either just an `error` or a `customValue, error` combination.
-Again, the best practice here is to use a `struct` type to hold all custom values.
-A Workflow Definition written in Go can return both a custom value and an error.
-However, it's not possible to receive both a custom value and an error in the calling process, as is normal in Go.
-The caller will receive either one or the other.
-Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-```go
-package yourapp
-
-import (
-	"time"
-
-	"go.temporal.io/sdk/workflow"
-)
-// ...
-
-// YourWorkflowResultObject is the object returned by the Workflow.
-type YourWorkflowResultObject struct {
-	WFResultFieldX string
-	WFResultFieldY int
-}
-// ...
-// YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
-// ...
-	if err != nil {
-		return nil, err
-	}
-	// Make the results of the Workflow Execution available.
-	workflowResult := &YourWorkflowResultObject{
-		WFResultFieldX: activityResult.ResultFieldX,
-		WFResultFieldY: activityResult.ResultFieldY,
-	}
-	return workflowResult, nil
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1138,38 +947,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In Go, by default, the Workflow Type name is the same as the function name.
+Content is planned but not yet available.
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#run-a-dev-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
-
-```go
-package main
-
-import (
-	"log"
-
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-	"go.temporal.io/sdk/workflow"
-
-	"documentation-samples-go/yourapp"
-)
-// ...
-func main() {
-// ...
-	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-// ...
-	// Use RegisterOptions to set the name of the Workflow Type for example.
-	registerWFOptions := workflow.RegisterOptions{
-		Name: "JustAnotherWorkflow",
-	}
-	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1270,31 +1050,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In Go, Workflow Definition code cannot directly do the following:
+Content is planned but not yet available.
 
-- Iterate over maps using `range`, because with `range` the order of the map's iteration is randomized.
-  Instead you can collect the keys of the map, sort them, and then iterate over the sorted keys to access the map.
-  This technique provides deterministic results.
-  You can also use a Side Effect or an Activity to process the map instead.
-- Call an external API, conduct a file I/O operation, talk to another service, etc. (Use an Activity for these.)
-
-The Temporal Go SDK has APIs to handle equivalent Go constructs:
-
-- `workflow.Now()` This is a replacement for `time.Now()`.
-- `workflow.Sleep()` This is a replacement for `time.Sleep()`.
-- `workflow.GetLogger()` This ensures that the provided logger does not duplicate logs during a replay.
-- `workflow.Go()` This is a replacement for the `go` statement.
-- `workflow.Channel` This is a replacement for the native `chan` type.
-  Temporal provides support for both buffered and unbuffered channels.
-- `workflow.Selector` This is a replacement for the `select` statement.
-  Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
-- `workflow.Context` This is a replacement for `context.Context`.
-  See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-```go
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1435,48 +1193,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.
-Below is an example of both a basic Activity Definition and of an Activity defined as a Struct method.
-An _Activity struct_ can have more than one method, with each method acting as a separate Activity Type.
-Activities written as struct methods can use shared struct variables, such as:
+Content is planned but not yet available.
 
-- an application level DB pool
-- client connection to another service
-- reusable utilities
-- any other expensive resources that you only want to initialize once per process
-
-Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-```go
-package yourapp
-
-import (
-	"context"
-
-	"go.temporal.io/sdk/activity"
-)
-// ...
-
-// YourSimpleActivityDefinition is a basic Activity Definiton.
-func YourSimpleActivityDefinition(ctx context.Context) error {
-	return nil
-}
-
-// YourActivityObject is the struct that maintains shared state across Activities.
-// If the Worker crashes this Activity object loses its state.
-type YourActivityObject struct {
-	Message *string
-	Number *int
-}
-
-// YourActivityDefinition is your custom Activity Definition.
-// An Activity Definiton is an exportable function.
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1674,26 +1393,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The first parameter of an Activity Definition is `context.Context`.
-This parameter is optional for an Activity Definition, though it is recommended, especially if the Activity is expected to use other Go SDK APIs.
+Content is planned but not yet available.
 
-An Activity Definition can support as many other custom parameters as needed.
-However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-```go
-// YourActivityParam is the struct passed to your Activity.
-// Use a struct so that your function signature remains compatible if fields change.
-type YourActivityParam struct {
-	ActivityParamX string
-	ActivityParamY int
-}
-// ...
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1796,31 +1498,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
-You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-```go
-// YourActivityResultObject is the struct returned from your Activity.
-// Use a struct so that you can return multiple values of different types.
-// Additionally, your function signature remains compatible if the fields change.
-type YourActivityResultObject struct {
-	ResultFieldX string
-	ResultFieldY int
-}
-// ...
-func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
-// ...
-	result := &YourActivityResultObject{
-		ResultFieldX: "Success",
-		ResultFieldY: 1,
-	}
-	// Return the results back to the Workflow Execution.
-	// The results persist within the Event History of the Workflow Execution.
-	return result, nil
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1903,23 +1583,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
+Content is planned but not yet available.
 
-```go
-func main() {
-// ...
-	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-// ...
-	// Use RegisterOptions to change the name of the Activity Type for example.
-	registerAOptions := activity.RegisterOptions{
-		Name: "JustAnotherActivity",
-	}
-	yourWorker.RegisterActivityWithOptions(yourapp.YourSimpleActivityDefinition, registerAOptions)
-	// Run the Worker
-	err = yourWorker.Run(worker.InterruptCh())
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2054,39 +1720,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
-The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
-The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-The Activity function name can be provided as a variable object (no quotations) or as a string.
-The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
-	// Set the options for the Activity Execution.
-	// Either StartToClose Timeout OR ScheduleToClose is required.
-	// Not specifying a Task Queue will default to the parent Workflow Task Queue.
-	activityOptions := workflow.ActivityOptions{
-		StartToCloseTimeout: 10 * time.Second,
-	}
-	ctx = workflow.WithActivityOptions(ctx, activityOptions)
-	activityParam := YourActivityParam{
-		ActivityParamX: param.WorkflowParamX,
-		ActivityParamY: param.WorkflowParamY,
-	}
-	// Use a nil struct pointer to call Activities that are part of a struct.
-	var a *YourActivityObject
-	// Execute the Activity and wait for the result.
-	var activityResult *YourActivityResultObject
-	err := workflow.ExecuteActivity(ctx, a.YourActivityDefinition, activityParam).Get(ctx, &activityResult)
-	if err != nil {
-		return nil, err
-	}
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2401,47 +2037,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The `ExecuteActivity` API call returns an instance of [`workflow.Future`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Futures) which has the following two methods:
+Content is planned but not yet available.
 
-- `Get()`: Takes an instance of the `workflow.Context`, that was passed to the Activity Execution, and a pointer as parameters.
-  The variable associated with the pointer is populated with the Activity Execution result.
-  This call blocks until the results are available.
-- `IsReady()`: Returns `true` when the result of the Activity Execution is ready.
-
-Call the `Get()` method on the instance of `workflow.Future` to get the result of the Activity Execution.
-The type of the result parameter must match the type of the return value declared by the Activity function.
-
-```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
- future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
- var yourActivityResult YourActivityResult
- if err := future.Get(ctx, &yourActivityResult); err != nil {
-   // ...
- }
- // ...
-}
-```
-
-Use the `IsReady()` method first to make sure the `Get()` call doesn't cause the Workflow Execution to wait on the result.
-
-```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
- // ...
- future := workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam)
- // ...
- if(future.IsReady()) {
-   var yourActivityResult YourActivityResult
-   if err := future.Get(ctx, &yourActivityResult); err != nil {
-     // ...
-   }
- }
- // ...
-}
-```
-
-It is idiomatic to invoke multiple Activity Executions from within a Workflow.
-Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2601,79 +2199,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available through the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
+Content is planned but not yet available.
 
-1. An instance of the Temporal Go SDK `Client`.
-1. The name of the Task Queue that it will poll.
-1. An instance of `worker.Options`, which can be empty.
-
-Then, register the Workflow Types and the Activity Types that the Worker will be capable of executing.
-
-Lastly, call either the `Start()` or the `Run()` method on the instance of the Worker.
-Run accepts an interrupt channel as a parameter, so that the Worker can be stopped in the terminal.
-Otherwise, the `Stop()` method must be called to stop the Worker.
-
-:::tip
-
-If you have [`gow`](https://github.com/mitranim/gow) installed, the Worker Process automatically "reloads" when you update the Worker file:
-
-```bash
-go install github.com/mitranim/gow@latest
-gow run worker/main.go # automatically reloads when file changes
-```
-
-:::
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
-
-```go
-package main
-
-import (
-	"log"
-
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-	"go.temporal.io/sdk/workflow"
-
-	"documentation-samples-go/yourapp"
-)
-
-
-func main() {
-	// Create a Temporal Client
-	// A Temporal Client is a heavyweight object that should be created just once per process.
-	temporalClient, err := client.Dial(client.Options{})
-	if err != nil {
-		log.Fatalln("Unable to create client", err)
-	}
-	defer temporalClient.Close()
-	// Create a new Worker.
-	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
-	// Register your Workflow Definitions with the Worker.
-	// Use the ReisterWorkflow or RegisterWorkflowWithOptions method for each Workflow registration.
-	yourWorker.RegisterWorkflow(yourapp.YourWorkflowDefinition)
-// ...
-	// Register your Activity Definitons with the Worker.
-	// Use this technique for registering all Activities that are part of a struct and set the shared variable values.
-	message := "This could be a connection string or endpoint details"
-	number := 100
-	activities := &yourapp.YourActivityObject{
-		Message: &message,
-		Number: &number,
-	}
-	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
-	yourWorker.RegisterActivity(activities)
-// ...
-	// Run the Worker
-	err = yourWorker.Run(worker.InterruptCh())
-	if err != nil {
-		log.Fatalln("Unable to start Worker", err)
-	}
-}
-// ...
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2959,64 +2487,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To run a Worker that talks to Temporal Cloud, you need the following:
+Content is planned but not yet available.
 
-- A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
-- Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
-  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
-
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
-
-```go
-package main
-
-import (
-	"crypto/tls"
-	"log"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-
-	"documentation-samples-go/cloud"
-)
-
-
-func main() {
-	// Get the key and cert from your env or local machine
-	clientKeyPath := "./secrets/yourkey.key"
-	clientCertPath := "./secrets/yourcert.pem"
-	// Specify the host and port of your Temporal Cloud Namespace
-	// Host and port format: namespace.unique_id.tmprl.cloud:port
-	hostPort := "<yournamespace>.<id>.tmprl.cloud:7233"
-	namespace := "<yournamespace>.<id>"
-	// Use the crypto/tls package to create a cert object
-	cert, err := tls.LoadX509KeyPair(clientCertPath, clientKeyPath)
-	if err != nil {
-		log.Fatalln("Unable to load cert and key pair.", err)
-	}
-	// Add the cert to the tls certificates in the ConnectionOptions of the Client
-	temporalClient, err := client.Dial(client.Options{
-		HostPort:  hostPort,
-		Namespace: namespace,
-		ConnectionOptions: client.ConnectionOptions{
-			TLS: &tls.Config{Certificates: []tls.Certificate{cert}},
-		},
-	})
-	if err != nil {
-		log.Fatalln("Unable to connect to Temporal Cloud.", err)
-	}
-	defer temporalClient.Close()
-	// Create a new Worker.
-	yourWorker := worker.New(temporalClient, "cloud-connection-example-go-task-queue", worker.Options{})
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3063,25 +2536,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in-memory mapping between the Workflow Types and their implementations, inside the Worker process.
+Content is planned but not yet available.
 
-**Registering Activity `structs`**
-
-Per <a class="tdlp" href="#develop-activities">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a> best practices, you might have an Activity struct that has multiple methods and fields.
-When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
-
-**Registering multiple Types**
-
-To register multiple Activity Types and/or Workflow Types with the Worker Entity, just make multiple Activity registration calls, but make sure each Type name is unique:
-
-```go
-w.RegisterActivity(ActivityA)
-w.RegisterActivity(ActivityB)
-w.RegisterActivity(ActivityC)
-w.RegisterWorkflow(WorkflowA)
-w.RegisterWorkflow(WorkflowB)
-w.RegisterWorkflow(WorkflowC)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3301,53 +2758,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a [Workflow Execution](/workflows#workflow-execution), use the `ExecuteWorkflow()` method on the Go SDK [`Client`](https://pkg.go.dev/go.temporal.io/sdk/client#Client).
+Content is planned but not yet available.
 
-The `ExecuteWorkflow()` API call requires an instance of [`context.Context`](https://pkg.go.dev/context#Context), an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions), a Workflow Type name, and all variables to be passed to the Workflow Execution.
-The `ExecuteWorkflow()` call returns a Future, which can be used to get the result of the Workflow Execution.
-
-```go
-package main
-
-import (
-  // ...
-
-  "go.temporal.io/sdk/client"
-)
-
-func main() {
-  temporalClient, err := client.Dial(client.Options{})
-  if err != nil {
-    // ...
-  }
-  defer temporalClient.Close()
-  // ...
-  workflowOptions := client.StartWorkflowOptions{
-    // ...
-  }
-  workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
-  if err != nil {
-    // ...
-  }
-  // ...
-}
-
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (YourWorkflowResponse, error) {
-  // ...
-}
-```
-
-If the invocation process has access to the function directly, then the Workflow Type name parameter can be passed as if the function name were a variable, without quotations.
-
-```go
-workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
-```
-
-If the invocation process does not have direct access to the statically defined Workflow Definition, for example, if the Workflow Definition is in an un-importable package, or it is written in a completely different language, then the Workflow Type can be provided as a `string`.
-
-```go
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "YourWorkflowDefinition", param)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3620,22 +3033,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
+Content is planned but not yet available.
 
-- Type: `string`
-- Default: None, this is a required field to be set by the developer
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  TaskQueue: "your-task-queue",
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3858,22 +3258,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
+Content is planned but not yet available.
 
-- Type: `string`
-- Default: System generated UUID
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  ID: "Your-Custom-Workflow-Id",
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3979,92 +3366,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
+Content is planned but not yet available.
 
-```go
- workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
- if err != nil {
-   // ...
- }
- // ...
-}
-```
-
-The instance of `WorkflowRun` has the following three methods:
-
-- `GetWorkflowID()`: Returns the Workflow Id of the invoked Workflow Execution.
-- `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make up the full Workflow Execution.
-- `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
-
-To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
-
-```go
- workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
- if err != nil {
-   // ...
- }
- var result YourWorkflowResponse
- err = workflowRun.Get(context.Background(), &result)
- if err != nil {
-     // ...
- }
- // ...
-}
-```
-
-However, the result of a Workflow Execution can be obtained from a completely different process.
-All that is needed is the [Workflow Id](#).
-(A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
-The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the system.
-
-<!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
-
-Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
-Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
-
-```go
- // ...
- workflowID := "Your-Custom-Workflow-Id"
- workflowRun := c.GetWorkflow(context.Background, workflowID)
-
- var result YourWorkflowResponse
- err = workflowRun.Get(context.Background(), &result)
- if err != nil {
-     // ...
- }
- // ...
-```
-
-**Get last completion result**
-
-In the case of a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
-
-To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
-
-```go
-type CronResult struct {
- Count int
-}
-
-func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
- count := 1
-
- if workflow.HasLastCompletionResult(ctx) {
-   var lastResult CronResult
-   if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
-     count = count + lastResult.Count
-   }
- }
-
- newResult := CronResult {
-   Count: count,
- }
- return newResult, nil
-}
-```
-
-This will work even if one of the cron Workflow Runs fails.
-The next Workflow Run gets the result of the last successfully Completed Workflow Run.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
