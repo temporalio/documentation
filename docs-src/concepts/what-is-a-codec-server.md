@@ -11,7 +11,7 @@ A Codec Server is an HTTP server that uses your custom [Payload Codec](/concepts
 
 ![](/img/tctl-diagram-codec-server.svg)
 
-You can [create a custom Payload Codec](/prod-readiness-context/data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
+You can [create a custom Payload Codec](/production-readiness/develop#data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
 
 Using a custom Payload Codec in your Codec Server enables encoding and decoding data remotely through the endpoints that you expose on the Codec Server.
 
@@ -35,7 +35,7 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 When using tctl or the Web UI to perform some operations on a Workflow Execution, you can configure the exposed Codec Server endpoints to remotely encode data sent to the Temporal Server and decode data received from the Temporal Server.
 
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/prod-readiness-context/data-encryption).
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/production-readiness/develop#data-encryption).
 
 Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.
