@@ -7,6 +7,7 @@ export async function genReport(config) {
   let str = "";
   str = `${str}# Docs Assembly Workflow report\n\n`;
   str = `${str}Last assembled: ${format(new Date(), "dddd MMMM DD YYYY HH:mm:ss A ZZ")}\n\n`;
+  str = `${str}Assembly Workflow Id: ${config.workflow_id}\n\n`;
   const sourceNodesPath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
   const sourceObjects = await fs.readJSON(sourceNodesPath);
   const matchedGuidesPath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);

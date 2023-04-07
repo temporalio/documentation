@@ -13,8 +13,7 @@ export async function fullAssembly(params) {
   });
   const config = await activities.getConfig(params);
   const info = workflowInfo();
-  const workflowID = info.workflowId;
-  config.workflow_id = workflowID;
+  config.workflow_id = info.workflowId;
 
   await activities.createTempDir(config);
 
