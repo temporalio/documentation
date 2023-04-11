@@ -3,9 +3,6 @@ id: how-to-handle-workflow-logic-requirements-in-go
 title: How to handle Workflow logic requirements in Go
 sidebar_label: Workflow logic requirements
 description: In Go, Workflow Definition code cannot directly do a few things to adhere to deterministic constraints.
-tags:
-  - go
-  - how-to
 ---
 
 In Go, Workflow Definition code cannot directly do the following:
@@ -28,3 +25,8 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/app-dev-context/tracing) for more information about context propagation.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
+
+```go
+```

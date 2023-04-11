@@ -83,7 +83,7 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
 - Deprecate a Namespace: The [`DeprecateNamespace` API](/app-dev-context/namespaces) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
 
 - Delete a Namespace: Deletes a Namespace and all Workflow Executions on the Namespace. Note that this API is supported for Temporal Server version 1.17 and later.
-- With tctl: [`tctl namespace delete`](/tctl-next/namespace#delete). Note that this feature is only available in the [tctl v2.0.0-beta](/tctl-next/namespace#delete).
+- With tctl: [`tctl namespace delete`](/cli/operator/namespace/delete).
 - Use the [`DeleteNamespace` API](/app-dev-context/namespaces) to delete a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
 
 ### Setting
