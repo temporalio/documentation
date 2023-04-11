@@ -7,73 +7,86 @@ tags:
 date: 2023-03-10T00:00:00Z
 ---
 
-This document provides general guidance for organizing namespaces across use cases, services, applications or domains. Temporal Cloud provides namespace–as-a-service and as such the namespace is the end point. Customers should consider not only a namespace naming convention but also how to group or isolate workloads using the namespace as a boundary.
+This article provides general guidance for organizing [Namespaces](/concepts/what-is-a-namespace) across use cases, services, applications, or domains.
+Temporal Cloud provides Namespace–as-a-service, so the Namespace is the endpoint.
+Customers should consider not only a Namespace naming convention but also how to group or isolate workloads using the Namespace as a boundary.
 
 <!-- truncate -->
 
-## Constraints and Limitations
+## Constraints and limitations
 
-Before considering an appropriate namespace configuration customers should be aware of the constraints:
+Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
-- Each Temporal account has a default limit of 10 namespaces. This can be increased via a support ticket.
-- Cross-namespace communications between workflows is not supported today (future feature). Today a workaround exists, involving using the SDK client from within an activity.
-- Each namespace has a rate limit (throttling). The default rate limit is 200 APS (actions per second) but can be increased via a support ticket.
-- Namespace has an SLA of 99.9%.
-- Namespace (for now) are single-region only.
-- Namespace is a security isolation boundary. Access to Temporal by application workers is permitted at the namespace level. Isolating applications or environments (development, test, staging, production) should take this into consideration.
-- Namespace is an endpoint and requires mTLS authorization to access from the client, requiring CA certificates.
-- WorkflowID uniqueness is per namespace.
-- Task Queue names are unique per namespace.
-- Closed workflow retention is per namespace.
-- RBAC permissions are implemented at namespace level.
+- Each Temporal account has a default limit of 10 Namespaces.
+  You can request an increase by [creating a ticket for Temporal Support](/cloud/how-to-create-a-ticket-for-temporal-support).
+- Cross-Namespace communications between [Workflows](/concepts/what-is-a-workflow) is not yet supported.
+  For now, you can use the [SDK client](/concepts/what-is-a-temporal-client) from within an [Activity](/concepts/what-is-an-activity) as a workaround.
+- Each Namespace has a rate limit ("throttling").
+  The default rate limit is 200 Actions per second but can be increased via a support ticket.
+- Each Namespace has a service-level agreement (SLA) of 99.9% uptime.
+- For now, Namespaces are single-region only.
+- A Namespace is a security isolation boundary.
+  Access to Temporal by [Worker Processes](/concepts/what-is-a-worker-process) is permitted at the Namespace level.
+  Isolating applications or environments (development, test, staging, production) should take this into consideration.
+- A Namespace is an endpoint.
+  To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates).
+- [Workflow Id](/concepts/what-is-a-workflow-id) uniqueness is per Namespace.
+- [Task Queue](/concepts/what-is-a-task-queue) names are unique per Namespace.
+- Closed Workflow retention is per Namespace.
+- RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
 
 ## General Guidance
 
-Namespace configuration requires some consideration. Below are some general guidelines to consider.
+Namespace configuration requires some consideration.
+Following are some general guidelines to consider.
 
-- Namespaces are usually defined per use case. A use case can encompass a broad range of workflow types, and a nearly unlimited scale of concurrent workflow executions.
+- Namespaces are usually defined per use case.
+  A use case can encompass a broad range of Workflow types and a nearly unlimited scale of concurrent [Workflow Executions](/concepts/what-is-a-workflow-execution).
 - Namespaces can be split along additional boundaries such as service, application, domain or even sub-domain.
-- Environments such as production and development usually have requirements for isolation. It is recommended that each environment has its own namespace.
-- Namespaces should be used to reduce blast radius for mission critical applications.
-- Workflows that need to communicate with one another (for now) should be in the same namespace.
-- Careful consideration should be taken when sharing namespaces across team or domain boundaries.
+- Environments such as production and development usually have requirements for isolation.
+  We recommend that each environment has its own Namespace.
+- Namespaces should be used to reduce the "blast radius" for mission-critical applications.
+- Workflows that need to communicate with each other should (for now) be in the same Namespace.
+- If you need to share Namespaces across team or domain boundaries, be sure to ensure the uniqueness of Workflow Ids.
 
 ## Examples
 
-Below are some ideas about how to organize namespaces.
+Following are some ideas about how to organize Namespaces.
 
-### Example 1: Namespace per Use Case/Environment
+### Example 1: Namespace per use case and environment
 
-A namespace per use case/environment is recommended for simple configurations where multiple services, team or domain boundaries don't exist.
+We recommend using one Namespace for each use case and environment combination for simple configurations in which multiple services and team or domain boundaries don't exist.
 
 Sample naming convention:
 
 <pre>
-&lt;user case>_&lt;environment>
+&lt;use-case>_&lt;environment>
 </pre>
 
-### Example 2: Namespace per Use Case/Service/Environment
+### Example 2: Namespace per use case, service, and environment
 
-A namespace per use case/service/environment is recommended when multiple services that are part of same use case, communicate externally to Temporal via API (HTTP/gRPC).
+We recommend using one Namespace for each use case, service, and environment combination when multiple services that are part of same use case communicate externally to Temporal via API (HTTP/gRPC).
 
 Sample naming convention:
 
 <pre>
-&lt;user case>_&lt;service>_&lt;environment>
+&lt;use-case>_&lt;service>_&lt;environment>
 </pre>
 
-### Example 3: Namespace per Use Case/Domain/Environment
+### Example 3: Namespace per use case, domain, and environment
 
-A namespace per use case/domain/environment is recommended when multiple services that are part of the same use case need to communicate with one another, via signals or starting of child workflows. It is very important however, in this case, to be mindful about workflowId uniqueness by prefixing workflowId with a service specific string. If multiple teams are involved the domain could also represent a team boundary.
+We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/concepts/what-is-a-signal) or by starting [Child Workflows](/concepts/what-is-a-child-workflow).
+In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.
+If multiple teams are involved, the domain could also represent a team boundary.
 
 Sample naming convention:
 
 <pre>
-&lt;user case>_&lt;domain>_&lt;environment>
+&lt;use-case>_&lt;domain>_&lt;environment>
 </pre>
 
 Sample workflowId convention:
 
 <pre>
-&lt;service string>_&lt;workflowId>
+&lt;service-string>_&lt;workflow-id>
 </pre>
