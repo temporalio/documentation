@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday April 07 2023 07:38:05 AM -0700
+Last assembled: Tuesday April 11 2023 10:37:33 AM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-60 guide configurations found.
+65 guide configurations found.
 
-1078 information nodes found.
+1175 information nodes found.
 
-978 information nodes are attached to guides.
+1111 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -392,6 +392,8 @@ concepts/what-is-a-workflow-execution-timeout -> #workflow-execution-timeout
 
 concepts/what-is-a-workflow-run-timeout -> #workflow-run-timeout
 
+go/how-to-set-a-workflow-id-in-go -> /application-development/golang/foundations#workflow-id
+
 app-dev-context/workflow-retries -> /application-development/features#workflow-retries
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
@@ -682,7 +684,13 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 go/developing-workflows -> #develop-workflows
 
+go/how-to-develop-an-activity-definition-in-go -> #activity-definition
+
 go/spawning-activities -> #activity-execution
+
+go/how-to-develop-a-worker-in-go -> #develop-worker
+
+go/run-a-temporal-cloud-worker -> #run-a-temporal-cloud-worker
 
 go/spawning-workflows -> #start-workflow-execution
 
@@ -690,16 +698,8 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
-go/how-to-develop-a-worker-in-go -> #develop-worker
-
-go/tracing -> /application-development/observability#tracing
-
-go/how-to-develop-an-activity-definition-in-go -> #activity-definition
+go/tracing -> /application-development/golang/observability#tracing
 
 app-dev-context/metrics -> /application-development/observability#metrics
-
-go/how-to-set-a-workflow-id-in-go -> /application-development/golang/foundations#workflow-id
-
-go/run-a-temporal-cloud-worker -> #run-a-temporal-cloud-worker
 
 

@@ -141,50 +141,9 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 </TabItem>
 <TabItem value="python">
 
-To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
+Content is planned but not yet available.
 
-```python
-@workflow.signal
-def your_signal(self, value: str) -> None:
-    self._signal = value
-```
-
-The [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) decorator defines a method as a Signal. Signals can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated.
-
-**Dynamic Signals**
-
-You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
-
-Your method parameters must be `self`, a string Signal name, and a `*args` variable argument parameter.
-
-```python
-@workflow.signal(dynamic=True)
-def signal_dynamic(self, name: str, *args: Any) -> None:
-    self._last_event = f"signal_dynamic {name}: {args[0]}"
-```
-
-**Customize name**
-
-Non-dynamic methods can only have positional arguments. Temporal suggests taking a single argument that is an
-object or data class of fields that can be added to as needed.
-
-Return values from Signal methods are ignored.
-
-You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method `__name__`.
-
-The following example sets a custom Signal name.
-
-```python
-@workflow.signal(name="Custom-Name")
-def signal(self, arg: str) -> None:
-    self._last_event = f"signal: {arg}"
-```
-
-:::note
-
-You can either set the `name` or the `dynamic` parameter in a Signal's decorator, but not both.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -344,11 +303,9 @@ The main Workflow coroutine waits for the value to change by using the `Workflow
 </TabItem>
 <TabItem value="python">
 
-To send a Signal to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+Content is planned but not yet available.
 
-```python
-await handle.signal("some signal")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -447,22 +404,9 @@ See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img
 </TabItem>
 <TabItem value="python">
 
-To send a Signal from the Client, use the [signal()](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) function on the Workflow handle.
+Content is planned but not yet available.
 
-To get the Workflow handle, you can use any of the following options.
-
-- Use the [get_workflow_handle()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle) method.
-- Use the [get_workflow_handle_for()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) method to get a type-safe Workflow handle by its Workflow Id.
-- Use the [start_workflow()](https://python.temporal.io/temporalio.client.Client.html#start_workflow) to start a Workflow and return its handle.
-
-```python
-async def your_function():
-    client = await Client.connect("localhost:7233")
-    handle = client.get_workflow_handle_for(
-        "your-workflow-id",
-    )
-    await handle.signal()
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -553,22 +497,9 @@ $workflow->setValue(true);
 </TabItem>
 <TabItem value="python">
 
-Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for) to get a typed Workflow handle to an existing Workflow by its identifier. Use [`get_external_workflow_handle`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle) when you don't know the type of the other Workflow.
+Content is planned but not yet available.
 
-```python
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async run(self) -> None:
-        handle = workflow.get_external_workflow_handle_for(OtherWorkflow.run, "other-workflow-id")
-        await handle.signal(OtherWorkflow.other_signal, "other signal arg")
-```
-
-:::note
-
-The Workflow Type passed is only for type annotations and not for validation.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -686,20 +617,9 @@ $run = $workflowClient->startWithSignal(
 </TabItem>
 <TabItem value="python">
 
-To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
+Content is planned but not yet available.
 
-```python
-async def main():
-    client = await Client.connect("localhost:7233", namespace="your-namespace")
-
-    handle = await client.start_workflow(
-        "your-workflow-name",
-        "some arg",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        start_signal="your-signal-name",
-    )
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -819,43 +739,9 @@ In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workf
 </TabItem>
 <TabItem value="python">
 
-To define a Query, set the Query decorator [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) on the Query function inside your Workflow.
+Content is planned but not yet available.
 
-```python
-@workflow.query
-async def current_greeting(self) -> str:
-    return self._current_greeting
-```
-
-The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
-
-**Dynamic Queries**
-
-You can use `@workflow.query(dynamic=True)`, which means all other unhandled Queries fall through to this.
-
-```python
-@workflow.query(dynamic=True)
-def query_dynamic(self, name: str, *args: Any) -> str:
-    return f"query_dynamic {name}: {args[0]}"
-```
-
-**Customize names**
-
-You can have a name parameter to customize the Query's name, otherwise it defaults to the unqualified method `__name__`.
-
-The following example sets a custom Query name.
-
-```python
-@workflow.query(name="Custom-Name")
-def query(self, arg: str) -> None:
-    self._last_event = f"query: {arg}"
-```
-
-:::note
-
-You can either set the `name` or the `dynamic` parameter in a Query's decorator, but not both.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1077,11 +963,9 @@ var_dump($workflow->getCurrentState());
 </TabItem>
 <TabItem value="python">
 
-To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
+Content is planned but not yet available.
 
-```python
-await handle.query("some query")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1157,11 +1041,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
+Content is planned but not yet available.
 
-```python
-await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1263,41 +1145,9 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="python">
 
-Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- `execution_timeout`
-- `run_timeout`
-- `task_timeout`
-
-```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    # Set Workflow Timeout duration
-    execution_timeout=timedelta(seconds=2),
-    # run_timeout=timedelta(seconds=2),
-    # task_timeout=timedelta(seconds=2),
-)
-```
-
-```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    # Set Workflow Timeout duration
-    execution_timeout=timedelta(seconds=2),
-    # run_timeout=timedelta(seconds=2),
-    # task_timeout=timedelta(seconds=2),
-)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1413,29 +1263,9 @@ $workflow = $this->workflowClient->newWorkflowStub(
 </TabItem>
 <TabItem value="python">
 
-Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+Content is planned but not yet available.
 
-```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-)
-```
-
-```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1556,27 +1386,9 @@ $this->greetingActivity = Workflow::newActivityStub(
 </TabItem>
 <TabItem value="python">
 
-Activity options are set as keyword arguments after the Activity arguments.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- schedule_to_close_timeout
-- schedule_to_start_timeout
-- start_to_close_timeout
-
-```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            your_activity,
-            name,
-            schedule_to_close_timeout=timedelta(seconds=5),
-            # schedule_to_start_timeout=timedelta(seconds=5),
-            # start_to_close_timeout=timedelta(seconds=5),
-        )
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1697,18 +1509,9 @@ For an executable code sample, see [ActivityRetry sample](https://github.com/tem
 </TabItem>
 <TabItem value="python">
 
-To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
+Content is planned but not yet available.
 
-The following example sets the maximum interval to 2 seconds.
-
-```python
-workflow.execute_activity(
-    your_activity,
-    name,
-    start_to_close_timeout=timedelta(seconds=10),
-    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1848,16 +1651,9 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="python">
 
-To Heartbeat an Activity Execution in Python, use the [`heartbeat()`](https://python.temporal.io/temporalio.activity.html#heartbeat) API.
+Content is planned but not yet available.
 
-```python
-@activity.defn
-async def your_activity_definition() -> str:
-    activity.heartbeat("heartbeat details!")
-```
-
-In addition to obtaining cancellation information, Heartbeats also support detail data that persists on the server for retrieval during Activity retry.
-If an Activity calls `heartbeat(123, 456)` and then fails and is retried, `heartbeat_details` returns an iterable containing `123` and `456` on the next Run.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2011,28 +1807,9 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities
 </TabItem>
 <TabItem value="python">
 
-[`heartbeat_timeout`](https://python.temporal.io/temporalio.worker.StartActivityInput.html#heartbeat_timeout) is a class variable for the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) function used to set the maximum time between Activity Heartbeats.
+Content is planned but not yet available.
 
-```python
-workflow.start_activity(
-    activity="your-activity",
-    schedule_to_close_timeout=timedelta(seconds=5),
-    heartbeat_timeout=timedelta(seconds=1),
-)
-```
-
-`execute_activity()` is a shortcut for [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
-
-To get just the handle to wait and cancel separately, use `start_activity()`. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
-
-```python
-workflow.execute_activity(
-    activity="your-activity",
-    name,
-    schedule_to_close_timeout=timedelta(seconds=5),
-    heartbeat_timeout=timedelta(seconds=1),
-)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2259,25 +2036,9 @@ $activityClient->completeExceptionallyByToken($taskToken, new \Error("activity f
 </TabItem>
 <TabItem value="python">
 
-To mark an Activity as completing asynchoronus, do the following inside the Activity.
+Content is planned but not yet available.
 
-```python
-# Capture token for later completion
-captured_token = activity.info().task_token
-activity.raise_complete_async()
-```
-
-To update an Activity outside the Activity, use the [get_async_activity_handle()](https://python.temporal.io/temporalio.client.Client.html#get_async_activity_handle) method to get the handle of the Activity.
-
-```python
-handle = my_client.get_async_activity_handle(task_token=captured_token)
-```
-
-Then, on that handle, you can call the results of the Activity, `heartbeat`, `complete`, `fail`, or `report_cancellation` method to update the Activity.
-
-```python
-await handle.complete("Completion value.")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2356,47 +2117,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To cancel an Activity from a Workflow Execution, call the [cancel()](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) method on the Activity handle that is returned from [start_activity()](https://python.temporal.io/temporalio.workflow.html#start_activity).
+Content is planned but not yet available.
 
-```python
-@activity.defn
-async def cancellable_activity(input: ComposeArgsInput) -> NoReturn:
-    try:
-        while True:
-            print("Heartbeating cancel activity")
-            await asyncio.sleep(0.5)
-            activity.heartbeat("some details")
-    except asyncio.CancelledError:
-        print("Activity cancelled")
-        raise
-
-
-@activity.defn
-async def run_activity(input: ComposeArgsInput):
-    print("Executing activity")
-    return input.arg1 + input.arg2
-
-@workflow.defn
- class GreetingWorkflow:
-     @workflow.run
-     async def run(self, input: ComposeArgsInput) -> None:
-        activity_handle = workflow.start_activity(
-            cancel_activity,
-            ComposeArgsInput(input.arg1, input.arg2),
-            start_to_close_timeout=timedelta(minutes=5),
-            heartbeat_timeout=timedelta(seconds=30),
-        )
-    
-        await asyncio.sleep(3)
-        activity_handle.cancel()
-```
-
-:::note
-
-The Activity handle is a Python task.
-By calling `cancel()`, you're essentially requesting the task to be canceled.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2608,17 +2331,9 @@ $childResult = yield Workflow::executeChildWorkflow(
 </TabItem>
 <TabItem value="python">
 
-To spawn a Child Workflow Execution in Python, use the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function. `execute_child_workflow()` starts the Child Workflow and waits for completion.
+Content is planned but not yet available.
 
-```python
-await workflow.execute_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
-```
-
-Alternatively, use the [`start_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function to start a Child Workflow and return its handle. This is useful if you want to do something after it has only started, or to get the workflow/run ID, or to be able to signal it while running. To wait for completion, simply `await` the handle. `execute_child_workflow()` is a helper function for `start_child_workflow()` + `await handle`.
-
-```python
-await workflow.start_child_workflow(MyWorkflow.run, "my child arg", id="my-child-id")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2741,23 +2456,9 @@ We need `yield` here to ensure that a Child Workflow Execution starts before the
 </TabItem>
 <TabItem value="python">
 
-Set the `parent_close_policy` parameter inside the [`start_child_workflow`](https://python.temporal.io/temporalio.workflow.html#start_child_workflow) function or the [`execute_child_workflow()`](https://python.temporal.io/temporalio.workflow.html#execute_child_workflow) function to specify the behavior of the Child Workflow when the Parent Workflow closes.
+Content is planned but not yet available.
 
-```python
-async def run(self, name: str) -> str:
-    return await workflow.execute_child_workflow(
-        ComposeGreeting.run,
-        ComposeGreetingInput("Hello", name),
-        id="hello-child-workflow-workflow-child-id",
-        parent_close_policy=TERMINATE,
-    )
-```
-
-:::note
-
-`execute_child_workflow()` is a shortcut function for `temporalio.workflow.start_child_workflow()` plus `handle.result()`.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2872,11 +2573,9 @@ public function periodic(string $name, int $value = 0)
 </TabItem>
 <TabItem value="python">
 
-To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
+Content is planned but not yet available.
 
-```python
-workflow.continue_as_new("your-workflow-name")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2953,11 +2652,9 @@ You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` metho
 </TabItem>
 <TabItem value="python">
 
-To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
+Content is planned but not yet available.
 
-```python
-await asyncio.sleep(5)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -3052,16 +2749,9 @@ For more information, see the [PHP samples](https://github.com/temporalio/sample
 </TabItem>
 <TabItem value="python">
 
-You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods:
+Content is planned but not yet available.
 
-```python
-await client.start_workflow(
-    "your_workflow_name",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    cron_schedule="* * * * *",
-)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">

@@ -34,7 +34,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-emit-metrics-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -63,7 +63,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-configure-tracing-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -92,7 +92,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-log-from-a-workflow-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -121,7 +121,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-a-custom-logger-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -154,7 +154,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-list-workflow-executions-using-the-client-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -183,7 +183,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -212,7 +212,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -241,7 +241,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-remove-search-attributes-from-a-workflow-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",

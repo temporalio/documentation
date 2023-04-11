@@ -55,7 +55,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-One recommended framework for testing in Python for the Temporal SDK is [pytest](https://docs.pytest.org/), which can help with fixtures to stand up and tear down test environments, provide useful test discovery, and make it easy to write parameterized tests.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -113,10 +115,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To run an Activity in a test, use the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class.
+Content is planned but not yet available.
 
-This class allows you to run any callable inside an Activity context.
-Use it to test the behavior of your code under various conditions.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -179,24 +180,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To test a Heartbeat in an Activity, use the [`on_heartbeat()`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html#on_heartbeat) property of the [`ActivityEnvironment`](https://python.temporal.io/temporalio.testing.ActivityEnvironment.html) class.
-This property sets a custom function that is called every time the `activity.heartbeat()` function is called within the Activity.
+Content is planned but not yet available.
 
-```python
-@activity.defn
-async def activity_with_heartbeats(param: str):
-    activity.heartbeat(f"param: {param}")
-    activity.heartbeat("second heartbeat")
-
-env = ActivityEnvironment()
-heartbeats = []
-# Set the `on_heartbeat` property to a callback function that will be called for each Heartbeat sent by the Activity.
-env.on_heartbeat = lambda *args: heartbeats.append(args[0])
-# Use the run method to start the Activity, passing in the function that contains the Heartbeats and any necessary parameters.
-await env.run(activity_with_heartbeats, "test")
-# Verify that the expected Heartbeats are received by the callback function.
-assert heartbeats == ["param: test", "second heartbeat"]
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -410,45 +396,9 @@ $this->activityMocks->expectFailure('SimpleActivity.echo', new \LogicException('
 </TabItem>
 <TabItem value="python">
 
-Provide mock Activity implementations to the Worker.
+Content is planned but not yet available.
 
-```python
-import uuid
-from temporalio.client import Client
-from temporalio.worker import Worker
-
-# Import your Activity Definition and real implementation
-from hello.hello_activity import (
-    ComposeGreetingInput,
-    GreetingWorkflow,
-    compose_greeting,
-)
-
-# Define your mocked Activity implementation
-@activity.defn(name="compose_greeting")
-async def compose_greeting_mocked(input: ComposeGreetingInput) -> str:
-    return f"{input.greeting}, {input.name} from mocked activity!"
-
-async def test_mock_activity(client: Client):
-    task_queue_name = str(uuid.uuid4())
-    # Provide the mocked Activity implementation to the Worker
-    async with Worker(
-        client,
-        task_queue=task_queue_name,
-        workflows=[GreetingWorkflow],
-        activities=[compose_greeting_mocked],
-    ):
-        # Execute your Workflow as usual
-        assert "Hello, World from mocked activity!" == await client.execute_workflow(
-            GreetingWorkflow.run,
-            "World",
-            id=str(uuid.uuid4()),
-            task_queue=task_queue_name,
-        )
-```
-
-The mocked Activity implementation should have the same signature as the real implementation (including the input and output types) and the same name.
-When the Workflow invokes the Activity, it invokes the mocked implementation instead of the real one, allowing you to test your Workflow isolated.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -657,11 +607,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-Use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) method to start a test server process and skip time automatically.
+Content is planned but not yet available.
 
-Use the [`start_local()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_local) method for a full local Temporal Server.
-
-Use the [`from_client()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#from_client) method for an existing Temporal Server.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -736,18 +684,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To implement time skipping, use the [`start_time_skipping()`](https://python.temporal.io/temporalio.testing.WorkflowEnvironment.html#start_time_skipping) static method.
+Content is planned but not yet available.
 
-```python
-from temporalio.testing import WorkflowEnvironment
-
-async def test_manual_time_skipping():
-    async with await WorkflowEnvironment.start_time_skipping() as env:
-        # Your code here
-        # You can use the env.sleep(seconds) method to manually advance time
-        await env.sleep(3) # This will advance time by 3 seconds
-        # Your code here
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1054,7 +993,9 @@ Not applicable to this SDK.
 </TabItem>
 <TabItem value="python">
 
-For information about assert statements in Python, see [`assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) in the Python Language Reference.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1125,61 +1066,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [worker.WorkflowReplayer](https://pkg.go.dev/go.temporal.io/sdk/worker#WorkflowReplayer) to replay an existing Workflow Execution from its Event History to replicate errors.
+Content is planned but not yet available.
 
-For example, the following code retrieves the Event History of a Workflow:
-
-```go
-import (
-	"context"
-
-	"go.temporal.io/api/enums/v1"
-	"go.temporal.io/api/history/v1"
-	"go.temporal.io/sdk/client"
-)
-
-func GetWorkflowHistory(ctx context.Context, client client.Client, id, runID string) (*history.History, error) {
-	var hist history.History
-	iter := client.GetWorkflowHistory(ctx, id, runID, false, enums.HISTORY_EVENT_FILTER_TYPE_ALL_EVENT)
-	for iter.HasNext() {
-		event, err := iter.Next()
-		if err != nil {
-			return nil, err
-		}
-		hist.Events = append(hist.Events, event)
-	}
-	return &hist, nil
-}
-```
-
-This history can then be used to _replay_.
-For example, the following code creates a `WorkflowReplayer` and register the `YourWorkflow` Workflow function.
-Then it calls the `ReplayWorkflowHistory` to _replay_ the Event History and return an error code.
-
-```go
-import (
-	"context"
-
-	"go.temporal.io/sdk/client"
-	"go.temporal.io/sdk/worker"
-)
-
-func ReplayWorkflow(ctx context.Context, client client.Client, id, runID string) error {
-	hist, err := GetWorkflowHistory(ctx, client, id, runID)
-	if err != nil {
-		return err
-	}
-	replayer := worker.NewWorkflowReplayer()
-	replayer.RegisterWorkflow(YourWorkflow)
-	return replayer.ReplayWorkflowHistory(nil, hist)
-}
-```
-
-The code above will cause the Worker to re-execute the Workflow's Workflow Function using the original Event History.
-If a noticeably different code path was followed or some code caused a deadlock, it will be returned in the error code.
-Replaying a Workflow Execution locally is a good way to see exactly what code path was taken for given input and events.
-
-You can replay many Event Histories by registering all the needed Workflow implementation and then calling `ReplayWorkflowHistory` repeatedly.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1239,35 +1128,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To replay Workflow Executions, use the [`replay_workflows`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflows) or [`replay_workflow`](https://python.temporal.io/temporalio.worker.Replayer.html#replay_workflow) methods, passing one or more Event Histories as arguments.
+Content is planned but not yet available.
 
-In the following example (which, as of server v1.18, requires Advanced Visibility to be enabled), Event Histories are downloaded from the server and then replayed.
-If any replay fails, the code raises an exception.
-
-```python
-workflows = client.list_workflows(f"TaskQueue=foo and StartTime > '2022-01-01T12:00:00'")
-histories = workflows.map_histories()
-replayer = Replayer(
-    workflows=[MyWorkflowA, MyWorkflowB, MyWorkflowC]
-)
-await replayer.replay_workflows(histories)
-```
-
-In the next example, a single history is loaded from a JSON string:
-
-```python
-replayer = Replayer(workflows=[YourWorkflow])
-await replayer.replay_workflow(WorkflowHistory.from_json(history_json_str))
-```
-
-In both examples, if Event History is non-deterministic, an error is thrown.
-You can choose to wait until all histories have been replayed with `replay_workflows` by setting the `fail_fast` option to `false`.
-
-:::note
-
-If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tctl](/tctl-v1), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">

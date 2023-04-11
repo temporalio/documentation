@@ -49,6 +49,22 @@ module.exports = {
             "application-development/golang/testing",
           ],
         },
+        {
+          type: "category",
+          label: "Python",
+          collapsible: true,
+          collapsed: true,
+          link: {
+            type: "doc",
+            id: "application-development/python/index",
+          },
+          items: [
+            "application-development/python/foundations",
+            "application-development/python/features",
+            "application-development/python/observability",
+            "application-development/python/testing",
+          ],
+        },
         "application-development/foundations",
         "application-development/features",
         "application-development/observability",

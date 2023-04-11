@@ -38,7 +38,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-define-a-signal-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -67,7 +67,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-handle-a-signal-in-a-workflow-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -96,7 +96,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-send-a-signal-from-a-client-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -125,7 +125,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-send-a-signal-from-a-workflow-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -154,7 +154,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-send-a-signal-with-start-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -187,7 +187,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-define-a-query-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -216,7 +216,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-handle-a-query-in-a-workflow-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -245,7 +245,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-send-a-query-to-a-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -274,7 +274,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-workflow-timeouts-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -303,7 +303,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-workflow-retry-options-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -332,7 +332,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-activity-timeouts-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -361,7 +361,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-an-activity-retry-policy-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -394,7 +394,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-heartbeat-an-activity-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -423,7 +423,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-a-heartbeat-timeout-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -452,7 +452,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-asynchronous-activity-completion-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -481,7 +481,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-cancel-an-activity-from-a-workflow-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -510,7 +510,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-spawn-a-child-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -539,7 +539,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-a-parent-close-policy-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -568,7 +568,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-continue-as-new-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -597,7 +597,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-timers-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -626,7 +626,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-set-a-cron-schedule-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",

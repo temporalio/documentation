@@ -1,0 +1,85 @@
+{
+  "file_name": "observability.md",
+  "id": "observability",
+  "file_dir": "application-development/python",
+  "title": "Temporal Python SDK developer's guide - Observability",
+  "sidebar_label": "Observability",
+  "description": "The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "python/observability"
+    },
+    {
+      "type": "h2",
+      "id": "python/metrics"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-emit-metrics-in-python"
+    },
+    {
+      "type": "h2",
+      "id": "python/tracing"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-configure-tracing-in-python"
+    },
+    {
+      "type": "h2",
+      "id": "python/logging"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-log-from-a-workflow-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/custom-logging"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-set-a-custom-logger-in-python"
+    },
+    {
+      "type": "h2",
+      "id": "python/visibility"
+    },
+    {
+      "type": "h3",
+      "id": "python/search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-list-workflow-executions-using-the-client-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/set-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/upsert-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/remove-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-remove-search-attributes-from-a-workflow-in-python"
+    }
+  ]
+}
