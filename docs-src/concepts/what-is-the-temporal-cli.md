@@ -24,7 +24,7 @@ The tool runs as a single process with zero runtime dependencies and supports pe
 
 ## Installation
 
-Temporal CLI can be installed through several different methods. While most of them can be used across all operating systems, please note that Homebrew is macOS-exclusive.
+Temporal CLI can be installed through several different methods.
 
 For more information, see our guide to [running a Development Cluster](/clusters/how-to-install-temporal-cli).
 
