@@ -16,33 +16,21 @@ The following terms are used in [Temporal Platform](/temporal) documentation.`;
 
 export async function genGlossary(config) {
   console.log(`generating the glossary...`);
-  const sourceNodesFilePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.source_info_nodes_file_name
-  );
+  const sourceNodesFilePath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
   let sourceNodes = await fs.readJSON(sourceNodesFilePath);
 
   let terms = await getTerms(config, sourceNodes);
   terms = await sortTerms(terms);
   const glossStr = await genGlossString(terms);
 
-  const glossaryWritePath = path.join(
-    config.root_dir,
-    config.content_write_dir,
-    config.glossary_file_name
-  );
+  const glossaryWritePath = path.join(config.root_dir, config.content_write_dir, config.glossary_file_name);
   await fs.writeFile(glossaryWritePath, glossStr);
   return;
 }
 
 async function getTerms(config, sourceNodes) {
   const terms = [];
-  const matchedGuidesFilePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const matchedGuidesFilePath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   let matchedGuides = await fs.readJSON(matchedGuidesFilePath);
   for (const node of sourceNodes) {
     if (node.tags !== undefined) {
