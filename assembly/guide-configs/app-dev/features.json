@@ -26,7 +26,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-define-a-signal-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -55,7 +55,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-handle-a-signal-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -84,7 +84,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-send-a-signal-from-a-client-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -113,7 +113,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-send-a-signal-from-a-workflow-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -142,7 +142,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-send-a-signal-with-start-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -175,7 +175,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-define-a-query-type-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -204,7 +204,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-handle-a-query-in-a-workflow-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -233,7 +233,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-send-a-query-to-a-workflow-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -262,7 +262,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-workflow-timeouts-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -291,7 +291,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-workflow-retry-policy-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -320,7 +320,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-activity-timeouts-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -349,7 +349,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-an-activity-retry-policy-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -382,7 +382,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-heartbeat-an-activity-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -411,7 +411,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-heartbeat-timeout-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -440,7 +440,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-asynchronously-complete-an-activity-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -498,7 +498,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-spawn-a-child-workflow-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -527,7 +527,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-parent-close-policy-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -556,7 +556,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-continue-as-new-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -585,7 +585,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-timers-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -614,7 +614,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-cron-schedule-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -643,7 +643,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-execute-a-side-effect-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -672,7 +672,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-mutable-side-effects-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -705,7 +705,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-register-namespace-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -734,7 +734,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-manage-namespaces-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -763,7 +763,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-use-a-custom-payload-converter-in-go"
+          "id": "none"
         },
         {
           "lang": "java",

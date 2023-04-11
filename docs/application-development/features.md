@@ -58,16 +58,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Structs should be used to define Signals and carry data, as long as the struct is [serializable via the Data Converter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter.ToPayload).
-The `Receive()` method on the Data Converter decodes the data into the Struct within the Workflow.
-Only public fields are serializable.
+Content is planned but not yet available.
 
-```go
-MySignal struct {
-	Message string // serializable
-	message string // not serializable
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -223,25 +216,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
+Content is planned but not yet available.
 
-```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-  // ...
-  var signal MySignal
-  signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
-  signalChan.Receive(ctx, &signal)
-  if len(signal.Message) > 0 && signal.Message != "SOME_VALUE" {
-      return errors.New("signal")
-  }
-  // ...
-}
-```
-
-In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
-
-Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
-Otherwise, the Signals will be lost.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -409,29 +386,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `SignalWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> to a [Workflow Execution](/workflows#workflow-execution).
+Content is planned but not yet available.
 
-Pass in both the <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> and <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a> to uniquely identify the Workflow Execution.
-If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
-
-```go
-// ...
-signal := MySignal {
-  Message: "Some important data",
-}
-err = temporalClient.SignalWorkflow(context.Background(), "your-workflow-id", runID, "your-signal-name", signal)
-if err != nil {
-	log.Fatalln("Error sending the Signal", err)
-	return
-}
-// ...
-```
-
-Possible errors:
-
-- `serviceerror.NotFound`
-- `serviceerror.Internal`
-- `serviceerror.Unavailable`
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -542,22 +499,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-A Signal can be sent from within a Workflow to a different Workflow Execution using the [`SignalExternalWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SignalExternalWorkflow) API from the `go.temporal.io/sdk/workflow` package.
+Content is planned but not yet available.
 
-```go
-// ...
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-  //...
-  signal := MySignal {
-    Message: "Some important data",
-  }
-  err :=  workflow.SignalExternalWorkflow(ctx, "some-workflow-id", "", "your-signal-name", signal).Get(ctx, nil)
-  if err != nil {
-    // ...
-  }
-// ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -658,21 +602,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `SignalWithStartWorkflow()` API on the Go SDK Temporal Client to start a Workflow Execution (if not already running) and pass it the Signal at the same time.
+Content is planned but not yet available.
 
-Because the Workflow Execution might not exist, this API does not take a Run ID as a parameter
-
-```go
-// ...
-signal := MySignal {
-  Message: "Some important data",
-}
-err = temporalClient.SignalWithStartWorkflow(context.Background(), "your-workflow-id", "your-signal-name", signal)
-if err != nil {
-	log.Fatalln("Error sending the Signal", err)
-	return
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -809,11 +741,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In Go, a Query type, also called a Query name, is a `string` value.
+Content is planned but not yet available.
 
-```go
-queryType := "your_query_name"
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -963,53 +893,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `SetQueryHandler` API from the `go.temporal.io/sdk/workflow` package to set a Query Handler that listens for a Query by name.
+Content is planned but not yet available.
 
-The handler must be a function that returns two values:
-
-1. A serializable result
-2. An error
-
-The handler function can receive any number of input parameters, but all input parameters must be serializable.
-The following sample code sets up a Query Handler that handles the `current_state` Query type:
-
-```go
-func YourWorkflow(ctx workflow.Context, input string) error {
-  currentState := "started" // This could be any serializable struct.
-  queryType := "current_state"
-  err := workflow.SetQueryHandler(ctx, queryType, func() (string, error) {
-    return currentState, nil
-  })
-  if err != nil {
-    currentState = "failed to register query handler"
-    return err
-  }
-  // Your normal Workflow code begins here, and you update the currentState as the code makes progress.
-  currentState = "waiting timer"
-  err = NewTimer(ctx, time.Hour).Get(ctx, nil)
-  if err != nil {
-    currentState = "timer failed"
-    return err
-  }
-  currentState = "waiting activity"
-  ctx = WithActivityOptions(ctx, yourActivityOptions)
-  err = ExecuteActivity(ctx, YourActivity, "your_input").Get(ctx, nil)
-  if err != nil {
-    currentState = "activity failed"
-    return err
-  }
-  currentState = "done"
-  return nil
-}
-```
-
-For example, suppose your query handler function takes two parameters:
-
-```go
-err := workflow.SetQueryHandler(ctx, "current_state", func(prefix string, suffix string) (string, error) {
-    return prefix + currentState + suffix, nil
-})
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1233,43 +1119,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the `QueryWorkflow()` API or the `QueryWorkflowWithOptions` API on the Temporal Client to send a Query to a Workflow Execution.
+Content is planned but not yet available.
 
-```go
-// ...
-response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType)
-if err != nil {
-  // ...
-}
-// ...
-```
-
-You can pass an arbitrary number of arguments to the `QueryWorkflow()` function.
-
-```go
-// ...
-response, err := temporalClient.QueryWorkflow(context.Background(), workflowID, runID, queryType, "foo", "baz")
-if err != nil {
-  // ...
-}
-// ...
-```
-
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
-
-```go
-// ...
-response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
-    WorkflowID: workflowID,
-    RunID: runID,
-    QueryType: queryType,
-    Args: args,
-})
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1354,28 +1206,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set a timeout, and pass the instance to the `ExecuteWorkflow` call.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- `WorkflowExecutionTimeout`
-- `WorkflowRunTimeout`
-- `WorkflowTaskTimeout`
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  // Set Workflow Timeout duration
-  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
-  // WorkflowTaskTimeout: time.Second * 10,
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1537,26 +1370,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of a [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
+Content is planned but not yet available.
 
-- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
-- Default: None
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
-}
-workflowOptions := client.StartWorkflowOptions{
-  RetryPolicy: retrypolicy,
-  // ...
-}
-workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1664,28 +1480,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set an Activity Timeout in Go, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the Activity Timeout field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- `StartToCloseTimeout`
-- `ScheduleToClose`
-- `ScheduleToStartTimeout`
-
-```go
-activityoptions := workflow.ActivityOptions{
-  // Set Activity Timeout duration
-  ScheduleToCloseTimeout: 10 * time.Second,
-  // StartToCloseTimeout: 10 * time.Second,
-  // ScheduleToStartTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -1826,40 +1623,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a <a class="tdlp" href="/retry-policies#">RetryPolicy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+Content is planned but not yet available.
 
-- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
-- Default:
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
-  MaximumAttempts: 0, // Unlimited
-  NonRetryableErrorTypes: []string, // empty
-}
-```
-
-Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
-
-```go
-retrypolicy := &temporal.RetryPolicy{
-  InitialInterval:    time.Second,
-  BackoffCoefficient: 2.0,
-  MaximumInterval:    time.Second * 100,
-}
-
-activityoptions := workflow.ActivityOptions{
-  RetryPolicy: retrypolicy,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2005,60 +1771,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To <a class="tdlp" href="/activities#activity-heartbeat">Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> in an Activity in Go, use the `RecordHeartbeat` API.
+Content is planned but not yet available.
 
-```go
-import (
-    // ...
-    "go.temporal.io/sdk/workflow"
-    // ...
-)
-
-func YourActivityDefinition(ctx, YourActivityDefinitionParam) (YourActivityDefinitionResult, error) {
-    // ...
-    activity.RecordHeartbeat(ctx, details)
-    // ...
-}
-```
-
-When an Activity Task Execution times out due to a missed Heartbeat, the last value of the `details` variable above is returned to the calling Workflow in the `details` field of `TimeoutError` with `TimeoutType` set to `Heartbeat`.
-
-You can also Heartbeat an Activity from an external source:
-
-```go
-// The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.Dial(client.Options{})
-// Record heartbeat.
-err := temporalClient.RecordActivityHeartbeat(ctx, taskToken, details)
-```
-
-The parameters of the `RecordActivityHeartbeat` function are:
-
-- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-  the Activity.
-- `details`: The serializable payload containing progress information.
-
-If an Activity Execution Heartbeats its progress before it failed, the retry attempt will have access to the progress information, so that the Activity Execution can resume from the failed state.
-Here's an example of how this can be implemented:
-
-```go
-func SampleActivity(ctx context.Context, inputArg InputParams) error {
-    startIdx := inputArg.StartIndex
-    if activity.HasHeartbeatDetails(ctx) {
-        // Recover from finished progress.
-        var finishedIndex int
-        if err := activity.GetHeartbeatDetails(ctx, &finishedIndex); err == nil {
-            startIdx = finishedIndex + 1 // Start from next one.
-        }
-    }
-
-    // Normal Activity logic...
-    for i:=startIdx; i<inputArg.EndIdx; i++ {
-        // Code for processing item i goes here...
-        activity.RecordHeartbeat(ctx, i) // Report progress.
-    }
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2203,19 +1918,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>, Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+Content is planned but not yet available.
 
-```go
-activityoptions := workflow.ActivityOptions{
-  HeartbeatTimeout: 10 * time.Second,
-}
-ctx = workflow.WithActivityOptions(ctx, activityoptions)
-var yourActivityResult YourActivityResult
-err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2367,50 +2072,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-1. Provide the external system with a Task Token to complete the Activity Execution.
-   To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
+Content is planned but not yet available.
 
-```go
-// Retrieve the Activity information needed to asynchronously complete the Activity.
-activityInfo := activity.GetInfo(ctx)
-taskToken := activityInfo.TaskToken
-// Send the taskToken to the external service that will complete the Activity.
-```
-
-2. Return an `activity.ErrResultPending` error to indicate that the Activity is completing asynchronously.
-
-```go
-return "", activity.ErrResultPending
-```
-
-3. Use the Temporal Client to complete the Activity using the Task Token.
-
-```go
-// Instantiate a Temporal service client.
-// The same client can be used to complete or fail any number of Activities.
-// The client is a heavyweight object that should be created once per process.
-temporalClient, err := client.Dial(client.Options{})
-
-// Complete the Activity.
-temporalClient.CompleteActivity(context.Background(), taskToken, result, nil)
-```
-
-The following are the parameters of the `CompleteActivity` function:
-
-- `taskToken`: The value of the binary `TaskToken` field of the `ActivityInfo` struct retrieved inside
-  the Activity.
-- `result`: The return value to record for the Activity. The type of this value must match the type
-  of the return value declared by the Activity function.
-- `err`: The error code to return if the Activity terminates with an error.
-
-If `error` is not null, the value of the `result` field is ignored.
-
-To fail the Activity, you would do the following:
-
-```go
-// Fail the Activity.
-client.CompleteActivity(context.Background(), taskToken, nil, err)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -2764,76 +2428,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To spawn a <a class="tdlp" href="/workflows#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#child-workflow">Learn more</a></span></span></a> in Go, use the [`ExecuteChildWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ExecuteChildWorkflow) API, which is available from the `go.temporal.io/sdk/workflow` package.
+Content is planned but not yet available.
 
-The `ExecuteChildWorkflow` call requires an instance of [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context), with an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions) applied to it, the Workflow Type, and any parameters that should be passed to the Child Workflow Execution.
-
-`workflow.ChildWorkflowOptions` contain the same fields as `client.StartWorkflowOptions`.
-Workflow Option fields automatically inherit their values from the Parent Workflow Options if they are not explicitly set.
-If a custom `WorkflowID` is not set, one is generated when the Child Workflow Execution is spawned.
-Use the [`WithChildOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#WithChildOptions) API to apply Child Workflow Options to the instance of `workflow.Context`.
-
-The `ExecuteChildWorkflow` call returns an instance of a [`ChildWorkflowFuture`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowFuture).
-
-Call the `.Get()` method on the instance of `ChildWorkflowFuture` to wait for the result.
-
-```go
-func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
-
-  childWorkflowOptions := workflow.ChildWorkflowOptions{}
-  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
-
-  var result ChildResp
-  err := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{}).Get(ctx, &result)
-  if err != nil {
-    // ...
-  }
-  // ...
-  return resp, nil
-}
-
-func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
-  // ...
-  return resp, nil
-}
-```
-
-To asynchronously spawn a Child Workflow Execution, the Child Workflow must have an "Abandon" Parent Close Policy set in the Child Workflow Options.
-Additionally, the Parent Workflow Execution must wait for the `ChildWorkflowExecutionStarted` Event to appear in its Event History before it completes.
-
-If the Parent makes the `ExecuteChildWorkflow` call and then immediately completes, the Child Workflow Execution does not spawn.
-
-To be sure that the Child Workflow Execution has started, first call the `GetChildWorkflowExecution` method on the instance of the `ChildWorkflowFuture`, which will return a different Future.
-Then call the `Get()` method on that Future, which is what will wait until the Child Workflow Execution has spawned.
-
-```go
-import (
-  // ...
-  "go.temporal.io/api/enums/v1"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
-
-  childWorkflowOptions := workflow.ChildWorkflowOptions{
-    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
-  }
-  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
-
-  childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
-  // Wait for the Child Workflow Execution to spawn
-  var childWE workflow.Execution
-  if err := childWorkflowFuture.GetChildWorkflowExecution().Get(ctx, &childWE); err != nil {
-     return err
-  }
-  // ...
-  return resp, nil
-}
-
-func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
-  // ...
-  return resp, nil
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3073,40 +2670,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In Go, a Parent Close Policy is set on the `ParentClosePolicy` field of an instance of [`workflow.ChildWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#ChildWorkflowOptions).
-The possible values can be obtained from the [`go.temporal.io/api/enums/v1`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy) package.
+Content is planned but not yet available.
 
-- `PARENT_CLOSE_POLICY_ABANDON`
-- `PARENT_CLOSE_POLICY_TERMINATE`
-- `PARENT_CLOSE_POLICY_REQUEST_CANCEL`
-
-The Child Workflow Options are then applied to the instance of `workflow.Context` by using the `WithChildOptions` API, which is then passed to the `ExecuteChildWorkflow()` call.
-
-- Type: [`ParentClosePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#ParentClosePolicy)
-- Default: `PARENT_CLOSE_POLICY_TERMINATE`
-
-```go
-import (
-  // ...
-  "go.temporal.io/api/enums/v1"
-)
-
-func YourWorkflowDefinition(ctx workflow.Context, params ParentParams) (ParentResp, error) {
-  // ...
-  childWorkflowOptions := workflow.ChildWorkflowOptions{
-    // ...
-    ParentClosePolicy: enums.PARENT_CLOSE_POLICY_ABANDON,
-  }
-  ctx = workflow.WithChildOptions(ctx, childWorkflowOptions)
-  childWorkflowFuture := workflow.ExecuteChildWorkflow(ctx, YourOtherWorkflowDefinition, ChildParams{})
-  // ...
-}
-
-func YourOtherWorkflowDefinition(ctx workflow.Context, params ChildParams) (ChildResp, error) {
-  // ...
-  return resp, nil
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3238,23 +2804,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a>, the Workflow API should return the result of the [`NewContinueAsNewError()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewContinueAsNewError) function available from the `go.temporal.io/sdk/workflow` package.
+Content is planned but not yet available.
 
-```go
-func SimpleWorkflow(ctx workflow.Context, value string) error {
-    ...
-    return workflow.NewContinueAsNewError(ctx, SimpleWorkflow, value)
-}
-```
-
-To check whether a Workflow Execution was spawned as a result of Continue-As-New, you can check if `workflow.GetInfo(ctx).ContinuedExecutionRunID` is not empty (i.e. `""`).
-
-**Notes**
-
-- To prevent Signal loss, be sure to perform an asynchronous drain on the Signal channel.
-  Failure to do so can result in buffered Signals being ignored and lost.
-- Make sure that the previous Workflow and the Continue-As-New Workflow are referenced by the same alias.
-  Failure to do so can cause the Workflow to Continue-As-New on an entirely different Workflow.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3372,20 +2924,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To set a Timer in Go, use the [`NewTimer()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#NewTimer) function and pass the duration you want to wait before continuing.
+Content is planned but not yet available.
 
-```go
-timer := workflow.NewTimer(timerCtx, duration)
-```
-
-To set a sleep duration in Go, use the [`sleep()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Sleep) function and pass the duration you want to wait before continuing.
-A zero or negative sleep duration causes the function to return immediately.
-
-```go
-sleep = workflow.Sleep(ctx, 10*time.Second)
-```
-
-For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3448,21 +2989,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `CronSchedule` field, and pass the instance to the `ExecuteWorkflow` call.
+Content is planned but not yet available.
 
-- Type: `string`
-- Default: None
-
-```go
-workflowOptions := client.StartWorkflowOptions{
-  CronSchedule: "15 8 * * *",
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3572,45 +3101,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use the [`SideEffect`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect) function from the `go.temporal.io/sdk/workflow` package to execute a <a class="tdlp" href="/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Side Effect?</span><br /><br /><span class="tdlppd">A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#side-effect">Learn more</a></span></span></a> directly in your Workflow.
+Content is planned but not yet available.
 
-Pass it an instance of `context.Context` and the function to execute.
-
-The `SideEffect` API returns a Future, an instance of [`converter.EncodedValue`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SideEffect).
-
-Use the `Get` method on the Future to retrieve the result of the Side Effect.
-
-**Correct implementation**
-
-The following example demonstrates the correct way to use `SideEffect`:
-
-```go
-encodedRandom := workflow.SideEffect(ctx, func(ctx workflow.Context) interface{} {
- return rand.Intn(100)
-})
-
-var random int
-encodedRandom.Get(&random)
-// ...
-}
-```
-
-**Incorrect implementation**
-
-The following example demonstrates how NOT to use `SideEffect`:
-
-```go
-// Warning: This is an incorrect example.
-// This code is non-deterministic.
-var random int
-workflow.SideEffect(func(ctx workflow.Context) interface{} {
-      random = rand.Intn(100)
-      return nil
-})
-// random will always be 0 in replay, so this code is non-deterministic.
-```
-
-On replay the provided function is not executed, the random number will always be 0, and the Workflow Execution could take a different path, breaking determinism.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3712,13 +3205,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To use [`MutableSideEffect()`](https://pkg.go.dev/go.temporal.io/sdk/workflow#MutableSideEffect) in Go, provide a unique name within the scope of the workflow.
+Content is planned but not yet available.
 
-```go
-if err := workflow.MutableSideEffect(ctx, "configureNumber", get, eq).Get(&number); err != nil {
-    panic("can't decode number:" + err.Error())
-  }
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3780,31 +3269,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use [`Register` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient` interface to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retention Period?</span><br /><br /><span class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#retention-period">Learn more</a></span></span></a> for the Workflow Execution Event History for the Namespace.
+Content is planned but not yet available.
 
-You can also <a class="tdlp" href="/tctl-v1/namespace#register">register Namespaces using the tctl command-line tool<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl namespace register</span><br /><br /><span class="tdlppd">How to register a Namespace using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/namespace#register">Learn more</a></span></span></a>.
-
-```go
-client, err := client.NewNamespaceClient(client.Options{HostPort: ts.config.ServiceAddr})
-        //...
-    err = client.Register(ctx, &workflowservice.RegisterNamespaceRequest{
-        Namespace: your-namespace-name,
-        WorkflowExecutionRetentionPeriod: &retention,
-    })
-```
-
-The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
-The minimum value you can set for this period is 1 day.
-
-Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
-See <a class="tdlp" href="/application-development/foundations#connect-to-temporal-cloud">how to set Namespace in a Client in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#connect-to-temporal-cloud">Learn more</a></span></span></a> for details.
-
-Note that Namespace registration using this API takes up to 10 seconds to complete.
-Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
-
-To update your Namespace, use the [`Update` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) with the `NamespaceClient`.
-
-To update your Namespace using tctl, use the <a class="tdlp" href="/tctl-v1/namespace#update">tctl namespace update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl namespace update</span><br /><br /><span class="tdlppd">How to update a Namespace using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/namespace#update">Learn more</a></span></span></a> command.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -3881,86 +3348,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
+Content is planned but not yet available.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
-
-- Update information and configuration for a registered Namespace on your Temporal Cluster:
-
-  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
-    Example
-  - Use the [`UpdateNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to update configuration on a Namespace.
-    Example
-
-    ```go
-    //...
-      err = client.Update(context.Background(), &workflowservice.UpdateNamespaceRequest{
-      Namespace:         "your-namespace-name",
-      UpdateInfo:        &namespace.UpdateNamespaceInfo{ //updates info for the namespace "your-namespace-name"
-          Description:   "updated namespace description",
-          OwnerEmail:    "newowner@mail.com",
-          //Data:        nil,
-          //State:       0,
-      },
-      /*other details that you can update:
-      Config:            &namespace.NamespaceConfig{ //updates the configuration of the namespace with the following options
-          //WorkflowExecutionRetentionTtl: nil,
-          //BadBinaries:                   nil,
-          //HistoryArchivalState:          0,
-          //HistoryArchivalUri:            "",
-          //VisibilityArchivalState:       0,
-          //VisibilityArchivalUri:         "",
-      },
-      ReplicationConfig: &replication.NamespaceReplicationConfig{ //updates the replication configuration for the namespace
-          //ActiveClusterName: "",
-          //Clusters:          nil,
-          //State:             0,
-      },
-      SecurityToken:     "",
-      DeleteBadBinary:   "",
-      PromoteNamespace:  false,
-      })*/
-    //...
-    ```
-
-- Get details for a registered Namespace on your Temporal Cluster:
-
-  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
-  - Use the [`DescribeNamespace` API](https://pkg.go.dev/go.temporal.io/sdk/client#NamespaceClient) to return information and configuration details for a registered Namespace.
-    Example
-
-    ```go
-    //...
-      client, err := client.NewNamespaceClient(client.Options{})
-      //...
-      client.Describe(context.Background(), "default")
-    //...
-    ```
-
-- Get details for all registered Namespaces on your Temporal Cluster:
-
-  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
-  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
-    Example
-
-  ```go
-  //...
-      namespace.Handler.ListNamespaces(context.Context(), &workflowservice.ListNamespacesRequest{ //lists 1 page (1-100) of namespaces on the active cluster. You can set a large PageSize or loop until NextPageToken is nil
-          //PageSize:        0,
-          //NextPageToken:   nil,
-          //NamespaceFilter: nil,
-          })
-  //...
-  ```
-
-- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/operatorservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
-  Example:
-
-  ```go
-  //...
-  client.OperatorService().DeleteNamespace(ctx, &operatorservice.DeleteNamespaceRequest{...
-  //...
-  ```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -4095,41 +3485,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use [CompositeDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
+Content is planned but not yet available.
 
-`NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
-The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:
-
-- [NewNilPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
-- [NewByteSlicePayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
-- [NewProtoJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
-- [NewProtoPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
-- [NewJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
-
-The order in which the Payload Converters are applied is important because during serialization the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil Payload.
-
-A custom [`PayloadConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadConverter) must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from a Payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to a Payload.
-
-To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the Data Converter in the Client options.
-
-- To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
-
-  ```go
-  dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
-  ```
-
-- To add your custom type conversion to the default Data Converter, use the following to keep the defaults but set yours just before the default JSON fall through.
-
-  ```go
-  dataConverter := converter.NewCompositeDataConverter(
-    converter.NewNilPayloadConverter(),
-    converter.NewByteSlicePayloadConverter(),
-    converter.NewProtoJSONPayloadConverter(),
-    converter.NewProtoPayloadConverter(),
-    YourCustomPayloadConverter(),
-    converter.NewJSONPayloadConverter(),
-  )
-  ```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">

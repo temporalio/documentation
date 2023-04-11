@@ -8,6 +8,8 @@ tags:
   - how-to
 ---
 
+Although it is not required, we recommend providing your own [Workflow Id](/concepts/what-is-a-workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
+
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`

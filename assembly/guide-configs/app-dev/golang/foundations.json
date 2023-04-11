@@ -2,7 +2,7 @@
   "file_name": "foundations.md",
   "id": "foundations",
   "file_dir": "application-development/golang",
-  "title": "Temporal Go SDK Developer's guide - Foundations",
+  "title": "Go SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",
   "description": "The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
@@ -11,7 +11,7 @@
   "sections": [
     {
       "type": "p",
-      "id": "app-dev-context/foundations"
+      "id": "go/foundations"
     },
     {
       "type": "h2",
@@ -19,7 +19,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/add-sdk"
+      "id": "go/add-sdk"
     },
     {
       "type": "p",
@@ -27,7 +27,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/api-reference"
+      "id": "go/api-reference"
     },
     {
       "type": "p",
@@ -35,7 +35,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/code-samples"
+      "id": "go/code-samples"
     },
     {
       "type": "p",
@@ -43,7 +43,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/connect-to-a-dev-cluster"
+      "id": "go/connect-to-a-dev-cluster"
     },
     {
       "type": "p",
@@ -51,7 +51,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/connect-to-temporal-cloud"
+      "id": "go/connect-to-temporal-cloud"
     },
     {
       "type": "p",
@@ -59,7 +59,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/developing-workflows"
+      "id": "go/developing-workflows"
     },
     {
       "type": "p",
@@ -67,7 +67,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/workflow-parameters"
+      "id": "go/workflow-parameters"
     },
     {
       "type": "p",
@@ -75,7 +75,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/workflow-return-values"
+      "id": "go/workflow-return-values"
     },
     {
       "type": "p",
@@ -83,7 +83,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/workflow-type"
+      "id": "go/workflow-type"
     },
     {
       "type": "p",
@@ -91,7 +91,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/workflow-logic-requirements"
+      "id": "go/workflow-logic-requirements"
     },
     {
       "type": "p",
@@ -99,15 +99,11 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/developing-activities"
-    },
-    {
-      "type": "p",
       "id": "go/how-to-develop-an-activity-definition-in-go"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/activity-parameters"
+      "id": "go/activity-parameters"
     },
     {
       "type": "p",
@@ -115,7 +111,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/activity-return-values"
+      "id": "go/activity-return-values"
     },
     {
       "type": "p",
@@ -123,7 +119,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/activity-type"
+      "id": "go/activity-type"
     },
     {
       "type": "p",
@@ -131,7 +127,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/spawning-activities"
+      "id": "go/spawning-activities"
     },
     {
       "type": "p",
@@ -139,7 +135,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/required-activity-timeout"
+      "id": "go/required-activity-timeout"
     },
     {
       "type": "p",
@@ -147,7 +143,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/get-activity-results"
+      "id": "go/get-activity-results"
     },
     {
       "type": "p",
@@ -155,15 +151,11 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/run-a-dev-worker"
-    },
-    {
-      "type": "p",
       "id": "go/how-to-develop-a-worker-in-go"
     },
     {
       "type": "h2",
-      "id": "app-dev-context/run-a-temporal-cloud-worker"
+      "id": "go/run-a-temporal-cloud-worker"
     },
     {
       "type": "p",
@@ -171,7 +163,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/registering-types"
+      "id": "go/registering-types"
     },
     {
       "type": "p",
@@ -179,7 +171,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/spawning-workflows"
+      "id": "go/spawning-workflows"
     },
     {
       "type": "p",
@@ -187,7 +179,7 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/set-task-queue"
+      "id": "go/set-task-queue"
     },
     {
       "type": "p",
@@ -195,19 +187,15 @@
     },
     {
       "type": "h3",
-      "id": "app-dev-context/set-workflow-id"
-    },
-    {
-      "type": "p",
       "id": "go/how-to-set-a-workflow-id-in-go"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/get-workflow-results"
+      "id": "go/get-workflow-results"
     },
     {
       "type": "p",
-      "id": "go/how-to-set-a-workflow-id-in-go"
+      "id": "go/how-to-get-the-result-of-a-workflow-execution-in-go"
     }
   ]
 }

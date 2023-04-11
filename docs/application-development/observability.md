@@ -50,19 +50,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-To emit metrics from the Temporal Client in Go, create a [metrics handler](https://pkg.go.dev/go.temporal.io/sdk/internal/common/metrics#Handler) from the [Client Options](https://pkg.go.dev/go.temporal.io/sdk@v1.15.0/internal#ClientOptions) and specify a listener address to be used by Prometheus.
+Content is planned but not yet available.
 
-```go
-client.Options{
-		MetricsHandler: sdktally.NewMetricsHandler(newPrometheusScope(prometheus.Configuration{
-			ListenAddress: "0.0.0.0:9090",
-			TimerType:     "histogram",
-		}
-```
-
-The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
-
-For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -155,17 +145,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
-Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+Content is planned but not yet available.
 
-Tracing can be configured by providing an [opentracing.Tracer](https://pkg.go.dev/github.com/opentracing/opentracing-go#Tracer)
-implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
-
-For more details on how to configure and leverage tracing, see the [OpenTracing documentation](https://opentracing.io/docs/getting-started/).
-
-The OpenTracing support has been validated using [Jaeger](https://www.jaegertracing.io/), but other implementations mentioned [here](https://opentracing.io/docs/supported-tracers/) should also work.
-
-Tracing functionality utilizes generic context propagation provided by the Client.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -290,40 +272,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In Workflow Definitions you can use [`workflow.GetLogger(ctx)`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLogger) to write logs.
+Content is planned but not yet available.
 
-```go
-import (
-	"context"
-	"time"
-
-	"go.temporal.io/sdk/activity"
-	"go.temporal.io/sdk/workflow"
-)
-
-// Workflow is a standard workflow definition.
-// Note that the Workflow and Activity don't need to care that
-// their inputs/results are being compressed.
-func Workflow(ctx workflow.Context, name string) (string, error) {
-// ...
-
-workflow.WithActivityOptions(ctx, ao)
-
-// Getting the logger from the context.
-	logger := workflow.GetLogger(ctx)
-// Logging a message with the key value pair `name` and `name`
-	logger.Info("Compressed Payloads workflow started", "name", name)
-
-	info := map[string]string{
-		"name": name,
-	}
-
-
-	logger.Info("Compressed Payloads workflow completed.", "result", result)
-
-	return result, nil
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -523,33 +474,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-This field sets a custom Logger that is used for all logging actions of the instance of the Temporal Client.
+Content is planned but not yet available.
 
-Although the Go SDK does not support most third-party logging solutions natively, [our friends at Banzai Cloud](https://github.com/sagikazarmark) built the adapter package [logur](https://github.com/logur/logur) which makes it possible to use third party loggers with minimal overhead.
-Most of the popular logging solutions have existing adapters in Logur, but you can find a full list [in the Logur Github project](https://github.com/logur?q=adapter-).
-
-Here is an example of using Logur to support [Logrus](https://github.com/sirupsen/logrus):
-
-```go
-package main
-import (
-  "go.temporal.io/sdk/client"
-
-	"github.com/sirupsen/logrus"
-	logrusadapter "logur.dev/adapter/logrus"
-	"logur.dev/logur"
-)
-
-func main() {
-  // ...
-  logger := logur.LoggerToKV(logrusadapter.New(logrus.New()))
-  clientOptions := client.Options{
-    Logger: logger,
-  }
-  temporalClient, err := client.Dial(clientOptions)
-  // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -659,7 +586,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Use [`Client.ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow).
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -715,35 +644,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Provide key-value pairs in [`StartWorkflowOptions.SearchAttributes`](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions).
+Content is planned but not yet available.
 
-Search Attributes are represented as `map[string]interface{}`.
-The values in the map must correspond to the [Search Attribute's value type](/visibility#types):
-
-- Bool = `bool`
-- Datetime = `time.Time`
-- Double = `float64`
-- Int = `int64`
-- Keyword = `string`
-- Text = `string`
-
-If you had custom Search Attributes `CustomerId` of type Keyword and `MiscData` of type Text, you would provide `string` values:
-
-```go
-func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payload map[string]interface{}) error {
-    // ...
-    searchAttributes := map[string]interface{}{
-        "CustomerId": payload["customer"],
-        "MiscData": payload["miscData"]
-    }
-    options := client.StartWorkflowOptions{
-        SearchAttributes:   searchAttributes
-        // ...
-    }
-    we, err := c.Client.ExecuteWorkflow(ctx, options, app.YourWorkflow, payload)
-    // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -844,38 +747,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-In advanced cases, you may want to dynamically update these attributes as the Workflow progresses.
-[UpsertSearchAttributes](https://pkg.go.dev/go.temporal.io/sdk/workflow#UpsertSearchAttributes) is used to add or update Search Attributes from within Workflow code.
+Content is planned but not yet available.
 
-`UpsertSearchAttributes` will merge attributes to the existing map in the Workflow.
-Consider this example Workflow code:
-
-```go
-func YourWorkflow(ctx workflow.Context, input string) error {
-
-    attr1 := map[string]interface{}{
-        "CustomIntField": 1,
-        "CustomBoolField": true,
-    }
-    workflow.UpsertSearchAttributes(ctx, attr1)
-
-    attr2 := map[string]interface{}{
-        "CustomIntField": 2,
-        "CustomKeywordField": "seattle",
-    }
-    workflow.UpsertSearchAttributes(ctx, attr2)
-}
-```
-
-After the second call to `UpsertSearchAttributes`, the map will contain:
-
-```go
-map[string]interface{}{
-    "CustomIntField": 2, // last update wins
-    "CustomBoolField": true,
-    "CustomKeywordField": "seattle",
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">
@@ -980,11 +854,9 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-**There is no support for removing a field.**
+Content is planned but not yet available.
 
-However, to achieve a similar effect, set the field to some placeholder value.
-For example, you could set `CustomKeywordField` to `impossibleVal`.
-Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="java">

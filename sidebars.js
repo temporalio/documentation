@@ -42,7 +42,12 @@ module.exports = {
             type: "doc",
             id: "application-development/golang/index",
           },
-          items: ["application-development/golang/foundations"],
+          items: [
+            "application-development/golang/foundations",
+            "application-development/golang/features",
+            "application-development/golang/observability",
+            "application-development/golang/testing",
+          ],
         },
         "application-development/foundations",
         "application-development/features",

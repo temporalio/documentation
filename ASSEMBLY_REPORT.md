@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday April 06 2023 17:50:56 PM -0700
+Last assembled: Friday April 07 2023 07:38:05 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
-55 guide configurations found.
+60 guide configurations found.
 
-984 information nodes found.
+1078 information nodes found.
 
-841 information nodes are attached to guides.
+978 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -392,8 +392,6 @@ concepts/what-is-a-workflow-execution-timeout -> #workflow-execution-timeout
 
 concepts/what-is-a-workflow-run-timeout -> #workflow-run-timeout
 
-go/how-to-set-a-workflow-id-in-go -> /application-development/foundations#workflow-id
-
 app-dev-context/workflow-retries -> /application-development/features#workflow-retries
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
@@ -658,19 +656,9 @@ concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 
 java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
 
-cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
-
-go/how-to-develop-a-worker-in-go -> #run-a-dev-worker
-
-app-dev-context/tracing -> /application-development/observability#tracing
-
 java/how-to-develop-a-worker-program-in-java -> #run-a-dev-worker
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #get-activity-results
-
-go/how-to-develop-an-activity-definition-in-go -> #develop-activities
 
 java/how-to-send-a-signal-with-start-in-java -> /application-development/features#signal-with-start
 
@@ -684,6 +672,34 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+go/workflow-timeouts -> #workflow-timeouts
+
+go/connect-to-temporal-cloud -> /application-development/golang/foundations#connect-to-temporal-cloud
+
+go/add-sdk -> #install-a-temporal-sdk
+
+go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+go/developing-workflows -> #develop-workflows
+
+go/spawning-activities -> #activity-execution
+
+go/spawning-workflows -> #start-workflow-execution
+
+cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+
+go/how-to-develop-a-worker-in-go -> #develop-worker
+
+go/tracing -> /application-development/observability#tracing
+
+go/how-to-develop-an-activity-definition-in-go -> #activity-definition
+
 app-dev-context/metrics -> /application-development/observability#metrics
+
+go/how-to-set-a-workflow-id-in-go -> /application-development/golang/foundations#workflow-id
+
+go/run-a-temporal-cloud-worker -> #run-a-temporal-cloud-worker
 
 

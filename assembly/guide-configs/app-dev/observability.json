@@ -22,7 +22,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-emit-metrics-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -51,7 +51,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-configure-tracing-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -80,7 +80,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-log-from-a-workflow-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -109,7 +109,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-set-a-custom-logger-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -142,7 +142,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-list-workflow-executions-using-the-client-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -171,7 +171,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -200,7 +200,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-go"
+          "id": "none"
         },
         {
           "lang": "java",
@@ -229,7 +229,7 @@
       "langtabs": [
         {
           "lang": "go",
-          "id": "go/how-to-remove-search-attributes-from-a-workflow-in-go"
+          "id": "none"
         },
         {
           "lang": "java",

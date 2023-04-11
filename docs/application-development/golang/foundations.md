@@ -1,6 +1,6 @@
 ---
 id: foundations
-title: Temporal Go SDK Developer's guide - Foundations
+title: Go SDK developer's guide - Foundations
 sidebar_label: Foundations
 description: The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 toc_max_heading_level: 4
@@ -30,10 +30,10 @@ In this section you can find the following:
 - <a class="tdlp" href="#connect-to-a-dev-cluster">Connect to a dev Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</span><br /><br /><span class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>
 - <a class="tdlp" href="#connect-to-temporal-cloud">Connect to Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-temporal-cloud">Learn more</a></span></span></a>
 - <a class="tdlp" href="#develop-workflows">Develop a Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Workflow</span><br /><br /><span class="tdlppd">Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-workflows">Learn more</a></span></span></a>
-- <a class="tdlp" href="#develop-activities">Develop an Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Activity</span><br /><br /><span class="tdlppd">One of the primary things that Workflows do is orchestrate the execution of Activities.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a>
+- <a class="tdlp" href="#activity-definition">Develop an Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a>
 - <a class="tdlp" href="#activity-execution">Start an Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>
-- <a class="tdlp" href="#run-a-dev-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
-- <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="#develop-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="#run-a-temporal-cloud-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Temporal Cloud Worker</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-temporal-cloud-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
 ## Run a development server
@@ -421,7 +421,7 @@ The following examples demonstrate how to set a custom name for your Workflow Ty
 
 In Go, by default, the Workflow Type name is the same as the function name.
 
-To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](/go/how-to-develop-a-worker-in-go).
+To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#develop-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-worker">Learn more</a></span></span></a>.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
@@ -477,14 +477,14 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Selector` This is a replacement for the `select` statement.
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
-  See <a class="tdlp" href="/application-development/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
+  See <a class="tdlp" href="/application-development/golang/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/golang/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 ```
 
-## Develop Activities
+## Activity Definition
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
@@ -753,7 +753,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (Your
 It is idiomatic to invoke multiple Activity Executions from within a Workflow.
 Therefore, it is also idiomatic to either block on the results of the Activity Executions or continue on to execute additional logic, checking for the Activity Execution results at a later time.
 
-## Run a dev Worker
+## Develop Worker
 
 The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
@@ -924,7 +924,7 @@ The `RegisterWorkflow()` and `RegisterActivity()` calls essentially create an in
 
 **Registering Activity `structs`**
 
-Per [Activity Definition](/go/how-to-develop-an-activity-definition-in-go) best practices, you might have an Activity struct that has multiple methods and fields.
+Per <a class="tdlp" href="#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop an Activity Definition in Go</span><br /><br /><span class="tdlppd">In the Temporal Go SDK programming model, an Activity Definition is an exportable function or a `struct` method.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-definition">Learn more</a></span></span></a> best practices, you might have an Activity struct that has multiple methods and fields.
 When you use `RegisterActivity()` for an Activity struct, that Worker has access to all exported methods.
 
 **Registering multiple Types**
@@ -1054,20 +1054,90 @@ It's possible to both block progress on the result (synchronous execution) or ge
 
 In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
-Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
-
-- Type: `string`
-- Default: System generated UUID
+The `ExecuteWorkflow` call returns an instance of [`WorkflowRun`](https://pkg.go.dev/go.temporal.io/sdk/client#WorkflowRun), which is the `workflowRun` variable in the following line.
 
 ```go
-workflowOptions := client.StartWorkflowOptions{
-  // ...
-  ID: "Your-Custom-Workflow-Id",
-  // ...
-}
-workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
-if err != nil {
-  // ...
+ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, app.YourWorkflowDefinition, param)
+ if err != nil {
+   // ...
+ }
+ // ...
 }
 ```
+
+The instance of `WorkflowRun` has the following three methods:
+
+- `GetWorkflowID()`: Returns the Workflow Id of the invoked Workflow Execution.
+- `GetRunID()`: Always returns the Run Id of the initial Run (See [Continue As New](#)) in the series of Runs that make up the full Workflow Execution.
+- `Get`: Takes a pointer as a parameter and populates the associated variable with the Workflow Execution result.
+
+To wait on the result of Workflow Execution in the same process that invoked it, call `Get()` on the instance of `WorkflowRun` that is returned by the `ExecuteWorkflow()` call.
+
+```go
+ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition, param)
+ if err != nil {
+   // ...
+ }
+ var result YourWorkflowResponse
+ err = workflowRun.Get(context.Background(), &result)
+ if err != nil {
+     // ...
+ }
+ // ...
+}
+```
+
+However, the result of a Workflow Execution can be obtained from a completely different process.
+All that is needed is the [Workflow Id](#).
+(A [Run Id](#) is optional if more than one closed Workflow Execution has the same Workflow Id.)
+The result of the Workflow Execution is available for as long as the Workflow Execution Event History remains in the system.
+
+<!-- TODO (See [How long do Workflow Execution Histories persist](#)). -->
+
+Call the `GetWorkflow()` method on an instance of the Go SDK Client and pass it the Workflow Id used to spawn the Workflow Execution.
+Then call the `Get()` method on the instance of `WorkflowRun` that is returned, passing it a pointer to populate the result.
+
+```go
+ // ...
+ workflowID := "Your-Custom-Workflow-Id"
+ workflowRun := c.GetWorkflow(context.Background, workflowID)
+
+ var result YourWorkflowResponse
+ err = workflowRun.Get(context.Background(), &result)
+ if err != nil {
+     // ...
+ }
+ // ...
+```
+
+**Get last completion result**
+
+In the case of a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, you might need to get the result of the previous Workflow Run and use it in the current Workflow Run.
+
+To do this, use the [`HasLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#HasLastCompletionResult) and [`GetLastCompletionResult`](https://pkg.go.dev/go.temporal.io/sdk/workflow#GetLastCompletionResult) APIs, available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/sdk/workflow) package, directly in your Workflow code.
+
+```go
+type CronResult struct {
+ Count int
+}
+
+func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
+ count := 1
+
+ if workflow.HasLastCompletionResult(ctx) {
+   var lastResult CronResult
+   if err := workflow.GetLastCompletionResult(ctx, &lastResult); err == nil {
+     count = count + lastResult.Count
+   }
+ }
+
+ newResult := CronResult {
+   Count: count,
+ }
+ return newResult, nil
+}
+```
+
+This will work even if one of the cron Workflow Runs fails.
+The next Workflow Run gets the result of the last successfully Completed Workflow Run.
 
