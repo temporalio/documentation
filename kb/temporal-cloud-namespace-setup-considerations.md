@@ -77,6 +77,7 @@ Sample naming convention:
 
 We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/concepts/what-is-a-signal) or by starting [Child Workflows](/concepts/what-is-a-child-workflow).
 In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.
+The name of each Task Queue must also be unique.
 If multiple teams are involved, the domain could also represent a team boundary.
 
 Sample naming convention:
