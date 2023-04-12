@@ -1,4 +1,4 @@
-import {Client, LogLevel} from "@notionhq/client";
+import { Client, LogLevel } from "@notionhq/client";
 import fs from "fs-extra";
 import path from "path";
 
@@ -6,23 +6,11 @@ const titleQuestionRegex = /^(What|How|When|Where|Why|Who|By whom).*/gm;
 
 export async function updateCoverageBoard(config) {
   console.log("updating the coverage boards...");
-  const notionPagesReadPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.notion_store_file_name
-  );
+  const notionPagesReadPath = path.join(config.root_dir, config.temp_write_dir, config.notion_store_file_name);
   const notionPages = await fs.readJSON(notionPagesReadPath);
-  const matchedGuidesReadPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const matchedGuidesReadPath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   const matchedGuides = await fs.readJSON(matchedGuidesReadPath);
-  const notionCredsReadPath = path.join(
-    config.root_dir,
-    config.secure_config_dir,
-    config.notion_creds_file_name
-  );
+  const notionCredsReadPath = path.join(config.root_dir, config.secure_config_dir, config.notion_creds_file_name);
   const secureData = await fs.readJSON(notionCredsReadPath);
   const notion = new Client({
     auth: secureData.notion_key,
@@ -79,12 +67,12 @@ async function updatePage(notion, notionPage, link) {
 async function createPage(notion, secureData, link) {
   console.log(`creating a new page for ${link.node_title}...`);
   notion.pages.create({
-    parent: {database_id: secureData.notion_db},
+    parent: { database_id: secureData.notion_db },
     properties: {
-      Exists: {name: "Exists"},
-      Type: [{name: "Question"}],
+      Exists: { name: "Exists" },
+      Type: [{ name: "Question" }],
       Location: convertToURL(link),
-      title: [{text: {content: link.node_title}}],
+      title: [{ text: { content: link.node_title } }],
     },
   });
 }
@@ -109,10 +97,7 @@ async function deDuplicatePages(notion, notionPages) {
   return uniquePages;
   function checkIfThere(page, uniquePages) {
     for (const uniquePage of uniquePages) {
-      if (
-        page.properties.Name.title[0].plain_text ==
-        uniquePage.properties.Name.title[0].plain_text
-      ) {
+      if (page.properties.Name.title[0].plain_text == uniquePage.properties.Name.title[0].plain_text) {
         return true;
       }
     }

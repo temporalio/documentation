@@ -541,45 +541,19 @@ async def main():
 </TabItem>
 <TabItem value="typescript">
 
-Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
+Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
 
-If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
-However, always configure your connection and Namespace when [deploying to production](https://legacy-documentation-sdks.temporal.io/typescript/security/#encryption-in-transit-with-mtls).
+If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
 
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
-
-Use a new `WorkflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
-
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
-
-```typescript
-import fs from "fs-extra";
-import {Connection, WorkflowClient} from "@temporalio/client";
-import path = from "path";
+```ts
+import { Client } from '@temporalio/client';
 
 async function run() {
-  const cert = await fs.readFile("./path-to/your.pem");
-  const key = await fs.readFile("./path-to/your.key");
+  const client = new Client();
 
-  const connectionOptions = {
-    address: "your-custom-namespace.tmprl.cloud:7233",
-    tls: {
-      clientCertPair: {
-        crt: cert,
-        key: key,
-      },
-    // serverRootCACertificatePath: "ca.cert",
-    },
-  };
-  const connection = await Connection.connect(connectionOptions);
+  // . . .
 
-  const client = new WorkflowClient({
-    connection,
-    // connects to 'default' namespace if not specified
-    namespace: "your-custom-namespace",
-  });
-
-    // . . .
+  await client.connection.close();
 }
 
 run().catch((err) => {
@@ -692,9 +666,49 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Content is planned but not yet available.
+Create a [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) with a [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) object that has your Cloud namespace and client certificate.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```ts
+import { Client, Connection } from '@temporalio/client';
+import fs from 'fs-extra';
+
+const { NODE_ENV = 'development' } = process.env;
+const isDeployed = ['production', 'staging'].includes(NODE_ENV);
+
+async function run() {
+  const cert = await fs.readFile('./path-to/your.pem');
+  const key = await fs.readFile('./path-to/your.key');
+
+  let connectionOptions = {};
+  if (isDeployed) {
+    connectionOptions = {
+      address: 'your-namespace.tmprl.cloud:7233',
+      tls: {
+        clientCertPair: {
+          crt: cert,
+          key,
+        },
+      },
+    };
+
+    const connection = await Connection.connect(connectionOptions);
+
+    const client = new Client({
+      connection,
+      namespace: 'your-namespace',
+    });
+
+    // . . .
+
+    await client.connection.close();
+  }
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 
 </TabItem>
 </Tabs>
