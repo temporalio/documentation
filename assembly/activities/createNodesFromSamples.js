@@ -116,63 +116,63 @@ export async function createNodesFromSamples(config) {
     }
     return nodes;
   }
-  
 
-function isMultilineStart(invLine) {
-  if (invLine.includes("/*") || invLine.includes('"""dacx')) {
-    return true;
-  }
-  return false;
-}
-
-function isMultilineEnd(invLine) {
-  if (invLine.includes("*/") || invLine.includes('dacx"""')) {
-    return true;
-  }
-  return false;
-}
-
-function findMetaData(contents) {
-  const dacMatches = [];
-  let data;
-  while ((data = docsAsSource.exec(contents)) !== null) {
-    dacMatches.push(data);
-  }
-  return dacMatches;
-}
-
-function trimUP(str) {
-  const strs = str.split(":");
-  return strs[1].trim();
-}
-
-function isSupportedExtension(ext) {
-  switch (ext) {
-    case ".go":
+  function isMultilineStart(invLine) {
+    if (invLine.includes("/*") || invLine.includes('"""dacx')) {
       return true;
-    case ".py":
-      return true;
-    default:
-      return false;
-  }
-}
-function isDACX(str) {
-  str.toLowerCase();
-  if (str.includes("_dacx")) {
-    return true;
-  } else {
+    }
     return false;
   }
-}
 
-function parseURL(repoPath, file) {
-  const parts = file.directory.split("/");
-  const dirParts = parts.slice(1);
-  const directory = path.join(...dirParts);
-  const sourceURL = repoPath + "/" + path.join(directory, file.name);
-  return sourceURL;
-}
+  function isMultilineEnd(invLine) {
+    if (invLine.includes("*/") || invLine.includes('dacx"""')) {
+      return true;
+    }
+    return false;
+  }
 
-function genSourceLinkHTML(link) {
-  return `<a class="dacx-source-link" href="${link}">View source code</a>`;
+  function findMetaData(contents) {
+    const dacMatches = [];
+    let data;
+    while ((data = docsAsSource.exec(contents)) !== null) {
+      dacMatches.push(data);
+    }
+    return dacMatches;
+  }
+
+  function trimUP(str) {
+    const strs = str.split(":");
+    return strs[1].trim();
+  }
+
+  function isSupportedExtension(ext) {
+    switch (ext) {
+      case ".go":
+        return true;
+      case ".py":
+        return true;
+      default:
+        return false;
+    }
+  }
+  function isDACX(str) {
+    str.toLowerCase();
+    if (str.includes("_dacx")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function parseURL(repoPath, file) {
+    const parts = file.directory.split("/");
+    const dirParts = parts.slice(1);
+    const directory = path.join(...dirParts);
+    const sourceURL = repoPath + "/" + path.join(directory, file.name);
+    return sourceURL;
+  }
+
+  function genSourceLinkHTML(link) {
+    return `<a class="dacx-source-link" href="${link}">View source code</a>`;
+  }
 }

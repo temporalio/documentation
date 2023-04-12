@@ -3403,7 +3403,7 @@ Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/start_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -3472,7 +3472,7 @@ method on the Schedule Handle.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/backfill_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -3592,7 +3592,7 @@ You can get a complete list of the attributes of the Scheduled Workflow Executio
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/describe_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -3652,7 +3652,7 @@ If a schedule is added or deleted, it may not be available in the list immediate
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/list_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main() -> None:
     client = await Client.connect("localhost:7233")
     async for schedule in await client.list_schedules():
@@ -3707,7 +3707,7 @@ You can pass a `note` to the `pause()` method to provide a reason for pausing th
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/pause_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -3764,7 +3764,7 @@ To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https:/
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/trigger_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -3823,7 +3823,7 @@ The following example updates the Schedule to use a new argument.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/update_schedule_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
     async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
         schedule_action = input.description.schedule.action
 

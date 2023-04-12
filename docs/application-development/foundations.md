@@ -527,7 +527,7 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
-// ...
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -536,6 +536,13 @@ async def main():
         "your name",
         id="your-workflow-id",
         task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </TabItem>
@@ -963,18 +970,16 @@ Workflow parameters are the method parameters of the singular method decorated w
 These can be any data type Temporal can convert, including [`dataclasses`](https://docs.python.org/3/library/dataclasses.html) when properly type-annotated.
 Technically this can be multiple parameters, but Temporal strongly encourages a single `dataclass` parameter containing all input fields.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">View source code</a>
+
 ```python
+from dataclasses import dataclass
+# . . .
+# . . .
 @dataclass
 class YourParams:
-    your_int_param: int
-    your_str_param: str
-
-
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, params: YourParams) -> None:
-        ...
+    greeting: str
+    name: str
 ```
 
 </TabItem>
@@ -1235,13 +1240,20 @@ interface YourWorkflowDefinitionInterface
 
 You can customize the Workflow name with a custom name in the decorator argument. For example, `@workflow.defn(name="your-workflow-name")`. If the name parameter is not specified, the Workflow name defaults to the function name.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+
 ```python
-@workflow.defn(name="your-workflow-name")
+from temporalio import workflow
+# . . .
+# . . .
+@workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
         )
 ```
 
@@ -1585,9 +1597,9 @@ Register the function as an Activity with a custom name through a decorator argu
 
 ```python
 from temporalio import activity
-// ...
-// ...
-@activity.defn
+# . . .
+# . . .
+@activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
@@ -1723,9 +1735,9 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 from temporalio import activity
 
 from your_dataobject_dacx import YourParams
-// ...
-// ...
-@activity.defn
+# . . .
+# . . .
+@activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
@@ -1839,8 +1851,8 @@ The following example defines an Activity that takes a string as input and retur
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```python
-// ...
-@activity.defn
+# . . .
+@activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
@@ -1961,12 +1973,16 @@ The `#[YourActivityInterface("file_activities.")]` is an annotation that tells t
 </TabItem>
 <TabItem value="python">
 
-You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`. If the name parameter is not specified, the Activity name defaults to the function name.
+You can customize the Activity name with a custom name in the decorator argument. For example, `@activity.defn(name="your-activity")`.
+If the name parameter is not specified, the Activity name defaults to the function name.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```python
-@activity.defn(name="your-activity")
-async def your_activity(name: str) -> str:
-    return f"Hello, {name}!"
+# . . .
+@activity.defn(name="your_activity")
+async def your_activity(input: YourParams) -> str:
+    return f"{input.greeting}, {input.name}!"
 ```
 
 </TabItem>
@@ -2311,22 +2327,29 @@ class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
 To spawn an Activity Execution, use the [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) operation from within your Workflow Definition.
 
-```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
-        )
-```
-
 `execute_activity()` is a shortcut for [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) that waits on its result.
 
 To get just the handle to wait and cancel separately, use `start_activity()`.
 In most cases, use `execute_activity()` unless advanced task capabilities are needed.
 
 A single argument to the Activity is positional. Multiple arguments are not supported in the type-safe form of `start_activity()` or `execute_activity()` and must be supplied by the `args` keyword argument.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+
+```python
+from temporalio import workflow
+# . . .
+# . . .
+@workflow.defn(name="YourWorkflow")
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
+```
 
 </TabItem>
 <TabItem value="typescript">
@@ -2775,8 +2798,8 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 ```python
 from temporalio.client import Client
 from temporalio.worker import Worker
-// ...
-// ...
+# . . .
+# . . .
 async def main():
     client = await Client.connect("localhost:7233")
     worker = Worker(
@@ -3150,13 +3173,23 @@ $worker->registerActivityFinalizer(fn() => $kernel->showtdown());
 
 When a `Worker` is created, it accepts a list of Workflows in the `workflows` parameter, a list of Activities in the `activities` parameter, or both.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">View source code</a>
+
 ```python
-worker = Worker(
-    client,
-    task_queue="your-task-queue",
-    workflows=[YourWorkflow1, YourWorkflow2],
-    activities=[your_activity_1, your_activity_2],
-)
+# . . .
+async def main():
+    client = await Client.connect("localhost:7233")
+    worker = Worker(
+        client,
+        task_queue="your-task-queue",
+        workflows=[YourWorkflow],
+        activities=[your_activity],
+    )
+    await worker.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </TabItem>
@@ -3722,13 +3755,25 @@ If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Chi
 
 To set a Task Queue in Python, specify the `task_queue` argument when executing a Workflow with either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) methods.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+
 ```python
-result = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+# . . .
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </TabItem>
@@ -3896,13 +3941,25 @@ To set a Workflow Id in Python, specify the `id` argument when executing a Workf
 
 The `id` argument should be a unique identifier for the Workflow Execution.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
+
 ```python
-result = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-)
+# . . .
+async def main():
+    client = await Client.connect("localhost:7233")
+
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+    )
+
+    print(f"Result: {result}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </TabItem>

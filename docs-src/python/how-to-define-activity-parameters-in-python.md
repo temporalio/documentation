@@ -15,9 +15,9 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 from temporalio import activity
 
 from your_dataobject_dacx import YourParams
-// ...
-// ...
-@activity.defn
+# . . .
+# . . .
+@activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
