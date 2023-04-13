@@ -17,11 +17,7 @@ export async function attachSourceToGuides(config) {
     guideConfigs.cfgs.push(raw_content);
   }
   guideConfigs.cfgs = await attachNodes(guideConfigs.cfgs, sourceInfoNodes);
-  const writePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const writePath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   await fs.writeJSON(writePath, guideConfigs);
   return;
 }
