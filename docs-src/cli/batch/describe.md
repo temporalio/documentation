@@ -4,14 +4,14 @@ title: temporal batch describe
 sidebar_label: describe
 description: Describe a Batch operation job.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
 
 Use the command options listed below to change the information returned by this command.
 Make sure to write the command in this format:
-`temporal batch describe [command options] [arguments]`
+`temporal batch describe [command options]`
 
 - [--address](/cli/cmd-options/address)
 

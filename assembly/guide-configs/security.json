@@ -14,18 +14,6 @@
       },
       {
         "type": "h2",
-        "id": "concepts/what-is-a-data-converter"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-codec-server"
-      },
-      {
-        "type": "h3",
-        "id": "security/how-to-set-up-codec-server"
-      },
-      {
-        "type": "h2",
         "id": "security/cluster-plugins"
       },
       {
@@ -64,6 +52,10 @@
             "id": "none"
           }
         ]
+      },
+      {
+        "type": "h2",
+        "id": "security/data-converter"
       }
     ]
   }

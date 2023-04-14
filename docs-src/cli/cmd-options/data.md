@@ -2,9 +2,9 @@
 id: data
 title: temporal  data
 sidebar_label: data
-description: Definition for the data command option.
+description: Namespace data in a key=value format
 tags:
-	- cli
+    - cli
 ---
 
-Namespace data in a format key=value
+Namespace data in a key=value format

@@ -2,9 +2,9 @@
 id: cron
 title: temporal  cron
 sidebar_label: cron
-description: Definition for the cron command option.
+description: Optional Cron Schedule for the Workflow. 
 tags:
-	- cli
+    - cli
 ---
 
 Optional Cron Schedule for the Workflow. Cron spec is formatted as:

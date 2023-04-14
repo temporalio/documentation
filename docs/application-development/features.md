@@ -35,6 +35,7 @@ In this section you can find the following:
 - [How to Heartbeat an Activity](#activity-heartbeats)
 - [How to Asynchronously complete an Activity](#asynchronous-activity-completion)
 - [How to register Namespaces](#namespaces)
+- [How to use custom payload conversion](#custom-payload-conversion)
 
 ## Signals
 
@@ -48,7 +49,7 @@ Signals can be sent to Workflow Executions from a Temporal Client or from anothe
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
-- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>.
+- The arguments must be <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
 
 <Tabs
 defaultValue="go"
@@ -799,7 +800,7 @@ A <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/i
 A Query has a name and can have arguments.
 
 - The name, also called a Query type, is a string.
-- The arguments must be <a class="tdlp" href="/security#data-converter">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>.
+- The arguments must be <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
 
 <Tabs
 defaultValue="go"
@@ -4049,6 +4050,146 @@ On self-hosted Temporal Cluster, you can manage your registered Namespaces using
       .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("your-namespace-name").build());
   //...
   ```
+
+</TabItem>
+<TabItem value="php">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="python">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+<TabItem value="typescript">
+
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
+</TabItem>
+</Tabs>
+
+## Custom payload conversion
+
+Temporal SDKs provide a <a class="tdlp" href="/dataconversion#payload-converter">Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-converter">Learn more</a></span></span></a> that can be customized to convert a custom data type to <a class="tdlp" href="/dataconversion#payload">Payload<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload">Learn more</a></span></span></a> and back.
+
+Implementing custom Payload conversion is optional.
+It is needed only if the <a class="tdlp" href="/dataconversion#default-data-converter">default Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a default Data Converter?</span><br /><br /><span class="tdlppd">The default Data Converter is used by the Temporal SDK to convert objects into bytes using a series of Payload Converters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#default-data-converter">Learn more</a></span></span></a> does not support your custom values.
+
+To support custom Payload conversion, create a <a class="tdlp" href="/dataconversion#custom-payload-conversion">custom Payload Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Converter?</span><br /><br /><span class="tdlppd">A Payload Converter serializes data, converting objects or values to bytes and back.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#custom-payload-conversion">Learn more</a></span></span></a> and configure the Data Converter to use it in your Client options.
+
+The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
+You can set multiple encoding Payload Converters to run your conversions.
+When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+<Tabs
+defaultValue="go"
+queryString="lang"
+values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+
+<TabItem value="go">
+
+Use [CompositeDataConverter](https://pkg.go.dev/go.temporal.io/sdk/converter#CompositeDataConverter) to apply custom, type-specific Payload Converters in a specified order.
+
+`NewCompositeDataConverter` creates a new instance of `CompositeDataConverter` from an ordered list of type-specific Payload Converters.
+The following type-specific Payload Converters are available in the Go SDK, listed in the order that they are applied by the default Data Converter:
+
+- [NewNilPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#NilPayloadConverter.ToString)
+- [NewByteSlicePayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ByteSlicePayloadConverter)
+- [NewProtoJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoJSONPayloadConverter)
+- [NewProtoPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#ProtoPayloadConverter)
+- [NewJSONPayloadConverter()](https://pkg.go.dev/go.temporal.io/sdk/converter#JSONPayloadConverter)
+
+The order in which the Payload Converters are applied is important because during serialization the Data Converter tries the Payload Converters in that specific order until a Payload Converter returns a non-nil Payload.
+
+A custom [`PayloadConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#PayloadConverter) must implement functions `FromPayload` (for a single value) or `FromPayloads` (for a list of values) to convert to values from a Payload, and `ToPayload` (for a single value) or `ToPayloads` (for a list of values) to convert values to a Payload.
+
+To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://pkg.go.dev/go.temporal.io/sdk/converter#NewCompositeDataConverter) and set it as the Data Converter in the Client options.
+
+- To replace the default Data Converter with a custom `NewCompositeDataConverter`, use the following.
+
+  ```go
+  dataConverter := converter.NewCompositeDataConverter(YourCustomPayloadConverter())
+  ```
+
+- To add your custom type conversion to the default Data Converter, use the following to keep the defaults but set yours just before the default JSON fall through.
+
+  ```go
+  dataConverter := converter.NewCompositeDataConverter(
+    converter.NewNilPayloadConverter(),
+    converter.NewByteSlicePayloadConverter(),
+    converter.NewProtoJSONPayloadConverter(),
+    converter.NewProtoPayloadConverter(),
+    YourCustomPayloadConverter(),
+    converter.NewJSONPayloadConverter(),
+  )
+  ```
+
+</TabItem>
+<TabItem value="java">
+
+Create a custom implementation of a [PayloadConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with `DefaultDataConverter`.
+
+`PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
+You can create a custom implementation of `PayloadConverter` for custom formats, as shown in the following example:
+
+```java
+/** Payload Converter specific to your custom object */
+public class YourCustomPayloadConverter implements PayloadConverter {
+ //...
+  @Override
+  public String getEncodingType() {
+    return "json/plain"; // The encoding type determines which default conversion behavior to override.
+  }
+
+  @Override
+  public Optional<Payload> toData(Object value) throws DataConverterException {
+      // Add your convert-to logic here.
+  }
+
+  @Override
+  public <T> T fromData(Payload content, Class<T> valueClass, Type valueType)
+      throws DataConverterException {
+    // Add your convert-from logic here.
+  }
+//...
+}
+```
+
+You can also use [specific implementation classes](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/package-summary.html) provided in the Java SDK.
+
+For example, to create a custom `JacksonJsonPayloadConverter`, use the following:
+
+```java
+//...
+private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
+  ObjectMapper objectMapper = new ObjectMapper();
+  // Add your custom logic here.
+  return new JacksonJsonPayloadConverter(objectMapper);
+}
+//...
+```
+
+To set your custom Payload Converter, use it with [withPayloadConverterOverrides](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of `DefaultDataConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
+
+The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
+
+```java
+//...
+DefaultDataConverter ddc =
+        DefaultDataConverter.newDefaultInstance()
+            .withPayloadConverterOverrides(new YourCustomPayloadConverter());
+
+    WorkflowClientOptions workflowClientOptions =
+        WorkflowClientOptions.newBuilder().setDataConverter(ddc).build();
+//...
+```
 
 </TabItem>
 <TabItem value="php">

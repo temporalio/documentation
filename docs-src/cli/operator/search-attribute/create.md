@@ -1,10 +1,10 @@
 ---
 id: create
-title: temporal operator create
+title: temporal operator search-attribute create
 sidebar_label: create
 description: Adds one or more custom Search Attributes.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal operator search-attribute create` command adds one or more custom [Search Attributes](/concepts/what-is-a-search-attribute).
@@ -12,7 +12,7 @@ These Search Attributes can be used to [filter a list](/concepts/what-is-a-list-
 
 Use the options listed below to change the command's behavior.
 Make sure to write the command as follows:
-`temporal operator search-attribute create [command options] [arguments]`
+`temporal operator search-attribute create [command options]`
 
 - [--address](/cli/cmd-options/address)
 
@@ -43,5 +43,3 @@ Make sure to write the command as follows:
 - [--tls-server-name](/cli/cmd-options/tls-server-name)
 
 - [--type](/cli/cmd-options/type)
-
-- [--yes](/cli/cmd-options/yes)

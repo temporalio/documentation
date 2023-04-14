@@ -2,9 +2,9 @@
 id: namespace-id
 title: temporal  namespace-id
 sidebar_label: namespace-id
-description: Definition for the namespace-id command option.
+description: Namespace Id
 tags:
-	- cli
+    - cli
 ---
 
 Namespace Id

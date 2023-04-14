@@ -2,9 +2,9 @@
 id: time-format
 title: temporal  time-format
 sidebar_label: time-format
-description: Definition for the time-format command option.
+description: Format time as either relative, iso, raw.
 tags:
-	- cli
+    - cli
 ---
 
 Format time as: relative, iso, raw. (default: relative)

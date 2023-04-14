@@ -4,13 +4,13 @@ title: temporal schedule describe
 sidebar_label: describe
 description: Get Schedule configuration and current state.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal schedule describe` command shows the current [Schedule](/concepts/what-is-a-schedule) configuration.
 This command also provides information about past, current, and future [Workflow Runs](/concepts/what-is-a-run-id).
 
-`temporal schedule describe --sid 'your-schedule-id' [command options] [arguments]`
+`temporal schedule describe --sid 'your-schedule-id' [command options]`
 
 Use the options below to change this command's output.
 
