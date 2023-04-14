@@ -17,17 +17,16 @@ will be thrown.
 If replay fails for any other reason a [`ReplayError`](https://typescript.temporal.io/api/classes/worker.ReplayError)
 will be thrown.
 
-In the next example, a single history is loaded from a JSON file on disk (as obtained from the [Web
-UI](https://docs.temporal.io/web-ui) or the [Temporal CLI](https://docs.temporal.io/cli/workflow#show)):
+In the next example, a single history is loaded from a JSON file on disk (as obtained from the [WebUI](https://docs.temporal.io/web-ui) or the [Temporal CLI](https://docs.temporal.io/cli/workflow#show)):
 
 ```ts
-const filePath = "./history_file.json";
-const history = await JSON.parse(fs.promises.readFile(filePath, "utf8"));
+const filePath = './history_file.json';
+const history = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -35,14 +34,14 @@ Alternatively, we can download the history programatically using a Client:
 
 ```ts
 const connection = await Connection.connect({ address });
-const client = new Client({ connection, namespace: "your-namespace" });
-const handle = client.workflow.getHandle("your-workflow-id");
+const client = new Client({ connection, namespace: 'your-namespace' });
+const handle = client.workflow.getHandle('your-workflow-id');
 const history = await handle.fetchHistory();
 await Worker.runReplayHistory(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  history
+  history,
 );
 ```
 
@@ -65,13 +64,13 @@ const executions = client.workflow.list({
 const histories = executions.intoHistories();
 const results = Worker.runReplayHistories(
   {
-    workflowsPath: require.resolve("./your/workflows"),
+    workflowsPath: require.resolve('./your/workflows'),
   },
-  histories
+  histories,
 );
 for await (const result of results) {
   if (result.error) {
-    console.error("Replay failed", result);
+    console.error('Replay failed', result);
   }
 }
 ```
