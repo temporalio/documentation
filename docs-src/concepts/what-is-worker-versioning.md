@@ -26,9 +26,10 @@ the version sets.
 The primary use case for this feature is the deployment of incompatible changes to short-lived
 [Workflows](/workers). On Task Queues using this feature, the Workflow starter does not need to know
 when new versions are introduced. New [Workflow Executions](/workflows#workflow-execution) run using
-the new code in the newly deployed Workers, and old (but still open) Workflow Executions are
-processed only by Workers with an appropriate version. Old workers can be decommissioned after the
-completion of any open workflows using their version.
+the new code in the newly deployed Workers, and old Workflow Executions are processed only by
+Workers with an appropriate version. Old workers can be decommissioned after the archival of any
+open workflows using their version, or if you do not care about querying closed workflows, once
+there are no longer any open workflows at that version.
 
 For example, if you have a Workflow that never takes longer than a day to execute, a great strategy
 is to always assign a new build identifier to every new build of your Worker and add it to the
@@ -58,6 +59,10 @@ Worker with an incompatible definition. The same principle applies to Child Work
 Note that if you schedule an Activity or a Child Workflow on _different_ Task Queue from the one
 the Workflow is running on, they will be not be assigned any particular version.
 
+Continue-as-new from a Workflow on a versioned Task Queue will, by default, start the continued
+Workflow on the same compatible set as the original Workflow. Continuing-as-new onto a different
+task queue will not assign any particular version.
+
 ### How to use Worker Versioning
 
 To use this feature, follow these steps:
@@ -70,9 +75,10 @@ To use this feature, follow these steps:
 
 #### Defining the version sets
 
-Whether you use `temporal` cli or an SDK, updating the version sets feels the same. You specify the
-Task Queue that you're targeting, the build identifier that you're adding (or promoting), whether it
-becomes the new default version, and any existing versions it should be considered compatible with.
+Whether you use `temporal` [cli](/cli/) or an SDK, updating the version sets feels the same. You
+specify the Task Queue that you're targeting, the build identifier that you're adding (or
+promoting), whether it becomes the new default version, and any existing versions it should be
+considered compatible with.
 
 The rest of this section uses updates to one Task Queue's version sets as examples.
 
@@ -173,7 +179,7 @@ progress.
 #### Set constraints
 
 The sets have a maximum size limit, which defaults to 1000 build ids across all sets. This limit is
-configurable on Temporal Server via the `limit.versionBuildIDPerQueue` dynamic config property.
+configurable on Temporal Server via the `limit.versionBuildIDsPerQueue` dynamic config property.
 Operations to add new Build IDs to the sets will fail if the limit would be exceeded.
 
 There is also a limit on the number of sets, which defaults to 10. This limit is configurable via
