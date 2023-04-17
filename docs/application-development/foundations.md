@@ -832,19 +832,24 @@ interface FileProcessingWorkflow
 
 In the Temporal Python SDK programming model, Workflows are defined as classes.
 
-Specify the [`@workflow.defn`](https://python.temporal.io/temporalio.workflow.html#defn) decorator on the Workflow class to identify a Workflow.
+Specify the `@workflow.defn` decorator on the Workflow class to identify a Workflow.
 
-Use the [`@workflow.run`](https://python.temporal.io/temporalio.workflow.html#run) to mark the entry point method to be invoked.
-This must be set on one asynchronous method defined on the same class as `@workflow.defn`.
-Run methods have positional parameters.
+Use the `@workflow.run` to mark the entry point method to be invoked. This must be set on one asynchronous method defined on the same class as `@workflow.defn`. Run methods have positional parameters.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
-@workflow.defn
+from temporalio import workflow
+# . . .
+# . . .
+@workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
         )
 ```
 
@@ -1104,20 +1109,23 @@ interface FileProcessingWorkflow {
 
 To return a value of the Workflow, use `return` to return an object.
 
-To return the results of a Workflow Execution, use either [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+To return the results of a Workflow Execution, use either `start_workflow()` or `execute_workflow()` asynchronous methods.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
-@dataclass
-class YourResult:
-    your_int_param: int
-    your_str_param: str
-
-
-@workflow.defn
+from temporalio import workflow
+# . . .
+# . . .
+@workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
-    async def run(self, params: YourResult) -> None:
-      return YourResult
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
+        )
 ```
 
 </TabItem>
@@ -2539,13 +2547,20 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 `execute_activity()` is a shortcut for `await start_activity()`. An asynchronous `execute_activity()` helper is provided which takes the same arguments as `start_activity()` and `await`s on the result. `execute_activity()` should be used in most cases unless advanced task capabilities are needed.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
+
 ```python
-@workflow.defn
+from temporalio import workflow
+# . . .
+# . . .
+@workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_activity(
-            your_activity, name, schedule_to_close_timeout=timedelta(seconds=5)
+            your_activity,
+            YourParams("Hello", name),
+            start_to_close_timeout=timedelta(seconds=10),
         )
 ```
 
@@ -3549,32 +3564,25 @@ You can start a Workflow Execution on a regular schedule with <a class="tdlp" hr
 
 To start a Workflow Execution in Python, use either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods in the Client.
 
-The following code example starts a Workflow and returns its handle.
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
+# . . .
 async def main():
-    client = await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
+    client = await Client.connect("localhost:7233")
 
-    handle = await client.start_workflow(
-        "your-workflow-name",
-        "some arg",
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your name",
         id="your-workflow-id",
         task_queue="your-task-queue",
     )
-```
 
-The following code example starts a Workflow and waits for completion.
+    print(f"Result: {result}")
 
-```python
-async def main():
-    client = await Client.connect("127.0.0.1:7233", namespace="your-custom-namespace")
 
-    handle = await client.execute_workflow(
-        "your-workflow-name",
-        "some arg",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-    )
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 </TabItem>

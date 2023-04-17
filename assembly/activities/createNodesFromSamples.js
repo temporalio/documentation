@@ -85,7 +85,7 @@ export async function createNodesFromSamples(config) {
           previousNum = lineNum;
         } else {
           if (lineNum - previousNum > 1) {
-            node.inverse_content.push(lang === "python" ? "# . . ." : "// ...");
+            node.inverse_content.push(lang === "python" ? "# ..." : "// ...");
           }
           node.inverse_content.push(fileLines[lineNum - 1]);
           previousNum = lineNum;
