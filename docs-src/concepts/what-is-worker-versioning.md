@@ -8,14 +8,12 @@ tags:
   - versioning
 ---
 
-Worker Versioning simplifies the process of deploying changes to [Workflow
-Definitions](/workflows/#workflow-definition). We recommend that you read about Workflow Definitions
+Worker Versioning simplifies the process of deploying changes to [WorkflowDefinitions](/workflows/#workflow-definition). We recommend that you read about Workflow Definitions
 before proceeding, because Workflow Versioning is largely concerned with helping to manage
 nondeterministic changes to those definitions.
 
 This feature can help you manage nondeterministic changes by providing a convenient way to ensure
-that [Workers](/workers) with different Workflow & Activity Definitions operating on the same [Task
-Queue](/tasks/#task-queue) do not attempt to process [Workflow Tasks](/tasks/#workflow-task) and
+that [Workers](/workers) with different Workflow & Activity Definitions operating on the same [TaskQueue](/tasks/#task-queue) do not attempt to process [Workflow Tasks](/tasks/#workflow-task) and
 [Activity Tasks](/tasks/#actvitiy-task) that they can't successfully process, according to sets of
 versions associated with that Task Queue that you define.
 
@@ -57,7 +55,7 @@ to change the type signature of an Activity Definition while creating a new inco
 for a Worker, you can do so without concern that the Activity will fail to execute on some other
 Worker with an incompatible definition. The same principle applies to Child Workflows.
 
-Note that if you schedule an Activity or a Child Workflow on *different* Task Queue from the one
+Note that if you schedule an Activity or a Child Workflow on _different_ Task Queue from the one
 the Workflow is running on, they will be not be assigned any particular version.
 
 ### How to use Worker Versioning
@@ -95,7 +93,7 @@ First, we add a version `1.0` to the Task Queue as the new default.
 Our version sets now look like this:
 
 | set 1 (d) |
-|-----------|
+| --------- |
 | 1.0 (d)   |
 
 All new Workflows started on the Task Queue have their first Tasks assigned to version `1.0`.
@@ -109,7 +107,7 @@ version, those Workers receive no Tasks.
 Now we need to change the Workflow for some reason, so we add `2.0` to the sets as the new default:
 
 | set 1   | set 2 (d) |
-|---------|-----------|
+| ------- | --------- |
 | 1.0 (d) | 2.0 (d)   |
 
 All new Workflows started on the Task Queue have their first Tasks assigned to version `2.0`.
@@ -122,7 +120,7 @@ code as fast as possible. So we add `2.1` to the sets, marking it as compatible 
 sets look like this:
 
 | set 1   | set 2 (d) |
-|---------|-----------|
+| ------- | --------- |
 | 1.0 (d) | 2.0       |
 |         | 2.1 (d)   |
 
@@ -135,19 +133,19 @@ We continue with our normal development cycle, adding a `3.0` version.
 Nothing new here:
 
 | set 1   | set 2   | set 3 (d) |
-|---------|---------|-----------|
+| ------- | ------- | --------- |
 | 1.0 (d) | 2.0     | 3.0 (d)   |
-|         | 2.1 (d) |           |   
+|         | 2.1 (d) |           |
 
 Now imagine that version `3.0` doesn't have an explicit bug, but something about the business logic
 is less than ideal. We are OK with existing `3.0` Workflows running to completion, but we want new
 Workflows to use the old `2.x` branch. This operation is supported by performing an update targeting
 `2.1` (or `2.0`) and setting it's set as the current default, which results in these sets:
 
-| set 1   | set 3     | set 2 (d) |
-|---------|-----------|-----------|
-| 1.0 (d) | 3.0 (d)   | 2.0       |
-|         |           | 2.1 (d)   |
+| set 1   | set 3   | set 2 (d) |
+| ------- | ------- | --------- |
+| 1.0 (d) | 3.0 (d) | 2.0       |
+|         |         | 2.1 (d)   |
 
 Now new workflows start on `2.1`.
 
