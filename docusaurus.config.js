@@ -152,6 +152,10 @@ module.exports = {
               label: "Support forum",
               href: "https://community.temporal.io/",
             },
+            {
+              label: 'Ask an expert',
+              href: 'https://pages.temporal.io/ask-an-expert'
+            },
           ],
         },
         {
