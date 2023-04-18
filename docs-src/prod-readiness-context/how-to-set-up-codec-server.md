@@ -63,7 +63,7 @@ Each request from the Web UI to your Codec Server includes the following headers
 #### Request Body
 
 General specification for the `POST` Request body contains payloads.
-By default, all field values in your payload are Base64 encoded, regardless of whether they are encrypted in your custom codec implementation.
+By default, all field values in your payload are Base64 encoded, regardless of whether they are encrypted by your custom codec implementation.
 
 The following example shows a sample `POST` Request body with Base64 encoding.
 
