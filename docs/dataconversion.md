@@ -243,54 +243,15 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 #### Usage
 
-When using tctl or the Web UI to perform some operations on a Workflow Execution, you can configure the exposed Codec Server endpoints to remotely encode data sent to the Temporal Server and decode data received from the Temporal Server.
-
 When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/production-readiness/develop#data-encryption).
 
-Before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
+To see decoded data when using CLI or the Web UI to perform some operations on a Workflow Execution, you can configure the exposed Codec Server endpoints to remotely decode data received from the Temporal Server.
+
+For details on creating your Codec Server, see <a class="tdlp" href="//production-readiness/develop#codec-server-setup">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Codec Server Setup</span><br /><br /><span class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//production-readiness/develop#codec-server-setup">Learn more</a></span></span></a>.
+
+After you start your Codec Server, <a class="tdlp" href="//production-readiness/develop#codec-server-setup">configure your Codec Server endpoints<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Codec Server Setup</span><br /><br /><span class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//production-readiness/develop#codec-server-setup">Learn more</a></span></span></a> to decode the encoded data to its original format when viewed from the Web UI or tctl.
+
+You can set your Codec Server endpoints to encode data sent to the Temporal Server (see <a class="tdlp" href="#remote-data-encoding">Remote data encoding<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remote-data-encoding">Learn more</a></span></span></a>).
+However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers.
-
-<a class="tdlp" href="#setting-codec-server-endpoints">Configure your Codec Server endpoints<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Setting Codec Server endpoints</span><br /><br /><span class="tdlppd">Run a Codec Server with your Payload Codec and then configure tctl and the Web UI to use the server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#setting-codec-server-endpoints">Learn more</a></span></span></a> to decode the encoded data to its original format when viewed from the Web UI or tctl.
-
-The following samples provide implementation examples for applying authentication on your Codec Server using the Go SDK.
-
-- [Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server)
-- [GRPC proxy server](https://github.com/temporalio/samples-go/tree/main/grpc-proxy)
-
-### Setting Codec Server endpoints
-
-To use a <a class="tdlp" href="#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#codec-server">Learn more</a></span></span></a>, first run it with your Payload Codec and then configure [tctl](/tctl-v1) and the [Web UI](/web-ui) to use it.
-
-#### tctl
-
-After the Codec Server is started, provide the exposed endpoint to tctl using the `--codec_endpoint` global option.
-
-For example, if you are running your Codec Server locally and expose port 8888 as your endpoint, you can run the following command to see the decoded output of the Workflow Execution "yourWorkflow" in the Namespace "yourNamespace".
-
-```bash
-tctl --codec-endpoint "http://localhost:8888" --namespace "yourNamespace" workflow show --workflow-id "yourWorkflow"  --run-id "<yourRunId>" --output "table"
-```
-
-#### Web UI
-
-You can set the codec endpoints either in the Web UI or in the [UI server](https://github.com/temporalio/ui-server) configuration file before starting the UI server.
-
-**In the Web UI**
-
-<div class="tdiw"><div class="tditw"><p class="tdit">Data Encoder icon</p></div><div class="tdiiw"><img class="img_ev3q" src="/img/docs/data-encoder-button.png" alt="Data Encoder icon" height="304" width="406" /></div></div>
-
-In the lower-left corner, select **Data Encoder**.
-In the codec endpoint dialog, enter the URL and port number for your codec endpoint.
-Refresh your Workflow Execution page to see encoded/decoded data.
-
-**In the Web UI server configuration file**
-
-Specify the codec endpoint in the Web UI server [configuration file](/references/web-ui-configuration#codec):
-
-```yaml
-codec:
-    endpoint: {{ default .Env.TEMPORAL_CODEC_ENDPOINT "{namespace}"}}
-```
-
-Start the UI server to use this endpoint for decoding data in Workflow Executions in the specified Namespace.
 

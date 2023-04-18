@@ -44,10 +44,6 @@
       {
         "type": "h2",
         "id": "concepts/what-is-a-codec-server"
-      },
-      {
-        "type": "h3",
-        "id": "prod-readiness-context/how-to-set-up-codec-server"
       }
     ]
   }
