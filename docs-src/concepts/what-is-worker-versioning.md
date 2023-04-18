@@ -54,7 +54,7 @@ Activity scheduled by a Workflow on the same Task Queue will, by default, only b
 Workers that have a compatible build ID with the Workflow that scheduled it. Thus, if you wish
 to change the type signature of an Activity Definition while creating a new incompatible build ID
 for a Worker, you can do so without concern that the Activity will fail to execute on some other
-Worker with an incompatible definition. The same principle applies to Child Workflows. It's 
+Worker with an incompatible definition. The same principle applies to Child Workflows. It's
 important to keep in mind that "publicly facing" workflows on a versioned Task Queue should not
 change their signature, as this defeats the purpose of workflow-launching clients being oblivious
 to changes in the Workflow Definition. If you need to change the signature of a Workflow, you should
@@ -107,7 +107,7 @@ First, we add a version `1.0` to the Task Queue as the new default.
 Our version sets now look like this:
 
 | set 1 (default) |
-|-----------------|
+| --------------- |
 | 1.0 (default)   |
 
 All new Workflows started on the Task Queue have their first Tasks assigned to version `1.0`.
@@ -121,7 +121,7 @@ version, those Workers receive no Tasks.
 Now we need to change the Workflow for some reason, so we add `2.0` to the sets as the new default:
 
 | set 1         | set 2 (default) |
-|---------------|-----------------|
+| ------------- | --------------- |
 | 1.0 (default) | 2.0 (default)   |
 
 All new Workflows started on the Task Queue have their first Tasks assigned to version `2.0`.
@@ -134,7 +134,7 @@ code as fast as possible. So we add `2.1` to the sets, marking it as compatible 
 sets look like this:
 
 | set 1         | set 2 (default) |
-|---------------|-----------------|
+| ------------- | --------------- |
 | 1.0 (default) | 2.0             |
 |               | 2.1 (default)   |
 
@@ -147,7 +147,7 @@ We continue with our normal development cycle, adding a `3.0` version.
 Nothing new here:
 
 | set 1         | set 2         | set 3 (default) |
-|---------------|---------------|-----------------|
+| ------------- | ------------- | --------------- |
 | 1.0 (default) | 2.0           | 3.0 (default)   |
 |               | 2.1 (default) |                 |
 
@@ -157,7 +157,7 @@ Workflows to use the old `2.x` branch. This operation is supported by performing
 `2.1` (or `2.0`) and setting it's set as the current default, which results in these sets:
 
 | set 1         | set 3         | set 2 (default) |
-|---------------|---------------|-----------------|
+| ------------- | ------------- | --------------- |
 | 1.0 (default) | 3.0 (default) | 2.0             |
 |               |               | 2.1 (default)   |
 
