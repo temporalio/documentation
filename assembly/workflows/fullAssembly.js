@@ -1,4 +1,4 @@
-import {proxyActivities} from "@temporalio/workflow";
+import { proxyActivities, workflowInfo } from "@temporalio/workflow";
 
 const simpleActivityOptions = {
   startToCloseTimeout: "10 minutes",
@@ -6,14 +6,14 @@ const simpleActivityOptions = {
 
 export async function fullAssembly(params) {
   const activities = proxyActivities(simpleActivityOptions);
-
   // If these Activities fail, we don't want to retry them, as they will continue failing.
   const deterministicActivities = proxyActivities({
     ...simpleActivityOptions,
-    retry: {maximumAttempts: 1},
+    retry: { maximumAttempts: 1 },
   });
-
   const config = await activities.getConfig(params);
+  const info = workflowInfo();
+  config.workflow_id = info.workflowId;
 
   await activities.createTempDir(config);
 
@@ -44,6 +44,7 @@ export async function fullAssembly(params) {
 
     await activities.updateCoverageBoard(config);
   }
+  await activities.genReport(config);
 
   await activities.cleanUpTempDir(config);
 

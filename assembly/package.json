@@ -10,6 +10,7 @@
     "@octokit/rest": "^19.0.7",
     "anzip": "^0.2.0",
     "arraybuffer-to-buffer": "^0.0.7",
+    "date-format-parse": "^0.2.7",
     "fs-extra": "^10.1.0",
     "gray-matter": "^4.0.3",
     "image-size": "^1.0.2",
