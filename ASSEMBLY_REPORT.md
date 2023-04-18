@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday April 13 2023 10:43:03 AM -0500
+Last assembled: Tuesday April 18 2023 14:21:51 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -347,8 +347,6 @@ clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 app-dev-context/custom-payload-conversion -> /application-development/features#custom-payload-conversion
-
-prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 

@@ -329,9 +329,10 @@ Use a Codec Server to decrypt your encoded <a class="tdlp" href="/dataconversion
 A Codec Server is an HTTP or HTTPS Server that you create and host.
 It must be configured to use a <a class="tdlp" href="/dataconversion#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> with the required decode logic and encryption keys.
 
-The Codec Server is independent of the Temporal Server, and decodes your encrypted payloads through endpoints.
-When you integrate this server with the Temporal Web UI, the Web UI uses the remote endpoint to send the encoded data to the Codec Server (see [API contract requirements](#api-contract-requirements)) and receive the decoded payloads from the Codec Server, which are then displayed in the Workflow Execution Event History on the Web UI.
-Note that the decoded payloads are only visible to you on the Web UI; All data on the Temporal Server remains encrypted.
+The Codec Server is independent of the Temporal Server and decodes your encrypted payloads through endpoints.
+When you set the codec endpoint in the Temporal Web UI, the Web UI uses the remote endpoint to send encoded data to the Codec Server and receive decoded payloads from the Codec Server. See [API contract requirements](#api-contract-specifications).
+Decoded payloads are then displayed in the Workflow Execution Event History on the Web UI.
+Note that the decoded payloads are visible only to you on the Web UI; All data on the Temporal Server remains encrypted.
 
 Since you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
@@ -357,7 +358,7 @@ For examples on how to create your Codec Server, see following Codec Server impl
 
 ### API contract specifications
 
-When you set your Codec Server endpoints in the Web UI or in your CLI commands, the following requirements must be met to decode encrypted payloads in your Workflow Execution Event History.
+When you create your Codec Server to handle requests from the Web UI, the following requirements must be met.
 
 #### Endpoints
 
