@@ -58,7 +58,7 @@ Worker with an incompatible definition. The same principle applies to Child Work
 important to keep in mind that "publicly facing" workflows on a versioned Task Queue should not
 change their signature, as this defeats the purpose of workflow-launching clients being oblivious
 to changes in the Workflow Definition. If you need to change the signature of a Workflow, you should
-use an entirely new Task Queue.
+use a different Workflow Type or an entirely new Task Queue.
 
 Note that if you schedule an Activity or a Child Workflow on _different_ Task Queue from the one
 the Workflow is running on, they will be not be assigned any particular version. Meaning if the
