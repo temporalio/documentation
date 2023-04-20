@@ -57,31 +57,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To emit metrics with the Java SDK, use the[`MicrometerClientStatsReporter`](https://github.com/temporalio/sdk-java/blob/55ee7894aec427d7e384c3519732bdd61119961a/src/main/java/io/temporal/common/reporter/MicrometerClientStatsReporter.java#L34) class to integrate with Micrometer MeterRegistry configured for your metrics backend.
-[Micrometer](https://micrometer.io/docs) is a popular Java framework that provides integration with Prometheus and other backends.
+Content is planned but not yet available.
 
-The following example shows how to use `MicrometerClientStatsReporter` to define the metrics scope and set it with the `WorkflowServiceStubsOptions`.
-
-```java
-//...
-   // see the Micrometer documentation for configuration details on other supported monitoring systems.
-   // in this example shows how to set up Prometheus registry and stats reported.
-   PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-   StatsReporter reporter = new MicrometerClientStatsReporter(registry);
-    // set up a new scope, report every 10 seconds
-     Scope scope = new RootScopeBuilder()
-             .reporter(reporter)
-             .reportEvery(com.uber.m3.util.Duration.ofSeconds(10));
-   // for Prometheus collection, expose a scrape endpoint.
-   //...
-   // add metrics scope to WorkflowServiceStub options
-   WorkflowServiceStubsOptions stubOptions =
-       WorkflowServiceStubsOptions.newBuilder().setMetricsScope(scope).build();
-//...
-```
-
-For more details, see the [Java SDK Samples](https://github.com/temporalio/samples-java/tree/main/src/main/java/io/temporal/samples/metrics).
-For details on configuring a Prometheus scrape endpoint with Micrometer, see the [Micrometer Prometheus Configuring](https://micrometer.io/docs/registry/prometheus#_configuring) documentation.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -143,45 +121,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To configure tracing in Java, register the `OpenTracingClientInterceptor()` interceptor.
-You can register the interceptors on both the Temporal Client side and the Worker side.
+Content is planned but not yet available.
 
-The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Temporal Client.
-
-```java
-WorkflowClientOptions.newBuilder()
-   //...
-   .setInterceptors(new OpenTracingClientInterceptor())
-   .build();
-```
-
-```java
-WorkflowClientOptions clientOptions =
-    WorkflowClientOptions.newBuilder()
-        .setInterceptors(new OpenTracingClientInterceptor(JaegerUtils.getJaegerOptions(type)))
-        .build();
-WorkflowClient client = WorkflowClient.newInstance(service, clientOptions);
-```
-
-The following code examples demonstrate the `OpenTracingClientInterceptor()` on the Worker.
-
-```java
-WorkerFactoryOptions.newBuilder()
-   //...
-   .setWorkerInterceptors(new OpenTracingWorkerInterceptor())
-   .build();
-```
-
-```java
-WorkerFactoryOptions factoryOptions =
-    WorkerFactoryOptions.newBuilder()
-        .setWorkerInterceptors(
-            new OpenTracingWorkerInterceptor(JaegerUtils.getJaegerOptions(type)))
-        .build();
-WorkerFactory factory = WorkerFactory.newInstance(client, factoryOptions);
-```
-
-For more information, see the Temporal [OpenTracing module](https://github.com/temporalio/sdk-java/blob/master/temporal-opentracing/README.md).
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -262,13 +204,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To get a standard `slf4j` logger in your Workflow code, use the [`Workflow.getLogger`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html) method.
+Content is planned but not yet available.
 
-```java
-private static final Logger logger = Workflow.getLogger(DynamicDslWorkflow.class);
-```
-
-Logs in replay mode are omitted unless the [`WorkerFactoryOptions.Builder.setEnableLoggingInReplay(boolean)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/worker/WorkerFactoryOptions.Builder.html#setEnableLoggingInReplay(boolean)) method is set to true.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -434,7 +372,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To set a custom logger, supply your own logging implementation and configuration details the same way you would in any other Java application.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -603,23 +543,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To set a custom Search Attribute, call the [`setSearchAttributes()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setSearchAttributes(java.util.Map)) method.
+Content is planned but not yet available.
 
-```java
-WorkflowOptions workflowOptions =
-    WorkflowOptions.newBuilder()
-        .setSearchAttributes(generateSearchAttributes())
-        .build();
-```
-
-`generateSearchAttributes()` is a `Map<String, ?>` from the Search Attribute used as the key to a value of one of the following types.
-
-- `String`
-- `Long`
-- `Integer`
-- `Boolean`
-- `Double`
-- `OffsetDateTime`
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -699,29 +625,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-In your Workflow code, call the [`upsertSearchAttributes(Map<String, ?> searchAttributes)`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#upsertSearchAttributes(java.util.Map)) method.
+Content is planned but not yet available.
 
-```java
- Map<String, Object> attr1 = new HashMap<>();
-     attr1.put("CustomIntField", 1);
-     attr1.put("CustomBoolField", true);
-     Workflow.upsertSearchAttributes(attr1);
-
-     Map<String, Object> attr2 = new HashMap<>();
-     attr2.put("CustomIntField", Lists.newArrayList(1, 2));
-     attr2.put("CustomKeywordField", "Seattle");
-     Workflow.upsertSearchAttributes(attr2);
-```
-
-The results of `upsertSearchAttributes()` output the following search attributes.
-
-```json
-{
-    "CustomIntField": 1, 2,
-    "CustomBoolField": true,
-    "CustomKeywordField": "Seattle",
-  }
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -802,7 +708,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To remove a Search Attribute, call the `upsertSearchAttributes()` method and set it to an empty map.
+Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -832,4 +740,3 @@ async function yourWorkflow() {
 
 </TabItem>
 </Tabs>
-

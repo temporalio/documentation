@@ -198,6 +198,45 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## Connect to Temporal Cloud
+
+When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+
+- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
+- mTLS CA certificate.
+- mTLS private key.
+
+For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+
+For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+
+Use the `connect()` method on the Client class to create and connect to a Temporal Client to the Temporal Cluster.
+Then specify the [TLSConfig](https://python.temporal.io/temporalio.service.TLSConfig.html) arguments to connect to a Temporal Cluster with TLS enabled.
+The `client_cert` must be combined with `client_private_key` to authenticate the Client.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py">View source code</a>
+
+```python
+from temporalio.client import Client, TLSConfig
+# . . .
+# . . .
+async def main():
+    with open("client-cert.pem", "rb") as f:
+        client_cert = f.read()
+    with open("client-private-key.pem", "rb") as f:
+        client_private_key = f.read()
+    client = await Client.connect(
+        "your-custom-namespace.tmprl.cloud:7233",
+        namespace="your-custom-namespace",
+        tls=TLSConfig(
+            client_cert=client_cert,
+            client_private_key=client_private_key,
+            # domain=domain, # TLS domain
+            # server_root_ca_cert=server_root_ca_cert, # ROOT CA to validate the server cert
+        ),
+    )
+```
+
 ## Develop Workflows
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.

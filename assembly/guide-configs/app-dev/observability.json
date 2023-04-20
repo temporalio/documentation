@@ -26,7 +26,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-emit-metrics-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -55,7 +55,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-configure-tracing-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -84,7 +84,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-log-from-a-workflow-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -113,7 +113,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-set-a-custom-logger-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -175,7 +175,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -204,7 +204,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -233,7 +233,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-remove-search-attributes-from-a-workflow-in-java"
+          "id": "none"
         },
         {
           "lang": "php",

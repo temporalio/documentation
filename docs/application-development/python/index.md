@@ -1,8 +1,9 @@
 ---
 id: index
-title: Temporal Go SDK Developer's guide
-description: The Temporal Go SDK Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
-sidebar_label: Go dev guide
+title: Temporal Python SDK developer's guide
+description: The Temporal Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+sidebar_label: Python
+sidebar_position: 3
 ---
 
 :::info WORK IN PROGRESS
@@ -21,7 +22,7 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 
 The Developer's guide is divided into the following sections:
 
-1. [**Foundations**](/application-development/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
+1. [**Foundations**](/application-development/python/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
    - [Run a development Cluster](/application-development/python/foundations#run-a-dev-cluster)
    - [Add an SDK to your project](/application-development/python/foundations#add-your-sdk)
@@ -31,3 +32,31 @@ The Developer's guide is divided into the following sections:
    - [Call to execute an Activity](/application-development/python/foundations#activity-execution)
    - [Run a Worker Process](/application-development/python/foundations#run-worker-processes)
    - [Start a Workflow Execution](/application-development/python/foundations#start-workflow-execution)
+
+2. [**Features**](/application-development/python/features): All the general features available to a Temporal Application.
+
+   - [Signals](/application-development/python/features#signals)
+   - [Queries](/application-development/python/features#queries)
+   - [Workflow timeouts and retries](/application-development/python/features#workflow-timeouts)
+   - [Activity timeouts and retries](/application-development/python/features#activity-timeouts)
+   - [Activity Heartbeats](/application-development/python/features#activity-heartbeats)
+   - [Async Activity Completion](/application-development/python/features#asynchronous-activity-completion)
+   - [Child Workflows](/application-development/python/features#child-workflows)
+   - [Continue-As-New](/application-development/python/features#continue-as-new)
+   - [Cron Jobs](/application-development/python/features#temporal-cron-jobs)
+
+3. [**Observability**](/application-development/python/observability): Methods for observing a Temporal Application.
+
+   - [Metrics](/application-development/python/observability#metrics)
+   - [Tracing](/application-development/python/observability#tracing)
+   - [Logging](/application-development/python/observability#logging)
+   - [Visibility](/application-development/python/observability#visibility)
+
+4. [**Worker performance**](/application-development/worker-performance)
+
+   - [Metrics](/application-development/worker-performance#metrics)
+   - [Configuration](/application-development/worker-performance#configuration)
+   - [Task Queue processing tuning](/application-development/worker-performance#task-queues-processing-tuning)
+   - [Workflow cache tuning](/application-development/worker-performance#workflow-cache-tuning)
+   - [Invariants](/application-development/worker-performance#invariants)
+   - [Large value drawbacks](/application-development/worker-performance#drawbacks-of-putting-just-large-values-everywhere)

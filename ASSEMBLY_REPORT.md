@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday April 18 2023 12:00:23 PM -0600
+Last assembled: Thursday April 20 2023 17:22:17 PM -0600
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
-65 guide configurations found.
+75 guide configurations found.
 
-1198 information nodes found.
+1401 information nodes found.
 
-1152 information nodes are attached to guides.
+1433 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -628,8 +628,6 @@ app-dev-context/queries -> #queries
 
 app-dev-context/signals -> #signals
 
-java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signal
-
 app-dev-context/handle-signal -> #handle-signal
 
 app-dev-context/workflow-timeouts -> #workflow-timeouts
@@ -639,8 +637,6 @@ concepts/what-is-a-workflow-task-timeout -> /workflows#workflow-task-timeout
 concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-timeout
 
 concepts/what-is-a-task-token -> /activities#task-token
-
-java/how-to-develop-a-workflow-definition-in-java -> /application-development/foundations#develop-workflows
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
@@ -656,23 +652,21 @@ app-dev-context/spawning-workflows -> #start-workflow-execution
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 
+app-dev-context/cron-jobs -> /application-development/features#temporal-cron-jobs
+
+concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
+
+java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
+
+java/how-to-develop-a-workflow-definition-in-java -> /application-development/java/foundations#develop-workflows
+
 java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
 
 java/how-to-develop-a-worker-program-in-java -> #run-a-dev-worker
 
-java/how-to-get-the-result-of-an-activity-execution-in-java -> #get-activity-results
+java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
-java/how-to-send-a-signal-with-start-in-java -> /application-development/features#signal-with-start
-
-java/how-to-create-a-temporal-client-in-java -> #connect-to-a-dev-cluster
-
-java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
-
-java/how-to-set-a-cron-schedule-in-java -> /application-development/features#temporal-cron-jobs
-
-app-dev-context/cron-jobs -> /application-development/features#temporal-cron-jobs
-
-concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
+java/how-to-send-a-signal-with-start-in-java -> /application-development/java/features#signal-with-start
 
 go/workflow-timeouts -> #workflow-timeouts
 
@@ -701,5 +695,11 @@ concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-i
 go/tracing -> /application-development/golang/observability#tracing
 
 app-dev-context/metrics -> /application-development/observability#metrics
+
+java/how-to-create-a-temporal-client-in-java -> #connect-to-a-dev-cluster
+
+java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+java/how-to-set-a-cron-schedule-in-java -> /application-development/java/features#cron-schedule
 
 

@@ -65,28 +65,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-The `@SignalMethod` annotation indicates that the method is used to handle and react to external Signals.
+Content is planned but not yet available.
 
-```java
-@SignalMethod
-   void mySignal(String signalName);
-```
-
-The method can have parameters that contain the Signal payload and must be serializable by the default Jackson JSON Payload Converter.
-
-```java
-void mySignal(String signalName, Object... args);
-```
-
-This method does not return a value and must have a `void` return type.
-
-Things to consider when defining Signals:
-
-- Use Workflow object constructors and initialization blocks to initialize the internal data structures if possible.
-- Signals might be received by a Workflow before the Workflow method is executed.
-  When implementing Signals in scenarios where this can occur, assume that no parts of Workflow code ran.
-  In some cases, Signal method implementation might require some initialization to be performed by the Workflow method code first—for example, when the Signal processing depends on, and is defined by the Workflow input.
-  In this case, you can use a flag to determine whether the Workflow method is already triggered; if not, persist the Signal data into a collection for delayed processing by the Workflow method.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -148,18 +129,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-[`defineSignal`](https://typescript.temporal.io/api/namespaces/workflow/#definesignal)
+Content is planned but not yet available.
 
-```ts
-import { defineSignal } from '@temporalio/workflow';
-
-interface JoinInput {
-  userId: string;
-  groupId: string;
-}
-
-export const joinSignal = defineSignal<[JoinInput]>('join');
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -182,92 +154,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Use the `@SignalMethod` annotation to handle Signals in the Workflow interface.
+Content is planned but not yet available.
 
-The Signal type defaults to the name of the method. In the following example, the Signal type defaults to `retryNow`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @SignalMethod
-   void retryNow();
-}
-```
-
-To overwrite this default naming and assign a custom Signal type, use the `@SignalMethod` annotation with the `name` parameter.
-In the following example, the Signal type is set to `retrysignal`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-
-   @WorkflowMethod
-   String processFile(Arguments args);
-
-   @SignalMethod(name = "retrysignal")
-   void retryNow();
-}
-```
-
-A Workflow interface can define any number of methods annotated with `@SignalMethod`, but the method names or the `name` parameters for each must be unique.
-
-In the following example, we define a Signal method `updateGreeting` to update the greeting in the Workflow.
-We set a `Workflow.await` in the Workflow implementation to block the current Workflow Execution until the provided unblock condition is evaluated to `true`.
-In this case, the unblocking condition is evaluated to `true` when the Signal to update the greeting is received.
-
-```java
-@WorkflowInterface
-public interface HelloWorld {
-    @WorkflowMethod
-    void sayHello(String name);
-
-    @SignalMethod
-    void updateGreeting(String greeting);
-}
-```
-
-```java
-public class HelloWorldImpl implements HelloWorld {
-    private final Logger workflowLogger = Workflow.getLogger(HelloWorldImpl.class);
-    private String greeting;
-
-    @Override
-    public void sayHello(String name) {
-        int count = 0;
-        while (!"Bye".equals(greeting)) {
-            String oldGreeting = greeting;
-            Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
-        }
-        workflowLogger.info(++count + ": " + greeting + " " + name + "!");
-    }
-
-    @Override
-    public void updateGreeting(String greeting) {
-        this.greeting = greeting;
-    }
-}
-```
-
-This Workflow completes when the Signal updates the greeting to `Bye`.
-
-**Dynamic Signal Handler**
-You can also implement Signal handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicSignalListener` in the Workflow implementation code.
-
-```java
-Workflow.registerListener(
-  (DynamicSignalHandler)
-      (signalName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-```
-
-When registered, any Signals sent to the Workflow without a defined handler will be delivered to the `DynamicSignalHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicSignalHandler` can be implemented in both regular and dynamic Workflow implementations.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -310,24 +199,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-[`setHandler`](https://typescript.temporal.io/api/namespaces/workflow/#sethandler)
+Content is planned but not yet available.
 
-```ts
-import { setHandler } from '@temporalio/workflow';
-
-export async function yourWorkflow() {
-  const groups = new Map<string, Set<string>>();
-
-  setHandler(joinSignal, ({ userId, groupId }: JoinInput) => {
-    const group = groups.get(groupId);
-    if (group) {
-      group.add(userId);
-    } else {
-      groups.set(groupId, new Set([userId]));
-    }
-  });
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -350,28 +224,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `@SignalMethod` in the Workflow interface, from the Client code.
+Content is planned but not yet available.
 
-In the following Client code example, we start the Workflow `greetCustomer` and call the Signal method `addCustomer` that is handled in the Workflow.
-
-```java
-// create a typed Workflow stub for GreetingsWorkflow
-GreetingsWorkflow workflow = client.newWorkflowStub(GreetingsWorkflow.class,
-        WorkflowOptions.newBuilder()
-                // set the Task Queue
-                .setTaskQueue(taskQueue)
-                // Workflow Id is recommended but not required
-                .setWorkflowId(workflowId)
-                .build());
-
-// start the Workflow
-WorkflowClient.start(workflow::greetCustomer);
-// send a Signal to the Workflow
-Customer customer = new Customer("John", "Spanish", "john@john.com");
-workflow.addCustomer(customer); //addCustomer is the Signal method defined in the greetCustomer Workflow.
-```
-
-See <a class="tdlp" href="#handle-signal">Handle Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to handle Signals in an Workflow in Java</span><br /><br /><span class="tdlppd">Use the `@SignalMethod` annotation to handle Signals within the Workflow interface.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#handle-signal">Learn more</a></span></span></a> for details on how to handle Signals in a Workflow.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -411,18 +266,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-[`WorkflowHandle.signal`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle#signal)
+Content is planned but not yet available.
 
-```typescript
-import { WorkflowClient } from '@temporalio/client';
-import { joinSignal } from './workflows';
-
-const client = new WorkflowClient();
-
-const handle = client.getHandle('workflow-id-123');
-
-await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -450,24 +296,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To send a Signal from within a Workflow to a different Workflow Execution, initiate an `ExternalWorkflowStub` in the implementation of the current Workflow and call the Signal method defined in the other Workflow.
+Content is planned but not yet available.
 
-The following example shows how to use an untyped `ExternalWorkflowStub` in the Workflow implementation to send a Signal to another Workflow.
-
-```java
-    public String sendGreeting(String name) {
-
-        // initiate ExternalWorkflowStub to call another Workflow by its Id "ReplyWF"
-        ExternalWorkflowStub callRespondWorkflow = Workflow.newUntypedExternalWorkflowStub("ReplyWF");
-
-        String responseTrigger = activity.greeting("Hello", name);
-
-        // send a Signal from this sendGreeting Workflow to the other Workflow
-        // by calling the Signal method name "getGreetCall" defined in that Workflow.
-        callRespondWorkflow.signal("getGreetCall", responseTrigger);
-
-        return responseTrigger;
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -504,17 +335,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-[`getExternalWorkflowHandle`](https://typescript.temporal.io/api/namespaces/workflow#getexternalworkflowhandle)
+Content is planned but not yet available.
 
-```typescript
-import { getExternalWorkflowHandle } from '@temporalio/workflow';
-import { joinSignal } from './other-workflow';
-
-export async function yourWorkflowThatSignals() {
-  const handle = getExternalWorkflowHandle('workflow-id-123');
-  await handle.signal(joinSignal, { userId: 'user-1', groupId: 'group-1' });
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -540,61 +363,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.
-This method ensures that if the Workflow Execution is in a closed state, a new Workflow Execution is spawned and the Signal is delivered to the running Workflow Execution.
+Content is planned but not yet available.
 
-Note that when the `SignalwithStart` spawns a new Workflow Execution, the Signal is delivered before the call to your `@WorkflowMethod`.
-This means that the Signal handler in your Workflow interface code will execute before the `@WorkfowMethod`.
-You must ensure that your code logic can deal with this.
-
-In the following example, the Client code uses `SignalwithStart` to send the Signal `setCustomer` to the `UntypedWorkflowStub` named `GreetingWorkflow`.
-If the `GreetingWorkflow` Workflow Execution is not running, the `SignalwithStart` starts the Workflow Execution.
-
-```java
-...
-public static void signalWithStart() {
-        // WorkflowStub is a client-side stub to a single Workflow instance
-        WorkflowStub untypedWorkflowStub = client.newUntypedWorkflowStub("GreetingWorkflow",
-        WorkflowOptions.newBuilder()
-                .setWorkflowId(workflowId)
-                .setTaskQueue(taskQueue)
-                .build());
-
-        untypedWorkflowStub.signalWithStart("setCustomer", new Object[] {customer2}, new Object[] {customer1});
-
-        printWorkflowStatus();
-
-        try {
-            String greeting = untypedWorkflowStub.getResult(String.class);
-            printWorkflowStatus();
-            System.out.println("Greeting: " + greeting);
-        } catch(WorkflowFailedException e) {
-            System.out.println("Workflow failed: " + e.getCause().getMessage());
-            printWorkflowStatus();
-        }
-    }
-...
-```
-
-The following example shows the Workflow interface for the `GreetingWorkflow` called in the previous example.
-
-```java
-...
-@WorkflowInterface
-public interface GreetingWorkflow {
-    @WorkflowMethod
-    String greet(Customer customer);
-
-    @SignalMethod
-    void setCustomer(Customer customer);
-
-    @QueryMethod
-    Customer getCustomer();
-...
-}
-```
-
-Note that the Signal handler `setCustomer` is executed before the `@WorkflowMethod` `greet` is called.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -624,21 +395,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-[`WorkflowClient.signalWithStart`](https://typescript.temporal.io/api/classes/client.WorkflowClient#signalwithstart)
+Content is planned but not yet available.
 
-```typescript
-import { WorkflowClient } from '@temporalio/client';
-import { joinSignal, yourWorkflow } from './workflows';
-
-const client = new WorkflowClient();
-
-await client.signalWithStart(yourWorkflow, {
-  workflowId: 'workflow-id-123',
-  args: [{ foo: 1 }],
-  signal: joinSignal,
-  signalArgs: [{ userId: 'user-1', groupId: 'group-1' }],
-});
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -668,23 +427,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To define a Query, define the method name and the result type of the Query.
+Content is planned but not yet available.
 
-```java
-query(String queryType, Class<R> resultClass, Type resultType, Object... args);
-
-  /* @param queryType name of the Query handler. Usually it is a method name.
-   * @param resultClass class of the Query result type
-   * @param args optional Query arguments
-   * @param <R> type of the Query result
-  */
-```
-
-Query methods can take in any number of input parameters which can be used to limit the data that is returned.
-
-Use the Query method names to send and receive Queries.
-
-Query methods must never change any Workflow state including starting Activities or blocking threads in any way.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -746,21 +491,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-define-query -->
-
-[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
-
-```ts
-import { defineQuery } from '@temporalio/workflow';
-
-export const getValueQuery = defineQuery<number | undefined, [string]>(
-  'getValue',
-);
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -786,87 +519,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To handle a Query in the Workflow, create a Query handler using the `@QueryMethod` annotation in the Workflow interface and define it in the Workflow implementation.
+Content is planned but not yet available.
 
-The `@QueryMethod` annotation indicates that the method is used to handle a Query that is sent to the Workflow Execution.
-The method can have parameters that can be used to filter data that the Query returns.
-Because the method returns a value, it must have a return type that is not `void`.
-
-The Query name defaults to the name of the method.
-In the following example, the Query name defaults to `getStatus`.
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-   @QueryMethod
-   String getStatus();
-}
-```
-
-To overwrite this default naming and assign a custom Query name, use the `@QueryMethod` annotation with the `name` parameter. In the following example, the Query name is set to "history".
-
-```java
-@WorkflowInterface
-public interface FileProcessingWorkflow {
-   @QueryMethod(name = "history")
-   String getStatus();
-}
-```
-
-A Workflow Definition interface can define multiple methods annotated with `@QueryMethod`, but the method names or the `name` parameters for each must be unique.
-
-The following Workflow interface has a Query method `getCount()` to handle Queries to this Workflow.
-
-```java
-  @WorkflowInterface
-  public interface HelloWorld {
-    @WorkflowMethod
-    void sayHello(String name);
-
-    @QueryMethod
-    int getCount();
-  }
-```
-
-The following example is the Workflow implementation with the Query method defined in the `HelloWorld` Workflow interface from the previous example.
-
-```java
-  public static class HelloWorldImpl implements HelloWorld {
-
-    private String greeting = "Hello";
-    private int count = 0;
-
-    @Override
-    public void sayHello(String name) {
-      while (!"Bye".equals(greeting)) {
-        logger.info(++count + ": " + greeting + " " + name + "!");
-        String oldGreeting = greeting;
-        Workflow.await(() -> !Objects.equals(greeting, oldGreeting));
-      }
-      logger.info(++count + ": " + greeting + " " + name + "!");
-    }
-
-    @Override
-    public int getCount() {
-      return count;
-    }
-  }
-```
-
-**Dynamic Query Handler**
-You can also implement Query handlers dynamically. This is useful for library-level code and implementation of DSLs.
-
-Use `Workflow.registerListener(Object)` to register an implementation of the `DynamicQueryListener` in the Workflow implementation code.
-
-```java
-Workflow.registerListener(
-  (DynamicQueryHandler)
-      (queryName, encodedArgs) -> name = encodedArgs.get(0, String.class));
-```
-
-When registered, any Queries sent to the Workflow without a defined handler will be delivered to the `DynamicQueryHandler`.
-Note that you can only register one `Workflow.registerListener(Object)` per Workflow Execution.
-`DynamicQueryHandler` can be implemented in both regular and dynamic Workflow implementations.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -970,24 +625,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/#handlequery) to handle Queries inside a Workflow.
+Content is planned but not yet available.
 
-You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
-
-<!--SNIPSTART typescript-handle-query -->
-
-[state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
-
-```ts
-export async function trackState(): Promise<void> {
-  const state = new Map<string, number>();
-  setHandler(setValueSignal, (key, value) => void state.set(key, value));
-  setHandler(getValueQuery, (key) => state.get(key));
-  await CancellationScope.current().cancelRequested;
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1010,26 +650,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To send a Query to a Workflow Execution from an external process, call the Query method (defined in the Workflow) from a `WorkflowStub` within the Client code.
+Content is planned but not yet available.
 
-For example, the following Client code calls a Query method `queryGreeting()` defined in the `GreetingWorkflow` Workflow interface.
-
-```java
- // Create our workflow options
-    WorkflowOptions workflowOptions =
-        WorkflowOptions.newBuilder()
-        .setWorkflowId(WORKFLOW_ID)
-        .setTaskQueue(TASK_QUEUE).build();
-
-    // Create the Temporal client stub. It is used to start our workflow execution.
-    GreetingWorkflow workflow = client.newWorkflowStub(GreetingWorkflow.class, workflowOptions);
-
-    // Start our workflow asynchronously to not use another thread to query.
-    WorkflowClient.start(workflow::createGreeting, "World");
-
-    // Query the Workflow to get the current value of greeting and print it.
-    System.out.println(workflow.queryGreeting());
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1048,25 +671,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-send-query -->
-
-[state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
-
-```ts
-import { Client } from '@temporalio/client';
-import { getValueQuery } from './workflows';
-
-async function run(): Promise<void> {
-  const client = new Client();
-  const handle = client.workflow.getHandle('state-id-0');
-  const meaning = await handle.query(getValueQuery, 'meaning-of-life');
-  console.log({ meaning });
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1095,28 +702,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Create an instance of [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) in the Client code and set your timeout.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- [setWorkflowExecutionTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowExecutionTimeout(java.time.Duration))
-- [setWorkflowRunTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowRunTimeout(java.time.Duration))
-- [setWorkflowTaskTimeout()](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html#setWorkflowTaskTimeout(java.time.Duration))
-
-```java
-//create Workflow stub for YourWorkflowInterface
-YourWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
-        GreetWorkflowInterface.class,
-        WorkflowOptions.newBuilder()
-                .setWorkflowId("YourWorkflow")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Timeout duration
-                .setWorkflowExecutionTimeout(Duration.ofSeconds(10))
-                // .setWorkflowRunTimeout(Duration.ofSeconds(10))
-                // .setWorkflowTaskTimeout(Duration.ofSeconds(10))
-                .build());
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1152,55 +740,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Create an instance of `WorkflowOptions` from the Client and set your Workflow Timeout.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- [`workflowExecutionTimeout​`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowexecutiontimeout)
-- [`workflowRunTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowruntimeout)
-- [`workflowTaskTimeout`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#workflowtasktimeout)
-
-<!--SNIPSTART typescript-execution-timeout -->
-
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
-
-```ts
-await client.workflow.start(example, {
-  taskQueue,
-  workflowId,
-  workflowExecutionTimeout: '1 day',
-});
-```
-
-<!--SNIPEND-->
-
-<!--SNIPSTART typescript-run-timeout -->
-
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
-
-```ts
-await client.workflow.start(example, {
-  taskQueue,
-  workflowId,
-  workflowRunTimeout: '1 minute',
-});
-```
-
-<!--SNIPEND-->
-
-<!--SNIPSTART typescript-task-timeout -->
-
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
-
-```ts
-await client.workflow.start(example, {
-  taskQueue,
-  workflowId,
-  workflowTaskTimeout: '1 minute',
-});
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1227,23 +769,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To set a Workflow Retry Options in the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance use [`WorkflowOptions.Builder.setWorkflowRetryOptions`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Content is planned but not yet available.
 
-- Type: `RetryOptions`
-- Default: `Null` which means no retries will be attempted.
-
-```java
-//create Workflow stub for GreetWorkflowInterface
-GreetWorkflowInterface workflow1 =
-    WorkerGreet.greetclient.newWorkflowStub(
-        GreetWorkflowInterface.class,
-        WorkflowOptions.newBuilder()
-                .setWorkflowId("GreetWF")
-                .setTaskQueue(WorkerGreet.TASK_QUEUE)
-                // Set Workflow Retry Options
-                .setRetryOptions(RetryOptions.newBuilder()
-                .build());
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1270,23 +798,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Create an instance of the Retry Policy, known as [`retry`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions/#retry) in TypeScript, from the [`WorkflowOptions`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions) of the Client interface.
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-retry-workflow -->
-
-[snippets/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/client.ts)
-
-```ts
-const handle = await client.workflow.start(example, {
-  taskQueue,
-  workflowId,
-  retry: {
-    maximumAttempts: 3,
-  },
-});
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1317,49 +831,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Set your Activity Timeout from the [`ActivityOptions.Builder`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html) class.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- ScheduleToCloseTimeout()
-- ScheduleToStartTimeout()
-- StartToCloseTimeout()
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-
-The following uses `ActivityStub`.
-
-```java
-GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
-                ActivityOptions.newBuilder()
-                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                        // .setStartToCloseTimeout(Duration.ofSeconds(2)
-                        // .setScheduletoCloseTimeout(Duration.ofSeconds(20))
-                        .build());
-```
-
-The following uses `WorkflowImplementationOptions`.
-
-```java
-WorkflowImplementationOptions options =
-            WorkflowImplementationOptions.newBuilder()
-                    .setActivityOptions(
-                            ImmutableMap.of(
-                                    "GetCustomerGreeting",
-                                    // Set Activity Execution timeout
-                                    ActivityOptions.newBuilder()
-                                        .setScheduleToCloseTimeout(Duration.ofSeconds(5))
-                                        // .setStartToCloseTimeout(Duration.ofSeconds(2))
-                                        // .setScheduleToStartTimeout(Duration.ofSeconds(5))
-                                        .build()))
-                    .build();
-```
-
-:::note
-
-If you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
-:::
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1393,31 +867,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-When you call `proxyActivities` in a Workflow Function, you can set a range of `ActivityOptions`.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- [`scheduleToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletoclosetimeout)
-- [`startToCloseTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#starttoclosetimeout)
-- [`scheduleToStartTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions/#scheduletostarttimeout)
-
-```typescript
-// Sample of typical options you can set
-const { greet } = proxyActivities<typeof activities>({
-  scheduleToCloseTimeout: '5m',
-  // startToCloseTimeout: "30s", // recommended
-  // scheduleToStartTimeout: "60s",
-
-  retry: {
-    // default retry policy if not specified
-    initialInterval: '1s',
-    backoffCoefficient: 2,
-    maximumAttempts: Infinity,
-    maximumInterval: 100 * initialInterval,
-    nonRetryableErrorTypes: [],
-  },
-});
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1442,46 +894,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To set a Retry Policy, known as the <a class="tdlp" href="/retry-policies#">Retry Options<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+Content is planned but not yet available.
 
-- Type: `RetryOptions`
-- Default: Server-defined Activity Retry policy.
-
-- With `ActivityStub`
-
-  ```java
-  private final ActivityOptions options =
-      ActivityOptions.newBuilder()
-          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-          // required when setting Activity options.
-          .setStartToCloseTimeout(Duration.ofSeconds(5))
-          .setRetryOptions(
-              RetryOptions.newBuilder()
-                  .setInitialInterval(Duration.ofSeconds(1))
-                  .setMaximumInterval(Duration.ofSeconds(10))
-                  .build())
-          .build();
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-  WorkflowImplementationOptions options =
-          WorkflowImplementationOptions.newBuilder()
-                 .setActivityOptions(
-                      ImmutableMap.of(
-                          "EmailCustomerGreeting",
-                          ActivityOptions.newBuilder()
-                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                // required when setting Activity options.
-                                .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                .setRetryOptions(
-                                      RetryOptions.newBuilder()
-                                          .setDoNotRetry(NullPointerException.class.getName())
-                                          .build())
-                                .build()))
-                .build();
-  ```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1516,22 +931,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To set Activity Retry Policies in TypeScript, pass [`ActivityOptions.retry`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#retry) to [`proxyActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxyactivities).
+Content is planned but not yet available.
 
-```typescript
-// Sample of typical options you can set
-const { yourActivity } = proxyActivities<typeof activities>({
-  // ...
-  retry: {
-    // default retry policy if not specified
-    initialInterval: '1s',
-    backoffCoefficient: 2,
-    maximumAttempts: Infinity,
-    maximumInterval: 100 * initialInterval,
-    nonRetryableErrorTypes: [],
-  },
-});
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1581,28 +983,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To Heartbeat an Activity Execution in Java, use the `Activity.getExecutionContext().heartbeat()` Class method.
+Content is planned but not yet available.
 
-```java
-public class YourActivityDefinitionImpl implements YourActivityDefinition {
-
-  @Override
-  public String yourActivityMethod(YourActivityMethodParam param) {
-    // ...
-    Activity.getExecutionContext().heartbeat(details);
-    // ...
-  }
-  // ...
-}
-```
-
-The method takes an optional argument, the `details` variable above that represents latest progress of the Activity Execution.
-This method can take a variety of types such as an exception object, custom object, or string.
-
-If the Activity Execution times out, the last Heartbeat `details` are included in the thrown `ActivityTimeoutException`, which can be caught by the calling Workflow.
-The Workflow can then use the `details` information to pass to the next Activity invocation if needed.
-
-In the case of Activity retries, the last Heartbeat's `details` are available and can be extracted from the last failed attempt by using `Activity.getExecutionContext().getHeartbeatDetails(Class<V> detailsClass)`
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1658,47 +1041,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Long-running Activities should Heartbeat their progress back to the Workflow for earlier detection of stalled Activities (with <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>) and resuming stalled Activities from checkpoints (with Heartbeat details).
+Content is planned but not yet available.
 
-To set Activity Heartbeat, use `Context.current().heartbeat()` in your Activity implementation, and set `heartbeatTimeout` in your Workflow.
-
-```ts
-// activity implementation
-export async function example(sleepIntervalMs = 1000): Promise<void> {
-  for (let progress = 1; progress <= 1000; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
-    // record activity heartbeat
-    Context.current().heartbeat();
-  }
-}
-
-// ...
-
-// workflow code calling activity
-const { example } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '1 hour',
-  heartbeatTimeout: '10s',
-});
-```
-
-In the previous example, setting the Heartbeat informs the Temporal Server of the Activity's progress at regular intervals.
-If the Activity stalls or the Activity Worker becomes unavailable, the absence of Heartbeats prompts the Temporal Server to retry the Activity immediately, without waiting for `startToCloseTimeout` to complete.
-
-You can also add `heartbeatDetails` as a checkpoint to collect data about failures during the execution, and use it to resume the Activity from that point.
-
-The following example extends the previous sample to include a `heartbeatDetails` checkpoint.
-
-```ts
-export async function example(sleepIntervalMs = 1000): Promise<void> {
-  const startingPoint = Context.current().info.heartbeatDetails || 1; // allow for resuming from heartbeat
-  for (let progress = startingPoint; progress <= 100; ++progress) {
-    await Context.current().sleep(sleepIntervalMs);
-    Context.current().heartbeat(progress);
-  }
-}
-```
-
-In this example, when the `heartbeatTimeout` is reached and the Activity is retried, the Activity Worker picks up the execution from where the previous attempt left off.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1721,44 +1066,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>, use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+Content is planned but not yet available.
 
-- Type: `Duration`
-- Default: None
-
-You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
-Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
-
-- With `ActivityStub`
-
-  ```java
-  private final GreetingActivities activities =
-      Workflow.newActivityStub(
-          GreetingActivities.class,
-          ActivityOptions.newBuilder()
-              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-              // required when setting Activity options.
-              .setStartToCloseTimeout(Duration.ofSeconds(5))
-              .setHeartbeatTimeout(Duration.ofSeconds(2))
-              .build());
-  ```
-
-- With `WorkflowImplementationOptions`
-
-  ```java
-  WorkflowImplementationOptions options =
-              WorkflowImplementationOptions.newBuilder()
-                      .setActivityOptions(
-                              ImmutableMap.of(
-                                "EmailCustomerGreeting",
-                                      ActivityOptions.newBuilder()
-                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
-                                          // required when setting Activity options.
-                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
-                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
-                                            .build()))
-                      .build();
-  ```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -1814,19 +1124,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To set a Heartbeat Timeout, use [`ActivityOptions.heartbeatTimeout`](https://typescript.temporal.io/api/interfaces/common.ActivityOptions#heartbeattimeout). If the Activity takes longer than that between heartbeats, the Activity is failed.
+Content is planned but not yet available.
 
-```typescript
-// Creating a proxy for the activity.
-const { longRunningActivity } = proxyActivities<typeof activities>({
-  // translates to 300000 ms
-  scheduleToCloseTimeout: '5m',
-  // translates to 30000 ms
-  startToCloseTimeout: '30s',
-  // equivalent to '10 seconds'
-  heartbeatTimeout: 10000,
-});
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -1856,68 +1156,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To complete an Activity asynchronously, set the [`ActivityCompletionClient`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/ActivityCompletionClient.html) interface to the `complete()` method.
+Content is planned but not yet available.
 
-```java
-    @Override
-    public String composeGreeting(String greeting, String name) {
-
-      // Get the activity execution context
-      ActivityExecutionContext context = Activity.getExecutionContext();
-
-      // Set a correlation token that can be used to complete the activity asynchronously
-      byte[] taskToken = context.getTaskToken();
-
-      /**
-       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
-       * activity. In real-life applications this could be any service. The composeGreetingAsync
-       * method is the one that will actually complete workflow action execution.
-       */
-      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
-      context.doNotCompleteOnReturn();
-
-      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
-      // ignored.
-      return "ignored";
-    }
-
-    // Method that will complete action execution using the defined ActivityCompletionClient
-    private void composeGreetingAsync(byte[] taskToken, String greeting, String name) {
-      String result = greeting + " " + name + "!";
-
-      // Complete our workflow activity using ActivityCompletionClient
-      completionClient.complete(taskToken, result);
-    }
-  }
-```
-
-Alternatively, set the [`doNotCompleteOnReturn()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityExecutionContext.html#doNotCompleteOnReturn()) method during an Activity Execution.
-
-```java
-    @Override
-    public String composeGreeting(String greeting, String name) {
-
-      // Get the activity execution context
-      ActivityExecutionContext context = Activity.getExecutionContext();
-
-      // Set a correlation token that can be used to complete the activity asynchronously
-      byte[] taskToken = context.getTaskToken();
-
-      /**
-       * For the example we will use a {@link java.util.concurrent.ForkJoinPool} to execute our
-       * activity. In real-life applications this could be any service. The composeGreetingAsync
-       * method is the one that will actually complete workflow action execution.
-       */
-      ForkJoinPool.commonPool().execute(() -> composeGreetingAsync(taskToken, greeting, name));
-      context.doNotCompleteOnReturn();
-
-      // Since we have set doNotCompleteOnReturn(), the workflow action method return value is
-      // ignored.
-      return "ignored";
-    }
-```
-
-When this method is called during an Activity Execution, the Activity Execution does not complete when its method returns.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -2043,31 +1284,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-activity-complete-async -->
-
-[activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
-
-```ts
-import { CompleteAsyncError, Context } from '@temporalio/activity';
-import { AsyncCompletionClient } from '@temporalio/client';
-
-export async function doSomethingAsync(): Promise<string> {
-  const taskToken = Context.current().info.taskToken;
-  setTimeout(() => doSomeWork(taskToken), 1000);
-  throw new CompleteAsyncError();
-}
-
-// this work could be done in a different process or on a different machine
-async function doSomeWork(taskToken: Uint8Array): Promise<void> {
-  const client = new AsyncCompletionClient();
-  // does some work...
-  await client.complete(taskToken, 'Job\'s done!');
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -2158,118 +1377,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-The first call to the Child Workflow stub must always be its Workflow method (method annotated with `@WorkflowMethod`).
-Similar to Activities, invoking Child Workflow methods can be made synchronous or asynchronous by using `Async#function` or `Async#procedure`.
-The synchronous call blocks until a Child Workflow method completes.
-The asynchronous call returns a `Promise` which can be used to wait for the completion of the Child Workflow method, as in the following example:
+Content is planned but not yet available.
 
-```java
-GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
-Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
-// ...
-greeting.get()
-```
-
-To execute an untyped Child Workflow asynchronously, call `executeAsync` on the `ChildWorkflowStub`, as shown in the following example.
-
-```java
-//...
-ChildWorkflowStub childUntyped =
-    Workflow.newUntypedChildWorkflowStub(
-        "GreetingChild", // your workflow type
-        ChildWorkflowOptions.newBuilder().setWorkflowId("childWorkflow").build());
-
-Promise<String> greeting =
-    childUntyped.executeAsync(String.class, String.class, "Hello", name);
-String result = greeting.get();
-//...
-```
-
-The following examples show how to spawn a Child Workflow:
-
-- Spawn a Child Workflow from a Workflow:
-
-  ```java
-  // Child Workflow interface
-  @WorkflowInterface
-  public interface GreetingChild {
-  @WorkflowMethod
-  String composeGreeting(String greeting, String name);
-  }
-  // Child Workflow implementation not shown
-
-  // Parent Workflow implementation
-  public class GreetingWorkflowImpl implements GreetingWorkflow {
-
-  @Override
-  public String getGreeting(String name) {
-      GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
-
-      // This is a blocking call that returns only after child has completed.
-      return child.composeGreeting("Hello", name );
-  }
-  }
-  ```
-
-- Spawn two Child Workflows (with the same type) in parallel:
-
-  ```java
-  // Parent Workflow implementation
-  public class GreetingWorkflowImpl implements GreetingWorkflow {
-
-      @Override
-      public String getGreeting(String name) {
-
-          // Workflows are stateful, so a new stub must be created for each new child.
-          GreetingChild child1 = Workflow.newChildWorkflowStub(GreetingChild.class);
-          Promise<String> greeting1 = Async.function(child1::composeGreeting, "Hello", name);
-
-          // Both children will run concurrently.
-          GreetingChild child2 = Workflow.newChildWorkflowStub(GreetingChild.class);
-          Promise<String> greeting2 = Async.function(child2::composeGreeting, "Bye", name);
-
-          // Do something else here.
-          ...
-          return "First: " + greeting1.get() + ", second: " + greeting2.get();
-      }
-  }
-  ```
-
-- Send a Signal to a Child Workflow from the parent:
-
-  ```java
-  // Child Workflow interface
-  @WorkflowInterface
-  public interface GreetingChild {
-      @WorkflowMethod
-      String composeGreeting(String greeting, String name);
-
-      @SignalMethod
-      void updateName(String name);
-  }
-
-  // Parent Workflow implementation
-  public class GreetingWorkflowImpl implements GreetingWorkflow {
-
-      @Override
-      public String getGreeting(String name) {
-          GreetingChild child = Workflow.newChildWorkflowStub(GreetingChild.class);
-          Promise<String> greeting = Async.function(child::composeGreeting, "Hello", name);
-          child.updateName("Temporal");
-          return greeting.get();
-      }
-  }
-  ```
-
-- Sending a Query to Child Workflows from within the parent Workflow code is not supported. However, you can send a Query to Child Workflows from Activities using `WorkflowClient`.
-
-Related reads:
-
-- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
-
-- <a class="tdlp" href="/application-development/foundations#develop-workflows">How to develop a Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Workflow Definition in Java</span><br /><br /><span class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#develop-workflows">Learn more</a></span></span></a>
-
-- Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -2338,36 +1448,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To start a Child Workflow and return a [handle](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowHandle/) to it, use [`startChild`](https://typescript.temporal.io/api/namespaces/workflow/#startchild).
+Content is planned but not yet available.
 
-To start a Child Workflow Execution and await its completion, use [`executeChild`](https://typescript.temporal.io/api/namespaces/workflow/#executechild).
-
-By default, a child is scheduled on the same Task Queue as the parent.
-
-<!--SNIPSTART typescript-child-workflow -->
-
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
-
-```ts
-import { executeChild } from '@temporalio/workflow';
-
-export async function parentWorkflow(...names: string[]): Promise<string> {
-  const responseArray = await Promise.all(
-    names.map((name) =>
-      executeChild(childWorkflow, {
-        args: [name],
-        // workflowId, // add business-meaningful workflow id here
-        // // regular workflow options apply here, with two additions (defaults shown):
-        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
-      })
-    ),
-  );
-  return responseArray.join('\n');
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -2392,36 +1475,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Set <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></span></span></a> on an instance of `ChildWorkflowOptions` using [`ChildWorkflowOptions.newBuilder().setParentClosePolicy`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/ChildWorkflowOptions.Builder.html).
+Content is planned but not yet available.
 
-- Type: `ChildWorkflowOptions.Builder`
-- Default: `PARENT_CLOSE_POLICY_TERMINATE`
-
-```java
- public void parentWorkflow() {
-     ChildWorkflowOptions options =
-        ChildWorkflowOptions.newBuilder()
-            .setParentClosePolicy(ParentClosePolicy.PARENT_CLOSE_POLICY_ABANDON)
-            .build();
-     MyChildWorkflow child = Workflow.newChildWorkflowStub(MyChildWorkflow.class, options);
-     Async.procedure(child::<workflowMethod>, <args>...);
-     Promise<WorkflowExecution> childExecution = Workflow.getWorkflowExecution(child);
-     // Wait for child to start
-     childExecution.get()
-}
-```
-
-In this example, we are:
-
-1. Setting `ChildWorkflowOptions.ParentClosePolicy` to `ABANDON` when creating a Child Workflow stub.
-2. Starting Child Workflow Execution asynchronously using `Async.function` or `Async.procedure`.
-3. Calling `Workflow.getWorkflowExecution(…)` on the child stub.
-4. Waiting for the `Promise` returned by `getWorkflowExecution` to complete.
-   This indicates whether the Child Workflow started successfully (or failed).
-5. Completing parent Workflow Execution asynchronously.
-
-Steps 3 and 4 are needed to ensure that a Child Workflow Execution starts before the parent closes.
-If the parent initiates a Child Workflow Execution and then completes immediately after, the Child Workflow will never execute.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -2463,32 +1519,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To specify how a Child Workflow reacts to a Parent Workflow reaching a Closed state, use the [`parentClosePolicy`](https://typescript.temporal.io/api/interfaces/workflow.ChildWorkflowOptions#parentclosepolicy) option.
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-child-workflow -->
-
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
-
-```ts
-import { executeChild } from '@temporalio/workflow';
-
-export async function parentWorkflow(...names: string[]): Promise<string> {
-  const responseArray = await Promise.all(
-    names.map((name) =>
-      executeChild(childWorkflow, {
-        args: [name],
-        // workflowId, // add business-meaningful workflow id here
-        // // regular workflow options apply here, with two additions (defaults shown):
-        // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
-        // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
-      })
-    ),
-  );
-  return responseArray.join('\n');
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -2512,37 +1545,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Temporal SDK allows you to use <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> in various ways.
+Content is planned but not yet available.
 
-To continue execution of the same Workflow that is currently running, use:
-
-```java
-Workflow.continueAsNew(input1, ...);
-```
-
-To continue execution of a currently running Workflow as a completely different Workflow Type, use `Workflow.newContinueAsNewStub()`.
-For example, in a Workflow class called `YourWorkflow`, we can create a Workflow stub with a different type, and call its Workflow method to continue execution as that type:
-
-```java
-MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class);
-coninueAsNew.greet(input);
-```
-
-To provide `ContinueAsNewOptions` options in `Workflow.newContinueAsNewStub()` use:
-
-```java
-ContinueAsNewOptions options = ContinueAsNewOptions.newBuilder()
-        .setTaskQueue("newTaskQueueName")
-        .build();
-
-MyOtherWorkflow continueAsNew = Workflow.newContinueAsNewStub(MyOtherWorkflow.class, options);
-// ...
-continueAsNew.greet(input);
-```
-
-Providing these options allows you to continue Workflow Execution as a new Workflow run, with a different Workflow Type, and on a different Task Queue.
-
-Java Workflow reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/package-summary.html>
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -2580,28 +1585,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To cause a Workflow Execution to <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a>, the Workflow function should return the result of the [`continueAsNew`](https://typescript.temporal.io/api/namespaces/workflow#continueasnew).
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-continue-as-new-workflow -->
-
-[continue-as-new/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/continue-as-new/src/workflows.ts)
-
-```ts
-import { continueAsNew, sleep } from '@temporalio/workflow';
-
-export async function loopingWorkflow(iteration = 0): Promise<void> {
-  if (iteration === 10) {
-    return;
-  }
-  console.log('Running Workflow iteration:', iteration);
-  await sleep(1000);
-  // Must match the arguments expected by `loopingWorkflow`
-  await continueAsNew<typeof loopingWorkflow>(iteration + 1);
-  // Unreachable code, continueAsNew is like `process.exit` and will stop execution once called.
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -3117,11 +2103,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To set a Timer in Java, use [`sleep()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sleep) and pass the number of seconds you want to wait before continuing.
+Content is planned but not yet available.
 
-```java
-sleep(5);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -3146,16 +2130,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To set a Timer in TypeScript, use the [`sleep()`](https://typescript.temporal.io/api/namespaces/workflow/#sleep) function and pass how long you want to wait before continuing (using an [ms-formatted string](https://www.npmjs.com/package/ms) or number of milliseconds).
+Content is planned but not yet available.
 
-```typescript
-import { sleep } from '@temporalio/workflow';
-
-export async function sleepWorkflow(): Promise<void> {
-  await sleep('2 months');
-  console.log('done sleeping');
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -3180,28 +2157,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Set the Cron Schedule with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setCronSchedule`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
+Content is planned but not yet available.
 
-Setting `setCronSchedule` changes the Workflow Execution into a Temporal Cron Job.
-The default timezone for a Cron is UTC.
-
-- Type: `String`
-- Default: None
-
-```java
-//create Workflow stub for YourWorkflowInterface
-YourWorkflowInterface workflow1 =
-    YourWorker.yourclient.newWorkflowStub(
-        YourWorkflowInterface.class,
-        WorkflowOptions.newBuilder()
-                .setWorkflowId("YourWF")
-                .setTaskQueue(YourWorker.TASK_QUEUE)
-                // Set Cron Schedule
-                .setCronSchedule("* * * * *")
-                .build());
-```
-
-For more details, see the [Cron Sample](https://github.com/temporalio/samples-java/blob/main/src/main/java/io/temporal/samples/hello/HelloCron.java)
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -3243,14 +2201,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-You can set each Workflow to repeat on a schedule with the `cronSchedule` option:
+Content is planned but not yet available.
 
-```typescript
-const handle = await client.start(scheduledWorkflow, {
-  // ...
-  cronSchedule: '* * * * *', // start every minute
-});
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -3285,58 +2238,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-To use a Side Effect in Java, set the [`sideEffect()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#sideEffect(java.lang.Class,io.temporal.workflow.Functions.Func)) function in your Workflow Execution and return the non-deterministic code.
+Content is planned but not yet available.
 
-```java
-int random = Workflow.sideEffect(Integer.class, () -> random.nextInt(100));
-if random < 50 {
-       ....
-} else {
-       ....
-}
-```
-
-Here's another example that uses `sideEffect()`.
-
-```java
-// implementation of the @WorkflowMethod
-public void execute() {
-    int randomInt = Workflow.sideEffect( int.class, () -> {
-        Random random = new SecureRandom();
-        return random.nextInt();
-    });
-
-    String userHome = Workflow.sideEffect(String.class, () -> System.getenv("USER_HOME"));
-
-    if(randomInt % 2 == 0) {
-        // ...
-    } else {
-        // ...
-    }
-}
-```
-
-Java also provides a deterministic method to generate random numbers or random UUIDs.
-
-To generate random numbers in a deterministic method, use [`newRandom()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom())
-
-```java
-// implementation of the @WorkflowMethod
-public void execute() {
-    int randomInt = Workflow.newRandom().nextInt();
-    // ...
-}
-```
-
-To generate a random UUID in a deterministic method, use [`randomUUID()`](https://www.javadoc.io/static/io.temporal/temporal-sdk/latest/io/temporal/workflow/Workflow.html#newRandom()).
-
-```java
-// implementation of the @WorkflowMethod
-public void execute() {
-    String randomUUID = Workflow.randomUUID().toString();
-    // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -3453,34 +2357,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Use the [`RegisterNamespace` API](https://github.com/temporalio/api/blob/f0350f8032ad2f0c60c539b3b61ea37f412f1cf7/temporal/api/workflowservice/v1/service.proto) to register a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and set the <a class="tdlp" href="/clusters#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retention Period?</span><br /><br /><span class="tdlppd">A Retention Period is the amount of time a Workflow Execution Event History remains in the Cluster's persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#retention-period">Learn more</a></span></span></a> for the Workflow Execution Event History for the Namespace.
+Content is planned but not yet available.
 
-```java
-//...
-import com.google.protobuf.util.Durations;
-import io.temporal.api.workflowservice.v1.RegisterNamespaceRequest;
-//...
-public static void createNamespace(String name) {
-    RegisterNamespaceRequest req = RegisterNamespaceRequest.newBuilder()
-            .setNamespace("your-custom-namespace")
-            .setWorkflowExecutionRetentionPeriod(Durations.fromDays(3)) // keeps the Workflow Execution
-            //Event History for up to 3 days in the Persistence store. Not setting this value will throw an error.
-            .build();
-    service.blockingStub().registerNamespace(req);
-}
-//...
-```
-
-The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandatory.
-The minimum value you can set for this period is 1 day.
-
-Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Java](/application-development/foundations#connect-to-a-cluster) for details.
-
-Note that Namespace registration using this API takes up to 10 seconds to complete.
-Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
-
-To update your Namespace, use the [`UpdateNamespace` API](/application-development/features/#namespaces) with the `NamespaceClient`.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -3532,91 +2411,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+Content is planned but not yet available.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
-
-- Update information and configuration for a registered Namespace on your Temporal Cluster:
-
-  - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
-    Example
-  - Use the [`UpdateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to update configuration on a Namespace.
-    Example
-
-  ```java
-  import io.temporal.api.workflowservice.v1.*;
-  //...
-  UpdateNamespaceRequest updateNamespaceRequest = UpdateNamespaceRequest.newBuilder()
-              .setNamespace("your-namespace-name") //the namespace that you want to update
-              .setUpdateInfo(UpdateNamespaceInfo.newBuilder() //has options to update namespace info
-                      .setDescription("your updated namespace description") //updates description in the namespace info.
-                      .build())
-              .setConfig(NamespaceConfig.newBuilder() //has options to update namespace configuration
-                      .setWorkflowExecutionRetentionTtl(Durations.fromHours(30)) //updates the retention period for the namespace "your-namespace--name" to 30 hrs.
-                      .build())
-              .build();
-      UpdateNamespaceResponse updateNamespaceResponse = namespaceservice.blockingStub().updateNamespace(updateNamespaceRequest);
-  //...
-  ```
-
-- Get details for a registered Namespace on your Temporal Cluster:
-
-  - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
-  - Use the [`DescribeNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for a registered Namespace.
-    Example
-
-  ```java
-  import io.temporal.api.workflowservice.v1.*;
-  //...
-  DescribeNamespaceRequest descNamespace = DescribeNamespaceRequest.newBuilder()
-              .setNamespace("your-namespace-name") //specify the namespace you want details for
-              .build();
-      DescribeNamespaceResponse describeNamespaceResponse = namespaceservice.blockingStub().describeNamespace(descNamespace);
-      System.out.println("Namespace Description: " + describeNamespaceResponse);
-  //...
-  ```
-
-- Get details for all registered Namespaces on your Temporal Cluster:
-
-  - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
-  - Use the [`ListNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) to return information and configuration details for all registered Namespaces on your Temporal Cluster.
-    Example
-
-  ```java
-  import io.temporal.api.workflowservice.v1.*;
-  //...
-  ListNamespacesRequest listNamespaces = ListNamespacesRequest.newBuilder().build();
-      ListNamespacesResponse listNamespacesResponse = namespaceservice.blockingStub().listNamespaces(listNamespaces); //lists 1-100 namespaces (1 page) in the active cluster. To list all, set the page size or loop until NextPageToken is nil.
-  //...
-  ```
-
-- Deprecate a Namespace: The [`DeprecateNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
-  Example:
-
-  ```java
-  import io.temporal.api.workflowservice.v1.*;
-  //...
-  DeprecateNamespaceRequest deprecateNamespace = DeprecateNamespaceRequest.newBuilder()
-              .setNamespace("your-namespace-name") //specify the namespace that you want to deprecate
-              .build();
-      DeprecateNamespaceResponse response = namespaceservice.blockingStub().deprecateNamespace(deprecateNamespace);
-  //...
-  ```
-
-- Delete a Namespace: The [`DeleteNamespace` API](https://github.com/temporalio/api/blob/e5cf521c6fdc71c69353f3d2ac5506dd6e827af8/temporal/api/workflowservice/v1/service.proto) deletes a Namespace. Deleting a Namespace deletes all running and completed Workflow Executions on the Namespace, and removes them from the persistence store and the visibility store.
-
-  Example:
-
-  ```java
-  //...
-  DeleteNamespaceResponse res =
-  OperatorServiceStubs.newServiceStubs(OperatorServiceStubsOptions.newBuilder()
-          .setChannel(service.getRawChannel())
-          .validateAndBuildWithDefaults())
-      .blockingStub()
-      .deleteNamespace(DeleteNamespaceRequest.newBuilder().setNamespace("your-namespace-name").build());
-  //...
-  ```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -3669,62 +2466,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="java">
 
-Create a custom implementation of a [PayloadConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/PayloadConverter.html) interface and use the `withPayloadConverterOverrides` method to implement the custom object conversion with `DefaultDataConverter`.
+Content is planned but not yet available.
 
-`PayloadConverter` serializes and deserializes method parameters that need to be sent over the wire.
-You can create a custom implementation of `PayloadConverter` for custom formats, as shown in the following example:
-
-```java
-/** Payload Converter specific to your custom object */
-public class YourCustomPayloadConverter implements PayloadConverter {
- //...
-  @Override
-  public String getEncodingType() {
-    return "json/plain"; // The encoding type determines which default conversion behavior to override.
-  }
-
-  @Override
-  public Optional<Payload> toData(Object value) throws DataConverterException {
-      // Add your convert-to logic here.
-  }
-
-  @Override
-  public <T> T fromData(Payload content, Class<T> valueClass, Type valueType)
-      throws DataConverterException {
-    // Add your convert-from logic here.
-  }
-//...
-}
-```
-
-You can also use [specific implementation classes](https://www.javadoc.io/static/io.temporal/temporal-sdk/1.18.1/io/temporal/common/converter/package-summary.html) provided in the Java SDK.
-
-For example, to create a custom `JacksonJsonPayloadConverter`, use the following:
-
-```java
-//...
-private static JacksonJsonPayloadConverter yourCustomJacksonJsonPayloadConverter() {
-  ObjectMapper objectMapper = new ObjectMapper();
-  // Add your custom logic here.
-  return new JacksonJsonPayloadConverter(objectMapper);
-}
-//...
-```
-
-To set your custom Payload Converter, use it with [withPayloadConverterOverrides](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DefaultDataConverter.html#withPayloadConverterOverrides(io.temporal.common.converter.PayloadConverter...)) with a new instance of `DefaultDataConverter` in your `WorkflowClient` options that you use in your Worker process and to start your Workflow Executions.
-
-The following example shows how to set a custom `YourCustomPayloadConverter` Payload Converter.
-
-```java
-//...
-DefaultDataConverter ddc =
-        DefaultDataConverter.newDefaultInstance()
-            .withPayloadConverterOverrides(new YourCustomPayloadConverter());
-
-    WorkflowClientOptions workflowClientOptions =
-        WorkflowClientOptions.newBuilder().setDataConverter(ddc).build();
-//...
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="php">
@@ -3749,4 +2493,3 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 </TabItem>
 </Tabs>
-

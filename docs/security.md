@@ -2,6 +2,7 @@
 id: security
 title: Temporal Platform security features
 sidebar_label: Security
+sidebar_position: 6
 description: This guide is an overview of the Temporal Platform security features.
 toc_max_heading_level: 4
 ---

@@ -2,6 +2,7 @@
 id: index
 title: Temporal Cloud documentation
 sidebar_label: Temporal Cloud
+sidebar_position: 3
 description: Temporal Cloud documentation, including explanations and usage.
 toc_max_heading_level: 4
 ---
@@ -75,4 +76,3 @@ For a Namespace, a user can have one of the following permissions:
 - **Namespace Admin:** Can create and edit Namespaces; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
-

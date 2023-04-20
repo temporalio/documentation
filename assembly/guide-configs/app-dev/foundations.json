@@ -30,7 +30,7 @@
         },
         {
           "lang": "java",
-          "id": "java/index"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -59,7 +59,7 @@
         },
         {
           "lang": "java",
-          "id": "java/api-reference-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -88,7 +88,7 @@
         },
         {
           "lang": "java",
-          "id": "java/code-samples-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -117,7 +117,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-create-a-temporal-client-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -154,7 +154,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-connect-to-temporal-cloud-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -175,7 +175,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-develop-a-workflow-definition-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -204,7 +204,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-define-workflow-parameters-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -233,7 +233,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-define-workflow-return-values-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -262,7 +262,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-customize-workflow-type-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -291,7 +291,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-handle-workflow-logic-requirements-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -320,7 +320,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-develop-an-activity-definition-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -349,7 +349,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-define-activity-parameters-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -378,7 +378,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-define-activity-return-values-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -407,7 +407,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-customize-activity-type-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -436,7 +436,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-spawn-an-activity-execution-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -469,7 +469,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-get-the-result-of-an-activity-execution-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -498,7 +498,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-develop-a-worker-program-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -556,7 +556,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-register-types-with-a-worker-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -585,7 +585,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-spawn-a-workflow-execution-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -614,7 +614,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-set-a-workflow-task-queue-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -643,7 +643,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-set-a-workflow-id-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
@@ -672,7 +672,7 @@
         },
         {
           "lang": "java",
-          "id": "java/how-to-get-the-result-of-a-workflow-execution-in-java"
+          "id": "none"
         },
         {
           "lang": "php",
