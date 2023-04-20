@@ -35,7 +35,7 @@ OSS users can verify that the Frontend Service is connected and running by using
 tctl --address frontendAddress:frontendPort cluster health
 ```
 
-Use `grpc-health-probe` to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
+Use [`grpc-health-probe`](https://github.com/grpc-ecosystem/grpc-health-probe) to check the Frontend Service, [Matching Service](/clusters#matching-service), and [History Service](/clusters#history-service).
 
 ```
 ./grpc-health-probe -addr=frontendAddress:frontendPort -service=temporal.api.workflowservice.v1.WorkflowService
