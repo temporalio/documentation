@@ -4,7 +4,7 @@ title: Temporal Cloud Namespace naming considerations
 tags:
   - cloud
   - namespaces
-date: 2023-03-10T00:00:00Z
+date: 2023-04-20T00:00:00Z
 ---
 
 This article provides general guidance for organizing [Namespaces](/namespaces) across use cases, services, applications, or domains.
