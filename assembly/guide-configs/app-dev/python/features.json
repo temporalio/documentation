@@ -187,6 +187,74 @@
     },
     {
       "type": "h2",
+      "id": "python/schedules"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-create"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-schedule-a-workflow-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-backfill"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-backfill-a-scheduled-workflow-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-delete"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-delete-a-scheduled-workflow-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-describe"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-describe-a-scheduled-workflow-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-list"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-list-scheduled-workflow-executions-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-pause"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-pause-a-scheduled-workflow-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-trigger"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-trigger-a-scheduled-workflow-execution-in-python"
+    },
+    {
+      "type": "h3",
+      "id": "python/schedule-update"
+    },
+    {
+      "type": "p",
+      "id": "python/how-to-update-scheduled-workflow-execution-in-python"
+    },
+    {
+      "type": "h2",
       "id": "python/cron-jobs"
     },
     {

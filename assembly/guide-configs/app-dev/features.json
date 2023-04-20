@@ -601,7 +601,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-schedule-a-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -630,7 +630,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-backfill-a-scheduled-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -659,7 +659,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-delete-a-scheduled-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -688,7 +688,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-describe-a-scheduled-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -717,7 +717,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-list-scheduled-workflow-executions-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -746,7 +746,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-pause-a-scheduled-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -775,7 +775,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-trigger-a-scheduled-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",
@@ -804,7 +804,7 @@
         },
         {
           "lang": "python",
-          "id": "python/how-to-update-scheduled-workflow-execution-in-python"
+          "id": "none"
         },
         {
           "lang": "typescript",

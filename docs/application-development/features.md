@@ -1630,36 +1630,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To create a Scheduled Workflow Execution in Python, use the [create_schedule()](https://python.temporal.io/temporalio.client.Client.html#create_schedule)
-asynchronous method on the Client.
-Then pass the Schedule ID and the Schedule object to the method to create a Scheduled Workflow Execution.
-Set the `action` parameter to `ScheduleActionStartWorkflow` to start a Workflow Execution.
-Optionally, you can set the `spec` parameter to `ScheduleSpec` to specify the schedule or set the `intervals` parameter to `ScheduleIntervalSpec` to specify the interval.
-Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/start_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-async def main():
-    client = await Client.connect("localhost:7233")
-
-    await client.create_schedule(
-        "workflow-schedule-id",
-        Schedule(
-            action=ScheduleActionStartWorkflow(
-                YourSchedulesWorkflow.run,
-                "my schedule arg",
-                id="schedules-workflow-id",
-                task_queue="schedules-task-queue",
-            ),
-            spec=ScheduleSpec(
-                intervals=[ScheduleIntervalSpec(every=timedelta(minutes=2))]
-            ),
-            state=ScheduleState(note="Here's a note on my Schedule."),
-        ),
-    )
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1703,27 +1676,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To Backfill a Scheduled Workflow Execution in Python, use the [backfill()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#backfill) asynchronous
-method on the Schedule Handle.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/backfill_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-async def main():
-    client = await Client.connect("localhost:7233")
-    handle = client.get_schedule_handle(
-        "workflow-schedule-id",
-    )
-    now = datetime.utcnow()
-    await handle.backfill(
-        ScheduleBackfill(
-            start_at=now - timedelta(minutes=10),
-            end_at=now - timedelta(minutes=9),
-            overlap=ScheduleOverlapPolicy.ALLOW_ALL,
-        ),
-    ),
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1767,19 +1722,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To delete a Scheduled Workflow Execution in Python, use the [delete()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/delete_schedule_dacx.py">View source code</a>
-
-```python
-async def main():
-    client = await Client.connect("localhost:7233")
-    handle = client.get_schedule_handle(
-        "workflow-schedule-id",
-    )
-
-    await handle.delete()
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1823,23 +1768,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To describe a Scheduled Workflow Execution in Python, use the [describe()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#delete) asynchronous method on the Schedule Handle.
-You can get a complete list of the attributes of the Scheduled Workflow Execution from the [ScheduleDescription](https://python.temporal.io/temporalio.client.ScheduleDescription.html) class.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/describe_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-async def main():
-    client = await Client.connect("localhost:7233")
-    handle = client.get_schedule_handle(
-        "workflow-schedule-id",
-    )
-
-    desc = await handle.describe()
-
-    print(f"Returns the note: {desc.schedule.state.note}")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1883,18 +1814,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To list all schedules, use the [list_schedules()](https://python.temporal.io/temporalio.client.Client.html#list_schedules) asynchronous method on the Client.
-If a schedule is added or deleted, it may not be available in the list immediately.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/list_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-async def main() -> None:
-    client = await Client.connect("localhost:7233")
-    async for schedule in await client.list_schedules():
-        print(f"List Schedule Info: {schedule.info}.")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1938,21 +1860,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To pause a Scheduled Workflow Execution in Python, use the [pause()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#pause) asynchronous method on the Schedule Handle.
-You can pass a `note` to the `pause()` method to provide a reason for pausing the schedule.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/pause_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-async def main():
-    client = await Client.connect("localhost:7233")
-    handle = client.get_schedule_handle(
-        "workflow-schedule-id",
-    )
-
-    await handle.pause(note="Pausing the schedule for now")
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -1996,20 +1906,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https://python.temporal.io/temporalio.client.ScheduleHandle.html#trigger) asynchronous method on the Schedule Handle.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/trigger_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-async def main():
-    client = await Client.connect("localhost:7233")
-    handle = client.get_schedule_handle(
-        "workflow-schedule-id",
-    )
-
-    await handle.trigger()
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
@@ -2053,21 +1952,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="python">
 
-Create a function that takes `ScheduleUpdateInput` and returns `ScheduleUpdate`.
-To update a Schedule, use a callback to build the update from the description.
-The following example updates the Schedule to use a new argument.
+Content is planned but not yet available.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/update_schedule_dacx.py">View source code</a>
-
-```python
-# . . .
-    async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
-        schedule_action = input.description.schedule.action
-
-        if isinstance(schedule_action, ScheduleActionStartWorkflow):
-            schedule_action.args = ["my new schedule arg"]
-        return ScheduleUpdate(schedule=input.description.schedule)
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="typescript">
