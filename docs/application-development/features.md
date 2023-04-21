@@ -72,52 +72,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#queries">Learn more</a></span></span></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signals">Learn more</a></span></span></a>.
+Content is planned but not yet available.
 
-All interface methods must have one of the following annotations:
-
-- **#[WorkflowMethod]** indicates an entry point to a Workflow.
-  It contains parameters that specify timeouts and a Task Queue name.
-  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
-- **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
-- **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
-
-> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
-
-You can have more than one method with the same annotation (except #[WorkflowMethod]).
-
-For example:
-
-```php
-use Temporal\Workflow\WorkflowInterface;
-use Temporal\Workflow\WorkflowMethod;
-use Temporal\Workflow\SignalMethod;
-use Temporal\Workflow\QueryMethod;
-
-#[WorkflowInterface]
-interface FileProcessingWorkflow
-{
-    #[WorkflowMethod]
-    public function processFile(Argument $args);
-
-    #[QueryMethod("history")]
-    public function getHistory(): array;
-
-    #[QueryMethod("status")]
-    public function getStatus(): string;
-
-    #[SignalMethod]
-    public function retryNow(): void;
-
-    #[SignalMethod]
-    public function abandon(): void;
-}
-```
-
-Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
-If name is not specified the short name of the Workflow interface is used.
-
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -161,33 +118,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Use the `#[SignalMethod]` annotation to handle Signals in the Workflow interface:
+Content is planned but not yet available.
 
-```php
-use Temporal\Workflow;
-
-#[Workflow\WorkflowInterface]
-class YourWorkflow
-{
-    private bool $value;
-
-    #[Workflow\WorkflowMethod]
-    public function run()
-    {
-        yield Workflow::await(fn()=> $this->value);
-        return 'OK';
-    }
-
-    #[Workflow\SignalMethod]
-    public function setValue(bool $value)
-    {
-        $this->value = $value;
-    }
-}
-```
-
-In the preceding example, the Workflow updates the protected value.
-The main Workflow coroutine waits for the value to change by using the `Workflow::await()` function.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -231,30 +164,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-To send a Signal to a Workflow Execution from a Client, call the Signal method, annotated with `#[SignalMethod]` in the Workflow interface, from the Client code.
+Content is planned but not yet available.
 
-To send a Signal to a Workflow, use `WorkflowClient->newWorkflowStub` or `WorkflowClient->newUntypedWorkflowStub`:
-
-```php
-$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
-
-$run = $workflowClient->start($workflow);
-
-// do something
-
-$workflow->setValue(true);
-
-assert($run->getValue() === true);
-```
-
-Use `WorkflowClient->newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send Signals to already running Workflows.
-
-```php
-$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
-$workflow->setValue(true);
-```
-
-See <a class="tdlp" href="#handle-signal">Handle Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to handle a Signal</span><br /><br /><span class="tdlppd">Workflows listen for Signals by the Signal's name.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#handle-signal">Learn more</a></span></span></a> for details on how to handle Signals in a Workflow.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -303,27 +215,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-To send signal to a Workflow use `WorkflowClient`->`newWorkflowStub` or `WorkflowClient`->`newUntypedWorkflowStub`:
+Content is planned but not yet available.
 
-```php
-$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
-
-$run = $workflowClient->start($workflow);
-
-// do something
-
-$workflow->setValue(true);
-
-assert($run->getValue() === true);
-```
-
-Use `WorkflowClient`->`newRunningWorkflowStub` or `WorkflowClient->newUntypedRunningWorkflowStub` with Workflow Id to send
-Signals to a running Workflow.
-
-```php
-$workflow = $workflowClient->newRunningWorkflowStub(YourWorkflow::class, 'workflowID');
-$workflow->setValue(true);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -370,20 +264,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-In cases where you may not know if a Workflow is running, and want to send a Signal to it, use `startwithSignal`.
-If a running Workflow exists, the `startwithSignal` API sends the Signal.
-If there is no running Workflow, the API starts a new Workflow Run and delivers the Signal to it.
+Content is planned but not yet available.
 
-```php
-$workflow = $workflowClient->newWorkflowStub(YourWorkflow::class);
-
-$run = $workflowClient->startWithSignal(
-    $workflow,
-    'setValue',
-    [true], // signal arguments
-    [] // start arguments
-);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -434,52 +317,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Workflows can answer synchronous <a class="tdlp" href="#queries">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Queries</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to get the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#queries">Learn more</a></span></span></a> and receive <a class="tdlp" href="#signals">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Signals</span><br /><br /><span class="tdlppd">A Signal is a message sent to a running Workflow Execution</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signals">Learn more</a></span></span></a>.
+Content is planned but not yet available.
 
-All interface methods must have one of the following annotations:
-
-- **#[WorkflowMethod]** indicates an entry point to a Workflow.
-  It contains parameters that specify timeouts and a Task Queue name.
-  Required parameters (such as `executionStartToCloseTimeoutSeconds`) that are not specified through the annotation must be provided at runtime.
-- **#[SignalMethod]** indicates a method that reacts to external signals. It must have a `void` return type.
-- **#[QueryMethod]** indicates a method that reacts to synchronous query requests. It must have a non `void` return type.
-
-> It is possible (though not recommended for usability reasons) to annotate concrete class implementation.
-
-You can have more than one method with the same annotation (except #[WorkflowMethod]).
-
-For example:
-
-```php
-use Temporal\Workflow\WorkflowInterface;
-use Temporal\Workflow\WorkflowMethod;
-use Temporal\Workflow\SignalMethod;
-use Temporal\Workflow\QueryMethod;
-
-#[WorkflowInterface]
-interface FileProcessingWorkflow
-{
-    #[WorkflowMethod]
-    public function processFile(Argument $args);
-
-    #[QueryMethod("history")]
-    public function getHistory(): array;
-
-    #[QueryMethod("status")]
-    public function getStatus(): string;
-
-    #[SignalMethod]
-    public function retryNow(): void;
-
-    #[SignalMethod]
-    public function abandon(): void;
-}
-```
-
-Note that name parameter of Workflow method annotations can be used to specify name of Workflow, Signal and Query types.
-If name is not specified the short name of the Workflow interface is used.
-
-In the above code the `#[WorkflowMethod(name)]` is not specified, thus the Workflow Type defaults to `"FileProcessingWorkflow"`.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -526,94 +366,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-You can add custom Query types to handle Queries such as Querying the current state of a
-Workflow, or Querying how many Activities the Workflow has completed. To do this, you need to set
-up a Query handler using method attribute `QueryMethod` or `Workflow::registerQueryHandler`.
+Content is planned but not yet available.
 
-```php
-#[Workflow\WorkflowInterface]
-class YourWorkflow
-{
-    #[Workflow\QueryMethod]
-    public function getValue()
-    {
-        return 42;
-    }
-
-    #[Workflow\WorkflowMethod]
-    public function run()
-    {
-        // workflow code
-    }
-
-}
-```
-
-The handler function can receive any number of input parameters, but all input parameters must be
-serializable. The following sample code sets up a Query handler that handles the Query type of
-`currentState`:
-
-```php
-#[Workflow\WorkflowInterface]
-class YourWorkflow
-{
-    private string $currentState;
-
-    #[Workflow\QueryMethod('current_state')]
-    public function getCurrentState(): string
-    {
-        return $this->currentState;
-    }
-
-    #[Workflow\WorkflowMethod]
-    public function run()
-    {
-        // Your normal Workflow code begins here, and you update the currentState
-        // as the code makes progress.
-        $this->currentState = 'waiting timer';
-        try{
-            yield Workflow::timer(DateInterval::createFromDateString('1 hour'));
-        } catch (\Throwable $e) {
-            $this->currentState = 'timer failed';
-            throw $e;
-        }
-
-        $yourActivity = Workflow::newActivityStub(
-            YourActivityInterface::class,
-            ActivityOptions::new()->withScheduleToStartTimeout(60)
-        );
-
-        $this->currentState = 'waiting activity';
-        try{
-            yield $yourActivity->doSomething('some input');
-        } catch (\Throwable $e) {
-            $this->currentState = 'activity failed';
-            throw $e;
-        }
-
-        $this->currentState = 'done';
-
-        return null;
-    }
-}
-```
-
-You can also issue a Query from code using the `QueryWorkflow()` API on a Temporal Client object.
-
-Use `WorkflowStub` to Query Workflow instances from your Client code (can be applied to both running and closed Workflows):
-
-```php
-$workflow = $workflowClient->newWorkflowStub(
-    YourWorkflow::class,
-    WorkflowOptions::new()
-);
-
-$workflowClient->start($workflow);
-
-var_dump($workflow->getCurrentState());
-sleep(60);
-var_dump($workflow->getCurrentState());
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -709,26 +464,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Create an instance of `WorkflowOptions` in the Client code and set your timeout.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- `withWorkflowExecutionTimeout()`
-- `withWorkflowRunTimeout()`
-- `withWorkflowTaskTimeout()`
-
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-    DynamicSleepWorkflowInterface::class,
-    WorkflowOptions::new()
-        ->withWorkflowId(DynamicSleepWorkflow::WORKFLOW_ID)
-        ->withWorkflowIdReusePolicy(WorkflowIdReusePolicy::WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE)
-        // Set Workflow Timeout duration
-        ->withWorkflowExecutionTimeout(CarbonInterval::minutes(2))
-        // ->withWorkflowRunTimeout(CarbonInterval::minute(2))
-        // ->withWorkflowTaskTimeout(CarbonInterval::minute(2))
-);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -776,17 +514,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-A Retry Policy can be configured with an instance of the `RetryOptions` object.
-To enable retries for a Workflow, you need to provide a Retry Policy object via `ChildWorkflowOptions` for Child Workflows or via `WorkflowOptions` for top-level Workflows.
+Content is planned but not yet available.
 
-```php
-$workflow = $this->workflowClient->newWorkflowStub(
-      CronWorkflowInterface::class,
-      WorkflowOptions::new()->withRetryOptions(
-        RetryOptions::new()->withInitialInterval(120)
-      )
-);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -838,24 +568,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Because Activities are reentrant, only a single stub can be used for multiple Activity invocations.
+Content is planned but not yet available.
 
-Available timeouts are:
-
-- withScheduleToCloseTimeout()
-- withStartToCloseTimeout()
-- withScheduleToStartTimeout()
-
-```php
-$this->greetingActivity = Workflow::newActivityStub(
-    GreetingActivityInterface::class,
-    // Set Activity Timeout duration
-    ActivityOptions::new()
-        ->withScheduleToCloseTimeout(CarbonInterval::seconds(2))
-        // ->withStartToCloseTimeout(CarbonInterval::seconds(2))
-        // ->withScheduleToStartTimeout(CarbonInterval::seconds(10))
-);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -901,25 +616,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-To set an Activity Retry, set `{@link RetryOptions}` on `{@link ActivityOptions}`.
-The follow example creates a new Activity with the given options.
+Content is planned but not yet available.
 
-```php
-$this->greetingActivity = Workflow::newActivityStub(
-    GreetingActivityInterface::class,
-    ActivityOptions::new()
-        ->withScheduleToCloseTimeout(CarbonInterval::seconds(10))
-        ->withRetryOptions(
-            RetryOptions::new()
-                ->withInitialInterval(CarbonInterval::seconds(1))
-                ->withMaximumAttempts(5)
-                ->withNonRetryableExceptions([\InvalidArgumentException::class])
-        )
-);
-}
-```
-
-For an executable code sample, see [ActivityRetry sample](https://github.com/temporalio/samples-php/tree/master/app/src/ActivityRetry) in the PHP samples repository.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -990,46 +689,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Some Activities are long-running.
-To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
+Content is planned but not yet available.
 
-You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
-When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
-
-```php
-use Temporal\Activity;
-
-class FileProcessingActivitiesImpl implements FileProcessingActivities
-{
-    // ...
-    public function download(
-        string $bucketName,
-        string $remoteName,
-        string $localName
-    ): void
-    {
-        $this->dowloader->downloadWithProgress(
-            $bucketName,
-            $remoteName,
-            $localName,
-            // on progress
-            function ($progress) {
-                Activity::heartbeat($progress);
-            }
-        );
-
-        Activity::heartbeat(100); // download complete
-
-        // ...
-    }
-
-    // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1073,46 +735,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Some Activities are long-running.
-To react to a crash quickly, use the Heartbeat mechanism, `Activity::heartbeat()`, which lets the Temporal Server know that the Activity is still alive.
-This acts as a periodic checkpoint mechanism for the progress of an Activity.
+Content is planned but not yet available.
 
-You can piggyback `details` on an Activity Heartbeat.
-If an Activity times out, the last value of `details` is included in the `TimeoutFailure` delivered to a Workflow.
-Then the Workflow can pass the details to the next Activity invocation.
-Additionally, you can access the details from within an Activity via `Activity::getHeartbeatDetails`.
-When an Activity is retried after a failure `getHeartbeatDetails` enables you to get the value from the last successful Heartbeat.
-
-```php
-use Temporal\Activity;
-
-class FileProcessingActivitiesImpl implements FileProcessingActivities
-{
-    // ...
-    public function download(
-        string $bucketName,
-        string $remoteName,
-        string $localName
-    ): void
-    {
-        $this->dowloader->downloadWithProgress(
-            $bucketName,
-            $remoteName,
-            $localName,
-            // on progress
-            function ($progress) {
-                Activity::heartbeat($progress);
-            }
-        );
-
-        Activity::heartbeat(100); // download complete
-
-        // ...
-    }
-
-    // ...
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1163,116 +788,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Sometimes Workflows need to perform certain operations in parallel.
+Content is planned but not yet available.
 
-Invoking activity stub without the use of `yield` will return the Activity result promise which can be resolved at later moment.
-Calling `yield` on promise blocks until a result is available.
-
-> Activity promise also exposes `then` method to construct promise chains.
-> Read more about Promises [here](https://github.com/reactphp/promise).
-
-Alternatively you can explicitly wrap your code (including `yield` constucts) using `Workflow::async` which will execute nested code in parallel with main Workflow code.
-Call `yeild` on Promise returned by `Workflow::async` to merge execution result back to primary Workflow method.
-
-```php
-public function greet(string $name): \Generator
-{
-    // Workflow::async runs it's activities and child workflows in a separate coroutine. Use keyword yield to merge
-    // it back to parent process.
-
-    $first = Workflow::async(
-        function () use ($name) {
-            $hello = yield $this->greetingActivity->composeGreeting('Hello', $name);
-            $bye = yield $this->greetingActivity->composeGreeting('Bye', $name);
-
-            return $hello . '; ' . $bye;
-        }
-    );
-
-    $second = Workflow::async(
-        function () use ($name) {
-            $hello = yield $this->greetingActivity->composeGreeting('Hola', $name);
-            $bye = yield $this->greetingActivity->composeGreeting('Chao', $name);
-
-            return $hello . '; ' . $bye;
-        }
-    );
-
-    // blocks until $first and $second complete
-    return (yield $first) . "\n" . (yield $second);
-}
-```
-
-**Async completion**
-
-There are certain scenarios when moving on from an Activity upon completion of its function is not possible or desirable.
-For example, you might have an application that requires user input to complete the Activity.
-You could implement the Activity with a polling mechanism, but a simpler and less resource-intensive implementation is to asynchronously complete a Temporal Activity.
-
-There are two parts to implementing an asynchronously completed Activity:
-
-1. The Activity provides the information necessary for completion from an external system and notifies the Temporal service that it is waiting for that outside callback.
-2. The external service calls the Temporal service to complete the Activity.
-
-The following example demonstrates the first part:
-
-<!--SNIPSTART samples-php-async-activity-completion-activity-class-->
-
-[app/src/AsyncActivityCompletion/GreetingActivity.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/GreetingActivity.php)
-
-```php
-class GreetingActivity implements GreetingActivityInterface
-{
-    private LoggerInterface $logger;
-
-    public function __construct()
-    {
-        $this->logger = new Logger();
-    }
-    /**
-     * Demonstrates how to implement an Activity asynchronously.
-     * When {@link Activity::doNotCompleteOnReturn()} is called,
-     * the Activity implementation function that returns doesn't complete the Activity.
-     */
-    public function composeGreeting(string $greeting, string $name): string
-    {
-        // In real life this request can be executed anywhere. By a separate service for example.
-        $this->logger->info(sprintf('GreetingActivity token: %s', base64_encode(Activity::getInfo()->taskToken)));
-        // Send the taskToken to the external service that will complete the Activity.
-        // Return from the Activity a function indicating that Temporal should wait
-        // for an async completion message.
-        Activity::doNotCompleteOnReturn();
-        // When doNotCompleteOnReturn() is invoked the return value is ignored.
-        return 'ignored';
-    }
-}
-```
-
-<!--SNIPEND-->
-
-The following code demonstrates how to complete the Activity successfully using `WorkflowClient`:
-
-<!--SNIPSTART samples-php-async-activity-completion-completebytoken-->
-
-[app/src/AsyncActivityCompletion/CompleteCommand.php](https://github.com/temporalio/samples-php/blob/master/app/src/AsyncActivityCompletion/CompleteCommand.php)
-
-```php
-$client = $this->workflowClient->newActivityCompletionClient();
-// Complete the Activity.
-$client->completeByToken(
-    base64_decode($input->getArgument('token')),
-    $input->getArgument('message')
-);
-```
-
-<!--SNIPEND-->
-
-To fail the Activity, you would do the following:
-
-```php
-// Fail the Activity.
-$activityClient->completeExceptionallyByToken($taskToken, new \Error("activity failed"));
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1384,59 +902,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Besides Activities, a Workflow can also start other Workflows.
+Content is planned but not yet available.
 
-`Workflow::executeChildWorkflow` and `Workflow::newChildWorkflowStub` enables the scheduling of other Workflows from within a Workflow's implementation.
-The parent Workflow has the ability to monitor and impact the lifecycle of the Child Workflow, similar to the way it does for an Activity that it invoked.
-
-```php
-// Use one stub per child workflow run
-$child = Workflow::newChildWorkflowStub(
-    ChildWorkflowInterface::class,
-    ChildWorkflowOptions::new()
-        // Do not specify WorkflowId if you want Temporal to generate a unique Id
-        // for the child execution.
-        ->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW')
-        ->withExecutionStartToCloseTimeout(DateInterval::createFromDateString('30 minutes'))
-);
-
-// This is a non blocking call that returns immediately.
-// Use yield $child->workflowMethod(name) to call synchronously.
-$promise = $child->workflowMethod('value');
-
-// Do something else here.
-try{
-    $value = yield $promise;
-} catch(TemporalException $e) {
-    $logger->error('child workflow failed');
-    throw $e;
-}
-```
-
-Let's take a look at each component of this call.
-
-Before calling `$child->workflowMethod()`, you must configure `ChildWorkflowOptions` for the invocation.
-These options customize various execution timeouts, and are passed into the Workflow stub defined by the `Workflow::newChildWorkflowStub`.
-Once stub created you can invoke its Workflow method based on attribute `WorkflowMethod`.
-
-The method call returns immediately and returns a `Promise`.
-This allows you to execute more code without having to wait for the scheduled Workflow to complete.
-
-When you are ready to process the results of the Workflow, call the `yield $promise` method on the returned promise object.
-
-When a parent Workflow is cancelled by the user, the Child Workflow can be cancelled or abandoned based on a configurable child policy.
-
-You can also skip the stub part of Child Workflow initiation and use `Workflow::executeChildWorkflow` directly:
-
-```php
-// Use one stub per child workflow run
-$childResult = yield Workflow::executeChildWorkflow(
-    'ChildWorkflowName',
-    ['args'],
-    ChildWorkflowOptions::new()->withWorkflowId('BID-SIMPLE-CHILD-WORKFLOW'),
-    Type::TYPE_STRING // optional: defines the return type
-);
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1482,32 +950,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-In PHP, a <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></span></span></a> is set via the `ChildWorkflowOptions` object and `withParentClosePolicy()` method.
-The possible values can be obtained from the [`ParentClosePolicy`](https://github.com/temporalio/sdk-php/blob/master/src/Workflow/ParentClosePolicy.php) class.
+Content is planned but not yet available.
 
-- `POLICY_TERMINATE`
-- `POLICY_ABANDON`
-- `POLICY_REQUEST_CANCEL`
-
-Then `ChildWorkflowOptions` object is used to create a new Child Workflow object:
-
-```php
-$child = Workflow::newUntypedChildWorkflowStub(
-    'child-workflow',
-    ChildWorkflowOptions::new()
-        ->withParentClosePolicy(ParentClosePolicy::POLICY_ABANDON)
-);
-
-yield $child->start();
-```
-
-In the snippet above we:
-
-1. Create a new untyped Child Workflow stub with `Workflow::newUntypedChildWorkflowStub`.
-2. Provide `ChildWorkflowOptions` object with Parent Close Policy set to `ParentClosePolicy::POLICY_ABANDON`.
-3. Start Child Workflow Execution asynchronously using `yield` and method `start()`.
-
-We need `yield` here to ensure that a Child Workflow Execution starts before the parent closes.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1552,28 +997,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Workflows that need to rerun periodically could naively be implemented as a big **while** loop with a sleep where the entire logic of the Workflow is inside the body of the **while** loop.
-The problem with this approach is that the history for that Workflow will keep growing to a point where it reaches the maximum size enforced by the service.
+Content is planned but not yet available.
 
-**ContinueAsNew** is the low level construct that enables implementing such Workflows without the risk of failures down the road.
-The operation atomically completes the current execution and starts a new execution of the Workflow with the same **Workflow Id**.
-The new execution will not carry over any history from the old execution.
-
-To trigger this behavior, use `Workflow::continueAsNew` or `Workflow::newContinueAsNewStub` method:
-
-```php
-#[Workflow\WorkflowMethod]
-public function periodic(string $name, int $value = 0)
-{
-    for ($i = 0; $i < 100; $i++) {
-        // do something
-        $value++;
-    }
-
-    // maintain $value counter between runs
-    return Workflow::newContinueAsNewStub(self::class)->periodic($name, $value);
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -1997,15 +1423,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-To set a Timer in PHP, use `Workflow::timer()` and pass the number of seconds you want to wait before continuing.
+Content is planned but not yet available.
 
-The following example yields a sleep method for 5 minutes.
-
-```php
-yield Workflow::timer(300); // sleep for 5 minutes
-```
-
-You cannot set a Timer invocation inside the `await` or `awaitWithTimeout` methods.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">
@@ -2051,32 +1471,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="php">
 
-Set your Cron Schedule with `CronSchedule('* * * * *')`.
+Content is planned but not yet available.
 
-The following example sets a Cron Schedule in PHP:
-
-```php
-  $workflow = $this->workflowClient->newWorkflowStub(
-      CronWorkflowInterface::class,
-      WorkflowOptions::new()
-          ->withWorkflowId(CronWorkflowInterface::WORKFLOW_ID)
-          ->withCronSchedule('* * * * *')
-          // Execution timeout limits total time. Cron will stop executing after this timeout.
-          ->withWorkflowExecutionTimeout(CarbonInterval::minutes(10))
-          // Run timeout limits duration of a single workflow invocation.
-          ->withWorkflowRunTimeout(CarbonInterval::minute(1))
-  );
-
-  $output->writeln("Starting <comment>CronWorkflow</comment>... ");
-
-  try {
-      $run = $this->workflowClient->start($workflow, 'Antony');
-      // ...
-  }
-```
-
-Setting `withCronSchedule` turns the Workflow Execution into a Temporal Cron Job.
-For more information, see the [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code or the PHP SDK `WorkflowOptions` [source code](https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php).
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 <TabItem value="python">

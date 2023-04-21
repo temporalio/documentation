@@ -1,0 +1,49 @@
+{
+  "file_name": "observability.md",
+  "id": "observability",
+  "file_dir": "application-development/php",
+  "title": "Developer's guide - Observability",
+  "sidebar_label": "Observability",
+  "description": "The Observability section of the Temporal Developer's guide covers the many ways to view the current state of your Temporal Application—that is, ways to view what Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "php/observability"
+    },
+    {
+      "type": "h2",
+      "id": "php/visibility"
+    },
+    {
+      "type": "h3",
+      "id": "php/search-attributes"
+    },
+    {
+      "type": "h3",
+      "id": "php/set-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "php/how-to-add-custom-search-attributes-to-workflow-executions-at-start-time-in-php"
+    },
+    {
+      "type": "h3",
+      "id": "php/upsert-custom-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "php/how-to-upsert-custom-search-attributes-to-a-workflow-executions-during-execution-in-php"
+    },
+    {
+      "type": "h3",
+      "id": "php/remove-search-attributes"
+    },
+    {
+      "type": "p",
+      "id": "php/how-to-remove-search-attributes-from-a-workflow-in-php"
+    }
+  ]
+}

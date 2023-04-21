@@ -131,93 +131,26 @@ An SDK provides you with the following:
 - APIs to create and manage <a class="tdlp" href="/workers#">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a>.
 - APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+[![CI Status](https://github.com/temporalio/php-sdk/workflows/Unit/badge.svg)](https://github.com/temporalio/php-sdk/actions)
+[![Stable Release](https://poser.pugx.org/temporal/sdk/version)](https://packagist.org/packages/temporal/sdk)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftemporalio%2Fsdk-php.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftemporalio%2Fsdk-php?ref=badge_shield)
 
-<TabItem value="go">
+The Temporal PHP SDK is available as composer package and can be installed using the following command in a root of your project:
 
-Content is planned but not yet available.
+```bash
+composer require temporal/sdk
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+The Temporal PHP SDK requires the RoadRunner 2.0 application server and supervisor to run Activities and Workflows in a scalable way.
 
-</TabItem>
-<TabItem value="java">
+Install RoadRunner manually by downloading its binary from the [release page](https://github.com/roadrunner-server/roadrunner/releases/tag/v1.9.2).
 
-Content is planned but not yet available.
+Or install RoadRunner through the CLI:
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
-
-### API reference
-
-Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
-
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```bash
+composer require spiral/roadrunner:v2.0 nyholm/psr7
+./vendor/bin/rr get-binary
+```
 
 ### Code samples
 
@@ -225,47 +158,9 @@ You can find a complete list of executable code samples in [Temporal's GitHub re
 
 Additionally, several of the [Tutorials](https://learn.temporal.io) are backed by a fully executable template application.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+- [PHP samples repo](https://github.com/temporalio/samples-php)
 
-<TabItem value="go">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+- [Subscription-style Workflow Definition in PHP](https://github.com/temporalio/subscription-workflow-project-template-php): Demonstrates some of the patterns that could be implemented for a subscription-style business process.
 
 ## Connect to a dev Cluster
 
@@ -288,147 +183,70 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 When you are running a Cluster locally (such as [Temporalite](/kb/all-the-ways-to-run-a-cluster#temporalite)), the number of connection options you must provide is minimal.
 Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker-compose) serve (`127.0.0.1:7233`).
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Create an instance of the `$workflowClient` class and use the `create()` method to connect a Temporal Client to a Temporal Cluster.
 
-<TabItem value="go">
+Specify the target host, `localhost:7223`, parameter as a string and provide the TLS configuration for connecting to a Temporal Cluster.
 
-Content is planned but not yet available.
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowOptions;
+# . . .
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         'certs/ca.cert',
+         'certs/client.key',
+         'certs/client.pem',
+         'tls-sample',
+     ),
+ );
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+To provide the client options as an environmental variable, add the `tls` option to the RoadRunner configuration file and pass the path to the file.
 
-</TabItem>
-<TabItem value="java">
+```yml
+temporal:
+  # . . .
+  tls:
+    key: "certs/client.key"
+    cert: "certs/client.pem"
+    root_ca: "certs/ca.cert"
+    client_auth_type: require_and_verify_client_cert
+    server_name: "tls-sample"
+```
 
-Content is planned but not yet available.
+Then update your application and use the SSL connection for `ServiceClient`.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
-
-## Connect to Temporal Cloud
-
-When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
-
-- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
-- mTLS CA certificate.
-- mTLS private key.
-
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
-
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
-
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```php
+$workflowClient = Temporal\Client\WorkflowClient::create(
+     ServiceClient::createSSL(
+         'localhost:7233',
+         getenv('TEMPORAL_SERVER_ROOT_CA_CERT_PATH'),
+         getenv('TEMPORAL_CLIENT_KEY_PATH'),
+         getenv('TEMPORAL_CLIENT_CERT_PATH'),
+         getenv('TEMPORAL_SERVER_NAME_OVERRIDE')
+     ),
+ );
+```
 
 ## Develop Workflows
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+In the Temporal PHP SDK programming model, Workflows are a class method. Classes must implement interfaces that are annotated with `#[WorkflowInterface]`. The method that is the Workflow must be annotated with `#[WorkflowMethod]`.
 
-<TabItem value="go">
+```php
+use Temporal\Workflow\YourWorkflowInterface;
+use Temporal\Workflow\WorkflowMethod;
 
-Content is planned but not yet available.
+#[WorkflowInterface]
+interface FileProcessingWorkflow
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+}
+```
 
 ### Workflow parameters
 
@@ -436,47 +254,21 @@ Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
 All Workflow Definition parameters must be serializable.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+A method annotated with `#[WorkflowMethod]` can have any number of parameters.
 
-<TabItem value="go">
+We recommend passing a single parameter that contains all the input fields to allow for adding fields in a backward-compatible manner.
 
-Content is planned but not yet available.
+Note that all inputs should be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+You can create a custom object and pass it to the Workflow method, as shown in the following example:
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```php
+#[WorkflowInterface]
+interface FileProcessingWorkflow {
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 ### Workflow return values
 
@@ -484,47 +276,18 @@ Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
 However, Temporal APIs that must be used to get the result of a Workflow Execution will only ever receive one of either the result or the error.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+A Workflow method returns a Generator.
+To properly typecast the Workflow's return value in the client code, use the `#[ReturnType()]` annotation.
 
-<TabItem value="go">
+```php
+#[YourWorkflowInterface]
+interface FileProcessingWorkflow {
 
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+    #[WorkflowMethod]
+    #[ReturnType("string")]
+    public function processFile(Argument $args);
+}
+```
 
 ### Workflow Type
 
@@ -532,47 +295,22 @@ Workflows have a Type that are referred to as the Workflow name.
 
 The following examples demonstrate how to set a custom name for your Workflow Type.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+To customize a Workflow Type, use the `WorkflowMethod` annotation to specify the name of Workflow.
 
-<TabItem value="go">
+```php
+#[WorkflowMethod(name)]
+```
 
-Content is planned but not yet available.
+If a Workflow Type is not specified, then Workflow Type defaults to the interface name, which is `YourWorkflowDefinitionInterface` in this case.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```php
+#[WorkflowInterface]
+interface YourWorkflowDefinitionInterface
+{
+    #[WorkflowMethod]
+    public function processFile(Argument $args);
+}
+```
 
 ### Workflow logic requirements
 
@@ -580,47 +318,39 @@ Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-
 Therefore, each language is limited to the use of certain idiomatic techniques.
 However, each Temporal SDK provides a set of APIs that can be used inside your Workflow to interact with external (to the Workflow) application code.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+\*\*Temporal uses the [Microsoft Azure Event Sourcing pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing) to recover the state of a Workflow object including its local variable values.
 
-<TabItem value="go">
+In essence, every time a Workflow state has to be restored, its code is re-executed from the beginning.
+When replaying, side effects (such as Activity invocations) are ignored because they are already recorded in the Workflow event history.
+When writing Workflow logic, the replay is not visible, so the code should be written since it executes only once.
+This design puts the following constraints on the Workflow implementation:
 
-Content is planned but not yet available.
+- Do not use any mutable global variables because multiple instances of Workflows are executed in parallel.
+- Do not call any non-deterministic functions like non seeded random or `UUID` directly from the Workflow code.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+Always do the following in the Workflow implementation code:
 
-</TabItem>
-<TabItem value="java">
+- Don’t perform any IO or service calls as they are not usually deterministic. Use Activities for this.
+- Only use `Workflow::now()` to get the current time inside a Workflow.
+- Call `yield Workflow::timer()` instead of `sleep()`.
+- Do not use any blocking SPL provided by PHP (i.e. `fopen`, `PDO`, etc) in **Workflow code**.
+- Use `yield Workflow::getVersion()` when making any changes to the Workflow code. Without this, any deployment of updated Workflow code
+  might break already open Workflows.
+- Don’t access configuration APIs directly from a Workflow because changes in the configuration might affect a Workflow Execution path.
+  Pass it as an argument to a Workflow function or use an Activity to load it.
 
-Content is planned but not yet available.
+Workflow method arguments and return values are serializable to a byte array using the provided [DataConverter](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html) interface.
+The default implementation uses JSON serializer, but you can use any alternative serialization mechanism.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+Make sure to annotate your `WorkflowMethod` using `ReturnType` to specify concrete return type.
 
-</TabItem>
-<TabItem value="php">
+> You can not use the default return type declaration as Workflow methods are generators.
 
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+The values passed to Workflows through invocation parameters or returned through a result value are recorded in the execution history.
+The entire execution history is transferred from the Temporal service to Workflow workers with every event that the Workflow logic needs to process.
+A large execution history can thus adversely impact the performance of your Workflow.
+Therefore, be mindful of the amount of data that you transfer via Activity invocation parameters or return values.
+Otherwise, no additional limitations exist on Activity implementations.\*\*
 
 ## Develop Activities
 
@@ -629,47 +359,26 @@ An Activity is a normal function or method execution that's intended to execute 
 An Activity can interact with world outside the Temporal Platform or use a Temporal Client to interact with a Cluster.
 For the Workflow to be able to execute the Activity, we must define the <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Activities are defined as methods of a plain PHP interface annotated with `#[YourActivityInterface]`.
+(You can also use PHP 8 attributes in PHP 7.)
 
-<TabItem value="go">
+Following is an example of an interface that defines four Activities:
 
-Content is planned but not yet available.
+```php
+#[YourActivityInterface]
+// Defining an interface for the activities.
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName): void;
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName): void;
 
-</TabItem>
-<TabItem value="java">
+    public function processFile(): string;
 
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+    public function deleteLocalFile(string $fileName): void;
+}
+```
 
 ### Activity parameters
 
@@ -688,47 +397,11 @@ Some SDKs require that you pass context objects, others do not.
 When it comes to your application data—that is, data that is serialized and encoded into a Payload—we recommend that you use a single object as an argument that wraps the application data passed to Activities.
 This is so that you can change what data is passed to the Activity without breaking a function or method signature.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Each method defines a single Activity type.
+A single Workflow can use more than one Activity interface and call more than one Activity method from the same interface.
 
-<TabItem value="go">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+The only requirement is that Activity method arguments and return values are serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
 
 ### Activity return values
 
@@ -736,94 +409,58 @@ All data returned from an Activity must be serializable.
 
 There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Return values must be serializable to a byte array using the provided [DataConverter](https://github.com/temporalio/sdk-php/blob/master/src/DataConverter/DataConverterInterface.php) interface.
+The default implementation uses a JSON serializer, but an alternative implementation can be easily configured.
+Thus, you can return both primitive types:
 
-<TabItem value="go">
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): string
+    {
+        return $greeting . ' ' . $name;
+    }
+}
+```
 
-Content is planned but not yet available.
+And objects:
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```php
+class GreetingActivity implements GreetingActivityInterface
+{
+    public function composeGreeting(string $greeting, string $name): Greeting
+    {
+        return new Greeting($greeting, $name);
+    }
+}
+```
 
 ### Activity Type
 
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+An optional `#[ActivityMethod]` annotation can be used to override a default Activity name.
 
-<TabItem value="go">
+You can define your own prefix for all Activity names by adding the `prefix` option to the `YourActivityInterface` annotation.
+(The default prefix is empty.)
 
-Content is planned but not yet available.
+```php
+#[YourActivityInterface("file_activities.")]
+interface FileProcessingActivities
+{
+    public function upload(string $bucketName, string $localName, string $targetName);
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+    #[ActivityMethod("transcode_file")]
+    public function download(string $bucketName, string $remoteName);
 
-</TabItem>
-<TabItem value="java">
+    public function processFile(): string;
 
-Content is planned but not yet available.
+    public function deleteLocalFile(string $fileName);
+}
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+The `#[YourActivityInterface("file_activities.")]` is an annotation that tells the PHP SDK to generate a class to implement the `FileProcessingActivities` interface. The functions define Activities that are used in the Workflow.
 
 ## Activity Execution
 
@@ -841,47 +478,61 @@ A large Execution history can thus adversely impact the performance of your Work
 Therefore, be mindful of the amount of data you transfer through Activity invocation parameters or Return Values.
 Otherwise, no additional limitations exist on Activity implementations.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Activity implementation is an implementation of an Activity interface.
+The following code example, uses a constructor that takes an Amazon S3 client and a local directory, and uploads a file to the S3 bucket.
+Then, the code uses a function to download a file from the S3 bucket passing a bucket name, remote name, and local name as arguments.
+Finally, it uses a function that takes a local file name as an argument and returns a string.
 
-<TabItem value="go">
+```php
+// An implementation of an Activity interface.
+class FileProcessingActivitiesImpl implements FileProcessingActivities {
 
-Content is planned but not yet available.
+    private S3Client $s3Client;
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+    private string $localDirectory;
 
-</TabItem>
-<TabItem value="java">
+    public function __construct(S3Client $s3Client, string $localDirectory) {
+        $this->s3Client = $s3Client;
+        $this->localDirectory = $localDirectory;
+    }
 
-Content is planned but not yet available.
+    // Uploading a file to S3.
+    public function upload(string $bucketName, string $localName, string $targetName): void
+    {
+        $this->s3Client->putObject(
+            $bucketName,
+            $targetName,
+            fopen($this->localDirectory . $localName, 'rb+')
+        );
+    }
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+// Downloading a file from S3.
+    public function download(
+        string $bucketName,
+        string $remoteName,
+        string $localName
+    ): void
+    {
+        $this->s3Client->downloadObject(
+            $bucketName,
+            $remoteName,
+            fopen($this->localDirectory .$localName, 'wb+')
+        );
+    }
 
-</TabItem>
-<TabItem value="php">
+// A function that takes a local file name as an argument and returns a string.
+    public function processFile(string $localName): string
+    {
+        // Implementation omitted for brevity.
+        return compressFile($this->localDirectory . $localName);
+    }
 
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+    public function deleteLocalFile(string $fileName): void
+    {
+        unlink($this->localDirectory . $fileName);
+    }
+}
+```
 
 ### Required timeout
 
@@ -894,47 +545,48 @@ These values are set in the Activity Options.
 The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+`Workflow::newActivityStub`returns a client-side stub an implements an Activity interface. The client-side stub can be used within the Workflow code. It takes the Activity's type and`ActivityOptions` as arguments.
 
-<TabItem value="go">
+Calling (via `yield`) a method on this interface invokes an Activity that implements this method.
+An Activity invocation synchronously blocks until the Activity completes, fails, or times out.
+Even if Activity Execution takes a few months, the Workflow code still sees it as a single synchronous invocation.
+It doesn't matter what happens to the processes that host the Workflow.
+The business logic code just sees a single method call.
 
-Content is planned but not yet available.
+```php
+class GreetingWorkflow implements GreetingWorkflowInterface
+{
+    private $greetingActivity;
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+    public function __construct()
+    {
+        $this->greetingActivity = Workflow::newActivityStub(
+            GreetingActivityInterface::class,
+            ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
+        );
+    }
 
-</TabItem>
-<TabItem value="java">
+    public function greet(string $name): \Generator
+    {
+        // This is a blocking call that returns only after the activity has completed.
+        return yield $this->greetingActivity->composeGreeting('Hello', $name);
+    }
+}
+```
 
-Content is planned but not yet available.
+If different Activities need different options, like timeouts or a task queue, multiple client-side stubs can be created with different options.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+$greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 seconds'))
+);
 
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+$greetingActivity = Workflow::newActivityStub(
+    GreetingActivityInterface::class,
+    ActivityOptions::new()->withStartToCloseTimeout(\DateInterval::createFromDateString('30 minutes'))
+);
+```
 
 ## Run a dev Worker
 
@@ -951,101 +603,81 @@ For more information, see the [Worker tuning guide](/application-development/wor
 
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+The [RoadRunner application server](https://roadrunner.dev/) will launch multiple Temporal PHP Worker processes based on provided `.rr.yaml` configuration.
 
-<TabItem value="go">
+Each Worker might connect to one or multiple Task Queues.
+Worker poll _Temporal service_ for tasks, performs those tasks, and communicates task execution results back to the _Temporal service_.
 
-Content is planned but not yet available.
+Worker code are developed, deployed, and operated by Temporal customers.
+To create a worker use `Temporal\WorkerFactory`:
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+<?php
 
-</TabItem>
-<TabItem value="java">
+declare(strict_types=1);
 
-Content is planned but not yet available.
+use Temporal\WorkerFactory;
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+ini_set('display_errors', 'stderr');
+include "vendor/autoload.php";
 
-</TabItem>
-<TabItem value="php">
+// factory initiates and runs task queue specific activity and workflow workers
+$factory = WorkerFactory::create();
 
-Content is planned but not yet available.
+// Worker that listens on a Task Queue and hosts both workflow and activity implementations.
+$worker = $factory->newWorker();
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+// Workflows are stateful. So you need a type to create instances.
+$worker->registerWorkflowTypes(App\DemoWorkflow::class);
 
-</TabItem>
-<TabItem value="python">
+// Activities are stateless and thread safe. So a shared instance is used.
+$worker->registerActivity(App\DemoActivity::class);
 
-Content is planned but not yet available.
+// In case an activity class requires some external dependencies provide a callback - factory
+// that creates or builds a new activity instance. The factory should be a callable which accepts
+// an instance of ReflectionClass with an activity class which should be created.
+$worker->registerActivity(App\DemoActivity::class, fn(ReflectionClass $class) => $container->create($class->getName()));
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+// start primary loop
+$factory->run();
+```
 
-</TabItem>
-<TabItem value="typescript">
+You can configure task queue name using first argument of `WorkerFactory`->`newWorker`:
 
-Content is planned but not yet available.
+```php
+$worker = $factory->newWorker('your-task-queue');
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+As mentioned above you can create as many Task Queue connections inside a single Worker Process as you need.
 
-</TabItem>
-</Tabs>
+To configure additional WorkerOptions use `Temporal\Worker\WorkerOptions`:
 
-## Run a Temporal Cloud Worker
+```php
+use Temporal\Worker\WorkerOptions;
 
-To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
+$worker = $factory->newWorker(
+    'your-task-queue',
+    WorkerOptions::new()
+        ->withMaxConcurrentWorkflowTaskPollers(10)
+);
+```
 
-- An address that includes your <a class="tdlp" href="/namespaces#">Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and a port number: `<Namespace>.<ID>.tmprl.cloud:<port>`.
-- mTLS CA certificate.
-- mTLS private key.
+Make sure to point the Worker file in application server configuration:
 
-For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
+```yaml
+rpc:
+  listen: tcp://127.0.0.1:6001
 
-For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
+server:
+  command: "php worker.php"
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+temporal:
+  address: "temporal:7233"
+  activities:
+    num_workers: 10
+```
 
-<TabItem value="go">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+> You can serve HTTP endpoints using the same server setup.
 
 ### Register types
 
@@ -1054,47 +686,32 @@ All Workers listening to the same Task Queue name must be registered to handle t
 If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it fails that Task.
 However, the failure of the Task does not cause the associated Workflow Execution to fail.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Worker listens on a Task Queue and hosts both Workflow and Activity implementations:
 
-<TabItem value="go">
+```php
+// Workflows are stateful. So you need a type to create instances:
+$worker->registerWorkflowTypes(App\DemoWorkflow::class);
+// Activities are stateless and thread safe:
+$worker->registerActivity(App\DemoActivity::class);
+```
 
-Content is planned but not yet available.
+In case an activity class requires some external dependencies provide a callback - factory
+that creates or builds a new activity instance. The factory should be a callable which accepts
+an instance of ReflectionClass with an activity class which should be created.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+$worker->registerActivity(
+    App\DemoActivity::class,
+    fn(ReflectionClass $class) => $container->create($class->getName())
+);
+```
 
-</TabItem>
-<TabItem value="java">
+If you want to clean up some resources after activity is done, you may register a finalizer. This callback is called
+after each activity invocation:
 
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```php
+$worker->registerActivityFinalizer(fn() => $kernel->showtdown());
+```
 
 ## Start Workflow Execution
 
@@ -1108,47 +725,81 @@ See the [Customize Workflow Type](#customize-workflow-type) section to see how t
 A request to spawn a Workflow Execution causes the Temporal Cluster to create the first Event ([WorkflowExecutionStarted](/references/events/#workflowexecutionstarted)) in the Workflow Execution Event History.
 The Temporal Cluster then creates the first Workflow Task, resulting in the first [WorkflowTaskScheduled](/references/events/#workflowtaskscheduled) Event.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+Workflows can be started both synchronously and asynchronously.
+You can use typed or untyped Workflows stubs available via `Temporal\Client\WorkflowClient`.
+To create a Workflow Client:
 
-<TabItem value="go">
+```php
+use Temporal\Client\GRPC\ServiceClient;
+use Temporal\Client\WorkflowClient;
 
-Content is planned but not yet available.
+$workflowClient = WorkflowClient::create(ServiceClient::create('localhost:7233'));
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+**Synchronous start**
 
-</TabItem>
-<TabItem value="java">
+A synchronous start initiates a Workflow and then waits for its completion. The started Workflow will not rely on the
+invocation process and will continue executing even if the waiting process crashes or stops.
 
-Content is planned but not yet available.
+Be sure to acquire the Workflow interface or class name you want to start.
+For example:
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+#[WorkflowInterface]
+interface AccountTransferWorkflowInterface
+{
+    #[WorkflowMethod(name: "MoneyTransfer")]
+    #[ReturnType('int')]
+    public function transfer(
+        string $fromAccountId,
+        string $toAccountId,
+        string $referenceId,
+        int $amountCents
+    );
+}
+```
 
-</TabItem>
-<TabItem value="php">
+To start the Workflow in sync mode:
 
-Content is planned but not yet available.
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+$result = $accountTransfer->transfer(
+    'fromID',
+    'toID',
+    'refID',
+    1000
+);
+```
 
-</TabItem>
-<TabItem value="python">
+**Asynchronous start**
 
-Content is planned but not yet available.
+An asynchronous start initiates a Workflow Execution and immediately returns to the caller without waiting for a result.
+This is the most common way to start Workflows in a live environment.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+To start a Workflow asynchronously, pass the Workflow stub instance and start parameters into the `WorkflowClient`->`start` method.
 
-</TabItem>
-<TabItem value="typescript">
+```php
+$accountTransfer = $workflowClient->newWorkflowStub(
+    AccountTransferWorkflowInterface::class
+);
 
-Content is planned but not yet available.
+$run = $this->workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+After the Workflow is started, you can receive the Workflow Id via the `WorkflowRun` object returned by the `start` method:
 
-</TabItem>
-</Tabs>
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
+
+var_dump($run->getExecution()->getID());
+```
+
+**Recurring start**
+
+You can start a Workflow Execution on a regular schedule with <a class="tdlp" href="/application-development/features#temporal-cron-jobs">the CronSchedule option<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Temporal Cron Jobs</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#temporal-cron-jobs">Learn more</a></span></span></a>.
 
 ### Set Task Queue
 
@@ -1156,93 +807,135 @@ In most SDKs, the only Workflow Option that must be set is the name of the <a cl
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+In PHP, a Task Queue is represented in code by its name as a `string`.
+There are four places where the name of the Task Queue is supplied by the developer.
 
-<TabItem value="go">
+1. When starting a Workflow, a Task Queue name must be provided in the `StartWorkflowOptions`.
 
-Content is planned but not yet available.
+```php
+// Create new Workflow Options and set the Task Queue
+$workflowOptions = WorkflowOptions::new()
+  ->withTaskQueue("Workflow-Task-Queue-1")
+  // ...
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+$yourWorkflow = $workflowClient->newWorkflowStub(
+  YourWorkflowInterface::class,
+  $workflowOptions
+);
 
-</TabItem>
-<TabItem value="java">
+$result = $yourWorkflow->workflowMethod();
+```
 
-Content is planned but not yet available.
+2. A Task Queue name must be provided as a parameter when creating a Worker.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+use Temporal\WorkerFactory;
 
-</TabItem>
-<TabItem value="php">
+// Create a Worker Factory
+$factory = WorkerFactory::create();
 
-Content is planned but not yet available.
+// Set the Task Queue when creating the Worker
+$worker = $factory->newWorker("Workflow-Task-Queue-1");
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+// Workflows are stateful. So you need a type to create instances.
+$worker->registerWorkflowTypes(YourWorkflow::class);
 
-</TabItem>
-<TabItem value="python">
+// start primary loop
+$factory->run();
+```
 
-Content is planned but not yet available.
+A single Worker can listen to only one Task Queue.
+And, it is important to remember that the name of the Task Queue the Worker is listening to must match the name of the Task Queue provided in the options to any given Workflow or Activity.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
-</TabItem>
-<TabItem value="typescript">
+If a Worker polls a Task for a Workflow Type or Activity Type it does not know about, it will fail that Task.
+However, the failure of the Task will not cause the associated Workflow Execution to fail.
 
-Content is planned but not yet available.
+3. Optionally, the name of a Task Queue can be provided in the `ActivityOptions` when calling an Activity from a Workflow.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+class YourWorkflow implements YourWorkflowInterface
+{
+  private $yourActivity;
 
-</TabItem>
-</Tabs>
+  public function __construct()
+  {
+    // Create Activity options and set the Task Queue
+    $activityOptions = ActivityOptions::new()
+      ->withTaskQueue("Activity-Task-Queue-1")
+      // ...
+
+    // Create a new Activity Stub and pass the options
+    $this->yourActivity = Workflow::newActivityStub(
+      YourActivityInterface::class,
+      $activityOptions
+    );
+  }
+
+  public function workflowMethod(): \Generator
+  {
+    // Call the Activity
+    return yield $this->yourActivity->activityMethod();
+  }
+}
+```
+
+If a Task Queue name is not provided in the `ActivityOptions`, then the Activity Tasks are placed in the same Task Queue as the Workflow Task Queue.
+
+4. Optionally, the name of a Task Queue can be provided in the `ChildWorkflowOptions` when calling a Child Workflow.
+
+```php
+//Create new Child Workflow Options and set the Task Queue
+$childWorkflowOptions = ChildWorkflowOptions::new()
+    ->withTaskQueue("Child-Workflow-Task-Queue-1")
+    // ...
+
+// Create a new Child Workflow Stub and set the Task Queue
+$childWorkflow = Workflow::newChildWorkflowStub(
+    ChildWorkflowInterface::class,
+    $childWorkflowOptions
+);
+
+// Call the Child Workflow method
+$promise = $childWorkflow->workflowMethod();
+```
+
+If a Task Queue name is not provided in the `ChildWorkflowOptions`, then the Child Workflow Tasks are placed in the same Task Queue as the Parent Workflow Task Queue.
 
 ### Workflow Id
 
 Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+The following code example grabs the `userID` as an input and uses it to start the Workflow. The `userID` is used as Workflow Id. You can use this to cancel your Workflow later.
 
-<TabItem value="go">
+```php
+#[WorkflowInterface]
+interface SubscriptionWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function subscribe(string $userID);
+}
+```
 
-Content is planned but not yet available.
+The following code example, uses the input parameter `userID` as the Workflow Id.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```php
+#[WorkflowInterface]
+interface SubscriptionWorkflowInterface
+{
+    #[WorkflowMethod]
+    public function subscribe(
+        string $userID
+    );
+}
+```
 
-</TabItem>
-<TabItem value="java">
+You can also set the Workflow Id as a constant, for example:
 
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>
+```php
+public const WORKFLOW_ID = Your-Workflow-Id
+```
 
 ### Get Workflow results
 
@@ -1254,44 +947,12 @@ It's possible to both block progress on the result (synchronous execution) or ge
 
 In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
-<Tabs
-defaultValue="go"
-queryString="lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
+If you need to wait for the completion of a Workflow after an asynchronous start, make a blocking call to
+the `WorkflowRun`->`getResult` method.
 
-<TabItem value="go">
+```php
+$run = $workflowClient->start($accountTransfer, 'fromID', 'toID', 'refID', 1000);
 
-Content is planned but not yet available.
+var_dump($run->getResult());
+```
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="java">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="php">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="python">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-<TabItem value="typescript">
-
-Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
-</TabItem>
-</Tabs>

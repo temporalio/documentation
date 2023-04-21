@@ -34,7 +34,7 @@
         },
         {
           "lang": "php",
-          "id": "php/index"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -42,7 +42,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/index"
+          "id": "none"
         }
       ]
     },
@@ -71,7 +71,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/api-reference-typescript"
+          "id": "none"
         }
       ]
     },
@@ -92,7 +92,7 @@
         },
         {
           "lang": "php",
-          "id": "php/code-samples-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -100,7 +100,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/code-samples-typescript"
+          "id": "none"
         }
       ]
     },
@@ -121,7 +121,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-connect-to-a-cluster-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -129,7 +129,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-connect-to-a-development-cluster-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -158,7 +158,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-connect-to-temporal-cloud-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -179,7 +179,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-develop-a-workflow-definition-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -187,7 +187,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-develop-a-workflow-definition-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -208,7 +208,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-define-workflow-parameters-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -216,7 +216,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-define-workflow-parameters-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -237,7 +237,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-define-workflow-return-values-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -245,7 +245,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-define-workflow-return-values-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -266,7 +266,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-customize-workflow-type-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -274,7 +274,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-customize-workflow-type-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -295,7 +295,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-handle-workflow-logic-requirements-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -303,7 +303,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-handle-workflow-logic-requirements-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -324,7 +324,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-develop-an-activity-definition-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -332,7 +332,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-develop-an-activity-definition-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -353,7 +353,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-define-activity-parameters-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -361,7 +361,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-define-activity-parameters-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -382,7 +382,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-define-activity-return-values-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -390,7 +390,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-define-activity-return-values-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -411,7 +411,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-customize-activity-type-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -419,7 +419,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-customize-activity-type-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -440,7 +440,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-spawn-an-activity-execution-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -448,7 +448,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-spawn-an-activity-execution-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -473,7 +473,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-get-the-result-of-an-activity-execution-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -481,7 +481,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-get-the-result-of-an-activity-execution-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -502,7 +502,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-develop-a-worker-program-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -510,7 +510,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-develop-a-worker-program-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -560,7 +560,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-register-types-with-a-worker-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -568,7 +568,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-register-types-with-a-worker-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -589,7 +589,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-spawn-a-workflow-execution-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -597,7 +597,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-spawn-a-workflow-execution-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -618,7 +618,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-workflow-task-queue-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -626,7 +626,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-set-a-workflow-task-queue-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -647,7 +647,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-workflow-id-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -655,7 +655,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-set-a-workflow-id-in-typescript"
+          "id": "none"
         }
       ]
     },
@@ -676,7 +676,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-get-the-result-of-a-workflow-execution-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -684,7 +684,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
+          "id": "none"
         }
       ]
     }

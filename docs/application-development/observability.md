@@ -78,21 +78,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Workers can emit metrics and traces. There are a few [telemetry options](https://typescript.temporal.io/api/interfaces/worker.TelemetryOptions) that can be provided to [`Runtime.install`](https://typescript.temporal.io/api/classes/worker.Runtime/#install). The common options are:
+Content is planned but not yet available.
 
-- `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
-- `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
-
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](https://legacy-documentation-sdks.temporal.io/typescript/logging#opentelemetry-tracing) package.
-
-```typescript
-telemetryOptions: {
-    metrics: {
-      prometheus: { bindAddress: '0.0.0.0:9464' },
-    },
-    logging: { forward: { level: 'DEBUG' } },
-  },
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -142,44 +130,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-The [`interceptors-opentelemetry`](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) sample shows how to use the SDK's built-in OpenTelemetry tracing to trace everything from starting a Workflow to Workflow Execution to running an Activity from that Workflow.
+Content is planned but not yet available.
 
-The built-in tracing uses protobuf message headers (like [this one](https://github.com/temporalio/api/blob/b2b8ae6592a8730dd5be6d90569d1aea84e1712f/temporal/api/workflowservice/v1/request_response.proto#L161) when starting a Workflow) to propagate the tracing information from the client to the Workflow and from the Workflow to its successors (when Continued As New), children, and Activities.
-All of these executions are linked with a single trace identifier and have the proper `parent -> child` span relation.
-
-Tracing is compatible between different Temporal SDKs as long as compatible [context propagators](https://opentelemetry.lightstep.com/core-concepts/context-propagation/) are used.
-
-**Context propagation**
-
-The TypeScript SDK uses the global OpenTelemetry propagator.
-
-To extend the default ([Trace Context](https://github.com/open-telemetry/opentelemetry-js/blob/main/packages/opentelemetry-core/README.md#w3ctracecontextpropagator-propagator) and [Baggage](https://github.com/open-telemetry/opentelemetry-js/blob/main/packages/opentelemetry-core/README.md#baggage-propagator) propagators) to also include the [Jaeger propagator](https://www.npmjs.com/package/@opentelemetry/propagator-jaeger), follow these steps:
-
-- `npm i @opentelemetry/propagator-jaeger`
-
-- At the top level of your Workflow code, add the following lines:
-
-  ```js
-  import { propagation } from '@opentelemetry/api';
-  import {
-    CompositePropagator,
-    W3CBaggagePropagator,
-    W3CTraceContextPropagator,
-  } from '@opentelemetry/core';
-  import { JaegerPropagator } from '@opentelemetry/propagator-jaeger';
-
-  propagation.setGlobalPropagator(
-    new CompositePropagator({
-      propagators: [
-        new W3CTraceContextPropagator(),
-        new W3CBaggagePropagator(),
-        new JaegerPropagator(),
-      ],
-    }),
-  );
-  ```
-
-Similarly, you can customize the OpenTelemetry `NodeSDK` propagators by following the instructions in the [Initialize the SDK](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-sdk-node#initialize-the-sdk) section of the `README.md` file.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -225,131 +178,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Logging from Workflows is tricky for two reasons:
+Content is planned but not yet available.
 
-1. Workflows run in a sandboxed environment and cannot do any I/O.
-1. Workflow code might get replayed at any time, generating duplicate log messages.
-
-To work around these limitations, we recommend using the Sinks feature in the TypeScript SDK.
-Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
-
-<!--
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](https://legacy-documentation-sdks.temporal.io/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
-
-Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
-
-<details>
-  <summary>Comparing Sinks, Activities and Interceptors</summary>
-
-Sinks are similar to Activities in that they are both registered on the Worker and proxied into the Workflow.
-However, they differ from Activities in important ways:
-
-- Sink functions don't return any value back to the Workflow and cannot not be awaited.
-- Sink calls are not recorded in Workflow histories (no timeouts or retries).
-- Sink functions are _always_ run on the same Worker that runs the Workflow they are called from.
-
-</details>
-
-**Declaring the Sink Interface**
-
-Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
-
-<!--SNIPSTART typescript-logger-sink-interface-->
-
-[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
-
-```ts
-import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
-
-export interface AlertSinks extends Sinks {
-  alerter: {
-    alert(message: string): void;
-  };
-}
-
-export type MySinks = AlertSinks & LoggerSinks;
-```
-
-<!--SNIPEND-->
-
-**Implementing Sinks**
-
-Implementing Sinks is a two-step process.
-
-Implement and inject the Sink function into a Worker
-
-<!--SNIPSTART typescript-logger-sink-worker-->
-
-[sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
-
-```ts
-import { defaultSinks, InjectedSinks, Worker } from '@temporalio/worker';
-import { MySinks } from './workflows';
-
-async function main() {
-  const sinks: InjectedSinks<MySinks> = {
-    ...defaultSinks(),
-    alerter: {
-      alert: {
-        fn(workflowInfo, message) {
-          console.log(`sending SMS alert!
-workflow: ${workflowInfo.runId}
-message: ${message}`);
-        },
-        callDuringReplay: false, // The default
-      },
-    },
-  };
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    taskQueue: 'sinks',
-    sinks,
-  });
-  await worker.run();
-  console.log('Worker gracefully shutdown');
-}
-
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-
-<!--SNIPEND-->
-
-- Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
-- You can specify whether you want the injected function to be called during Workflow replay by setting the `callDuringReplay` boolean option.
-
-**Proxy and call a Sink function from a Workflow**
-
-<!--SNIPSTART typescript-logger-sink-workflow-->
-
-[sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
-
-```ts
-const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
-
-export async function sinkWorkflow(): Promise<string> {
-  defaultWorkerLogger.info('default logger: Workflow Execution started', {});
-  alerter.alert('alerter: Workflow Execution started');
-  return 'Hello, Temporal!';
-}
-```
-
-<!--SNIPEND-->
-
-Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:
-
-- **Injected WorkflowInfo argument**: The first argument of a Sink function implementation is a [`workflowInfo` object](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo/) that contains useful metadata.
-- **Limited arguments types**: The remaining Sink function arguments are copied between the sandbox and the Node.js environment using the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
-- **No return value**: To prevent breaking determinism, Sink functions cannot return values to the Workflow.
-
-**Advanced: Performance considerations and non-blocking Sinks**
-
-The injected sink function contributes to the overall Workflow Task processing duration.
-
-- If you have a long-running sink function, such as one that tries to communicate with external services, you might start seeing Workflow Task timeouts.
-- The effect is multiplied when using `callDuringReplay: true` and replaying long Workflow histories because the Workflow Task timer starts when the first history page is delivered to the Worker.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -393,52 +224,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-**Logging in Workers and Clients**
+Content is planned but not yet available.
 
-The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
-The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
-
-**Customizing the default logger**
-
-Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
-
-```ts
-import { DefaultLogger, Runtime } from '@temporalio/worker';
-
-const logger = new DefaultLogger('WARN', ({ level, message }) => {
-  console.log(`Custom logger: ${level} — ${message}`);
-});
-Runtime.install({ logger });
-```
-
-The previous code example sets the default logger to only log messages with level `WARN` and higher.
-
-**Accumulate logs for testing and reporting**
-
-```ts
-import { DefaultLogger, LogEntry } from '@temporalio/worker';
-
-const logs: LogEntry[] = [];
-const logger = new DefaultLogger('TRACE', (entry) => logs.push(entry));
-log.debug('hey', { a: 1 });
-log.info('ho');
-log.warn('lets', { a: 1 });
-log.error('go');
-```
-
-A common logging use case is logging to a file to be picked up by a collector like the [Datadog Agent](https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30).
-
-```ts
-import { Runtime } from '@temporalio/worker';
-import winston from 'winston';
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [new transports.File({ filename: '/path/to/worker.log' })],
-});
-Runtime.install({ logger });
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -509,18 +297,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Use [`WorkflowService.listWorkflowExecutions`](https://typescript.temporal.io/api/classes/proto.temporal.api.workflowservice.v1.workflowservice-1/#listworkflowexecutions):
+Content is planned but not yet available.
 
-```typescript
-import { Connection } from '@temporalio/client';
-
-const connection = await Connection.connect();
-const response = await connection.workflowService.listWorkflowExecutions({
-  query: `ExecutionStatus = "Running"`,
-});
-```
-
-where `query` is a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -576,33 +355,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-search-attributes-client-->
-
-[search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/client.ts)
-
-```ts
-const handle = await client.workflow.start(example, {
-  taskQueue: 'search-attributes',
-  workflowId: 'search-attributes-example-0',
-  searchAttributes: {
-    CustomIntField: [2],
-    CustomKeywordField: ['keywordA', 'keywordB'],
-    CustomBoolField: [true],
-    CustomDatetimeField: [new Date()],
-    CustomStringField: [
-      'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
-    ],
-  },
-});
-
-const { searchAttributes } = await handle.describe();
-```
-
-<!--SNIPEND-->
-
-The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -661,31 +416,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Inside a Workflow, we can read from [`WorkflowInfo.searchAttributes`](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInfo#searchattributes) and call [`upsertSearchAttributes`](https://typescript.temporal.io/api/namespaces/workflow#upsertsearchattributes):
+Content is planned but not yet available.
 
-<!--SNIPSTART typescript-search-attributes-workflow -->
-
-[search-attributes/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/workflows.ts)
-
-```ts
-export async function example(): Promise<SearchAttributes> {
-  const customInt =
-    (workflowInfo().searchAttributes.CustomIntField?.[0] as number) || 0;
-  upsertSearchAttributes({
-    // overwrite the existing CustomIntField: [2]
-    CustomIntField: [customInt + 1],
-
-    // delete the existing CustomBoolField: [true]
-    CustomBoolField: [],
-
-    // add a new value
-    CustomDoubleField: [3.14],
-  });
-  return workflowInfo().searchAttributes;
-}
-```
-
-<!--SNIPEND-->
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
@@ -727,16 +460,9 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-```typescript
-import { upsertSearchAttributes } from '@temporalio/workflow';
+Content is planned but not yet available.
 
-async function yourWorkflow() {
-  upsertSearchAttributes({ CustomIntField: [1, 2, 3] });
-
-  // ... later, to remove:
-  upsertSearchAttributes({ CustomIntField: [] });
-}
-```
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>

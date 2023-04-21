@@ -34,7 +34,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-define-a-signal-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -63,7 +63,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-handle-a-signal-in-a-workflow-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -92,7 +92,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-send-a-signal-from-a-client-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -121,7 +121,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-send-a-signal-from-a-workflow-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -150,7 +150,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-send-a-signal-with-start-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -183,7 +183,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-define-a-query-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -212,7 +212,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-handle-a-query-in-a-workflow-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -270,7 +270,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-workflow-timeouts-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -299,7 +299,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-workflow-retry-options-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -328,7 +328,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-activity-timeouts-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -357,7 +357,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-activity-retry-options-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -390,7 +390,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-heartbeat-for-an-activity-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -419,7 +419,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-heartbeat-timeout-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -448,7 +448,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-asynchronous-activity-completion-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -506,7 +506,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-spawn-a-child-workflow-execution-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -535,7 +535,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-parent-close-policy-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -564,7 +564,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-continue-as-new-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -829,7 +829,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-timers-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
@@ -858,7 +858,7 @@
         },
         {
           "lang": "php",
-          "id": "php/how-to-set-a-cron-schedule-in-php"
+          "id": "none"
         },
         {
           "lang": "python",
