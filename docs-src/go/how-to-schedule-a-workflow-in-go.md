@@ -9,14 +9,14 @@ tags:
   - how-to
 ---
 
-Scheduling [Workflows]() is crucial to automation.
-By scheduling [Workflow Executions](), you can reduce manual intervention and ensure timely execution of business processes.
+Scheduling [Workflows](/concepts/what-is-a-workflow) is crucial to automation.
+By scheduling [Workflow Executions](/concepts/what-is-a-workflow-execution), you can reduce manual intervention and ensure timely execution of business processes.
 
-Temporal allows you to execute multiple Schedule operations, either through code or with the [CLI tool]().
+Temporal allows you to execute multiple Schedule operations, either through code or with the [CLI tool](/concepts/what-is-the-temporal-cli).
 Read on to find out how to create and edit Schedules.
 
 :::note
-Make sure to [enable Schedules in your environment]() before creating any Schedules.
+Make sure to [enable Schedules in your environment](/concepts/what-is-a-schedule#limitations) before creating any Schedules.
 :::
 
 ## Create
@@ -24,8 +24,8 @@ Make sure to [enable Schedules in your environment]() before creating any Schedu
 Schedules are created with the `create` action. 
 Each new Schedule is given a uniquely generated Schedule ID.
 
-To create a Schedule in Go, use `ScheduleClient().Create()` on the [Client]().
-Schedules must be initialized with a Schedule ID, [Spec](), and [Action]() to perform.
+To create a Schedule in Go, use `ScheduleClient().Create()` on the [Client](/concepts/what-is-the-temporal-client).
+Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-schedule#spec), and [Action](/concepts/what-is-a-schedule#action) to perform.
 Enter these values in `client.Schedule.Options{}`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["28-36"]}-->
@@ -33,7 +33,7 @@ Enter these values in `client.Schedule.Options{}`.
 
 ## Backfill
 
-Backfilling a Schedule executes [Workflow Actions]() ahead of the Schedule's specified time range.
+Backfilling a Schedule executes [Workflow Tasks](/concepts/what-is-a-workflow-task) ahead of the Schedule's specified time range.
 This is useful when you need to execute a missed or delayed Action, or if you want to test the Workflow ahead of time.
 
 To backfill a Schedule in Go, use `Backfill()` on the `scheduleHandle`.
@@ -51,7 +51,7 @@ To delete a Schedule in Go, use the `Delete()` command on the `scheduleHandle`.
 ## Describe
 
 Information about the current Schedule configuration can be retrieved with the `describe` action.
-This is helpful when you want to get a detailed view of the Schedule and its associated [Workflow Runs]().
+This is helpful when you want to get a detailed view of the Schedule and its associated [Workflow Runs](/concepts/what-is-a-run-id).
 
 To describe a Schedule in Go, use `Describe()` on the `scheduleHandle`.
 
@@ -86,7 +86,7 @@ To unpause a Schedule, use `Unpause()` on the `scheduleHandle`.
 
 ## Trigger
 
-Triggering a Schedule immediately executes an [Action]() defined in the Schedule.
+Triggering a Schedule immediately executes an Action defined in the Schedule.
 By default, `trigger` is subject to the Overlap Policy.
 
 To trigger a Scheduled Workflow Execution in Go, use `Trigger()` on the `scheduleHandle`.
