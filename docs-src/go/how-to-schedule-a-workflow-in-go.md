@@ -21,7 +21,7 @@ Make sure to [enable Schedules in your environment](/concepts/what-is-a-schedule
 
 ## Create
 
-Schedules are created with the `create` action. 
+Schedules are created with the `create` action.
 Each new Schedule is given a uniquely generated Schedule ID.
 
 To create a Schedule in Go, use `ScheduleClient().Create()` on the [Client](/concepts/what-is-the-temporal-client).
@@ -81,6 +81,7 @@ scheduleHandle.Pause()
 ```
 
 To unpause a Schedule, use `Unpause()` on the `scheduleHandle`.
+
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["99-102"]}-->
 <!--SNIPEND-->
 
