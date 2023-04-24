@@ -14,15 +14,15 @@ A Codec Server is an HTTP or HTTPS Server that you create and host.
 It must be configured to use a [Payload Codec](/concepts/what-is-a-payload-codec) with the required decode logic and encryption keys.
 
 The Codec Server is independent of the Temporal Server and decodes your encrypted payloads through endpoints.
-When you set the codec endpoint in the Temporal Web UI, the Web UI uses the remote endpoint to send encoded data to the Codec Server and receive decoded payloads from the Codec Server. See [API contract requirements](#api-contract-specifications).
+When you set the codec endpoint in the Temporal Web UI, the Web UI uses the remote endpoint to send encoded payloads to the Codec Server and receive decoded payloads from the Codec Server. See [API contract requirements](#api-contract-specifications).
 Decoded payloads are then displayed in the Workflow Execution Event History on the Web UI.
-Note that the decoded payloads are visible only to you on the Web UI; All data on the Temporal Server remains encrypted.
+Note that when you use a Codec Server, the decoded payloads are visible only to you on the Web UI; payloads on the Temporal Server (whether on Temporal Cloud or a self-hosted Temporal Cluster) remain encrypted.
 
 Since you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
 - When you set your codec endpoint with your Web UI, expect your Codec Server to receive a large number of requests per Workflow Execution from the Web UI.
 - Ensure that you secure access to the decrypted data from your Codec Server. <!--Need a better way to explain this; with temporal cloud, the decrypted data is sent to the browser; there is no guarantee that the cloud ui is hosted in a particualr region etc.> need clearer way to set this expectation.-->
-- The Temporal Web UI only displays the decoded payloads received from your Codec Server in real-time; it does not store or send the data back to the Temporal Server (whether on Cloud or self-hosted Temporal Clusters).
+- The Temporal Web UI only displays the decoded payloads received from your Codec Server in real-time; it does not store or send the data back to the Temporal Server (whether on Cloud or self-hosted Temporal Cluster).
 - You might have latencies introduced in the Web UI when sending and receiving payloads to the Codec Server.
 
 To create a Codec Server, you need the following components:
@@ -60,6 +60,10 @@ Each request from the Web UI to your Codec Server includes the following headers
 
 - `X-Namespace: {namespace}`: This is a custom HTTP Header. Ensure that the [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration in your Codec Server includes this header.
 
+- [Optional] `Authorization: <credentials>`: Include this in your CORS configuration when enabling authorization with your Codec Server.
+
+For details on setting up authorization, see [Authorization](#authorization).
+
 #### Request Body
 
 General specification for the `POST` Request body contains payloads.
@@ -95,7 +99,9 @@ For example, for Temporal Cloud Web UI hosted at https://cloud.temporal.io, enab
 - `Access-Control-Allow-Methods: POST, GET, OPTIONS`
 - `Access-Control-Allow-Headers: X-Namespace, Content-Type`
 
-For details on what a sample request/response looks like from the Temporal Web UI, see [Sample Request/Response](#sample-request/response].
+For details on what a sample request/response looks like from the Temporal Web UI, see [Sample Request/Response](#sample-request/response).
+If setting authorization, include `Authorization` in your `Access-Control-Allow-Headers`.
+For details on setting up authorization, see [Authorization](#authorization).
 
 #### Authorization
 
@@ -104,10 +110,11 @@ To enable authorization, your Codec Server must be an HTTPS Server with SSL cert
 **Temporal Cloud**
 
 Temporal Cloud uses Auth0 to authenticate access.
-The Temporal Cloud UI provides an option to pass access tokens (JWT) to your Codec Server endpoints to validate access and then return decoded payloads.
+The Temporal Cloud UI provides an option to pass access tokens (JWT) to your Codec Server endpoints.
+Use the access tokens to validate access and then return decoded payloads from the Codec Server.
 
 You can enable this by selecting **Pass access token** in your Codec Server endpoint interface where you add your endpoint.
-Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set. <!--NEED AN EXAMPLE HERE FOR WHAT A SAMPLE REQUEST LOOKS LIKE WITH AN ASUTH HEADER-->
+Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set. <!--NEED AN EXAMPLE HERE FOR WHAT A SAMPLE REQUEST LOOKS LIKE WITH AN AUTH HEADER-->
 
 In your Codec Server implementation, verify the signature on this access token (in your authorization header) against the JWKS endpoint provided to you. <!--Is this process defined? when a customer signs up for temporal cloud, do we provide them with the JWKS as part of the onboarding process?-->
 If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.
@@ -134,21 +141,21 @@ Note that with self-hosted Temporal Clusters, you must explicitly configure auth
 The following samples provide implementation examples for applying authentication on your Codec Server using the Go SDK.
 
 - [Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server)
-- [GRPC proxy server](https://github.com/temporalio/samples-go/tree/main/grpc-proxy)
 
 #### Sample Request/Response
 
 Consider the following sample Request/Response when creating and hosting a Codec Server with the following specifications:
 
-- Scheme: https
-- Host: dev.mydomain.com/codec
-- Path: /decode
+- Scheme: `https`
+- Host: `dev.mydomain.com/codec`
+- Path: `/decode`
 
 ```json
 HTTP/1.1 POST /decode
 Host: https://dev.mydomain.com/codec
 Content-Type: application/json
 X-Namespace: myapp-dev.acctid123
+Authorization: Bearer <token>
 
 {"payloads":[{"metadata":{"encoding":"anNvbi9wcm90b2J1Zg==","messageType":"dGVtcG9yYWxfc2hvcC5vcmNoZXN0cmF0aW9ucy52MS5TdGFydFNob3BwaW5nQ2FydFJlcXVlc3Q="},"data":"eyJjYXJ0SWQiOiJleGFtcGxlLWNhcnQiLCJzaG9wcGVySWQiOiJ5b3VyLXNob3BwZXItaWQtZXhhbXBsZSIsImVtYWlsIjoieW91ci1lbWFpbEBkb21haW4uY29tIn0"}]}
 
@@ -176,7 +183,7 @@ Your Codec Server can be hosted at an organization-level or locally.
 Hosting the Codec Server for your organization simplifies both key management used for decryption and versioning the codec itself.
 Consider the following details for a multi-tenant approach to setting up your Codec Server:
 
-- Ingress: Your server must be reachable from the public internet, and will require configuration for ingress to that server.
+- Ingress: Your server will require ingress configuration for your users to access the server.
 - Authorization: You must set explicit authorization checks to validate requests to your Codec Server.
 
 #### Local Hosting
@@ -218,19 +225,17 @@ For details, see the [CLI reference](/cli/).
 
 #### Web UI
 
-You can set the codec endpoints either in the Web UI or in the [UI server](https://github.com/temporalio/ui-server) configuration file before starting the UI server.
-
-**In the Web UI**
+On Temporal Cloud and self-hosted Temporal Clusters, you can set the codec endpoints in the Web UI.
 
 ![Codec Server endpoint setting](/img/docs/data-encoder-button.png)
 
-In the top-right corner, select **Configure Codec Server**.
+In the top-right corner on the Web UI, select **Configure Codec Server**.
 In the codec endpoint dialog, enter the URL and port number for your codec endpoint.
+This sets the codec endpoint on the currently selected Namespace.
 Refresh your Workflow Execution page to see encoded/decoded data.
 
-**In the Web UI server configuration file**
-
-Specify the codec endpoint in the Web UI server [configuration file](/references/web-ui-configuration#codec):
+In self-hosted Temporal Clusters where you set up your UI Server, you can also set the codec endpoint in the UI server configuration file.
+Specify the codec endpoint in the UI server [configuration file](/references/web-ui-configuration#codec) as shown in the following example.
 
 ```yaml
 codec:
