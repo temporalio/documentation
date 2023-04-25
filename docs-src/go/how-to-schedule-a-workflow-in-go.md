@@ -90,7 +90,7 @@ To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 Triggering a Schedule immediately executes an Action defined in the Schedule.
 By default, `trigger` is subject to the Overlap Policy.
 
-To trigger a Scheduled Workflow Execution in Go, use `Trigger()` on the `scheduleHandle`.
+To trigger a Scheduled Workflow Execution in Go, use `Trigger()` on `scheduleHandle`.
 Set desired changes in `ScheduleTriggerOptions`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["51-56"]}-->
