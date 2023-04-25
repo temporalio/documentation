@@ -8,37 +8,18 @@ tags:
 ---
 
 The `temporal operator cluster describe` command shows information about the [Cluster](/concepts/what-is-a-temporal-cluster).
+This information can include information about other connected services, such as a remote [Codec Server](/concepts/what-is-a-codec-server).
 
 Use the options listed below to change the output of this command.
-Make sure to write the command as follows:
-`temporal operator cluster describe [command options]`
-
-- [--address](/cli/cmd-options/address)
-
-- [--codec-auth](/cli/cmd-options/codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
-
-- [--color](/cli/cmd-options/color)
-
-- [--context-timeout](/cli/cmd-options/context-timeout)
-
-- [--env](/cli/cmd-options/env)
 
 - [--fields](/cli/cmd-options/fields)
 
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
+- [--limit](/cli/cmd-options/limit)
 
-- [--namespace](/cli/cmd-options/namespace)
+- [--no-pager](/cli/cmd-options/no-pager)
 
 - [--output](/cli/cmd-options/output)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+- [--pager](/cli/cmd-options/pager)
 
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)

@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Request concurrency. (default: 10)
+Request concurrency.

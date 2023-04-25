@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Namespace data in a key=value format
+Namespace data in a key=value format.

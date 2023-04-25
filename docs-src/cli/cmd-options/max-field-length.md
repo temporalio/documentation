@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Maximum length for each attribute field. (default: 0)
+Maximum length for each attribute field.

@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Namespace Id
+Namespace Id.

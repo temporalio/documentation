@@ -1094,79 +1094,62 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-To replay one or more Event Histories, use [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) or [worker.runReplayHistory](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistory).
+To replay a single Event History, use [worker.runReplayHistory](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistory).
 
-In all examples if Workflow History is non-deterministic, a
-[`DeterminismViolationError`](https://typescript.temporal.io/api/classes/workflow.determinismviolationerror/)
-will be thrown.
+When an Event History is replayed and non-determinism is detected (that is, the Workflow code is incompatible with the History), [DeterminismViolationError](https://typescript.temporal.io/api/classes/workflow.DeterminismViolationError) is thrown.
+If replay fails for any other reason, [ReplayError](https://typescript.temporal.io/api/classes/worker.ReplayError) is thrown.
 
-In the following example (which, as of server 1.18, requires advanced visibility to be enabled),
-histories are downloaded from the server and then replayed by passing in a client and a set of
-executions. The code will throw an exception if any replay fails.
+In the following example, a single Event History is loaded from a JSON file on disk (as obtained from the [Web UI](/web-ui) or the [Temporal CLI](/cli/workflow#show)):
+
+```ts
+const filePath = './history_file.json';
+const history = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
+await Worker.runReplayHistory(
+  {
+    workflowsPath: require.resolve('./your/workflows'),
+  },
+  history,
+);
+```
+
+Alternatively, we can download the Event History programmatically using a Client:
+
+```ts
+const connection = await Connection.connect({ address });
+const client = new Client({ connection, namespace: 'your-namespace' });
+const handle = client.workflow.getHandle('your-workflow-id');
+const history = await handle.fetchHistory();
+await Worker.runReplayHistory(
+  {
+    workflowsPath: require.resolve('./your/workflows'),
+  },
+  history,
+);
+```
+
+To gain confidence that changes to a Workflow are safe to deploy, we recommend that you obtain Event Histories from the relevant Task Queue and replay them in bulk.
+You can do so by combining the [workflow.list](https://typescript.temporal.io/api/classes/client.WorkflowClient#list) and [worker.runReplayHistories](https://typescript.temporal.io/api/classes/worker.Worker#runreplayhistories) APIs.
+
+In the following example (which, as of server 1.18, requires <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> to be enabled), Event Histories are downloaded from the server and then replayed by passing in a client and a set of Workflows Executions.
+The [results](https://typescript.temporal.io/api/interfaces/worker.ReplayResult) returned by the async iterator contain information about the Workflow Execution and whether an error occurred during replay.
 
 ```ts
 const executions = client.workflow.list({
   query: 'TaskQueue=foo and StartTime > "2022-01-01T12:00:00"',
 });
 const histories = executions.intoHistories();
-await Worker.runReplayHistories(
+const results = Worker.runReplayHistories(
   {
     workflowsPath: require.resolve('./your/workflows'),
   },
   histories,
 );
+for await (const result of results) {
+  if (result.error) {
+    console.error('Replay failed', result);
+  }
+}
 ```
-
-In the next example, a single history is loaded from a JSON file on disk:
-
-```ts
-const filePath = './history_file.json';
-const hist = await JSON.parse(fs.promises.readFile(filePath, 'utf8'));
-await Worker.runReplayHistory(
-  {
-    workflowsPath: require.resolve('./your/workflows'),
-  },
-  hist,
-);
-```
-
-Here, we show downloading a history and replaying it separately:
-
-<!--SNIPSTART typescript-history-get-workflowhistory-->
-
-[replay-history/src/replayer.ts](https://github.com/temporalio/samples-typescript/blob/master/replay-history/src/replayer.ts)
-
-```ts
-const conn = await Connection.connect(
-  /* { address: 'temporal.prod.company.com' } */
-);
-const { history } = await conn.workflowService.getWorkflowExecutionHistory({
-  namespace: 'default',
-  execution: {
-    workflowId: 'calc',
-  },
-});
-```
-
-<!--SNIPEND-->
-
-Then call [`Worker.runReplayHistory`](https://typescript.temporal.io/api/classes/worker.worker/#runreplayhistory).
-
-<!--SNIPSTART typescript-history-replay-->
-
-[replay-history/src/replayer.ts](https://github.com/temporalio/samples-typescript/blob/master/replay-history/src/replayer.ts)
-
-```ts
-await Worker.runReplayHistory(
-  {
-    workflowsPath: require.resolve('./workflows'),
-    replayName: 'calc',
-  },
-  history,
-);
-```
-
-<!--SNIPEND-->
 
 </TabItem>
 </Tabs>

@@ -7,5 +7,7 @@ tags:
     - cli
 ---
 
-Alias: **-q**
-Visibility Query of Search Attributes describing the Workflow Executions to reset. See https://docs.temporal.io/docs/tctl/workflow/list#--query.
+Visibility Query of Search Attributes describing the Workflow Executions to reset.
+See https://docs.
+temporal.
+io/docs/tctl/workflow/list#--query.

@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Cluster name
+Cluster name.
