@@ -69,7 +69,7 @@ To retrieve a list of Schedules, use `ScheduleClient().List()`.
 The `pause` and `unpause` actions enable starting or stopping all future Workflow Runs on a given Schedule.
 Pausing a Schedule halts all future Workflow Runs; unpausing a Schedule allows the Workflow to execute as planned.
 
-Pausing can be enabled upon creating a Schedule by setting `State.Paused` to `true`.
+Pausing can be enabled when you create a Schedule by setting `State.Paused` to `true`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["85"]}-->
 <!--SNIPEND-->
