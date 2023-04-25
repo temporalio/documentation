@@ -16,13 +16,13 @@ Temporal allows you to execute multiple Schedule operations, either through code
 Read on to find out how to create and edit Schedules.
 
 :::note
-Make sure to [enable Schedules in your environment](/concepts/what-is-a-schedule#limitations) before creating any Schedules.
+Be sure to [enable Schedules in your environment](/concepts/what-is-a-schedule#limitations) before creating any Schedules.
 :::
 
 ## Create
 
 Schedules are created with the `create` action.
-Each new Schedule is given a uniquely generated Schedule ID.
+For each new Schedule, tbe Temporal Server generates a unique Schedule ID.
 
 To create a Schedule in Go, use `ScheduleClient().Create()` on the [Client](/concepts/what-is-the-temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-schedule#spec), and [Action](/concepts/what-is-a-schedule#action) to perform.
