@@ -217,13 +217,9 @@ Samples:
 
 ## Codec Server
 
-A Codec Server is an HTTP server that uses your custom <a class="tdlp" href="#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a> to encode and decode your data remotely through endpoints.
+A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#data-encryption) to decode your data remotely through endpoints.
 
 ![](/img/tctl-diagram-codec-server.svg)
-
-You can [create a custom Payload Codec](/production-readiness/develop#data-encryption) with your encoding logic (such as encryption and/or compression), and apply it to the data processed in your Workflows.
-
-Using a custom Payload Codec in your Codec Server enables encoding and decoding data remotely through the endpoints that you expose on the Codec Server.
 
 A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
 It implements two endpoints:
@@ -247,9 +243,9 @@ When you apply custom encoding with encryption or compression on your Workflow d
 
 To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution you can configure an endpoint for a Codec Server. The CLI or Web UI will send the encoded data received from the Temporal Server to the Codec Server to be decoded.
 
-For details on creating your Codec Server, see [Codec Server](/production-readiness/develop#how-to-set-up-codec-server).
+For details on creating your Codec Server, see [Codec Server](/production-readiness/develop#codec-server-setup).
 
-After you start your Codec Server, [configure your Codec Server endpoints](/production-readiness/develop#how-to-set-up-codec-server).
+After you start your Codec Server, [configure your Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli).
 
 You can set your Codec Server endpoints to encode data sent to the Temporal Server (see <a class="tdlp" href="#remote-data-encoding">Remote data encoding<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remote-data-encoding">Learn more</a></span></span></a>).
 However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
