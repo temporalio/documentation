@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Number of items to print. (default: 0)
+Number of items to print.

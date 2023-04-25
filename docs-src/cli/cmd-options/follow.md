@@ -7,5 +7,4 @@ tags:
     - cli
 ---
 
-Alias: **-f**: Follow the progress of a Workflow Execution.
 Follow the progress of a Workflow Execution.
