@@ -160,7 +160,7 @@
     {
       "source": "/application-development/features#activity-retry-simulator",
       "destination": "/application-development/activity-retry-simulator"
-    }
+    },
     {
       "source": "/temporal-explained/introduction",
       "destination": "/temporal"
