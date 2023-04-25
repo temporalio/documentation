@@ -27,7 +27,14 @@ The process for setting up observability includes the following steps:
 If you're following through with the examples provided here, ensure that you have the following:
 
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
-- Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See [Connect to a Cluster](application-development/foundations#connect-to-a-cluster) for details.
+- Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
+
+  - [Go](application-development/golang/foundations#connect-to-a-cluster)
+  - [Java](application-development/java/foundations#connect-to-a-cluster)
+  - [PHP](application-development/php/foundations#connect-to-a-cluster)
+  - [Python](application-development/python/foundations#connect-to-a-cluster)
+  - [TypeScript](application-development/typescript/foundations#connect-to-a-cluster)
+
 - Prometheus and Grafana installed.
 
 ## Temporal Cloud metrics setup
@@ -58,7 +65,9 @@ See [Data sources configuration for Temporal Cloud and SDK metrics in Grafana](#
 
 SDK metrics are emitted by SDK Clients used to start your Workers and to start, signal, or query your Workflow Executions.
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
-The [Metrics](/application-development/observability#metrics) section of the Observability guide details how to set this up for all supported SDKs.
+The Metrics section of the Observability guide details how to set this up for all supported SDKs.
+
+- [Go](/application-development/golang/observability#metrics)
 
 The following example uses the Java SDK to set the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK metrics.
 

@@ -727,11 +727,15 @@
     },
     {
       "source": "/server-production-deploy",
-      "destination": "/server/production-deploy"
+      "destination": "/kb/legacy-oss-prod-deploy"
     },
     {
       "source": "/server-production-deployment",
-      "destination": "/server/production-deploy"
+      "destination": "/kb/legacy-oss-prod-deploy"
+    },
+    {
+      "source": "/server/production-deploy",
+      "destination": "/kb/legacy-oss-prod-deploy"
     },
     {
       "source": "/server-quick-install",

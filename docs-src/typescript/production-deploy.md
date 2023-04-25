@@ -11,8 +11,8 @@ The following are recommended steps to take before deploying your Temporal appli
 
 Either use Temporal Cloud ([join the waitlist](https://pages.temporal.io/cloud-early-access)) or deploy a self-hosted Temporal Cluster:
 
-- [Deployment guide](/server/production-deployment/)
-- [Scaling checklist](/server/production-deployment#checklist-for-scaling-temporal)
+- [Deployment guide](/kb/legacy-oss-prod-deploy/)
+- [Scaling checklist](/kb/legacy-oss-prod-deploy#checklist-for-scaling-temporal)
 
 ## Linting and types
 
@@ -47,10 +47,6 @@ Temporal Clients and Workers connect with Temporal Clusters through gRPC.
   ```
 
 For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript/security#local-mtls-sample-tutorial).
-
-## Pre-build code
-
-This information has been moved to [Register Types](/application-development/foundations/#register-types) section in the application developer guide.
 
 ## Logging
 

@@ -2,6 +2,7 @@
 id: debugging
 title: Temporal Python SDK developer's guide - Debugging
 sidebar_label: Debugging
+sidebar_position: 5
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 toc_max_heading_level: 4
 ---
@@ -23,10 +24,11 @@ You can debug production Workflows using:
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
 - [Replay](#replay)
-- [Tracing](/application-development/observability#tracing)
-- [Logging](/application-development/observability#logging)
+- <a class="tdlp" href="/application-development/python/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/python/observability#tracing">Learn more</a></span></span></a>
+- <a class="tdlp" href="/application-development/python/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/python/observability#logging">Learn more</a></span></span></a>
 
-You can debug and tune Worker performance with metrics and the [Worker performance guide](/application-development/worker-performance). For more information, see [Observability ▶️ Metrics](/application-development/observability#metrics) for setting up SDK metrics.
+You can debug and tune Worker performance with metrics and the [Worker performance guide](/application-development/worker-performance).
+For more information, see [Observability ▶️ Metrics](/application-development/python/observability#metrics) for setting up SDK metrics.
 
-Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/server/production-deployment#scaling-and-metrics).
+Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
 

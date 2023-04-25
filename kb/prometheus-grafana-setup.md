@@ -24,9 +24,8 @@ Each section includes an example on how you can do this in your local docker-com
 If you implement the examples, ensure that your local docker-compose is set up, install your SDK, and have a sample application to work with.
 (To get started, you can clone the SDK samples repositories.)
 
-- See [Docker Compose](/application-development/foundations#docker-compose) for details on how to set up your local Temporal docker-compose.
-- See [Install a Temporal SDK](/application-development/foundations#install-a-temporal-sdk) for details on how to install your SDK and get started with samples.
-- Create your own sample from the workshops or tutorials, or clone an existing [code sample](/application-development/foundations?lang=java#code-samples).
+- See [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker--docker-compose) for details on how to set up your local Temporal docker-compose.
+- See the [Dev guide](/application-development) for details on how to install your SDK and get started with samples.
 
 To set up Prometheus and Grafana:
 
@@ -86,7 +85,13 @@ Depending on how you deploy your Temporal Cluster, you can set different ports f
 ### SDK metrics setup
 
 SDK metrics are emitted by Clients and must be set up in your application code.
-The [Metrics section in the Observability guide](/application-development/observability#metrics) details how to set this up for all the supported SDKs.
+The Metrics section in the Observability guide details how to set this up for all the supported SDKs.
+
+[Golang](/application-development/golang/observability#metrics)
+[Java](/application-development/java/observability#metrics)
+[PHP](/application-development/php/observability#metrics)
+[Python](/application-development/python/observability#metrics)
+[TypeScript](/application-development/typescript/observability#metrics)
 
 For example, with the Java SDK, you can set up the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK Client metrics in the following way.
 

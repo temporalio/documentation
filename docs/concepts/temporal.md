@@ -71,11 +71,11 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [Get started with the Go SDK](/application-development/foundations/?lang=go#add-your-sdk)
-- [Get started with the Java SDK](/application-development/foundations/?lang=java#add-your-sdk)
-- [Get started with the PHP SDK](/application-development/foundations/?lang=php)
-- [Get started with the Python SDK](/application-development/foundations/?lang=python#add-your-sdk)
-- [How to use the TypeScript SDK](/application-development/foundations/?lang=typescript#add-your-sdk)
+- <a class="tdlp" href="/application-development/golang/foundations#install-a-temporal-sdk">Get started with the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/golang/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
+- <a class="tdlp" href="/application-development/java/foundations#install-a-temporal-sdk">Get started with the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/java/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
+- [Get started with the PHP SDK](/application-development/php)
+- <a class="tdlp" href="/application-development/python/foundations#install-a-temporal-sdk">Get started with the Python SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/python/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
+- <a class="tdlp" href="/application-development/typescript/foundations#install-a-temporal-sdk">How to use the TypeScript SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/typescript/foundations#install-a-temporal-sdk">Learn more</a></span></span></a>
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.

@@ -10,7 +10,11 @@ tags:
 
 A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
 
-- [How to set a Cron Schedule](/application-development/features#temporal-cron-jobs)
+- [How to set a Cron Schedule using the Go SDK](/go/cron-jobs)
+- [How to set a Cron Schedule using the Java SDK](/java/how-to-set-a-cron-schedule-in-java)
+- [How to set a Cron Schedule using the PHP SDK](/php/cron-jobs)
+- [How to set a Cron Schedule using the Python SDK](/python/cron-jobs)
+- [How to set a Cron Schedule using the TypeScript SDK](/typescript/cron-jobs)
 
 ![Temporal Cron Job timeline](/diagrams/temporal-cron-job.svg)
 

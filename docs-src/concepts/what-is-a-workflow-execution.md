@@ -11,8 +11,12 @@ tags:
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/concepts/what-is-a-temporal-application).
 
-- [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
+- [How to start a Workflow Execution using the Go SDK](/go/spawning-workflows)
+- [How to start a Workflow Execution using the Java SDK](/java/how-to-spawn-a-workflow-execution-in-java)
+- [How to start a Workflow Execution using the PHP SDK](/php/spawning-workflows)
+- [How to start a Workflow Execution using the Python SDK](/python/spawning-workflows)
+- [How to start a Workflow Execution using the TypeScript SDK](/typescript/spawning-workflows)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/concepts/what-is-a-signal) and the environment through [Activities](/concepts/what-is-an-activity).
@@ -46,7 +50,10 @@ For more information, see [Deterministic constraints](/concepts/what-is-a-workfl
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-- [How to use Replay APIs to test Workflow Definitions](/app-dev-context/replays)
+- [How to use Replay APIs using the Go SDK](/go/replays)
+- [How to use Replay APIs using the Java SDK](/java/replays)
+- [How to use Replay APIs using the Python SDK](/python/replays)
+- [How to use Replay APIs using the TypeScript SDK](/typescript/replays)
 
 ### Commands and awaitables
 

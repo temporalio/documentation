@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday April 25 2023 09:13:01 AM -0600
+Last assembled: Tuesday April 25 2023 15:40:06 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-80 guide configurations found.
+72 guide configurations found.
 
-1518 information nodes found.
+1412 information nodes found.
 
-1557 information nodes are attached to guides.
+1154 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -46,9 +46,15 @@ concepts/what-is-the-temporal-server -> /clusters#temporal-server
 
 concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replication
 
-app-dev-context/timers -> /application-development/features#timers
+concepts/what-is-a-workflow-task -> /tasks#workflow-task
 
-app-dev-context/search-attributes -> /application-development/observability#search-attributes
+concepts/what-is-a-signal -> /workflows#signal
+
+concepts/what-is-an-event -> /workflows#event
+
+concepts/what-is-a-workflow -> /workflows#
+
+concepts/what-is-a-worker -> /workers#
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -62,11 +68,11 @@ concepts/what-is-a-codec-server -> /dataconversion#codec-server
 
 concepts/what-is-remote-data-encoding -> /dataconversion#remote-data-encoding
 
+concepts/what-is-the-temporal-cli -> /cli/index#
+
 concepts/what-is-a-workflow-id -> /workflows#workflow-id
 
 concepts/what-is-a-workflow-type -> /workflows#workflow-type
-
-concepts/what-is-an-event -> /workflows#event
 
 concepts/what-is-a-run-id -> /workflows#run-id
 
@@ -140,8 +146,6 @@ tctl-v1/batch/list -> #list
 
 tctl-v1/batch/terminate -> #terminate
 
-concepts/what-is-a-signal -> /workflows#signal
-
 tctl-v1/cluster/health -> #health
 
 tctl-v1/cluster/get-search-attributes -> #get-search-attributes
@@ -155,8 +159,6 @@ tctl-v1/workflow/start -> /tctl-v1/workflow#start
 tctl-v1/dataconverter/web -> #web
 
 concepts/what-is-a-namespace -> /namespaces#
-
-concepts/what-is-a-workflow -> /workflows#
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -233,8 +235,6 @@ concepts/what-is-an-event-history -> /workflows#event-history
 concepts/what-is-a-query -> /workflows#query
 
 concepts/what-is-a-start-to-close-timeout -> /activities#start-to-close-timeout
-
-concepts/what-is-a-workflow-task -> /tasks#workflow-task
 
 concepts/what-is-a-temporal-cron-job -> /workflows#cron-schedules
 
@@ -322,19 +322,75 @@ concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
 
 concepts/what-is-an-activity-task-execution -> /tasks#activity-task-execution
 
+go/how-to-develop-an-activity-definition-in-go -> /application-development/golang/foundations#activity-definition
+
+java/developing-activities -> /application-development/java/foundations#develop-activities
+
+php/developing-activities -> /application-development/php/foundations#develop-activities
+
+python/developing-activities -> /application-development/python/foundations#develop-activities
+
+typescript/developing-activities -> /application-development/typescript/foundations#develop-activities
+
 concepts/what-is-a-retry-policy -> /retry-policies#
+
+go/spawning-activities -> /application-development/golang/foundations#activity-execution
+
+java/spawning-activities -> /application-development/java/foundations#activity-execution
+
+php/spawning-activities -> /application-development/php/foundations#activity-execution
+
+python/spawning-activities -> /application-development/python/foundations#activity-execution
+
+typescript/spawning-activities -> /application-development/typescript/foundations#activity-execution
 
 concepts/what-is-asynchronous-activity-completion -> #asynchronous-activity-completion
 
 concepts/what-is-an-activity-task -> /tasks#activity-task
 
-concepts/what-is-a-worker -> /workers#
+go/activity-timeouts -> /application-development/golang/features#activity-timeouts
 
-app-dev-context/activity-retries -> /application-development/features#activity-retries
+java/activity-timeouts -> /application-development/java/features#activity-timeouts
+
+php/activity-timeouts -> /application-development/php/features#activity-timeouts
+
+python/activity-timeouts -> /application-development/python/features#activity-timeouts
+
+typescript/activity-timeouts -> /application-development/typescript/features#activity-timeouts
 
 concepts/what-is-a-schedule-to-close-timeout -> #schedule-to-close-timeout
 
 concepts/what-is-a-heartbeat-timeout -> #heartbeat-timeout
+
+go/activity-heartbeats -> /application-development/golang/features#activity-heartbeats
+
+java/activity-heartbeats -> /application-development/java/features#activity-heartbeats
+
+php/activity-heartbeats -> /application-development/php/features#activity-heartbeats
+
+python/activity-heartbeats -> /application-development/python/features#activity-heartbeats
+
+typescript/activity-heartbeats -> /application-development/typescript/features#activity-heartbeats
+
+go/heartbeat-timeout -> /application-development/golang/features#heartbeat-timeout
+
+java/heartbeat-timeout -> /application-development/java/features#heartbeat-timeout
+
+php/heartbeat-timeout -> /application-development/php/features#heartbeat-timeout
+
+python/heartbeat-timeout -> /application-development/python/features#heartbeat-timeout
+
+typescript/heartbeat-timeout -> /application-development/typescript/features#heartbeat-timeout
+
+go/async-activity-completion -> /application-development/golang/features#asynchronous-activity-completion
+
+java/async-activity-completion -> /application-development/java/features#asynchronous-activity-completion
+
+php/async-activity-completion -> /application-development/php/features#asynchronous-activity-completion
+
+python/async-activity-completion -> /application-development/python/features#asynchronous-activity-completion
+
+typescript/async-activity-completion -> /application-development/typescript/features#asynchronous-activity-completion
 
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
@@ -342,17 +398,29 @@ concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
 concepts/what-is-a-history-shard -> #history-shard
 
+go/namespaces -> /application-development/golang/features#namespaces
+
+java/namespaces -> /application-development/java/features#namespaces
+
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
-app-dev-context/custom-payload-conversion -> /application-development/features#custom-payload-conversion
+go/custom-payload-conversion -> /application-development/golang/features#custom-payload-conversion
+
+java/custom-payload-conversion -> /application-development/java/features#custom-payload-conversion
 
 prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-app-dev-context/namespaces -> /application-development/features#namespaces
+go/register-namespaces -> /application-development/golang/features#register-namespace
+
+java/register-namespaces -> /application-development/java/features#register-namespace
+
+go/manage-namespaces -> /application-development/golang/features#manage-namespaces
+
+java/manage-namespaces -> /application-development/java/features#manage-namespaces
 
 cli/operator/namespace/delete -> /cli/operator#delete
 
@@ -360,15 +428,65 @@ concepts/what-is-a-task -> /tasks#
 
 concepts/what-is-a-workflow-task-execution -> /tasks#workflow-task-execution
 
+go/activity-retries -> /application-development/golang/features#activity-retries
+
+java/activity-retries -> /application-development/java/features#activity-retries
+
+php/activity-retries -> /application-development/php/features#activity-retries
+
+python/activity-retries -> /application-development/python/features#activity-retries
+
+typescript/activity-retries -> /application-development/typescript/features#activity-retries
+
+go/workflow-retries -> /application-development/golang/features#workflow-retries
+
+java/workflow-retries -> /application-development/java/features#workflow-retries
+
+php/workflow-retries -> /application-development/php/features#workflow-retries
+
+python/workflow-retries -> /application-development/python/features#workflow-retries
+
+typescript/workflow-retries -> /application-development/typescript/features#workflow-retries
+
 concepts/what-is-continue-as-new -> /workflows#continue-as-new
 
 concepts/what-is-a-worker-entity -> /workers#worker-entity
 
 concepts/what-is-task-routing -> #task-routing
 
-app-dev-context/run-a-dev-worker -> /application-development/foundations#run-a-dev-worker
+go/spawning-workflows -> /application-development/golang/foundations#start-workflow-execution
 
-app-dev-context/run-a-temporal-cloud-worker -> /application-development/foundations#run-a-temporal-cloud-worker
+java/how-to-spawn-a-workflow-execution-in-java -> /application-development/java/foundations#start-workflow-execution
+
+php/spawning-workflows -> /application-development/php/foundations#start-workflow-execution
+
+python/spawning-workflows -> /application-development/python/foundations#start-workflow-execution
+
+typescript/spawning-workflows -> /application-development/typescript/foundations#start-workflow-execution
+
+go/how-to-develop-a-worker-in-go -> /application-development/golang/foundations#develop-worker
+
+java/how-to-develop-a-worker-program-in-java -> /application-development/java/foundations#run-a-dev-worker
+
+php/run-a-dev-worker -> /application-development/php/foundations#run-a-dev-worker
+
+python/run-a-dev-worker -> /application-development/python/foundations#run-a-dev-worker
+
+typescript/run-a-dev-worker -> /application-development/typescript/foundations#run-a-dev-worker
+
+go/run-a-temporal-cloud-worker -> /application-development/golang/foundations#run-a-temporal-cloud-worker
+
+typescript/run-a-temporal-cloud-worker -> /application-development/typescript/foundations#run-a-temporal-cloud-worker
+
+go/child-workflows -> /application-development/golang/features#child-workflows
+
+java/child-workflows -> /application-development/java/features#child-workflows
+
+php/child-workflows -> /application-development/php/features#child-workflows
+
+python/child-workflows -> /application-development/python/features#child-workflows
+
+typescript/child-workflows -> /application-development/typescript/features#child-workflows
 
 concepts/what-is-a-worker-process -> /workers#worker-process
 
@@ -376,31 +494,125 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
+go/add-sdk -> /application-development/golang/foundations#install-a-temporal-sdk
+
+java/add-sdk -> /application-development/java/foundations#install-a-temporal-sdk
+
+python/add-sdk -> /application-development/python/foundations#install-a-temporal-sdk
+
+typescript/add-sdk -> /application-development/typescript/foundations#install-a-temporal-sdk
+
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
 
 clusters/how-to-remove-a-custom-search-attribute-key -> /cluster-deployment-guide#remove-custom-search-attributes
 
-app-dev-context/developing-workflows -> /application-development/foundations#develop-workflows
+go/visibility -> /application-development/golang/observability#visibility
+
+java/visibility -> /application-development/java/observability#visibility
+
+php/visibility -> /application-development/php/observability#visibility
+
+python/visibility -> /application-development/python/observability#visibility
+
+typescript/visibility -> /application-development/typescript/observability#visibility
+
+go/developing-workflows -> /application-development/golang/foundations#develop-workflows
+
+java/how-to-develop-a-workflow-definition-in-java -> /application-development/java/foundations#develop-workflows
+
+php/developing-workflows -> /application-development/php/foundations#develop-workflows
+
+python/developing-workflows -> /application-development/python/foundations#develop-workflows
+
+typescript/developing-workflows -> /application-development/typescript/foundations#develop-workflows
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
 concepts/what-is-an-activity -> /activities#
 
-app-dev-context/replays -> /application-development/testing#replay
+go/replays -> /application-development/golang/testing#replay
+
+java/replays -> /application-development/java/testing#replay
+
+python/replays -> /application-development/python/testing#replay
+
+typescript/replays -> /application-development/typescript/testing#replay
 
 concepts/what-is-a-workflow-execution-timeout -> #workflow-execution-timeout
 
 concepts/what-is-a-workflow-run-timeout -> #workflow-run-timeout
 
+go/continue-as-new -> /application-development/golang/features#continue-as-new
+
+java/continue-as-new -> /application-development/java/features#continue-as-new
+
+php/continue-as-new -> /application-development/php/features#continue-as-new
+
+python/continue-as-new -> /application-development/python/features#continue-as-new
+
+typescript/continue-as-new -> /application-development/typescript/features#continue-as-new
+
 go/how-to-set-a-workflow-id-in-go -> /application-development/golang/foundations#workflow-id
 
-app-dev-context/workflow-retries -> /application-development/features#workflow-retries
+go/workflow-timeouts -> /application-development/golang/features#workflow-timeouts
+
+java/workflow-timeouts -> /application-development/java/features#workflow-timeouts
+
+php/workflow-timeouts -> /application-development/php/features#workflow-timeouts
+
+python/workflow-timeouts -> /application-development/python/features#workflow-timeouts
+
+typescript/workflow-timeouts -> /application-development/typescript/features#workflow-timeouts
+
+go/signals -> /application-development/golang/features#signals
+
+java/signals -> /application-development/java/features#signals
+
+php/signals -> /application-development/php/features#signals
+
+python/signals -> /application-development/python/features#signals
+
+typescript/signals -> /application-development/typescript/features#signals
+
+go/queries -> /application-development/golang/features#queries
+
+java/queries -> /application-development/java/features#queries
+
+php/queries -> /application-development/php/features#queries
+
+python/queries -> /application-development/python/features#queries
+
+typescript/queries -> /application-development/typescript/features#queries
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
+go/parent-close-policy -> /application-development/golang/features#parent-close-policy
+
+java/parent-close-policy -> /application-development/java/features#parent-close-policy
+
+php/parent-close-policy -> /application-development/php/features#parent-close-policy
+
+python/parent-close-policy -> /application-development/python/features#parent-close-policy
+
+typescript/parent-close-policy -> /application-development/typescript/features#parent-close-policy
+
+go/cron-jobs -> /application-development/golang/features#temporal-cron-jobs
+
+java/how-to-set-a-cron-schedule-in-java -> /application-development/java/features#cron-schedule
+
+php/cron-jobs -> /application-development/php/features#temporal-cron-jobs
+
+python/cron-jobs -> /application-development/python/features#temporal-cron-jobs
+
+typescript/cron-jobs -> /application-development/typescript/features#temporal-cron-jobs
+
 concepts/what-is-temporal-cloud -> /cloud/index#
 
-app-dev-context/connect-to-temporal-cloud -> /application-development/foundations#connect-to-temporal-cloud
+go/connect-to-temporal-cloud -> /application-development/golang/foundations#connect-to-temporal-cloud
+
+python/connect-to-temporal-cloud -> /application-development/python/foundations#connect-to-temporal-cloud
+
+typescript/connect-to-temporal-cloud -> /application-development/typescript/foundations#connect-to-temporal-cloud
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -432,7 +644,7 @@ cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-clusters/how-to-install-temporal-cli -> /application-development/foundations#run-a-development-server
+clusters/how-to-install-temporal-cli -> /application-development/typescript/foundations#run-a-development-server
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -600,7 +812,9 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
-app-dev-context/workflow-timeouts -> #workflow-timeouts
+typescript/tracing -> /application-development/typescript/observability#tracing
+
+typescript/logging -> /application-development/typescript/observability#logging
 
 concepts/what-is-a-workflow-task-timeout -> /workflows#workflow-task-timeout
 
@@ -610,72 +824,54 @@ concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
-app-dev-context/add-sdk -> #install-a-temporal-sdk
-
-app-dev-context/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-app-dev-context/developing-activities -> #develop-activities
-
-app-dev-context/spawning-activities -> #activity-execution
-
-app-dev-context/spawning-workflows -> #start-workflow-execution
+typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
-app-dev-context/queries -> #queries
+python/tracing -> /application-development/python/observability#tracing
 
-app-dev-context/signals -> #signals
+python/logging -> /application-development/python/observability#logging
 
-app-dev-context/handle-signal -> #handle-signal
+python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-app-dev-context/cron-jobs -> /application-development/features#temporal-cron-jobs
+php/handle-signal -> #handle-signal
+
+php/add-sdk -> #install-a-temporal-sdk
+
+php/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+java/tracing -> /application-development/java/observability#tracing
+
+java/logging -> /application-development/java/observability#logging
 
 java/how-to-handle-a-signal-in-a-workflow-in-java -> #handle-signals
 
-java/how-to-develop-a-workflow-definition-in-java -> /application-development/java/foundations#develop-workflows
-
-java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
-
-java/how-to-develop-a-worker-program-in-java -> #run-a-dev-worker
+java/how-to-create-a-temporal-client-in-java -> /application-development/java/foundations#connect-to-a-dev-cluster
 
 java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-execution-result
 
 java/how-to-send-a-signal-with-start-in-java -> /application-development/java/features#signal-with-start
 
-java/how-to-create-a-temporal-client-in-java -> #connect-to-a-dev-cluster
-
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-java/how-to-set-a-cron-schedule-in-java -> /application-development/java/features#cron-schedule
+go/tracing -> /application-development/golang/observability#tracing
 
-go/workflow-timeouts -> #workflow-timeouts
+go/logging -> /application-development/golang/observability#logging
 
-go/connect-to-temporal-cloud -> /application-development/golang/foundations#connect-to-temporal-cloud
-
-go/add-sdk -> #install-a-temporal-sdk
+go/metrics -> /application-development/golang/observability#metrics
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-go/developing-workflows -> #develop-workflows
-
-go/how-to-develop-an-activity-definition-in-go -> #activity-definition
-
-go/spawning-activities -> #activity-execution
-
-go/how-to-develop-a-worker-in-go -> #develop-worker
-
-go/run-a-temporal-cloud-worker -> #run-a-temporal-cloud-worker
-
-go/spawning-workflows -> #start-workflow-execution
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
-go/tracing -> /application-development/golang/observability#tracing
+java/metrics -> /application-development/java/observability#metrics
 
-app-dev-context/metrics -> /application-development/observability#metrics
+python/metrics -> /application-development/python/observability#metrics
+
+typescript/metrics -> /application-development/typescript/observability#metrics
 
 

@@ -2,6 +2,7 @@
 id: features
 title: Temporal Java SDK developer's guide - Features
 sidebar_label: Features
+sidebar_position: 2
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 slug: /application-development/java/features
 toc_max_heading_level: 4
@@ -1122,12 +1123,12 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `WorkflowClientOptions` within a Workflow Client to run your Workflow Executions within that Namespace.
-See [how to set Namespace in a Client in Java](/application-development/foundations#connect-to-a-cluster) for details.
+See <a class="tdlp" href="/application-development/java/foundations#connect-to-a-dev-cluster">how to set Namespace in a Client in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Temporal Client in Java</span><br /><br /><span class="tdlppd">To initialize a Workflow Client, create an instance of a `WorkflowClient`, create a client-side `WorkflowStub`, and then call a Workflow method (annotated with the `@WorkflowMethod` annotation).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/java/foundations#connect-to-a-dev-cluster">Learn more</a></span></span></a> for details.
 
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.
 
-To update your Namespace, use the [`UpdateNamespace` API](/application-development/features/#namespaces) with the `NamespaceClient`.
+To update your Namespace, use the [`UpdateNamespace` API](/application-development/java/features/#namespaces) with the `NamespaceClient`.
 
 ### Manage Namespaces
 

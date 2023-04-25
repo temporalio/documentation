@@ -10,7 +10,10 @@ During the past month, the following content has been added or improved:
 
 - We updated information about [Namespaces](/namespaces) and [Retention Periods](/clusters/#retention-period).
 
-- We added a section on how to [Manage Namespaces](/application-development/features/#namespaces) in the Developer’s guide.
+- We added a section on how to Manage Namespaces in the Developer’s guide.
+
+  - [Go](/application-development/golang/features/#namespaces)
+  - [Java](/application-development/java/features/#namespaces)
 
 - We added a [reference of metrics](/references/cluster-metrics) that are emitted from a Temporal Cluster.
 

@@ -5,6 +5,7 @@
   "file_dir": "application-development/javalang",
   "title": "Temporal Java SDK developer's guide - Testing",
   "sidebar_label": "Testing",
+  "sidebar_position": 4,
   "description": "The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -12,59 +13,59 @@
   "sections": [
     {
       "type": "p",
-      "id": "app-dev-context/testing"
+      "id": "java/testing"
     },
     {
       "type": "h2",
-      "id": "app-dev-context/testing-frameworks"
+      "id": "java/testing-frameworks"
     },
     {
       "type": "h2",
-      "id": "app-dev-context/testing-activities"
+      "id": "java/testing-activities"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/run-an-activity"
+      "id": "java/run-an-activity"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/listen-to-heartbeats"
+      "id": "java/listen-to-heartbeats"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/cancel-an-activity"
+      "id": "java/cancel-an-activity"
     },
     {
       "type": "h2",
-      "id": "app-dev-context/testing-workflows"
+      "id": "java/testing-workflows"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/mock-activities"
+      "id": "java/mock-activities"
     },
     {
       "type": "h3",
-      "id": "app-dev-context/skip-time"
+      "id": "java/skip-time"
     },
     {
       "type": "h4",
-      "id": "app-dev-context/skip-time-set-up"
+      "id": "java/skip-time-set-up"
     },
     {
       "type": "h4",
-      "id": "app-dev-context/skip-time-skip-automatically"
+      "id": "java/skip-time-skip-automatically"
     },
     {
       "type": "h4",
-      "id": "app-dev-context/skip-time-skip-manually"
+      "id": "java/skip-time-skip-manually"
     },
     {
       "type": "h4",
-      "id": "app-dev-context/skip-time-skip-activities"
+      "id": "java/skip-time-skip-activities"
     },
     {
       "type": "h2",
-      "id": "app-dev-context/replays"
+      "id": "java/replays"
     },
     {
       "type": "p",

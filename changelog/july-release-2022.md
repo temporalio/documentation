@@ -12,9 +12,14 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 :::
 
-- Python examples are now available in much of the [Foundations section](/application-development/foundations) of the Developer's guide.
+- Python examples are now available in much of the [Foundations section](/application-development/python/foundations) of the Developer's guide.
 
-- We added an [Observability section](/application-development/observability) to the Developer's guide.
+- We added an Observability section to the Developer's guide.
+  - [Go](/application-development/golang/observability)
+  - [Java](/application-development/java/observability)
+  - [PHP](/application-development/php/observability)
+  - [Python](/application-development/python/observability)
+  - [TypeScript](/application-development/typescript/observability)
 
 :::info Reminder
 

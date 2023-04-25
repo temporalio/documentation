@@ -55,7 +55,8 @@ On self-hosted Temporal Clusters, you can register your Namespaces in the follow
 - Use the `tctl namespace register` command with the `--retention` modfiier to register your Namespaces, one at a time, and set the Retention Period on each.
 
   - [How to register a new Namespace using tctl](/tctl-v1/namespace#register)
-  - <a class="tdlp" href="/application-development/features#namespaces">How to register a new Namespace using SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#namespaces">Learn more</a></span></span></a>
+  - <a class="tdlp" href="/application-development/golang/features#register-namespace">How to register a new Namespace using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to register Namespaces</span><br /><br /><span class="tdlppd">On Temporal Cloud, use the Temporal Cloud UI or tcld commands, and on self-hosted Temporal Cluster, use `tctl namespace register` or `RegisterNamespaceRequest` API to create Namespaces.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/golang/features#register-namespace">Learn more</a></span></span></a>
+  - <a class="tdlp" href="/application-development/java/features#register-namespace">How to register a new Namespace using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to register Namespaces</span><br /><br /><span class="tdlppd">On Temporal Cloud, use the Temporal Cloud UI or tcld commands, and on self-hosted Temporal Cluster, use `tctl namespace register` or `RegisterNamespaceRequest` API to create Namespaces.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/java/features#register-namespace">Learn more</a></span></span></a>
 
 - In your Client program, register your Namespace using `RegisterNamespaceRequest` API available in all the SDKs.
 
@@ -67,35 +68,40 @@ Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span 
 
 On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
-On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
+On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs.
+Note that these APIs and tctl commands will not work with Temporal Cloud.
+
+- <a class="tdlp" href="/application-development/golang/features#manage-namespaces">How to manage Namespaces using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces</span><br /><br /><span class="tdlppd">You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/golang/features#manage-namespaces">Learn more</a></span></span></a>
+- <a class="tdlp" href="/application-development/java/features#manage-namespaces">How to manage Namespaces using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces</span><br /><br /><span class="tdlppd">You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/java/features#manage-namespaces">Learn more</a></span></span></a>
 
 - Update information and configuration for a registered Namespace on your Temporal Cluster:
 
   - With tctl: [`tctl namespace update`](/tctl-v1/namespace#update)
-  - Use the <a class="tdlp" href="/application-development/features#namespaces"> `UpdateNamespace` API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#namespaces">Learn more</a></span></span></a> to update configuration on a Namespace.
+  - Use the Update Namespace API to update configuration on a Namespace.
 
 - Get details for a registered Namespace on your Temporal Cluster:
 
   - With tctl: [`tctl namespace describe`](/tctl-v1/namespace#describe)
-  - Use the <a class="tdlp" href="/application-development/features#namespaces"> `DescribeNamespace` API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#namespaces">Learn more</a></span></span></a> to return information and configuration details for a registered Namespace.
+  - Use the Describe Namespace to return information and configuration details for a registered Namespace.
 
 - Get details for all registered Namespaces on your Temporal Cluster:
 
   - With tctl: [`tctl namespace list`](/tctl-v1/namespace#list)
-  - Use the <a class="tdlp" href="/application-development/features#namespaces"> `ListNamespace` API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#namespaces">Learn more</a></span></span></a> to return information and configuration details for all registered Namespaces on your Temporal Cluster.
+  - Use the List Namespace API to return information and configuration details for all registered Namespaces on your Temporal Cluster.
 
-- Deprecate a Namespace: The <a class="tdlp" href="/application-development/features#namespaces"> `DeprecateNamespace` API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#namespaces">Learn more</a></span></span></a> updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
+- Deprecate a Namespace: The Deprecate Namespace updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
 
 - Delete a Namespace: Deletes a Namespace and all Workflow Executions on the Namespace. Note that this API is supported for Temporal Server version 1.17 and later.
 - With tctl: <a class="tdlp" href="/cli/operator#delete"> `tctl namespace delete`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal operator namespace delete</span><br /><br /><span class="tdlppd">Deletes an existing Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/operator#delete">Learn more</a></span></span></a>.
-- Use the <a class="tdlp" href="/application-development/features#namespaces"> `DeleteNamespace` API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#namespaces">Learn more</a></span></span></a> to delete a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
+- Use the DeleteNamespace API to delete a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
 
 ### Setting
 
 Set Namespaces in your SDK Client to isolate your Workflow Executions to the Namespace.
 If you do not set a Namespace, all Workflow Executions started using the Client will be associated with the "default" Namespace. This means, you must have a default Namespace called "default" registered with your Temporal Cluster. See [Registration](#registration) for details.
 
-- [How to set the Namespace for a Temporal Client](/application-development/foundations#connect-to-a-cluster)
+<!-- TODO add sample for this to link to -[How to set the Namespace for a Temporal Client](/) -->
+
 - [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)
 

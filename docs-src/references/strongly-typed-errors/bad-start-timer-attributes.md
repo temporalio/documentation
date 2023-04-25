@@ -8,6 +8,8 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the scheduled [Event](/workflows/#event) is missing a [Timer Id](/app-dev-context/timers).
+This error indicates that the scheduled [Event](/concepts/what-is-an-event) is missing a Timer Id.
 
-Set a valid Timer Id and retry the [Workflow Task](/tasks/#workflow-task).
+<!-- TODO add Timer Id as anchor for term and link to it -->
+
+Set a valid Timer Id and retry the [Workflow Task](/concepts/what-is-a-workflow-task).

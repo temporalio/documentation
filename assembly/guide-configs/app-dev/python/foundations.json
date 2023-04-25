@@ -4,6 +4,7 @@
   "file_dir": "application-development/python",
   "title": "Temporal Python SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",
+  "sidebar_position": 1,
   "description": "The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -51,7 +52,7 @@
     },
     {
       "type": "h2",
-      "id": "app-dev-context/connect-to-temporal-cloud"
+      "id": "python/connect-to-temporal-cloud"
     },
     {
       "type": "p",

@@ -2,6 +2,7 @@
 id: features
 title: Go SDK developer's guide - Features
 sidebar_label: Features
+sidebar_position: 2
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 toc_max_heading_level: 4
 ---
@@ -83,7 +84,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
 
-Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Before completing the Workflow or using <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to Continue-As-New</span><br /><br /><span class="tdlppd">Continue-As-New enables a Workflow Execution to close successfully and create a new Workflow Execution in a single atomic operation if the number of Events in the Event History is becoming too large.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a>, make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.
 
 ### Send Signal from Client

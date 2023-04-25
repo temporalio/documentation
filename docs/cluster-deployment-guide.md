@@ -17,7 +17,7 @@ This guide is a work in progress.
 Some sections may be incomplete.
 Information may change at any time.
 
-Legacy production deployment information is available [here](/server/production-deployment)
+Legacy production deployment information is available [here](/kb/legacy-oss-prod-deploy)
 
 :::
 
@@ -67,7 +67,6 @@ You can set MySQL as your <a class="tdlp" href="/visibility#">Visibility store<s
 Verify <a class="tdlp" href="#supported-databases">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> before you proceed.
 
 If using MySQL v8.0.17 or later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
-For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -157,7 +156,6 @@ You can set PostgreSQL as your <a class="tdlp" href="/visibility#">Visibility st
 Verify <a class="tdlp" href="#supported-databases">supported versions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> before you proceed.
 
 If using PostgreSQL v12 or later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
-For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -243,7 +241,6 @@ You can change the configuration to use a file-based database so that it is pres
 However, if you use a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
 
 If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
-For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
@@ -456,7 +453,7 @@ These constraints do not apply if you use Elasticsearch.
 
 Add custom Search Attributes to your Visibility store using `tctl` for a self-hosted Temporal Cluster and `tcld` for Temporal Cloud.
 
-Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow metadata](/application-development/observability#search-attributes) and <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
+Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
 
 **On Temporal Cloud**
 

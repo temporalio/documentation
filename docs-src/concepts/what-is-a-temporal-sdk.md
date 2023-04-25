@@ -18,11 +18,11 @@ A Temporal SDK enables you to write your application code using the full power o
 
 Temporal currently offers the following SDKs:
 
-- [Get started with the Go SDK](/application-development/foundations/?lang=go#add-your-sdk)
-- [Get started with the Java SDK](/application-development/foundations/?lang=java#add-your-sdk)
-- [Get started with the PHP SDK](/application-development/foundations/?lang=php)
-- [Get started with the Python SDK](/application-development/foundations/?lang=python#add-your-sdk)
-- [How to use the TypeScript SDK](/application-development/foundations/?lang=typescript#add-your-sdk)
+- [Get started with the Go SDK](/go/add-sdk)
+- [Get started with the Java SDK](/java/add-sdk)
+- [Get started with the PHP SDK](/application-development/php)
+- [Get started with the Python SDK](/python/add-sdk)
+- [How to use the TypeScript SDK](/typescript/add-sdk)
 
 Each SDK emits metrics which can be ingested into monitoring platforms.
 See the [SDK metrics reference](/references/sdk-metrics) for a complete list.
