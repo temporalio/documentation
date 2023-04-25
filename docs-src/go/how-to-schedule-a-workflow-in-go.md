@@ -74,7 +74,7 @@ Pausing can be enabled when you create a Schedule by setting `State.Paused` to `
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["85"]}-->
 <!--SNIPEND-->
 
-Pausing can also be done by using `Pause()` on the `scheduleHandle`.
+Pausing can also be done by using `Pause()` on `scheduleHandle`.
 
 ```go
 scheduleHandle.Pause()
