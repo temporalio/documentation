@@ -60,7 +60,7 @@ To describe a Schedule in Go, use `Describe()` on `scheduleHandle`.
 
 ## List
 
-When used, `list` returns all available Schedules and their Schedule IDs.
+When used, `list` returns all available Schedules and their Schedule Ids.
 
 To retrieve a list of Schedules, use `ScheduleClient().List()`.
 
