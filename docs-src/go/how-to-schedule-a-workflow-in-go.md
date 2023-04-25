@@ -36,7 +36,7 @@ Enter these values in `client.Schedule.Options{}`.
 Backfilling a Schedule executes [Workflow Tasks](/concepts/what-is-a-workflow-task) ahead of the Schedule's specified time range.
 This is useful when you need to execute a missed or delayed Action, or if you want to test the Workflow ahead of time.
 
-To backfill a Schedule in Go, use `Backfill()` on the `scheduleHandle`.
+To backfill a Schedule in Go, use `Backfill()` on `scheduleHandle`.
 
 ## Delete
 
