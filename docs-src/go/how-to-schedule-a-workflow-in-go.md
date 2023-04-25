@@ -50,7 +50,7 @@ To delete a Schedule in Go, use the `Delete()` command on `scheduleHandle`.
 
 ## Describe
 
-Information about the current Schedule configuration can be retrieved with the `describe` action.
+You can retrieve information about the current Schedule configuration by using the `describe` action.
 This is helpful when you want to get a detailed view of the Schedule and its associated [Workflow Runs](/concepts/what-is-a-run-id).
 
 To describe a Schedule in Go, use `Describe()` on the `scheduleHandle`.
