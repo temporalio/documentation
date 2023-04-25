@@ -50,8 +50,16 @@
       "destination": "/application-development"
     },
     {
-      "source": "/samples-library",
-      "destination": "/application-development/foundations#code-samples"
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/application-development/golang/foundations:path*",
+      "permanent": false
     },
     {
       "source": "/change-log",
@@ -143,12 +151,16 @@
     },
     {
       "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
-      "destination": "/application-development/features#activity-retry-simulator"
+      "destination": "/application-development/activity-retry-simulator"
     },
     {
       "source": "/retry-policies/#visualizing-retry-policies",
-      "destination": "/application-development/features#activity-retry-simulator"
+      "destination": "/application-development/activity-retry-simulator"
     },
+    {
+      "source": "/application-development/features#activity-retry-simulator",
+      "destination": "/application-development/activity-retry-simulator"
+    }
     {
       "source": "/temporal-explained/introduction",
       "destination": "/temporal"
@@ -307,35 +319,35 @@
     },
     {
       "source": "/go-activities",
-      "destination": "/application-development/foundations#develop-activities"
+      "destination": "/application-development/golang/foundations#develop-activities"
     },
     {
       "source": "/go/activities",
-      "destination": "/application-development/foundations#develop-activities"
+      "destination": "/application-development/golang/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-develop-an-activity-in-go",
-      "destination": "/application-development/foundations#develop-activities"
+      "destination": "/application-development/golang/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-spawn-an-activity-execution-in-go",
-      "destination": "/application-development/foundations#activity-execution"
+      "destination": "/application-development/golang/foundations#activity-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-an-activity-execution-in-go",
-      "destination": "/application-development/foundations#get-activity-results"
+      "destination": "/application-development/golang/foundations#get-activity-results"
     },
     {
       "source": "/go/how-to-heartbeat-an-activity-in-go",
-      "destination": "/application-development/features#activity-heartbeats"
+      "destination": "/application-development/golang/features#activity-heartbeats"
     },
     {
       "source": "/go/child-workflows",
-      "destination": "/application-development/features#child-workflows"
+      "destination": "/application-development/golang/features#child-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-child-workflow-execution-in-go",
-      "destination": "/application-development/features#child-workflows"
+      "destination": "/application-development/golang/features#child-workflows"
     },
     {
       "source": "/go-continue-as-new",
@@ -347,31 +359,31 @@
     },
     {
       "source": "/go-create-workflows",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/application-development/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/create-workflows",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/application-development/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/workflows",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/application-development/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-develop-a-workflow-in-go",
-      "destination": "/application-development/foundations#develop-workflows"
+      "destination": "/application-development/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-workflow-execution-in-go",
-      "destination": "/application-development/foundations#start-workflow-execution"
+      "destination": "/application-development/golang/foundations#start-workflow-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-a-workflow-execution-in-go",
-      "destination": "/application-development/foundations#get-workflow-results"
+      "destination": "/application-development/golang/foundations#get-workflow-results"
     },
     {
       "source": "/go/distributed-cron",
-      "destination": "/application-development/features#temporal-cron-jobs"
+      "destination": "/application-development/golang/features#temporal-cron-jobs"
     },
     {
       "source": "/go-error-handling",
@@ -383,11 +395,11 @@
     },
     {
       "source": "/go/queries",
-      "destination": "/application-development/features#queries"
+      "destination": "/application-development/golang/features#queries"
     },
     {
       "source": "/go/retries",
-      "destination": "/application-development/features#activity-timeouts"
+      "destination": "/application-development/golang/features#activity-timeouts"
     },
     {
       "source": "/go-run-your-first-app",
@@ -415,19 +427,19 @@
     },
     {
       "source": "/go/signals",
-      "destination": "/application-development/features#signals"
+      "destination": "/application-development/golang/features#signals"
     },
     {
       "source": "/go/how-to-use-signals-in-go",
-      "destination": "/application-development/features#signals"
+      "destination": "/application-development/golang/features#signals"
     },
     {
       "source": "/go/how-to-send-a-signal-to-a-workflow-execution-in-go",
-      "destination": "/application-development/features#signals"
+      "destination": "/application-development/golang/features#signals"
     },
     {
       "source": "/go/how-to-handle-a-signal-in-a-workflow-in-go",
-      "destination": "/application-development/features#signals"
+      "destination": "/application-development/golang/features#signals"
     },
     {
       "source": "/go-sync-vs-async-start",
@@ -463,19 +475,19 @@
     },
     {
       "source": "/go/workers",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/application-development/golang/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-program-in-go",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/application-development/golang/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-in-go",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/application-development/golang/foundations#run-a-dev-worker"
     },
     {
       "source": "/go-execute-activity",
-      "destination": "/application-development-guide#activity-execution"
+      "destination": "/application-development/golang/foundations#activity-execution"
     },
     {
       "source": "/go-activity-async-completion",
@@ -659,11 +671,11 @@
     },
     {
       "source": "/content/how-to-develop-a-worker-program-in-php",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/application-development/php/foundations#run-a-dev-worker"
     },
     {
       "source": "/php/how-to-develop-a-worker-program-in-php",
-      "destination": "/application-development/foundations#run-a-dev-worker"
+      "destination": "/application-development/php/foundations#run-a-dev-worker"
     },
     {
       "source": "/server",

@@ -153,8 +153,8 @@ module.exports = {
               href: "https://community.temporal.io/",
             },
             {
-              label: 'Ask an expert',
-              href: 'https://pages.temporal.io/ask-an-expert'
+              label: "Ask an expert",
+              href: "https://pages.temporal.io/ask-an-expert",
             },
           ],
         },
@@ -419,23 +419,23 @@ module.exports = {
         },
       },
     ],
-    [
-      "@docusaurus/plugin-client-redirects",
-      {
-        createRedirects(existingPath) {
-          if (existingPath.includes("?lang=go")) {
-            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
-            return [
-              existingPath.replace(
-                "/application-development/golang/foundations",
-                "/application-development/foundations"
-              ),
-            ];
-          }
-          return undefined; // Return a falsy value: no redirect created
-        },
-      },
-    ],
+    // [
+    //   "@docusaurus/plugin-client-redirects",
+    //   {
+    //     createRedirects(existingPath) {
+    //       if (existingPath.includes("?lang=go")) {
+    //         // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+    //         return [
+    //           existingPath.replace(
+    //             "/application-development/golang/foundations",
+    //             "/application-development/foundations"
+    //           ),
+    //         ];
+    //       }
+    //       return undefined; // Return a falsy value: no redirect created
+    //     },
+    //   },
+    // ],
   ],
 };
 
