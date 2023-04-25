@@ -7,5 +7,4 @@ tags:
     - cli
 ---
 
-Alias: **-n**
-Identifies a Namespace in the Temporal Workflow. (default: default)
+Specify namespaces that should be pre-created (namespace "default" is always created).

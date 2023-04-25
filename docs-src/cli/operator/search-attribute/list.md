@@ -10,33 +10,15 @@ tags:
 The `temporal operator search-attrbute list` command displays a list of all [Search Attributes](/concepts/what-is-a-search-attribute) that can be used in `temporal workflow list --query`.
 
 Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal operator search-attribute list [command options]`
 
-- [--address](/cli/cmd-options/address)
+- [--fields](/cli/cmd-options/fields)
 
-- [--codec-auth](/cli/cmd-options/codec-auth)
+- [--limit](/cli/cmd-options/limit)
 
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
-
-- [--color](/cli/cmd-options/color)
-
-- [--context-timeout](/cli/cmd-options/context-timeout)
-
-- [--env](/cli/cmd-options/env)
-
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
-
-- [--namespace](/cli/cmd-options/namespace)
+- [--no-pager](/cli/cmd-options/no-pager)
 
 - [--output](/cli/cmd-options/output)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+- [--pager](/cli/cmd-options/pager)
 
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)

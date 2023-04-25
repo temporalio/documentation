@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Optionally specify visibility archival URI (cannot be changed after first time archival is enabled)
+Optionally specify visibility archival URI (cannot be changed after first time archival is enabled).

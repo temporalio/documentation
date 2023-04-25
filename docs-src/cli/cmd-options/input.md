@@ -7,5 +7,5 @@ tags:
     - cli
 ---
 
-Alias: **-i**
-Optional JSON input to provide to the Workflow. Pass "null" for null values.
+Optional JSON input to provide to the Workflow.
+Pass "null" for null values.

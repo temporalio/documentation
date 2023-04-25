@@ -2,10 +2,9 @@
 id: output
 title: temporal  output
 sidebar_label: output
-description: format output as either table, json, card. 
+description: Output format.
 tags:
     - cli
 ---
 
-Alias: **-o**
-format output as: table, json, card. (default: table)
+format output as: table, json, card.
