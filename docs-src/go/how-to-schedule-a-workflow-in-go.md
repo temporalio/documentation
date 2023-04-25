@@ -80,7 +80,7 @@ Pausing can also be done by using `Pause()` on `scheduleHandle`.
 scheduleHandle.Pause()
 ```
 
-To unpause a Schedule, use `Unpause()` on the `scheduleHandle`.
+To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["99-102"]}-->
 <!--SNIPEND-->
