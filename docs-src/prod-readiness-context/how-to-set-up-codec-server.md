@@ -105,7 +105,7 @@ For details on setting up authorization, see [Authorization](#authorization).
 
 #### Authorization
 
-To enable authorization, your Codec Server must be an HTTPS Server with SSL certificates and corresponding private keys.
+To enable authorization, your Codec Server must be an HTTPS Server.
 
 **Temporal Cloud**
 
@@ -114,7 +114,7 @@ The Temporal Cloud UI provides an option to pass access tokens (JWT) to your Cod
 Use the access tokens to validate access and then return decoded payloads from the Codec Server.
 
 You can enable this by selecting **Pass access token** in your Codec Server endpoint interface where you add your endpoint.
-Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set. <!--NEED AN EXAMPLE HERE FOR WHAT A SAMPLE REQUEST LOOKS LIKE WITH AN AUTH HEADER-->
+Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set.
 
 In your Codec Server implementation, verify the signature on this access token (in your authorization header) against the JWKS endpoint provided to you. <!--Is this process defined? when a customer signs up for temporal cloud, do we provide them with the JWKS as part of the onboarding process?-->
 If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.
