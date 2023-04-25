@@ -7,4 +7,5 @@ tags:
     - cli
 ---
 
-Set the log formatting. Options: ["json", "pretty"]. (default: json)
+Set the log formatting.
+Options: ["json", "pretty"].

@@ -7,5 +7,4 @@ tags:
     - cli
 ---
 
-Alias: **-c**
 Path to config directory.

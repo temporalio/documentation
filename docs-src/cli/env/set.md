@@ -9,32 +9,19 @@ tags:
 
 The `temporal env set` command sets the value for an environmental property.
 
+Properties can be set for the entire system, such as the frontend address:
+`temporal env set local.address 127.0.0.1:7233`
+
 Use the options listed below to change the command's behavior.
-Make sure to write the command as follows:
-`temporal env set [command options] [arguments]`
 
-- [--address](/cli/cmd-options/address)
+- [--fields](/cli/cmd-options/fields)
 
-- [--codec-auth](/cli/cmd-options/codec-auth)
+- [--limit](/cli/cmd-options/limit)
 
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+- [--no-pager](/cli/cmd-options/no-pager)
 
-- [--color](/cli/cmd-options/color)
+- [--output](/cli/cmd-options/output)
 
-- [--context-timeout](/cli/cmd-options/context-timeout)
+- [--pager](/cli/cmd-options/pager)
 
-- [--env](/cli/cmd-options/env)
-
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
-
-- [--namespace](/cli/cmd-options/namespace)
-
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)

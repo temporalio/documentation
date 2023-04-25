@@ -8,36 +8,22 @@ tags:
 ---
 
 The `temporal operator namespace describe` command provides a description of a [Namespace](/concepts/what-is-a-namespace).
-Namespaces can be identified by name or Namespace ID.
+Namespaces are identified by Namespace ID.
+
+`temporal operator namespace describe --namespace-id=meaningful-business-id`
 
 Use the options listed below to change the command's output.
-Make sure to write the command as follows:
-`temporal operator namespace describe [command options] [arguments]`
 
-- [--address](/cli/cmd-options/address)
+- [--fields](/cli/cmd-options/fields)
 
-- [--codec-auth](/cli/cmd-options/codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
-
-- [--color](/cli/cmd-options/color)
-
-- [--context-timeout](/cli/cmd-options/context-timeout)
-
-- [--env](/cli/cmd-options/env)
-
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
-
-- [--namespace](/cli/cmd-options/namespace)
+- [--limit](/cli/cmd-options/limit)
 
 - [--namespace-id](/cli/cmd-options/namespace-id)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
+- [--no-pager](/cli/cmd-options/no-pager)
 
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
+- [--output](/cli/cmd-options/output)
 
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
+- [--pager](/cli/cmd-options/pager)
 
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)
