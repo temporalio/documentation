@@ -13,6 +13,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 - [Create a Namespace](#create-a-namespace)
 - [Access a Namespace](#access-a-namespace)
 - [Manage Namespaces](#manage-namespaces)
+- [Delete a Namespace](#delete-a-namespace)
 
 ## Create a Namespace
 
@@ -115,3 +116,25 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 
 To manage certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#certificate-filters">Learn more</a></span></span></a> commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
+
+## Delete a Namespace
+
+:::info
+
+To delete a Namespace, a user must have Namespace Admin [permission](/cloud/#namespace-level-permissions) for that Namespace.
+
+:::
+
+### Delete a Namespace using Temporal Cloud UI
+
+1. Go to the Temporal Cloud UI and log in.
+1. On the left side of the window, select **Namespaces**.
+1. On the **Namespaces** page, select a Namespace Name.
+1. On the Namespace page, select **Edit** in the upper-right portion of the window.
+1. On the **Edit** Namespace page, select **Delete Namespace** in the upper-right portion of the window.
+1. In the **Delete Namespace** dialog, type `DELETE` to confirm the deletion of that Namespace.
+1. Select **Delete**.
+
+### Delete a Namespace using tcld
+
+This functionality is in development.

@@ -471,10 +471,11 @@ The [`Context.current().cancellationSignal`](https://typescript.temporal.io/api/
 ```ts
 import { Context } from '@temporalio/activity';
 import fetch from 'node-fetch';
+import type { AbortSignal as FetchAbortSignal } from 'node-fetch/externals';
 
 export async function cancellableFetch(url: string): Promise<Uint8Array> {
   const response = await fetch(url, {
-    signal: Context.current().cancellationSignal,
+    signal: Context.current().cancellationSignal as FetchAbortSignal,
   });
   const contentLengthHeader = response.headers.get('Content-Length');
   if (contentLengthHeader === null) {
