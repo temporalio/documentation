@@ -62,6 +62,250 @@
       "permanent": false
     },
     {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/application-development/golang/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/application-development/golang/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/application-development/golang/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/application-development/java/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/application-development/java/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/application-development/java/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/application-development/java/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/application-development/php/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/application-development/php/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/application-development/php/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/application-development/php/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/application-development/python/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/application-development/python/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/application-development/python/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/application-development/python/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/application-development/typescript/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/application-development/typescript/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/application-development/typescript/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/application-development/typescript/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations",
+      "destination": "/application-development"
+    },
+    {
+      "source": "/application-development/features",
+      "destination": "/application-development"
+    },
+    {
+      "source": "/application-development/observability",
+      "destination": "/application-development"
+    },
+    {
+      "source": "/application-development/testing",
+      "destination": "/application-development"
+    },
+    {
       "source": "/change-log",
       "destination": "/changelog"
     },
