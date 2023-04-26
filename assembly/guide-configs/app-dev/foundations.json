@@ -15,7 +15,7 @@
     },
     {
       "type": "h2",
-      "id": "clusters/quick-install"
+      "id": "clusters/how-to-install-temporal-cli"
     },
     {
       "type": "h2",
@@ -129,7 +129,7 @@
         },
         {
           "lang": "typescript",
-          "id": "typescript/how-to-connect-to-a-cluster-in-typescript"
+          "id": "typescript/how-to-connect-to-a-development-cluster-in-typescript"
         }
       ]
     },
@@ -158,7 +158,7 @@
         },
         {
           "lang": "typescript",
-          "id": "none"
+          "id": "typescript/how-to-connect-to-temporal-cloud-in-typescript"
         }
       ]
     },

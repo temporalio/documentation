@@ -15,7 +15,7 @@ This guide provides a comprehensive overview of Temporal Clusters.
 
 A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a>, combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- <a class="tdlp" href="/application-development/foundations#run-a-development-cluster">How to quickly install a Temporal Cluster for testing and development<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/foundations#run-a-development-cluster">Learn more</a></span></span></a>
+- [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -57,8 +57,7 @@ The release notes of each Temporal Server declare when we plan to drop support f
   Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
 - We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
   Feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
-- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is meant only for development and testing, not production usage.
-  Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
+- Temporal also supports SQLite v3.x persistence, but this is meant only for development and testing, not production usage.
 
 ### Monitoring and observation
 
@@ -286,7 +285,7 @@ Retention Period is the duration for which the Temporal Cluster stores data asso
 A Retention Period applies to all closed Workflow Executions within a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and is set when the Namespace is registered.
 
 The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
-mutable
+
 The minimum Retention Period is 1 day.
 On Temporal Cluster version 1.18 and later, the maximum Retention Period value for Namespaces can be set to anything over the minimum requirement of 1 day. Ensure that your Persistence store has enough capacity for the storage.
 On Temporal Cluster versions 1.17 and earlier, the maximum Retention Period you can set is 30 days.
@@ -420,10 +419,10 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 1               | 1       |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 1               | 1       |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 1: adding event with event ID == 2 & version == 1
@@ -434,11 +433,11 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 2               | 1       |
-| 2        | 1               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 2               | 1       |
+| 2        | 1             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 2: adding event with event ID == 3 & version == 1
@@ -449,12 +448,12 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 3               | 1       |
-| 2        | 1               |                 |         |
-| 3        | 1               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 3               | 1       |
+| 2        | 1             |                 |         |
+| 3        | 1             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 3: Namespace failover triggered, Namespace version is now 2
@@ -466,13 +465,13 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 3               | 1       |
-| 2        | 1               | 4               | 2       |
-| 3        | 1               |                 |         |
-| 4        | 2               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 3               | 1       |
+| 2        | 1             | 4               | 2       |
+| 3        | 1             |                 |         |
+| 4        | 2             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 4: adding event with event ID == 5 & version == 2
@@ -483,14 +482,14 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 3               | 1       |
-| 2        | 1               | 5               | 2       |
-| 3        | 1               |                 |         |
-| 4        | 2               |                 |         |
-| 5        | 2               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 3               | 1       |
+| 2        | 1             | 5               | 2       |
+| 3        | 1             |                 |         |
+| 4        | 2             |                 |         |
+| 5        | 2             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 </details>
@@ -516,12 +515,12 @@ View in both Cluster B & C
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 2               | 1       |
-| 2        | 1               | 3               | 2       |
-| 3        | 2               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 2               | 1       |
+| 2        | 1             | 3               | 2       |
+| 3        | 2             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 1: adding event with event ID == 4 & version == 2 in Cluster B
@@ -530,13 +529,13 @@ T = 1: adding event with event ID == 4 & version == 2 in Cluster B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 2               | 1       |
-| 2        | 1               | 4               | 2       |
-| 3        | 2               |                 |         |
-| 4        | 2               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 2               | 1       |
+| 2        | 1             | 4               | 2       |
+| 3        | 2             |                 |         |
+| 4        | 2             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 1: namespace failover to Cluster C, adding event with event ID == 4 & version == 3 in Cluster C
@@ -545,13 +544,13 @@ T = 1: namespace failover to Cluster C, adding event with event ID == 4 & versio
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version   | Event ID        | Version |
-| -------- | -------------   | --------------- | ------- |
-| 1        | 1               | 2               | 1       |
-| 2        | 1               | 3               | 2       |
-| 3        | 2               | 4               | 3       |
-| 4        | 3               |                 |         |
-| -------- | -------------   | --------------- | ------- |
+| Event ID | Event Version | Event ID        | Version |
+|----------|---------------|-----------------|---------|
+| 1        | 1             | 2               | 1       |
+| 2        | 1             | 3               | 2       |
+| 3        | 2             | 4               | 3       |
+| 4        | 3             |                 |         |
+| -------- | ------------- | --------------- | ------- |
 ```
 
 T = 2: replication task from Cluster C arrives in Cluster B
@@ -562,12 +561,12 @@ Note: below are a tree structures
                 | -------- | ------------- |
                 | Events        |
                 | ------------- | ------------- |
-                | Event ID      | Event Version |
-                | --------      | ------------- |
-                | 1             | 1             |
-                | 2             | 1             |
-                | 3             | 2             |
-                | --------      | ------------- |
+                | Event ID | Event Version |
+                |----------|---------------|
+                | 1        | 1             |
+                | 2        | 1             |
+                | 3        | 2             |
+                | -------- | ------------- |
                 |               |
                 | ------------- | ------------  |
                 |               |
@@ -580,11 +579,11 @@ Note: below are a tree structures
           | --------------- | ------- |
           | Version History |
           | --------------- | ------------------- |
-          | Event ID        | Version             |
-          | --------------- | -------             |
-          | 2               | 1                   |
-          | 3               | 2                   |
-          | --------------- | -------             |
+          | Event ID        | Version |
+          |-----------------|---------|
+          | 2               | 1       |
+          | 3               | 2       |
+          | --------------- | ------- |
           |                 |
           | -------         | ------------------- |
           |                 |
@@ -674,7 +673,7 @@ T = 0: task A is generated according to Event Id: 4, version: 2
 | Events   |
 | -------- | ------------- |
 | Event ID | Event Version |
-| -------- | ------------- |
+|----------|---------------|
 | 1        | 1             |
 | 2        | 1             |
 | 3        | 2             |
@@ -694,12 +693,12 @@ T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuil
 | -------- | ------------- |
 | Events        |
 | ------------- | -------------------------------------------- |
-| Event ID      | Event Version                                |
-| --------      | -------------                                |
-| 1             | 1                                            |
-| 2             | 1                                            |
-| 3             | 2                                            |
-| --------      | -------------                                |
+| Event ID | Event Version |
+|----------|---------------|
+| 1        | 1             |
+| 2        | 1             |
+| 3        | 2             |
+| -------- | ------------- |
 |               |
 | ------------- | -------------------------------------------- |
 |               |

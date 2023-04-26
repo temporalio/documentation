@@ -2,9 +2,9 @@
 id: dry-run
 title: temporal  dry-run
 sidebar_label: dry-run
-description: Definition for the dry-run command option.
+description: Simulate reset without resetting any Workflow Executions.
 tags:
-	- cli
+    - cli
 ---
 
 Simulate reset without resetting any Workflow Executions.

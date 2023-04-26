@@ -11,6 +11,16 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+:::success Temporal CLI is now available!
+
+The new [Temporal CLI](/cli) is available for use.
+
+tctl v1.17 can still be used with Temporal Server version 1.20 and is expected to be compatible with Temporal Server version 1.21.
+
+tctl is expected to be fully deprecated by Temporal Server version 1.22
+
+:::
+
 The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-execution) operations.
 
 - <a class="tdlp" href="#cancel">tctl workflow cancel<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow cancel</span><br /><br /><span class="tdlppd">How to cancel a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cancel">Learn more</a></span></span></a>

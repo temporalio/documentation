@@ -4,41 +4,28 @@ title: temporal batch terminate
 sidebar_label: terminate
 description: Stop a Batch operation job.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
+A reason for terminating the Batch Job can also be provided for future reference.
+
+`temporal batch terminate --job-id=MyJobId --reason=JobReason`
 
 Use the command options listed below to change the behavior of this command.
-Make sure to write the command as follows:
-`temporal batch terminate [command options] [arguments]`
 
-- [--address](/cli/cmd-options/address)
-
-- [--codec-auth](/cli/cmd-options/codec-auth)
-
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
-
-- [--color](/cli/cmd-options/color)
-
-- [--context-timeout](/cli/cmd-options/context-timeout)
-
-- [--env](/cli/cmd-options/env)
-
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
+- [--fields](/cli/cmd-options/fields)
 
 - [--job-id](/cli/cmd-options/job-id)
 
-- [--namespace](/cli/cmd-options/namespace)
+- [--limit](/cli/cmd-options/limit)
+
+- [--no-pager](/cli/cmd-options/no-pager)
+
+- [--output](/cli/cmd-options/output)
+
+- [--pager](/cli/cmd-options/pager)
 
 - [--reason](/cli/cmd-options/reason)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)

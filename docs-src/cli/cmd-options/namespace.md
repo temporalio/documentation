@@ -2,10 +2,9 @@
 id: namespace
 title: temporal  namespace
 sidebar_label: namespace
-description: Definition for the namespace command option.
+description: Identifies a Namespace in the Temporal Workflow.
 tags:
-	- cli
+    - cli
 ---
 
-Alias: **-n**
-Identifies a Namespace in the Temporal Workflow. (default: default)
+Specify namespaces that should be pre-created (namespace "default" is always created).

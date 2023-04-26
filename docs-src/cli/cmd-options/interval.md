@@ -2,9 +2,9 @@
 id: interval
 title: temporal  interval
 sidebar_label: interval
-description: Definition for the interval command option.
+description: Interval duration to include phase offset.
 tags:
-	- cli
+    - cli
 ---
 
 Interval duration, e.g. 90m, or 90m/13m to include phase offset.

@@ -25,7 +25,7 @@ If you can't find what you are looking for in the Developer's guide, it could be
 
 In this section you can find the following:
 
-- <a class="tdlp" href="#run-a-development-cluster">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-cluster">Learn more</a></span></span></a>
+- <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
 - <a class="tdlp" href="#install-a-temporal-sdk">Install your SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install a Temporal SDK</span><br /><br /><span class="tdlppd">A Temporal SDK provides a framework for Temporal Application development.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#install-a-temporal-sdk">Learn more</a></span></span></a>
 - <a class="tdlp" href="#connect-to-a-dev-cluster">Connect to a dev Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect a Temporal Client to a Temporal Cluster</span><br /><br /><span class="tdlppd">When connecting a Temporal Client to a Temporal Cluster, you must provide the address and port number of the Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-a-dev-cluster">Learn more</a></span></span></a>
 - <a class="tdlp" href="#connect-to-temporal-cloud">Connect to Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#connect-to-temporal-cloud">Learn more</a></span></span></a>
@@ -36,86 +36,89 @@ In this section you can find the following:
 - <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
-## Run a development Cluster
+## Run a development server
 
-The following sections list various methods of deploying your <a class="tdlp" href="/clusters#">Temporal Clusters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> locally, so that you can use and interact with the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> APIs and [tctl](/tctl-v1) commands to test and develop applications.
+This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
+The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
 
-The following sections list methods for deploying your Temporal development Clusters.
+For information on deploying and running a production Cluster, see the [Cluster deployment guide](/cluster-deployment-guide), or sign up for [Temporal Cloud](/cloud) and let us run your production Cluster for you.
 
-- [Temporalite](#temporalite): This distribution of Temporal runs as a single process with zero runtime dependencies.
-- [Docker](#docker-compose): Using Docker Compose simplifies developing your Temporal Application.
-- [Gitpod](#gitpod): One-click deployments are available for Go and TypeScript.
+Temporal CLI is a tool for interacting with a Temporal Cluster from the command line and it includes a distribution of the Temporal Server and Web UI.
+This local development Cluster runs as a single process with zero runtime dependencies and it supports persistence to disk and in-memory mode through SQLite.
 
-**For information on deploying a [production environment](/server/production-deployment), see the [Temporal Cloud](/cloud) documentation.**
+**Install the Temporal CLI**
 
-### Temporalite
+Choose one of the following install methods to install the Temporal CLI.
 
-Temporalite is a distribution of Temporal that runs as a single process with zero runtime dependencies.
-It supports persistence to disk and in-memory mode through SQLite.
+<Tabs>
+<TabItem value="macOS" label="macOS">
 
-**Prerequisites**
+- Install the Temporal CLI with Homebrew.
 
-Temporalite requires [Go 1.18 or later](https://go.dev/dl/).
+  ```bash
+  brew install temporal
+  ```
 
-**Build and start Temporalite**
+- Install the Temporal CLI with cURL.
 
-The following steps start and run a Temporal Cluster.
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
 
-1. Build from source.
-   ```bash
-   git clone https://github.com/temporalio/temporalite.git
-   cd temporalite
-   go build ./cmd/temporalite
-   ```
-2. Start Temporalite by using the `start` command.
-   ```bash
-   ./temporalite start --namespace default
-   ```
-   Replace `default` with your [Namespace Name](/namespaces).
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64">Download for Darwin amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64">Download for Darwin arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
 
-**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8233`](http://127.0.0.1:8233/).
+</TabItem>
+<TabItem value="Linux" label="Linux">
 
-<!-- For macOS users, if you receive the `error setting up schema: stat /Users/<user_name>/Library/Application Support/temporalite/db:` error, then create the folders `temporalite/db` in your `Application Support` library. -->
+- Install the Temporal CLI with cURL.
 
-### Docker Compose
+  ```bash
+  curl -sSf https://temporal.download/cli.sh | sh
+  ```
 
-Use Docker Compose and Temporal Cluster Docker images to quickly install and run a Temporal Cluster locally while developing Temporal Applications.
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed.
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=amd64">Download for Linux amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=linux&arch=arm64">Download for Linux arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal` binary to your PATH.
 
-**Prerequisites**
+</TabItem>
+<TabItem value="Windows" label="Windows">
 
-Install [Docker](https://docs.docker.com/engine/install) and [Docker Compose](https://docs.docker.com/compose/install).
+- Install the Temporal CLI from CDN.
+  1. Select the platform and architecture needed and download the binary.
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=amd64">Download for Windows amd64</a>
+     - <a href="https://temporal.download/cli/archive/latest?platform=windows&arch=arm64">Download for Windows arm64</a>
+  2. Extract the downloaded archive.
+  3. Add the `temporal.exe` binary to your PATH.
 
-**Clone the repo and run Docker Compose**
+</TabItem>
+</Tabs>
 
-The following steps start and run a Temporal Cluster using the default configuration.
+**Start the Temporal Development Server**
 
-1. Clone the [temporalio/docker-compose](https://github.com/temporalio/docker-compose) repository.
-   ```bash
-   git clone https://github.com/temporalio/docker-compose.git
-   ```
-2. Change to the directory for the project.
-   ```bash
-   cd docker-compose
-   ```
-3. From your project directory, start your application.
-   ```bash
-   docker compose up
-   ```
+Start the Temporal Development Server by using the `server start-dev` command.
 
-**Results**: You should have Temporal Cluster running at `http://127.0.0.1:7233` and the Temporal Web UI at [`http://127.0.0.1:8080`](http://127.0.0.1:8080/).
+```bash
+temporal server start-dev
+```
 
-To try other configurations (different dependencies and databases), or to try a custom Docker image, follow the [temporalio/docker-compose README](https://github.com/temporalio/docker-compose/blob/main/README.md).
+This command automatically starts the Web UI, creates the default [Namespace](/namespaces), and uses an in-memory database.
 
-### Gitpod
+The Temporal Server should be available on `localhost:7233` and the Temporal Web UI should be accessible at [`http://localhost:8233`](http://localhost:8233/).
 
-Run a Temporal Cluster and develop Temporal Applications in your browser using [Gitpod](https://gitpod.io/#https://github.com/temporalio/samples-typescript/).
+The server's startup configuration can be customized using command line options.
+For a full list of options, run:
 
-One-click deployments are available for the [temporalio/samples-go](https://github.com/temporalio/samples-go) repo and the [temporalio/samples-typescript](https://github.com/temporalio/samples-typescript) repo.
-
-A one-click deployment starts a Temporal Cluster using a Temporal Cluster Docker image, starts a Worker Process, and starts one of the application's sample Workflows.
-
-A one-click deployment can take up to a full minute to get fully up and running.
-When it is running, you can customize the application samples.
+```bash
+temporal server start-dev --help
+```
 
 ## Install a Temporal SDK
 
@@ -358,8 +361,8 @@ However, it is acceptable and common to use a Temporal Client inside an Activity
 
 :::
 
-When you are running a Cluster locally (such as <a class="tdlp" href="#temporalite">Temporalite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporalite">Learn more</a></span></span></a>), the number of connection options you must provide is minimal.
-Many SDKs default to the local host or IP address and port that Temporalite and <a class="tdlp" href="#docker-compose">Docker Compose<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to quickly install a Temporal Cluster for testing and local development</span><br /><br /><span class="tdlppd">There are four ways to quickly install and run a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#docker-compose">Learn more</a></span></span></a> serve (`127.0.0.1:7233`).
+When you are running a Cluster locally (such as [Temporalite](/kb/all-the-ways-to-run-a-cluster#temporalite)), the number of connection options you must provide is minimal.
+Many SDKs default to the local host or IP address and port that Temporalite and [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker-compose) serve (`127.0.0.1:7233`).
 
 <Tabs
 defaultValue="go"
@@ -542,45 +545,19 @@ client = await Client.connect(
 </TabItem>
 <TabItem value="typescript">
 
-Declaring the `WorkflowClient()` creates a new connection to the Temporal service.
+Creating a [Connection](https://typescript.temporal.io/api/classes/client.Connection) connects to the Temporal Cluster, and you can pass the `Connection` instance when creating the [Client](https://typescript.temporal.io/api/classes/client.Client#connection).
 
-If you omit the connection and just call the `new WorkflowClient()`, you create a default connection that works locally.
-However, always configure your connection and Namespace when [deploying to production](https://legacy-documentation-sdks.temporal.io/typescript/security/#encryption-in-transit-with-mtls).
+If you omit the `Connection` and just create a `new Client()`, it will connect to `localhost:7233`.
 
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) API available in the [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient) package to create a new [`client`](https://typescript.temporal.io/api/namespaces/client/) to communicate with a Temporal Cluster.
-
-Use a new `WorkflowClient()` with the requisite gRPC [`Connection`](https://typescript.temporal.io/api/classes/client.Connection#service) to connect to a Client and set your Namespace name.
-
-Use the [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.TLSConfig) API to connect a Client with mTLS.
-
-```typescript
-import fs from "fs-extra";
-import {Connection, WorkflowClient} from "@temporalio/client";
-import path = from "path";
+```ts
+import { Client } from '@temporalio/client';
 
 async function run() {
-  const cert = await fs.readFile("./path-to/your.pem");
-  const key = await fs.readFile("./path-to/your.key");
+  const client = new Client();
 
-  const connectionOptions = {
-    address: "your-custom-namespace.tmprl.cloud:7233",
-    tls: {
-      clientCertPair: {
-        crt: cert,
-        key: key,
-      },
-    // serverRootCACertificatePath: "ca.cert",
-    },
-  };
-  const connection = await Connection.connect(connectionOptions);
+  // . . .
 
-  const client = new WorkflowClient({
-    connection,
-    // connects to 'default' namespace if not specified
-    namespace: "your-custom-namespace",
-  });
-
-    // . . .
+  await client.connection.close();
 }
 
 run().catch((err) => {
@@ -693,9 +670,49 @@ The information you are looking for may be found in the [legacy docs](https://le
 </TabItem>
 <TabItem value="typescript">
 
-Content is planned but not yet available.
+Create a [`Connection`](https://typescript.temporal.io/api/classes/client.Connection) with a [`connectionOptions`](https://typescript.temporal.io/api/interfaces/client.ConnectionOptions) object that has your Cloud namespace and client certificate.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+```ts
+import { Client, Connection } from '@temporalio/client';
+import fs from 'fs-extra';
+
+const { NODE_ENV = 'development' } = process.env;
+const isDeployed = ['production', 'staging'].includes(NODE_ENV);
+
+async function run() {
+  const cert = await fs.readFile('./path-to/your.pem');
+  const key = await fs.readFile('./path-to/your.key');
+
+  let connectionOptions = {};
+  if (isDeployed) {
+    connectionOptions = {
+      address: 'your-namespace.tmprl.cloud:7233',
+      tls: {
+        clientCertPair: {
+          crt: cert,
+          key,
+        },
+      },
+    };
+
+    const connection = await Connection.connect(connectionOptions);
+
+    const client = new Client({
+      connection,
+      namespace: 'your-namespace',
+    });
+
+    // . . .
+
+    await client.connection.close();
+  }
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
 
 </TabItem>
 </Tabs>
@@ -1062,7 +1079,7 @@ Ensure that your Client can handle an Object type return or is able to convert t
 
 Related references:
 
-- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>
@@ -1827,7 +1844,7 @@ Activity return values must be serializable and deserializable by the provided [
 The `execute` method for `DynamicActivity` can return type Object.
 Ensure that your Workflow or Client can handle an Object type return or is able to convert the Object type response.
 
-- <a class="tdlp" href="/security#data-converter">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that encodes and decodes data entering and exiting a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#data-converter">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>
 - Java DataConverter reference: <https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/common/converter/DataConverter.html>
 
 </TabItem>

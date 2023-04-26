@@ -2,9 +2,9 @@
 id: active-cluster
 title: temporal  active-cluster
 sidebar_label: active-cluster
-description: Definition for the active-cluster command option.
+description: Active cluster name
 tags:
-	- cli
+    - cli
 ---
 
-Active cluster name
+Active cluster name.

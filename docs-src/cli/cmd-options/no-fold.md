@@ -2,9 +2,10 @@
 id: no-fold
 title: temporal  no-fold
 sidebar_label: no-fold
-description: Definition for the no-fold command option.
+description: Disable folding
 tags:
-	- cli
+    - cli
 ---
 
-Disable folding. All Child Workflows within the set depth will be fetched and displayed.
+Disable folding.
+All Child Workflows within the set depth will be fetched and displayed.

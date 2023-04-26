@@ -256,9 +256,7 @@ To serialize values as [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol
 [protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/master/protobufs/protos/root.js)
 
 ```js
-const { patchProtobufRoot } = require(
-  '@temporalio/common/lib/converter/patch-protobuf-root',
-);
+const { patchProtobufRoot } = require('@temporalio/common/lib/protobufs');
 const unpatchedRoot = require('./json-module');
 module.exports = patchProtobufRoot(unpatchedRoot);
 ```

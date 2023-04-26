@@ -2,9 +2,9 @@
 id: reapply-type
 title: temporal  reapply-type
 sidebar_label: reapply-type
-description: Definition for the reapply-type command option.
+description: Event types to reapply after the reset point.
 tags:
-	- cli
+    - cli
 ---
 
-Event types to reapply after the reset point: , Signal, None. (default: All)
+Event types to reapply after the reset point: Signal, None.

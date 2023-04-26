@@ -2,9 +2,9 @@
 id: history-archival-state
 title: temporal  history-archival-state
 sidebar_label: history-archival-state
-description: Definition for the history-archival-state command option.
+description: Flag to set history archival state, valid values are "disabled" and "enabled"
 tags:
-	- cli
+    - cli
 ---
 
-Flag to set history archival state, valid values are "disabled" and "enabled"
+Flag to set history archival state, valid values are "disabled" and "enabled".

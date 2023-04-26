@@ -2,9 +2,9 @@
 id: description
 title: temporal  description
 sidebar_label: description
-description: Definition for the description command option.
+description: Namespace description
 tags:
-	- cli
+    - cli
 ---
 
-Namespace description
+Namespace description.

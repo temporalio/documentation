@@ -1208,14 +1208,6 @@
     {
       "source": "/java/:path*",
       "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
-    },
-    {
-      "source": "/application-development/foundations#run-worker-processes",
-      "destination": "/application-development/foundations#run-a-dev-worker"
-    },
-    {
-      "source": "/application-development/foundations#connect-to-a-cluster",
-      "destination": "/application-development/foundations#connect-to-a-dev-cluster"
     }
   ]
 }

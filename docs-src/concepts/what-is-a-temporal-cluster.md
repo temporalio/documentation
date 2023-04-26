@@ -10,7 +10,7 @@ tags:
 
 A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
 
-- [How to quickly install a Temporal Cluster for testing and development](/clusters/quick-install)
+- [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
@@ -52,8 +52,7 @@ The release notes of each Temporal Server declare when we plan to drop support f
   Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
 - We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
   Feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
-- Temporal is [working on official SQLite v3.x persistence](https://github.com/temporalio/temporal/pulls?q=is%3Apr+sort%3Aupdated-desc+sqlite), but this is meant only for development and testing, not production usage.
-  Cassandra, MySQL, and PostgreSQL schemas are supported and thus can be used as the Server's database.
+- Temporal also supports SQLite v3.x persistence, but this is meant only for development and testing, not production usage.
 
 ### Monitoring and observation
 
