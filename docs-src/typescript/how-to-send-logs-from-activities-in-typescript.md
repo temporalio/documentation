@@ -17,16 +17,10 @@ Inject Activity context via interceptor and log all Activity Executions
 </summary>
 
 <!--SNIPSTART typescript-activity-logging-interceptor-->
-
 [instrumentation/src/activities/interceptors.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/interceptors.ts)
-
 ```ts
 import { Context } from '@temporalio/activity';
-import {
-  ActivityExecuteInput,
-  ActivityInboundCallsInterceptor,
-  Next,
-} from '@temporalio/worker';
+import { ActivityInboundCallsInterceptor, ActivityExecuteInput, Next } from '@temporalio/worker';
 import { Logger } from 'winston';
 
 /** An Activity Context with an attached logger */
@@ -40,9 +34,7 @@ export function getContext(): ContextWithLogger {
 }
 
 /** Logs Activity executions and their duration */
-export class ActivityInboundLogInterceptor
-  implements ActivityInboundCallsInterceptor
-{
+export class ActivityInboundLogInterceptor implements ActivityInboundCallsInterceptor {
   public readonly logger: Logger;
 
   constructor(ctx: Context, logger: Logger) {
@@ -55,10 +47,7 @@ export class ActivityInboundLogInterceptor
     (ctx as ContextWithLogger).logger = this.logger;
   }
 
-  async execute(
-    input: ActivityExecuteInput,
-    next: Next<ActivityInboundCallsInterceptor, 'execute'>,
-  ): Promise<unknown> {
+  async execute(input: ActivityExecuteInput, next: Next<ActivityInboundCallsInterceptor, 'execute'>): Promise<unknown> {
     let error: any = undefined;
     const startTime = process.hrtime.bigint();
     try {
@@ -78,7 +67,6 @@ export class ActivityInboundLogInterceptor
   }
 }
 ```
-
 <!--SNIPEND-->
 
 </details>
@@ -89,9 +77,7 @@ Use the injected logger from an Activity
 </summary>
 
 <!--SNIPSTART typescript-activity-use-injected-logger -->
-
 [instrumentation/src/activities/index.ts](https://github.com/temporalio/samples-typescript/blob/master/instrumentation/src/activities/index.ts)
-
 ```ts
 import { getContext } from './interceptors';
 
@@ -101,7 +87,6 @@ export async function greet(name: string): Promise<string> {
   return `Hello, ${name}!`;
 }
 ```
-
 <!--SNIPEND-->
 
 </details>

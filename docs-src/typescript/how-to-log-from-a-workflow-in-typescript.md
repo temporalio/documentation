@@ -40,11 +40,9 @@ However, they differ from Activities in important ways:
 Explicitly declaring a Sink's interface is optional, but is useful for ensuring type safety in subsequent steps:
 
 <!--SNIPSTART typescript-logger-sink-interface-->
-
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
-
 ```ts
-import { LoggerSinks, proxySinks, Sinks } from '@temporalio/workflow';
+import { proxySinks, LoggerSinks, Sinks } from '@temporalio/workflow';
 
 export interface AlertSinks extends Sinks {
   alerter: {
@@ -54,7 +52,6 @@ export interface AlertSinks extends Sinks {
 
 export type MySinks = AlertSinks & LoggerSinks;
 ```
-
 <!--SNIPEND-->
 
 **Implementing Sinks**
@@ -64,9 +61,7 @@ Implementing Sinks is a two-step process.
 Implement and inject the Sink function into a Worker
 
 <!--SNIPSTART typescript-logger-sink-worker-->
-
 [sinks/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/worker.ts)
-
 ```ts
 import { defaultSinks, InjectedSinks, Worker } from '@temporalio/worker';
 import { MySinks } from './workflows';
@@ -99,7 +94,6 @@ main().catch((err) => {
   process.exit(1);
 });
 ```
-
 <!--SNIPEND-->
 
 - Sink function implementations are passed as an object into [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions/#sinks)
@@ -108,9 +102,7 @@ main().catch((err) => {
 **Proxy and call a Sink function from a Workflow**
 
 <!--SNIPSTART typescript-logger-sink-workflow-->
-
 [sinks/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/sinks/src/workflows.ts)
-
 ```ts
 const { alerter, defaultWorkerLogger } = proxySinks<MySinks>();
 
@@ -120,7 +112,6 @@ export async function sinkWorkflow(): Promise<string> {
   return 'Hello, Temporal!';
 }
 ```
-
 <!--SNIPEND-->
 
 Some important features of the [InjectedSinkFunction](https://typescript.temporal.io/api/interfaces/worker.InjectedSinkFunction) interface:

@@ -16,13 +16,10 @@ tags:
 Activities are _just functions_. The following is an Activity that accepts a string parameter and returns a string.
 
 <!--SNIPSTART typescript-activity-fn -->
-
 [snippets/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/snippets/src/activities.ts)
-
 ```ts
 export async function greet(name: string): Promise<string> {
   return `👋 Hello, ${name}!`;
 }
 ```
-
 <!--SNIPEND-->

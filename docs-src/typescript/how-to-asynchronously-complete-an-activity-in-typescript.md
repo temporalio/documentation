@@ -11,9 +11,7 @@ tags:
 To asynchronously complete an Activity, call [`AsyncCompletionClient.complete`](https://typescript.temporal.io/api/classes/client.AsyncCompletionClient#complete).
 
 <!--SNIPSTART typescript-activity-complete-async -->
-
 [activities-examples/src/activities/async-completion.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-examples/src/activities/async-completion.ts)
-
 ```ts
 import { CompleteAsyncError, Context } from '@temporalio/activity';
 import { AsyncCompletionClient } from '@temporalio/client';
@@ -28,8 +26,7 @@ export async function doSomethingAsync(): Promise<string> {
 async function doSomeWork(taskToken: Uint8Array): Promise<void> {
   const client = new AsyncCompletionClient();
   // does some work...
-  await client.complete(taskToken, 'Job\'s done!');
+  await client.complete(taskToken, "Job's done!");
 }
 ```
-
 <!--SNIPEND-->

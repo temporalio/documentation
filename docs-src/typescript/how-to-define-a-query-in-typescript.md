@@ -12,15 +12,10 @@ tags:
 Use [`defineQuery`](https://typescript.temporal.io/api/namespaces/workflow/#definequery) to define the name, parameters, and return value of a Query.
 
 <!--SNIPSTART typescript-define-query -->
-
 [state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
-
 ```ts
 import { defineQuery } from '@temporalio/workflow';
 
-export const getValueQuery = defineQuery<number | undefined, [string]>(
-  'getValue',
-);
+export const getValueQuery = defineQuery<number | undefined, [string]>('getValue');
 ```
-
 <!--SNIPEND-->

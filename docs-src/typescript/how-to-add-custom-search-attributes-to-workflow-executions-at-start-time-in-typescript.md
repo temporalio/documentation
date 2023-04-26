@@ -12,27 +12,24 @@ tags:
 Use [`WorkflowOptions.searchAttributes`](https://typescript.temporal.io/api/interfaces/client.WorkflowOptions#searchattributes).
 
 <!--SNIPSTART typescript-search-attributes-client-->
-
 [search-attributes/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/search-attributes/src/client.ts)
-
 ```ts
-const handle = await client.workflow.start(example, {
-  taskQueue: 'search-attributes',
-  workflowId: 'search-attributes-example-0',
-  searchAttributes: {
-    CustomIntField: [2],
-    CustomKeywordField: ['keywordA', 'keywordB'],
-    CustomBoolField: [true],
-    CustomDatetimeField: [new Date()],
-    CustomStringField: [
-      'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
-    ],
-  },
-});
+  const handle = await client.workflow.start(example, {
+    taskQueue: 'search-attributes',
+    workflowId: 'search-attributes-example-0',
+    searchAttributes: {
+      CustomIntField: [2],
+      CustomKeywordField: ['keywordA', 'keywordB'],
+      CustomBoolField: [true],
+      CustomDatetimeField: [new Date()],
+      CustomStringField: [
+        'String field is for text. When queried, it will be tokenized for partial match. StringTypeField cannot be used in Order By',
+      ],
+    },
+  });
 
-const { searchAttributes } = await handle.describe();
+  const { searchAttributes } = await handle.describe();
 ```
-
 <!--SNIPEND-->
 
 The type of `searchAttributes` is `Record<string, string[] | number[] | boolean[] | Date[]>`.
