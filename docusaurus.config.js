@@ -258,7 +258,7 @@ module.exports = {
               require("remark-typescript-tools").transpileCodeblocks,
               {
                 compilerSettings: {
-                  tsconfig: path.join(__dirname, "docs", "typescript", "tsconfig.json"),
+                  tsconfig: path.join(__dirname, "tsconfig.json"),
                   externalResolutions: {},
                 },
                 fileExtensions: [".md", ".mdx"],
