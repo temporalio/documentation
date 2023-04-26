@@ -29,7 +29,9 @@ Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-sch
 Enter these values in `client.Schedule.Options{}`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["28-36"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -137,6 +139,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## Backfill
@@ -154,7 +157,9 @@ Deletion does not affect any Workflows started by the Schedule.
 To delete a Schedule in Go, use the `Delete()` command on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["43-46"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -262,6 +267,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## Describe
@@ -272,7 +278,9 @@ This is helpful when you want to get a detailed view of the Schedule and its ass
 To describe a Schedule in Go, use `Describe()` on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["107-110"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -380,6 +388,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## List
@@ -396,7 +405,9 @@ Pausing a Schedule halts all future Workflow Runs; unpausing a Schedule allows t
 Pausing can be enabled when you create a Schedule by setting `State.Paused` to `true`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["85"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -504,6 +515,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 Pausing can also be done by using `Pause()` on `scheduleHandle`.
@@ -515,7 +527,9 @@ scheduleHandle.Pause()
 To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["99-102"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -623,6 +637,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## Trigger
@@ -634,7 +649,9 @@ To trigger a Scheduled Workflow Execution in Go, use `Trigger()` on `scheduleHan
 Set desired changes in `ScheduleTriggerOptions`.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["51-56"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -742,6 +759,7 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## Update
@@ -751,7 +769,9 @@ Updating a Schedule changes the configuration of existing Schedules.
 Use the `Update()` command to modify an existing Schedule.
 
 <!--SNIPSTART samples-go-schedule {"selectedLines": ["59-83"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 func main() {
 	ctx := context.Background()
@@ -859,4 +879,5 @@ func main() {
 	}
 }
 ```
+
 <!--SNIPEND-->
