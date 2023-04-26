@@ -7,6 +7,9 @@ tags:
   - guide-context
 ---
 
+If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
+Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
+
 To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
 1. Sign in to the [Microsoft Azure AD portal](https://portal.azure.com/).
@@ -46,8 +49,9 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    Near the top of the pane, select **Save**.
 1. In the **Attributes & Claims** section, select **Edit**.
 1. We require the user's full email address when connecting to Temporal.
-   In the **Required claim** section, verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
-1. Collect the information you need to send to us:
+   In the **Required claim** section, set **emailaddress** and **name**.
+   Verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
+1. Collect information that you need to send to us:
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 

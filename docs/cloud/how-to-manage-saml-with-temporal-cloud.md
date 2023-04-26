@@ -10,9 +10,6 @@ toc_max_heading_level: 4
 
 To authenticate the users of your Temporal Cloud account, you can connect a Security Assertion Markup Language (SAML) identity provider (IdP).
 
-If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
-Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
-
 ## Integrate SAML with your Temporal Cloud account
 
 1. Locate your <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a>.
@@ -25,6 +22,9 @@ Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 1. [Share your connection information with us and test your connection.](#finish-your-saml-configuration)
 
 ## Configure SAML with Azure AD
+
+If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
+Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 
 To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
@@ -65,8 +65,9 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    Near the top of the pane, select **Save**.
 1. In the **Attributes & Claims** section, select **Edit**.
 1. We require the user's full email address when connecting to Temporal.
-   In the **Required claim** section, verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
-1. Collect the information you need to send to us:
+   In the **Required claim** section, set **emailaddress** and **name**.
+   Verify that **Unique User Identifier (NameID)** is set to `user.userprincipalname [nameid-format:emailAddress]`.
+1. Collect information that you need to send to us:
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
@@ -105,13 +106,14 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    ```
 
 1. We require the user's full email address when connecting to Temporal.
-   In **Name ID format**, select `EmailAddress`.
+   - In **Name ID format**, select `EmailAddress`.
+   - In **Attribute Statements**, set **email** and **name**.
 1. Select **Next**.
 1. In the **Feedback** section, select **Finish**.
 1. On the **Applications** page, select the name of the application integration you just created.
 1. On the application integration page, select the **Sign On** tab.
 1. Under **SAML Setup**, select **View SAML setup instructions**.
-1. Collect the information you need to send to us:
+1. Collect information that you need to send to us:
    - Copy the IdP settings.
    - Download the active certificate.
 
@@ -120,10 +122,14 @@ To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML c
 ## Finish SAML configuration
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-To do that, send the following information to us:
+To do that, [create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) and send the following information to us:
 
 - The sign-in URL from your application
-- The SAML sign-in certificate
+- The X.509 SAML sign-in certificate
+- At least one IdP domain to map to the SAML connection
+
+Generally, your IdP domain is the same as the domain for your email address.
+You can provide multiple IdP domains.
 
 When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud.
 This time, though, enter your email address in **Enterprise identity** and select **Continue**.

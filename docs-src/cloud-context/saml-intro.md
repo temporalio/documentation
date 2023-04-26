@@ -9,9 +9,6 @@ tags:
 
 To authenticate the users of your Temporal Cloud account, you can connect a Security Assertion Markup Language (SAML) identity provider (IdP).
 
-If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
-Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
-
 ## Integrate SAML with your Temporal Cloud account
 
 1. Locate your [Temporal Cloud Account Id](/concepts/what-is-a-cloud-account-id).

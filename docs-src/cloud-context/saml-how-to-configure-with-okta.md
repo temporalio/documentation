@@ -38,13 +38,14 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    ```
 
 1. We require the user's full email address when connecting to Temporal.
-   In **Name ID format**, select `EmailAddress`.
+   - In **Name ID format**, select `EmailAddress`.
+   - In **Attribute Statements**, set **email** and **name**.
 1. Select **Next**.
 1. In the **Feedback** section, select **Finish**.
 1. On the **Applications** page, select the name of the application integration you just created.
 1. On the application integration page, select the **Sign On** tab.
 1. Under **SAML Setup**, select **View SAML setup instructions**.
-1. Collect the information you need to send to us:
+1. Collect information that you need to send to us:
    - Copy the IdP settings.
    - Download the active certificate.
 
