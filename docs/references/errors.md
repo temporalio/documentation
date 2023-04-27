@@ -146,7 +146,7 @@ If the system hasn't started a new Workflow, manually reset the Workflow.
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
 
-If you see this error, contact your administrator to file a support ticket or report it [here](https://github.com/temporalio/temporal/issues).
+If you see this error, contact your administrator to [file a support ticket](http://support.temporal.io/) or report it [here](https://github.com/temporalio/temporal/issues).
 
 <!--TODO: add link above -->
 
@@ -207,7 +207,7 @@ The system will retry automatically.
 
 ## Resource Exhausted Cause Concurrent Limit
 
-This error indicates that the concurrent [poller count](/application-development/worker-performance/#poller-count) has been reached.
+This error indicates that the concurrent [poller count](/application-development/worker-performance/#poller-count) has been exhausted.
 
 <!--TODO: more info needed -->
 
@@ -221,7 +221,7 @@ This error indicates that the persistence rate limit has been reached.
 
 ## Resource Exhausted Cause RPS Limit
 
-This error indicates that the [Workflow](/workflows) has reached its RPS limit.
+This error indicates that the [Workflow](/workflows) has exhausted its RPS limit.
 
 <!--TODO: more info needed -->
 

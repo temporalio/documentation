@@ -52,15 +52,13 @@ Here, we show downloading a history and replaying it separately:
 [replay-history/src/replayer.ts](https://github.com/temporalio/samples-typescript/blob/master/replay-history/src/replayer.ts)
 
 ```ts
-const conn = await Connection.connect(
+const connection = await Connection.connect(
   /* { address: 'temporal.prod.company.com' } */
 );
-const { history } = await conn.workflowService.getWorkflowExecutionHistory({
-  namespace: 'default',
-  execution: {
-    workflowId: 'calc',
-  },
-});
+const client = new Client({ connection, namespace: 'default' });
+const workflowId = 'calc';
+const handle = client.workflow.getHandle(workflowId);
+const history = await handle.fetchHistory();
 ```
 
 <!--SNIPEND-->
