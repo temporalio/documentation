@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Port for the Web UI. (default: 0)
+Port for the Web UI.

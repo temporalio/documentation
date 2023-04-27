@@ -7,5 +7,4 @@ tags:
     - cli
 ---
 
-Alias: **-y**: Confirm all prompts.
 Confirm all prompts.

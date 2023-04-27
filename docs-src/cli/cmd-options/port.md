@@ -7,5 +7,4 @@ tags:
     - cli
 ---
 
-Alias: **-p**
-Port for the frontend gRPC service. (default: 7233)
+Port for the frontend gRPC service.

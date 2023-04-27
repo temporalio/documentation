@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Flag to indicate whether namespace is a global namespace
+Flag to indicate whether namespace is a global namespace.

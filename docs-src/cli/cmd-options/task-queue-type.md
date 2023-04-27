@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Task Queue type [workflow|activity] (default: workflow)
+Task Queue type [workflow|activity] (default: workflow).

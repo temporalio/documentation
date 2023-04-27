@@ -7,4 +7,4 @@ tags:
     - cli
 ---
 
-Start-to-close timeout for a Workflow Task (in seconds). (default: 10)
+Start-to-close timeout for a Workflow Task (in seconds).
