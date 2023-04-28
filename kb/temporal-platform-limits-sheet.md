@@ -67,4 +67,7 @@ The Temporal Cloud service sets default limits for the following aspects:
     - text: 5
   - Retention Period: 30 days (configurable; range of 1–90 days)
 - **List Filters**
-  - The **ORDER BY** clause is not supported in Temporal Cloud.
+  - The **ORDER BY** clause is not supported in List Filters in Temporal Cloud.
+    This means that you can not apply custom ordering of Workflows with Cloud Visibility features.
+    Lists of Workflows are still ordered by a default ordering rule.
+    Though, this rule may change in the future.
