@@ -45,7 +45,7 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
-- [Search Attributes maximums](visibility/#custom-search-attributes-limits)
+- [Search Attributes maximums](/visibility/#custom-search-attributes-limits)
 
 ## Default limits for Temporal Cloud
 
@@ -68,6 +68,6 @@ The Temporal Cloud service sets default limits for the following aspects:
   - Retention Period: 30 days (configurable; range of 1–90 days)
 - **List Filters**
   - The **ORDER BY** operator is not supported in List Filters in Temporal Cloud.
-    This means that you can not apply custom ordering of Workflows with Cloud Visibility features.
+    This means that you cannot apply custom ordering of Workflows with Cloud Visibility features.
     Lists of Workflows are still ordered by a default ordering rule.
-    Though, this rule may change in the future.
+    Be aware that this rule might change.
