@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday April 13 2023 10:43:03 AM -0500
+Last assembled: Friday April 28 2023 08:22:35 AM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 55 guide configurations found.
 
@@ -404,45 +404,9 @@ app-dev-context/connect-to-temporal-cloud -> /application-development/foundation
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/address -> /cli/cmd-options#address
-
-cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
-
-cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
-
-cli/cmd-options/color -> /cli/cmd-options#color
-
-cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
-
-cli/cmd-options/env -> /cli/cmd-options#env
-
-cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
-
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
-cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
-
-cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
-
-cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
-
-cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
-
-cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
-
-cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -452,7 +416,17 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -569,6 +543,8 @@ cli/cmd-options/log-format -> /cli/cmd-options#log-format
 cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
+
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
 
 cli/cmd-options/port -> /cli/cmd-options#port
 
