@@ -164,6 +164,49 @@
     },
     {
       "type": "h2",
+      "id": "app-dev-context/updates"
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/define-update"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-define-a-update-type-in-go"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/handle-update"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-handle-a-query-in-a-workflow-in-go"
+        }
+      ]
+    },
+    {
+      "type": "h3",
+      "id": "app-dev-context/send-update-from-client"
+    },
+    {
+      "type": "langtabs",
+      "langtabs": [
+        {
+          "lang": "go",
+          "id": "go/how-to-send-an-update-from-a-client-in-go"
+        }
+      ]
+    },
+    {
+      "type": "h2",
       "id": "app-dev-context/queries"
     },
     {
