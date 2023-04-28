@@ -53,8 +53,10 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
 - **ORDER BY**
 
 The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
-This means that the **ORDER BY** operator is currently not supported in Temporal Cloud.
-Additionally, custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
+
+The **ORDER BY** operator is currently not supported in Temporal Cloud.
+
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
 
 ### Partial string match
 
