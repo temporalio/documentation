@@ -19,7 +19,7 @@ To authenticate the users of your Temporal Cloud account, you can connect a Secu
 1. Configure SAML with your IdP by following one of these sets of instructions:
    - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
    - [Okta](#configure-saml-with-okta)
-1. [Share your connection information with us and test your connection.](#finish-your-saml-configuration)
+1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
 
 ## Configure SAML with Azure AD
 
@@ -29,7 +29,7 @@ Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
 1. Sign in to the [Microsoft Azure AD portal](https://portal.azure.com/).
-1. On the home page under **Manage Azure Active Directory**, select **View**.
+1. On the home page, under **Manage Azure Active Directory**, select **View**.
 1. On the **Overview** page near the top, select **Add > Enterprise application**.
 1. On the **Browse Azure AD Gallery** page near the top, select **Create your own application**.
 1. In the **Create your own application** pane, provide a name for your application (such as `temporal-cloud`) and select **Integrate any other application you don't find in the gallery**.
@@ -43,7 +43,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    urn:auth0:prod-tmprl:ACCOUNT_ID-saml
    ```
 
-   A correctly formed entity identifier resembles the following:
+   A correctly formed entity identifier looks like this:
 
    ```bash
    urn:auth0:prod-tmprl:f45a2-saml
@@ -55,7 +55,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
    ```
 
-   A correctly formed callback URL resembles the following:
+   A correctly formed callback URL looks like this:
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
@@ -88,7 +88,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
    ```
 
-   A correctly formed callback URL resembles the following:
+   A correctly formed callback URL looks like this:
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
@@ -99,7 +99,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    urn:auth0:prod-tmprl:ACCOUNT_ID-saml
    ```
 
-   A correctly formed entity identifier resembles the following:
+   A correctly formed entity identifier looks like this:
 
    ```bash
    urn:auth0:prod-tmprl:f45a2-saml
@@ -122,13 +122,13 @@ To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML c
 ## Finish SAML configuration
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-To do that, [create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) and send the following information to us:
+[Create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate
-- At least one IdP domain to map to the SAML connection
+- One or more IdP domains to map to the SAML connection
 
-Generally, your IdP domain is the same as the domain for your email address.
+Generally, the provided IdP domain is the same as the domain for your email address.
 You can provide multiple IdP domains.
 
 When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud.
