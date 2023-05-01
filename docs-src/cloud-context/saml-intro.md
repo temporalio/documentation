@@ -18,4 +18,4 @@ To authenticate the users of your Temporal Cloud account, you can connect a Secu
 1. Configure SAML with your IdP by following one of these sets of instructions:
    - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
    - [Okta](#configure-saml-with-okta)
-1. [Share your connection information with us and test your connection.](#finish-your-saml-configuration)
+1. [Share your connection information with us and test your connection.](#finish-saml-configuration)

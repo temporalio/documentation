@@ -20,7 +20,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
    ```
 
-   A correctly formed callback URL resembles the following:
+   A correctly formed callback URL looks like this:
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
@@ -31,7 +31,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    urn:auth0:prod-tmprl:ACCOUNT_ID-saml
    ```
 
-   A correctly formed entity identifier resembles the following:
+   A correctly formed entity identifier looks like this:
 
    ```bash
    urn:auth0:prod-tmprl:f45a2-saml

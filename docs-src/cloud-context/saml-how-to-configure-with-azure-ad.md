@@ -39,7 +39,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    https://login.tmprl.cloud/login/callback?connection=ACCOUNT_ID-saml
    ```
 
-   A correctly formed callback URL resembles the following:
+   A correctly formed callback URL looks like this:
 
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
