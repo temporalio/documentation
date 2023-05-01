@@ -8,7 +8,8 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Execution](/concepts/what-is-a-workflow-execution) could not receive an update due to an invalid Workflow Execution update message.
+This error indicates that the [Workflow Execution](/concepts/what-is-a-workflow-execution) update could not be completed.
+
 The message could be in the wrong format, or missing required fields.
 
 Reset any missing attributes and reformat the update message.
