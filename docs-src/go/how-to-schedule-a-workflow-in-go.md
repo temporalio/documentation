@@ -28,7 +28,7 @@ To create a Schedule in Go, use `ScheduleClient().Create()` on the [Client](/con
 Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-schedule#spec), and [Action](/concepts/what-is-a-schedule#action) to perform.
 Enter these values in `client.Schedule.Options{}`.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["28-36"]}-->
+<!--SNIPSTART samples-go-schedule-create-delete {"selectedLines": ["26-38"]}-->
 <!--SNIPEND-->
 
 ## Backfill
@@ -45,7 +45,7 @@ Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule in Go, use the `Delete()` command on `scheduleHandle`.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["43-46"]}-->
+<!--SNIPSTART samples-go-schedule-create-delete {"selectedLines": ["42-49"]}-->
 <!--SNIPEND-->
 
 ## Describe
@@ -55,7 +55,7 @@ This is helpful when you want to get a detailed view of the Schedule and its ass
 
 To describe a Schedule in Go, use `Describe()` on `scheduleHandle`.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["107-110"]}-->
+<!--SNIPSTART samples-go-schedule-unpause-describe {"selectedLines": ["115-118"]}-->
 <!--SNIPEND-->
 
 ## List
@@ -71,7 +71,7 @@ Pausing a Schedule halts all future Workflow Runs; unpausing a Schedule allows t
 
 Pausing can be enabled when you create a Schedule by setting `State.Paused` to `true`.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["85"]}-->
+<!--SNIPSTART samples-go-schedule-update {"selectedLines": ["90-91"]}-->
 <!--SNIPEND-->
 
 Pausing can also be done by using `Pause()` on `scheduleHandle`.
@@ -82,7 +82,7 @@ scheduleHandle.Pause()
 
 To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["99-102"]}-->
+<!--SNIPSTART samples-go-schedule-unpause-describe {"selectedLines": ["107-110"]}-->
 <!--SNIPEND-->
 
 ## Trigger
@@ -93,7 +93,7 @@ By default, `trigger` is subject to the Overlap Policy.
 To trigger a Scheduled Workflow Execution in Go, use `Trigger()` on `scheduleHandle`.
 Set desired changes in `ScheduleTriggerOptions`.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["51-56"]}-->
+<!--SNIPSTART samples-go-schedule-trigger {"selectedLines": ["55-57"]}-->
 <!--SNIPEND-->
 
 ## Update
@@ -102,5 +102,5 @@ Updating a Schedule changes the configuration of existing Schedules.
 
 Use the `Update()` command to modify an existing Schedule.
 
-<!--SNIPSTART samples-go-schedule {"selectedLines": ["59-83"]}-->
+<!--SNIPSTART samples-go-schedule-update {"selectedLines": ["65-99"]}-->
 <!--SNIPEND-->
