@@ -8,10 +8,8 @@ tags:
   - strongly-typed
 ---
 
-`UnhandledUpdate` occurs when the [Workflow Execution](/concepts/what-is-a-workflow-execution) attempts to close itself before handling pending updates.
+`UnhandledUpdate` occurs when a Workflow Update is received by the server while a Workflow Task is being processed on a Worker producing a command that would cause the Workflow to transition to a closed state.
 
-This error can happen when the [Workflow](/concepts/what-is-a-workflow) is receiving a high number of [Signals](/application-development/features/#signals).
-Drain the Signal Channel with the `ReceiveAsync` function to prevent or resolve this error.
+Temporal rejects the Workflow Task completion in order to guarantee that Updates are eventually seen by Workflow code and will rewind the Workflow so it can handle the pending Update.
 
-If this error persists, the Workflow may be on a different [Worker](/concepts/what-is-a-worker) than the one with the pending updates.
-Check your logs for failing [Workflow Tasks](/tasks/#workflow-task).
+This error can happen when the [Workflow](/concepts/what-is-a-workflow) is receiving Updates at a high frequency.
