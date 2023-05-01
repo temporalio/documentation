@@ -9,7 +9,3 @@ tags:
 ---
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
-
-If you see this error, contact your administrator to [file a support ticket](http://support.temporal.io/) or report it [here](https://github.com/temporalio/temporal/issues).
-
-<!--TODO: add link above -->
