@@ -13,7 +13,7 @@ Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 
 1. Sign in to the [Microsoft Azure AD portal](https://portal.azure.com/).
-1. On the home page under **Manage Azure Active Directory**, select **View**.
+1. On the home page, under **Manage Azure Active Directory**, select **View**.
 1. On the **Overview** page near the top, select **Add > Enterprise application**.
 1. On the **Browse Azure AD Gallery** page near the top, select **Create your own application**.
 1. In the **Create your own application** pane, provide a name for your application (such as `temporal-cloud`) and select **Integrate any other application you don't find in the gallery**.
@@ -27,7 +27,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    urn:auth0:prod-tmprl:ACCOUNT_ID-saml
    ```
 
-   A correctly formed entity identifier resembles the following:
+   A correctly formed entity identifier looks like this:
 
    ```bash
    urn:auth0:prod-tmprl:f45a2-saml

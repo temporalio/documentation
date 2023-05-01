@@ -8,13 +8,13 @@ tags:
 ---
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-To do that, [create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) and send the following information to us:
+[Create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate
-- At least one IdP domain to map to the SAML connection
+- One or more IdP domains to map to the SAML connection
 
-Generally, your IdP domain is the same as the domain for your email address.
+Generally, the provided IdP domain is the same as the domain for your email address.
 You can provide multiple IdP domains.
 
 When you receive confirmation from us that we have finished configuration, log in to Temporal Cloud.
