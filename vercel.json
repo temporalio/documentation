@@ -1194,6 +1194,10 @@
       "destination": "/workflows#workflow-task-timeout"
     },
     {
+      "source": "/concepts/what-is-a-cloud-namespace-name",
+      "destination": "/cloud#temporal-cloud-namespace-name"
+    },
+    {
       "source": "/concepts/what-is-a-workflow-type",
       "destination": "/workflows#workflow-type"
     },
