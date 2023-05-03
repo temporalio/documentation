@@ -14,6 +14,7 @@ If you don't set a custom Namespace name in the Namespace field, the client conn
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
 
 ```go
+
 package main
 
 import (
@@ -41,3 +42,4 @@ func main() {
 // ...
 }
 ```
+

@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday April 28 2023 09:52:15 AM -0600
+Last assembled: Wednesday May 03 2023 09:49:05 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-55 guide configurations found.
+56 guide configurations found.
 
-985 information nodes found.
+989 information nodes found.
 
-841 information nodes are attached to guides.
+845 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -402,6 +402,8 @@ concepts/what-is-temporal-cloud -> /cloud/index#
 
 app-dev-context/connect-to-temporal-cloud -> /application-development/foundations#connect-to-temporal-cloud
 
+concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
 cli/cmd-options/fields -> /cli/cmd-options#fields
@@ -635,8 +637,6 @@ concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 go/how-to-develop-a-worker-in-go -> #run-a-dev-worker
 
