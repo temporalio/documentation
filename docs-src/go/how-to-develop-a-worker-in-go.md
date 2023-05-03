@@ -28,9 +28,11 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
+
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
+
 package main
 
 import (
@@ -78,3 +80,4 @@ func main() {
 }
 // ...
 ```
+
