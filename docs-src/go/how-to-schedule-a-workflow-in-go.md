@@ -29,33 +29,36 @@ Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-sch
 Enter these values in `client.Schedule.Options{}`.
 
 <!--SNIPSTART samples-go-schedule-create-delete {"selectedLines": ["26-38"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
-	// This schedule ID can be user business logic identifier as well.
-	scheduleID := "schedule_" + uuid.New()
-	workflowID := "schedule_workflow_" + uuid.New()
-	// Create the schedule, start with no spec so the schedule will not run.
-	scheduleHandle, err := c.ScheduleClient().Create(ctx, client.ScheduleOptions{
-		ID:   scheduleID,
-		Spec: client.ScheduleSpec{},
-		Action: &client.ScheduleWorkflowAction{
-			ID:        workflowID,
-			Workflow:  schedule.SampleScheduleWorkflow,
-			TaskQueue: "schedule",
-		},
-	})
+// This schedule ID can be user business logic identifier as well.
+scheduleID := "schedule_" + uuid.New()
+workflowID := "schedule_workflow_" + uuid.New()
+// Create the schedule, start with no spec so the schedule will not run.
+scheduleHandle, err := c.ScheduleClient().Create(ctx, client.ScheduleOptions{
+	ID:   scheduleID,
+	Spec: client.ScheduleSpec{},
+	Action: &client.ScheduleWorkflowAction{
+		ID:        workflowID,
+		Workflow:  schedule.SampleScheduleWorkflow,
+		TaskQueue: "schedule",
+	},
+})
+if err != nil {
+	log.Fatalln("Unable to create schedule", err)
+}
+// Delete the schedule once the sample is done
+defer func() {
+	log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
+	err = scheduleHandle.Delete(ctx)
 	if err != nil {
-		log.Fatalln("Unable to create schedule", err)
+		log.Fatalln("Unable to delete schedule", err)
 	}
-	// Delete the schedule once the sample is done
-	defer func() {
-		log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
-		err = scheduleHandle.Delete(ctx)
-		if err != nil {
-			log.Fatalln("Unable to delete schedule", err)
-		}
-	}()
+}()
 ```
+
 <!--SNIPEND-->
 
 ## Backfill
@@ -73,33 +76,36 @@ Deletion does not affect any Workflows started by the Schedule.
 To delete a Schedule in Go, use the `Delete()` command on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule-create-delete {"selectedLines": ["42-49"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
-	// This schedule ID can be user business logic identifier as well.
-	scheduleID := "schedule_" + uuid.New()
-	workflowID := "schedule_workflow_" + uuid.New()
-	// Create the schedule, start with no spec so the schedule will not run.
-	scheduleHandle, err := c.ScheduleClient().Create(ctx, client.ScheduleOptions{
-		ID:   scheduleID,
-		Spec: client.ScheduleSpec{},
-		Action: &client.ScheduleWorkflowAction{
-			ID:        workflowID,
-			Workflow:  schedule.SampleScheduleWorkflow,
-			TaskQueue: "schedule",
-		},
-	})
+// This schedule ID can be user business logic identifier as well.
+scheduleID := "schedule_" + uuid.New()
+workflowID := "schedule_workflow_" + uuid.New()
+// Create the schedule, start with no spec so the schedule will not run.
+scheduleHandle, err := c.ScheduleClient().Create(ctx, client.ScheduleOptions{
+	ID:   scheduleID,
+	Spec: client.ScheduleSpec{},
+	Action: &client.ScheduleWorkflowAction{
+		ID:        workflowID,
+		Workflow:  schedule.SampleScheduleWorkflow,
+		TaskQueue: "schedule",
+	},
+})
+if err != nil {
+	log.Fatalln("Unable to create schedule", err)
+}
+// Delete the schedule once the sample is done
+defer func() {
+	log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
+	err = scheduleHandle.Delete(ctx)
 	if err != nil {
-		log.Fatalln("Unable to create schedule", err)
+		log.Fatalln("Unable to delete schedule", err)
 	}
-	// Delete the schedule once the sample is done
-	defer func() {
-		log.Println("Deleting schedule", "ScheduleID", scheduleHandle.GetID())
-		err = scheduleHandle.Delete(ctx)
-		if err != nil {
-			log.Fatalln("Unable to delete schedule", err)
-		}
-	}()
+}()
 ```
+
 <!--SNIPEND-->
 
 ## Describe
@@ -110,7 +116,9 @@ This is helpful when you want to get a detailed view of the Schedule and its ass
 To describe a Schedule in Go, use `Describe()` on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule-unpause-describe {"selectedLines": ["115-118"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 	// Unpause schedule
 	log.Println("Unpausing schedule", "ScheduleID", scheduleHandle.GetID())
@@ -135,6 +143,7 @@ To describe a Schedule in Go, use `Describe()` on `scheduleHandle`.
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## List
@@ -151,7 +160,9 @@ Pausing a Schedule halts all future Workflow Runs; unpausing a Schedule allows t
 Pausing can be enabled when you create a Schedule by setting `State.Paused` to `true`.
 
 <!--SNIPSTART samples-go-schedule-update {"selectedLines": ["90-91"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 	// Update the schedule with a spec so it will run periodically,
 	log.Println("Updating schedule", "ScheduleID", scheduleHandle.GetID())
@@ -194,6 +205,7 @@ Pausing can be enabled when you create a Schedule by setting `State.Paused` to `
 		log.Fatalln("Unable to update schedule", err)
 	}
 ```
+
 <!--SNIPEND-->
 
 Pausing can also be done by using `Pause()` on `scheduleHandle`.
@@ -205,7 +217,9 @@ scheduleHandle.Pause()
 To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 
 <!--SNIPSTART samples-go-schedule-unpause-describe {"selectedLines": ["107-110"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 	// Unpause schedule
 	log.Println("Unpausing schedule", "ScheduleID", scheduleHandle.GetID())
@@ -230,6 +244,7 @@ To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 	}
 }
 ```
+
 <!--SNIPEND-->
 
 ## Trigger
@@ -241,7 +256,9 @@ To trigger a Scheduled Workflow Execution in Go, use `Trigger()` on `scheduleHan
 Set desired changes in `ScheduleTriggerOptions`.
 
 <!--SNIPSTART samples-go-schedule-trigger {"selectedLines": ["55-57"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 	// Manually trigger the schedule once
 	log.Println("Manually triggering schedule", "ScheduleID", scheduleHandle.GetID())
@@ -253,6 +270,7 @@ Set desired changes in `ScheduleTriggerOptions`.
 		log.Fatalln("Unable to trigger schedule", err)
 	}
 ```
+
 <!--SNIPEND-->
 
 ## Update
@@ -262,7 +280,9 @@ Updating a Schedule changes the configuration of existing Schedules.
 Use the `Update()` command to modify an existing Schedule.
 
 <!--SNIPSTART samples-go-schedule-update {"selectedLines": ["65-99"]}-->
+
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
+
 ```go
 	// Update the schedule with a spec so it will run periodically,
 	log.Println("Updating schedule", "ScheduleID", scheduleHandle.GetID())
@@ -305,4 +325,5 @@ Use the `Update()` command to modify an existing Schedule.
 		log.Fatalln("Unable to update schedule", err)
 	}
 ```
+
 <!--SNIPEND-->

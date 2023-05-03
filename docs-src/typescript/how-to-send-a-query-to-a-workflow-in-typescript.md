@@ -11,7 +11,9 @@ tags:
 Use [`WorkflowHandle.query`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle/#query) to query a running or completed Workflow.
 
 <!--SNIPSTART typescript-send-query -->
+
 [state/src/query-workflow.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/query-workflow.ts)
+
 ```ts
 import { Client } from '@temporalio/client';
 import { getValueQuery } from './workflows';
@@ -23,4 +25,5 @@ async function run(): Promise<void> {
   console.log({ meaning });
 }
 ```
+
 <!--SNIPEND-->
