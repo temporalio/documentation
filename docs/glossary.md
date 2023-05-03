@@ -11,6 +11,7 @@ tags:
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
+- [Action](/cloud#action)
 - [Activity](/activities#)
 - [Activity Definition](/activities#activity-definition)
 - [Activity Execution](/activities#activity-execution)
