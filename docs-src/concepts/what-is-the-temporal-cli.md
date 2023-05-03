@@ -36,7 +36,7 @@ temporal server start-dev
 
 At this point you should have a server running on `localhost:7233` and a web interface at <http://localhost:8233>.
 
-By default, it doesn’t persist your data—if you start a Workflow, Ctrl-C, and run the command again, your Workflow will be gone. 
+By default, it doesn’t persist your data—if you start a Workflow, Ctrl-C, and run the command again, your Workflow will be gone.
 
 If you'd like your Workflows to be saved, use the `--db-filename` flag:
 
@@ -281,7 +281,7 @@ The Temporal CLI hosts a set of Client Options that can be used to configure the
 Use the following table as a reference for the Temporal CLI environmental variables.
 
 | Variable                                     | Definition                                                                        | Client Option                   |
-|----------------------------------------------|-----------------------------------------------------------------------------------|---------------------------------|
+| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
 | `TEMPORAL_CLI_ADDRESS`                       | The host and port (formatted as host:port) for the Temporal Frontend Service.     | --address                       |
 | `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header on requests to the Codec Server.                    | --codec-auth                    |
 | `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for a remote Codec Server.                                               | --codec-endpoint                |
