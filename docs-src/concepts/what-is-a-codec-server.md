@@ -31,9 +31,10 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/production-readiness/develop#data-encryption).
 
-To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution you can configure an endpoint for a Codec Server. The CLI or Web UI will send the encoded data received from the Temporal Server to the Codec Server to be decoded.
+To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, you can configure an endpoint for a Codec Server.
+The CLI or Web UI sends encoded data received from the Temporal Server to the Codec Server to be decoded.
 
-For details on creating your Codec Server, see [Codec Server](/production-readiness/develop#codec-server-setup).
+For details on creating your Codec Server, see [Codec Server Setup](/production-readiness/develop#codec-server-setup).
 
 After you start your Codec Server, [configure your Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli).
 
