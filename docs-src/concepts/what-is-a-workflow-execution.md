@@ -126,9 +126,8 @@ No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
-The Temporal Cluster logs a warning at every 10,000 Events.
-When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+The Temporal Cluster logs a warning after 10K (10,240) Events and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
