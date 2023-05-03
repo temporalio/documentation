@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday April 25 2023 11:44:22 AM -0700
+Last assembled: Wednesday May 03 2023 09:50:58 AM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-55 guide configurations found.
+56 guide configurations found.
 
-985 information nodes found.
+989 information nodes found.
 
-841 information nodes are attached to guides.
+845 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -400,47 +400,13 @@ concepts/what-is-temporal-cloud -> /cloud/index#
 
 app-dev-context/connect-to-temporal-cloud -> /application-development/foundations#connect-to-temporal-cloud
 
+concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/address -> /cli/cmd-options#address
-
-cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
-
-cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
-
-cli/cmd-options/color -> /cli/cmd-options#color
-
-cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
-
-cli/cmd-options/env -> /cli/cmd-options#env
-
-cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
-
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
-cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
-
-cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
-
-cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
-
-cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
-
-cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
-
-cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -450,7 +416,17 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -568,6 +544,8 @@ cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
 
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
 cli/cmd-options/port -> /cli/cmd-options#port
 
 cli/cmd-options/sqlite-pragma -> /cli/cmd-options#sqlite-pragma
@@ -657,8 +635,6 @@ concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 go/how-to-develop-a-worker-in-go -> #run-a-dev-worker
 

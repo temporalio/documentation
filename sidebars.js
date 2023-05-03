@@ -53,6 +53,7 @@ module.exports = {
         "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
         "cloud/how-to-manage-namespaces-in-temporal-cloud",
+        "cloud/how-to-manage-saml-with-temporal-cloud",
         "cloud/how-to-monitor-temporal-cloud-metrics",
         "cloud/how-to-manage-audit-logging",
         {
