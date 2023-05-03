@@ -8,14 +8,13 @@ description: Use the ExecuteActivity() API call available from the go.temporal.i
 To spawn an [Activity Execution](/concepts/what-is-an-activity-execution), call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-	The Activity function name can be provided as a variable object (no quotations) or as a string.
-    The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-    The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+The Activity function name can be provided as a variable object (no quotations) or as a string.
+The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 	// Set the options for the Activity Execution.
 	// Either StartToClose Timeout OR ScheduleToClose is required.
@@ -39,4 +38,3 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 // ...
 }
 ```
-
