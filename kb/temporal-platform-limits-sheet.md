@@ -31,8 +31,8 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
   - We error at 50 MB: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistorySizeLimitError and HistorySizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
 - **History total count limit** (leading to a terminated Workflow Execution):
-  - We warn at 10,000 Events: `history size exceeds warn limit`.
-  - We error at 50,000 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
+  - We warn after 10,240 Events: `history size exceeds warn limit`.
+  - We error after 51,200 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Concurrent Action limit**
   - We fail the following action Commands on Cloud if the concurrent running count exceeds 2,000:
