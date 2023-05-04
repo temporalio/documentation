@@ -1,6 +1,6 @@
 ---
 id: foundations
-title: Temporal TypeScript SDK developer's guide - Foundations
+title: TypeScript SDK developer's guide - Foundations
 sidebar_label: Foundations
 sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.

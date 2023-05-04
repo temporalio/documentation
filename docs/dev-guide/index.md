@@ -1,7 +1,7 @@
 ---
 id: index
-title: Temporal Developer's guide
-description: The Temporal Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
+title: Temporal developer's guide
+description: The Temporal developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
 sidebar_label: Dev guide
 sidebar_position: 3
 ---
