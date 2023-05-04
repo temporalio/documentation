@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday May 04 2023 13:11:05 PM -0700
+Last assembled: Thursday May 04 2023 15:09:21 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -661,5 +661,13 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
+
+cloud/tcld/logout -> /cloud/tcld/logout#
+
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
+
+cloud/tcld/namespace/retention -> #retention
 
 

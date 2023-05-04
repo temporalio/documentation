@@ -263,7 +263,7 @@ This Event type contains [Activity Execution](/concepts/what-is-an-activity-exec
 ### ActivityTaskFailed
 
 This [Event](/concepts/what-is-an-event) type indicates that the [Activity Task](/concepts/what-is-an-activity-task) has failed.
-The SDK picked up the Activity Task but unsuccessfully completed it.
+The SDK client picked up the Activity Task but unsuccessfully completed it.
 This Event type contains [Activity Execution](/concepts/what-is-an-activity-execution) errors.
 
 | Field              | Description                                                                                                 |
