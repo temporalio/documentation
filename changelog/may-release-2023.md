@@ -14,7 +14,7 @@ The "Dev guide" is now language specific.
 - [Java](/application-development/java)
 - [PHP](/application-development/php)
 - [Python](/application-development/python)
-- [TypeScript](/application-developemnt/typescript)
+- [TypeScript](/application-development/typescript)
 
 ### Context
 
