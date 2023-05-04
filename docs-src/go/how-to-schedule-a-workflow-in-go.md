@@ -33,22 +33,22 @@ Enter these values in `client.Schedule.Options{}`.
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
 
 ```go
-	// This schedule ID can be user business logic identifier as well.
-	scheduleID := "schedule_" + uuid.New()
-	workflowID := "schedule_workflow_" + uuid.New()
-	// Create the schedule, start with no spec so the schedule will not run.
-	scheduleHandle, err := c.ScheduleClient().Create(ctx, client.ScheduleOptions{
-		ID:   scheduleID,
-		Spec: client.ScheduleSpec{},
-		Action: &client.ScheduleWorkflowAction{
-			ID:        workflowID,
-			Workflow:  schedule.SampleScheduleWorkflow,
-			TaskQueue: "schedule",
-		},
-	})
-	if err != nil {
-		log.Fatalln("Unable to create schedule", err)
-	}
+// This schedule ID can be user business logic identifier as well.
+scheduleID := "schedule_" + uuid.New()
+workflowID := "schedule_workflow_" + uuid.New()
+// Create the schedule, start with no spec so the schedule will not run.
+scheduleHandle, err := c.ScheduleClient().Create(ctx, client.ScheduleOptions{
+	ID:   scheduleID,
+	Spec: client.ScheduleSpec{},
+	Action: &client.ScheduleWorkflowAction{
+		ID:        workflowID,
+		Workflow:  schedule.SampleScheduleWorkflow,
+		TaskQueue: "schedule",
+	},
+})
+if err != nil {
+	log.Fatalln("Unable to create schedule", err)
+}
 ```
 
 <!--SNIPEND-->
@@ -96,11 +96,10 @@ To describe a Schedule in Go, use `Describe()` on `scheduleHandle`.
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
 
 ```go
-	description, err := scheduleHandle.Describe(ctx)
-	if err != nil {
-		log.Fatalln("Unable to describe schedule", err)
-	}
-
+description, err := scheduleHandle.Describe(ctx)
+if err != nil {
+	log.Fatalln("Unable to describe schedule", err)
+}
 ```
 
 <!--SNIPEND-->
@@ -123,8 +122,8 @@ Pausing can be enabled when you create a Schedule by setting `State.Paused` to `
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
 
 ```go
-			// Start the schedule paused to demonstrate how to unpause a schedule
-			schedule.Description.Schedule.State.Paused = true
+// Start the schedule paused to demonstrate how to unpause a schedule
+schedule.Description.Schedule.State.Paused = true
 ```
 
 <!--SNIPEND-->
@@ -142,12 +141,12 @@ To unpause a Schedule, use `Unpause()` on `scheduleHandle`.
 [schedule/starter/main.go](https://github.com/temporalio/samples-go/blob/master/schedule/starter/main.go)
 
 ```go
-	// Unpause schedule
-	log.Println("Unpausing schedule", "ScheduleID", scheduleHandle.GetID())
-	err = scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{})
-	if err != nil {
-		log.Fatalln("Unable to unpause schedule", err)
-	}
+// Unpause schedule
+log.Println("Unpausing schedule", "ScheduleID", scheduleHandle.GetID())
+err = scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{})
+if err != nil {
+	log.Fatalln("Unable to unpause schedule", err)
+}
 ```
 
 <!--SNIPEND-->
