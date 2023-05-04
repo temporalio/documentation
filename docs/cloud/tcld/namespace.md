@@ -15,11 +15,137 @@ The `tcld namespace` commands enable <a class="tdlp" href="/namespaces#">Namespa
 
 Alias: `n`
 
-- <a class="tdlp" href="#list">tcld namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace list</span><br /><br /><span class="tdlppd">How to list all Namespaces in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
+- <a class="tdlp" href="#create">tcld namespace create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace create</span><br /><br /><span class="tdlppd">How to create information about a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#create">Learn more</a></span></span></a>
+- <a class="tdlp" href="#delete">tcld namespace delete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace delete</span><br /><br /><span class="tdlppd">How to delete a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete">Learn more</a></span></span></a>
 - <a class="tdlp" href="#get">tcld namespace get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace get</span><br /><br /><span class="tdlppd">How to get information about a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
+- <a class="tdlp" href="#list">tcld namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace list</span><br /><br /><span class="tdlppd">How to list all Namespaces in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
 - <a class="tdlp" href="#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca</span><br /><br /><span class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#accepted-client-ca">Learn more</a></span></span></a>
 - <a class="tdlp" href="#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#certificate-filters">Learn more</a></span></span></a>
 - <a class="tdlp" href="#search-attributes">tcld namespace search-attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace search-attributes</span><br /><br /><span class="tdlppd">How to manage Search Attributes of a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attributes">Learn more</a></span></span></a>
+
+## create
+
+The `tcld namespace create` command creates a Temporal <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+
+Alias: `c`
+
+`tcld namespace create`
+
+The following modifiers control the behavior of the command.
+
+### `--request-id`
+
+The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
+
+Alias: `-r`
+
+### `--ca-certificate`
+
+The base64 encoded ca certificate.
+
+Alias: `-c`
+
+### `--namespace`
+
+Specify the namespace hosted on Temporal Cloud. If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
+
+Alias: `-n`
+
+### `--region`
+
+Create namespace in this Region.
+
+Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
+
+Alias: `--re`
+
+### `--retention-days`
+
+The retention of the namespace in days (default: 30).
+
+Alias: `--rd`
+
+### `--ca-certificate-file`
+
+The path to the CA certificate file.
+
+Alias: `--cf`
+
+### `--certificate-filter-file`
+
+Path to a JSON file that defines the certificate filters that will be added to the namespace.
+
+Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
+
+Alias: `--cff`
+
+### `--certificate-filter-input`
+
+JSON that defines the certificate filters that will be added to the namespace.
+
+Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
+
+Alias: `--cfi`
+
+### `--search-attribute`
+
+Flag can be used multiple times.
+
+Valid values: `name=type`
+
+Valid options: `Keyword` | `Text` | `Int` | `Double` | `Datetime` | `Bool`
+
+Alias: `--sa`
+
+### `--user-namespace-permission`
+
+Flag can be used multiple times.
+
+Value must be `email=permission`
+
+Valid permissions: `Admin` | `Write` | `Read`
+
+Alias: `-p`
+
+**Example**
+
+```bash
+tcld namespace create my-namespace --region us-west-2 --retention-days 60 --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' --user-namespace-permission "user@example.com=Admin" --search-attribute "customer_id=Int" --search-attribute "customer_name=Text"
+```
+
+## delete
+
+The `tcld namespace delete` command deletes the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+
+Alias: `d`
+
+`tcld namespace delete`
+
+The following modifiers control the behavior of the command.
+
+### `--namespace`
+
+Specify the Namespace hosted on Temporal Cloud to be deleted.
+
+Alias: `-n`
+
+### `--request-id`
+
+The request ID to use for the asynchronous operation. If not set, the server will assign one.
+
+Alias: `-r`
+
+### `--resource-version`
+
+The resource version (etag) to update from. If not set, the CLI will use the latest.
+
+Alias: `-v`
+
+**Example**
+
+```bash
+tcld namespace delete --namespace <namespace_id>
+```
 
 ## get
 
@@ -728,4 +854,38 @@ Alias: `--nn`
 
 ```bash
 tcld namespace search-attributes rename --existing-name <value> --new-name <value>
+```
+
+## retention
+
+The `tcld namespace retention` command manages the length of time (in days) a closed Workflow is preserved before deletion for a given Namespace in Temporal Cloud.
+
+Alias: `r`
+
+`tcld namespace retention`
+
+The following modifier controls the behavior of the command.
+
+### `set`
+
+Set the length of time (in days) a closed Workflow will be preserved before deletion for a given namespace.
+
+Alias: `s`
+
+**Example**
+
+```bash
+tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
+```
+
+### `get`
+
+Retrieve the length of time (in days) a closed Workflow will be preserved before deletion for a given namespace.
+
+Alias: `g`
+
+**Example**
+
+```bash
+tcld namespace retention get --namespace <namespace_id>
 ```
