@@ -79,7 +79,7 @@ The following are examples of minor changes that would not result in non-determi
 
 - Changing the duration of a Timer, with the following exceptions:
   - In Java, Python and Go, changing a timer’s duration from or to 0 is a non-deterministic behaviour;
-  - In .Net, changing a timer’s duration from or to -1 (which means ‘infinite’) is a non-deterministic behaviour.
+  - In .NET, changing a timer’s duration from or to -1 (which means ‘infinite’) is a non-deterministic behaviour.
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
