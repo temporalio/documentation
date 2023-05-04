@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday May 04 2023 14:54:31 PM -0700
+Last assembled: Thursday May 04 2023 15:00:08 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -667,5 +667,7 @@ cloud/tcld/logout -> /cloud/tcld/logout#
 cloud/tcld/namespace/create -> #create
 
 cloud/tcld/namespace/delete -> #delete
+
+cloud/tcld/namespace/retention -> #retention
 
 
