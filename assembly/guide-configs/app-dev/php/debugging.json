@@ -3,7 +3,7 @@
   "id": "debugging",
   "slug": "/application-development/php/debugging",
   "file_dir": "application-development/phplang",
-  "title": "Developer's guide - Debugging",
+  "title": "Temporal PHP SDK developer's guide - Debugging",
   "sidebar_label": "Debugging",
   "sidebar_position": 4,
   "description": "The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.",
