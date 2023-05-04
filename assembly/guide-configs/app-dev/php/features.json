@@ -1,8 +1,8 @@
 {
   "id": "features",
   "file_name": "features.md",
-  "slug": "/application-development/php/features",
-  "file_dir": "application-development/phplang",
+  "slug": "/dev-guide/php/features",
+  "file_dir": "dev-guide/phplang",
   "title": "Temporal PHP SDK developer's guide - Features",
   "sidebar_label": "Features",
   "sidebar_position": 2,

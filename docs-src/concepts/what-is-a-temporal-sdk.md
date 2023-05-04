@@ -20,7 +20,7 @@ Temporal currently offers the following SDKs:
 
 - [Get started with the Go SDK](/go/add-sdk)
 - [Get started with the Java SDK](/java/add-sdk)
-- [Get started with the PHP SDK](/application-development/php)
+- [Get started with the PHP SDK](/dev-guide/php)
 - [Get started with the Python SDK](/python/add-sdk)
 - [How to use the TypeScript SDK](/typescript/add-sdk)
 
@@ -54,7 +54,7 @@ The following SDKs are in alpha/pre-alpha development stages, but are not yet su
 
 ### Third-party SDKs
 
-The following third-party SDKs exist but are not supported in the [Developer's guide](/application-development):
+The following third-party SDKs exist but are not supported in the [Developer's guide](/dev-guide):
 
 - [Clojure](https://github.com/manetu/temporal-clojure-sdk) - from [@Manetu](https://github.com/manetu)
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)

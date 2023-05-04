@@ -1,8 +1,8 @@
 {
   "file_name": "foundations.md",
   "id": "foundations",
-  "slug": "/application-development/php/foundations",
-  "file_dir": "application-development/phplang",
+  "slug": "/dev-guide/php/foundations",
+  "file_dir": "dev-guide/phplang",
   "title": "Temporal PHP SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",
   "sidebar_position": 1,

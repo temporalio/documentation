@@ -12,6 +12,6 @@ You can debug production Workflows using:
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
 
-You can debug and tune Worker performance with metrics and the [Worker performance guide](/application-development/worker-performance).
+You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 
 Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).

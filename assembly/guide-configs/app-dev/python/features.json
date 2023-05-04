@@ -1,6 +1,6 @@
 {
   "file_name": "features.md",
-  "file_dir": "application-development/python",
+  "file_dir": "dev-guide/python",
   "id": "features",
   "title": "Temporal Python SDK developer's guide - Features",
   "sidebar_label": "Features",

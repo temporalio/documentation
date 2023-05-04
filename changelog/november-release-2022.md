@@ -6,7 +6,7 @@ date: 2022-11-23T00:00:00Z
 
 In November, we published the following content:
 
-- [How to test your Workflows and Activities section of the Developer's guide](/application-development/typescript/testing).
+- [How to test your Workflows and Activities section of the Developer's guide](/dev-guide/typescript/testing).
   This section was expanded significantly to cover many aspects of testing your application code, such as testing frameworks, replays, skipping time, Heartbeats, and cancellation.
   The only caveat is that most of the available samples are in TypeScript.
   However, more are on the way!

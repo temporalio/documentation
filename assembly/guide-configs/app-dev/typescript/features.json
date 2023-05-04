@@ -1,8 +1,8 @@
 {
   "id": "features",
   "file_name": "features.md",
-  "slug": "/application-development/typescript/features",
-  "file_dir": "application-development/tscript",
+  "slug": "/dev-guide/typescript/features",
+  "file_dir": "dev-guide/tscript",
   "title": "Temporal TypeScript SDK developer's guide - Features",
   "sidebar_label": "Features",
   "sidebar_position": 2,

@@ -15,7 +15,7 @@ You can debug production Workflows using:
 - [Tracing](/go/tracing)
 - [Logging](/go/logging)
 
-You can debug and tune Worker performance with metrics and the [Worker performance guide](/application-development/worker-performance).
+You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For more information, see [Metrics](/go/metrics) for setting up SDK metrics.
 
 Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).

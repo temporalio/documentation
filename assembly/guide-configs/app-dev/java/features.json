@@ -1,7 +1,7 @@
 {
   "file_name": "features.md",
-  "file_dir": "/application-development/javalang",
-  "slug": "/application-development/java/features",
+  "file_dir": "/dev-guide/javalang",
+  "slug": "/dev-guide/java/features",
   "id": "features",
   "title": "Temporal Java SDK developer's guide - Features",
   "sidebar_label": "Features",

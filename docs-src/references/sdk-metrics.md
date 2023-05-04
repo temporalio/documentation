@@ -24,7 +24,7 @@ The Temporal SDKs emit a set of metrics from Temporal Client usage and Worker Pr
 - [How to emit metrics using the Python SDK](/python/metrics)
 - [How to emit metrics using the TypeScript SDK](/typescript/metrics)
 
-- [How to tune Worker performance based on metrics](/application-development/worker-performance)
+- [How to tune Worker performance based on metrics](/dev-guide/worker-performance)
 
 All metrics are prefixed with `temporal_` before being exported to their configured destination.
 (The prefix has been removed in the following reference.)

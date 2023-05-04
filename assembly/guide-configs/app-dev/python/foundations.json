@@ -1,7 +1,7 @@
 {
   "file_name": "foundations.md",
   "id": "foundations",
-  "file_dir": "application-development/python",
+  "file_dir": "dev-guide/python",
   "title": "Temporal Python SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",
   "sidebar_position": 1,

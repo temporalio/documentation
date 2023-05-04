@@ -10,11 +10,11 @@ Since the last change log in March 2023, there have been changes to the Develope
 
 The "Dev guide" is now language specific.
 
-- [Go](/application-development/golang)
-- [Java](/application-development/java)
-- [PHP](/application-development/php)
-- [Python](/application-development/python)
-- [TypeScript](/application-development/typescript)
+- [Go](/dev-guide/golang)
+- [Java](/dev-guide/java)
+- [PHP](/dev-guide/php)
+- [Python](/dev-guide/python)
+- [TypeScript](/dev-guide/typescript)
 
 ### Context
 

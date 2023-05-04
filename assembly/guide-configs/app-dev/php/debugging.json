@@ -1,8 +1,8 @@
 {
   "file_name": "debugging.md",
   "id": "debugging",
-  "slug": "/application-development/php/debugging",
-  "file_dir": "application-development/phplang",
+  "slug": "/dev-guide/php/debugging",
+  "file_dir": "dev-guide/phplang",
   "title": "Temporal PHP SDK developer's guide - Debugging",
   "sidebar_label": "Debugging",
   "sidebar_position": 4,

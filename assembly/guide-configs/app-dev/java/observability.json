@@ -1,8 +1,8 @@
 {
   "file_name": "observability.md",
   "id": "observability",
-  "slug": "/application-development/java/observability",
-  "file_dir": "application-development/javalang",
+  "slug": "/dev-guide/java/observability",
+  "file_dir": "dev-guide/javalang",
   "title": "Temporal Java SDK developer's guide - Observability",
   "sidebar_label": "Observability",
   "sidebar_position": 3,

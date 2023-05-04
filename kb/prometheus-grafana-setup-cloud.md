@@ -29,11 +29,11 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
-  - [Go](application-development/golang/foundations#connect-to-a-cluster)
-  - [Java](application-development/java/foundations#connect-to-a-cluster)
-  - [PHP](application-development/php/foundations#connect-to-a-cluster)
-  - [Python](application-development/python/foundations#connect-to-a-cluster)
-  - [TypeScript](application-development/typescript/foundations#connect-to-a-cluster)
+  - [Go](/dev-guide/golang/foundations#connect-to-a-cluster)
+  - [Java](/dev-guide/java/foundations#connect-to-a-cluster)
+  - [PHP](/dev-guide/php/foundations#connect-to-a-cluster)
+  - [Python](/dev-guide/python/foundations#connect-to-a-cluster)
+  - [TypeScript](/dev-guide/typescript/foundations#connect-to-a-cluster)
 
 - Prometheus and Grafana installed.
 
@@ -67,7 +67,7 @@ SDK metrics are emitted by SDK Clients used to start your Workers and to start, 
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 The Metrics section of the Observability guide details how to set this up for all supported SDKs.
 
-- [Go](/application-development/golang/observability#metrics)
+- [Go](/dev-guide/golang/observability#metrics)
 
 The following example uses the Java SDK to set the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK metrics.
 
@@ -262,7 +262,7 @@ In this article, we will configure our dashboards using the UI.
      You can also select associated labels and values to sort the data on the query.
      The documentation on [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics#available-performance-metrics) lists metrics emitted from Temporal Cloud.
    - For Temporal SDK metrics, expand the **Metrics browser** and select the metrics you want to see.
-     A list of metrics on Worker performance are described in [Developer's Guide - Worker performance](/application-development/worker-performance).
+     A list of metrics on Worker performance are described in [Developer's Guide - Worker performance](/dev-guide/worker-performance).
      All metrics related to SDKs are described in the [SDK metrics](/references/sdk-metrics) reference.
 4. You should see the graph show data based on the queries you have selected.
    Note that for SDK metrics to show, you must have some Workflow Execution data and running Workers.

@@ -30,7 +30,7 @@ The tool runs as a single process with zero runtime dependencies and supports pe
 
 Temporal CLI can be installed through several different methods.
 
-For more information, see our guide to <a class="tdlp" href="/application-development/typescript/foundations#run-a-development-server">running a Development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/typescript/foundations#run-a-development-server">Learn more</a></span></span></a>.
+For more information, see our guide to <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-development-server">running a Development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-development-server">Learn more</a></span></span></a>.
 
 ## Starting the Temporal Server
 

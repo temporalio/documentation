@@ -1,7 +1,7 @@
 {
   "file_name": "debugging.md",
   "id": "debugging",
-  "file_dir": "application-development/golang",
+  "file_dir": "dev-guide/golang",
   "title": "Go SDK developer's guide - Debugging",
   "sidebar_label": "Debugging",
   "sidebar_position": 5,

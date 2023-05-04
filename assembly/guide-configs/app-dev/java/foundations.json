@@ -1,8 +1,8 @@
 {
   "file_name": "foundations.md",
   "id": "foundations",
-  "slug": "/application-development/java/foundations",
-  "file_dir": "application-development/javalang",
+  "slug": "/dev-guide/java/foundations",
+  "file_dir": "dev-guide/javalang",
   "title": "Temporal Java SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",
   "sidebar_position": 1,

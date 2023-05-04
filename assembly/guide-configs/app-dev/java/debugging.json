@@ -1,8 +1,8 @@
 {
   "file_name": "debugging.md",
   "id": "debugging",
-  "slug": "/application-development/java/debugging",
-  "file_dir": "application-development/javalang",
+  "slug": "/dev-guide/java/debugging",
+  "file_dir": "dev-guide/javalang",
   "title": "Temporal Java SDK developer's guide - Debugging",
   "sidebar_label": "Debugging",
   "sidebar_position": 5,

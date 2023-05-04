@@ -31,11 +31,11 @@
     },
     {
       "source": "/sdks-introduction",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/other-sdks",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/get-started",
@@ -47,7 +47,7 @@
     },
     {
       "source": "/application-development-guide",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/application-development/foundations:path*",
@@ -58,7 +58,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/foundations:path*",
+      "destination": "/dev-guide/golang/foundations:path*",
       "permanent": false
     },
     {
@@ -70,7 +70,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/features:path*",
+      "destination": "/dev-guide/golang/features:path*",
       "permanent": false
     },
     {
@@ -82,7 +82,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/observability:path*",
+      "destination": "/dev-guide/golang/observability:path*",
       "permanent": false
     },
     {
@@ -94,7 +94,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/testing:path*",
+      "destination": "/dev-guide/golang/testing:path*",
       "permanent": false
     },
     {
@@ -106,7 +106,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/foundations:path*",
+      "destination": "/dev-guide/java/foundations:path*",
       "permanent": false
     },
     {
@@ -118,7 +118,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/features:path*",
+      "destination": "/dev-guide/java/features:path*",
       "permanent": false
     },
     {
@@ -130,7 +130,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/observability:path*",
+      "destination": "/dev-guide/java/observability:path*",
       "permanent": false
     },
     {
@@ -142,7 +142,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/testing:path*",
+      "destination": "/dev-guide/java/testing:path*",
       "permanent": false
     },
     {
@@ -154,7 +154,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/foundations:path*",
+      "destination": "/dev-guide/php/foundations:path*",
       "permanent": false
     },
     {
@@ -166,7 +166,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/features:path*",
+      "destination": "/dev-guide/php/features:path*",
       "permanent": false
     },
     {
@@ -178,7 +178,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/observability:path*",
+      "destination": "/dev-guide/php/observability:path*",
       "permanent": false
     },
     {
@@ -190,7 +190,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/testing:path*",
+      "destination": "/dev-guide/php/testing:path*",
       "permanent": false
     },
     {
@@ -202,7 +202,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/foundations:path*",
+      "destination": "/dev-guide/python/foundations:path*",
       "permanent": false
     },
     {
@@ -214,7 +214,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/features:path*",
+      "destination": "/dev-guide/python/features:path*",
       "permanent": false
     },
     {
@@ -226,7 +226,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/observability:path*",
+      "destination": "/dev-guide/python/observability:path*",
       "permanent": false
     },
     {
@@ -238,7 +238,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/testing:path*",
+      "destination": "/dev-guide/python/testing:path*",
       "permanent": false
     },
     {
@@ -250,7 +250,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/foundations:path*",
+      "destination": "/dev-guide/typescript/foundations:path*",
       "permanent": false
     },
     {
@@ -262,7 +262,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/features:path*",
+      "destination": "/dev-guide/typescript/features:path*",
       "permanent": false
     },
     {
@@ -274,7 +274,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/observability:path*",
+      "destination": "/dev-guide/typescript/observability:path*",
       "permanent": false
     },
     {
@@ -286,24 +286,24 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/testing:path*",
+      "destination": "/dev-guide/typescript/testing:path*",
       "permanent": false
     },
     {
       "source": "/application-development/foundations",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/application-development/features",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/application-development/observability",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/application-development/testing",
-      "destination": "/application-development"
+      "destination": "/dev-guide"
     },
     {
       "source": "/change-log",
@@ -395,15 +395,15 @@
     },
     {
       "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
-      "destination": "/application-development/activity-retry-simulator"
+      "destination": "/dev-guide/activity-retry-simulator"
     },
     {
       "source": "/retry-policies/#visualizing-retry-policies",
-      "destination": "/application-development/activity-retry-simulator"
+      "destination": "/dev-guide/activity-retry-simulator"
     },
     {
       "source": "/application-development/features#activity-retry-simulator",
-      "destination": "/application-development/activity-retry-simulator"
+      "destination": "/dev-guide/activity-retry-simulator"
     },
     {
       "source": "/temporal-explained/introduction",
@@ -563,35 +563,35 @@
     },
     {
       "source": "/go-activities",
-      "destination": "/application-development/golang/foundations#develop-activities"
+      "destination": "/dev-guide/golang/foundations#develop-activities"
     },
     {
       "source": "/go/activities",
-      "destination": "/application-development/golang/foundations#develop-activities"
+      "destination": "/dev-guide/golang/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-develop-an-activity-in-go",
-      "destination": "/application-development/golang/foundations#develop-activities"
+      "destination": "/dev-guide/golang/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-spawn-an-activity-execution-in-go",
-      "destination": "/application-development/golang/foundations#activity-execution"
+      "destination": "/dev-guide/golang/foundations#activity-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-an-activity-execution-in-go",
-      "destination": "/application-development/golang/foundations#get-activity-results"
+      "destination": "/dev-guide/golang/foundations#get-activity-results"
     },
     {
       "source": "/go/how-to-heartbeat-an-activity-in-go",
-      "destination": "/application-development/golang/features#activity-heartbeats"
+      "destination": "/dev-guide/golang/features#activity-heartbeats"
     },
     {
       "source": "/go/child-workflows",
-      "destination": "/application-development/golang/features#child-workflows"
+      "destination": "/dev-guide/golang/features#child-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-child-workflow-execution-in-go",
-      "destination": "/application-development/golang/features#child-workflows"
+      "destination": "/dev-guide/golang/features#child-workflows"
     },
     {
       "source": "/go-continue-as-new",
@@ -603,31 +603,31 @@
     },
     {
       "source": "/go-create-workflows",
-      "destination": "/application-development/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/create-workflows",
-      "destination": "/application-development/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/workflows",
-      "destination": "/application-development/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-develop-a-workflow-in-go",
-      "destination": "/application-development/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/golang/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-workflow-execution-in-go",
-      "destination": "/application-development/golang/foundations#start-workflow-execution"
+      "destination": "/dev-guide/golang/foundations#start-workflow-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-a-workflow-execution-in-go",
-      "destination": "/application-development/golang/foundations#get-workflow-results"
+      "destination": "/dev-guide/golang/foundations#get-workflow-results"
     },
     {
       "source": "/go/distributed-cron",
-      "destination": "/application-development/golang/features#temporal-cron-jobs"
+      "destination": "/dev-guide/golang/features#temporal-cron-jobs"
     },
     {
       "source": "/go-error-handling",
@@ -639,11 +639,11 @@
     },
     {
       "source": "/go/queries",
-      "destination": "/application-development/golang/features#queries"
+      "destination": "/dev-guide/golang/features#queries"
     },
     {
       "source": "/go/retries",
-      "destination": "/application-development/golang/features#activity-timeouts"
+      "destination": "/dev-guide/golang/features#activity-timeouts"
     },
     {
       "source": "/go-run-your-first-app",
@@ -671,19 +671,19 @@
     },
     {
       "source": "/go/signals",
-      "destination": "/application-development/golang/features#signals"
+      "destination": "/dev-guide/golang/features#signals"
     },
     {
       "source": "/go/how-to-use-signals-in-go",
-      "destination": "/application-development/golang/features#signals"
+      "destination": "/dev-guide/golang/features#signals"
     },
     {
       "source": "/go/how-to-send-a-signal-to-a-workflow-execution-in-go",
-      "destination": "/application-development/golang/features#signals"
+      "destination": "/dev-guide/golang/features#signals"
     },
     {
       "source": "/go/how-to-handle-a-signal-in-a-workflow-in-go",
-      "destination": "/application-development/golang/features#signals"
+      "destination": "/dev-guide/golang/features#signals"
     },
     {
       "source": "/go-sync-vs-async-start",
@@ -719,19 +719,19 @@
     },
     {
       "source": "/go/workers",
-      "destination": "/application-development/golang/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/golang/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-program-in-go",
-      "destination": "/application-development/golang/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/golang/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-in-go",
-      "destination": "/application-development/golang/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/golang/foundations#run-a-dev-worker"
     },
     {
       "source": "/go-execute-activity",
-      "destination": "/application-development/golang/foundations#activity-execution"
+      "destination": "/dev-guide/golang/foundations#activity-execution"
     },
     {
       "source": "/go-activity-async-completion",
@@ -915,11 +915,11 @@
     },
     {
       "source": "/content/how-to-develop-a-worker-program-in-php",
-      "destination": "/application-development/php/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/php/foundations#run-a-dev-worker"
     },
     {
       "source": "/php/how-to-develop-a-worker-program-in-php",
-      "destination": "/application-development/php/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/php/foundations#run-a-dev-worker"
     },
     {
       "source": "/server",
@@ -995,15 +995,15 @@
     },
     {
       "source": "/server-quick-install",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/dev-guide"
     },
     {
       "source": "/server/quick-install",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/dev-guide"
     },
     {
       "source": "/clusters/quick-install",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/dev-guide"
     },
     {
       "source": "/server/security",
@@ -1015,7 +1015,7 @@
     },
     {
       "source": "/cluster/how-to-quickly-install-the-temporal-cluster-using-docker-compose",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/kb/all-the-ways-to-run-a-cluster#docker--docker-compose"
     },
     {
       "source": "/content/how-to-deploy-temporal-to-kubernetes-for-testing-and-development",
@@ -1023,7 +1023,7 @@
     },
     {
       "source": "/content/how-to-quickly-install-the-temporal-server",
-      "destination": "/application-development/foundations#run-a-development-cluster"
+      "destination": "/kb/all-the-ways-to-run-a-cluster"
     },
     {
       "source": "/content/how-to-integrate-elasticsearch-into-a-temporal-cluster",
@@ -1055,7 +1055,7 @@
     },
     {
       "source": "/operation/how-to-tune-workers",
-      "destination": "/application-development/worker-performance"
+      "destination": "/dev-guide/worker-performance"
     },
     {
       "source": "/cadence-to-temporal",
