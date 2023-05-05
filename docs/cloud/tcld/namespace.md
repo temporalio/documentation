@@ -891,11 +891,9 @@ The `tcld namespace retention` commands manage the length of time (in days) a cl
 Alias: `r`
 
 - <a class="tdlp" href="#get">tcld namespace retention get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention get</span><br /><br /><span class="tdlppd">How to retrieve the length of time a closed Workflows will be preserved before deletion for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
-- <a class="tdlp" href="#set">tcld namespace retention set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention set</span><br /><br /><span class="tdlppd">How to set the length of time a closed Workflows will be preserved before deletion for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set">Learn more</a></span></span></a>
+- <a class="tdlp" href="#set">tcld namespace retention set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention set</span><br /><br /><span class="tdlppd">How to set the length of time a closed Workflow will be preserved before deletion for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set">Learn more</a></span></span></a>
 
 ### get
-
-#### `get`
 
 Retrieve the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
 
@@ -907,7 +905,8 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify the Namespace hosted on Temporal Cloud to be deleted.
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -919,19 +918,18 @@ tcld namespace retention get --namespace <namespace_id>
 
 ### set
 
-#### `set`
-
 Set the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
 
 Alias: `s`
 
-The following modifier controls the behavior of the command.
+The following modifiers control the behavior of the command.
 
 #### `--namespace`
 
 _Required modifier_
 
-Specify the Namespace hosted on Temporal Cloud to be set.
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
@@ -939,7 +937,7 @@ Alias: `-n`
 
 _Required modifier_
 
-Specify the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
+Specify the number of days a closed Workflow will be preserved before deletion.
 
 Alias: `--rd`
 
