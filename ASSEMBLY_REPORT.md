@@ -4,11 +4,11 @@ Last assembled: Friday May 05 2023 08:42:10 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-56 guide configurations found.
+57 guide configurations found.
 
-989 information nodes found.
+990 information nodes found.
 
-845 information nodes are attached to guides.
+846 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -662,4 +662,11 @@ concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
+
+cloud/tcld/namespace/retention -> #retention
 
