@@ -17,24 +17,35 @@ The following modifiers control the behavior of the command.
 
 ### `--request-id`
 
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 ### `--ca-certificate`
 
-The base64 encoded ca certificate.
+_Required modifier unless `--ca-certificate-file` is specified_
+
+A base64-encoded CA certificate.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
 Alias: `-c`
 
 ### `--namespace`
 
-Specify the namespace hosted on Temporal Cloud.
+
+_Required modifier_
+
+Specify the name of the Namespace to create.
+
 Alias: `-n`
 
 ### `--region`
 
-Create namespace in this Region.
+_Required modifier_
+
+The region to create the Namespace in.
 
 Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
 
@@ -42,49 +53,63 @@ Alias: `--re`
 
 ### `--retention-days`
 
-The retention of the namespace in days (default: 30).
+The number of days that data about closed Workflow Executions will be retained (default: 30).
 
 Alias: `--rd`
 
 ### `--ca-certificate-file`
 
-The path to the CA certificate file.
+_Required modifier unless `--ca-certificate` is specified_
+
+A path to a CA certificate PEM file.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
 Alias: `--cf`
 
 ### `--certificate-filter-file`
 
-Path to a JSON file that defines the certificate filters that will be added to the namespace.
+_Required modifier unless `--certificate-filter-input` is specified_
+
+Path to a JSON file that defines the certificate filters to be applied to the Namespace.
+The specified filters replace any existing filters.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
+
+If both `--certificate-filter-file` and `--certificate-filter-input` are specified, the command returns an error.
 
 Alias: `--cff`
 
 ### `--certificate-filter-input`
 
-JSON that defines the certificate filters that will be added to the namespace.
+_Required modifier unless `--certificate-filter-file` is specified_
+
+A JSON string that defines the certificate filters to be applied to the Namespace.
+The specified filters replace any existing filters.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
+
+If both `--certificate-filter-input` and `--certificate-filter-file` are specified, the command returns an error.
 
 Alias: `--cfi`
 
 ### `--search-attribute`
 
-Flag can be used multiple times.
+_Required modifier; can be specified more than once_
 
-Valid values: `name=type`
+A custom Search Attribute in the form `_name_=_type_`.
 
-Valid options: `Keyword` | `Text` | `Int` | `Double` | `Datetime` | `Bool`
+Valid values for _type_: `Keyword` | `Text` | `Int` | `Double` | `Datetime` | `Bool`
 
 Alias: `--sa`
 
 ### `--user-namespace-permission`
 
-Flag can be used multiple times.
+_Can be specified more than once_
 
-Value must be `email=permission`
+A [Namespace-level permission](/cloud/#namespace-level-permissions) for a user in the form `_email_=_permission_`.
 
-Valid permissions: `Admin` | `Write` | `Read`
+Valid values for _permission_: `Admin` | `Write` | `Read`
 
 Alias: `-p`
 

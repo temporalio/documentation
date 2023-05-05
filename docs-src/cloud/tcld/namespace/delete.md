@@ -17,19 +17,23 @@ The following modifiers control the behavior of the command.
 
 ### `--namespace`
 
+_Required modifier_
+
 Specify the Namespace hosted on Temporal Cloud to be deleted.
 
 Alias: `-n`
 
 ### `--request-id`
 
-The request ID to use for the asynchronous operation. If not set, the server will assign one.
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 ### `--resource-version`
 
-The resource version (etag) to update from. If not set, the CLI will use the latest.
+A resource version (ETag) to update from.
+If not set, the CLI uses the latest.
 
 Alias: `-v`
 
