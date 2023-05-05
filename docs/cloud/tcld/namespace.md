@@ -931,9 +931,17 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify the Namespace hosted on Temporal Cloud to be deleted.
+Specify the Namespace hosted on Temporal Cloud to be set.
 
 Alias: `-n`
+
+#### `--retention-days`
+
+_Required modifier_
+
+Specify the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
+
+Alias: `--rd`
 
 **Example**
 

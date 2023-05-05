@@ -78,16 +78,15 @@ To invite users, a user must have the Global Admin account-level [Role](/cloud/#
 
 :::
 
-1. In Temporal Web UI, select **Namespaces** in the lower-left portion of the window.
-2. On the **Namespaces** page, select the Namespace of you want to invite users to.
-3. Select **Edit** in the upper-right portion of the window.
-4. On the **Edit Namespace** page, select **Add User** and enter the email address of the user you want to invite.
-5. In **Select a permission** dropdown, select a [permission](/cloud/#account-level-roles) for that user.
+1. In Temporal Web UI, click **Settings** in the lower-left portion of the window.
+1. On the **Settings** page, click **Create Users** in the upper-right portion of the window.
+1. On the **Create Users** page in the **Email Addresses** box, type or paste one or more email addresses.
+1. In **Account-Level Role**, select a [Role](/cloud/#account-level-roles).
    The Role applies to all users whose email addresses appear in **Email Addresses**.
-6. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
+1. If the account has any Namespaces, they are listed under **Grant access to Namespaces**.
    To add a permission, select the checkbox next to a Namespace, and then select a [permission](/cloud/#namespace-level-permissions).
    Repeat as needed.
-7. When all permissions are assigned, click **Send Invite**.
+1. When all permissions are assigned, click **Send Invite**.
 
 Temporal sends an email message to each user.
 To join Temporal Cloud, a user must click **Accept Invite** in the message.
