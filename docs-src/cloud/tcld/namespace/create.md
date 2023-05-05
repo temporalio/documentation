@@ -34,7 +34,6 @@ Alias: `-c`
 
 ### `--namespace`
 
-
 _Required modifier_
 
 Specify the name of the Namespace to create.
@@ -99,7 +98,7 @@ _Required modifier; can be specified more than once_
 
 A custom Search Attribute in the form `_name_=_type_`.
 
-Valid values for _type_: `Keyword` | `Text` | `Int` | `Double` | `Datetime` | `Bool`
+Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
 
 Alias: `--sa`
 

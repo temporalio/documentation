@@ -19,10 +19,10 @@ Alias: `n`
 - <a class="tdlp" href="#delete">tcld namespace delete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace delete</span><br /><br /><span class="tdlppd">How to delete a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete">Learn more</a></span></span></a>
 - <a class="tdlp" href="#get">tcld namespace get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace get</span><br /><br /><span class="tdlppd">How to get information about a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
 - <a class="tdlp" href="#list">tcld namespace list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace list</span><br /><br /><span class="tdlppd">How to list all Namespaces in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
-- <a class="tdlp" href="#retention">tcld namespace retention<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention</span><br /><br /><span class="tdlppd">How to manage the length of time a closed Workflow is preserved before deletion.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#retention">Learn more</a></span></span></a>
 - <a class="tdlp" href="#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca</span><br /><br /><span class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#accepted-client-ca">Learn more</a></span></span></a>
 - <a class="tdlp" href="#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#certificate-filters">Learn more</a></span></span></a>
 - <a class="tdlp" href="#search-attributes">tcld namespace search-attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace search-attributes</span><br /><br /><span class="tdlppd">How to manage Search Attributes of a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attributes">Learn more</a></span></span></a>
+- <a class="tdlp" href="#retention">tcld namespace retention<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention</span><br /><br /><span class="tdlppd">How to manage the length of time a closed Workflow is preserved before deletion.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#retention">Learn more</a></span></span></a>
 
 ## create
 
@@ -36,24 +36,34 @@ The following modifiers control the behavior of the command.
 
 ### `--request-id`
 
-The request-id to use for the asynchronous operation, if not set the server will assign one (optional).
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 ### `--ca-certificate`
 
-The base64 encoded ca certificate.
+_Required modifier unless `--ca-certificate-file` is specified_
+
+A base64-encoded CA certificate.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
 Alias: `-c`
 
 ### `--namespace`
 
-Specify the namespace hosted on Temporal Cloud.
+_Required modifier_
+
+Specify the name of the Namespace to create.
+
 Alias: `-n`
 
 ### `--region`
 
-Create namespace in this Region.
+_Required modifier_
+
+The region to create the Namespace in.
 
 Valid options: `ap-northeast-1` | `ap-southeast-1` | `ap-southeast-2` | `ca-central-1` | `eu-central-1` | `eu-west-1` | `eu-west-2` | `us-east-1` | `us-west-2`
 
@@ -61,49 +71,63 @@ Alias: `--re`
 
 ### `--retention-days`
 
-The retention of the namespace in days (default: 30).
+The number of days that data about closed Workflow Executions will be retained (default: 30).
 
 Alias: `--rd`
 
 ### `--ca-certificate-file`
 
-The path to the CA certificate file.
+_Required modifier unless `--ca-certificate` is specified_
+
+A path to a CA certificate PEM file.
+
+If both `--ca-certificate` and `--ca-certificate-file` are specified, only `--ca-certificate` is used.
 
 Alias: `--cf`
 
 ### `--certificate-filter-file`
 
-Path to a JSON file that defines the certificate filters that will be added to the namespace.
+_Required modifier unless `--certificate-filter-input` is specified_
+
+Path to a JSON file that defines the certificate filters to be applied to the Namespace.
+The specified filters replace any existing filters.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
+
+If both `--certificate-filter-file` and `--certificate-filter-input` are specified, the command returns an error.
 
 Alias: `--cff`
 
 ### `--certificate-filter-input`
 
-JSON that defines the certificate filters that will be added to the namespace.
+_Required modifier unless `--certificate-filter-file` is specified_
+
+A JSON string that defines the certificate filters to be applied to the Namespace.
+The specified filters replace any existing filters.
 
 Sample JSON: `{ "filters": [ { "commonName": "test1" } ] }`
+
+If both `--certificate-filter-input` and `--certificate-filter-file` are specified, the command returns an error.
 
 Alias: `--cfi`
 
 ### `--search-attribute`
 
-Flag can be used multiple times.
+_Required modifier; can be specified more than once_
 
-Valid values: `name=type`
+A custom Search Attribute in the form `_name_=_type_`.
 
-Valid options: `Keyword` | `Text` | `Int` | `Double` | `Datetime` | `Bool`
+Valid values for _type_: `Bool` | `Datetime` | `Double` | `Int` | `Keyword` | `Text`
 
 Alias: `--sa`
 
 ### `--user-namespace-permission`
 
-Flag can be used multiple times.
+_Can be specified more than once_
 
-Value must be `email=permission`
+A [Namespace-level permission](/cloud/#namespace-level-permissions) for a user in the form `_email_=_permission_`.
 
-Valid permissions: `Admin` | `Write` | `Read`
+Valid values for _permission_: `Admin` | `Write` | `Read`
 
 Alias: `-p`
 
@@ -125,19 +149,23 @@ The following modifiers control the behavior of the command.
 
 ### `--namespace`
 
+_Required modifier_
+
 Specify the Namespace hosted on Temporal Cloud to be deleted.
 
 Alias: `-n`
 
 ### `--request-id`
 
-The request ID to use for the asynchronous operation. If not set, the server will assign one.
+The request identifier to use for the asynchronous operation.
+If not set, the server assigns an identifier.
 
 Alias: `-r`
 
 ### `--resource-version`
 
-The resource version (etag) to update from. If not set, the CLI will use the latest.
+A resource version (ETag) to update from.
+If not set, the CLI uses the latest.
 
 Alias: `-v`
 
@@ -858,34 +886,57 @@ tcld namespace search-attributes rename --existing-name <value> --new-name <valu
 
 ## retention
 
-The `tcld namespace retention` command manages the length of time (in days) a closed Workflow is preserved before deletion for a given Namespace in Temporal Cloud.
+The `tcld namespace retention` commands manage the length of time (in days) a closed Workflow is preserved before deletion for a given Namespace in Temporal Cloud.
 
 Alias: `r`
 
-`tcld namespace retention`
+- <a class="tdlp" href="#get">tcld namespace retention get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention get</span><br /><br /><span class="tdlppd">How to retrieve the length of time a closed Workflows will be preserved before deletion for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
+- <a class="tdlp" href="#set">tcld namespace retention set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace retention set</span><br /><br /><span class="tdlppd">How to set the length of time a closed Workflows will be preserved before deletion for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set">Learn more</a></span></span></a>
+
+### get
+
+#### `get`
+
+Retrieve the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
+
+Alias: `g`
 
 The following modifier controls the behavior of the command.
 
-### `set`
+#### `--namespace`
 
-Set the length of time (in days) a closed Workflow will be preserved before deletion for a given namespace.
+_Required modifier_
 
-Alias: `s`
+Specify the Namespace hosted on Temporal Cloud to be deleted.
 
-**Example**
-
-```bash
-tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
-```
-
-### `get`
-
-Retrieve the length of time (in days) a closed Workflow will be preserved before deletion for a given namespace.
-
-Alias: `g`
+Alias: `-n`
 
 **Example**
 
 ```bash
 tcld namespace retention get --namespace <namespace_id>
+```
+
+### set
+
+#### `set`
+
+Set the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
+
+Alias: `s`
+
+The following modifier controls the behavior of the command.
+
+#### `--namespace`
+
+_Required modifier_
+
+Specify the Namespace hosted on Temporal Cloud to be deleted.
+
+Alias: `-n`
+
+**Example**
+
+```bash
+tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
 ```

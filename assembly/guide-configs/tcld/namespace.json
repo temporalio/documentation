@@ -79,7 +79,15 @@
     },
     {
       "type": "h2",
-      "id": "cloud/tcld/namespace/retention"
+      "id": "cloud/tcld/namespace/retention/index"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/namespace/retention/get"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/namespace/retention/set"
     }
   ]
 }
