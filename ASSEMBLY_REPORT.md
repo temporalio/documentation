@@ -664,4 +664,9 @@ app-dev-context/metrics -> /application-development/observability#metrics
 
 cloud/tcld/logout -> /cloud/tcld/logout#
 
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
+
+cloud/tcld/namespace/retention -> #retention
 
