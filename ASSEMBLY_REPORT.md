@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday May 05 2023 08:42:10 AM -0700
+Last assembled: Friday May 05 2023 11:54:14 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -268,9 +268,13 @@ cloud/tcld/login -> /cloud/tcld/login#
 
 cloud/tcld/version -> /cloud/tcld/version#
 
-cloud/tcld/namespace/list -> #list
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
 
 cloud/tcld/namespace/get -> #get
+
+cloud/tcld/namespace/list -> #list
 
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
@@ -662,11 +666,12 @@ concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
 
+cloud/tcld/namespace/retention/index -> #retention
+
+cloud/tcld/namespace/retention/get -> #get
+
+cloud/tcld/namespace/retention/set -> #set
+
 cloud/tcld/logout -> /cloud/tcld/logout#
 
-cloud/tcld/namespace/create -> #create
-
-cloud/tcld/namespace/delete -> #delete
-
-cloud/tcld/namespace/retention -> #retention
 
