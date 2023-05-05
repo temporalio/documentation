@@ -29,8 +29,7 @@ Alias: `-c`
 
 ### `--namespace`
 
-Specify the namespace hosted on Temporal Cloud. If not specified, the value of the environment variable `$TEMPORAL_CLOUD_NAMESPACE` is used.
-
+Specify the namespace hosted on Temporal Cloud.
 Alias: `-n`
 
 ### `--region`
@@ -92,5 +91,5 @@ Alias: `-p`
 **Example**
 
 ```bash
-tcld namespace create my-namespace --region us-west-2 --retention-days 60 --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' --user-namespace-permission "user@example.com=Admin" --search-attribute "customer_id=Int" --search-attribute "customer_name=Text"
+tcld namespace create --namespace <namespace_id> --region us-west-2 --retention-days 60 --certificate-filter-input '{"filters": [{"commonName": "test1"}]}' --user-namespace-permission "user@example.com=Admin" --search-attribute "customer_id=Int" --search-attribute "customer_name=Text"
 ```
