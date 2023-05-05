@@ -16,7 +16,7 @@ When you configure the client SDK, you need to present a complete certificate ch
 
 ### Option 2: You don't have certificate management infrastructure
 
-If you don't have existing certificate management infrastructure, you can issue the CA and client certificates by using tools such as OpenSSL or certstrap.
+If you don't have an existing certificate management infrastructure, you can issue the CA and client certificates by using tools such as OpenSSL or open source tools like certstrap.
 
 #### Option 2a: Use certstrap
 
@@ -37,7 +37,7 @@ export NAMESPACE_NAME=your-namespace
 certstrap init --common-name "Your Cert Auth"
 ```
 
-4. Request a certificate with a common name equal to the Namespace Name:.
+4. Request a certificate with a common name equal to the Namespace Name:
 
 ```command
 certstrap request-cert --common-name ${NAMESPACE_NAME}
