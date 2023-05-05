@@ -7,8 +7,6 @@ tags:
   - tcld
 ---
 
-#### `get`
-
 Retrieve the length of time (in days) a closed Workflow will be preserved before deletion for the specified Namespace.
 
 Alias: `g`
@@ -19,7 +17,8 @@ The following modifier controls the behavior of the command.
 
 _Required modifier_
 
-Specify the Namespace hosted on Temporal Cloud to be deleted.
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
 
