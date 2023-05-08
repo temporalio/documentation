@@ -27,11 +27,19 @@ Follow these steps to issue a certificate for use with Temporal Cloud:
 1. Install certstrap by following the instructions in the [certstrap README](https://github.com/square/certstrap#getting-started).
 2. Set the Namespace Name as the common name for the certificate:
 
+- MacOS:
+
 ```command
 export NAMESPACE_NAME=your-namespace
 ```
 
-3. Initialize a new certificate authority:
+- Windows:
+
+```command
+set NAMESPACE_NAME=your-namespace
+```
+
+1. Initialize a new certificate authority:
 
 ```command
 ./certstrap init --common-name ${NAMESPACE_NAME}
