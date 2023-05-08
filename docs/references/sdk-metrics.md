@@ -83,7 +83,7 @@ Some keys may not be available in every SDK, and Histogram metrics may have diff
 | [sticky_cache_total_forced_eviction](#sticky_cache_total_forced_eviction)               | Worker         | Counter     | Go, PHP, Java                     |
 | [unregistered_activity_invocation](#unregistered_activity_invocation)                   | Worker         | Counter     | Go, PHP                           |
 | [worker_start](#worker_start)                                                           | Worker         | Counter     | TypeScript, Python, Go, PHP, Java |
-| [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, PHP, Java                     |
+| [worker_task_slots_available](#worker_task_slots_available)                             | Worker         | Gauge       | Go, PHP, Java, TypeScript, Python |
 | [workflow_active_thread_count](#workflow_active_thread_count)                           | Worker         | Gauge       | Java                              |
 | [workflow_cancelled](#workflow_cancelled)                                               | Worker         | Counter     | TypeScript, Python, Go, PHP, Java |
 | [workflow_completed](#workflow_completed)                                               | Worker         | Counter     | TypeScript, Python, Go, PHP, Java |
@@ -318,7 +318,7 @@ Use the `worker_type` key to differentiate execution slots.
 (Workflow Workers execute Workflow Tasks; Activity Workers execute Activity Tasks.)
 
 - Type: Gauge
-- Available in: Go, Java, PHP, TypeScript
+- Available in: Go, Java, PHP, Python, TypeScript
 - Tags: `namespace`, `task_queue`, `worker_type`
 
 ### workflow_active_thread_count
