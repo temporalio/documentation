@@ -29,6 +29,7 @@ All metrics are prefixed with `temporal_` before being exported to their configu
 Currently, some metrics are specific to certain SDKs.
 
 TypeScript, Python, .NET, and Ruby SDKs metrics are defined in the Core SDK.
+
 PHP and Go metrics are defined in the Go SDK.
 
 Metrics are defined in the following locations.
