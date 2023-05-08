@@ -34,19 +34,19 @@ export NAMESPACE_NAME=your-namespace
 3. Initialize a new certificate authority:
 
 ```command
-certstrap init --common-name "Your Cert Auth"
+./certstrap init --common-name ${NAMESPACE_NAME}
 ```
 
 4. Request a certificate with a common name equal to the Namespace Name:
 
 ```command
-certstrap request-cert --common-name ${NAMESPACE_NAME}
+./certstrap request-cert --common-name ${NAMESPACE_NAME}
 ```
 
 5. Sign the certificate request and generate the end-entity certificate:
 
 ```command
-certstrap sign ${NAMESPACE_NAME} --CA "Your Cert Auth"
+./certstrap sign ${NAMESPACE_NAME} --CA CertAuth
 ```
 
 You can now use the generated client certificate with Temporal Cloud.
