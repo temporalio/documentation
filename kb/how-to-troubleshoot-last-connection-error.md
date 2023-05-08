@@ -1,0 +1,75 @@
+---
+slug: troubleshoot-last-connection-error
+title: Troubleshoot the "failed reaching server" error
+tags:
+  - cloud
+  - namespaces
+date: 2023-05-09T00:00:00Z
+---
+
+The error, `failed reaching server: last connection error`, is usually caused by an expired TLS certification.
+
+In this article, we'll provide a step-by-step guide for developers to troubleshoot and resolve this error, including how to check the certification expiration date, renew the certification, and update the server configuration.
+
+By following these steps, you can quickly resolve the following error:
+
+```bash
+failed reaching server: last connection error: connection closed before server preface received
+```
+
+### Verify TLS certification expiration date
+
+The first step in troubleshooting this error is to check the expiration date of the TLS certification.
+
+**Existing certificate management infrastructure**
+
+If you are using an existing certificate management infrastructure, check the TLS expiration date.
+For example if you are using OpenSSL, run the following command:
+
+```command
+openssl s_client -connect <address_id>.tmprl.cloud:7233 -showcerts -cert ~/certs/path.pem -key .~/certs/path.key -tls1_2
+```
+
+**Self-signed certificate**
+
+If you are using a self-signed certificate, run the following `tctl` command:
+
+```command
+tctl --namespace <namespace_id> --address <address_id>.tmprl.cloud:7233 --tls-cert-path ~/certs/path.pem --tls-key-path ~/certs/path.key namespace describe
+```
+
+### Renew TLS certification
+
+If the certificate has expired or is about to expire, the next step is to renew it.
+
+This can be done by contacting the certificate authority (CA) that issued the certificate and requesting a renewal.
+
+**Existing certificate management infrastructure**
+
+If you are using an existing certificate management infrastructure, contact the administrator of the infrastructure to renew the certificate.
+
+**Self-signed certificate**
+
+Alternatively, if you are using a self-signed certificate or do not have an existing infrastructure, you can generate a new certificate using OpenSSL or certstrap.
+For information on generating a self-signed certificate, see [Link to this or similar](https://github.com/temporalio/documentation/pull/2024)
+
+### Update the TLS certification in the server configuration
+
+Once the new certificate has been obtained or generated, it needs to be updated in the server configuration.
+
+You can update certificates using any of the following methods:
+
+- **[Update certificates using Temporal Cloud UI](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#update-certificates-using-temporal-cloud-ui)**
+- **[Update certificates using tcld](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#update-certificates-using-tcld)**
+
+Once you’ve updated the TLS certification in the server configuration, retry your connection.
+
+### Set reminders
+
+Don't let your certificates expire! Add reminders to your calendar to issue new CA certificates well before the expiration dates of the existing ones.
+
+## Additional resources
+
+By following these steps, you’ll troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certification.
+
+If this issue persists, check to see if the Client you are using to connect to the server is using the correct TLS certification, or open a ticket at [https://support.temporal.io/](https://support.temporal.io/)
