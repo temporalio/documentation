@@ -9,3 +9,5 @@ tags:
 ---
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
+
+If you see this error, examine your Workflow Definition.
