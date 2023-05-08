@@ -1,0 +1,58 @@
+---
+id: delete
+title: tcld user invite
+sidebar_label: invite
+description: How to invite users in Temporal Cloud using tcld.
+tags:
+  - tcld
+---
+
+The `tcld namespace invite` command invites the specified user in Temporal Cloud.
+
+Alias: `i`
+
+The following modifiers control the behavior of the command.
+
+### `--user-email`
+
+_Required modifier_
+
+Specify the email address of the user to be invited. You can supply this flag multiple times to invite multiple users in a single request.
+
+Alias: `-e`
+
+### `--account-role`
+
+_Required modifier_
+
+Specify the account role to set on the user.
+
+Available account roles: `admin` | `developer` | `read`.
+
+Alias: `--ar`
+
+
+### `--namespace-permission`
+
+Specify the Namespace permissions for the invited user.
+
+You can supply this flag multiple times to set multiple namespace permissions in a single request.
+
+Each value must be in the format of `namespace=permission-type`.
+
+Available namespace permissions: `Admin` | `Write` | `Read`.
+
+Alias: `-p`
+
+### `--request-id`
+
+The request identifier to use for the asynchronous operation.
+
+If not set, the server assigns an identifier.
+
+Alias: `-r`
+
+```bash
+tcld user invite --user-email <test@example.com> --account-role developer --namespace-permission ns1=Admin --namespace-permission ns2=Write --request-id <123456>
+```
+
