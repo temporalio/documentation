@@ -318,7 +318,7 @@ Use the `worker_type` key to differentiate execution slots.
 (Workflow Workers execute Workflow Tasks; Activity Workers execute Activity Tasks.)
 
 - Type: Gauge
-- Available in: Go, PHP, Java
+- Available in: Go, Java, PHP, TypeScript
 - Tags: `namespace`, `task_queue`, `worker_type`
 
 ### workflow_active_thread_count
