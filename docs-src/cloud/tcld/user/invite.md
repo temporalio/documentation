@@ -1,5 +1,5 @@
 ---
-id: delete
+id: invite
 title: tcld user invite
 sidebar_label: invite
 description: How to invite users in Temporal Cloud using tcld.
@@ -31,7 +31,6 @@ Available account roles: `admin` | `developer` | `read`.
 
 Alias: `--ar`
 
-
 ### `--namespace-permission`
 
 Specify the Namespace permissions for the invited user.
@@ -52,7 +51,6 @@ If not set, the server assigns an identifier.
 
 Alias: `-r`
 
-```bash
+```command
 tcld user invite --user-email <test@example.com> --account-role developer --namespace-permission ns1=Admin --namespace-permission ns2=Write --request-id <123456>
 ```
-

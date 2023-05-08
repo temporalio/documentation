@@ -1,0 +1,45 @@
+{
+    "file_name": "user.md",
+    "file_dir": "cloud/tcld",
+    "id": "user",
+    "title": "tcld user command reference",
+    "sidebar_label": "user",
+    "description": "How to use Temporal Cloud's tcld user command",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/tcld/user/index"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/get"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/delete"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/invite"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/list"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/resend-invite"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/set-account-role"
+        },
+        {
+            "type": "h2",
+            "id": "cloud/tcld/user/set-namespace-permissions"
+        }
+    ]
+}

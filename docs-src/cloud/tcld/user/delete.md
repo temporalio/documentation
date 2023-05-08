@@ -7,7 +7,7 @@ tags:
   - tcld
 ---
 
-The `tcld namespace delete` command deletes the specified user in Temporal Cloud.
+The `tcld user delete` command deletes the specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id` to specify the user to be deleted.
 
 Alias: `d`
@@ -20,7 +20,7 @@ Specify the user to be deleted by email.
 
 **Example**
 
-```bash
+```command
 tcld user delete --user-email <test@example.com>
 ```
 
@@ -30,6 +30,6 @@ Specify the user to be deleted by user identifier.
 
 **Example**
 
-```bash
+```command
 tcld user delete --user-id <test-user-id>
 ```
