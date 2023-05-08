@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday May 08 2023 07:35:23 AM -0600
+Last assembled: Monday May 08 2023 07:36:48 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-56 guide configurations found.
+57 guide configurations found.
 
-989 information nodes found.
+995 information nodes found.
 
-845 information nodes are attached to guides.
+851 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -266,17 +266,25 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
 cloud/tcld/version -> /cloud/tcld/version#
 
-cloud/tcld/namespace/list -> #list
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
 
 cloud/tcld/namespace/get -> #get
+
+cloud/tcld/namespace/list -> #list
 
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
+
+cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -295,6 +303,10 @@ cloud/tcld/namespace/certificate-filters/clear -> #clear
 cloud/tcld/namespace/search-attributes/add -> #add
 
 cloud/tcld/namespace/search-attributes/rename -> #rename
+
+cloud/tcld/namespace/retention/get -> #get
+
+cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
