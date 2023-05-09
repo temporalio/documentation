@@ -43,7 +43,23 @@
     },
     {
       "type": "h2",
+      "id": "concepts/what-is-persistence"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-visibility"
+    },
+    {
+      "type": "h2",
       "id": "concepts/what-is-archival"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-cluster-configuration"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-cluster-monitoring"
     },
     {
       "type": "h2",

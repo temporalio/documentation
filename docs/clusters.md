@@ -20,118 +20,17 @@ A Temporal Cluster is the group of services, known as the <a class="tdlp" href="
 
 ![A Temporal Cluster (Server + persistence)](/diagrams/temporal-cluster.svg)
 
-### Persistence
+<!-- ### Visibility
+Commenting this out because it is out of place. Using the what is visibility concept topic in the guide instead.
+Also these details are covered in the Visibility store setup under cluster deployment.
 
-A Temporal Cluster's only required dependency for basic operation is a database.
-Multiple types of databases are supported.
-
-<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" height="620" width="1140" /></div></div>
-
-The database stores the following types of data:
-
-- Tasks: Tasks to be dispatched.
-- State of Workflow Executions:
-  - Execution table: A capture of the mutable state of Workflow Executions.
-  - History table: An append only log of Workflow Execution History Events.
-- Namespace metadata: Metadata of each Namespace in the Cluster.
-- Visibility data: Enables operations like "show all running Workflow Executions".
-  For production environments, we recommend using Elasticsearch.
-
-An Elasticsearch database must be added to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
-
-With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
-
-#### Dependency versions
-
-Temporal tests compatibility by spanning the **minimum** and **maximum** stable non-EOL major versions for each supported database.
-As of time of writing, these specific versions are used in our test pipelines and actively tested before we release any version of Temporal:
-
-- **Cassandra v3.11 and v4.0**
-- **PostgreSQL v10.18 and v13.4**
-- **MySQL v5.7 and v8.0** (specifically 8.0.19+ due to a bug)
-
-We update these support ranges once a year.
-The release notes of each Temporal Server declare when we plan to drop support for database versions reaching End of Life.
-
-- Because Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
-  Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.
-- We do not run tests with vendors like Vitess and CockroachDB, so you rely on their compatibility claims if you use them.
-  Feel free to discuss them with fellow users [in our forum](https://community.temporal.io/).
-- Temporal also supports SQLite v3.x persistence, but this is meant only for development and testing, not production usage.
-
-### Monitoring and observation
-
-Temporal emits metrics by default in a format that is supported by Prometheus.
-Monitoring and observing those metrics is optional.
-Any metrics software that supports the same format can be used. Currently, we test with the following Prometheus and Grafana versions:
-
-- **Prometheus >= v2.0**
-- **Grafana >= v2.5**
-
-### Visibility
-
-Temporal has built-in <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> features.
+Temporal has built-in <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> features.
 To enhance this feature, Temporal supports an <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integration with Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a>.
 
 - Elasticsearch v8 is supported from Temporal version 1.18.0 onwards
 - Elasticsearch v7.10 is supported from Temporal version 1.7.0 onwards
 - Elasticsearch v6.8 is supported up to Temporal version 1.17.x
-- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch
-
-### mTLS encryption
-
-Temporal supports Mutual Transport Layer Security (mTLS) as a method of encrypting network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
-
-Mutual TLS can be enabled in Temporal’s [TLS configuration](/references/configuration#tls).
-This configuration can be passed through `WithConfig` or `WithConfigLoader`.
-
-This configuration includes two sections that serve to separate intra-cluster and external traffic. That way, different certificates and settings can be used to encrypt each section of traffic:
-
-- `internode`: configuration for encrypting communication between nodes within the Cluster.
-- `frontend`: configuration for encrypting the Frontend's public endpoints
-
-### Temporal Client connections
-
-A client's network access can be limited by using certificates issued by a specific Certificate Authority (CA).
-
-To restrict access to Temporal Cluster endpoints, use the `clientCAFiles` or `clientCAData` property and the `requireClientAuth` property.
-These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
-
-#### Server name specification
-
-Specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
-
-Entering a value for `serverName` enables established connections to authenticate the endpoint.
-This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
-
-This measure can be used for `internode` and `frontend` endpoints.
-
-For more information on mTLS configuration, refer to our [TLS configuration guide](/references/configuration#tls).
-
-### Auth
-
-**Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
-**Authorization** is the verification of applications and data that a user on your Cluster or application has access to.
-
-Temporal has several authentication protocols that can be set to restrict access to your data.
-These protocols address three areas: servers, client connections, and users.
-
-Server attacks can be prevented by specifying `serverName` in the `client` section of your mTLS configuration.
-This can be done for both `frontend` and `internode` endpoints.
-
-Client connections can be restricted to certain endpoints by requiring certificates from a specific CA.
-Modify the `clientCaFiles`, `clientCaData`, and `requireClientAuth` properties in the `internode` and `frontend` sections of the mTLS configuration.
-
-User access can be restricted through extensibility points and plugins.
-When implemented, the `frontend` invokes the plugin before executing the requested operation.
-
-Temporal offers two plugin interfaces for API call authentication and authorization.
-
-- <a class="tdlp" href="/security#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
-- <a class="tdlp" href="/security#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
-
-The logic of both plugins can be customized to fit a variety of use cases.
-When provided, the frontend invokes the implementation of the plugins before running the requested operation.
+- Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch -->
 
 ## Temporal Server
 
@@ -156,6 +55,7 @@ Each service is aware of the others, including scaled instances, through a membe
 All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 
 Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
+For details on upgrading your Temporal Cluster, see [Upgrade Server](/cluster-deployment-guide#upgrade-server).
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
 
@@ -165,7 +65,7 @@ We offer maintenance support of the last three **minor** versions after a releas
 
 We offer maintenance support of **major** versions for at least 12 months after a GA release, and we provide at least 6 months' notice before EOL/deprecating support.
 
-#### Dependencies
+**Dependencies**
 
 Temporal offers official support for, and is tested against, dependencies with the exact versions described in the `go.mod` file of the corresponding release tag.
 (For example, [v1.5.1](https://github.com/temporalio/temporal/tree/v1.5.1) dependencies are documented in [the go.mod for v1.5.1](https://github.com/temporalio/temporal/blob/v1.5.1/go.mod).)
@@ -182,7 +82,7 @@ Types of inbound calls include the following:
 - <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> CRUD
 - External events
 - Worker polls
-- <a class="tdlp" href="/visibility#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#">Learn more</a></span></span></a> requests
+- <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> requests
 - [tctl](/tctl-v1) (the Temporal CLI) operations
 - Calls from a remote Cluster related to <a class="tdlp" href="#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Multi-Cluster Replication?</span><br /><br /><span class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#multi-cluster-replication">Learn more</a></span></span></a>
 
@@ -294,6 +194,55 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the [`RegisterNamespaceRequest`](/application-development/features/#namespaces) API, it returns an error.
 
+## Persistence
+
+Temporal Persistence store is a database used by <a class="tdlp" href="#temporal-server">Temporal Services<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a> to persist events generated and processed in your Temporal Cluster and SDK.
+
+A Temporal Cluster's only required dependency for basic operation is the Persistence database.
+Multiple types of databases are supported.
+
+<div class="tdiw"><div class="tditw"><p class="tdit">Persistence</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-database.svg" alt="Persistence" height="620" width="1140" /></div></div>
+
+The database stores the following types of data:
+
+- Tasks: Tasks to be dispatched.
+- State of Workflow Executions:
+  - Execution table: A capture of the mutable state of Workflow Executions.
+  - History table: An append only log of Workflow Execution History Events.
+- Namespace metadata: Metadata of each Namespace in the Cluster.
+- <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> data: Enables operations like "show all running Workflow Executions".
+  For production environments, we recommend using Elasticsearch as your Visibility store.
+
+An Elasticsearch database must be added to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
+
+With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
+
+#### Dependency versions
+
+Temporal tests compatibility by spanning the **minimum** and **maximum** stable major versions for each supported database.
+The following versions are used in our test pipelines and actively tested before we release any version of Temporal:
+
+- **Cassandra v3.11 and v4.0**
+- **PostgreSQL v10.18 and v13.4**
+- **MySQL v5.7 and v8.0** (specifically 8.0.19+ due to a bug)
+
+You can verify supported databases in the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
+
+- Because Temporal Server primarily relies on core database functionality, we do not expect compatibility to break often.
+  <!--Temporal has no opinions on database upgrade paths; as long as you can upgrade your database according to each project's specifications, Temporal should work with any version within supported ranges.-->
+- We do not run tests with vendors like Vitess and CockroachDB.
+- Temporal also supports SQLite v3.x persistence, but this is meant only for development and testing, not production usage.
+
+## Visibility
+
+The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+
+The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores the Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a group of Temporal Services with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+
+- [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
+
+A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
+
 ## Archival
 
 Archival is a feature that automatically backs up <a class="tdlp" href="/workflows#event-history">Event Histories<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and Visibility records from Temporal Cluster persistence to a custom blob store.
@@ -311,6 +260,124 @@ This feature is helpful for compliance and debugging.
 Temporal's Archival feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Archival is not supported when running Temporal through Docker and is disabled by default when installing the system manually and when deploying through [helm charts](https://github.com/temporalio/helm-charts/blob/master/templates/server-configmap.yaml) (but can be enabled in the [config](https://github.com/temporalio/temporal/blob/master/config/development.yaml)).
+
+## Cluster configuration
+
+Cluster configuration is the setup and configuration details of your self-hosted Temporal Cluster, defined using YAML.
+You must define your Cluster configuration when setting up your Temporal Cluster.
+
+Cluster configuration is composed of two types of configurations: Static configuration and Dynamic configuration.
+
+### Static configuration
+
+Static configuration contains details of how the Cluster should be set up. The static configuration is read just once and used to configure service nodes container/pod at startup.
+Depending on how you want to deploy your self-hosted Temporal Cluster, your static configuration must contain details for setting up:
+
+- Temporal Services - Frontend, History, Matching, Worker
+- Membership ports for the Temporal Services
+- Persistence (including Shard count), Visibility and Advanced Visibility, Archival store setups.
+- TLS, Auth
+- Server log level
+- Metrics
+- Cluster Metadata
+- Dynamic Config Client
+
+Static configuration values cannot be changed at runtime.
+Some values, such as Metrics configuration or Server log level can be changed in the static configuration but require restarting the Cluster for the changes to take effect.
+
+### Dynamic configuration
+
+Dynamic configuration is the ability to change the behavior of Temporal Server without having to redeploy the server images.
+
+Some configuration fields are truly dynamic; that is, changes to those values take effect immediately.
+Other configuration fields require a server restart because they are checked only at server startup (such as thread pool size).
+
+For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
+
+### Temporal Cluster security configuration
+
+Secure your Temporal Cluster (self-hosted and Temporal Cloud) by encrypting your network communication and setting authentication and authorization protocols for API calls.
+
+For details on setting up your Temporal Cluster security, see [Temporal Platform security features](/security).
+
+#### mTLS encryption
+
+Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
+
+On self-hosted Temporal Clusters, configure mTLS in the `tls` section of the [Cluster configuration](/references/configuration#tls).
+mTLS configuration is a [static configuration](#static-configuration) property.
+
+You can then use either [`WithConfig`](/references/server-options#withconfig) or [`WithConfigLoader`](/references/server-options#withconfigloader) server options to start your Temporal Cluster with this configuration.
+
+The mTLS configuration includes two sections that serve to separate communication within a Temporal Cluster and client calls made from your application the Cluster.
+
+- `internode`: configuration for encrypting communication between nodes within the Cluster.
+- `frontend`: configuration for encrypting the Frontend's public endpoints
+
+Setting mTLS for `internode` and `frontend` separately allows you to use different certificates and settings to encrypt each section of traffic.
+
+#### Using certificates for Client connections
+
+Use CA certificates to authenticate client connections to your Temporal Cluster.
+
+On Temporal Cloud, you can <a class="tdlp" href="/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates">set your CA certificates in your Temporal Cloud settings<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Get started - Certificates</span><br /><br /><span class="tdlppd">Learn requirements for CA certificates</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates">Learn more</a></span></span></a> and use the end-entity certificates in your client calls.
+
+On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Cluster configuration.
+These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
+For details, see the [tls confiuration reference](/references/configuration#tls).
+
+##### Server name specification
+
+On self-hosted Temporal Clusters, you can specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+
+Entering a value for `serverName` enables established connections to authenticate the endpoint.
+This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
+
+This measure can be used for `internode` and `frontend` endpoints.
+
+For more information on mTLS configuration, see [tls configuration reference](/references/configuration#tls).
+
+#### Auth
+
+<!-- commenting this very generic explanation out. Can include it back in if everyone feels strongly.
+ **Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
+**Authorization** is the verification of applications and data that a user on your Cluster or application has access to. -->
+
+Temporal provides authentication protocols that can be set to restrict access to your data.
+These protocols address three areas: servers, client connections, and users.
+
+Temporal offers two plugin interfaces for API call authentication and authorization.
+
+- <a class="tdlp" href="/security#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
+- <a class="tdlp" href="/security#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
+
+The logic of both plugins can be customized to fit a variety of use cases.
+When provided, the Frontend Service invokes the implementation of the plugins before running the requested operation.
+
+## Cluster monitoring and observation
+
+You can monitor and observe performance by using the metrics emitted by your self-hosted Temporal Cluster or by Temporal Cloud.
+
+Temporal emits metrics by default in a format that is supported by Prometheus.
+Any metrics software that supports the same format can be used.
+Currently, we test with the following Prometheus and Grafana versions:
+
+- **Prometheus >= v2.0**
+- **Grafana >= v2.5**
+
+Temporal Cloud emits metrics through a Prometheus HTTP API endpoint which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
+
+On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints. You can then set up your observability platform (such as Grafana) to use this as a datasource.
+
+Metrics reference:
+
+- [Temporal Cloud metrics reference](/cloud/how-to-monitor-temporal-cloud-metrics)
+- [Temporal Cluster OSS metrics reference](/references/cluster-metrics)
+
+For details on setting up metrics on Temporal Cloud and self-hosted Clusters, see:
+
+- [Set up Grafana with Temporal Cloud observability to view metrics](/kb/prometheus-grafana-setup-cloud#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana)
+- [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/kb/prometheus-grafana-setup)
 
 ## Multi-Cluster Replication
 
@@ -419,10 +486,10 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 1               | 1       |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 1               | 1       |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 1: adding event with event ID == 2 & version == 1
@@ -433,11 +500,11 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 2               | 1       |
-| 2        | 1             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 2               | 1       |
+| 2        | 1               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 2: adding event with event ID == 3 & version == 1
@@ -448,12 +515,12 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 3               | 1       |
-| 2        | 1             |                 |         |
-| 3        | 1             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 3               | 1       |
+| 2        | 1               |                 |         |
+| 3        | 1               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 3: Namespace failover triggered, Namespace version is now 2
@@ -465,13 +532,13 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 3               | 1       |
-| 2        | 1             | 4               | 2       |
-| 3        | 1             |                 |         |
-| 4        | 2             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 3               | 1       |
+| 2        | 1               | 4               | 2       |
+| 3        | 1               |                 |         |
+| 4        | 2               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 4: adding event with event ID == 5 & version == 2
@@ -482,14 +549,14 @@ View in both Cluster A & B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 3               | 1       |
-| 2        | 1             | 5               | 2       |
-| 3        | 1             |                 |         |
-| 4        | 2             |                 |         |
-| 5        | 2             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 3               | 1       |
+| 2        | 1               | 5               | 2       |
+| 3        | 1               |                 |         |
+| 4        | 2               |                 |         |
+| 5        | 2               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 </details>
@@ -515,12 +582,12 @@ View in both Cluster B & C
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 2               | 1       |
-| 2        | 1             | 3               | 2       |
-| 3        | 2             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 2               | 1       |
+| 2        | 1               | 3               | 2       |
+| 3        | 2               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 1: adding event with event ID == 4 & version == 2 in Cluster B
@@ -529,13 +596,13 @@ T = 1: adding event with event ID == 4 & version == 2 in Cluster B
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 2               | 1       |
-| 2        | 1             | 4               | 2       |
-| 3        | 2             |                 |         |
-| 4        | 2             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 2               | 1       |
+| 2        | 1               | 4               | 2       |
+| 3        | 2               |                 |         |
+| 4        | 2               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 1: namespace failover to Cluster C, adding event with event ID == 4 & version == 3 in Cluster C
@@ -544,13 +611,13 @@ T = 1: namespace failover to Cluster C, adding event with event ID == 4 & versio
 | -------- | ------------- | --------------- | ------- |
 | Events   | Version History |
 | -------- | --------------- | --------------- | ------- |
-| Event ID | Event Version | Event ID        | Version |
-|----------|---------------|-----------------|---------|
-| 1        | 1             | 2               | 1       |
-| 2        | 1             | 3               | 2       |
-| 3        | 2             | 4               | 3       |
-| 4        | 3             |                 |         |
-| -------- | ------------- | --------------- | ------- |
+| Event ID | Event Version   | Event ID        | Version |
+| -------- | -------------   | --------------- | ------- |
+| 1        | 1               | 2               | 1       |
+| 2        | 1               | 3               | 2       |
+| 3        | 2               | 4               | 3       |
+| 4        | 3               |                 |         |
+| -------- | -------------   | --------------- | ------- |
 ```
 
 T = 2: replication task from Cluster C arrives in Cluster B
@@ -561,12 +628,12 @@ Note: below are a tree structures
                 | -------- | ------------- |
                 | Events        |
                 | ------------- | ------------- |
-                | Event ID | Event Version |
-                |----------|---------------|
-                | 1        | 1             |
-                | 2        | 1             |
-                | 3        | 2             |
-                | -------- | ------------- |
+                | Event ID      | Event Version |
+                | --------      | ------------- |
+                | 1             | 1             |
+                | 2             | 1             |
+                | 3             | 2             |
+                | --------      | ------------- |
                 |               |
                 | ------------- | ------------  |
                 |               |
@@ -579,11 +646,11 @@ Note: below are a tree structures
           | --------------- | ------- |
           | Version History |
           | --------------- | ------------------- |
-          | Event ID        | Version |
-          |-----------------|---------|
-          | 2               | 1       |
-          | 3               | 2       |
-          | --------------- | ------- |
+          | Event ID        | Version             |
+          | --------------- | -------             |
+          | 2               | 1                   |
+          | 3               | 2                   |
+          | --------------- | -------             |
           |                 |
           | -------         | ------------------- |
           |                 |
@@ -673,7 +740,7 @@ T = 0: task A is generated according to Event Id: 4, version: 2
 | Events   |
 | -------- | ------------- |
 | Event ID | Event Version |
-|----------|---------------|
+| -------- | ------------- |
 | 1        | 1             |
 | 2        | 1             |
 | 3        | 2             |
@@ -693,12 +760,12 @@ T = 1: conflict resolution happens, Workflow Execution's mutable state is rebuil
 | -------- | ------------- |
 | Events        |
 | ------------- | -------------------------------------------- |
-| Event ID | Event Version |
-|----------|---------------|
-| 1        | 1             |
-| 2        | 1             |
-| 3        | 2             |
-| -------- | ------------- |
+| Event ID      | Event Version                                |
+| --------      | -------------                                |
+| 1             | 1                                            |
+| 2             | 1                                            |
+| 3             | 2                                            |
+| --------      | -------------                                |
 |               |
 | ------------- | -------------------------------------------- |
 |               |

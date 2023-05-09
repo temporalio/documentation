@@ -154,6 +154,7 @@ module.exports = {
         "references/errors",
         "references/events",
         "references/configuration",
+        "references/dynamic-configuration",
         "references/web-ui-configuration",
         "references/web-ui-environment-variables",
         "references/server-options",

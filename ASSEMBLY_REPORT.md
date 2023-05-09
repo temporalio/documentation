@@ -1,18 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday April 13 2023 10:43:03 AM -0500
+Last assembled: Monday May 08 2023 17:32:45 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
 55 guide configurations found.
 
-985 information nodes found.
+989 information nodes found.
 
-841 information nodes are attached to guides.
+845 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -404,45 +404,9 @@ app-dev-context/connect-to-temporal-cloud -> /application-development/foundation
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/address -> /cli/cmd-options#address
-
-cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
-
-cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
-
-cli/cmd-options/color -> /cli/cmd-options#color
-
-cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
-
-cli/cmd-options/env -> /cli/cmd-options#env
-
-cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
-
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
-cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
-
-cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
-
-cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
-
-cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
-
-cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
-
-cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -452,7 +416,17 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -570,6 +544,8 @@ cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
 
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
 cli/cmd-options/port -> /cli/cmd-options#port
 
 cli/cmd-options/sqlite-pragma -> /cli/cmd-options#sqlite-pragma
@@ -684,6 +660,10 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
+
 app-dev-context/metrics -> /application-development/observability#metrics
+
+cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 
 
