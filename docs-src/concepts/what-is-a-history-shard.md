@@ -10,7 +10,7 @@ tags:
 A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.
 
 Each History Shard maps to a single persistence partition.
-A History Shard assumes that only be one concurrent operation can be within a partition at a time.
+A History Shard assumes that only one concurrent operation can be within a partition at a time.
 In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Cluster.
 This means that the number of History Shards in a Temporal Cluster plays a significant role in the performance of your Temporal Application.
 
