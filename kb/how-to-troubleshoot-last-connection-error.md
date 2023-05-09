@@ -7,15 +7,13 @@ tags:
 date: 2023-05-09T00:00:00Z
 ---
 
-The error, `failed reaching server: last connection error`, is usually caused by an expired TLS certification.
+An expired TLS certification can often cause `failed reaching server: last connection error`.
 
-In this article, we'll provide a step-by-step guide for developers to troubleshoot and resolve this error, including how to check the certification expiration date, renew the certification, and update the server configuration.
+This troubleshooting guide shows you how to do the following:
 
-By following these steps, you can quickly resolve the following error:
-
-```bash
-failed reaching server: last connection error: connection closed before server preface received
-```
+- Check the certification expiration date
+- Renew the certification
+- Update the server configuration
 
 ### Verify TLS certification expiration date
 
@@ -50,12 +48,14 @@ If you are using an existing certificate management infrastructure, contact the 
 
 **Self-signed certificate**
 
-Alternatively, if you are using a self-signed certificate or do not have an existing infrastructure, you can generate a new certificate using OpenSSL or certstrap.
-For information on generating a self-signed certificate, see [Link to this or similar](https://github.com/temporalio/documentation/pull/2024)
+Alternatively, if you are using a self-signed certificate or do not have an existing infrastructure, you can generate a new certificate using OpenSSL or [certstrap](https://github.com/square/certstrap).
 
-### Update the TLS certification in the server configuration
+<!-- For information on generating a self-signed certificate, see [Link to this or similar](https://github.com/temporalio/documentation/pull/2024)
+-->
 
-Once the new certificate has been obtained or generated, it needs to be updated in the server configuration.
+### Update the CA certification in the server configuration
+
+Update the Temporal Cloud server configuration with the new CA certificate.
 
 You can update certificates using any of the following methods:
 
