@@ -2,13 +2,11 @@
 
 Last assembled: Monday May 08 2023 15:06:12 PM -0500
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-55 guide configurations found.
+57 guide configurations found.
 
-987 information nodes found.
-
-843 information nodes are attached to guides.
+995 information nodes found.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -270,17 +268,25 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
 cloud/tcld/version -> /cloud/tcld/version#
 
-cloud/tcld/namespace/list -> #list
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
 
 cloud/tcld/namespace/get -> #get
+
+cloud/tcld/namespace/list -> #list
 
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
+
+cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -299,6 +305,10 @@ cloud/tcld/namespace/certificate-filters/clear -> #clear
 cloud/tcld/namespace/search-attributes/add -> #add
 
 cloud/tcld/namespace/search-attributes/rename -> #rename
+
+cloud/tcld/namespace/retention/get -> #get
+
+cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
@@ -401,6 +411,8 @@ concepts/what-is-a-parent-close-policy -> #parent-close-policy
 concepts/what-is-temporal-cloud -> /cloud/index#
 
 app-dev-context/connect-to-temporal-cloud -> /application-development/foundations#connect-to-temporal-cloud
+
+concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -635,8 +647,6 @@ concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 go/how-to-develop-a-worker-in-go -> #run-a-dev-worker
 

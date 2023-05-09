@@ -29,7 +29,10 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 - **ORDER BY**
 
 The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
-Additionally, custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
+
+The **ORDER BY** operator is currently not supported in Temporal Cloud.
+
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
 
 ### Partial string match
 
