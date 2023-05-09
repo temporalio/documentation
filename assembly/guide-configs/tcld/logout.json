@@ -1,0 +1,17 @@
+{
+    "file_name": "logout.md",
+    "file_dir": "cloud/tcld",
+    "id": "logout",
+    "title": "tcld logout command reference",
+    "sidebar_label": "logout",
+    "description": "How to use Temporal Cloud's tcld logout command.",
+    "use_description": false,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "cloud/tcld/logout"
+        }
+    ]
+}
