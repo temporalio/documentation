@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 09 2023 12:13:57 PM -0700
+Last assembled: Tuesday May 09 2023 12:18:54 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -671,5 +671,7 @@ cloud/tcld/namespace/retention/index -> #retention
 cloud/tcld/namespace/retention/get -> #get
 
 cloud/tcld/namespace/retention/set -> #set
+
+prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
 
 

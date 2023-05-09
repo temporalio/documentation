@@ -35,7 +35,7 @@ User code <--> Payload Converter <--> Payload Codec <--> Wire <--> Temporal Serv
 ```
 
 You can run your Payload Codec with a [Codec Server](/concepts/what-is-a-codec-server) and use the Codec Server endpoints in Web UI and tctl to decode your encrypted Payload locally.
-For details on how to set up a Codec Server, see (/prod-readiness-context/how-to-set-up-codec-server).
+For details on how to set up a Codec Server, see [Codec Server setup](/prod-readiness-context/how-to-set-up-codec-server).
 
 However, if you plan to set up [remote data encoding](/concepts/what-is-remote-data-encoding) for your data, ensure that you consider all security implications of running encryption remotely before implementing it.
 
