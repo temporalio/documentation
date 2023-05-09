@@ -62,7 +62,7 @@ To backfill a Schedule in Go, use `Backfill()` on `scheduleHandle`.
 
 ## Delete
 
-Deleting a Schedule erases a Schedule from a Workflow.
+Deleting a Schedule erases a Schedule.
 Deletion does not affect any Workflows started by the Schedule.
 
 To delete a Schedule in Go, use the `Delete()` command on `scheduleHandle`.
