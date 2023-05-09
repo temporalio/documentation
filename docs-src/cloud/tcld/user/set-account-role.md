@@ -14,6 +14,16 @@ Alias: `ri`
 
 The following modifiers control the behavior of the command.
 
+### `--account-role`
+
+_Required modifier_
+
+Specify the account-level Role to assign to the user.
+
+Available account roles: `admin` | `developer` | `read`.
+
+Alias: `-ar`
+
 ### `--user-email`
 
 Specify the email address of the user to assign an account-level Role to.
@@ -52,13 +62,3 @@ Specify a resource version (ETag) to update from.
 If not specified, the latest version is used.
 
 Alias: `-v`
-
-### `--account-role`
-
-_Required modifier_
-
-Specify the account-level Role to assign to the user.
-
-Available account roles: `admin` | `developer` | `read`.
-
-Alias: `-ar`

@@ -33,3 +33,11 @@ Specify the user identifier of the user to resend an invitation to.
 ```bash
 tcld user resend-invite --user-id <test-user-id>
 ```
+
+### `--request-id`
+
+The request identifier to use for the asynchronous operation.
+
+If not set, the server assigns an identifier.
+
+Alias: `-r`
