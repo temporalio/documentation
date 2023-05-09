@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday May 08 2023 10:34:38 AM -0700
+Last assembled: Tuesday May 09 2023 15:57:10 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -266,6 +266,8 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
 cloud/tcld/version -> /cloud/tcld/version#
 
 cloud/tcld/namespace/create -> #create
@@ -281,6 +283,8 @@ cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
+
+cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -299,6 +303,10 @@ cloud/tcld/namespace/certificate-filters/clear -> #clear
 cloud/tcld/namespace/search-attributes/add -> #add
 
 cloud/tcld/namespace/search-attributes/rename -> #rename
+
+cloud/tcld/namespace/retention/get -> #get
+
+cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
@@ -666,12 +674,18 @@ concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
 
-cloud/tcld/namespace/retention/index -> #retention
+cloud/tcld/user/delete -> #delete
 
-cloud/tcld/namespace/retention/get -> #get
+cloud/tcld/user/get -> #get
 
-cloud/tcld/namespace/retention/set -> #set
+cloud/tcld/user/invite -> #invite
 
-cloud/tcld/logout -> /cloud/tcld/logout#
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 
