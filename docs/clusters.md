@@ -285,6 +285,8 @@ Depending on how you want to deploy your self-hosted Temporal Cluster, your stat
 Static configuration values cannot be changed at runtime.
 Some values, such as Metrics configuration or Server log level can be changed in the static configuration but require restarting the Cluster for the changes to take effect.
 
+For details on static configuration keys, see [Cluster configuration reference](/references/configuration).
+
 ### Dynamic configuration
 
 Dynamic configuration is the ability to change the behavior of Temporal Server without having to redeploy the server images.
