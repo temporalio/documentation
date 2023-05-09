@@ -30,6 +30,7 @@ TypeScript, Python, .NET, and Ruby SDKs metrics are defined in the Core SDK.
 
 PHP and Go metrics are defined in the Go SDK.
 
+Java metrics are defined in the Java SDK
 Metrics are defined in the following locations.
 
 - [Core SDK Worker metrics](https://github.com/temporalio/sdk-core/blob/master/core/src/telemetry/metrics.rs)
