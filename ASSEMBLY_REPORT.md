@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday May 08 2023 15:28:15 PM -0700
+Last assembled: Tuesday May 09 2023 13:45:27 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -309,20 +309,6 @@ cloud/tcld/namespace/retention/get -> #get
 cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
-
-cloud/tcld/user/delete -> #delete
-
-cloud/tcld/user/get -> #get
-
-cloud/tcld/user/invite -> #invite
-
-cloud/tcld/user/list -> #list
-
-cloud/tcld/user/resend-invite -> #resend-invite
-
-cloud/tcld/user/set-account-role -> #set-account-role
-
-cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
@@ -687,5 +673,19 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
+
+cloud/tcld/user/delete -> #delete
+
+cloud/tcld/user/get -> #get
+
+cloud/tcld/user/invite -> #invite
+
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 

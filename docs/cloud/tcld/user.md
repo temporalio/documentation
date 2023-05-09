@@ -11,46 +11,17 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tcld user` commands manages users in Temporal Cloud.
+The `tcld user` commands manage users in Temporal Cloud.
 
 Alias: `u`
 
 - <a class="tdlp" href="#delete">tcld user delete<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user delete</span><br /><br /><span class="tdlppd">How to delete users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#delete">Learn more</a></span></span></a>
 - <a class="tdlp" href="#get">tcld user get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user get</span><br /><br /><span class="tdlppd">How to get user information in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
-- <a class="tdlp" href="#invite">tcld user invite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user invite</span><br /><br /><span class="tdlppd">How to invite users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#invite">Learn more</a></span></span></a>
+- <a class="tdlp" href="#invite">tcld user invite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user invite</span><br /><br /><span class="tdlppd">How to invite users to join Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#invite">Learn more</a></span></span></a>
 - <a class="tdlp" href="#list">tcld user list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user list</span><br /><br /><span class="tdlppd">How to list users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
-- <a class="tdlp" href="#resend-invite">tcld user resend-invite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user resend-invite</span><br /><br /><span class="tdlppd">How to resend invitations to users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#resend-invite">Learn more</a></span></span></a>
-- <a class="tdlp" href="#set-account-role">tcld user set-account-role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user set-account-role</span><br /><br /><span class="tdlppd">How to set account roles for users in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set-account-role">Learn more</a></span></span></a>
-- <a class="tdlp" href="#set-namespace-permissions">tcld user set-namespace-permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user set-namespace-permissions</span><br /><br /><span class="tdlppd">How to set a Namespace permission for a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set-namespace-permissions">Learn more</a></span></span></a>
-
-## get
-
-The `tcld user get` command gets information on the specified user in Temporal Cloud.
-You must set either `--user-email` or `--user-id`.
-
-Alias: `g`
-
-The following modifiers control the behavior of the command.
-
-### `--user-email`
-
-Specify the user's email address to get information on.
-
-**Example**
-
-```command
-tcld user delete --user-email <test@example.com>
-```
-
-### `--user-id`
-
-Specify the user's identifier to get information on.
-
-**Example**
-
-```command
-tcld user delete --user-id <test-user-id>
-```
+- <a class="tdlp" href="#resend-invite">tcld user resend-invite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user resend-invite</span><br /><br /><span class="tdlppd">How to resend an invitation to a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#resend-invite">Learn more</a></span></span></a>
+- <a class="tdlp" href="#set-account-role">tcld user set-account-role<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user set-account-role</span><br /><br /><span class="tdlppd">How to set an account-level Role for a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set-account-role">Learn more</a></span></span></a>
+- <a class="tdlp" href="#set-namespace-permissions">tcld user set-namespace-permissions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld user set-namespace-permissions</span><br /><br /><span class="tdlppd">How to set Namespace-level permissions for a user in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set-namespace-permissions">Learn more</a></span></span></a>
 
 ## delete
 
@@ -63,7 +34,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user to be deleted by email.
+Specify the email address of the user to delete.
 
 **Example**
 
@@ -73,7 +44,36 @@ tcld user delete --user-email <test@example.com>
 
 ### `--user-id`
 
-Specify the user to be deleted by user identifier.
+Specify the user identifier of the user to delete.
+
+**Example**
+
+```command
+tcld user delete --user-id <test-user-id>
+```
+
+## get
+
+The `tcld user get` command gets information about the specified user in Temporal Cloud.
+You must set either `--user-email` or `--user-id`.
+
+Alias: `g`
+
+The following modifiers control the behavior of the command.
+
+### `--user-email`
+
+Specify the email address of the user to get information about.
+
+**Example**
+
+```command
+tcld user delete --user-email <test@example.com>
+```
+
+### `--user-id`
+
+Specify the user identifier of the user to get information about.
 
 **Example**
 
@@ -83,7 +83,7 @@ tcld user delete --user-id <test-user-id>
 
 ## invite
 
-The `tcld namespace invite` command invites the specified user in Temporal Cloud.
+The `tcld namespace invite` command invites the specified user to join Temporal Cloud.
 
 Alias: `i`
 
@@ -93,7 +93,8 @@ The following modifiers control the behavior of the command.
 
 _Required modifier_
 
-Specify the email address of the user to be invited. You can supply this flag multiple times to invite multiple users in a single request.
+Specify the email address of the user to be invited.
+You can supply this modifier multiple times to invite multiple users in a single request.
 
 Alias: `-e`
 
@@ -101,7 +102,7 @@ Alias: `-e`
 
 _Required modifier_
 
-Specify the account role to set on the user.
+Specify the [account-level Role](/cloud/#account-level-roles) for the invited user.
 
 Available account roles: `admin` | `developer` | `read`.
 
@@ -109,9 +110,8 @@ Alias: `--ar`
 
 ### `--namespace-permission`
 
-Specify the Namespace permissions for the invited user.
-
-You can supply this flag multiple times to set multiple namespace permissions in a single request.
+Specify the [Namespace-level permissions](/cloud/#namespace-level-permissions) for the invited user.
+You can supply this modifier multiple times to set multiple Namespace permissions in a single request.
 
 Each value must be in the format of `namespace=permission-type`.
 
@@ -133,9 +133,11 @@ tcld user invite --user-email <test@example.com> --account-role developer --name
 
 ## list
 
-The `tcld user list` command returns a paginated list of Temporal Cloud.
+The `tcld user list` command returns a paginated list of users in Temporal Cloud.
 
 Alias: `l`
+
+The command has no modifiers.
 
 **Example**
 
@@ -154,7 +156,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user's email to resend an invitation to.
+Specify the email address of the user to resend an invitation to.
 
 **Example**
 
@@ -164,7 +166,7 @@ tcld user resend-invite --user-email <test@example.com>
 
 ### `--user-id`
 
-Specify the user's identifier to resend an invitation to.
+Specify the user identifier of the user to resend an invitation to.
 
 **Example**
 
@@ -174,7 +176,7 @@ tcld user resend-invite --user-id <test-user-id>
 
 ## set-account-role
 
-The `tcld user set-account-role` command sets an account role for the specified user in Temporal Cloud.
+The `tcld user set-account-role` command sets an [account-level Role](/cloud/#account-level-roles) for the specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id`.
 
 Alias: `ri`
@@ -183,7 +185,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user's email to set an account role to.
+Specify the email address of the user to assign an account-level Role to.
 
 Alias: `-e`
 
@@ -195,7 +197,7 @@ tcld user set-account-role --user-email <test@example.com> --account-role Develo
 
 ### `--user-id`
 
-Specify the user's identifier to set an account role to.
+Specify the user identifier of the user to assign an account-level Role to.
 
 Alias: `--id`
 
@@ -215,7 +217,8 @@ Alias: `-r`
 
 ### `--resource-version`
 
-Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+Specify a resource version (ETag) to update from.
+If not specified, the latest version is used.
 
 Alias: `-v`
 
@@ -223,7 +226,7 @@ Alias: `-v`
 
 _Required modifier_
 
-Specify the account role to set on the user.
+Specify the account-level Role to assign to the user.
 
 Available account roles: `admin` | `developer` | `read`.
 
@@ -231,7 +234,7 @@ Alias: `-ar`
 
 ## set-namespace-permissions
 
-The `tcld user set-namespace-permissions` command sets Namespace permissions for a specified user in Temporal Cloud.
+The `tcld user set-namespace-permissions` command sets [Namespace-level permissions](/cloud/#namespace-level-permissions) for a specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id`.
 
 Alias: `snp`
@@ -240,7 +243,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user's email to set Namespace permissions to.
+Specify the email address of the user to assign Namespace-level permissions to.
 
 **Example**
 
@@ -250,7 +253,7 @@ tcld user set-namespace-permissions --user-email <test@example.com>
 
 ### `--user-id`
 
-Specify the user's identifier to set Namespace permissions to.
+Specify the user identifier of the user to assign Namespace-level permissions to.
 
 **Example**
 
