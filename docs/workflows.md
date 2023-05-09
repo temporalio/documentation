@@ -418,7 +418,8 @@ In some cases, an attempt to spawn a Workflow Execution with a Workflow Id that 
 
 :::note
 
-The default [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.20.0/internal#StartWorkflowOptions) behavior in the Go SDK is to not return an error when a new Workflow Execution is spawned with the same Workflow ID as an open Workflow Execution. Instead, it will return a Workflow run instance representing the current or last run of the open Workflow Execution.
+The default [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) behavior in the Go SDK is to not return an error when a new Workflow Execution is attempted with the same Workflow Id as an open Workflow Execution.
+Instead, it returns a WorkflowRun instance representing the current or last run of the open Workflow Execution.
 
 To return the `Workflow execution already started` error, set `WorkflowExecutionErrorWhenAlreadyStarted` to `true`.
 
