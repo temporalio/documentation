@@ -7,7 +7,7 @@ tags:
   - tcld
 ---
 
-The `tcld user` commands manages users in Temporal Cloud.
+The `tcld user` commands manage users in Temporal Cloud.
 
 Alias: `u`
 

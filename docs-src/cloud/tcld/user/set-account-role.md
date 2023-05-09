@@ -2,12 +2,12 @@
 id: set-account-role
 title: tcld user set-account-role
 sidebar_label: set-account-role
-description: How to set account roles for users in Temporal Cloud using tcld.
+description: How to set an account-level Role for a user in Temporal Cloud using tcld.
 tags:
   - tcld
 ---
 
-The `tcld user set-account-role` command sets an account role for the specified user in Temporal Cloud.
+The `tcld user set-account-role` command sets an [account-level Role](/cloud/#account-level-roles) for the specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id`.
 
 Alias: `ri`
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user's email to set an account role to.
+Specify the email address of the user to assign an account-level Role to.
 
 Alias: `-e`
 
@@ -28,7 +28,7 @@ tcld user set-account-role --user-email <test@example.com> --account-role Develo
 
 ### `--user-id`
 
-Specify the user's identifier to set an account role to.
+Specify the user identifier of the user to assign an account-level Role to.
 
 Alias: `--id`
 
@@ -48,7 +48,8 @@ Alias: `-r`
 
 ### `--resource-version`
 
-Specify a resource version (ETag) to update from. If not specified, the latest version is used.
+Specify a resource version (ETag) to update from.
+If not specified, the latest version is used.
 
 Alias: `-v`
 
@@ -56,7 +57,7 @@ Alias: `-v`
 
 _Required modifier_
 
-Specify the account role to set on the user.
+Specify the account-level Role to assign to the user.
 
 Available account roles: `admin` | `developer` | `read`.
 

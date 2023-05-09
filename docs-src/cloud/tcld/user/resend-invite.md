@@ -2,7 +2,7 @@
 id: resend-invite
 title: tcld user resend-invite
 sidebar_label: resend-invite
-description: How to resend invitations to users in Temporal Cloud using tcld.
+description: How to resend an invitation to a user in Temporal Cloud using tcld.
 tags:
   - tcld
 ---
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user's email to resend an invitation to.
+Specify the email address of the user to resend an invitation to.
 
 **Example**
 
@@ -26,7 +26,7 @@ tcld user resend-invite --user-email <test@example.com>
 
 ### `--user-id`
 
-Specify the user's identifier to resend an invitation to.
+Specify the user identifier of the user to resend an invitation to.
 
 **Example**
 

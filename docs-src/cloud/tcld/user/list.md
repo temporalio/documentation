@@ -7,9 +7,11 @@ tags:
   - tcld
 ---
 
-The `tcld user list` command returns a paginated list of Temporal Cloud.
+The `tcld user list` command returns a paginated list of users in Temporal Cloud.
 
 Alias: `l`
+
+The command has no modifiers.
 
 **Example**
 

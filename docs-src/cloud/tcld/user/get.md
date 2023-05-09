@@ -7,7 +7,7 @@ tags:
   - tcld
 ---
 
-The `tcld user get` command gets information on the specified user in Temporal Cloud.
+The `tcld user get` command gets information about the specified user in Temporal Cloud.
 You must set either `--user-email` or `--user-id`.
 
 Alias: `g`
@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user's email address to get information on.
+Specify the email address of the user to get information about.
 
 **Example**
 
@@ -26,7 +26,7 @@ tcld user delete --user-email <test@example.com>
 
 ### `--user-id`
 
-Specify the user's identifier to get information on.
+Specify the user identifier of the user to get information about.
 
 **Example**
 

@@ -15,11 +15,11 @@
         },
         {
             "type": "h2",
-            "id": "cloud/tcld/user/get"
+            "id": "cloud/tcld/user/delete"
         },
         {
             "type": "h2",
-            "id": "cloud/tcld/user/delete"
+            "id": "cloud/tcld/user/get"
         },
         {
             "type": "h2",

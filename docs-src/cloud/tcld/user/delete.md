@@ -16,7 +16,7 @@ The following modifiers control the behavior of the command.
 
 ### `--user-email`
 
-Specify the user to be deleted by email.
+Specify the email address of the user to delete.
 
 **Example**
 
@@ -26,7 +26,7 @@ tcld user delete --user-email <test@example.com>
 
 ### `--user-id`
 
-Specify the user to be deleted by user identifier.
+Specify the user identifier of the user to delete.
 
 **Example**
 
