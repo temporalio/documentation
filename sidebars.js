@@ -66,11 +66,12 @@ module.exports = {
             id: "cloud/tcld/index",
           },
           items: [
+            "cloud/tcld/account",
             "cloud/tcld/login",
             "cloud/tcld/logout",
-            "cloud/tcld/account",
             "cloud/tcld/namespace",
             "cloud/tcld/request",
+            "cloud/tcld/user",
             "cloud/tcld/version",
           ],
         },
