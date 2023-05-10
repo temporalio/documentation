@@ -1,0 +1,33 @@
+extends: existence
+message: Double check '%s' - may need to be capitalized.
+level: warning
+ignorecase: false
+tokens:
+ - workflow
+ - workflows
+ - activity
+ - activities
+ - query
+ - queries
+ - sandboxing
+ - schedule
+ - schedules
+ - signal
+ - signals
+ - task queue
+ - task queues
+ - temporal
+ - temporal cloud
+ - Temporal cloud
+ - Temporal application
+ - Temporal applications
+ - timer
+ - timers
+ - workers
+ - workflow definition
+ - workflow definitions
+ - activity definition
+ - activity definitions
+ - workflow execution
+ - workflow executions
+ - workflow sandboxing

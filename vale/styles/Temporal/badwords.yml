@@ -1,0 +1,19 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: error
+ignorecase: true
+action:
+  name: replace
+swap:
+  female: woman
+  females: women
+  utilization: usage
+  utilizing: using
+  utilize: use
+  utilized: used
+  utilizes: uses
+  learn to: ""
+  learned to: ""
+  learn how to: ""
+  learned how to: ""
+  below: "following"
