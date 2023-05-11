@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday April 13 2023 10:43:03 AM -0500
+Last assembled: Tuesday May 09 2023 16:34:08 PM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-55 guide configurations found.
+58 guide configurations found.
 
-985 information nodes found.
+1003 information nodes found.
 
-841 information nodes are attached to guides.
+859 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -266,17 +266,25 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
 cloud/tcld/version -> /cloud/tcld/version#
 
-cloud/tcld/namespace/list -> #list
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
 
 cloud/tcld/namespace/get -> #get
+
+cloud/tcld/namespace/list -> #list
 
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
+
+cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -295,6 +303,10 @@ cloud/tcld/namespace/certificate-filters/clear -> #clear
 cloud/tcld/namespace/search-attributes/add -> #add
 
 cloud/tcld/namespace/search-attributes/rename -> #rename
+
+cloud/tcld/namespace/retention/get -> #get
+
+cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
@@ -402,47 +414,13 @@ concepts/what-is-temporal-cloud -> /cloud/index#
 
 app-dev-context/connect-to-temporal-cloud -> /application-development/foundations#connect-to-temporal-cloud
 
+concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
-cli/cmd-options/address -> /cli/cmd-options#address
-
-cli/cmd-options/codec-auth -> /cli/cmd-options#codec-auth
-
-cli/cmd-options/codec-endpoint -> /cli/cmd-options#codec-endpoint
-
-cli/cmd-options/color -> /cli/cmd-options#color
-
-cli/cmd-options/context-timeout -> /cli/cmd-options#context-timeout
-
-cli/cmd-options/env -> /cli/cmd-options#env
-
-cli/cmd-options/grpc-meta -> /cli/cmd-options#grpc-meta
+cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/identity -> /cli/cmd-options#identity
-
-cli/cmd-options/namespace -> /cli/cmd-options#namespace
-
-cli/cmd-options/result -> /cli/cmd-options#result
-
-cli/cmd-options/run-id -> /cli/cmd-options#run-id
-
-cli/cmd-options/tls-ca-path -> /cli/cmd-options#tls-ca-path
-
-cli/cmd-options/tls-cert-path -> /cli/cmd-options#tls-cert-path
-
-cli/cmd-options/tls-disable-host-verification -> /cli/cmd-options#tls-disable-host-verification
-
-cli/cmd-options/tls-key-path -> /cli/cmd-options#tls-key-path
-
-cli/cmd-options/tls-server-name -> /cli/cmd-options#tls-server-name
-
-cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
-
-cli/cmd-options/detail -> /cli/cmd-options#detail
-
-cli/cmd-options/reason -> /cli/cmd-options#reason
-
-cli/cmd-options/fields -> /cli/cmd-options#fields
 
 cli/cmd-options/limit -> /cli/cmd-options#limit
 
@@ -452,7 +430,17 @@ cli/cmd-options/output -> /cli/cmd-options#output
 
 cli/cmd-options/pager -> /cli/cmd-options#pager
 
+cli/cmd-options/result -> /cli/cmd-options#result
+
+cli/cmd-options/run-id -> /cli/cmd-options#run-id
+
 cli/cmd-options/time-format -> /cli/cmd-options#time-format
+
+cli/cmd-options/workflow-id -> /cli/cmd-options#workflow-id
+
+cli/cmd-options/detail -> /cli/cmd-options#detail
+
+cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
@@ -570,6 +558,8 @@ cli/cmd-options/log-level -> /cli/cmd-options#log-level
 
 cli/cmd-options/metrics-port -> /cli/cmd-options#metrics-port
 
+cli/cmd-options/namespace -> /cli/cmd-options#namespace
+
 cli/cmd-options/port -> /cli/cmd-options#port
 
 cli/cmd-options/sqlite-pragma -> /cli/cmd-options#sqlite-pragma
@@ -660,8 +650,6 @@ java/how-to-spawn-a-workflow-execution-in-java -> #start-workflow-execution
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
-
 go/how-to-develop-a-worker-in-go -> #run-a-dev-worker
 
 app-dev-context/tracing -> /application-development/observability#tracing
@@ -685,5 +673,19 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
+
+cloud/tcld/user/delete -> #delete
+
+cloud/tcld/user/get -> #get
+
+cloud/tcld/user/invite -> #invite
+
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 

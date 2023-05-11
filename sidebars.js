@@ -20,7 +20,7 @@ module.exports = {
         "visibility",
         "clusters",
         "namespaces",
-        "dataconversion"
+        "dataconversion",
       ],
     },
     {
@@ -53,6 +53,7 @@ module.exports = {
         "cloud/how-to-get-started-with-temporal-cloud",
         "cloud/how-to-manage-certificates-in-temporal-cloud",
         "cloud/how-to-manage-namespaces-in-temporal-cloud",
+        "cloud/how-to-manage-saml-with-temporal-cloud",
         "cloud/how-to-monitor-temporal-cloud-metrics",
         "cloud/how-to-manage-audit-logging",
         {
@@ -65,10 +66,12 @@ module.exports = {
             id: "cloud/tcld/index",
           },
           items: [
-            "cloud/tcld/login",
             "cloud/tcld/account",
+            "cloud/tcld/login",
+            "cloud/tcld/logout",
             "cloud/tcld/namespace",
             "cloud/tcld/request",
+            "cloud/tcld/user",
             "cloud/tcld/version",
           ],
         },
@@ -90,9 +93,7 @@ module.exports = {
         type: "doc",
         id: "production-readiness/index",
       },
-      items: [
-        "production-readiness/develop",
-      ],
+      items: ["production-readiness/develop"],
     },
     "security",
     {
@@ -202,9 +203,7 @@ module.exports = {
       label: "Cluster how-tos",
       collapsible: false,
       collapsed: false,
-      items: [
-        "server/production-deployment",
-      ],
+      items: ["server/production-deployment"],
     },
   ],
 };

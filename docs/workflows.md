@@ -77,7 +77,9 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer (unless changing from a duration of 0).
+- Changing the duration of a Timer, with the following exceptions:
+  - In Java, Python, and Go, changing a Timer’s duration from or to 0 is a non-deterministic behavior.
+  - In .NET, changing a Timer’s duration from or to -1 (which means "infinite") is a non-deterministic behavior.
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.
@@ -254,9 +256,8 @@ No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
-The Temporal Cluster logs a warning at every 10,000 Events.
-When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+The Temporal Cluster logs a warning after 10K (10,240) Events and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
@@ -341,16 +342,14 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-A Workflow Execution Event History has [a hard limit of 50,000 Events](/workflows#limits), as well as a hard limit of 50 MB in terms of size.
-The Temporal Cluster logs a warning at every 10,000 Events.
-
-When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+The Temporal Cluster logs a [warning after 10K (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
 
 #### Continue-As-New
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> to 50,000 Events or 50 MB, and will warn you every 10,000 Events or 10 MB.
+As a precautionary measure, the Temporal Platform limits the total <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -410,17 +409,23 @@ A Workflow Id is meant to be a business-process identifier such as customer iden
 A <a class="tdlp" href="#workflow-id-reuse-policy">Workflow Id Reuse Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id Reuse Policy?</span><br /><br /><span class="tdlppd">A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-id-reuse-policy">Learn more</a></span></span></a> can be used to manage whether a Workflow Id can be re-used.
 The Temporal Platform guarantees uniqueness of the Workflow Id within a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> based on the Workflow Id Reuse Policy.
 
-It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
-An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
-
 A Workflow Execution can be uniquely identified across all Namespaces by its <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a>, Workflow Id, and <a class="tdlp" href="#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-id">Learn more</a></span></span></a>.
 
 #### Workflow Id Reuse Policy
 
 A Workflow Id Reuse Policy determines whether a Workflow Execution is allowed to spawn with a particular Workflow Id, if that Workflow Id has been used with a previous, and now Closed, Workflow Execution.
 
-It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution.
-An attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow Execution already started` error.
+It is not possible for a new Workflow Execution to spawn with the same Workflow Id as another Open Workflow Execution, regardless of the Workflow Id Reuse Policy.
+In some cases, an attempt to spawn a Workflow Execution with a Workflow Id that is the same as the Id of a currently Open Workflow Execution results in a `Workflow execution already started` error.
+
+:::note
+
+The default [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#StartWorkflowOptions) behavior in the Go SDK is to not return an error when a new Workflow Execution is attempted with the same Workflow Id as an open Workflow Execution.
+Instead, it returns a WorkflowRun instance representing the current or last run of the open Workflow Execution.
+
+To return the `Workflow execution already started` error, set `WorkflowExecutionErrorWhenAlreadyStarted` to `true`.
+
+:::
 
 The Workflow Id Reuse Policy can have one of the following values:
 
