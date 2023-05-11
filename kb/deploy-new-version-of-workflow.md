@@ -1,6 +1,6 @@
 ---
 slug: deploy-new-version-of-workflow
-title: Use Replay before deploy a new version of a Workflow
+title: Use Replay before deploying a new version of a Workflow
 tags:
   - troubleshooting
   - how-to
