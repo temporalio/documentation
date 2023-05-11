@@ -7,7 +7,7 @@ tags:
 date: 2023-05-11T00:00:00Z
 ---
 
-When making code changes to a Workflow, it is important to avoid introducing non-deterministic behavior; otherwise, you may encounter non-determinism errors in your Workflow History.
+When making code changes to a Workflow, it is important to avoid introducing non-deterministic behavior.
 
 One way to prevent this error from occurring is to use the [Workflow Replayer](/workflows#replays) to replay existing Workflow Histories against your new code before deploying it to production.
 
@@ -21,18 +21,14 @@ While the Workflow Replay helps to avoid non-deterministic code, it does not gua
 
 To use the Workflow Replayer, you need to provide the following:
 
-- The Workflow Replayer to register the Workflow that is going to be replayed
+- The Workflow Replayer to register the Workflow that you want to replay
 - A Workflow History to execute, either:
   - Loaded directly from the Client
   - Loaded from the JSON History file
 
-If you choose to load the Workflow History directly from the Client, consult the [SDK specific documentation](/application-development/testing#replay) for more information.
+Consult the [SDK specific documentation](/application-development/testing#replay) for information on using the Workflow Replayer programmatically.
 
-If you chose to load the Event History from a JSON file on disk, use one the following methods:
-
-### Programmatically
-
-Consult the [SDK specific documentation](/application-development/testing#replay) for information on loading event Histories.
+If you chose to load the Event History from a JSON file on disk, you can do so programmatically or from one of the following methods:
 
 ### The Temporal CLI
 
@@ -53,8 +49,15 @@ Once you have the Workflow JSON History file, you can use the Workflow Replayer 
 
 ## Replay existing Workflow Histories in CI
 
-Use your existing CI pipeline to replay Workflow Histories against your new Workflow versions to ensure that they are compatible with every change pushed to your version control management.
-You can replay existing Workflow Histories in your CI pipeline and validate that they do not break determinism and prevent failures from occurring in production.
+Use the Workflow Replayer in your existing Continuous Integration (CI) pipeline to ensure that new versions of your Workflow are compatible with every change pushed to your version control management. By replaying existing Workflow Histories, you can validate that they do not break determinism and prevent failures from occurring in production.
+
+To use the Replayer in your CI pipeline, consider the following steps:
+
+1. Fetch a representative sample of Workflow Histories to replay against your new Workflow version. For example, you could fetch the 100 most recent Histories for your Workflow and replay all of them.
+2. Run the Replayer against each of the fetched Histories to ensure that the new Workflow version is compatible with each of them.
+
+   - If the Replayer finds any incompatible changes, the CI pipeline should fail to prevent these changes from going into production. In this case, you should identify and fix the issues before retrying the CI pipeline.
+   - If the Replayer does not find any incompatible changes, the CI pipeline should succeed. You can then proceed with confidence that your changes are compatible with your existing Workflow Histories.
 
 For more information on testing Workflows, see [Test frameworks](/application-development/testing#test-frameworks)
 
