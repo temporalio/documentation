@@ -8,6 +8,3 @@ tags:
 ---
 
 Workflows listen for Updates by the Update's name.
-
-
-
