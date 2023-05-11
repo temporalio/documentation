@@ -46,7 +46,6 @@ swap:
   signals: Signals
   standard visibility: Standard Visibility
   start-to-close timeout: Start-To-Close Timeout
-  server: Cluster
   temporal server: Temporal Server
   temporal cluster: Temporal Cluster
   task queue: Task Queue
