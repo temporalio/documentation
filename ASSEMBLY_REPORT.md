@@ -1,12 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday May 08 2023 15:06:12 PM -0500
+Last assembled: Friday May 12 2023 09:31:55 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-57 guide configurations found.
+58 guide configurations found.
 
-995 information nodes found.
+1003 information nodes found.
+
+859 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -671,5 +673,19 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
+
+cloud/tcld/user/delete -> #delete
+
+cloud/tcld/user/get -> #get
+
+cloud/tcld/user/invite -> #invite
+
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 
