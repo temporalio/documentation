@@ -78,7 +78,15 @@
     },
     {
       "type": "h2",
+      "id": "references/strongly-typed-errors/cause-bad-update"
+    },
+    {
+      "type": "h2",
       "id": "references/strongly-typed-errors/cause-reset-workflow"
+    },
+    {
+      "type": "h2",
+      "id": "references/strongly-typed-errors/cause-unhandled-update"
     },
     {
       "type": "h2",

@@ -50,6 +50,12 @@ app-dev-context/timers -> /application-development/features#timers
 
 app-dev-context/search-attributes -> /application-development/observability#search-attributes
 
+concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
+
+concepts/what-is-a-worker -> /workers#
+
+concepts/what-is-a-workflow -> /workflows#
+
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
 concepts/what-is-a-claimmapper-plugin -> #claim-mapper
@@ -155,8 +161,6 @@ tctl-v1/workflow/start -> /tctl-v1/workflow#start
 tctl-v1/dataconverter/web -> #web
 
 concepts/what-is-a-namespace -> /namespaces#
-
-concepts/what-is-a-workflow -> /workflows#
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -310,8 +314,6 @@ cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
-concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
-
 concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 
 concepts/what-is-a-local-activity -> /activities#local-activity
@@ -339,8 +341,6 @@ concepts/what-is-a-retry-policy -> /retry-policies#
 concepts/what-is-asynchronous-activity-completion -> #asynchronous-activity-completion
 
 concepts/what-is-an-activity-task -> /tasks#activity-task
-
-concepts/what-is-a-worker -> /workers#
 
 app-dev-context/activity-retries -> /application-development/features#activity-retries
 
