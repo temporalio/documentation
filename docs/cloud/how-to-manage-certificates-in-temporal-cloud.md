@@ -68,19 +68,24 @@ Follow these steps to issue a certificate for use with Temporal Cloud:
 1. Install certstrap by following the instructions in the [certstrap README](https://github.com/square/certstrap#getting-started).
 2. Set the Namespace Name as the common name for the certificate:
 
-- MacOS:
+<Tabs>
+  <TabItem value="macos" label="MacOS" default>
 
 ```command
 export NAMESPACE_NAME=your-namespace
 ```
 
-- Windows:
+</TabItem>
+  <TabItem value="windows" label="Windows">
 
 ```command
 set NAMESPACE_NAME=your-namespace
 ```
 
-1. Initialize a new certificate authority:
+</TabItem>
+</Tabs>
+
+3. Initialize a new certificate authority:
 
 ```command
 ./certstrap init --common-name "My Cert Auth"
@@ -96,6 +101,13 @@ set NAMESPACE_NAME=your-namespace
 
 ```command
 ./certstrap sign ${NAMESPACE_NAME} --CA "My Cert Auth"
+```
+
+6. (optional) If you are using the Temporal Java SDK, you will need to convert the PKCS1 file format to PKCS8 file format.
+   Export the certificate and private key to a PKCS8 file:
+
+```command
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in <infile.key> -out <outfile.key> -nocrypt
 ```
 
 You can now use the generated client certificate with Temporal Cloud.
