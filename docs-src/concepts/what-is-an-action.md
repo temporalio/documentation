@@ -10,6 +10,8 @@ tags:
 
 An Action is the fundamental pricing unit in [Temporal Cloud](/concepts/what-is-temporal-cloud).
 
+The following operations result in Actions, which are billed monthly.
+
 **Workflows**
 
 - **Workflow started.**
@@ -26,7 +28,7 @@ An Action is the fundamental pricing unit in [Temporal Cloud](/concepts/what-is-
   Includes sending a [Signal](/concepts/what-is-a-signal) from a client or from within a Workflow to another Workflow.
 - **Query received.**
   [Queries](/concepts/what-is-a-query) aren't recorded in Event History.
-  A step such as viewing the stack trace in the Temporal Cloud UI results in a Query.
+  An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
