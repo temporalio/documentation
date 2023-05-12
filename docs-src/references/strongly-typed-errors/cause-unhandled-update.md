@@ -12,4 +12,4 @@ tags:
 
 Temporal rejects the Workflow Task completion to guarantee that the Update is eventually handled by Workflow code and rewinds the Workflow so it can handle the pending Update.
 
-This error can happen when the [Workflow](/concepts/what-is-a-workflow) is receiving Updates at a high frequency.
+This error can happen when the Workflow receives frequent Updates.
