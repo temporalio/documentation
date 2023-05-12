@@ -28,6 +28,8 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 
 An Action is the fundamental pricing unit in <a class="tdlp" href="#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a>.
 
+The following operations result in Actions, which are billed monthly.
+
 **Workflows**
 
 - **Workflow started.**
@@ -44,7 +46,7 @@ An Action is the fundamental pricing unit in <a class="tdlp" href="#">Temporal C
   Includes sending a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> from a client or from within a Workflow to another Workflow.
 - **Query received.**
   <a class="tdlp" href="/workflows#query">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Query?</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#query">Learn more</a></span></span></a> aren't recorded in Event History.
-  A step such as viewing the stack trace in the Temporal Cloud UI results in a Query.
+  An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
 - **Version marker recorded.**
   Occurs when a Workflow calls `get-version` or `patch`.
 - **Side Effect recorded.**
