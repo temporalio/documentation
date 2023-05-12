@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-`UnhandledUpdate` occurs when a Workflow Update is received by the server while a Workflow Task is being processed on a Worker producing a command that would cause the Workflow to transition to a closed state.
+`UnhandledUpdate` occurs when a Workflow Update is received by the Temporal Server while a Workflow Task being processed on a Worker produces a Command that would cause the Workflow to transition to a closed state.
 
 Temporal rejects the Workflow Task completion in order to guarantee that Updates are eventually seen by Workflow code and will rewind the Workflow so it can handle the pending Update.
 
