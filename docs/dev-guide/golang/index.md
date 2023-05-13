@@ -1,8 +1,9 @@
 ---
 id: index
+slug: /dev-guide/go
 title: Temporal Go SDK developer's guide
 description: The Temporal Developer's guide provides a comprehensive overview of the structures, primitives, and features used in Temporal Application development.
-sidebar_label: Golang
+sidebar_label: Go
 sidebar_position: 1
 ---
 
@@ -22,35 +23,35 @@ This guide is meant to provide a comprehensive overview of the structures, primi
 
 The Developer's guide is divided into the following sections:
 
-1. [**Foundations**](/dev-guide/golang/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
+1. [**Foundations**](/dev-guide/go/foundations): The minimum things required to build and run a simple Workflow with a single Activity.
 
-   - [Run a development Cluster](/dev-guide/golang/foundations#run-a-dev-cluster)
-   - [Add an SDK to your project](/dev-guide/golang/foundations#add-your-sdk)
-   - [Create a Temporal Client](/dev-guide/golang/foundations#connect-to-a-cluster)
-   - [Develop a basic Workflow Definition](/dev-guide/golang/foundations#develop-workflows)
-   - [Develop a basic Activity Definition](/dev-guide/golang/foundations#develop-activities)
-   - [Call to execute an Activity](/dev-guide/golang/foundations#activity-execution)
-   - [Run a Worker Process](/dev-guide/golang/foundations#run-worker-processes)
-   - [Start a Workflow Execution](/dev-guide/golang/foundations#start-workflow-execution)
+   - [Run a development Cluster](/dev-guide/go/foundations#run-a-dev-cluster)
+   - [Add an SDK to your project](/dev-guide/go/foundations#add-your-sdk)
+   - [Create a Temporal Client](/dev-guide/go/foundations#connect-to-a-cluster)
+   - [Develop a basic Workflow Definition](/dev-guide/go/foundations#develop-workflows)
+   - [Develop a basic Activity Definition](/dev-guide/go/foundations#develop-activities)
+   - [Call to execute an Activity](/dev-guide/go/foundations#activity-execution)
+   - [Run a Worker Process](/dev-guide/go/foundations#run-worker-processes)
+   - [Start a Workflow Execution](/dev-guide/go/foundations#start-workflow-execution)
 
-2. [**Features**](/dev-guide/golang/features): All the general features available to a Temporal Application.
+2. [**Features**](/dev-guide/go/features): All the general features available to a Temporal Application.
 
-   - [Signals](/dev-guide/golang/features#signals)
-   - [Queries](/dev-guide/golang/features#queries)
-   - [Workflow timeouts and retries](/dev-guide/golang/features#workflow-timeouts)
-   - [Activity timeouts and retries](/dev-guide/golang/features#activity-timeouts)
-   - [Activity Heartbeats](/dev-guide/golang/features#activity-heartbeats)
-   - [Async Activity Completion](/dev-guide/golang/features#asynchronous-activity-completion)
-   - [Child Workflows](/dev-guide/golang/features#child-workflows)
-   - [Continue-As-New](/dev-guide/golang/features#continue-as-new)
-   - [Cron Jobs](/dev-guide/golang/features#temporal-cron-jobs)
+   - [Signals](/dev-guide/go/features#signals)
+   - [Queries](/dev-guide/go/features#queries)
+   - [Workflow timeouts and retries](/dev-guide/go/features#workflow-timeouts)
+   - [Activity timeouts and retries](/dev-guide/go/features#activity-timeouts)
+   - [Activity Heartbeats](/dev-guide/go/features#activity-heartbeats)
+   - [Async Activity Completion](/dev-guide/go/features#asynchronous-activity-completion)
+   - [Child Workflows](/dev-guide/go/features#child-workflows)
+   - [Continue-As-New](/dev-guide/go/features#continue-as-new)
+   - [Cron Jobs](/dev-guide/go/features#temporal-cron-jobs)
 
-3. [**Observability**](/dev-guide/golang/observability): Methods for observing a Temporal Application.
+3. [**Observability**](/dev-guide/go/observability): Methods for observing a Temporal Application.
 
-   - [Metrics](/dev-guide/golang/observability#metrics)
-   - [Tracing](/dev-guide/golang/observability#tracing)
-   - [Logging](/dev-guide/golang/observability#logging)
-   - [Visibility](/dev-guide/golang/observability#visibility)
+   - [Metrics](/dev-guide/go/observability#metrics)
+   - [Tracing](/dev-guide/go/observability#tracing)
+   - [Logging](/dev-guide/go/observability#logging)
+   - [Visibility](/dev-guide/go/observability#visibility)
 
 4. [**Worker performance**](/dev-guide/worker-performance)
 

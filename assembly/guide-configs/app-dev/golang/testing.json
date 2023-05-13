@@ -1,6 +1,7 @@
 {
   "file_name": "testing.md",
   "id": "testing",
+  "slug": "/dev-guide/go/testing",
   "file_dir": "dev-guide/golang",
   "title": "Go SDK developer's guide - Testing",
   "sidebar_label": "Testing",

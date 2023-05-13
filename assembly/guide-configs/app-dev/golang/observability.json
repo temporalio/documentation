@@ -1,6 +1,7 @@
 {
   "file_name": "observability.md",
   "id": "observability",
+  "slug": "/dev-guide/go/observability",
   "file_dir": "dev-guide/golang",
   "title": "Go SDK developer's guide - Observability",
   "sidebar_label": "Observability",

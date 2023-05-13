@@ -126,7 +126,7 @@ function CliSVG() {
 
 const supportedTech = [
   {
-    link: " /dev-guide/golang",
+    link: " /dev-guide/go",
     image: "/img/golang.svg",
     alt: "Go lang logo",
     class: "w-10 h-8",
@@ -214,18 +214,13 @@ const appDevGuideLinks = {
   listOne: [
     {
       book: true,
-      path: "/dev-guide/golang",
+      path: "/dev-guide/go",
       name: "Go dev guide",
     },
     {
       book: true,
       path: "/dev-guide/java",
       name: "Java dev guide",
-    },
-    {
-      book: true,
-      path: "/dev-guide/php",
-      name: "PHP dev guide",
     },
     {
       book: true,
@@ -236,6 +231,11 @@ const appDevGuideLinks = {
       book: true,
       path: "/dev-guide/typescript",
       name: "TypeScript dev guide",
+    },
+    {
+      book: true,
+      path: "/dev-guide/php",
+      name: "PHP dev guide",
     },
   ],
   listTwo: [
@@ -251,13 +251,13 @@ const appDevGuideLinks = {
     },
     {
       exit: true,
-      path: "https://typescript.temporal.io/",
-      name: "TypeScript SDK API reference",
+      path: "https://python.temporal.io",
+      name: "Python SDK API reference",
     },
     {
       exit: true,
-      path: "https://python.temporal.io",
-      name: "Python SDK API reference",
+      path: "https://typescript.temporal.io/",
+      name: "TypeScript SDK API reference",
     },
   ],
 };

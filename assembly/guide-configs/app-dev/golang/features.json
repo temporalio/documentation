@@ -1,6 +1,7 @@
 {
   "file_name": "features.md",
   "file_dir": "dev-guide/golang",
+  "slug": "/dev-guide/go/features",
   "id": "features",
   "title": "Go SDK developer's guide - Features",
   "sidebar_label": "Features",

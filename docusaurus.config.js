@@ -384,6 +384,7 @@ module.exports = {
         blogSidebarTitle: "Docs changelog",
         path: "changelog",
         routeBasePath: "changelog",
+        blogSidebarCount: "ALL",
         blogDescription: "A log of changes to this site's content.",
         showReadingTime: false, // Show estimated reading time for the blog post.
         feedOptions: {

@@ -58,7 +58,7 @@
           "value": "go"
         }
       ],
-      "destination": "/dev-guide/golang/foundations:path*",
+      "destination": "/dev-guide/go/foundations:path*",
       "permanent": false
     },
     {
@@ -70,7 +70,7 @@
           "value": "go"
         }
       ],
-      "destination": "/dev-guide/golang/features:path*",
+      "destination": "/dev-guide/go/features:path*",
       "permanent": false
     },
     {
@@ -82,7 +82,7 @@
           "value": "go"
         }
       ],
-      "destination": "/dev-guide/golang/observability:path*",
+      "destination": "/dev-guide/go/observability:path*",
       "permanent": false
     },
     {
@@ -94,7 +94,7 @@
           "value": "go"
         }
       ],
-      "destination": "/dev-guide/golang/testing:path*",
+      "destination": "/dev-guide/go/testing:path*",
       "permanent": false
     },
     {
@@ -563,35 +563,35 @@
     },
     {
       "source": "/go-activities",
-      "destination": "/dev-guide/golang/foundations#develop-activities"
+      "destination": "/dev-guide/go/foundations#develop-activities"
     },
     {
       "source": "/go/activities",
-      "destination": "/dev-guide/golang/foundations#develop-activities"
+      "destination": "/dev-guide/go/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-develop-an-activity-in-go",
-      "destination": "/dev-guide/golang/foundations#develop-activities"
+      "destination": "/dev-guide/go/foundations#develop-activities"
     },
     {
       "source": "/go/how-to-spawn-an-activity-execution-in-go",
-      "destination": "/dev-guide/golang/foundations#activity-execution"
+      "destination": "/dev-guide/go/foundations#activity-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-an-activity-execution-in-go",
-      "destination": "/dev-guide/golang/foundations#get-activity-results"
+      "destination": "/dev-guide/go/foundations#get-activity-results"
     },
     {
       "source": "/go/how-to-heartbeat-an-activity-in-go",
-      "destination": "/dev-guide/golang/features#activity-heartbeats"
+      "destination": "/dev-guide/go/features#activity-heartbeats"
     },
     {
       "source": "/go/child-workflows",
-      "destination": "/dev-guide/golang/features#child-workflows"
+      "destination": "/dev-guide/go/features#child-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-child-workflow-execution-in-go",
-      "destination": "/dev-guide/golang/features#child-workflows"
+      "destination": "/dev-guide/go/features#child-workflows"
     },
     {
       "source": "/go-continue-as-new",
@@ -603,31 +603,31 @@
     },
     {
       "source": "/go-create-workflows",
-      "destination": "/dev-guide/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/create-workflows",
-      "destination": "/dev-guide/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/workflows",
-      "destination": "/dev-guide/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-develop-a-workflow-in-go",
-      "destination": "/dev-guide/golang/foundations#develop-workflows"
+      "destination": "/dev-guide/go/foundations#develop-workflows"
     },
     {
       "source": "/go/how-to-spawn-a-workflow-execution-in-go",
-      "destination": "/dev-guide/golang/foundations#start-workflow-execution"
+      "destination": "/dev-guide/go/foundations#start-workflow-execution"
     },
     {
       "source": "/go/how-to-get-the-result-of-a-workflow-execution-in-go",
-      "destination": "/dev-guide/golang/foundations#get-workflow-results"
+      "destination": "/dev-guide/go/foundations#get-workflow-results"
     },
     {
       "source": "/go/distributed-cron",
-      "destination": "/dev-guide/golang/features#temporal-cron-jobs"
+      "destination": "/dev-guide/go/features#temporal-cron-jobs"
     },
     {
       "source": "/go-error-handling",
@@ -639,11 +639,11 @@
     },
     {
       "source": "/go/queries",
-      "destination": "/dev-guide/golang/features#queries"
+      "destination": "/dev-guide/go/features#queries"
     },
     {
       "source": "/go/retries",
-      "destination": "/dev-guide/golang/features#activity-timeouts"
+      "destination": "/dev-guide/go/features#activity-timeouts"
     },
     {
       "source": "/go-run-your-first-app",
@@ -671,19 +671,19 @@
     },
     {
       "source": "/go/signals",
-      "destination": "/dev-guide/golang/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go/how-to-use-signals-in-go",
-      "destination": "/dev-guide/golang/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go/how-to-send-a-signal-to-a-workflow-execution-in-go",
-      "destination": "/dev-guide/golang/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go/how-to-handle-a-signal-in-a-workflow-in-go",
-      "destination": "/dev-guide/golang/features#signals"
+      "destination": "/dev-guide/go/features#signals"
     },
     {
       "source": "/go-sync-vs-async-start",
@@ -719,19 +719,19 @@
     },
     {
       "source": "/go/workers",
-      "destination": "/dev-guide/golang/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/go/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-program-in-go",
-      "destination": "/dev-guide/golang/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/go/foundations#run-a-dev-worker"
     },
     {
       "source": "/go/how-to-develop-a-worker-in-go",
-      "destination": "/dev-guide/golang/foundations#run-a-dev-worker"
+      "destination": "/dev-guide/go/foundations#run-a-dev-worker"
     },
     {
       "source": "/go-execute-activity",
-      "destination": "/dev-guide/golang/foundations#activity-execution"
+      "destination": "/dev-guide/go/foundations#activity-execution"
     },
     {
       "source": "/go-activity-async-completion",

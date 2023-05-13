@@ -10,7 +10,7 @@ Since the last change log in March 2023, there have been changes to the Develope
 
 The "Dev guide" is now language specific.
 
-- [Go](/dev-guide/golang)
+- [Go](/dev-guide/go)
 - [Java](/dev-guide/java)
 - [PHP](/dev-guide/php)
 - [Python](/dev-guide/python)
@@ -20,7 +20,7 @@ The "Dev guide" is now language specific.
 
 About 1 year ago there was a release of the first version of the Developer’s guide.
 
-Prior to this, there was no standard way to present SDK documentation outside of the SDK references.
+Prior to this, there was no standard way to present SDK documentation outside of the SDK API references.
 Each SDK had a set of pages that described things in their own way.
 And yet there has always been a desire to have “how to” information regarding app development presented in a more standardized and structured way.
 The creation of the "Dev guide" provided that structure by which to categorize guidance on feature usage.

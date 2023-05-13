@@ -12,7 +12,7 @@ During the past month, the following content has been added or improved:
 
 - We added a section on how to Manage Namespaces in the Developer’s guide.
 
-  - [Go](/dev-guide/golang/features/#namespaces)
+  - [Go](/dev-guide/go/features/#namespaces)
   - [Java](/dev-guide/java/features/#namespaces)
 
 - We added a [reference of metrics](/references/cluster-metrics) that are emitted from a Temporal Cluster.

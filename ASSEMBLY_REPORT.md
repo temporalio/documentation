@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday May 04 2023 16:25:12 PM -0600
+Last assembled: Saturday May 13 2023 06:39:10 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -322,7 +322,7 @@ concepts/what-is-an-activity-heartbeat -> #activity-heartbeat
 
 concepts/what-is-an-activity-task-execution -> /tasks#activity-task-execution
 
-go/how-to-develop-an-activity-definition-in-go -> /dev-guide/golang/foundations#activity-definition
+go/how-to-develop-an-activity-definition-in-go -> /dev-guide/go/foundations#activity-definition
 
 java/developing-activities -> /dev-guide/java/foundations#develop-activities
 
@@ -334,7 +334,7 @@ typescript/developing-activities -> /dev-guide/typescript/foundations#develop-ac
 
 concepts/what-is-a-retry-policy -> /retry-policies#
 
-go/spawning-activities -> /dev-guide/golang/foundations#activity-execution
+go/spawning-activities -> /dev-guide/go/foundations#activity-execution
 
 java/spawning-activities -> /dev-guide/java/foundations#activity-execution
 
@@ -348,7 +348,7 @@ concepts/what-is-asynchronous-activity-completion -> #asynchronous-activity-comp
 
 concepts/what-is-an-activity-task -> /tasks#activity-task
 
-go/activity-timeouts -> /dev-guide/golang/features#activity-timeouts
+go/activity-timeouts -> /dev-guide/go/features#activity-timeouts
 
 java/activity-timeouts -> /dev-guide/java/features#activity-timeouts
 
@@ -362,7 +362,7 @@ concepts/what-is-a-schedule-to-close-timeout -> #schedule-to-close-timeout
 
 concepts/what-is-a-heartbeat-timeout -> #heartbeat-timeout
 
-go/activity-heartbeats -> /dev-guide/golang/features#activity-heartbeats
+go/activity-heartbeats -> /dev-guide/go/features#activity-heartbeats
 
 java/activity-heartbeats -> /dev-guide/java/features#activity-heartbeats
 
@@ -372,7 +372,7 @@ python/activity-heartbeats -> /dev-guide/python/features#activity-heartbeats
 
 typescript/activity-heartbeats -> /dev-guide/typescript/features#activity-heartbeats
 
-go/heartbeat-timeout -> /dev-guide/golang/features#heartbeat-timeout
+go/heartbeat-timeout -> /dev-guide/go/features#heartbeat-timeout
 
 java/heartbeat-timeout -> /dev-guide/java/features#heartbeat-timeout
 
@@ -382,7 +382,7 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
-go/async-activity-completion -> /dev-guide/golang/features#asynchronous-activity-completion
+go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
 
 java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
 
@@ -398,7 +398,7 @@ concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
 concepts/what-is-a-history-shard -> #history-shard
 
-go/namespaces -> /dev-guide/golang/features#namespaces
+go/namespaces -> /dev-guide/go/features#namespaces
 
 java/namespaces -> /dev-guide/java/features#namespaces
 
@@ -406,7 +406,7 @@ clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
-go/custom-payload-conversion -> /dev-guide/golang/features#custom-payload-conversion
+go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
 
@@ -414,11 +414,11 @@ prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpo
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
-go/register-namespaces -> /dev-guide/golang/features#register-namespace
+go/register-namespaces -> /dev-guide/go/features#register-namespace
 
 java/register-namespaces -> /dev-guide/java/features#register-namespace
 
-go/manage-namespaces -> /dev-guide/golang/features#manage-namespaces
+go/manage-namespaces -> /dev-guide/go/features#manage-namespaces
 
 java/manage-namespaces -> /dev-guide/java/features#manage-namespaces
 
@@ -428,7 +428,7 @@ concepts/what-is-a-task -> /tasks#
 
 concepts/what-is-a-workflow-task-execution -> /tasks#workflow-task-execution
 
-go/activity-retries -> /dev-guide/golang/features#activity-retries
+go/activity-retries -> /dev-guide/go/features#activity-retries
 
 java/activity-retries -> /dev-guide/java/features#activity-retries
 
@@ -438,7 +438,7 @@ python/activity-retries -> /dev-guide/python/features#activity-retries
 
 typescript/activity-retries -> /dev-guide/typescript/features#activity-retries
 
-go/workflow-retries -> /dev-guide/golang/features#workflow-retries
+go/workflow-retries -> /dev-guide/go/features#workflow-retries
 
 java/workflow-retries -> /dev-guide/java/features#workflow-retries
 
@@ -454,7 +454,7 @@ concepts/what-is-a-worker-entity -> /workers#worker-entity
 
 concepts/what-is-task-routing -> #task-routing
 
-go/spawning-workflows -> /dev-guide/golang/foundations#start-workflow-execution
+go/spawning-workflows -> /dev-guide/go/foundations#start-workflow-execution
 
 java/how-to-spawn-a-workflow-execution-in-java -> /dev-guide/java/foundations#start-workflow-execution
 
@@ -464,7 +464,7 @@ python/spawning-workflows -> /dev-guide/python/foundations#start-workflow-execut
 
 typescript/spawning-workflows -> /dev-guide/typescript/foundations#start-workflow-execution
 
-go/how-to-develop-a-worker-in-go -> /dev-guide/golang/foundations#develop-worker
+go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
 
 java/how-to-develop-a-worker-program-in-java -> /dev-guide/java/foundations#run-a-dev-worker
 
@@ -474,11 +474,11 @@ python/run-a-dev-worker -> /dev-guide/python/foundations#run-a-dev-worker
 
 typescript/run-a-dev-worker -> /dev-guide/typescript/foundations#run-a-dev-worker
 
-go/run-a-temporal-cloud-worker -> /dev-guide/golang/foundations#run-a-temporal-cloud-worker
+go/run-a-temporal-cloud-worker -> /dev-guide/go/foundations#run-a-temporal-cloud-worker
 
 typescript/run-a-temporal-cloud-worker -> /dev-guide/typescript/foundations#run-a-temporal-cloud-worker
 
-go/child-workflows -> /dev-guide/golang/features#child-workflows
+go/child-workflows -> /dev-guide/go/features#child-workflows
 
 java/child-workflows -> /dev-guide/java/features#child-workflows
 
@@ -494,7 +494,7 @@ concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 
-go/add-sdk -> /dev-guide/golang/foundations#install-a-temporal-sdk
+go/add-sdk -> /dev-guide/go/foundations#install-a-temporal-sdk
 
 java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
 
@@ -506,7 +506,7 @@ clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide
 
 clusters/how-to-remove-a-custom-search-attribute-key -> /cluster-deployment-guide#remove-custom-search-attributes
 
-go/visibility -> /dev-guide/golang/observability#visibility
+go/visibility -> dev-guide/go/observability#visibility
 
 java/visibility -> /dev-guide/java/observability#visibility
 
@@ -516,7 +516,7 @@ python/visibility -> /dev-guide/python/observability#visibility
 
 typescript/visibility -> /dev-guide/typescript/observability#visibility
 
-go/developing-workflows -> /dev-guide/golang/foundations#develop-workflows
+go/developing-workflows -> /dev-guide/go/foundations#develop-workflows
 
 java/how-to-develop-a-workflow-definition-in-java -> /dev-guide/java/foundations#develop-workflows
 
@@ -530,7 +530,7 @@ concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
 concepts/what-is-an-activity -> /activities#
 
-go/replays -> /dev-guide/golang/testing#replay
+go/replays -> /dev-guide/go/testing#replay
 
 java/replays -> /dev-guide/java/testing#replay
 
@@ -542,7 +542,7 @@ concepts/what-is-a-workflow-execution-timeout -> #workflow-execution-timeout
 
 concepts/what-is-a-workflow-run-timeout -> #workflow-run-timeout
 
-go/continue-as-new -> /dev-guide/golang/features#continue-as-new
+go/continue-as-new -> /dev-guide/go/features#continue-as-new
 
 java/continue-as-new -> /dev-guide/java/features#continue-as-new
 
@@ -552,9 +552,9 @@ python/continue-as-new -> /dev-guide/python/features#continue-as-new
 
 typescript/continue-as-new -> /dev-guide/typescript/features#continue-as-new
 
-go/how-to-set-a-workflow-id-in-go -> /dev-guide/golang/foundations#workflow-id
+go/how-to-set-a-workflow-id-in-go -> /dev-guide/go/foundations#workflow-id
 
-go/workflow-timeouts -> /dev-guide/golang/features#workflow-timeouts
+go/workflow-timeouts -> /dev-guide/go/features#workflow-timeouts
 
 java/workflow-timeouts -> /dev-guide/java/features#workflow-timeouts
 
@@ -564,7 +564,7 @@ python/workflow-timeouts -> /dev-guide/python/features#workflow-timeouts
 
 typescript/workflow-timeouts -> /dev-guide/typescript/features#workflow-timeouts
 
-go/signals -> /dev-guide/golang/features#signals
+go/signals -> /dev-guide/go/features#signals
 
 java/signals -> /dev-guide/java/features#signals
 
@@ -574,7 +574,7 @@ python/signals -> /dev-guide/python/features#signals
 
 typescript/signals -> /dev-guide/typescript/features#signals
 
-go/queries -> /dev-guide/golang/features#queries
+go/queries -> /dev-guide/go/features#queries
 
 java/queries -> /dev-guide/java/features#queries
 
@@ -586,7 +586,7 @@ typescript/queries -> /dev-guide/typescript/features#queries
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
-go/parent-close-policy -> /dev-guide/golang/features#parent-close-policy
+go/parent-close-policy -> /dev-guide/go/features#parent-close-policy
 
 java/parent-close-policy -> /dev-guide/java/features#parent-close-policy
 
@@ -596,7 +596,7 @@ python/parent-close-policy -> /dev-guide/python/features#parent-close-policy
 
 typescript/parent-close-policy -> /dev-guide/typescript/features#parent-close-policy
 
-go/cron-jobs -> /dev-guide/golang/features#temporal-cron-jobs
+go/cron-jobs -> /dev-guide/go/features#temporal-cron-jobs
 
 java/how-to-set-a-cron-schedule-in-java -> /dev-guide/java/features#cron-schedule
 
@@ -608,7 +608,7 @@ typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
 concepts/what-is-temporal-cloud -> /cloud/index#
 
-go/connect-to-temporal-cloud -> /dev-guide/golang/foundations#connect-to-temporal-cloud
+go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
@@ -858,11 +858,11 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/tracing -> /dev-guide/golang/observability#tracing
+go/tracing -> dev-guide/go/observability#tracing
 
-go/logging -> /dev-guide/golang/observability#logging
+go/logging -> dev-guide/go/observability#logging
 
-go/metrics -> /dev-guide/golang/observability#metrics
+go/metrics -> dev-guide/go/observability#metrics
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 

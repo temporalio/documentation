@@ -29,7 +29,7 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 <TabItem value="go">
 
-Visit the [Go SDK dev guide](/dev-guide/golang)!
+Visit the [Go SDK dev guide](/dev-guide/go)!
 
 <div class="app-dev-landing-page-lang-logo">
 <img src="/app-dev/go-lang.svg" alt="Go lang logo" />

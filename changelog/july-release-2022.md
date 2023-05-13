@@ -15,7 +15,7 @@ Your feedback is invaluable to us as we work to improve the information that is 
 - Python examples are now available in much of the [Foundations section](/dev-guide/python/foundations) of the Developer's guide.
 
 - We added an Observability section to the Developer's guide.
-  - [Go](/dev-guide/golang/observability)
+  - [Go](/dev-guide/go/observability)
   - [Java](/dev-guide/java/observability)
   - [PHP](/dev-guide/php/observability)
   - [Python](/dev-guide/python/observability)

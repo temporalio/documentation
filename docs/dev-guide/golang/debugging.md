@@ -4,6 +4,7 @@ title: Go SDK developer's guide - Debugging
 sidebar_label: Debugging
 sidebar_position: 5
 description: The Debugging section of the Temporal Go SDK Developer's guide covers the many ways to debug your application.
+slug: /dev-guide/go/debugging
 toc_max_heading_level: 4
 ---
 
@@ -22,10 +23,10 @@ You can debug production Workflows using:
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
 - [Replay](#replay)
-- <a class="tdlp" href="/dev-guide/golang/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/observability#tracing">Learn more</a></span></span></a>
-- <a class="tdlp" href="/dev-guide/golang/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/observability#logging">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/go/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#tracing">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/go/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#logging">Learn more</a></span></span></a>
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
-For more information, see <a class="tdlp" href="/dev-guide/golang/observability#metrics">Metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/observability#metrics">Learn more</a></span></span></a> for setting up SDK metrics.
+For more information, see <a class="tdlp" href="/dev-guide/go/observability#metrics">Metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#metrics">Learn more</a></span></span></a> for setting up SDK metrics.
 
 Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).

@@ -1,6 +1,7 @@
 {
   "file_name": "foundations.md",
   "id": "foundations",
+  "slug": "/dev-guide/go/foundations",
   "file_dir": "dev-guide/golang",
   "title": "Go SDK developer's guide - Foundations",
   "sidebar_label": "Foundations",

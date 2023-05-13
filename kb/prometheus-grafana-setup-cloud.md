@@ -29,7 +29,7 @@ If you're following through with the examples provided here, ensure that you hav
 - Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
-  - [Go](/dev-guide/golang/foundations#connect-to-a-cluster)
+  - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
   - [Java](/dev-guide/java/foundations#connect-to-a-cluster)
   - [PHP](/dev-guide/php/foundations#connect-to-a-cluster)
   - [Python](/dev-guide/python/foundations#connect-to-a-cluster)
@@ -67,7 +67,7 @@ SDK metrics are emitted by SDK Clients used to start your Workers and to start, 
 You must configure a Prometheus scrape endpoint for Prometheus to collect and aggregate your SDK metrics.
 The Metrics section of the Observability guide details how to set this up for all supported SDKs.
 
-- [Go](/dev-guide/golang/observability#metrics)
+- [Go](/dev-guide/go/observability#metrics)
 
 The following example uses the Java SDK to set the Prometheus registry and Micrometer stats reporter, set the scope, and expose an endpoint from which Prometheus can scrape the SDK metrics.
 

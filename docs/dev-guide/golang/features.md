@@ -4,6 +4,7 @@ title: Go SDK developer's guide - Features
 sidebar_label: Features
 sidebar_position: 2
 description: The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
+slug: /dev-guide/go/features
 toc_max_heading_level: 4
 ---
 
@@ -878,7 +879,7 @@ The Retention Period setting using `WorkflowExecutionRetentionPeriod` is mandato
 The minimum value you can set for this period is 1 day.
 
 Once registered, set Namespace using `Dial` in a Workflow Client to run your Workflow Executions within that Namespace.
-See <a class="tdlp" href="/dev-guide/golang/foundations#connect-to-temporal-cloud">how to set Namespace in a Client in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/foundations#connect-to-temporal-cloud">Learn more</a></span></span></a> for details.
+See <a class="tdlp" href="/dev-guide/go/foundations#connect-to-temporal-cloud">how to set Namespace in a Client in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to connect to Temporal Cloud</span><br /><br /><span class="tdlppd">Use a compatible mTLS CA certificate and mTLS private key and your Cloud Namespace to connect to Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#connect-to-temporal-cloud">Learn more</a></span></span></a> for details.
 
 Note that Namespace registration using this API takes up to 10 seconds to complete.
 Ensure that you wait for this registration to complete before starting the Workflow Execution against the Namespace.

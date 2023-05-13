@@ -9,7 +9,7 @@ During the past month, the following content has been added or improved:
 - Timer section was added to the Developer's guide.
   The section shows you how to sleep within a Workflow.
 
-  - [Go](/dev-guide/golang/features/#timers)
+  - [Go](/dev-guide/go/features/#timers)
   - [Java](/dev-guide/java/features/#timers)
   - [PHP](/dev-guide/php/features/#timers)
   - [Python](/dev-guide/python/features/#timers)
@@ -21,15 +21,15 @@ During the past month, the following content has been added or improved:
 - How to connect to a Cluster in the Developer's guide has been updated and shows how to connect to Temporal Cloud.
   It shows how to use default connection settings for local development and how to quickly switch to using a Cloud Namespace.
 
-  - [Go](/dev-guide/golang/foundations/#connect-to-a-cluster)
-  - [Python](/dev-guide/golang/foundations/#connect-to-a-cluster)
-  - [TypeScript](/dev-guide/golang/foundations/#connect-to-a-cluster)
+  - [Go](/dev-guide/go/foundations/#connect-to-a-cluster)
+  - [Python](/dev-guide/go/foundations/#connect-to-a-cluster)
+  - [TypeScript](/dev-guide/go/foundations/#connect-to-a-cluster)
 
 - [Cloud metrics information](/cloud/how-to-monitor-temporal-cloud-metrics) was added to the Temporal Cloud docs.
 
 - An early iteration of the Testing section was added to the Developer's guide.
 
-  - [Go](/dev-guide/golang/testing)
+  - [Go](/dev-guide/go/testing)
   - [Java](/dev-guide/java/testing)
   - [PHP](/dev-guide/php/testing)
   - [Python](/dev-guide/python/testing)
