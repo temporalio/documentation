@@ -66,6 +66,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Signal](/workflows#signal)
 - [Standard Visibility](/visibility#standard-visibility)
 - [Start-To-Close Timeout](/activities#start-to-close-timeout)
+- [State Transition](/workflows#state-transition)
 - [Sticky Execution](/tasks#sticky-execution)
 - [Task](/tasks#)
 - [Task Queue](/tasks#task-queue)
