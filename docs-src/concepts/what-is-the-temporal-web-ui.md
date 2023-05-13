@@ -61,7 +61,7 @@ The top of the page lists the following execution metadata:
 - Start Time and Close Time
 - [Task Queue](/concepts/what-is-a-task-queue)
 - Parent and Parent ID
-- State Transitions
+- [State Transitions](/concepts/what-is-a-state-transition)
 
 The Input and Results section displays the function arguments and return values for debugging purposes.
 Results are not available until the Workflow finishes.
