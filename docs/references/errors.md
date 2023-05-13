@@ -140,19 +140,36 @@ This error indicates that the [Worker](/workers) deployment returned a bad binar
 
 <!-- TODO: get more information about binary -->
 
+## Cause Bad Update
+
+<!--TODO: add link to Workflow Update page when written -->
+
+This error indicates that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> tried to complete before receiving an Update.
+
+`BadUpdate` can happen when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> generates a [Workflow Task Completed](/references/events#WorkflowTaskCompleted) message with missing fields or an invalid Update response format.
+
+This error might indicate usage of an unsupported SDK.
+Make sure you're using a [supported SDK](/temporal#temporal-sdk).
+
 ## Cause Reset Workflow
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to a request to reset the [Workflow](/workflows).
 
 If the system hasn't started a new Workflow, manually reset the Workflow.
 
+## Cause Unhandled Update
+
+`UnhandledUpdate` occurs when a Workflow Update is received by the Temporal Server while a Workflow Task being processed on a Worker produces a Command that would cause the Workflow to transition to a closed state.
+
+Temporal rejects the Workflow Task completion to guarantee that the Update is eventually handled by Workflow code and rewinds the Workflow so it can handle the pending Update.
+
+This error can happen when the Workflow receives frequent Updates.
+
 ## Cause Unspecified
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
 
-If you see this error, contact your administrator to file a support ticket or report it [here](https://github.com/temporalio/temporal/issues).
-
-<!--TODO: add link above -->
+If you see this error, examine your Workflow Definition.
 
 ## Failover Close Command
 
@@ -211,7 +228,7 @@ The system will retry automatically.
 
 ## Resource Exhausted Cause Concurrent Limit
 
-This error indicates that the concurrent [poller count](/dev-guide/worker-performance/#poller-count) has been reached.
+This error indicates that the concurrent [poller count](/dev-guide/worker-performance/#poller-count) has been exhausted.
 
 <!--TODO: more info needed -->
 
@@ -225,7 +242,7 @@ This error indicates that the persistence rate limit has been reached.
 
 ## Resource Exhausted Cause RPS Limit
 
-This error indicates that the [Workflow](/workflows) has reached its RPS limit.
+This error indicates that the [Workflow](/workflows) has exhausted its RPS limit.
 
 <!--TODO: more info needed -->
 

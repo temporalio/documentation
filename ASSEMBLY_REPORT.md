@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Saturday May 13 2023 06:39:10 AM -0600
+Last assembled: Saturday May 13 2023 06:59:23 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-73 guide configurations found.
+75 guide configurations found.
 
-1416 information nodes found.
+1433 information nodes found.
 
-1158 information nodes are attached to guides.
+1175 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -52,9 +52,11 @@ concepts/what-is-a-signal -> /workflows#signal
 
 concepts/what-is-an-event -> /workflows#event
 
-concepts/what-is-a-workflow -> /workflows#
+concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-worker -> /workers#
+
+concepts/what-is-a-workflow -> /workflows#
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -266,17 +268,25 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
 cloud/tcld/version -> /cloud/tcld/version#
 
-cloud/tcld/namespace/list -> #list
+cloud/tcld/namespace/create -> #create
+
+cloud/tcld/namespace/delete -> #delete
 
 cloud/tcld/namespace/get -> #get
+
+cloud/tcld/namespace/list -> #list
 
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
+
+cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -296,9 +306,25 @@ cloud/tcld/namespace/search-attributes/add -> #add
 
 cloud/tcld/namespace/search-attributes/rename -> #rename
 
+cloud/tcld/namespace/retention/get -> #get
+
+cloud/tcld/namespace/retention/set -> #set
+
 cloud/tcld/request/get -> #get
 
-concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
+cloud/tcld/user/delete -> #delete
+
+cloud/tcld/user/get -> #get
+
+cloud/tcld/user/invite -> #invite
+
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 
@@ -392,6 +418,12 @@ python/async-activity-completion -> /dev-guide/python/features#asynchronous-acti
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
 
+concepts/what-is-temporal-cloud -> #
+
+concepts/what-is-continue-as-new -> /workflows#continue-as-new
+
+concepts/what-is-a-reset -> /workflows#reset
+
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
@@ -447,8 +479,6 @@ php/workflow-retries -> /dev-guide/php/features#workflow-retries
 python/workflow-retries -> /dev-guide/python/features#workflow-retries
 
 typescript/workflow-retries -> /dev-guide/typescript/features#workflow-retries
-
-concepts/what-is-continue-as-new -> /workflows#continue-as-new
 
 concepts/what-is-a-worker-entity -> /workers#worker-entity
 
@@ -506,7 +536,7 @@ clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide
 
 clusters/how-to-remove-a-custom-search-attribute-key -> /cluster-deployment-guide#remove-custom-search-attributes
 
-go/visibility -> dev-guide/go/observability#visibility
+go/visibility -> /dev-guide/go/observability#visibility
 
 java/visibility -> /dev-guide/java/observability#visibility
 
@@ -605,8 +635,6 @@ php/cron-jobs -> /dev-guide/php/features#temporal-cron-jobs
 python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
-
-concepts/what-is-temporal-cloud -> /cloud/index#
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
@@ -858,11 +886,11 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/tracing -> dev-guide/go/observability#tracing
+go/tracing -> /dev-guide/go/observability#tracing
 
-go/logging -> dev-guide/go/observability#logging
+go/logging -> /dev-guide/go/observability#logging
 
-go/metrics -> dev-guide/go/observability#metrics
+go/metrics -> /dev-guide/go/observability#metrics
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 

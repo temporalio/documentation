@@ -224,7 +224,7 @@ Ports are configurable in the Cluster configuration.
 A History Shard is an important unit within a Temporal Cluster by which the scale of concurrent Workflow Execution throughput can be measured.
 
 Each History Shard maps to a single persistence partition.
-A History Shard assumes that only be one concurrent operation can be within a partition at a time.
+A History Shard assumes that only one concurrent operation can be within a partition at a time.
 In essence, the number of History Shards represents the number of concurrent database operations that can occur for a Cluster.
 This means that the number of History Shards in a Temporal Cluster plays a significant role in the performance of your Temporal Application.
 
@@ -330,7 +330,7 @@ This feature must be enabled through a Dynamic Config flag per <a class="tdlp" h
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
 All Visibility APIs can be used against active and standby Clusters.
-This enables [Temporal Web](https://github.com/temporalio/temporal-web) to work seamlessly for Global Namespaces.
+This enables [Temporal UI](https://docs.temporal.io/web-ui) to work seamlessly for Global Namespaces.
 Applications making API calls directly to the Temporal Visibility API continue to work even if a Global Namespace is in standby mode.
 However, they might see a lag due to replication delay when querying the Workflow Execution state from a standby Cluster.
 
