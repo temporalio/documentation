@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday May 12 2023 09:31:55 AM -0700
+Last assembled: Sunday May 14 2023 10:02:51 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 58 guide configurations found.
 
-1003 information nodes found.
+1006 information nodes found.
 
-859 information nodes are attached to guides.
+862 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -53,8 +53,6 @@ app-dev-context/search-attributes -> /application-development/observability#sear
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-worker -> /workers#
-
-concepts/what-is-a-workflow -> /workflows#
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -161,6 +159,8 @@ tctl-v1/workflow/start -> /tctl-v1/workflow#start
 tctl-v1/dataconverter/web -> #web
 
 concepts/what-is-a-namespace -> /namespaces#
+
+concepts/what-is-a-workflow -> /workflows#
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -314,6 +314,20 @@ cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
+cloud/tcld/user/delete -> #delete
+
+cloud/tcld/user/get -> #get
+
+cloud/tcld/user/invite -> #invite
+
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
+
 concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 
 concepts/what-is-a-local-activity -> /activities#local-activity
@@ -348,6 +362,12 @@ concepts/what-is-a-schedule-to-close-timeout -> #schedule-to-close-timeout
 
 concepts/what-is-a-heartbeat-timeout -> #heartbeat-timeout
 
+concepts/what-is-temporal-cloud -> #
+
+concepts/what-is-continue-as-new -> /workflows#continue-as-new
+
+concepts/what-is-a-reset -> /workflows#reset
+
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
@@ -371,8 +391,6 @@ cli/operator/namespace/delete -> /cli/operator#delete
 concepts/what-is-a-task -> /tasks#
 
 concepts/what-is-a-workflow-task-execution -> /tasks#workflow-task-execution
-
-concepts/what-is-continue-as-new -> /workflows#continue-as-new
 
 concepts/what-is-a-worker-entity -> /workers#worker-entity
 
@@ -409,8 +427,6 @@ go/how-to-set-a-workflow-id-in-go -> /application-development/foundations#workfl
 app-dev-context/workflow-retries -> /application-development/features#workflow-retries
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
-
-concepts/what-is-temporal-cloud -> /cloud/index#
 
 app-dev-context/connect-to-temporal-cloud -> /application-development/foundations#connect-to-temporal-cloud
 
@@ -673,19 +689,5 @@ app-dev-context/cron-jobs -> /application-development/features#temporal-cron-job
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 app-dev-context/metrics -> /application-development/observability#metrics
-
-cloud/tcld/user/delete -> #delete
-
-cloud/tcld/user/get -> #get
-
-cloud/tcld/user/invite -> #invite
-
-cloud/tcld/user/list -> #list
-
-cloud/tcld/user/resend-invite -> #resend-invite
-
-cloud/tcld/user/set-account-role -> #set-account-role
-
-cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
 
 

@@ -140,11 +140,12 @@ This error indicates that the [Worker](/workers) deployment returned a bad binar
 
 <!--TODO: add link to Workflow Update page when written -->
 
-This error indicates that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> could not be updated.
+This error indicates that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> tried to complete before receiving an Update.
 
-`BadUpdate` can happen when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> generates a [Workflow Task Completed](/references/events#WorkflowTaskCompleted) message with missing fields or an invalid format.
+`BadUpdate` can happen when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> generates a [Workflow Task Completed](/references/events#WorkflowTaskCompleted) message with missing fields or an invalid Update response format.
 
-This error may indicate usage of an unsupported SDK.
+This error might indicate usage of an unsupported SDK.
+Make sure you're using a [supported SDK](/temporal#temporal-sdk).
 
 ## Cause Reset Workflow
 
@@ -154,11 +155,11 @@ If the system hasn't started a new Workflow, manually reset the Workflow.
 
 ## Cause Unhandled Update
 
-`UnhandledUpdate` occurs when a Workflow Update is received by the server while a Workflow Task is being processed on a Worker producing a command that would cause the Workflow to transition to a closed state.
+`UnhandledUpdate` occurs when a Workflow Update is received by the Temporal Server while a Workflow Task being processed on a Worker produces a Command that would cause the Workflow to transition to a closed state.
 
-Temporal rejects the Workflow Task completion in order to guarantee that Updates are eventually seen by Workflow code and will rewind the Workflow so it can handle the pending Update.
+Temporal rejects the Workflow Task completion to guarantee that the Update is eventually handled by Workflow code and rewinds the Workflow so it can handle the pending Update.
 
-This error can happen when the <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> is receiving Updates at a high frequency.
+This error can happen when the Workflow receives frequent Updates.
 
 ## Cause Unspecified
 
