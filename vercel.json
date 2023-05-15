@@ -306,6 +306,10 @@
       "destination": "/dev-guide"
     },
     {
+      "source": "/application-development",
+      "destination": "/dev-guide"
+    },
+    {
       "source": "/change-log",
       "destination": "/changelog"
     },
