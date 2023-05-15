@@ -25,11 +25,7 @@ export async function genSourceObjects(config) {
     const infoNode = await convertGraymatter(filePath, meta);
     docsObjects.push(infoNode);
   }
-  const writePath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.source_info_nodes_file_name
-  );
+  const writePath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
   await fs.writeJSON(writePath, docsObjects);
   return;
 }
@@ -75,9 +71,7 @@ function makeId(filePath, fileId) {
   }
 
   if (fileId === undefined) {
-    console.log(
-      `The file located at ${filePath} is missing an id... using filename...`
-    );
+    console.log(`The file located at ${filePath} is missing an id... using filename...`);
     const baseName = path.basename(filePath, ".md");
     nodeId = path.join(baseDir, baseName);
   } else {

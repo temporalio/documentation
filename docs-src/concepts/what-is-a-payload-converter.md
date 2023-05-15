@@ -29,4 +29,7 @@ If you use custom objects or types that are not supported by the Payload Convert
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
 
-For details on how to use the Payload Converter for custom data types, see [Custom Payload Conversion](/app-dev-context/custom-payload-conversion).
+For details on how to use the Payload Converter for custom data types, see Custom Payload Conversion in the following langauages:
+
+- [How to implement custom Payload convesion in Go](/go/custom-payload-conversion)
+- [How to implement custom Payload conversion in Java](/java/custom-payload-conversion)

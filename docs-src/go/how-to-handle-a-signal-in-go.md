@@ -25,5 +25,5 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
 
-Before completing the Workflow or using [Continue-As-New](/application-development/features#continue-as-new), make sure to do an asynchronous drain on the Signal channel.
+Before completing the Workflow or using [Continue-As-New](/go/continue-as-new), make sure to do an asynchronous drain on the Signal channel.
 Otherwise, the Signals will be lost.

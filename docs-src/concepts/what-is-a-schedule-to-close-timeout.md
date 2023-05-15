@@ -11,7 +11,11 @@ tags:
 
 A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall [Activity Execution](/concepts/what-is-an-activity-execution), from when the first [Activity Task](/concepts/what-is-an-activity-task) is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.
 
-- [How to set a Schedule-To-Close Timeout](/app-dev-context/activity-retries)
+- [How to set a Schedule-To-Close Timeout using the Go SDK](/go/activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the Java SDK](/java/activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the PHP SDK](/go/activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the Python SDK](/go/activity-timeouts)
+- [How to set a Schedule-To-Close Timeout using the TypeScript SDK](/typescript/activity-timeouts)
 
 ![Schedule-To-Close Timeout period](/diagrams/schedule-to-close-timeout.svg)
 
