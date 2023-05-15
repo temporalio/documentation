@@ -65,7 +65,7 @@ Visit the [Python SDK dev guide](/dev-guide/python)!
 </TabItem>
 <TabItem value="typescript">
 
-Visit the [Go SDK dev guide](/dev-guide/typescript)!
+Visit the [TypeScript SDK dev guide](/dev-guide/typescript)!
 
 <div class="app-dev-landing-page-lang-logos">
 <img src="/app-dev/typescript.svg" alt="TypeScript logo" />
