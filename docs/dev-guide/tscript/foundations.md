@@ -157,6 +157,8 @@ The TypeScript SDK is designed with TypeScript-first developer experience in min
 
 ### API reference
 
+Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
+
 The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
 
 ### Code samples

@@ -143,6 +143,8 @@ pip install temporalio
 
 ### API reference
 
+Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
+
 The Temporal Python SDK API reference is published on [python.temporal.io](https://python.temporal.io/index.html).
 
 ### Code samples
