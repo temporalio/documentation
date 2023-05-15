@@ -22,55 +22,56 @@ The Temporal SDK developer guides are meant to provide a comprehensive overview 
 
 Select one of the following [language SDKs](/temporal#temporal-sdk):
 
-<Tabs
-defaultValue="go"
-groupId="site-lang"
-values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP', value: 'php'},{label: 'Python', value: 'python'},{label: 'TypeScript', value: 'typescript'},]}>
-
-<TabItem value="go">
+### Go
 
 Visit the [Go SDK dev guide](/dev-guide/go)!
 
 <div class="app-dev-landing-page-lang-logo">
+<a href="/dev-guide/go">
 <img src="/app-dev/go-lang.svg" alt="Go lang logo" />
+</a>
 </div>
 
-</TabItem>
-<TabItem value="java">
+### Java
 
 Visit the [Java SDK dev guide](/dev-guide/java)!
 
 <div class="app-dev-landing-page-lang-logo">
+<a href="/dev-guide/java">
 <img src="/app-dev/java.svg" alt="Java logo" />
+</a>
 </div>
 
-</TabItem>
-<TabItem value="php">
+### PHP
 
 Visit the [PHP SDK dev guide](/dev-guide/php)!
 
 <div class="app-dev-landing-page-lang-logo">
+<a href="/dev-guide/php">
 <img src="/app-dev/php.svg" alt="PHP logo" />
+</a>
 </div>
 
-</TabItem>
-<TabItem value="python">
+### Python
 
 Visit the [Python SDK dev guide](/dev-guide/python)!
 
 <div class="app-dev-landing-page-lang-logo">
+<a href="/dev-guide/python">
 <img src="/app-dev/python.svg" alt="python logo" />
+</a>
 </div>
 
-</TabItem>
-<TabItem value="typescript">
+### TypeScript
 
 Visit the [Go SDK dev guide](/dev-guide/typescript)!
 
 <div class="app-dev-landing-page-lang-logos">
+<a href="/dev-guide/typescript?lang=ts">
 <img src="/app-dev/typescript.svg" alt="TypeScript logo" />
+</a>
+<a href="/dev-guide/typescript?lang=js">
 <img src="/img/javascript.svg" alt="JavaScript logo" />
+</a>
 </div>
 
-</TabItem>
-</Tabs>
