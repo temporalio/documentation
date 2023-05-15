@@ -38,8 +38,6 @@ If you are experiencing issues, you can check the status of Workers and the Task
 
 ### How to develop a Worker
 
-See the [How to develop a Worker](/application-development/foundations?lang=typescript#run-a-dev-worker) in the Developer's guide.
-
 <details>
 <summary>
 The Worker package embeds the <a href="https://github.com/temporalio/sdk-core">Temporal Rust Core SDK</a>.

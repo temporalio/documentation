@@ -19,7 +19,9 @@ Each of the below errors corresponds with a [WorkflowTaskFailedCause](https://ap
 
 ## Bad Cancel Timer Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed while attempting to cancel a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Timer?</span><br /><br /><span class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#timers">Learn more</a></span></span></a>.
+This error indicates that the [Workflow Task](/tasks#workflow-task) failed while attempting to cancel a Timer.
+
+<!-- TODO add Timer term definition and link to it -->
 
 Check your Timer attributes for a missing Timer Id value.
 Add a valid Timer Id and redeploy the code.
@@ -97,7 +99,7 @@ Adjust the size of the received payload to stay within the given size limit.
 
 ## Bad Search Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) has unset or invalid <a class="tdlp" href="/application-development/observability#search-attributes">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Search Attributes</span><br /><br /><span class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></span></span></a>.
+This error indicates that the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> has unset or invalid <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>.
 This can cause Workflow Tasks to continue to retry without success.
 
 Make sure that all attributes are defined before retrying the Task.
@@ -105,9 +107,9 @@ Adjust the size of the Payload to fit within the system's size limits.
 
 ## Bad Signal Input Size
 
-This error indicates that the Payload has exceeded the [Signal's](/application-development/features/#signals) available input size.
+This error indicates that the Payload has exceeded the <a class="tdlp" href="/workflows#signal">Signal's<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> available input size.
 
-Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks/#workflow-task).
+Adjust the size of the Payload, and redeploy the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a>.
 
 ## Bad Signal Workflow Execution Attributes
 
@@ -118,17 +120,19 @@ Adjust the input to fit within the system's size limits.
 
 ## Bad Start Child Execution Attributes
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate attributes for [`StartChildWorkflowExecution`](/references/commands/#startchildworkflowexecution)
+This error indicates that the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> failed to validate attributes for [`StartChildWorkflowExecution`](/references/commands/#startchildworkflowexecution)
 
 Adjust the input size of the attributes to fall within the system's size limits.
 
-Make sure that <a class="tdlp" href="/application-development/observability#search-attributes">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use Search Attributes</span><br /><br /><span class="tdlppd">Search Attributes enable complex List Filters to find the exact of Workflow Executions you are looking for.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/observability#search-attributes">Learn more</a></span></span></a> validation is performed after unaliasing keys.
+Make sure that <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> validation is performed after unaliasing keys.
 
 ## Bad Start Timer Attributes
 
-This error indicates that the scheduled [Event](/workflows/#event) is missing a <a class="tdlp" href="/application-development/features#timers">Timer Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Timer?</span><br /><br /><span class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#timers">Learn more</a></span></span></a>.
+This error indicates that the scheduled <a class="tdlp" href="/workflows#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event">Learn more</a></span></span></a> is missing a Timer Id.
 
-Set a valid Timer Id and retry the [Workflow Task](/tasks/#workflow-task).
+<!-- TODO add Timer Id as anchor for term and link to it -->
+
+Set a valid Timer Id and retry the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a>.
 
 ## Cause Bad Binary
 
@@ -136,19 +140,36 @@ This error indicates that the [Worker](/workers) deployment returned a bad binar
 
 <!-- TODO: get more information about binary -->
 
+## Cause Bad Update
+
+<!--TODO: add link to Workflow Update page when written -->
+
+This error indicates that a <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> tried to complete before receiving an Update.
+
+`BadUpdate` can happen when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> generates a [Workflow Task Completed](/references/events#WorkflowTaskCompleted) message with missing fields or an invalid Update response format.
+
+This error might indicate usage of an unsupported SDK.
+Make sure you're using a [supported SDK](/temporal#temporal-sdk).
+
 ## Cause Reset Workflow
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) failed due to a request to reset the [Workflow](/workflows).
 
 If the system hasn't started a new Workflow, manually reset the Workflow.
 
+## Cause Unhandled Update
+
+`UnhandledUpdate` occurs when a Workflow Update is received by the Temporal Server while a Workflow Task being processed on a Worker produces a Command that would cause the Workflow to transition to a closed state.
+
+Temporal rejects the Workflow Task completion to guarantee that the Update is eventually handled by Workflow code and rewinds the Workflow so it can handle the pending Update.
+
+This error can happen when the Workflow receives frequent Updates.
+
 ## Cause Unspecified
 
 This error indicates that the [Workflow Task](/tasks#workflow-task) has failed for an unknown reason.
 
-If you see this error, contact your administrator to file a support ticket or report it [here](https://github.com/temporalio/temporal/issues).
-
-<!--TODO: add link above -->
+If you see this error, examine your Workflow Definition.
 
 ## Failover Close Command
 
@@ -194,7 +215,7 @@ If you see this error, give the system time to process pending requests before r
 ## Pending Signals Limit Exceeded
 
 The Workflow has reached capacity for pending Signals.
-Therefore, the [Workflow Task](/tasks#workflow-task) was failed after attempting to add more [Signals](/application-development/features/#signals) to an external Workflow.
+Therefore, the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> was failed after attempting to add more <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a> to an external Workflow.
 
 Wait for Signals to be processed by the Workflow before retrying the Task.
 
@@ -207,7 +228,7 @@ The system will retry automatically.
 
 ## Resource Exhausted Cause Concurrent Limit
 
-This error indicates that the concurrent [poller count](/application-development/worker-performance/#poller-count) has been reached.
+This error indicates that the concurrent [poller count](/dev-guide/worker-performance/#poller-count) has been exhausted.
 
 <!--TODO: more info needed -->
 
@@ -221,7 +242,7 @@ This error indicates that the persistence rate limit has been reached.
 
 ## Resource Exhausted Cause RPS Limit
 
-This error indicates that the [Workflow](/workflows) has reached its RPS limit.
+This error indicates that the [Workflow](/workflows) has exhausted its RPS limit.
 
 <!--TODO: more info needed -->
 
@@ -246,22 +267,24 @@ Enter another Activity Id, and try running the Workflow Task again.
 
 ## Start Timer Duplicate Id
 
-This error indicates that a <a class="tdlp" href="/application-development/features#timers">Timer<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Timer?</span><br /><br /><span class="tdlppd">A Timer lets a Workflow sleep for a fixed time period.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/application-development/features#timers">Learn more</a></span></span></a> with the given Timer Id has already started.
+This error indicates that a Timer with the given Timer Id has already started.
 
-Try entering a different Timer Id, and retry the [Workflow Task](/tasks/#workflow-task).
+<!-- TODO link to Timer term when exists -->
+
+Try entering a different Timer Id, and retry the <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a>.
 
 ## Unhandled Command
 
-This error indicates new available [Events](/references/events) since the last [Workflow Task](/tasks/#workflow-task) started.
-The Workflow Task was failed because the [Workflow](/workflows) attempted to close itself without handling the new Events.
+This error indicates new available [Events](/references/events) since the last <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> started.
+The Workflow Task was failed because the <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a> attempted to close itself without handling the new Events.
 
-`UnhandledCommand` can happen when the Workflow is receiving a high number of [Signals](/application-development/features/#signals).
+`UnhandledCommand` can happen when the Workflow is receiving a high number of <a class="tdlp" href="/workflows#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a>.
 If the Workflow doesn't have enough time to handle these Signals, a RetryWorkflow Task is scheduled to handle these new Events.
 
 To prevent this error, drain the Signal Channel with the ReceiveAsync function.
 
 If you continue to see this error, check your logs for failing Workflow Tasks.
-The Workflow may have been picked up by a different [Worker](/workers).
+The Workflow may have been picked up by a different <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a>.
 
 ## Workflow Worker Unhandled Failure
 

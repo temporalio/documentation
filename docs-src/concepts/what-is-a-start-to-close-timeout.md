@@ -11,7 +11,11 @@ tags:
 
 A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task Execution](/concepts/what-is-an-activity-task-execution).
 
-- [How to set a Start-To-Close Timeout](/app-dev-context/activity-retries)
+- [How to set a Start-To-Close Timeout using the Go SDK](/go/activity-timeouts)
+- [How to set a Start-To-Close Timeout using the Java SDK](/java/activity-timeouts)
+- [How to set a Start-To-Close Timeout using the PHP SDK](/php/activity-timeouts)
+- [How to set a Start-To-Close Timeout using the Python SDK](/python/activity-timeouts)
+- [How to set a Start-To-Close Timeout using the TypeScript SDK](/typescript/activity-timeouts)
 
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout).**
 
