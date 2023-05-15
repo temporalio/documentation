@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
+import { SdkLogos } from "./SdkLogos";
 
 function InfoSVG() {
   return (
@@ -123,45 +124,6 @@ function CliSVG() {
     </svg>
   );
 }
-
-const supportedTech = [
-  {
-    link: " /dev-guide/go",
-    image: "/img/golang.svg",
-    alt: "Go lang logo",
-    class: "w-10 h-8",
-  },
-  {
-    link: " /dev-guide/java",
-    image: "/img/java.svg",
-    alt: "Java logo",
-    class: "w-7 h-7",
-  },
-  {
-    link: " /dev-guide/php",
-    image: "/img/php.svg",
-    alt: "php logo",
-    class: "w-10",
-  },
-  {
-    link: " /dev-guide/python",
-    image: "/img/python.svg",
-    alt: "Python logo",
-    class: "w-7 h-7",
-  },
-  {
-    link: " /dev-guide/typescript",
-    image: "/img/typescript.svg",
-    alt: "TypeScript logo",
-    class: "w-7 h-7",
-  },
-  {
-    link: " /dev-guide/typescript",
-    image: "/img/javascript.svg",
-    alt: "JavaScript logo",
-    class: "w-7 h-7",
-  },
-];
 
 const coreConcepts = {
   listOne: [
@@ -392,26 +354,6 @@ const references = {
   ],
 };
 
-const displayTechListItems = () => {
-  return supportedTech.map((tech) => {
-    return (
-      <li className="list-logo" key={tech.alt}>
-        <a href={tech.link}>
-          <img className={`${tech.class} pr-1 transition hover:scale-110 code-logo`} src={tech.image} alt={tech.alt} />
-        </a>
-      </li>
-    );
-  });
-};
-
-const displaySupportedTech = () => {
-  return (
-    <div className="supported-tech">
-      <ul className="landing-card-list-b logos">{displayTechListItems()}</ul>
-    </div>
-  );
-};
-
 const displayLinks = (links) => {
   return links.map((link, i) => {
     return (
@@ -447,7 +389,7 @@ function Explained() {
           </a>
           <div className="badge-purple">New</div>
         </div>
-        {displaySupportedTech()}
+        {SdkLogos()}
         <p className="landing-card-p">How-to guides for Temporal Application developers. </p>
         <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listOne)}</ul>
         <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listTwo)}</ul>
