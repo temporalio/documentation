@@ -11,7 +11,6 @@ docs/concepts/visibility.md linguist-generated=true
 docs/web-ui.md linguist-generated=true
 docs/workers.md linguist-generated=true
 docs/concepts/workflows.md linguist-generated=true
-docs/concepts/temporal.md linguist-generated=true
 docs/dev-guide/go/debugging.md linguist-generated=true
 docs/dev-guide/go/features.md linguist-generated=true
 docs/dev-guide/go/foundations.md linguist-generated=true
