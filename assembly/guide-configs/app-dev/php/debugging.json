@@ -1,0 +1,27 @@
+{
+  "file_name": "debugging.md",
+  "id": "debugging",
+  "slug": "/dev-guide/php/debugging",
+  "file_dir": "dev-guide/phplang",
+  "title": "PHP SDK developer's guide - Debugging",
+  "sidebar_label": "Debugging",
+  "sidebar_position": 4,
+  "description": "The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "h2",
+      "id": "php/debugging"
+    },
+    {
+      "type": "h3",
+      "id": "php/debug-environment-development"
+    },
+    {
+      "type": "h3",
+      "id": "php/debug-environment-production"
+    }
+  ]
+}
