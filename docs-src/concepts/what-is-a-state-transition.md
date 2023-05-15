@@ -13,4 +13,4 @@ Each State Transition is recorded in a persistence store.
 
 Some operations, such as [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat), require only one State Transition.
 Most operations require multiple State Transitions.
-For example, a simple Workflow with two [Activity Tasks](/concepts/what-is-an-activity-task) (and no retries) might need as few as 11 State Transitions.
+For example, a simple Workflow with two [Activity Tasks](/concepts/what-is-an-activity-task) (and no retries) produces 11 State Transitions.
