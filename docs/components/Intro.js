@@ -393,6 +393,11 @@ function Explained() {
         <p className="landing-card-p">How-to guides for Temporal Application developers. </p>
         <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listOne)}</ul>
         <ul className="landing-card-list">{displayLinks(appDevGuideLinks.listTwo)}</ul>
+        <p className="landing-card-p mt-4 mb-0">
+          For our .NET SDK, see the <a href="https://github.com/temporalio/sdk-dotnet#readme">README</a> and{" "}
+          <a href="https://dotnet.temporal.io/">API reference</a>. For our Ruby SDK, see the{" "}
+          <a href="https://github.com/temporalio/sdk-ruby#readme">README</a>.
+        </p>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="https://legacy-documentation-sdks.temporal.io/">

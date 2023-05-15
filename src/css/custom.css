@@ -149,15 +149,19 @@ main.p-6,
 }
 
 .tailwindcss .mb-1 {
-  margin-bottom: 0.25;
+  margin-bottom: 0.25rem;
 }
 
 .tailwindcss .mt-1 {
-  margin-top: 0.25;
+  margin-top: 0.25rem;
+}
+
+.tailwindcss .mt-4 {
+  margin-top: 1rem;
 }
 
 .tailwindcss .mb-2 {
-  margin-bottom: 0.5;
+  margin-bottom: 0.5rem;
 }
 .tailwindcss .mb-4 {
   margin-bottom: 1rem;
