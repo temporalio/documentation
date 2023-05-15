@@ -40,26 +40,6 @@ Visit the [Java SDK dev guide](/dev-guide/java)!
 </a>
 </div>
 
-### PHP
-
-Visit the [PHP SDK dev guide](/dev-guide/php)!
-
-<div class="app-dev-landing-page-lang-logo">
-<a href="/dev-guide/php">
-<img src="/app-dev/php.svg" alt="PHP logo" />
-</a>
-</div>
-
-### Python
-
-Visit the [Python SDK dev guide](/dev-guide/python)!
-
-<div class="app-dev-landing-page-lang-logo">
-<a href="/dev-guide/python">
-<img src="/app-dev/python.svg" alt="python logo" />
-</a>
-</div>
-
 ### TypeScript
 
 Visit the [Go SDK dev guide](/dev-guide/typescript)!
@@ -73,3 +53,22 @@ Visit the [Go SDK dev guide](/dev-guide/typescript)!
 </a>
 </div>
 
+### Python
+
+Visit the [Python SDK dev guide](/dev-guide/python)!
+
+<div class="app-dev-landing-page-lang-logo">
+<a href="/dev-guide/python">
+<img src="/app-dev/python.svg" alt="python logo" />
+</a>
+</div>
+
+### PHP
+
+Visit the [PHP SDK dev guide](/dev-guide/php)!
+
+<div class="app-dev-landing-page-lang-logo">
+<a href="/dev-guide/php">
+<img src="/app-dev/php.svg" alt="PHP logo" />
+</a>
+</div>
