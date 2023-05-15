@@ -20,8 +20,6 @@ The Temporal SDK developer guides are meant to provide a comprehensive overview 
 
 ## Supported SDKs
 
-Select one of the following [language SDKs](/temporal#temporal-sdk):
-
 ### Go
 
 Visit the [Go SDK dev guide](/dev-guide/go)!
