@@ -42,7 +42,7 @@ Visit the [Java SDK dev guide](/dev-guide/java)!
 
 ### TypeScript
 
-Visit the [Go SDK dev guide](/dev-guide/typescript)!
+Visit the [TypeScript SDK dev guide](/dev-guide/typescript)!
 
 <div class="app-dev-landing-page-lang-logos">
 <a href="/dev-guide/typescript?lang=ts">

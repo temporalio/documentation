@@ -2,7 +2,7 @@
 id: debugging
 title: PHP SDK developer's guide - Debugging
 sidebar_label: Debugging
-sidebar_position: 4
+sidebar_position: 5
 description: The Debugging section of the Temporal Developer's guide covers the many ways to debug your application.
 slug: /dev-guide/php/debugging
 toc_max_heading_level: 4
