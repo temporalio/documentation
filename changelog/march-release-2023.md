@@ -10,7 +10,7 @@ Since our last change log in January 2023, we published the following content:
   [Visibility](/visibility) is one of the features that is affected by the release.
 
 - The [Temporal CLI reference](/cli).
-  The new CLI has an updated set of commands and comes packaged with a [development Cluster](/application-development/foundations#connect-to-a-dev-cluster).
+  The new CLI has an updated set of commands and comes packaged with a [development Cluster](/cli/server).
 
 - The term [Replay](/workflows#replays) is now defined in the Workflow concept page.
 

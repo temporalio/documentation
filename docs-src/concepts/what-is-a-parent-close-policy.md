@@ -11,7 +11,11 @@ tags:
 
 A Parent Close Policy determines what happens to a [Child Workflow Execution](/concepts/what-is-a-child-workflow-execution) if its Parent changes to a Closed status (Completed, Failed, or Timed out).
 
-- [How to set a Parent Close Policy](/application-development/features#parent-close-policy)
+- [How to set a Parent Close Policy using the Go SDK](/go/parent-close-policy)
+- [How to set a Parent Close Policy using the Java SDK](/java/parent-close-policy)
+- [How to set a Parent Close Policy using the PHP SDK](/php/parent-close-policy)
+- [How to set a Parent Close Policy using the Python SDK](/python/parent-close-policy)
+- [How to set a Parent Close Policy using the TypeScript SDK](/typescript/parent-close-policy)
 
 There are three possible values:
 

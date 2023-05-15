@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the Payload has exceeded the [Signal's](/application-development/features/#signals) available input size.
+This error indicates that the Payload has exceeded the [Signal's](/concepts/what-is-a-signal) available input size.
 
-Adjust the size of the Payload, and redeploy the [Workflow Task](/tasks/#workflow-task).
+Adjust the size of the Payload, and redeploy the [Workflow Task](/concepts/what-is-a-workflow-task).

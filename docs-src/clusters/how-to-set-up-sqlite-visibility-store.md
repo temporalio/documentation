@@ -20,7 +20,6 @@ You can change the configuration to use a file-based database so that it is pres
 However, if you use a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
 
 If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
-For details, see [Search Attributes](/application-development/observability#visibility).
 
 **Persistence configuration**
 
