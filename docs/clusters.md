@@ -356,7 +356,7 @@ Temporal offers two plugin interfaces for API call authentication and authorizat
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the Frontend Service invokes the implementation of the plugins before running the requested operation.
 
-## Cluster monitoring and observation
+## Monitoring and observation
 
 You can monitor and observe performance by using the metrics emitted by your self-hosted Temporal Cluster or by Temporal Cloud.
 

@@ -27,7 +27,6 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Child Workflow](/workflows#child-workflow)
 - [Claim Mapper](/security#claim-mapper)
 - [Cluster configuration](/clusters#cluster-configuration)
-- [Cluster monitoring and observation](/clusters#cluster-monitoring-and-observation)
 - [Codec Server](/dataconversion#codec-server)
 - [Command](/workflows#command)
 - [Continue-As-New](/workflows#continue-as-new)

@@ -59,10 +59,6 @@
     },
     {
       "type": "h2",
-      "id": "concepts/what-is-cluster-monitoring"
-    },
-    {
-      "type": "h2",
       "id": "concepts/what-is-multi-cluster-replication"
     }
   ]

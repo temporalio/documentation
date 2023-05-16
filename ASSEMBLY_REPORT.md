@@ -1,15 +1,14 @@
 # Docs Assembly Workflow report
 
+Last assembled: Tuesday May 16 2023 11:58:09 AM -0700
 
-Last assembled: Monday May 08 2023 18:56:19 PM -0700
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 58 guide configurations found.
 
-989 information nodes found.
+1006 information nodes found.
 
-845 information nodes are attached to guides.
+862 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -311,6 +310,20 @@ cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
+cloud/tcld/user/delete -> #delete
+
+cloud/tcld/user/get -> #get
+
+cloud/tcld/user/invite -> #invite
+
+cloud/tcld/user/list -> #list
+
+cloud/tcld/user/resend-invite -> #resend-invite
+
+cloud/tcld/user/set-account-role -> #set-account-role
+
+cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
+
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
@@ -356,6 +369,8 @@ concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 concepts/what-is-a-history-shard -> #history-shard
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
+
+cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -677,5 +692,4 @@ concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
 
 app-dev-context/metrics -> /application-development/observability#metrics
 
-cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 

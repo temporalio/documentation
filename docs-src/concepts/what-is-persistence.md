@@ -2,7 +2,7 @@
 id: what-is-persistence
 title: What is Persistence?
 sidebar_label: Persistence
-description:
+description: Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
 tags:
   - term
   - explanation
