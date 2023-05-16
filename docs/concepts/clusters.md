@@ -2,7 +2,9 @@
 id: clusters
 title: Clusters
 sidebar_label: Clusters
+sidebar_position: 8
 description: This guide provides a comprehensive overview of Temporal Clusters.
+slug: /clusters
 toc_max_heading_level: 4
 ---
 
@@ -79,7 +81,7 @@ The Frontend Service is responsible for rate limiting, authorizing, validating, 
 
 Types of inbound calls include the following:
 
-- <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> CRUD
+- <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> CRUD
 - External events
 - Worker polls
 - <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> requests
@@ -145,11 +147,11 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 - Internal Timer Task Queue: Durably persists Timers.
 - Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
   (Relies on the experimental Multi-Cluster feature.)
-- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/concepts/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#advanced-visibility">Learn more</a></span></span></a> index.
+- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> index.
 
 ### Matching Service
 
-The Matching Service is responsible for hosting user-facing <a class="tdlp" href="/concepts/tasks#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/tasks#task-queue">Learn more</a></span></span></a> for Task dispatching.
+The Matching Service is responsible for hosting user-facing <a class="tdlp" href="/tasks#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a> for Task dispatching.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" height="980" width="870" /></div></div>
 
@@ -180,10 +182,10 @@ Ports are configurable in the Cluster configuration.
 Retention Period is the duration for which the Temporal Cluster stores data associated with closed Workflow Executions on a Namespace in the Persistence store.
 
 - [How to set the Retention Period for a Namespace](/tctl-v1/namespace#register)
-- <a class="tdlp" href="/dev-guide/golang/features#namespaces">How to set the Retention Period for a Namespace using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/features#namespaces">Learn more</a></span></span></a>
-- <a class="tdlp" href="//dev-guide/javalang/features#namespaces">How to set the Retention Period for a Namespace using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//dev-guide/javalang/features#namespaces">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/go/features#namespaces">How to set the Retention Period for a Namespace using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#namespaces">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/java/features#namespaces">How to set the Retention Period for a Namespace using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create and manage Namespaces</span><br /><br /><span class="tdlppd">You can create, update, deprecate or delete your Namespaces using either tctl or SDK APIs..</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#namespaces">Learn more</a></span></span></a>
 
-A Retention Period applies to all closed Workflow Executions within a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> and is set when the Namespace is registered.
+A Retention Period applies to all closed Workflow Executions within a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> and is set when the Namespace is registered.
 
 The Temporal Cluster triggers a Timer task at the end of the Retention Period that cleans up the data associated with the closed Workflow Execution on that Namespace.
 
@@ -216,7 +218,7 @@ The database stores the following types of data:
 - <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
-An Elasticsearch database must be added to enable <a class="tdlp" href="/concepts/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
+An Elasticsearch database must be added to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
 
 With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
 
@@ -248,12 +250,12 @@ A Visibility store can be configured to provide [Standard Visibility](/visibilit
 
 ## Archival
 
-Archival is a feature that automatically backs up <a class="tdlp" href="/concepts/workflows#event-history">Event Histories<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#event-history">Learn more</a></span></span></a> and Visibility records from Temporal Cluster persistence to a custom blob store.
+Archival is a feature that automatically backs up <a class="tdlp" href="/workflows#event-history">Event Histories<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and Visibility records from Temporal Cluster persistence to a custom blob store.
 
 - <a class="tdlp" href="/cluster-deployment-guide#custom-archiver">How to create a custom Archiver<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a custom Archiver</span><br /><br /><span class="tdlppd">To archive data with a given provider, using the Archival feature, Temporal must have a corresponding Archiver component installed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#custom-archiver">Learn more</a></span></span></a>
 - <a class="tdlp" href="/cluster-deployment-guide#set-up-archival">How to set up Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Archival</span><br /><br /><span class="tdlppd">This guide covers Temporal's archiving capabilities and how to set up the Archival feature.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#set-up-archival">Learn more</a></span></span></a>
 
-Workflow Execution Event Histories are backed up after the <a class="tdlp" href="/concepts/namespaces#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#retention-period">Learn more</a></span></span></a> is reached.
+Workflow Execution Event Histories are backed up after the <a class="tdlp" href="/namespaces#retention-period">Retention Period<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#retention-period">Learn more</a></span></span></a> is reached.
 Visibility records are backed up immediately after a Workflow Execution reaches a Closed status.
 
 Archival enables Workflow Execution data to persist as long as needed, while not overwhelming the Cluster's persistence store.
@@ -353,8 +355,8 @@ These protocols address three areas: servers, client connections, and users.
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-- <a class="tdlp" href="/security#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
-- <a class="tdlp" href="/security#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
+- <a class="tdlp" href="/security#claim-mapper"> `ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
+- <a class="tdlp" href="/security#authorizer-plugin"> `Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the Frontend Service invokes the implementation of the plugins before running the requested operation.
@@ -392,7 +394,7 @@ When necessary, for higher availability, Cluster operators can failover to any o
 Temporal's Multi-Cluster Replication feature is considered **experimental** and not subject to normal [versioning and support policy](/clusters).
 
 Temporal automatically forwards Start, Signal, and Query requests to the active Cluster.
-This feature must be enabled through a Dynamic Config flag per <a class="tdlp" href="/concepts/namespaces#global-namespace">Global Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Global Namespace?</span><br /><br /><span class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#global-namespace">Learn more</a></span></span></a>.
+This feature must be enabled through a Dynamic Config flag per <a class="tdlp" href="/namespaces#global-namespace">Global Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Global Namespace?</span><br /><br /><span class="tdlppd">A Global Namespace is a Namespace that exists across Clusters when Multi-Cluster Replication is set up.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#global-namespace">Learn more</a></span></span></a>.
 
 When the feature is enabled, Tasks are sent to the Parent Task Queue partition that matches that Namespace, if it exists.
 
@@ -785,4 +787,3 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-

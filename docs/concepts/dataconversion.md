@@ -2,7 +2,9 @@
 id: dataconversion
 title: Data conversion
 sidebar_label: Data conversion
+sidebar_position: 10
 description: This guide provides an overview of data handling using a Data Converter on the Temporal Platform.
+slug: /dataconversion
 toc_max_heading_level: 4
 ---
 
@@ -82,7 +84,7 @@ You can customize the default Data Converter behavior in two ways:
 - A Payload Codec encodes and decodes <a class="tdlp" href="#payload">Payloads<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload">Learn more</a></span></span></a>, with bytes-to-bytes conversion.
   To use custom encryption and/or compression logic, create a custom Payload Codec with your encryption/compression logic in the `encode` function and your decryption/decompression logic in the `decode` function.
 
-Custom Data Converters are not applied to all data; for example, <a class="tdlp" href="/concepts/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#search-attribute">Learn more</a></span></span></a> are simple values and persisted unencoded so they can be indexed for searching.
+Custom Data Converters are not applied to all data; for example, <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> are simple values and persisted unencoded so they can be indexed for searching.
 
 <!--
 Commenting this bit for reference later; the Headers detail might change.
@@ -97,8 +99,8 @@ A customized Data Converter can have the following three components:
 
 For details on how to implement custom Payload Converters in your SDK, see Custom Payload conversion for the following SDKs:
 
-- <a class="tdlp" href="/dev-guide/golang/features#custom-payload-conversion">How to implement custom Payload convesion in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/features#custom-payload-conversion">Learn more</a></span></span></a>
-- <a class="tdlp" href="//dev-guide/javalang/features#custom-payload-conversion">How to implement custom Payload conversion in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//dev-guide/javalang/features#custom-payload-conversion">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/go/features#custom-payload-conversion">How to implement custom Payload convesion in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#custom-payload-conversion">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/java/features#custom-payload-conversion">How to implement custom Payload conversion in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#custom-payload-conversion">Learn more</a></span></span></a>
 
 For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-readiness/develop#data-encryption).
 
@@ -127,8 +129,8 @@ When the Data Converter receives a value for conversion, it passes through each 
 
 For details on how to use the Payload Converter for custom data types, see Custom Payload Conversion in the following langauages:
 
-- <a class="tdlp" href="/dev-guide/golang/features#custom-payload-conversion">How to implement custom Payload convesion in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/golang/features#custom-payload-conversion">Learn more</a></span></span></a>
-- <a class="tdlp" href="//dev-guide/javalang/features#custom-payload-conversion">How to implement custom Payload conversion in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="//dev-guide/javalang/features#custom-payload-conversion">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/go/features#custom-payload-conversion">How to implement custom Payload convesion in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#custom-payload-conversion">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/java/features#custom-payload-conversion">How to implement custom Payload conversion in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#custom-payload-conversion">Learn more</a></span></span></a>
 
 ## Failure Converter
 
@@ -208,7 +210,7 @@ To encode this data, [specify your Codec Server endpoints](/dataconversion#setti
 
 #### Decoding data on the Web UI and tctl
 
-If you use custom encoding in your custom Data Converter, Payload data handled by the Temporal Cluster is encoded. Since the Web UI uses the <a class="tdlp" href="/concepts/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/clusters#visibility">Learn more</a></span></span></a> database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI or tctl shows in the encoded format.
+If you use custom encoding in your custom Data Converter, Payload data handled by the Temporal Cluster is encoded. Since the Web UI uses the <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> database to show events and data stored on the Temporal Server, all data in the Workflow Execution History in your Web UI or tctl shows in the encoded format.
 
 To see the original format of data in your Web UI and tctl, create a <a class="tdlp" href="#codec-server">Codec Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Codec Server?</span><br /><br /><span class="tdlppd">A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#codec-server">Learn more</a></span></span></a> with a remote data encoder and use the Payload Codec to decode your data locally.
 
@@ -299,4 +301,3 @@ codec:
 ```
 
 Start the UI server to use this endpoint for decoding data in Workflow Executions in the specified Namespace.
-

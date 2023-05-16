@@ -9,7 +9,7 @@ tags:
 
 <!-- This file is generated. Do not edit it directly. -->
 
-Temporal Cluster provides <a class="tdlp" href="/concepts/clusters#dynamic-configuration">dynamic configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/clusters#dynamic-configuration">Learn more</a></span></span></a> keys that you can update and apply to a running Cluster without restarting your services.
+Temporal Cluster provides <a class="tdlp" href="/clusters#dynamic-configuration">dynamic configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dynamic-configuration">Learn more</a></span></span></a> keys that you can update and apply to a running Cluster without restarting your services.
 
 The dynamic configuration keys are set with default values when you create your Cluster configuration.
 You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.

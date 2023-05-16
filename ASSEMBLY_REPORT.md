@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 09 2023 16:34:08 PM -0700
+Last assembled: Tuesday May 16 2023 12:49:39 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 75 guide configurations found.
 
-1433 information nodes found.
+1436 information nodes found.
 
-859 information nodes are attached to guides.
+1178 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -48,7 +48,15 @@ concepts/what-is-multi-cluster-replication -> /clusters#multi-cluster-replicatio
 
 concepts/what-is-a-workflow-task -> /tasks#workflow-task
 
-app-dev-context/search-attributes -> /application-development/observability#search-attributes
+concepts/what-is-a-signal -> /workflows#signal
+
+concepts/what-is-an-event -> /workflows#event
+
+concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
+
+concepts/what-is-a-worker -> /workers#
+
+concepts/what-is-a-workflow -> /workflows#
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -304,21 +312,6 @@ cloud/tcld/namespace/retention/set -> #set
 
 cloud/tcld/request/get -> #get
 
-cloud/tcld/user/delete -> #delete
-
-cloud/tcld/user/get -> #get
-
-cloud/tcld/user/invite -> #invite
-
-cloud/tcld/user/list -> #list
-
-cloud/tcld/user/resend-invite -> #resend-invite
-
-cloud/tcld/user/set-account-role -> #set-account-role
-
-cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
-
-concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 cloud/tcld/user/delete -> #delete
 
 cloud/tcld/user/get -> #get
@@ -901,23 +894,16 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/metrics -> /dev-guide/go/observability#metrics
 
-concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
-
-app-dev-context/metrics -> /application-development/observability#metrics
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-cloud/tcld/user/delete -> #delete
+cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-cloud/tcld/user/get -> #get
+concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
 
-cloud/tcld/user/invite -> #invite
+java/metrics -> /dev-guide/java/observability#metrics
 
-cloud/tcld/user/list -> #list
+python/metrics -> /dev-guide/python/observability#metrics
 
-cloud/tcld/user/resend-invite -> #resend-invite
-
-cloud/tcld/user/set-account-role -> #set-account-role
-
-cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
+typescript/metrics -> /dev-guide/typescript/observability#metrics
 
 

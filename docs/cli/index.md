@@ -2,6 +2,7 @@
 id: index
 title: Temporal CLI command reference
 sidebar_label: CLI (temporal)
+sidebar_position: 7
 description: How to use Temporal's CLI developer tool
 toc_max_heading_level: 4
 ---
@@ -11,7 +12,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The Temporal CLI is a command-line tool that includes a distribution of a Temporal Cluster (<a class="tdlp" href="/concepts/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/clusters#temporal-server">Learn more</a></span></span></a>, persistence (SQLite), and the <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>).
+The Temporal CLI is a command-line tool that includes a distribution of a Temporal Cluster (<a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a>, persistence (SQLite), and the <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>).
 The tool runs as a single process with zero runtime dependencies and supports persistence to disk and in-memory mode through SQLite.
 
 ### Available commands
@@ -29,7 +30,7 @@ The tool runs as a single process with zero runtime dependencies and supports pe
 
 Temporal CLI can be installed through several different methods.
 
-For more information, see our guide to <a class="tdlp" href="/dev-guide/tscript/foundations#run-a-development-server">running a Development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/tscript/foundations#run-a-development-server">Learn more</a></span></span></a>.
+For more information, see our guide to <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-development-server">running a Development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-development-server">Learn more</a></span></span></a>.
 
 ## Starting the Temporal Server
 

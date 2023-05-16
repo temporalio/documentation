@@ -34,7 +34,7 @@ Use <a class="tdlp" href="#start">tctl batch start<span class="tdlpiw"><img src=
 
 :::
 
-When starting a batch job, you must provide a <a class="tdlp" href="/concepts/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#list-filter">Learn more</a></span></span></a> and the type of batch job that should occur.
+When starting a batch job, you must provide a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> and the type of batch job that should occur.
 Batch jobs run in the background and affect Workflow Executions one at a time.
 
 The List Filter identifies the set of Workflow Executions to be affected by the batch job.
@@ -74,7 +74,7 @@ _Required modifier_
 
 Specify the [Workflow Executions](/workflows#workflow-execution) that this batch job should operate.
 
-The SQL-like query of <a class="tdlp" href="/concepts/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#search-attribute">Learn more</a></span></span></a> is the same as used by the `tctl workflow list --query` command.
+The SQL-like query of <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> is the same as used by the `tctl workflow list --query` command.
 
 Alias: `-q`
 
@@ -106,7 +106,7 @@ tctl batch start --query <value> --batch_type <operation>
 
 ### `--signal_name`
 
-Specify the name of a <a class="tdlp" href="/concepts/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#signal">Learn more</a></span></span></a>. This modifier is required when `--batch_type` is `signal`.
+Specify the name of a <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a>. This modifier is required when `--batch_type` is `signal`.
 
 **Example**
 
@@ -116,7 +116,7 @@ tctl batch start --query <value> --batch_type signal --signal_name <name>
 
 ### `--input`
 
-Pass input for the <a class="tdlp" href="/concepts/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#signal">Learn more</a></span></span></a>. Input must be in JSON format.
+Pass input for the <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#signal">Learn more</a></span></span></a>. Input must be in JSON format.
 
 Alias: `-i`
 

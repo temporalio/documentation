@@ -2,7 +2,9 @@
 id: testing
 title: PHP SDK developer's guide - Testing
 sidebar_label: Testing
+sidebar_position: 4
 description: The Testing section of the Temporal Developer's guide covers the many ways to test the state of your Temporal Application; that is, ways to view which Workflow Executions are tracked by the Platform and the state of any given Workflow Execution, either currently or at points of an execution.
+slug: /dev-guide/php/testing
 toc_max_heading_level: 4
 ---
 
@@ -29,8 +31,6 @@ An Activity can be tested with a mock Activity environment, which provides a way
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
 ## Test Workflows
-
-
 
 ### Mock Activities
 
@@ -187,4 +187,3 @@ if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
 ```gitignore
 temporal-test-server
 ```
-
