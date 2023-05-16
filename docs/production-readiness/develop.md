@@ -436,12 +436,6 @@ If you want to unpack the claims in your token to add additional checks on wheth
 The claims in the token provided from Temporal Cloud UI contain the following detail:
 
 - `id`: Email identifier of the person requesting access to the payloads.
-- `<namespace name>: <permissions>`: Namespace name and read/write permissions to the Namespace. For example:
-
-  ```json
-  mynamespace:read
-  anothernamespace:write
-  ```
 
 Based on the identity information in the claims, you can set conditions in your Codec Server whether to return decoded payloads or just return the original encoded payloads.
 
