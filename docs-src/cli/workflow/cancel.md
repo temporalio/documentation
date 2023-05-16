@@ -10,7 +10,7 @@ tags:
 The `temporal workflow cancel` command cancels a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
 Canceling a running Workflow Execution records a [`WorkflowExecutionCancelRequested` event](/references/events#workflow-execution-cancel-requested) in the [Event History](/concepts/what-is-an-event-history).
-A new [Workflow Task](/tasks#workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
+A new [Workflow Task](/concepts/what-is-a-workflow-task) will be scheduled, and the Workflow Execution performs cleanup work.
 
 `temporal workflow cancel --workflow-id=meaningful-business-id`
 
