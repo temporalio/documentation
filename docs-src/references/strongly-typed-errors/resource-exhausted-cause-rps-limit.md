@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow](/workflows) has reached its RPS limit.
+This error indicates that the [Workflow](/workflows) has exhausted its RPS limit.
 
 <!--TODO: more info needed -->

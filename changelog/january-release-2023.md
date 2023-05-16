@@ -23,12 +23,12 @@ Since our last change log in November 2022, we published the following content:
 
 **Legacy docs for SDKs**
 
-To support all the SDKs, in 2022 we started building the [Dev guide](/application-development).
+To support all the SDKs, in 2022 we started building the [Dev guide](/dev-guide).
 This guide now provides a single set of docs across Go, Java, PHP, Python, and TypeScript with more languages potentially on the way.
 This guide is the focus of new information moving forward.
 
 We published the legacy language-specific docs for Go, Java, PHP, and TypeScript to [legacy-documentation-sdks.temporal.io](https://legacy-documentation-sdks.temporal.io/).
 
-The documentation at [legacy-documentation-sdks.temporal.io](https://legacy-documentation-sdks.temporal.io/) is read-only but might still contain some information that is not yet represented in the [Dev guide](/application-development).
+The documentation at [legacy-documentation-sdks.temporal.io](https://legacy-documentation-sdks.temporal.io/) is read-only but might still contain some information that is not yet represented in the [Dev guide](/dev-guide).
 
 We are still encouraging users to use both sets of documentation at this time.
