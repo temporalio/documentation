@@ -68,8 +68,6 @@ assert heartbeats == ["param: test", "second heartbeat"]
 
 ## Test Workflows
 
-
-
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -217,4 +215,3 @@ You can choose to wait until all histories have been replayed with `replay_workf
 If the Workflow History is exported by [Temporal Web UI](/web-ui) or through [tctl](/tctl-v1), you can pass the JSON file history object as a JSON string or as a Python dictionary through the `json.load()` function, which takes a file object and returns the JSON object.
 
 :::
-
