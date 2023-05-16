@@ -162,6 +162,7 @@ Authorization: Bearer <token>
 
 200 OK
 Content-Type: application/json
+
 {
   "payloads": [{
     "metadata":{
