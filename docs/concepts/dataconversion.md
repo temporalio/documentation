@@ -257,11 +257,13 @@ For details on creating your Codec Server, see [Codec Server Setup](/production-
 After you start your Codec Server, [configure your Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli).
 
 <<<<<<< HEAD:docs/dataconversion.md
+
 <!-- You can set your Codec Server endpoints to encode data sent to the Temporal Server (see <a class="tdlp" href="#remote-data-encoding">Remote data encoding<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is remote data encoding?</span><br /><br /><span class="tdlppd">Remote data encding is using your custom Data Converter to decode (and encode) your Payloads remotely through endpoints.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remote-data-encoding">Learn more</a></span></span></a>).
 However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers. -->
 
 =======
+
 - [Codec Server](https://github.com/temporalio/samples-go/tree/main/codec-server)
 - [GRPC proxy server](https://github.com/temporalio/samples-go/tree/main/grpc-proxy)
 
