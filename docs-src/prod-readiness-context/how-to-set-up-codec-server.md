@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-Use a Codec Server to decrypt your encoded [payloads](/concepts/what-is-a-payload) and integrate it with the Temporal Web UI and CLI commands when debugging your Workflows.
+Use a Codec Server to decode your encoded [payloads](/concepts/what-is-a-payload) and integrate it with the Temporal Web UI and CLI commands when debugging your Workflows.
 
 A Codec Server is an HTTP or HTTPS Server that you create and host.
 It must be configured to use a [Payload Codec](/concepts/what-is-a-payload-codec) with the required decode logic and encryption keys.
@@ -33,7 +33,7 @@ To create a Codec Server, you need the following components:
   You can use the Payload Codec that you applied with your Data Converter to encode your Payloads and configure it with your Codec Server.
   However, if you are writing your Codec Server in a different SDK from the one that applies the Data Converter, ensure that your logic and keys are correctly replicated.
 - Key management infrastructure or plan for sharing your encryption keys between the Workers and your Codec Server.
-- [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration on the HTTP router in your Codec Server for sending and receiving requests from the Temporal Web UI.
+- [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration on the HTTP endpoints in your Codec Server for sending and receiving requests from the Temporal Web UI.
 
 For examples on how to create your Codec Server, see following Codec Server implementation samples:
 
@@ -77,8 +77,7 @@ The following example shows a sample `POST` request body with base64 encoding.
 {
   "payloads": [{
     "metadata": {
-      "encoding": <base64EncodedEncodingHint>,
-      "messageType": <base64EncodedMessageTypeName>
+      "encoding": <base64EncodedEncodingHint>
     },
     "data": <encryptedPayloadData>
   }, ...]
@@ -107,7 +106,7 @@ For details on setting up authorization, see [Authorization](#authorization).
 
 #### Authorization
 
-To enable authorization, your Codec Server must be an HTTPS Server.
+To enable authorization from the Web UI, your Codec Server must be an HTTPS Server.
 
 **Temporal Cloud**
 
@@ -166,12 +165,13 @@ Content-Type: application/json
 {
   "payloads": [{
     "metadata":{
-"encoding": "json/protobuf",
-"messageType": "temporal_shop.orchestrations.v1.StartShoppingCartRequest"
-    },"data":{
-"cartId":"example-cart",
-"shopperId":"your-shopper-id-example",
-"email":"your-email@domain.com"
+      "encoding": "json/protobuf",
+      "messageType": "temporal_shop.orchestrations.v1.StartShoppingCartRequest"
+    },
+    "data":{
+      "cartId":"example-cart",
+      "shopperId":"your-shopper-id-example",
+      "email":"your-email@domain.com"
     }}]
 }
 ```
