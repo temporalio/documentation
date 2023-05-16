@@ -102,6 +102,10 @@
     {
       "type": "h2",
       "id": "concepts/what-is-a-schedule"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-state-transition"
     }
   ]
 }

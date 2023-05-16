@@ -80,6 +80,8 @@ concepts/what-is-a-run-id -> /workflows#run-id
 
 concepts/what-is-a-task-queue -> /tasks#task-queue
 
+concepts/what-is-a-state-transition -> /workflows#state-transition
+
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
 tctl-v1/activity/complete -> #complete
