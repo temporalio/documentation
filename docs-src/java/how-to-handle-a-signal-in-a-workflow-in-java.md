@@ -2,11 +2,13 @@
 id: how-to-handle-a-signal-in-a-workflow-in-java
 title: How to handle Signals in an Workflow in Java
 sidebar_label: Handle Signals
-description: Use the `@SignalMethod` annotation to handle Signals within the Workflow interface.
+description: Use the @SignalMethod annotation to handle Signals within the Workflow interface.
 tags:
   - java
   - developer-guide
 ---
+
+Workflows listen for Signals by the Signal's name.
 
 Use the `@SignalMethod` annotation to handle Signals in the Workflow interface.
 

@@ -1,9 +1,11 @@
 {
   "file_name": "workflows.md",
   "id": "workflows",
-  "file_dir": "/",
+  "slug": "/workflows",
+  "file_dir": "concepts",
   "title": "Workflows",
   "sidebar_label": "Workflows",
+  "sidebar_position": 2,
   "description": "This guide provides a comprehensive overview of Temporal Workflows.",
   "use_description": true,
   "toc_max_heading_level": 4,

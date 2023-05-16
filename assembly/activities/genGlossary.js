@@ -6,6 +6,7 @@ id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
+sidebar_position: 11
 tags:
   - reference
 ---
@@ -76,7 +77,9 @@ async function findSlug(fullIndex, nodeId) {
   for (const link of fullIndex) {
     if (link.node_id == nodeId) {
       if (link.file_dir != "/") {
-        if (link.guide_id.includes("index")) {
+        if (link.slug != "none") {
+          return `${link.slug}#${link.local_ref}`;
+        } else if (link.guide_id.includes("index")) {
           return `/${link.file_dir}#${link.local_ref}`;
         } else {
           return `/${link.file_dir}/${link.guide_id}#${link.local_ref}`;

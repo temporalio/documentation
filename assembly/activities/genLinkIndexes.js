@@ -33,6 +33,7 @@ async function generateLinkIndex(guideConfig) {
             linkIndex.push({
               file_dir: guideConfig.file_dir,
               guide_id: guideConfig.id,
+              slug: guideConfig.slug ? guideConfig.slug : "none",
               local_ref: "",
               node_id: section.node.id,
               node_title: section.node.title,
@@ -46,6 +47,7 @@ async function generateLinkIndex(guideConfig) {
               linkIndex.push({
                 file_dir: guideConfig.file_dir,
                 guide_id: guideConfig.id,
+                slug: guideConfig.slug ? guideConfig.slug : "none",
                 local_ref: localRef(section.node.id, previousSection.node.label),
                 node_id: section.node.id,
                 node_title: section.node.title,
@@ -62,6 +64,7 @@ async function generateLinkIndex(guideConfig) {
                 linkIndex.push({
                   file_dir: guideConfig.file_dir,
                   guide_id: guideConfig.id,
+                  slug: guideConfig.slug ? guideConfig.slug : "none",
                   local_ref: "",
                   node_id: langtab.node.id,
                   node_title: langtab.node.title,
@@ -79,6 +82,7 @@ async function generateLinkIndex(guideConfig) {
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,
                     guide_id: guideConfig.id,
+                    slug: guideConfig.slug ? guideConfig.slug : "none",
                     local_ref: localRef(langtab.node.id, previousSection.node.label),
                     node_id: langtab.node.id,
                     node_title: langtab.node.title,
@@ -95,6 +99,7 @@ async function generateLinkIndex(guideConfig) {
           linkIndex.push({
             file_dir: guideConfig.file_dir,
             guide_id: guideConfig.id,
+            slug: guideConfig.slug ? guideConfig.slug : "none",
             local_ref: localRef(section.node.id, section.node.label),
             node_id: section.node.id,
             node_title: section.node.title,

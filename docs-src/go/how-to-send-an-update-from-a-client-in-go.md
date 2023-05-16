@@ -1,14 +1,16 @@
---
+---
 id: how-to-send-an-update-from-a-client-in-go
 title: How to send an Update from a Temporal Client in Go
 sidebar_label: Send Update from Client
 description: Use the `UpdateWorkflow()` method on an instance of the Go SDK Temporal Client to send an Update to a Workflow Execution.
 tags:
-
-- go
-- how-to
-
+  - go
+  - how-to
 ---
+
+When an Update is sent successfully from the Temporal Client it is dispatched to a Worker where it is accepted or rejected through a validation process.
+Rejections do not result in an event being written to the Event History while an accepted update will result in a WorkflowExecutionUpdateAccepted event.
+Accepted updates are then executed on the worker and upon completion will cause a WorkflowExecutionUpdateCompleted event to be written to the Event History.
 
 Use the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send an [Update](/concepts/what-is-an-update) to a [Workflow Execution](/workflows#workflow-execution).
 

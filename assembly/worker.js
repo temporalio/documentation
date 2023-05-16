@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {Worker, NativeConnection} from "@temporalio/worker";
+import { Worker, NativeConnection } from "@temporalio/worker";
 import * as activities from "./activities/index.js";
 import fs from "fs-extra";
 import path from "path";
@@ -18,7 +18,7 @@ async function run() {
     const cert = await fs.readFile("./secure/docs-assembly.pem");
     const key = await fs.readFile("./secure/docs-assembly.key");
     const connection = await NativeConnection.connect({
-      address: "docs-assembly.a2dd6.tmprl.cloud:7233",
+      address: "docs-assembly.a2dd6.tmprl.cloud",
       tls: {
         clientCertPair: {
           crt: cert,
@@ -26,6 +26,7 @@ async function run() {
         },
       },
     });
+
     const data = await fs.readJSON("./secure/cloud-connection.json");
     const worker = await Worker.create({
       connection,

@@ -1,7 +1,8 @@
 ---
 id: index
 title: tctl v1.17 command reference
-sidebar_label: index
+sidebar_label: CLI (tctl)
+sidebar_position: 8
 description: How to use Temporal's tctl v1.17 developer tool
 toc_max_heading_level: 4
 ---

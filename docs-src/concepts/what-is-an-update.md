@@ -12,7 +12,7 @@ tags:
 An Update is a request to a [Workflow Execution](/workflows#workflow-execution)
 that returns a response.
 
-- [How to develop, send, and handle Updates in code](/application-development/features#updates)
+- [How to develop, send, and handle Updates in code in Go](/go/updates)
 
 An update delivers a request to a running Workflow Execution where that request is handled by a registered update handler, the return value of which is sent back to the caller in the form of a response.
 Update handlers are Workflow functions that listen for Updates by Update name.
