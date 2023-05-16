@@ -4,6 +4,7 @@
   "file_dir": "cloud",
   "title": "Temporal Cloud documentation",
   "sidebar_label": "Temporal Cloud",
+  "sidebar_position": 3,
   "description": "Temporal Cloud documentation, including explanations and usage.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -16,6 +17,10 @@
     {
       "type": "p",
       "id": "cloud-context/cloud-intro"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-an-action"
     },
     {
       "type": "h2",

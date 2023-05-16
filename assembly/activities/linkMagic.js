@@ -174,10 +174,14 @@ async function replaceLinks(line, match, link, current_guide_id) {
   }
   // define the new path
   if (link.guide_id != current_guide_id) {
-    if (link.file_dir != "/") {
-      newPath = `/${link.file_dir}/${link.guide_id}${localRef}`;
+    if (link.slug == "none") {
+      if (link.file_dir != "/") {
+        newPath = `/${link.file_dir}/${link.guide_id}${localRef}`;
+      } else {
+        newPath = `/${link.guide_id}${localRef}`;
+      }
     } else {
-      newPath = `/${link.guide_id}${localRef}`;
+      newPath = `${link.slug}${localRef}`;
     }
   } else {
     newPath = `${localRef}`;

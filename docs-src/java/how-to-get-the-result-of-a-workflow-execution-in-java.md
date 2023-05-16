@@ -1,12 +1,20 @@
 ---
 id: how-to-get-the-result-of-a-workflow-execution-in-java
 title: How to get the result of a Workflow Execution in Java
-sidebar_label: Workflow Execution Result
+sidebar_label: Get Workflow results
 description: A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure). An asynchronous Workflow Execution immediately returns a value to the caller.
 tags:
   - java
   - developer-guide
 ---
+
+If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
+
+The Workflow Id, Run Id, and Namespace may be used to uniquely identify a Workflow Execution in the system and get its result.
+
+It's possible to both block progress on the result (synchronous execution) or get the result at some other point in time (asynchronous execution).
+
+In the Temporal Platform, it's also acceptable to use Queries as the preferred method for accessing the state and results of Workflow Executions.
 
 A synchronous Workflow Execution blocks your client thread until the Workflow Execution completes (or fails) and get the results (or error in case of failure).
 

@@ -3,6 +3,7 @@ id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
+sidebar_position: 11
 tags:
   - reference
 ---
@@ -11,6 +12,7 @@ tags:
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
+- [Action](/cloud#action)
 - [Activity](/activities#)
 - [Activity Definition](/activities#activity-definition)
 - [Activity Execution](/activities#activity-execution)
