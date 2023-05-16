@@ -5,8 +5,8 @@
  * work well for content-centric websites.
  */
 
- /* You can override the default Infima variables here. */
- 
+/* You can override the default Infima variables here. */
+
 :root {
   /* --ifm-color-primary: #f2633f;
   --ifm-color-primary-dark: #111827; */
@@ -149,15 +149,19 @@ main.p-6,
 }
 
 .tailwindcss .mb-1 {
-  margin-bottom: 0.25;
+  margin-bottom: 0.25rem;
 }
 
 .tailwindcss .mt-1 {
-  margin-top: 0.25;
+  margin-top: 0.25rem;
+}
+
+.tailwindcss .mt-4 {
+  margin-top: 1rem;
 }
 
 .tailwindcss .mb-2 {
-  margin-bottom: 0.5;
+  margin-bottom: 0.5rem;
 }
 .tailwindcss .mb-4 {
   margin-bottom: 1rem;
@@ -226,12 +230,9 @@ main.p-6,
   background-color: var(--ifm-card-background-color);
 }
 .tailwindcss .shadow-lg {
-  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
-    0 4px 6px -4px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .tailwindcss .space-x-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -665,7 +666,7 @@ h1 {
   flex-direction: row;
 }
 .app-dev-landing-page-lang-logos img {
-  max-width: 100px;
+  width: 100px;
   margin-right: 40px;
 }
 
@@ -762,7 +763,7 @@ a.tdlp:hover .tdlpc {
   border-radius: 3px;
   border: 1px solid #ffffff;
   padding: 3px 7px;
-  color:#ffffff !important;
+  color: #ffffff !important;
   font-weight: 300;
   font-size: 0.8em;
   text-decoration: none;
