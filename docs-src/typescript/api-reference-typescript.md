@@ -1,8 +1,8 @@
 ---
 id: api-reference-typescript
-title: API reference
+title: How to find the TypeScript SDK API reference
 sidebar_label: API reference
-description: The Temporal TypeScript SDK API reference is published on typescript.temporal.io.
+description: The Temporal TypeScript SDK API reference is published at typescript.temporal.io.
 tags:
   - how-to
   - typescript
