@@ -592,7 +592,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 An Update is a request to a [Workflow Execution](/workflows#workflow-execution)
 that returns a response.
 
-- <a class="tdlp" href="/dev-guide/go/features#queries">How to develop, send, and handle Updates in code in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Updates</span><br /><br /><span class="tdlppd">An Update is an operation that can mutate the state of a Workflow Execution and return a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#queries">Learn more</a></span></span></a>
+- <a class="tdlp" href="/dev-guide/go/features#updates">How to develop, send, and handle Updates in code in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Updates</span><br /><br /><span class="tdlppd">An Update is an operation that can mutate the state of a Workflow Execution and return a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#updates">Learn more</a></span></span></a>
 
 An update delivers a request to a running Workflow Execution where that request is handled by a registered update handler, the return value of which is sent back to the caller in the form of a response.
 Update handlers are Workflow functions that listen for Updates by Update name.

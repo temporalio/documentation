@@ -279,7 +279,7 @@ if err != nil {
 }
 ```
 
-## Queries
+## Updates
 
 An <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">A Update is a request to a workflow that returns a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> is an operation that can mutate the state of a Workflow Execution and return a response.
 
