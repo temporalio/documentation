@@ -50,6 +50,18 @@
       "destination": "/dev-guide"
     },
     {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/features:path*",
+      "permanent": false
+    },
+    {
       "source": "/application-development/features:path*",
       "has": [
         {
@@ -58,7 +70,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/features:path*",
+      "destination": "/dev-guide/go/features:path*",
       "permanent": false
     },
     {
@@ -70,7 +82,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/observability:path*",
+      "destination": "/dev-guide/go/observability:path*",
       "permanent": false
     },
     {
@@ -82,7 +94,7 @@
           "value": "go"
         }
       ],
-      "destination": "/application-development/golang/testing:path*",
+      "destination": "/dev-guide/go/testing:path*",
       "permanent": false
     },
     {
@@ -94,7 +106,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/foundations:path*",
+      "destination": "/dev-guide/java/foundations:path*",
       "permanent": false
     },
     {
@@ -106,7 +118,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/features:path*",
+      "destination": "/dev-guide/java/features:path*",
       "permanent": false
     },
     {
@@ -118,7 +130,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/observability:path*",
+      "destination": "/dev-guide/java/observability:path*",
       "permanent": false
     },
     {
@@ -130,7 +142,7 @@
           "value": "java"
         }
       ],
-      "destination": "/application-development/java/testing:path*",
+      "destination": "/dev-guide/java/testing:path*",
       "permanent": false
     },
     {
@@ -142,7 +154,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/foundations:path*",
+      "destination": "/dev-guide/php/foundations:path*",
       "permanent": false
     },
     {
@@ -154,7 +166,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/features:path*",
+      "destination": "/dev-guide/php/features:path*",
       "permanent": false
     },
     {
@@ -166,7 +178,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/observability:path*",
+      "destination": "/dev-guide/php/observability:path*",
       "permanent": false
     },
     {
@@ -178,7 +190,7 @@
           "value": "php"
         }
       ],
-      "destination": "/application-development/php/testing:path*",
+      "destination": "/dev-guide/php/testing:path*",
       "permanent": false
     },
     {
@@ -190,7 +202,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/foundations:path*",
+      "destination": "/dev-guide/python/foundations:path*",
       "permanent": false
     },
     {
@@ -202,7 +214,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/features:path*",
+      "destination": "/dev-guide/python/features:path*",
       "permanent": false
     },
     {
@@ -214,7 +226,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/observability:path*",
+      "destination": "/dev-guide/python/observability:path*",
       "permanent": false
     },
     {
@@ -226,7 +238,7 @@
           "value": "python"
         }
       ],
-      "destination": "/application-development/python/testing:path*",
+      "destination": "/dev-guide/python/testing:path*",
       "permanent": false
     },
     {
@@ -238,7 +250,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/foundations:path*",
+      "destination": "/dev-guide/typescript/foundations:path*",
       "permanent": false
     },
     {
@@ -250,7 +262,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/features:path*",
+      "destination": "/dev-guide/typescript/features:path*",
       "permanent": false
     },
     {
@@ -262,7 +274,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/observability:path*",
+      "destination": "/dev-guide/typescript/observability:path*",
       "permanent": false
     },
     {
@@ -274,7 +286,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/application-development/typescript/testing:path*",
+      "destination": "/dev-guide/typescript/testing:path*",
       "permanent": false
     },
     {
