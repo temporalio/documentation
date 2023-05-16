@@ -1223,9 +1223,9 @@
     "@docsearch/css" "3.3.3"
     algoliasearch "^4.0.0"
 
-"@docusaurus/core@2.4.0", "@docusaurus/core@^2.3.0":
+"@docusaurus/core@2.4.0", "@docusaurus/core@^2.4.0":
   version "2.4.0"
-  resolved "https://registry.npmjs.org/@docusaurus/core/-/core-2.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/@docusaurus/core/-/core-2.4.0.tgz#a12c175cb2e5a7e4582e65876a50813f6168913d"
   integrity sha512-J55/WEoIpRcLf3afO5POHPguVZosKmJEQWKBL+K7TAnfuE7i+Y0NPLlkKtnWCehagGsgTqClfQEexH/UT4kELA==
   dependencies:
     "@babel/core" "^7.18.6"
@@ -1470,9 +1470,9 @@
     sitemap "^7.1.1"
     tslib "^2.4.0"
 
-"@docusaurus/preset-classic@^2.3.0":
+"@docusaurus/preset-classic@^2.4.0":
   version "2.4.0"
-  resolved "https://registry.npmjs.org/@docusaurus/preset-classic/-/preset-classic-2.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/@docusaurus/preset-classic/-/preset-classic-2.4.0.tgz#92fdcfab35d8d0ffb8c38bcbf439e4e1cb0566a3"
   integrity sha512-/5z5o/9bc6+P5ool2y01PbJhoGddEGsC0ej1MF6mCoazk8A+kW4feoUd68l7Bnv01rCnG3xy7kHUQP97Y0grUA==
   dependencies:
     "@docusaurus/core" "2.4.0"

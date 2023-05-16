@@ -134,7 +134,7 @@ The name of the remote Cluster to remove.
 The `tctl admin cluster remove-search-attributes` command removes custom Search Attribute metadata from a Cluster.
 This operation has no effect on Elasticsearch index schema.
 
-Use the following command to remove a <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> from a Cluster's metadata:
+Use the following command to remove a <a class="tdlp" href="/concepts/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#search-attribute">Learn more</a></span></span></a> from a Cluster's metadata:
 
 ```bash
 tctl admin cluster remove-search-attributes --name <SearchAttributeKey>

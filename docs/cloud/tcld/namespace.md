@@ -11,7 +11,7 @@ toc_max_heading_level: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The `tcld namespace` commands enable <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> operations in Temporal Cloud.
+The `tcld namespace` commands enable <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> operations in Temporal Cloud.
 
 Alias: `n`
 
@@ -26,7 +26,7 @@ Alias: `n`
 
 ## create
 
-The `tcld namespace create` command creates a Temporal <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace create` command creates a Temporal <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 Alias: `c`
 
@@ -139,7 +139,7 @@ tcld namespace create --namespace <namespace_id> --region us-west-2 --retention-
 
 ## delete
 
-The `tcld namespace delete` command deletes the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace delete` command deletes the specified <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 Alias: `d`
 
@@ -177,7 +177,7 @@ tcld namespace delete --namespace <namespace_id>
 
 ## get
 
-The `tcld namespace get` command gets information about the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace get` command gets information about the specified <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 Alias: `g`
 
@@ -199,7 +199,7 @@ tcld namespace get --namespace <namespace_id>
 
 ## list
 
-The `tcld namespace list` command lists all <a class="tdlp" href="/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace list` command lists all <a class="tdlp" href="/concepts/namespaces#">Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 Alias: `l`
 
@@ -209,7 +209,7 @@ The command has no modifiers.
 
 ## accepted-client-ca
 
-The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud. The certificates are used to verify client connections.
+The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud. The certificates are used to verify client connections.
 
 :::important
 
@@ -230,7 +230,7 @@ Alias: `ca`
 
 ### add
 
-The `tcld namespace accepted-client-ca add` command adds client CA certificates to a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace accepted-client-ca add` command adds client CA certificates to a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace accepted-client-ca add --ca-certificate <value>`
 
@@ -308,7 +308,7 @@ tcld namespace accepted-client-ca add --ca-certificate-file <path>
 
 ### list
 
-The `tcld namespace accepted-client-ca list` command lists the client CA certificates that are currently configured for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace accepted-client-ca list` command lists the client CA certificates that are currently configured for a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace accepted-client-ca list`
 
@@ -330,7 +330,7 @@ tcld namespace accepted-client-ca list --namespace <namespace_id>
 
 ### remove
 
-The `tcld namespace accepted-client-ca remove` command removes client CA certificates from a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace accepted-client-ca remove` command removes client CA certificates from a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace accepted-client-ca remove --ca-certificate <value>`
 
@@ -428,7 +428,7 @@ tcld namespace accepted-client-ca remove --ca-certificate-fingerprint <fingerpri
 
 ### set
 
-The `tcld namespace accepted-client-ca set` command sets the client CA certificates for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace accepted-client-ca set` command sets the client CA certificates for a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace accepted-client-ca set --ca-certificate <value>`
 
@@ -535,7 +535,7 @@ tcld namespace accepted-client-ca set --ca-certificate-file <path>
 
 ## certificate-filters
 
-The `tcld namespace certificate-filters` commands manage optional certificate filters for the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud. The Namespace can use certificate filters to authorize client certificates based on distinguished name (DN) fields.
+The `tcld namespace certificate-filters` commands manage optional certificate filters for the specified <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud. The Namespace can use certificate filters to authorize client certificates based on distinguished name (DN) fields.
 
 Alias: `cf`
 
@@ -545,7 +545,7 @@ Alias: `cf`
 
 ### clear
 
-The `tcld namespace certificate-filters clear` command clears all certificate filters from a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace certificate-filters clear` command clears all certificate filters from a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 :::caution
 
@@ -595,7 +595,7 @@ tcld namespace certificate-filters clear --resource-version <etag>
 
 ### export
 
-The `tcld namespace certificate-filters export` command exports existing certificate filters from a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace certificate-filters export` command exports existing certificate filters from a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace certificate-filters export --certificate-filter-file <path>`
 
@@ -653,7 +653,7 @@ tcld namespace certificate-filters import --resource-version <etag> --certificat
 
 ### import
 
-The `tcld namespace certificate-filters import` command sets certificate filters for a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace certificate-filters import` command sets certificate filters for a <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace certificate-filters import --certificate-filter-file <path>`
 
@@ -738,7 +738,7 @@ tcld namespace certificate-filters import --resource-version <etag> --certificat
 
 ## search-attributes
 
-The `tcld namespace search-attributes` commands manage <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> of the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace search-attributes` commands manage <a class="tdlp" href="/concepts/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#search-attribute">Learn more</a></span></span></a> of the specified <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
 
 Alias: `sa`
 
@@ -747,7 +747,7 @@ Alias: `sa`
 
 ### add
 
-The `tcld namespace search-attributes add` command adds custom <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to a Namespace in Temporal Cloud.
+The `tcld namespace search-attributes add` command adds custom <a class="tdlp" href="/concepts/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#search-attribute">Learn more</a></span></span></a> to a Namespace in Temporal Cloud.
 
 `tcld namespace search-attributes add --search-attribute <value>`
 
@@ -814,7 +814,7 @@ tcld namespace search-attributes add --search-attribute "YourSearchAttribute1=Te
 
 ### rename
 
-The `tcld namespace search-attributes rename` command renames a custom <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> in Temporal Cloud.
+The `tcld namespace search-attributes rename` command renames a custom <a class="tdlp" href="/concepts/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/visibility#search-attribute">Learn more</a></span></span></a> in Temporal Cloud.
 
 `tcld namespace search-attributes rename --existing-name <value> --new-name <value>`
 
@@ -946,3 +946,4 @@ Alias: `--rd`
 ```bash
 tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
 ```
+

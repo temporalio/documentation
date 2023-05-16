@@ -1,7 +1,7 @@
 ---
 id: index
 title: tcld command reference
-sidebar_label: tcld CLI
+sidebar_label: CLI (tcld)
 description: How to use Temporal Cloud's tcld operational tool
 toc_max_heading_level: 4
 ---
@@ -73,3 +73,4 @@ brew install temporalio/brew/tcld
    ```bash
    tcld version
    ```
+

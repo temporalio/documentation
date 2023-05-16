@@ -17,7 +17,7 @@ Environment (or 'env') commands allow the user to configure the properties for t
 
 The `temporal env get` command prints the environmental properties for the environment in use.
 
-For example, passing the 'local' <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> returns the name, address, and certificate paths for the local environment.
+For example, passing the 'local' <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> returns the name, address, and certificate paths for the local environment.
 `temporal env get local`
 `Output: tls-cert-path  /home/my-user/certs/cluster.cert tls-key-path   /home/my-user/certs/cluster.key address        127.0.0.1:7233 namespace      accounting`
 
@@ -64,7 +64,7 @@ Use the options listed below to change the command's behavior.
 
 The `temporal env delete` command deletes a given environment or environmental property.
 
-Deleting a given environment (such as 'local') and its saved values is achieved by passing a valid <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> name.
+Deleting a given environment (such as 'local') and its saved values is achieved by passing a valid <a class="tdlp" href="/concepts/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/namespaces#">Learn more</a></span></span></a> name.
 
 `temporal env delete local`
 

@@ -1,9 +1,11 @@
 {
   "file_name": "visibility.md",
   "id": "visibility",
-  "file_dir": "/",
+  "slug": "/visibility",
+  "file_dir": "concepts",
   "title": "Visibility",
   "sidebar_label": "Visibility",
+  "sidebar_position": 7,
   "description": "This guide provides a comprehensive overview of Temporal Visibility.",
   "use_description": true,
   "toc_max_heading_level": 4,

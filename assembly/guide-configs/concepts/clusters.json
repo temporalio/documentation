@@ -1,9 +1,11 @@
 {
   "file_name": "clusters.md",
   "id": "clusters",
-  "file_dir": "/",
+  "slug": "/clusters",
+  "file_dir": "concepts",
   "title": "Clusters",
   "sidebar_label": "Clusters",
+  "sidebar_position": 8,
   "description": "This guide provides a comprehensive overview of Temporal Clusters.",
   "use_description": true,
   "toc_max_heading_level": 4,

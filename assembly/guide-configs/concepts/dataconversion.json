@@ -1,54 +1,55 @@
 {
-    "file_name": "dataconversion.md",
-    "id": "dataconversion",
-    "file_dir": "/",
-    "title": "Data conversion",
-    "sidebar_label": "Data conversion",
-    "description": "This guide provides an overview of data handling using a Data Converter on the Temporal Platform.",
-    "use_description": true,
-    "toc_max_heading_level": 4,
-    "add_tabs_support": false,
-    "sections": [
-      {
-        "type": "p",
-        "id": "concepts/what-is-a-data-converter"
-      },
-      {
-        "type": "h3",
-        "id": "concepts/what-is-a-payload"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-default-data-converter"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-custom-data-converter"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-payload-converter"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-failure-converter"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-payload-codec"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-remote-data-encoding"
-      },
-      {
-        "type": "h2",
-        "id": "concepts/what-is-a-codec-server"
-      },
-      {
-        "type": "h3",
-        "id": "prod-readiness-context/how-to-set-up-codec-server"
-      }
-    ]
-  }
-  
+  "file_name": "dataconversion.md",
+  "id": "dataconversion",
+  "slug": "/dataconversion",
+  "file_dir": "concepts",
+  "title": "Data conversion",
+  "sidebar_label": "Data conversion",
+  "sidebar_position": 10,
+  "description": "This guide provides an overview of data handling using a Data Converter on the Temporal Platform.",
+  "use_description": true,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "concepts/what-is-a-data-converter"
+    },
+    {
+      "type": "h3",
+      "id": "concepts/what-is-a-payload"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-default-data-converter"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-custom-data-converter"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-payload-converter"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-failure-converter"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-payload-codec"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-remote-data-encoding"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-codec-server"
+    },
+    {
+      "type": "h3",
+      "id": "prod-readiness-context/how-to-set-up-codec-server"
+    }
+  ]
+}

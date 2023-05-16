@@ -1,0 +1,203 @@
+{
+  "file_name": "foundations.md",
+  "id": "foundations",
+  "slug": "/dev-guide/go/foundations",
+  "file_dir": "dev-guide/golang",
+  "title": "Go SDK developer's guide - Foundations",
+  "sidebar_label": "Foundations",
+  "sidebar_position": 1,
+  "description": "The Foundations section of the Temporal Go SDK Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application in Go – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": true,
+  "sections": [
+    {
+      "type": "p",
+      "id": "go/foundations"
+    },
+    {
+      "type": "h2",
+      "id": "clusters/how-to-install-temporal-cli"
+    },
+    {
+      "type": "h2",
+      "id": "go/add-sdk"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-use-the-go-sdk"
+    },
+    {
+      "type": "h3",
+      "id": "go/api-reference"
+    },
+    {
+      "type": "p",
+      "id": "go/api-reference-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/code-samples"
+    },
+    {
+      "type": "p",
+      "id": "go/code-samples-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/connect-to-a-dev-cluster"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-connect-to-a-development-cluster-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/connect-to-temporal-cloud"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-connect-to-temporal-cloud-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/developing-workflows"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-develop-a-workflow-definition-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/workflow-parameters"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-define-workflow-parameters-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/workflow-return-values"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-define-workflow-return-values-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/workflow-type"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-customize-workflow-type-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/workflow-logic-requirements"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-handle-workflow-logic-requirements-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/how-to-develop-an-activity-definition-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/activity-parameters"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-define-activity-parameters-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/activity-return-values"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-define-activity-return-values-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/activity-type"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-customize-activity-type-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/spawning-activities"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-spawn-an-activity-execution-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/required-activity-timeout"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-set-activity-timeouts-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/get-activity-results"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-get-the-result-of-an-activity-execution-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/how-to-develop-a-worker-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/run-a-temporal-cloud-worker"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-run-a-temporal-cloud-worker-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/registering-types"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-register-types-with-a-worker-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/spawning-workflows"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-spawn-a-workflow-execution-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/set-task-queue"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-set-a-workflow-task-queue-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-set-a-workflow-id-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/get-workflow-results"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-get-the-result-of-a-workflow-execution-in-go"
+    }
+  ]
+}

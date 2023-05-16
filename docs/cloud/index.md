@@ -24,6 +24,46 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)
 - [Temporal Cloud release notes](/cloud/release-notes)
 
+## Action
+
+An Action is the fundamental pricing unit in <a class="tdlp" href="#">Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Temporal Cloud?</span><br /><br /><span class="tdlppd">Temporal Cloud is a managed, hosted Temporal environment that provides a platform for Temporal Applications.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a>.
+
+The following operations result in Actions, which are billed monthly.
+
+**Workflows**
+
+- **Workflow started.**
+  Occurs via client start, client Signal-With-Start, <a class="tdlp" href="/concepts/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#continue-as-new">Learn more</a></span></span></a>, or <a class="tdlp" href="/concepts/workflows#child-workflow">Child Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#child-workflow">Learn more</a></span></span></a> start.
+  If a Workflow start fails, an Action is not recorded.
+- **Workflow reset.**
+  Occurs when a <a class="tdlp" href="/concepts/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#">Learn more</a></span></span></a> is reset.
+  (Actions that occur before a <a class="tdlp" href="/concepts/workflows#reset">Reset<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Reset?</span><br /><br /><span class="tdlppd">A Reset terminates a Workflow Execution, removes the progress in the Event History up to the reset point, and then creates a new Workflow Execution with the same Workflow Type and Id to continue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#reset">Learn more</a></span></span></a> are counted even if they are no longer visible in <a class="tdlp" href="/concepts/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#event-history">Learn more</a></span></span></a>.)
+- **Timer started.**
+  Includes implicit Timers that are started by a Temporal SDK when timeouts are set, such as `AwaitWithTimeout` in Go or `condition` in TypeScript.
+- **Search Attribute upsert requested.**
+  Occurs after a Workflow starts and invokes `UpsertSearchAttributes`.
+- **Signal sent.**
+  Includes sending a <a class="tdlp" href="/concepts/workflows#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#signal">Learn more</a></span></span></a> from a client or from within a Workflow to another Workflow.
+- **Query received.** <a class="tdlp" href="/concepts/workflows#query">Queries<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Query?</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#query">Learn more</a></span></span></a> aren't recorded in Event History.
+  An operation such as viewing the stack trace in the Temporal Cloud UI results in a Query.
+- **Version marker recorded.**
+  Occurs when a Workflow calls `get-version` or `patch`.
+- **Side Effect recorded.**
+  For a mutable <a class="tdlp" href="/concepts/workflows#side-effect">Side Effect<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Side Effect?</span><br /><br /><span class="tdlppd">A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/workflows#side-effect">Learn more</a></span></span></a>, an Action occurs only when the value changes.
+  (Be aware that some SDKs don't support Side Effects.)
+
+**Activities**
+
+- **Activity started or retried.**
+  Occurs each time an Activity is started or retried.
+- **Local Activity started.**
+  Occurs each time a <a class="tdlp" href="/concepts/activities#local-activity">Local Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/activities#local-activity">Learn more</a></span></span></a> is started.
+- **Activity Heartbeat recorded.**
+  A Heartbeat call from Activity code counts as an Action only if it reaches the <a class="tdlp" href="/concepts/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/clusters#temporal-server">Learn more</a></span></span></a>.
+  Temporal SDKs throttle <a class="tdlp" href="/concepts/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/activities#activity-heartbeat">Learn more</a></span></span></a>.
+  The default throttle is 80% of the <a class="tdlp" href="/concepts/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/concepts/activities#heartbeat-timeout">Learn more</a></span></span></a>.
+  Heartbeats don't apply to Local Activities.
+
 ## Temporal Cloud Account Id
 
 A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
@@ -75,3 +115,4 @@ For a Namespace, a user can have one of the following permissions:
 - **Namespace Admin:** Can create and edit Namespaces; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace
+
