@@ -1,18 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 16 2023 10:18:33 AM -0600
+Last assembled: Tuesday May 16 2023 15:11:44 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
 75 guide configurations found.
 
-1433 information nodes found.
+1434 information nodes found.
 
-1175 information nodes are attached to guides.
+1177 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -79,8 +79,6 @@ concepts/what-is-a-workflow-type -> /workflows#workflow-type
 concepts/what-is-a-run-id -> /workflows#run-id
 
 concepts/what-is-a-task-queue -> /tasks#task-queue
-
-concepts/what-is-a-state-transition -> /workflows#state-transition
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -270,6 +268,8 @@ cloud/tcld/how-to-install-tcld -> #install-tcld
 
 cloud/tcld/login -> /cloud/tcld/login#
 
+cloud/tcld/logout -> /cloud/tcld/logout#
+
 cloud/tcld/version -> /cloud/tcld/version#
 
 cloud/tcld/namespace/create -> #create
@@ -278,11 +278,15 @@ cloud/tcld/namespace/delete -> #delete
 
 cloud/tcld/namespace/get -> #get
 
+cloud/tcld/namespace/list -> #list
+
 cloud/tcld/namespace/accepted-client-ca/index -> #accepted-client-ca
 
 cloud/tcld/namespace/certificate-filters/index -> #certificate-filters
 
 cloud/tcld/namespace/search-attributes/index -> #search-attributes
+
+cloud/tcld/namespace/retention/index -> #retention
 
 cloud/tcld/namespace/accepted-client-ca/add -> #add
 
@@ -432,9 +436,13 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
+cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
+
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
-app-dev-context/custom-payload-conversion -> /application-development/features#custom-payload-conversion
+go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
+
+java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
 
 prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
@@ -890,10 +898,14 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
+concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
+
 java/metrics -> /dev-guide/java/observability#metrics
 
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
+
+concepts/what-is-a-state-transition -> /workflows#state-transition
 
 

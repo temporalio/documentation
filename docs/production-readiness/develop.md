@@ -322,7 +322,7 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 ## Codec Server setup
 
-Use a Codec Server to decrypt your encoded <a class="tdlp" href="/dataconversion#payload">payloads<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload">Learn more</a></span></span></a> and integrate it with the Temporal Web UI and CLI commands when debugging your Workflows.
+Use a Codec Server to decode your encoded <a class="tdlp" href="/dataconversion#payload">payloads<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload">Learn more</a></span></span></a> and integrate it with the Temporal Web UI and CLI commands when debugging your Workflows.
 
 A Codec Server is an HTTP or HTTPS Server that you create and host.
 It must be configured to use a <a class="tdlp" href="/dataconversion#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> with the required decode logic and encryption keys.
@@ -347,7 +347,7 @@ To create a Codec Server, you need the following components:
   You can use the Payload Codec that you applied with your Data Converter to encode your Payloads and configure it with your Codec Server.
   However, if you are writing your Codec Server in a different SDK from the one that applies the Data Converter, ensure that your logic and keys are correctly replicated.
 - Key management infrastructure or plan for sharing your encryption keys between the Workers and your Codec Server.
-- [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration on the HTTP router in your Codec Server for sending and receiving requests from the Temporal Web UI.
+- [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration on the HTTP endpoints in your Codec Server for sending and receiving requests from the Temporal Web UI.
 
 For examples on how to create your Codec Server, see following Codec Server implementation samples:
 
@@ -391,8 +391,7 @@ The following example shows a sample `POST` request body with base64 encoding.
 {
   "payloads": [{
     "metadata": {
-      "encoding": <base64EncodedEncodingHint>,
-      "messageType": <base64EncodedMessageTypeName>
+      "encoding": <base64EncodedEncodingHint>
     },
     "data": <encryptedPayloadData>
   }, ...]
@@ -421,7 +420,7 @@ For details on setting up authorization, see [Authorization](#authorization).
 
 #### Authorization
 
-To enable authorization, your Codec Server must be an HTTPS Server.
+To enable authorization from the Web UI, your Codec Server must be an HTTPS Server.
 
 **Temporal Cloud**
 
@@ -477,15 +476,17 @@ Authorization: Bearer <token>
 
 200 OK
 Content-Type: application/json
+
 {
   "payloads": [{
     "metadata":{
-"encoding": "json/protobuf",
-"messageType": "temporal_shop.orchestrations.v1.StartShoppingCartRequest"
-    },"data":{
-"cartId":"example-cart",
-"shopperId":"your-shopper-id-example",
-"email":"your-email@domain.com"
+      "encoding": "json/protobuf",
+      "messageType": "temporal_shop.orchestrations.v1.StartShoppingCartRequest"
+    },
+    "data":{
+      "cartId":"example-cart",
+      "shopperId":"your-shopper-id-example",
+      "email":"your-email@domain.com"
     }}]
 }
 ```
