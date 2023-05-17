@@ -478,7 +478,7 @@ Supported values are:
     - `QueryWorkflow`
       See [SDK documentation](/dev-guide/) for details.
   - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
-- `toDC`:
+- `toDC`: <!--Need info here.-->
 
 Example":
 
