@@ -72,13 +72,11 @@ continued workflow should start using the latest default version of the Task Que
 
 ### How to use Worker Versioning
 
-To use this feature, follow these steps:
+To use this feature, you'll need to:
 
 1. Define Worker build-identifier version sets for the Task Queue.
    You can use either the `temporal` CLI or your choice of SDK.
-   **_TODO: Links_**
 2. Enable the feature on your Worker by specifying a build identifier.
-   **_TODO: Links for each SDK's Worker options_**
 
 #### Defining the version sets
 
