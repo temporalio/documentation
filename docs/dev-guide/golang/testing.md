@@ -48,6 +48,8 @@ If an Activity is supposed to react to a Cancellation, you can test whether it r
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -162,3 +164,4 @@ If a noticeably different code path was followed or some code caused a deadlock,
 Replaying a Workflow Execution locally is a good way to see exactly what code path was taken for given input and events.
 
 You can replay many Event Histories by registering all the needed Workflow implementation and then calling `ReplayWorkflowHistory` repeatedly.
+
