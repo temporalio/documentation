@@ -946,4 +946,3 @@ Alias: `--rd`
 ```bash
 tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
 ```
-

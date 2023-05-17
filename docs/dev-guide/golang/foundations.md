@@ -1124,4 +1124,3 @@ func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
 
 This will work even if one of the cron Workflow Runs fails.
 The next Workflow Run gets the result of the last successfully Completed Workflow Run.
-
