@@ -45,7 +45,7 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
-- [Search Attributes limits](/visibility/#custom-search-attributes-limits)
+- [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
 
 ## Default limits for Temporal Cloud
 
