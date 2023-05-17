@@ -17,9 +17,10 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -30,3 +31,4 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+

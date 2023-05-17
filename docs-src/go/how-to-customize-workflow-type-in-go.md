@@ -9,9 +9,10 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a [Worker](/go/how-to-develop-a-worker-in-go).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
+
 package main
 
 import (
@@ -36,4 +37,6 @@ func main() {
 	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
 // ...
 }
+
 ```
+

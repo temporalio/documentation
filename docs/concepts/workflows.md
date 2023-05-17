@@ -783,7 +783,6 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 ## Schedule
 
 :::tip Support, stability, and dependency info
-
 - Introduced in Temporal Server version 1.17.0
 - Available in tctl v1.17 and Temporal CLI
 - Available in Temporal Cloud via tctl and CLI
@@ -974,3 +973,4 @@ If you're using Standard Visibility, they are visible, though there's no need to
 Native support for Schedules in language SDKs is coming soon.
 For now, `tctl` and the web UI are the main interfaces to Schedules.
 For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
+

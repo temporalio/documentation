@@ -92,7 +92,7 @@ Note that these APIs and tctl commands will not work with Temporal Cloud.
 - Deprecate a Namespace: The Deprecate Namespace updates the state of a registered Namespace to "DEPRECATED". Once a Namespace is deprecated, you cannot start new Workflow Executions on it. All existing and running Workflow Executions on a deprecated Namespace will continue to run.
 
 - Delete a Namespace: Deletes a Namespace and all Workflow Executions on the Namespace. Note that this API is supported for Temporal Server version 1.17 and later.
-- With tctl: <a class="tdlp" href="/cli/operator#delete"> `tctl namespace delete`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal operator namespace delete</span><br /><br /><span class="tdlppd">Deletes an existing Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/operator#delete">Learn more</a></span></span></a>.
+- With tctl: <a class="tdlp" href="/cli/operator#delete">`tctl namespace delete`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal operator namespace delete</span><br /><br /><span class="tdlppd">Deletes an existing Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/operator#delete">Learn more</a></span></span></a>.
 - Use the DeleteNamespace API to delete a registered Namespaces. All the running Workflow Executions on a deleted Namespace are also deleted.
 
 ### Setting
@@ -127,3 +127,4 @@ Worker Processes on the standby Clusters are idle until a failover occurs and th
 
 Temporal Application API calls made to a non-active Cluster are rejected with a **NamespaceNotActiveError** which contains the name of the current active Cluster.
 It is the responsibility of the Temporal Application to call the Cluster that is currently active.
+

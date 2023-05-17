@@ -181,7 +181,8 @@ Use the `connect()` method on the Client class to create and connect to a Tempor
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -198,6 +199,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 
 ## Connect to Temporal Cloud
 
@@ -218,9 +220,10 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py">View source code</a>
 
 ```python
+
 from temporalio.client import Client, TLSConfig
-# . . .
-# . . .
+# ...
+# ...
 async def main():
     with open("client-cert.pem", "rb") as f:
         client_cert = f.read()
@@ -238,6 +241,7 @@ async def main():
     )
 ```
 
+
 ## Develop Workflows
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
@@ -251,9 +255,10 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -264,6 +269,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+
 
 ### Workflow parameters
 
@@ -278,14 +284,16 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">View source code</a>
 
 ```python
+
 from dataclasses import dataclass
-# . . .
-# . . .
+# ...
+# ...
 @dataclass
 class YourParams:
     greeting: str
     name: str
 ```
+
 
 ### Workflow return values
 
@@ -300,9 +308,10 @@ To return the results of a Workflow Execution, use either `start_workflow()` or 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -313,6 +322,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+
 
 ### Workflow Type
 
@@ -325,9 +335,10 @@ You can customize the Workflow name with a custom name in the decorator argument
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -338,6 +349,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+
 
 ### Workflow logic requirements
 
@@ -369,13 +381,15 @@ Register the function as an Activity with a custom name through a decorator argu
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import activity
-# . . .
-# . . .
+# ...
+# ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
+
 
 ### Activity parameters
 
@@ -401,15 +415,17 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import activity
 
 from your_dataobject_dacx import YourParams
-# . . .
-# . . .
+# ...
+# ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
+
 
 ### Activity return values
 
@@ -424,11 +440,13 @@ The following example defines an Activity that takes a string as input and retur
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
+
 
 ### Activity Type
 
@@ -441,11 +459,13 @@ If the name parameter is not specified, the Activity name defaults to the functi
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_activities_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"
 ```
+
 
 ## Activity Execution
 
@@ -475,9 +495,10 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -488,6 +509,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+
 
 ### Required timeout
 
@@ -531,9 +553,10 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
@@ -544,6 +567,7 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
+
 
 ## Run a dev Worker
 
@@ -567,10 +591,11 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">View source code</a>
 
 ```python
+
 from temporalio.client import Client
 from temporalio.worker import Worker
-# . . .
-# . . .
+# ...
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     worker = Worker(
@@ -585,6 +610,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 
 ### Register types
 
@@ -598,7 +624,8 @@ When a `Worker` is created, it accepts a list of Workflows in the `workflows` pa
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     worker = Worker(
@@ -613,6 +640,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 
 ## Start Workflow Execution
 
@@ -631,7 +659,8 @@ To start a Workflow Execution in Python, use either the [`start_workflow()`](htt
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -648,6 +677,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 
 ### Set Task Queue
 
@@ -660,7 +690,8 @@ To set a Task Queue in Python, specify the `task_queue` argument when executing 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -677,6 +708,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 
 ### Workflow Id
 
@@ -689,7 +721,8 @@ The `id` argument should be a unique identifier for the Workflow Execution.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -706,6 +739,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
 
 ### Get Workflow results
 
@@ -728,7 +762,8 @@ If the Workflow does not exist, this call fails.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/get_workflow_results_dacx.py">View source code</a>
 
 ```python
-# . . .
+
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -742,3 +777,5 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+
