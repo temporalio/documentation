@@ -71,8 +71,8 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
 This would add `deadbeef` to the existing compatible set containing `some-existing-build-id`, and
 would mark it as the new default ID for that set.
 
-
 You can also promote an existing Build ID in a set to be the default for that set:
+
 ```go
 // ...
 err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
@@ -85,6 +85,7 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
 
 As well as promote an entire set to become the default set for the queue (thus new workflows will
 start using that set's default):
+
 ```go
 // ...
 err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdCompatibilityOptions{
@@ -95,13 +96,12 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
 })
 ```
 
-
 ## Specifying what version Activities, Child Workflows, and Continue as New should use
 
 Activities, Child Workflows, and Continue as New will all, by default, use same compatible version
 set as the workflow that invoked them if they are also using the same task queue. If you instead
 want them to run using the latest default version, these commands' options all have a
-`UseLatestBuildId` boolean field which can be set true for this purpose. Refer to the 
+`UseLatestBuildId` boolean field which can be set true for this purpose. Refer to the
 [conceptual documentation](/concepts/what-is-worker-versioning) for more information.
 
 For example, if you wanted to use the latest default version for an Activity, you would do this
