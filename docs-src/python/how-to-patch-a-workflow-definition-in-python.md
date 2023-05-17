@@ -5,11 +5,9 @@ sidebar_label: Patch a Workflow Definition
 description: Set the patched() function on the Workflow.
 ---
 
-
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/version_your_workflows/workflow_2_patched_dacx.py">View source code</a>
 
 ```python
-
 from temporalio import workflow
 # ...
 @workflow.defn
@@ -22,4 +20,3 @@ class MyWorkflow:
                 schedule_to_close_timeout=timedelta(minutes=5),
             )
 ```
-

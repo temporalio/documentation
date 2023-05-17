@@ -10,7 +10,6 @@ You can customize the Workflow name with a custom name in the decorator argument
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_workflows_dacx.py">View source code</a>
 
 ```python
-
 from temporalio import workflow
 # ...
 # ...
@@ -24,4 +23,3 @@ class YourWorkflow:
             start_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

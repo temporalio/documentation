@@ -13,7 +13,6 @@ Use `Update()` on the ScheduleHandle to modify a Schedule.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/update/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 	updateSchedule := func(input client.ScheduleUpdateInput) (*client.ScheduleUpdate, error) {
@@ -28,4 +27,3 @@ func main() {
 }
 // ...
 ```
-

@@ -22,7 +22,6 @@ All Workflow Definition parameters must be serializable and can't be channels, f
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -43,4 +42,3 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 // ...
 }
 ```
-

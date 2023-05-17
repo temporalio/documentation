@@ -12,7 +12,6 @@ To return information on all Schedules, use `ScheduleClient.List()`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/list/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 	// list schedules
@@ -23,4 +22,3 @@ func main() {
 }
 // ...
 ```
-

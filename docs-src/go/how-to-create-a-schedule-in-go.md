@@ -14,7 +14,6 @@ Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-sch
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/create/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
     // Create Schedule and Workflow IDs
@@ -31,6 +30,4 @@ func main() {
 		},
 	})
 // ...
-
 ```
-

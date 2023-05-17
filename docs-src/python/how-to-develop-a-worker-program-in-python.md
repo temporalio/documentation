@@ -12,7 +12,6 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_worker_dacx.py">View source code</a>
 
 ```python
-
 from temporalio.client import Client
 from temporalio.worker import Worker
 # ...
@@ -31,4 +30,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-

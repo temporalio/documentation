@@ -14,7 +14,6 @@ Specify the start and end times to execute the Workflow, along with the overlap 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/backfill/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 		Backfill: []client.ScheduleBackfill{
@@ -32,6 +31,4 @@ func main() {
 	})
 		
 // ...
-
 ```
-

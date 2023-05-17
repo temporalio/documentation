@@ -783,6 +783,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 ## Schedule
 
 :::tip Support, stability, and dependency info
+
 - Introduced in Temporal Server version 1.17.0
 - Available in tctl v1.17 and Temporal CLI
 - Available in Temporal Cloud via tctl and CLI

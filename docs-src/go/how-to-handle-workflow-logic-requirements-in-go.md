@@ -29,6 +29,4 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 ```
-

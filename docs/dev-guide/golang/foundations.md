@@ -201,7 +201,6 @@ If you don't set a custom Namespace name in the Namespace field, the client conn
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/gateway/main_dacx.go">View source code</a>
 
 ```go
-
 package main
 
 import (
@@ -230,7 +229,6 @@ func main() {
 }
 ```
 
-
 ## Connect to Temporal Cloud
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
@@ -244,11 +242,12 @@ For more information about managing and generating client certificates for Tempo
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 To connect to and run Workflows through Temporal Cloud, you need the following:
+
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
+  See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
 - Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
-This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
@@ -257,7 +256,6 @@ For more information about configuring TLS to secure inter- and intra-network co
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/client/main_dacx.go">View source code</a>
 
 ```go
-
 package main
 
 import (
@@ -301,7 +299,6 @@ func main() {
 }
 ```
 
-
 ## Develop Workflows
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
@@ -312,7 +309,6 @@ Below is an example of a basic Workflow Definition.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -328,7 +324,6 @@ func YourSimpleWorkflowDefinition(ctx workflow.Context) error {
 	return nil
 }
 ```
-
 
 ### Workflow parameters
 
@@ -353,7 +348,6 @@ All Workflow Definition parameters must be serializable and can't be channels, f
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -375,7 +369,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 }
 ```
 
-
 ### Workflow return values
 
 Workflow return values must also be serializable.
@@ -392,7 +385,6 @@ Returning a non-nil `error` from a Workflow indicates that an error was encounte
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -421,9 +413,7 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 	}
 	return workflowResult, nil
 }
-
 ```
-
 
 ### Workflow Type
 
@@ -438,7 +428,6 @@ To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
-
 package main
 
 import (
@@ -463,9 +452,7 @@ func main() {
 	yourWorker.RegisterWorkflowWithOptions(yourapp.YourSimpleWorkflowDefinition, registerWFOptions)
 // ...
 }
-
 ```
-
 
 ### Workflow logic requirements
 
@@ -497,9 +484,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 ```
-
 
 ## Activity Definition
 
@@ -518,7 +503,6 @@ Because this is such a common need, the rest of this guide shows Activities writ
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -545,9 +529,7 @@ type YourActivityObject struct {
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
-
 ```
-
 
 ### Activity parameters
 
@@ -575,8 +557,6 @@ However, all parameters must be serializable (parameters can’t be channels, fu
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
-
-
 // YourActivityParam is the struct passed to your Activity.
 // Use a struct so that your function signature remains compatible if fields change.
 type YourActivityParam struct {
@@ -588,7 +568,6 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 // ...
 }
 ```
-
 
 ### Activity return values
 
@@ -602,8 +581,6 @@ You may wish to use a `struct` type to hold all custom values, just keep in mind
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
-
-
 // YourActivityResultObject is the struct returned from your Activity.
 // Use a struct so that you can return multiple values of different types.
 // Additionally, your function signature remains compatible if the fields change.
@@ -624,17 +601,14 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 }
 ```
 
-
 ### Activity Type
 
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
 
-
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 	yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
@@ -649,7 +623,6 @@ func main() {
 // ...
 }
 ```
-
 
 ## Activity Execution
 
@@ -670,14 +643,13 @@ Otherwise, no additional limitations exist on Activity implementations.
 To spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>, call [`ExecuteActivity()`](https://pkg.go.dev/go.temporal.io/workflow#ExecuteActivity) inside your Workflow Definition.
 The API is available from the [`go.temporal.io/sdk/workflow`](https://pkg.go.dev/go.temporal.io/workflow) package.
 The `ExecuteActivity()` API call requires an instance of `workflow.Context`, the Activity function name, and any variables to be passed to the Activity Execution.
-	The Activity function name can be provided as a variable object (no quotations) or as a string.
-    The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
-    The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
+The Activity function name can be provided as a variable object (no quotations) or as a string.
+The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
+The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
-
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
 	// Set the options for the Activity Execution.
 	// Either StartToClose Timeout OR ScheduleToClose is required.
@@ -701,7 +673,6 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*You
 // ...
 }
 ```
-
 
 ### Required timeout
 
@@ -804,11 +775,9 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
-
 package main
 
 import (
@@ -857,7 +826,6 @@ func main() {
 // ...
 ```
 
-
 ## Run a Temporal Cloud Worker
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
@@ -871,11 +839,12 @@ For more information about managing and generating client certificates for Tempo
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 To run a Worker that talks to Temporal Cloud, you need the following:
+
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
+  See <a class="tdlp" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements">Learn more</a></span></span></a>.
 - Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
-This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
-Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
+  This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
+  Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
 For more information about managing and generating client certificates for Temporal Cloud, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud.md).
 
@@ -884,7 +853,6 @@ For more information about configuring TLS to secure inter- and intra-network co
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/worker/main_dacx.go">View source code</a>
 
 ```go
-
 package main
 
 import (
@@ -928,7 +896,6 @@ func main() {
 // ...
 }
 ```
-
 
 ### Register types
 
@@ -1157,4 +1124,3 @@ func YourCronWorkflowDefinition(ctx workflow.Context) (CronResult, error) {
 
 This will work even if one of the cron Workflow Runs fails.
 The next Workflow Run gets the result of the last successfully Completed Workflow Run.
-

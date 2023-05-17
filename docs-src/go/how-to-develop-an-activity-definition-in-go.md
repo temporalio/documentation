@@ -20,7 +20,6 @@ Because this is such a common need, the rest of this guide shows Activities writ
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
-
 package yourapp
 
 import (
@@ -47,6 +46,4 @@ type YourActivityObject struct {
 func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param YourActivityParam) (*YourActivityResultObject, error) {
 // ...
 }
-
 ```
-

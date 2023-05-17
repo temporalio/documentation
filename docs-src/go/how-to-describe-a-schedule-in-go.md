@@ -13,7 +13,6 @@ To describe a Schedule, use `Describe()` on the ScheduleHandle.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/describe/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 	// describe schedule
@@ -21,4 +20,3 @@ func main() {
 }
 // ...
 ```
-

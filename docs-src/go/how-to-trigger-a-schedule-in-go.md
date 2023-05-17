@@ -13,7 +13,6 @@ To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/trigger/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 	// Create a Schedule to trigger
@@ -35,4 +34,3 @@ func main() {
 }
 // ...
 ```
-

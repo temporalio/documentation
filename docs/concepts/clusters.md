@@ -129,8 +129,8 @@ When implemented, the `frontend` invokes the plugin before executing the request
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
 
-- <a class="tdlp" href="/security#claim-mapper">`ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
-- <a class="tdlp" href="/security#authorizer-plugin">`Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
+- <a class="tdlp" href="/security#claim-mapper"> `ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
+- <a class="tdlp" href="/security#authorizer-plugin"> `Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
 
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the frontend invokes the implementation of the plugins before running the requested operation.
@@ -718,4 +718,3 @@ T = 2: task A is loaded.
 
 At this time, due to the rebuild of a Workflow Execution's mutable state (conflict resolution), Task A is no longer relevant (Task A's corresponding Event belongs to non-current branch).
 Task processing logic will verify both the Event Id and version of the Task against a corresponding Workflow Execution's mutable state, then discard task A.
-

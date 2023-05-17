@@ -16,7 +16,6 @@ To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/pause/main_dacx.go">View source code</a>
 
 ```go
-
 func main() {
 // ...
 	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
@@ -33,4 +32,3 @@ func main() {
 }
 // ...
 ```
-

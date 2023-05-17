@@ -11,11 +11,9 @@ If a schedule is added or deleted, it may not be available in the list immediate
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/list_schedule_dacx.py">View source code</a>
 
 ```python
-
 # ...
 async def main() -> None:
     client = await Client.connect("localhost:7233")
     async for schedule in await client.list_schedules():
         print(f"List Schedule Info: {schedule.info}.")
 ```
-

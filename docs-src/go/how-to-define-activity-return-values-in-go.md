@@ -11,8 +11,6 @@ You may wish to use a `struct` type to hold all custom values, just keep in mind
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
-
-
 // YourActivityResultObject is the struct returned from your Activity.
 // Use a struct so that you can return multiple values of different types.
 // Additionally, your function signature remains compatible if the fields change.
@@ -32,4 +30,3 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 	return result, nil
 }
 ```
-
