@@ -62,7 +62,7 @@ The top of the page lists the following execution metadata:
 - Start Time and Close Time
 - <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>
 - Parent and Parent ID
-- State Transitions
+- <a class="tdlp" href="/workflows#state-transition">State Transitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a State Transition?</span><br /><br /><span class="tdlppd">A State Transition is a unit of progress by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#state-transition">Learn more</a></span></span></a>
 
 The Input and Results section displays the function arguments and return values for debugging purposes.
 Results are not available until the Workflow finishes.
