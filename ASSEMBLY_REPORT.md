@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 16 2023 12:49:39 PM -0700
+Last assembled: Wednesday May 17 2023 14:47:58 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
 75 guide configurations found.
 
-1436 information nodes found.
+1437 information nodes found.
 
-1178 information nodes are attached to guides.
+1179 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -429,6 +429,8 @@ concepts/what-is-a-reset -> /workflows#reset
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+concepts/what-is-persistence -> #persistence
 
 concepts/what-is-a-history-shard -> #history-shard
 

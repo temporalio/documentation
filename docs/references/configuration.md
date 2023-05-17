@@ -18,9 +18,9 @@ Much of the behavior of a Temporal Cluster is configured using the `development.
 - [`services`](#services)
 - [`publicClient`](#publicclient)
 - [`archival`](#archival)
+- [`namespaceDefaults`](#namespacedefaults)
 - [`dcRedirectionPolicy`](#dcredirectionpolicy)
 - [`dynamicConfigClient`](#dynamicconfigclient)
-- [`namespaceDefaults`](#namespacedefaults)
 
 Changing any properties in the `development.yaml` file requires a process restart for changes to take effect.
 Configuration parsing code is available [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
@@ -364,7 +364,7 @@ _Required_
 
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
-- `grpcPort` is the port on which gRPC will listen.
+- `grpcPort` : Port on which gRPC will listen.
 - `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
   Each service should use different port.
   If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each cCluster should use different membershipPort.
@@ -388,3 +388,124 @@ publicClient:
 ```
 
 Use `dns:///` prefix to enable round-robin between IP address for DNS name.
+
+## archival
+
+_Optional_
+
+Archival is an optional configuration needed to set up the <a class="tdlp" href="/clusters#archival">Archival store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a>.
+It can be enabled on the `history` and `visibility`.
+
+The following list describes supported values for each configuration on the `history` and `visibility` data.
+
+- `state` : Supported values are `enabled`, `disabled` or `paused`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+- `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
+- `provider`: Location where data should be archived. Subprovider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. Default configuration specifies `filestore`.
+
+Example:
+
+```yaml
+# Cluster level Archival config
+archival:
+  # Event History configuration
+  history:
+    # Archival is enabled for the History service data
+    state: "enabled"
+    enableRead: true
+    # Namespaces can use either the local filestore provider or the Google Cloud provider
+    provider:
+      filestore:
+        fileMode: "0666"
+        dirMode: "0766"
+      gstorage:
+        credentialsPath: "/tmp/gcloud/keyfile.json"
+  # Configuration for archiving Visibility data.
+  visibility:
+    # Archival is enabled for Visibility data
+    state: "enabled"
+    enableRead: true
+    provider:
+      filestore:
+        fileMode: "0666"
+        dirMode: "0766":
+```
+
+For more details on Archival setup, see [Set up Archival](/cluster-deployment-guide#set-up-archival).
+
+## namespaceDefaults
+
+_Optional_
+
+Sets default Archival configuration for each Namespace using `namespaceDefaults` for `history` and `visibility` data.
+
+- `state`: Default state of the Archival for the Namespace. Supported values are `enabled` or `disabled`.
+- `URI`: Default URI for the Namespace.
+
+For more details on setting Namespace defaults on Archival, see [Namespace creation in Archival setup](/cluster-deployment-guide#namespace-creation)
+
+Example:
+
+```yaml
+# Default values for a Namespace if none are provided at creation
+namespaceDefaults:
+  # Archival defaults
+  archival:
+    # Event History defaults
+    history:
+      state: "enabled"
+      # New Namespaces will default to the local provider
+      URI: "file:///tmp/temporal_archival/development"
+    visibility:
+      state: "disabled"
+      URI: "file:///tmp/temporal_vis_archival/development"
+```
+
+## dcRedirectionPolicy
+
+_Required_
+
+Contains the Frontend datacenter API redirection policy.
+
+Supported values are:
+
+- `policy`: Supported values are `noop`, `selected-apis-forwarding`, `all-apis-forwarding`.
+  - `noop`: Not setting a value or setting `noop` means no redirection. This is the default value.
+  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace:
+    - `StartWorkflowExecution`
+    - `SignalWithStartWorkflowExecution`
+    - `SignalWorkflowExecution`
+    - `RequestCancelWorkflowExecution`
+    - `TerminateWorkflowExecution`
+    - `QueryWorkflow`
+      See [SDK documentation](/dev-guide/) for details.
+  - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
+- `toDC`:
+
+Example":
+
+```yaml
+#...
+dcRedirectionPolicy:
+  policy: "selected-apis-forwarding"
+  toDC: ""
+#...
+```
+
+## dynamicConfigClient
+
+_Optional_
+
+Configuration for setting up file-based <a class="tdlp" href="/clusters#dynamicconfiguration">dynamic configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dynamicconfiguration">Learn more</a></span></span></a> client for the Cluster.
+
+This setting is required if specifying dynamic configuration. Supported configuration values are:
+
+- `filepath`: Specifies the filepath where the dynamic configuration YAML file is store. The filepath should be relative to the root directory.
+- `PollInterval`: Interval (in seconds) between the file-based client polls to check for dynamic configuration updates.
+
+Example:
+
+```yaml
+dynamicConfigClient:
+  filepath: "config/dynamicconfig/development-cass.yaml"
+  pollInterval: "10s"
+```

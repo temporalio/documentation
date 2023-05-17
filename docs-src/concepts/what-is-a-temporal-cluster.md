@@ -2,13 +2,13 @@
 id: what-is-a-temporal-cluster
 title: What is a Temporal Cluster?
 sidebar_label: Temporal Cluster
-description: A Temporal Cluster is a group of Temporal Services with a Persistence store.
+description: A Temporal Cluster is a Temporal Server paired with a Persistence store.
 tags:
   - term
   - explanation
 ---
 
-A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with persistence stores, that together act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the [Temporal Server](/concepts/what-is-the-temporal-server), combined with [Persistence stores](/concepts/what-is-persistence), that together act as a component of the Temporal Platform.
 
 - [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
