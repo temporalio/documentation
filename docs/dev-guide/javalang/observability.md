@@ -227,3 +227,4 @@ The results of `upsertSearchAttributes()` output the following search attributes
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 
 To remove a Search Attribute, call the `upsertSearchAttributes()` method and set it to an empty map.
+

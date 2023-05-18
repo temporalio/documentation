@@ -12,6 +12,8 @@ toc_max_heading_level: 4
 
 ## Debug
 
+
+
 ### Debug in a development environment
 
 In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
@@ -30,3 +32,4 @@ You can debug and tune Worker performance with metrics and the [Worker performan
 For more information, see <a class="tdlp" href="/dev-guide/go/observability#metrics">Metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to emit metrics</span><br /><br /><span class="tdlppd">Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#metrics">Learn more</a></span></span></a> for setting up SDK metrics.
 
 Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
+
