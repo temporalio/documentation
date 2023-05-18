@@ -5,7 +5,7 @@ sidebar_label: List Schedules
 description: List all Schedules in a Namespace in Go.
 ---
 
-The `List` action returns all available Schedules and their respective Schedule IDs.
+The `List` action returns a list of existing Schedules and their respective Schedule IDs.
 
 To return information on all Schedules, use `ScheduleClient.List()`.
 
