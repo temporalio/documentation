@@ -5,6 +5,19 @@ sidebar_label: Develop Worker
 description: Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.
 ---
 
+The [Worker Process](/concepts/what-is-a-worker-process) is where Workflow Functions and Activity Functions are executed.
+
+- Each [Worker Entity](/concepts/what-is-a-worker-entity) in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one [Task Queue](/concepts/what-is-a-task-queue).
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
+
+A [Worker Entity](/concepts/what-is-a-worker-entity) is the component within a Worker Process that listens to a specific Task Queue.
+
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
+
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
+
 Create an instance of [`Worker`](https://pkg.go.dev/go.temporal.io/sdk/worker#Worker) by calling [`worker.New()`](https://pkg.go.dev/go.temporal.io/sdk/worker#New), available through the `go.temporal.io/sdk/worker` package, and pass it the following parameters:
 
 1. An instance of the Temporal Go SDK `Client`.
