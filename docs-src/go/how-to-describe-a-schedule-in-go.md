@@ -6,7 +6,7 @@ description: Describe a Schedule in Go.
 ---
 
 `Describe` retrieves information about the current Schedule configuration.
-This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
+This can include details about the Schedule Spec (such as Intervals or CronExpressions) and Schedule State.
 
 To describe a Schedule, use `Describe()` on the ScheduleHandle.
 
