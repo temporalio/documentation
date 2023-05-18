@@ -50,4 +50,3 @@ Alias: `-r`
 ```bash
 tcld namespace get --request-id <request_id>
 ```
-
