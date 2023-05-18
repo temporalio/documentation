@@ -132,8 +132,6 @@ await assert.rejects(env.run(activityFoo), (err) => {
 
 ## Test Workflows
 
-
-
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -594,4 +592,3 @@ for await (const result of results) {
   }
 }
 ```
-
