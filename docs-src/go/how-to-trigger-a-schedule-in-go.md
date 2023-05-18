@@ -5,10 +5,10 @@ sidebar_label: Trigger Schedule
 description: Immediately execute an Action in a Schedule.
 ---
 
-Triggering a Schedule immediately executes an Action defined in that Schedule.
+Triggering a [Schedule](/concepts/what-is-a-schedule) immediately executes an [Action](/concepts/what-is-a-schedule#action) defined in that Schedule.
 By default, `trigger` is subject to the `AllowAll` Overlap Policy.
 
-To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
+To trigger a Scheduled [Workflow Execution](/concepts/what-is-a-workflow-execution), use `trigger()` on `ScheduleHandle`.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/trigger/main_dacx.go">View source code</a>
 

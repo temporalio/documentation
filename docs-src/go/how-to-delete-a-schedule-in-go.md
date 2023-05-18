@@ -5,8 +5,8 @@ sidebar_label: Delete Schedule
 description: 
 ---
 
-Deleting a Schedule erases a Schedule.
-Deletion does not affect any Workflows started by the Schedule.
+Deleting a [Schedule](/concepts/what-is-a-schedule) erases a Schedule.
+Deletion does not affect any [Workflows](/concepts/what-is-a-workflow) started by the Schedule.
 
 To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 

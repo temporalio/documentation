@@ -5,7 +5,7 @@ sidebar_label: Create Schedule
 description: Create a Schedule for a Workflow in Go.
 ---
 
-Schedules are initiated with the `create` call.
+[Schedules](/concepts/what-is-a-schedule) are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
 
 To create a Schedule in Go, use `Create()` on the [Client](/concepts/what-is-a-temporal-client).

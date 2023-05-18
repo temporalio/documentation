@@ -5,10 +5,10 @@ sidebar_label: Update Schedule
 description: Update the configuration of a Schedule.
 ---
 
-Updating a Schedule changes the configuration of an existing Schedule.
-These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
+Updating a [Schedule](/concepts/what-is-a-schedule) changes the configuration of an existing Schedule.
+These changes can be made to [Actions](/concepts/what-is-a-schedule#action), Action parameters, [Memos](/concepts/what-is-a-memo), and the Workflow's Cancellation Policy.
 
-Use `Update()` on the ScheduleHandle to modify a Schedule.
+Use `Update()` on the `ScheduleHandle` to modify a Schedule.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/update/main_dacx.go">View source code</a>
 
