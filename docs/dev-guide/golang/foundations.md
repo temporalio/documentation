@@ -479,7 +479,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Selector` This is a replacement for the `select` statement.
   Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
 - `workflow.Context` This is a replacement for `context.Context`.
-  See [Tracing](/app-dev-context/tracing) for more information about context propagation.
+  See <a class="tdlp" href="/dev-guide/go/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/observability#tracing">Learn more</a></span></span></a> for more information about context propagation.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
