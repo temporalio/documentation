@@ -6,7 +6,7 @@ description: Immediately execute an Action in a Schedule.
 ---
 
 Triggering a Schedule immediately executes an Action defined in that Schedule.
-By default, `trigger` is subject to the Schedule Overlap Policy.
+By default, `trigger` is subject to the `AllowAll` Overlap Policy.
 
 To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
 

@@ -9,7 +9,7 @@ Backfilling a Schedule executes [Workflow Tasks](/concepts/what-is-a-workflow-ta
 This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
 
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
-Specify the start and end times to execute the Workflow, along with the overlap policy.
+Specify the start and end times to execute the Workflow, along with the [Overlap Policy](/docs-src/concepts/what-is-a-schedule#overlap-policy).
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/backfill/main_dacx.go">View source code</a>
 
