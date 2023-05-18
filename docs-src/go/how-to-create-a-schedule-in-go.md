@@ -8,7 +8,7 @@ description: Create a Schedule for a Workflow in Go.
 Schedules are initiated with the `create` call.
 The user generates a unique Schedule ID for each new Schedule.
 
-To create a Schedule in Go, use `Create()` on the [Client](/concepts/what-is-the-temporal-client).
+To create a Schedule in Go, use `Create()` on the [Client](/concepts/what-is-a-temporal-client).
 Schedules must be initialized with a Schedule ID, [Spec](/concepts/what-is-a-schedule#spec), and [Action](/concepts/what-is-a-schedule#action) in `client.ScheduleOptions{}`.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/create/main_dacx.go">View source code</a>

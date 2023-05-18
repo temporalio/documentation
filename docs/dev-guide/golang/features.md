@@ -733,6 +733,213 @@ sleep = workflow.Sleep(ctx, 10*time.Second)
 
 For more information, see the [Timer](https://github.com/temporalio/samples-go/tree/main/timer) example in the [Go Samples repository](https://github.com/temporalio/samples-go).
 
+## Schedule a Workflow
+
+Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
+
+Use any of the following action to help Schedule a Workflow Execution and take control over your automation process.
+
+### Create Schedule
+
+Schedules are initiated with the `create` call.
+The user generates a unique Schedule ID for each new Schedule.
+
+To create a Schedule in Go, use `Create()` on the <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a>.
+Schedules must be initialized with a Schedule ID, <a class="tdlp" href="/workflows#spec">Spec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#spec">Learn more</a></span></span></a>, and <a class="tdlp" href="/workflows#action">Action<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a> in `client.ScheduleOptions{}`.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/create/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+    // Create Schedule and Workflow IDs
+	scheduleID := "schedule_" + uuid.New()
+	workflowID := "schedule_workflow_" + uuid.New()
+	// Create the schedule.
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID:   scheduleID,
+		Spec: client.ScheduleSpec{},
+		Action: &client.ScheduleWorkflowAction{
+			ID:        workflowID,
+			Workflow:  schedule.ScheduleWorkflow,
+			TaskQueue: "schedule",
+		},
+	})
+// ...
+```
+
+### Backfill Schedule
+
+Backfilling a Schedule executes <a class="tdlp" href="/tasks#workflow-task">Workflow Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> ahead of the Schedule's specified time range.
+This is useful for executing a missed or delayed Action, or for testing the Workflow ahead of time.
+
+To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
+Specify the start and end times to execute the Workflow, along with the overlap policy.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/backfill/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+		Backfill: []client.ScheduleBackfill{
+			{
+				Start: now.Add(-4 * time.Minute),
+				End: now.Add(-2 * time.Minute),
+				Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+			},
+			{
+				Start: now.Add(-2 * time.Minute),
+				End: now,
+				Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+			},
+		},
+	})
+		
+// ...
+```
+
+### Delete Schedule
+
+Deleting a Schedule erases a Schedule.
+Deletion does not affect any Workflows started by the Schedule.
+
+To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/delete/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	scheduleHandle.Delete(ctx)	
+}
+// ...
+```
+
+### Describe Schedule
+
+`Describe` retrieves information about the current Schedule configuration.
+This can include details about the Schedule Spec (such as Intervals), CronExpressions, and Schedule State.
+
+To describe a Schedule, use `Describe()` on the ScheduleHandle.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/describe/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	// describe schedule
+	scheduleHandle.Describe(ctx)
+}
+// ...
+```
+
+### List Schedules
+
+The `List` action returns all available Schedules and their respective Schedule IDs.
+
+To return information on all Schedules, use `ScheduleClient.List()`.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/list/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	// list schedules
+	listView, _ := temporalClient.ScheduleClient().List(ctx, client.ScheduleListOptions{
+		PageSize: 1,
+	})
+// ...
+}
+// ...
+```
+
+### Pause Schedule
+
+`Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
+
+Pausing a Schedule halts all future Workflow Runs.
+Pausing can be enabled by setting `State.Paused` to `true`, or by using `Pause()` on the ScheduleHandle.
+
+Unpausing a Schedule allows the Workflow to execute as planned.
+To unpause a Schedule, use `Unpause()` on `ScheduleHandle`.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/pause/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	scheduleHandle, err := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+// ...
+		Paused: true,
+	})
+// ...
+	scheduleHandle.Unpause(ctx, client.ScheduleUnpauseOptions{
+		Note: "The Schedule has been unpaused.",
+	})
+	scheduleHandle.Pause(ctx, client.SchedulePauseOptions{
+		Note: "The Schedule has been paused.",
+	})
+}
+// ...
+```
+
+### Trigger Schedule
+
+Triggering a Schedule immediately executes an Action defined in that Schedule.
+By default, `trigger` is subject to the Overlap Policy.
+
+To trigger a Scheduled Workflow Execution, use `trigger()` on `ScheduleHandle`.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/trigger/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	// Create a Schedule to trigger
+	scheduleHandle, _ := temporalClient.ScheduleClient().Create(ctx, client.ScheduleOptions{
+		ID: "trigger-schedule",
+		Spec: client.ScheduleSpec{},
+		Action: &client.ScheduleWorkflowAction{},
+		Paused: true,
+		Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+	})
+// ...
+	// Trigger Schedule
+	for i := 0; i < 5; i++ {
+		scheduleHandle.Trigger(ctx, client.ScheduleTriggerOptions{
+			Overlap: enums.SCHEDULE_OVERLAP_POLICY_ALLOW_ALL,
+		})
+		time.Sleep(2 * time.Second)
+	}
+}
+// ...
+```
+
+### Update Schedule
+
+Updating a Schedule changes the configuration of an existing Schedule.
+These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
+
+Use `Update()` on the ScheduleHandle to modify a Schedule.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/update/main_dacx.go">View source code</a>
+
+```go
+func main() {
+// ...
+	updateSchedule := func(input client.ScheduleUpdateInput) (*client.ScheduleUpdate, error) {
+		return &client.ScheduleUpdate{
+			Schedule:  &input.Description.Schedule,
+		}, nil
+	}
+
+	_ = scheduleHandle.Update(ctx, client.ScheduleUpdateOptions{
+		DoUpdate: updateSchedule,
+	})
+}
+// ...
+```
+
 ## Temporal Cron Jobs
 
 A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a> is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.
