@@ -5,7 +5,7 @@ tags:
   - troubleshooting
   - error
 
-date: 2022-11-09T00:00:00Z
+date: 2023-05-18T00:00:00Z
 ---
 
 All requests made to the [Temporal Cluster](/clusters) by the Client or Worker are [gRPC requests](https://grpc.io/docs/what-is-grpc/core-concepts/#deadlines).
@@ -15,6 +15,14 @@ Network interruptions, timeouts, server overload, and Query errors are some of t
 The following sections discuss the nature of this error and how to troubleshoot it.
 
 <!-- truncate -->
+
+### Check system clocks
+
+Timing skew can cause the system clock on a Worker to drift behind the system clock of the Temporal Cluster.
+The difference between the two clocks will cause an `Activity complete after timeout` if it exceeds an Activity timeout.
+
+If you receive an `Activity complete after timeout` error alongside `Context: deadline exceeded`, check the clocks on the Temporal Cluster's system and the system of the Worker sending that error.
+Synchronize all clocks to an NTP server if the Worker's clock doesn't match the Temporal Cluster.
 
 ### Check Frontend Service logs
 
