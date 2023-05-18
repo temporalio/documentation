@@ -71,6 +71,12 @@ export default function Security() {
                 </li>
               </ul>
             </div>
+            <div className={clsx("col col--5", styles.securityPageHeaders)}>
+              <h2>Advisories</h2>
+            </div>
+            <div className={clsx("col col--4", styles.justifyLeft)}>
+              There are no current security advisories.
+              </div>
           </div>
         </div>
       </div>
