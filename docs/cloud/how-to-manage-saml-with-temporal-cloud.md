@@ -13,8 +13,6 @@ To authenticate the users of your Temporal Cloud account, you can connect a Secu
 :::info
 
 Implementing this feature adds a fee to your account.
-The fee does not apply to Google SSO or the general Microsoft login mechanism.
-
 For more information, contact your account manager.
 
 :::
