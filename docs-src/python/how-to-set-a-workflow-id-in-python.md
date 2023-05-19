@@ -12,7 +12,7 @@ The `id` argument should be a unique identifier for the Workflow Execution.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/run_workflow_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
