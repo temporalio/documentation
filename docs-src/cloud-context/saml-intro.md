@@ -9,6 +9,15 @@ tags:
 
 To authenticate the users of your Temporal Cloud account, you can connect a Security Assertion Markup Language (SAML) identity provider (IdP).
 
+:::info
+
+Implementing this feature adds a fee to your account.
+The fee does not apply to Google SSO or the general Microsoft login mechanism.
+
+For more information, contact your account manager.
+
+:::
+
 ## Integrate SAML with your Temporal Cloud account
 
 1. Locate your [Temporal Cloud Account Id](/concepts/what-is-a-cloud-account-id).
