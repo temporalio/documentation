@@ -50,6 +50,246 @@
       "destination": "/dev-guide"
     },
     {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "go"
+        }
+      ],
+      "destination": "/dev-guide/go/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "java"
+        }
+      ],
+      "destination": "/dev-guide/java/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "php"
+        }
+      ],
+      "destination": "/dev-guide/php/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "python"
+        }
+      ],
+      "destination": "/dev-guide/python/testing:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/foundations:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/foundations:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/features:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/features:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/observability:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/observability:path*",
+      "permanent": false
+    },
+    {
+      "source": "/application-development/testing:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang",
+          "value": "typescript"
+        }
+      ],
+      "destination": "/dev-guide/typescript/testing:path*",
+      "permanent": false
+    },
+    {
       "source": "/application-development:path*",
       "has": [
         {
@@ -58,7 +298,7 @@
           "value": "go"
         }
       ],
-      "destination": "/dev-guide/go:path*",
+      "destination": "/dev-guide/go",
       "permanent": false
     },
     {
@@ -70,7 +310,7 @@
           "value": "java"
         }
       ],
-      "destination": "/dev-guide/java:path*",
+      "destination": "/dev-guide/java",
       "permanent": false
     },
     {
@@ -82,7 +322,7 @@
           "value": "php"
         }
       ],
-      "destination": "/dev-guide/php:path*",
+      "destination": "/dev-guide/php",
       "permanent": false
     },
     {
@@ -94,7 +334,7 @@
           "value": "python"
         }
       ],
-      "destination": "/dev-guide/python:path*",
+      "destination": "/dev-guide/python",
       "permanent": false
     },
     {
@@ -106,7 +346,7 @@
           "value": "typescript"
         }
       ],
-      "destination": "/dev-guide/typescript:path*",
+      "destination": "/dev-guide/typescript",
       "permanent": false
     },
     {
