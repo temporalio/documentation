@@ -17,12 +17,12 @@ This troubleshooting guide shows you how to do the following:
 
 ### Verify TLS certification expiration date
 
-The first step in troubleshooting this error is to Verify the expiration date of the TLS certification.
+The first step in troubleshooting this error is to verify the expiration date of the TLS certification.
 
 **Existing certificate management infrastructure**
 
 If you are using an existing certificate management infrastructure, Verify the TLS expiration date.
-For example if you are using OpenSSL, run the following command:
+For example, if you are using OpenSSL, run the following command:
 
 ```command
 openssl s_client -connect <address_id>.tmprl.cloud:7233 -showcerts -cert ~/certs/path.pem -key .~/certs/path.key -tls1_2
@@ -70,6 +70,6 @@ Add reminders to your calendar to issue new CA certificates well before the expi
 
 ## Additional resources
 
-You'll troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certification by following these steps
+You'll troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certification by following these steps.
 
 If this issue persists, verify the Client you are using to connect to the server is using the correct TLS certification, the Client requests reach the server after the roles are fully initialized, or open a ticket at [https://support.temporal.io/](https://support.temporal.io/).
