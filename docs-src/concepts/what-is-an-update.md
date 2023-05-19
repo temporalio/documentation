@@ -9,31 +9,36 @@ tags:
   - explanation
 ---
 
-An Update is a request to a [Workflow Execution](/workflows#workflow-execution)
-that returns a response.
+An Update is a request and response from a Temporal Client to a [Workflow Execution](/concepts/what-is-a-workflow-execution).
 
-- [How to develop, send, and handle Updates in code in Go](/go/updates)
+- [How to develop, send, and handle Updates in Go](/go/updates)
 
-An update delivers a request to a running Workflow Execution where that request is handled by a registered update handler, the return value of which is sent back to the caller in the form of a response.
-Update handlers are Workflow functions that listen for Updates by Update name.
-Update handlers can mutate Workflow state.
-An Update is sent from a Temporal Client.
-If multiple deliveries of an Update request would be a problem for your Workflow, add idempotency logic to your Update handler that checks for duplicates.
+An Update is the full request and response to and from a running Workflow Execution.
+The Workflow must have a function to handle the Update.
+Unlike a [Signal](/concepts/what-is-a-signal) handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+The Update handler listens for Updates by the Update's name.
 
-Updates proceed in four phases.
+When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
 
-1. _Admission_ - Upon submission to an instance of the Temporal WorkflowService, an update is validated by the server against server-configured limits to resource utilization (e.g. concurrent request limits, RPS limits, etc).
-   When the server decides that the update can continue (i.e. is within the limits established by server configuration and runtime state) we say that the update has been _admitted_ and it progresses to the next phase.
-   Note that at this point the upate has not been written to the Workflow Execution [Event History](#event-history) nor has it been sent to a worker.
-1. _Validation_ - Update requests undergo further validation through an optional request validation phase that can be associated with an update handler at registration time.
-   This validation code can observe but not modify workflow state, much like a query handler, meaning that validation of an update request can be runtime dependent on workflow state.
-   If an update request fails validation at this stage, the request is rejected and nothing is written to the Workflow History to indicate that the update ever happened.
-   Subsequent phases in update processing do not occur. Workflow requeests that pass validation are said to have been _accepted_.
-   The acceptance of an update is denoted with a `WorkflowExecutionUpdateAcceptedEvent` in the Workflow Execution [Event History](#event-history).
-1. _Execution_ - Accepted Update requests proceed to the execution phase.
-   In this phase, the request is delivered to the update handler which acts on the input.
-   Update handlers work like workflow code in that they undergo replay and thus are required to be deterministic.
-   Further, they are expected to execute quickly and not block - an Update handler that needs to do blocking work should use an Activity and wait on that Activity's result, just like any other piece of workflow code.
-1. _Completion_ - The update handler can return a result value or some language-appropriate error/exception to indicate that it has completed.
-   The Update outcome is sent all the way back to the original invoking entity in the form of an Update response.
-   The completion of an update is denoted with a `WorkflowExecutionUpdateCompletedEvent` in the Workflow Execution [Event History](#event-history).
+An Update has four phases.
+
+1. **_Admission_** - The Temporal Cluster first validates Update submissions against configured resource utilization limits.
+   For example, there are limits against concurrent requests and requests per second limits.
+   See the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet) for more details.
+   After this, the Platform changes the status of the Update to **_Admitted_**.
+   At this stage, the Platform hasn't yet persisted the Update to the Workflow Execution's Event History or sent it to a Worker.
+1. **_Validation_** - An optional request validation phase further validates Update requests.
+   This Query handler performs the optional request validation.
+   This validation code, similar to a Query handler, can observe but not modify the workflow state.
+   This means that the validation of an Update request may depend on the Workflow state at runtime.
+   If an Update request doesn't pass validation at this stage, the system rejects the request and doesn't record anything in the Workflow Event History to indicate that the Update ever happened.
+   The Update processing doesn't proceed to subsequent phases.
+   Once the Update passes the validation stage, the Platform changes its state to **_Accepted_**.
+   A `WorkflowExecutionUpdateAcceptedEvent` in the Workflow Execution [Event History](#event-history) denotes the acceptance of an Update.
+1. **_Execution_** - Accepted Update requests move to the execution phase.
+   In this phase, the Worker delivers the request to the Update handler.
+   The Platform subjects Update handlers to Replays and handlers thus must be [deterministic](/concepts/what-is-workflow-definition#deterministic-constraints).
+   Moreover, they should execute quickly and not explicitly block; That is - if an Update handler needs to block it should use an Activity and wait for that Activity's result, just like any other piece of Workflow code.
+1. **_Completion_** - The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
+   The Platform sends the Update outcome back to the original invoking entity as an Update response.
+   A `WorkflowExecutionUpdateCompletedEvent` in the Workflow Execution [Event History](#event-history) denotes the completion of an update.
