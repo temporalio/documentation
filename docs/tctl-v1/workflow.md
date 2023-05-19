@@ -49,7 +49,7 @@ The `tctl workflow` commands enable [Workflow Execution](/workflows#workflow-exe
 The `tctl workflow cancel --query` command cancels a [Workflow Execution](/workflows#workflow-execution).
 
 Canceling a running Workflow Execution records a `WorkflowExecutionCancelRequested` event in the History.
-A new command task will be scheduled.
+A new <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> will be scheduled.
 After cancellation, the Workflow Execution can perform cleanup work.
 
 See also <a class="tdlp" href="#terminate">`tctl workflow terminate --query`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow terminate</span><br /><br /><span class="tdlppd">How to terminate a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#terminate">Learn more</a></span></span></a>.
@@ -2182,7 +2182,7 @@ tctl workflow start --search_attr_value <value>
 The `tctl workflow terminate` command terminates a [Workflow Execution](/workflows#workflow-execution).
 
 Terminating a running Workflow Execution records a `WorkflowExecutionTerminated` event as the closing event in the History.
-No more command tasks will be scheduled.
+No more <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> will be scheduled.
 
 See also <a class="tdlp" href="#cancel">`tctl workflow cancel`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow cancel</span><br /><br /><span class="tdlppd">How to cancel a Workflow Execution using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cancel">Learn more</a></span></span></a>.
 

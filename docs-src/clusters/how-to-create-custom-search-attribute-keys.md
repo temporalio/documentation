@@ -11,7 +11,7 @@ tags:
 
 Add custom Search Attributes to your Visibility store using `tctl` for a self-hosted Temporal Cluster and `tcld` for Temporal Cloud.
 
-Creating a custom Search Attribute in your Visibility store makes it available to use in your [Workflow metadata](/application-development/observability#search-attributes) and [List Filters](/concepts/what-is-a-list-filter).
+Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and [List Filters](/concepts/what-is-a-list-filter).
 
 **On Temporal Cloud**
 

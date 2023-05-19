@@ -1,6 +1,8 @@
 ---
 id: index
 title: Temporal Platform references
+sidebar_label: References
+sidebar_position: 10
 ---
 
 - [SDK metrics reference](/references/sdk-metrics)

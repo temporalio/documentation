@@ -3,6 +3,7 @@ id: glossary
 title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
+sidebar_position: 11
 tags:
   - reference
 ---
@@ -11,6 +12,7 @@ tags:
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
+- [Action](/cloud#action)
 - [Activity](/activities#)
 - [Activity Definition](/activities#activity-definition)
 - [Activity Execution](/activities#activity-execution)
@@ -65,6 +67,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 - [Signal](/workflows#signal)
 - [Standard Visibility](/visibility#standard-visibility)
 - [Start-To-Close Timeout](/activities#start-to-close-timeout)
+- [State Transition](/workflows#state-transition)
 - [Sticky Execution](/tasks#sticky-execution)
 - [Task](/tasks#)
 - [Task Queue](/tasks#task-queue)

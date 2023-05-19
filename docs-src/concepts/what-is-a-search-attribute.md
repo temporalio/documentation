@@ -82,7 +82,7 @@ Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
 However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
 
-See [Search Attribute limits](#search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
+See [custom Search Attributes limits](#custom-search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
 #### Supported types
 
@@ -154,12 +154,23 @@ This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttribute
 Search Attributes available in your Visibility store can be used with Workflow Executions for that Cluster.
 To actually have results from the use of a [List Filter](/concepts/what-is-a-list-filter), Search Attributes must be added to a Workflow Execution as metadata.
 
-- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys)
-- To set the value of Search Attribute in your Workflow, see [how to set custom Search Attributes value with your SDK](/application-development/observability#custom-search-attributes).
-- To update the value set for a Search Attribute from within the Workflow code, see [Upsert Search Attributes value](/application-development/observability#upsert-search-attributes)
-- To remove the value set for a Search Attribute from within the Workflow code, see [Remove Search Attribute value](/application-development/observability#remove-search-attribute).
-- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/clusters/how-to-remove-a-custom-search-attribute-key). Removing custom Search Attributes is not supported on Temporal Cloud.
+- To create custom Search Attributes in your Visibility store, see [Create custom Search Attributes](/clusters/how-to-create-custom-search-attribute-keys).
+- To remove a custom Search Attribute from the Visbility store, see [Remove custom Search Attributes](/clusters/how-to-remove-a-custom-search-attribute-key).
+  Removing custom Search Attributes is not supported on Temporal Cloud.
 - To rename a custom Search Attribute on Temporal Cloud, see [`tcld namespace search-attributes rename`](/cloud/tcld/namespace#rename).
+
+With Workflows you can do the following:
+
+- Set the value of Search Attributes in your Workflow
+- Update the value set for a Search Attribute from within the Workflow code
+- Remove the value set for a Search Attribute from within the Workflow code
+
+- [How to manage Search Attributes using the Go SDK](/go/visibility)
+- [How to manage Search Attributes using the Java SDK](/java/visibility)
+- [How to manage Search Attributes using the PHP SDK](/php/visibility)
+- [How to manage Search Attributes using the Python SDK](/python/visibility)
+- [How to manage Search Attributes using the TypeScript SDK](/typescript/visibility)
+
 - To get a list of Search Attributes using `tctl`, see [How to view Search Attributes using tctl](/tctl-v1/cluster#get-search-attributes).
 
 After you add and set your Search Attributes, use your default or custom Search Attributes in a List Filter.
