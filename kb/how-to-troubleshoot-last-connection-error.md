@@ -4,7 +4,7 @@ title: Troubleshoot the "failed reaching server" error
 tags:
   - cloud
   - namespaces
-date: 2023-05-09T00:00:00Z
+date: 2023-05-19T00:00:00Z
 ---
 
 An expired TLS certification can often cause `failed reaching server: last connection error`.
@@ -40,7 +40,7 @@ tctl --namespace <namespace_id> --address <address_id>.tmprl.cloud:7233 --tls-ce
 
 If the certificate has expired or is about to expire, the next step is to renew it.
 
-This can be done by contacting the certificate authority (CA) that issued the certificate and requesting a renewal.
+You can do this by contacting the certificate authority (CA) that issued the certificate and requesting a renewal.
 
 **Existing certificate management infrastructure**
 
@@ -55,14 +55,14 @@ Alternatively, if you are using a self-signed certificate or do not have an exis
 
 ### Update the CA certification in the server configuration
 
-Update the Temporal Cloud server configuration with the new CA certificate.
+Update the new CA certificate in the Temporal Cloud server configuration.
 
 You can update certificates using any of the following methods:
 
 - **[Update certificates using Temporal Cloud UI](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#update-certificates-using-temporal-cloud-ui)**
 - **[Update certificates using tcld](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#update-certificates-using-tcld)**
 
-Once you’ve updated the TLS certification in the server configuration, retry your connection.
+Retry your connection once you've updated the TLS certification in the server configuration.
 
 ### Set reminders
 
@@ -70,6 +70,6 @@ Don't let your certificates expire! Add reminders to your calendar to issue new 
 
 ## Additional resources
 
-By following these steps, you’ll troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certification.
+You'll troubleshoot the `failed reaching server: last connection error` error caused by an expired TLS certification by following these steps
 
 If this issue persists, check to see if the Client you are using to connect to the server is using the correct TLS certification, or open a ticket at [https://support.temporal.io/](https://support.temporal.io/)
