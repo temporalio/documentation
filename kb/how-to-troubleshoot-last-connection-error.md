@@ -50,7 +50,7 @@ If you are using an existing certificate management infrastructure, contact the 
 
 **Self-signed certificate**
 
-Alternatively, if you are using a self-signed certificate or don't have an existing infrastructure, you can generate a new certificate using OpenSSL or [certstrap](https://github.com/square/certstrap).
+If you are using a self-signed certificate or don't have an existing infrastructure, you can generate a new certificate using OpenSSL or [certstrap](https://github.com/square/certstrap).
 
 For information on generating a self-signed certificate, see [Control authorization](/cloud/how-to-manage-certificates-in-temporal-cloud#control-authorization).
 
