@@ -4,7 +4,7 @@ title: Troubleshoot the "failed reaching server" error
 tags:
   - cloud
   - namespaces
-date: 2023-05-19T00:00:00Z
+date: 2023-05-23T00:00:00Z
 ---
 
 The message `Failed reaching server: last connection error` can often result from an expired TLS certificate or during the Server startup process, in which the Client requests reach the Server before the roles are fully initialized.
@@ -20,10 +20,23 @@ This troubleshooting guide shows you how to do the following:
 ### Verify TLS certification expiration date
 
 The first step in troubleshooting this error is to verify the expiration date of the TLS certification.
+Then you can renew the certification and update the server configuration.
+
+Choose one of the following methods to verify the expiration date of the TLS certification:
+
+**Verify the expiration date of the TLS certification**
+
+List the expiration date with the following command:
+
+```command
+tcld namespace accepted-client-ca list --namespace <namespace_name> | jq -r '.[0].notAfter'
+```
+
+If the returned date is in the past, the certificate has expired.
 
 **Existing certificate management infrastructure**
 
-If you are using an existing certificate management infrastructure, use it to verify the TLS expiration date.
+If you are using an existing certificate management infrastructure, use it to verify the TLS connection.
 For example, if you are using OpenSSL, run the following command:
 
 ```command
