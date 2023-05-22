@@ -22,7 +22,7 @@ Timing skew can cause the system clock on a Worker to drift behind the system cl
 If the difference between the two clocks exceeds an Activity's [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), an `Activity complete after timeout` error occurs.
 
 If you receive an `Activity complete after timeout` error alongside `Context: deadline exceeded`, check the clocks on the Temporal Cluster's system and the system of the Worker sending that error.
-Synchronize all clocks to an NTP server if the Worker's clock doesn't match the Temporal Cluster.
+If the Worker's clock doesn't match the Temporal Cluster, synchronize all clocks to an NTP server.
 
 ### Check Frontend Service logs
 
