@@ -5,7 +5,7 @@ sidebar_label: Backfill Schedule
 description: Backfill a Schedule to execute a Workflow at a later time.
 ---
 
-Backfilling a [Schedule](/concepts/what-is-a-schedule) executes [Workflow Tasks](/concepts/what-is-a-workflow-task) ahead of the Schedule's specified time range.
+Backfilling a [Schedule](/concepts/what-is-a-schedule) executes Actions ahead of the Schedule's specified time range.
 This is useful for executing a missed or delayed [Action](/concepts/what-is-a-schedule#action), or for testing the [Workflow](/concepts/what-is-a-workflow) ahead of time.
 
 To backfill a Schedule in Go, use `Backfill()` on `ScheduleHandle`.
