@@ -9,7 +9,7 @@ tags:
 ---
 
 The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
-It ships with every [Docker Compose](/application-development/foundations#docker-compose) update and is available with [Temporal Cloud](/cloud).
+It ships with every [Temporal CLI](/concepts/what-is-the-temporal-cli) release and [Docker Compose](/kb/all-the-ways-to-run-a-cluster#docker--docker-compose) update and is available with [Temporal Cloud](/cloud).
 
 You can configure the Temporal Web UI to work in your own environment.
 See the [UI configuration reference](/references/web-ui-configuration).
@@ -61,7 +61,7 @@ The top of the page lists the following execution metadata:
 - Start Time and Close Time
 - [Task Queue](/concepts/what-is-a-task-queue)
 - Parent and Parent ID
-- State Transitions
+- [State Transitions](/concepts/what-is-a-state-transition)
 
 The Input and Results section displays the function arguments and return values for debugging purposes.
 Results are not available until the Workflow finishes.

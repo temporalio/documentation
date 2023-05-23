@@ -15,6 +15,14 @@
     },
     {
       "type": "h2",
+      "id": "cloud/tcld/namespace/create"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/namespace/delete"
+    },
+    {
+      "type": "h2",
       "id": "cloud/tcld/namespace/get"
     },
     {
@@ -68,7 +76,18 @@
     {
       "type": "h3",
       "id": "cloud/tcld/namespace/search-attributes/rename"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/namespace/retention/index"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/namespace/retention/get"
+    },
+    {
+      "type": "h3",
+      "id": "cloud/tcld/namespace/retention/set"
     }
   ]
 }
-  

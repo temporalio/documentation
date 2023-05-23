@@ -347,7 +347,7 @@ Use the options listed below to change the command's behavior.
 
 ### list
 
-The `temporal operator search-attrbute list` command displays a list of all <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> that can be used in `temporal workflow list --query`.
+The `temporal operator search-attribute list` command displays a list of all <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> that can be used in `temporal workflow list --query`.
 
 Use the options listed below to change the command's behavior.
 

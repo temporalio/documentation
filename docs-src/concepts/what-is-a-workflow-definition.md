@@ -10,7 +10,11 @@ tags:
 
 A Workflow Definition is the code that defines the constraints of a Workflow Execution.
 
-- [How to develop a Workflow Definition](/app-dev-context/developing-workflows)
+- [How to develop a Workflow Definition using the Go SDK](/go/developing-workflows)
+- [How to develop a Workflow Definition using the Java SDK](/java/how-to-develop-a-workflow-definition-in-java)
+- [How to develop a Workflow Definition using the PHP SDK](/php/developing-workflows)
+- [How to develop a Workflow Definition using the Python SDK](/python/developing-workflows)
+- [How to develop a Workflow Definition using the TypeScript SDK](/typescript/developing-workflows)
 
 A Workflow Definition is often also referred to as a Workflow Function.
 In Temporal's documentation, a Workflow Definition refers to the source for the instance of a Workflow Execution, while a Workflow Function refers to the source for the instance of a Workflow Function Execution.
@@ -67,7 +71,9 @@ The Workflow Execution would fail and return a non-deterministic error.
 
 The following are examples of minor changes that would not result in non-determinism errors when re-executing a History which already contain the Events:
 
-- Changing the duration of a Timer (unless changing from a duration of 0).
+- Changing the duration of a Timer, with the following exceptions:
+  - In Java, Python, and Go, changing a Timer’s duration from or to 0 is a non-deterministic behavior.
+  - In .NET, changing a Timer’s duration from or to -1 (which means "infinite") is a non-deterministic behavior.
 - Changing the arguments to:
   - The Activity Options in a call to spawn an Activity Execution (local or nonlocal).
   - The Child Workflow Options in a call to spawn a Child Workflow Execution.

@@ -1,12 +1,17 @@
 ---
 id: how-to-send-a-signal-with-start-in-java
 title: How to send a Signal-with-Start in Java
-sidebar_label: Signal with Start
+sidebar_label: Signal-With-Start
 description: To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.
 tags:
   - java
   - developer-guide
 ---
+
+Signal-With-Start is used from the Client.
+It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
+
+If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
 To send Signals to a Workflow Execution whose status is unknown, use `SignalWithStart` with a `WorkflowStub` in the Client code.
 This method ensures that if the Workflow Execution is in a closed state, a new Workflow Execution is spawned and the Signal is delivered to the running Workflow Execution.
