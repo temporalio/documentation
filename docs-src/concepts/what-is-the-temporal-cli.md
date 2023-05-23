@@ -23,7 +23,25 @@ The Temporal CLI is a command-line tool that includes a distribution of a Tempor
 
 ## Installation
 
-Temporal CLI can be installed through [several different methods](/clusters/how-to-install-temporal-cli).
+### cURL
+
+`curl -sSf https://temporal.download/cli.sh | sh`
+
+### Homebrew
+
+`brew install temporal`
+
+### Manual
+
+1. Download the version for your OS and architecture:
+    - [Linux amd64](https://temporal.download/cli/archive/latest?platform=linux&arch=amd64)
+    - [Linux arm64](https://temporal.download/cli/archive/latest?platform=linux&arch=arm64)
+    - [macOS amd64](https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64)
+    - [macOS arm64](https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64) (Apple silicon)
+    - [Windows amd64](https://temporal.download/cli/archive/latest?platform=windows&arch=amd64)
+    - [Windows arm64](https://temporal.download/cli/archive/latest?platform=windows&arch=arm64)
+2. Extract the downloaded archive.
+3. Add the `temporal` binary to your PATH. (`temporal.exe` for Windows)
 
 ## Starting the Temporal Server
 
@@ -281,7 +299,7 @@ The Temporal CLI hosts a set of Client Options that can be used to configure the
 Use the following table as a reference for the Temporal CLI environmental variables.
 
 | Variable                                     | Definition                                                                        | Client Option                   |
-| -------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
+|----------------------------------------------|-----------------------------------------------------------------------------------|---------------------------------|
 | `TEMPORAL_CLI_ADDRESS`                       | The host and port (formatted as host:port) for the Temporal Frontend Service.     | --address                       |
 | `TEMPORAL_CLI_CODEC_AUTH`                    | Sets the authorization header on requests to the Codec Server.                    | --codec-auth                    |
 | `TEMPORAL_CLI_CODEC_ENDPOINT`                | Endpoint for a remote Codec Server.                                               | --codec-endpoint                |
