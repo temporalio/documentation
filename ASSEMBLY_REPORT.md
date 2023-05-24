@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday May 17 2023 14:47:58 PM -0700
+Last assembled: Wednesday May 24 2023 16:37:26 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -902,7 +902,7 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 java/metrics -> /dev-guide/java/observability#metrics
 
