@@ -222,7 +222,7 @@ Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or
 If you use Elasticsearch as your Visibility store, your custom Search Attributes apply globally and can be used across Namespaces.
 However, if using any of the [supported SQL databases](/cluster-deployment-guide#visibility-store) with Temporal Server v1.20 and later, your custom Search Attributes are associated with a specific Namespace and can be used for Workflow Executions in that Namespace.
 
-See [Search Attribute limits](#search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
+See [custom Search Attributes limits](#custom-search-attributes-limits) for limits on the number and size of custom Search Attributes you can create.
 
 #### Supported types
 
