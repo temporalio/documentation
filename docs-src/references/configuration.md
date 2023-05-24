@@ -461,9 +461,9 @@ namespaceDefaults:
 
 ## dcRedirectionPolicy
 
-_Required_
+_Optional_
 
-Contains the Frontend datacenter API redirection policy.
+Contains the Frontend datacenter API redirection policy that you can use for cross-DC replication.
 
 Supported values are:
 
@@ -476,9 +476,8 @@ Supported values are:
     - `RequestCancelWorkflowExecution`
     - `TerminateWorkflowExecution`
     - `QueryWorkflow`
-      See [SDK documentation](/dev-guide/) for details.
+      See [SDK documentation](/dev-guide) for details.
   - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
-- `toDC`: <!--Need info here.-->
 
 Example":
 
@@ -498,8 +497,8 @@ Configuration for setting up file-based [dynamic configuration](/concepts/what-i
 
 This setting is required if specifying dynamic configuration. Supported configuration values are:
 
-- `filepath`: Specifies the filepath where the dynamic configuration YAML file is store. The filepath should be relative to the root directory.
-- `PollInterval`: Interval (in seconds) between the file-based client polls to check for dynamic configuration updates.
+- `filepath`: Specifies the filepath where the dynamic configuration YAML file is stored. The filepath should be relative to the root directory.
+- `PollInterval`: Interval (in seconds) between the client polls to check for dynamic configuration updates.
 
 Example:
 
