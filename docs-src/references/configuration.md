@@ -497,8 +497,8 @@ Configuration for setting up file-based [dynamic configuration](/concepts/what-i
 
 This setting is required if specifying dynamic configuration. Supported configuration values are:
 
-- `filepath`: Specifies the filepath where the dynamic configuration YAML file is stored. The filepath should be relative to the root directory.
-- `PollInterval`: Interval (in seconds) between the client polls to check for dynamic configuration updates.
+- `filepath`: Specifies the filepath where the dynamic configuration YAML file is store. The filepath should be relative to the root directory.
+- `PollInterval`: Interval (in seconds) between the file-based client polls to check for dynamic configuration updates. The minimum period you can set here is 5 seconds.
 
 Example:
 
