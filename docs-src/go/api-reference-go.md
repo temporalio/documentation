@@ -1,6 +1,7 @@
 ---
 id: api-reference-go
-title: API reference
+title: How to find the Go SDK API reference
+description: The Go SDK API reference is published on pkg.go.dev
 sidebar_label: API reference
 ---
 

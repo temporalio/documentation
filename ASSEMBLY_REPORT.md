@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday May 19 2023 11:12:29 AM -0700
+Last assembled: Wednesday May 24 2023 08:24:53 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 75 guide configurations found.
 
-1434 information nodes found.
+1429 information nodes found.
 
-1176 information nodes are attached to guides.
+1172 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -676,8 +676,6 @@ cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-clusters/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
-
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 cli/cmd-options/name -> /cli/cmd-options#name
@@ -855,6 +853,8 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
+
+clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
