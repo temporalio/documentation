@@ -195,5 +195,6 @@ In practice these limits should rarely be a concern, because a version is no lon
 open Workflows are using that version, and a background process will delete IDs and sets which are
 no longer needed.
 
-There is also a limit on the size of each Build ID / version string, which defaults to 1000 bytes.
-This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic config property.
+There is also a limit on the size of each Build ID / version string, which defaults to 255
+characters. This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic
+config property.
