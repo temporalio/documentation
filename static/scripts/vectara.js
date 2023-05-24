@@ -194,7 +194,7 @@ function isDesktop() {
       }, 500);
     });
 
-    iframe.src = "http://137.184.234.221";
+    iframe.src = "https://iq.temporal.io";
 
     document.body.appendChild(modal);
     modal.appendChild(widgetElement);
