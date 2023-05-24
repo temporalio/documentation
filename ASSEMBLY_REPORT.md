@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday May 15 2023 20:18:46 PM -0400
+Last assembled: Monday May 22 2023 12:27:36 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
 75 guide configurations found.
 
-1428 information nodes found.
+1434 information nodes found.
 
-1171 information nodes are attached to guides.
+1176 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -901,5 +901,7 @@ java/metrics -> /dev-guide/java/observability#metrics
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
+
+concepts/what-is-a-state-transition -> /workflows#state-transition
 
 
