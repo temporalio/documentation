@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Sunday May 14 2023 10:02:51 AM -0700
+Last assembled: Monday May 22 2023 12:27:36 PM -0500
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 75 guide configurations found.
 
-1006 information nodes found.
+1434 information nodes found.
 
-862 information nodes are attached to guides.
+1176 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -55,6 +55,8 @@ concepts/what-is-an-event -> /workflows#event
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-worker -> /workers#
+
+concepts/what-is-a-workflow -> /workflows#
 
 concepts/what-is-an-authorizer-plugin -> #authorizer-plugin
 
@@ -159,8 +161,6 @@ tctl-v1/workflow/start -> /tctl-v1/workflow#start
 tctl-v1/dataconverter/web -> #web
 
 concepts/what-is-a-namespace -> /namespaces#
-
-concepts/what-is-a-workflow -> /workflows#
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -901,5 +901,7 @@ java/metrics -> /dev-guide/java/observability#metrics
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
+
+concepts/what-is-a-state-transition -> /workflows#state-transition
 
 
