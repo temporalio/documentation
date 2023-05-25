@@ -36,7 +36,7 @@ An Update has four phases.
    A `WorkflowExecutionUpdateAcceptedEvent` Event in the Workflow Execution [Event History](#event-history) denotes the acceptance of an Update.
 1. **Execution.** Accepted Update requests move to the execution phase.
    In this phase, the Worker delivers the request to the Update handler.
-   The Platform subjects Update handlers to Replays and handlers thus must be [deterministic](/concepts/what-is-workflow-definition#deterministic-constraints).
+   The Platform subjects Update handlers to Replays and handlers thus must be [deterministic](/concepts/what-is-a-workflow-definition#deterministic-constraints).
    Moreover, they should execute quickly and not explicitly block; that is, if an Update handler needs to block, it should use an Activity and wait for that Activity's result, just like any other piece of Workflow code.
 1. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
    The Platform sends the Update outcome back to the original invoking entity as an Update response.
