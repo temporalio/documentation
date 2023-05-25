@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-Use the `SetUpdateHandler` API from the `go.temporal.io/sdk/workflow` package to register an Update handler for a given name.
+Use the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package to register an Update handler for a given name.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
@@ -22,9 +22,9 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-In the example above, the Workflow code uses `workflow.SetUpdateHandler` to register a function to handler workflow updates.
-The function can take multiple serializable input parameters though we recommend that only a single parameter is used to allow for fields to be added in future versions while retaining backward compatibility.
+In the preceding example, the Workflow code uses `workflow.SetUpdateHandler` to register a function to handle Workflow Updates.
+The function can take multiple serializable input parameters, although we recommend that you use only a single parameter to allow for fields to be added in future versions while retaining backward compatibility.
 The function can optionally take a `workflow.Context` parameter in the first position.
 The function returns either a serializable value and an error or just an error.
 
-Unlike with query handlers, it is safe for Update Handlers to observe and mutate workflow state.
+Unlike Query handlers, Update handlers can safely observe and mutate Workflow state.
