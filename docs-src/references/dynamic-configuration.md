@@ -112,9 +112,9 @@ When scaling your services, tune the RPS to test your workload and set acceptabl
 | `internal-frontend.globalNamespaceRPS` | Int  | Namespace rate limit per second across all internal-frontends.                                                                                                                                                                   | 0             |
 | History                                |      |                                                                                                                                                                                                                                  |               |
 | `history.rps`                          | Int  | Request rate per second for each history host.                                                                                                                                                                                   | 3000          |
-| `history.archiveRequestRPS`            | Int  | ArchiveRequestRPS is the rate limit on the number of archive request per second,                                                                                                                                                 | 300           |
+| `history.archiveRequestRPS`            | Int  | Rate limit on the number of archive request per second.                                                                                                                                              | 300           |
 | Matching                               |      |                                                                                                                                                                                                                                  |               |
-| `matching.rps`                         | Int  | MatchingRPS is request rate per second for each matching host                                                                                                                                                                    | 1200          |
+| `matching.rps`                         | Int  | Request rate per second for each matching host                                                                                                                                                                    | 1200          |
 
 ### QPS limits for Persistence database
 
@@ -153,7 +153,7 @@ Th, the default values will apply. Also, setting custom retry polici
 
 ### Size limit settings
 
-The Persistence database in the Cluster has default size limits set for optimal performance. The dynamic configuraiton keys relating to some of these are listed below.
+The Persistence database in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
 The default values on these keys have been set based on extensive testing. While these values can be changed, ensure that you are provisioning enough database resources to handle the changed values.
 
