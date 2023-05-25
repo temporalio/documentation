@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday May 25 2023 09:06:42 AM -0600
+Last assembled: Thursday May 25 2023 09:07:52 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 75 guide configurations found.
 
-1439 information nodes found.
+1434 information nodes found.
 
-1181 information nodes are attached to guides.
+1177 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -678,8 +678,6 @@ cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-clusters/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
-
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 cli/cmd-options/name -> /cli/cmd-options#name
@@ -857,6 +855,8 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
+
+clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
