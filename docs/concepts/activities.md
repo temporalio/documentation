@@ -210,7 +210,6 @@ The Temporal Server does not detect failures when Worker lose communication with
 
 :::
 
-
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Start-To-Close Timeout period</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/start-to-close-timeout.svg" alt="Start-To-Close Timeout period" height="666" width="1119" /></div></div>
@@ -399,4 +398,3 @@ The drawbacks of long-running Local Activities are:
 Using a Local Activity without understanding its limitations can cause various production issues.
 **We recommend using regular Activities unless your use case requires very high throughput and large Activity fan outs of very short-lived Activities.**
 More guidance in choosing between [Local Activity vs Activity](https://community.temporal.io/t/local-activity-vs-activity/290/3) is available in our forums.
-

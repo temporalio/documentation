@@ -31,7 +31,6 @@ The Temporal Server does not detect failures when Worker lose communication with
 
 :::
 
-
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
 ![Start-To-Close Timeout period](/diagrams/start-to-close-timeout.svg)
