@@ -281,7 +281,7 @@ if err != nil {
 
 ## Updates
 
-An <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">A Update is a request to a workflow that returns a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> is an operation that can mutate the state of a Workflow Execution and return a response.
+An <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">An Update is a request to and a response from Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> is an operation that can mutate the state of a Workflow Execution and return a response.
 
 ### Update type
 
@@ -294,7 +294,7 @@ updateType := "your_update_name"
 
 ### Handle Update
 
-Use the `SetUpdateHandler` API from the `go.temporal.io/sdk/workflow` package to register an Update handler for a given name.
+Use the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package to register an Update handler for a given name.
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
@@ -308,23 +308,24 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
 }
 ```
 
-In the example above, the Workflow code uses `workflow.SetUpdateHandler` to register a function to handler workflow updates.
-The function can take multiple serializable input parameters though we recommend that only a single parameter is used to allow for fields to be added in future versions while retaining backward compatibility.
+In the preceding example, the Workflow code uses `workflow.SetUpdateHandler` to register a function to handle Workflow Updates.
+The function can take multiple serializable input parameters, although we recommend that you use only a single parameter to allow for fields to be added in future versions while retaining backward compatibility.
 The function can optionally take a `workflow.Context` parameter in the first position.
 The function returns either a serializable value and an error or just an error.
 
-Unlike with query handlers, it is safe for Update Handlers to observe and mutate workflow state.
+Unlike Query handlers, Update handlers can safely observe and mutate Workflow state.
 
 ### Send Update from Client
 
-When an Update is sent successfully from the Temporal Client it is dispatched to a Worker where it is accepted or rejected through a validation process.
-Rejections do not result in an event being written to the Event History while an accepted update will result in a WorkflowExecutionUpdateAccepted event.
-Accepted updates are then executed on the worker and upon completion will cause a WorkflowExecutionUpdateCompleted event to be written to the Event History.
+When an Update is sent successfully from the Temporal Client, it is dispatched to a Worker where it is accepted or rejected through a validation process.
+A rejected Update does not result in an Event being written to the Event History.
+An accepted Update results in a `WorkflowExecutionUpdateAccepted` Event.
+The accepted Update is then executed on the Worker and, upon completion, causes a `WorkflowExecutionUpdateCompleted` Event to be written to the Event History.
 
-Use the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send an <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">A Update is a request to a workflow that returns a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> to a [Workflow Execution](/workflows#workflow-execution).
+Use the `UpdateWorkflow()` method on an instance of the [Go SDK Temporal Client](https://pkg.go.dev/go.temporal.io/sdk/client#Client) to send an <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">An Update is a request to and a response from Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> to a [Workflow Execution](/workflows#workflow-execution).
 
 Pass in both the <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> and <a class="tdlp" href="/workflows#run-id">Run Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a> to uniquely identify the Workflow Execution.
-If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is Running receives the Signal.
+If only the Workflow Id is supplied (provide an empty string as the Run Id param), the Workflow Execution that is running receives the Signal.
 
 ```go
 // ...
@@ -333,7 +334,7 @@ updateArg := MyUpdateArg {
 }
 updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), "your-workflow-id", runID, "your-update-name", updateArg)
 if err != nil {
-	log.Fatalln("Error issuing update request", err)
+	log.Fatalln("Error issuing Update request", err)
 	return
 }
 var updateResult myUpdateResult
