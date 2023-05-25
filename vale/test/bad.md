@@ -46,4 +46,3 @@ This is a good section that ends with a paragraph. But it utilizes bad words.
 ## Wrapping up
 
 This is the end. There's no conclusion section.
-

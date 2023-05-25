@@ -17,12 +17,17 @@ swap:
   advanced visibility: Advanced Visibility
   archival: Archival
   child workflow execution: Child Workflow Execution
+  codec server: Codec Server
   continue-as-new: Continue-As-New
   data converter: Data Converter
   event history: Event History
+  frontend service: Frontend Service
   grpc: gRPC
   '\bheartbeat\b': Heartbeat
-  heartbeating: Heartbeating
+  #heartbeating: Heartbeating
+  heartbeat timeout: Heartbeat Timeout
+  history service: History Service
+  history shard: History Shard
   id: Id
   ID: Id
   IDs: Ids
@@ -30,6 +35,7 @@ swap:
   list filters: List Filters
   local activity: Local Activity
   local activities: Local Activities
+  matching service: Matching Service
   namespace: Namespace
   namespaces: Namespaces
   parent close policy: Parent Close Policy
@@ -46,8 +52,10 @@ swap:
   signals: Signals
   standard visibility: Standard Visibility
   start-to-close timeout: Start-To-Close Timeout
+  state transition: State Transition
   temporal server: Temporal Server
   temporal cluster: Temporal Cluster
+  task: Task
   task queue: Task Queue
   task queues: Task Queues
   task token: Task Token
@@ -56,10 +64,15 @@ swap:
   temporal platform: Temporal Platform
   temporal sdk: Temporal SDK
   temporal sdks: Temporal SDKs
+  temporal server: Temporal Server
   '\bworker\b': Worker
   '\bworkflow\b': Workflow
   timer: Timer
   timers: Timers
+  web ui: Web UI
+  worker: Worker
+  workers: Workers
+  worker service: Worker Service
   workflow: Workflow
   workflows: Workflows
   workflow definition: Workflow Definition
