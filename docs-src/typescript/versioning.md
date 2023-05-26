@@ -9,7 +9,7 @@ tags:
 
 Versioning (known as "patching" in TypeScript) lets you update Workflow Definitions without disrupting current long-running Workflows.
 
-<!-- Ported from C:\Users\xyhw\source\repos\documentation\docs-src\typescript\patching.md -->
+<!-- Ported from \docs-src\typescript\patching.md -->
 
 ### Alternatives
 
