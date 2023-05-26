@@ -16,7 +16,7 @@ toc_max_heading_level: 4
 
 In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
 
-### Debug in a development production
+### Debug in a production environment
 
 You can debug production Workflows using:
 

@@ -22,6 +22,10 @@
     {
       "type": "h3",
       "id": "typescript/debug-environment-production"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/debug-with-a-debugger"
     }
   ]
 }

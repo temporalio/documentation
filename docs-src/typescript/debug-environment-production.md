@@ -1,8 +1,8 @@
 ---
 id: debug-environment-production
-title: How to debug in a development production
+title: How to debug in a production environment
 description: Debug production Workflows using the Web UI, tctl, Replays, Tracing, or Logging.
-sidebar_label: Debug in a development production
+sidebar_label: Debug in a production environment
 tags:
   - guide-context
 ---
@@ -11,7 +11,7 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
+- [Replay](/dev-guide/typescript/testing#replay)
 - [Tracing](/typescript/tracing)
 - [Logging](/typescript/logging)
 
