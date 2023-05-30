@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 09:35:49 AM -0600
+Last assembled: Tuesday May 30 2023 16:51:41 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-75 guide configurations found.
+77 guide configurations found.
 
-1429 information nodes found.
+1430 information nodes found.
 
-1172 information nodes are attached to guides.
+1175 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -342,6 +342,8 @@ concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converte
 
 concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
 
+prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
+
 concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-type -> #activity-type
@@ -443,8 +445,6 @@ concepts/what-is-a-default-data-converter -> #default-data-converter
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
-
-prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
@@ -557,6 +557,10 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
+
+java/versioning -> /dev-guide/java/versioning#
+
+typescript/versioning -> /dev-guide/typescript/versioning#
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
