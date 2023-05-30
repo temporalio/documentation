@@ -1,11 +1,6 @@
 ---
 id: versioning
-title: How to version Workflows in Java
-sidebar_label: Versioning
-description: Properly version your Workflows to avoid non-deterministic errors.
-tags:
-  - java
-  - workflow-versions
+title: Versioning
 ---
 
 As outlined in the _Workflow Implementation Constraints_ section, Workflow code has to be deterministic by taking the same
@@ -16,8 +11,7 @@ new code.
 
 ## Introduction to Versioning
 
-Because we design for potentially long-running Workflows at scale, versioning with Temporal works differently than with other workflow systems.
-We explain more in this optional 30-minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY).
+Because we design for potentially long running workflows at scale, versioning with Temporal works differently than with other workflow systems. We explain more in this optional 30 minute introduction: [https://www.youtube.com/watch?v=kkP899WxgzY](https://www.youtube.com/watch?v=kkP899WxgzY)
 
 ## Java Versioning API
 
