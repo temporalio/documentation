@@ -96,10 +96,11 @@ async function findSlug(fullIndex, nodeId) {
 }
 
 function genTagString(tags) {
-  let s = "";
+  let s = "_Tags: ";
   for (const tag of tags) {
-    s = `[${tag}](/tags/${tag}),`;
+    s = `${s}[${tag}](/tags/${tag}), `;
   }
-  s = s.slice(0, -1);
+  s = s.slice(0, -2);
+  s = `${s}_\n\n`;
   return s;
 }
