@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 12:17:45 PM -0600
+Last assembled: Tuesday May 30 2023 12:21:10 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -559,6 +559,8 @@ python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
 
 java/versioning -> /dev-guide/java/versioning#
+
+typescript/versioning -> /dev-guide/typescript/versioning#
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
