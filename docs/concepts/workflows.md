@@ -121,8 +121,12 @@ This feature is useful for Workflow Definition logic needs to be updated, but th
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
 - [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/go/versioning)
+  <<<<<<< HEAD
 - <a class="tdlp" href="/dev-guide/java/versioning#">How to version Workflow Definitions in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/versioning#">Learn more</a></span></span></a>
-- [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
+- # [How to version Workflow Definitions in TypeScript](https://legacy-documentation-sdks.temporal.io/typescript/patching)
+- [How to version Workflow Definitions in Java](https://legacy-documentation-sdks.temporal.io/java/versioning)
+- [How to version Workflow Definitions in TypeScript](/dev-guide/typescript/versioning)
+  >>>>>>> main
 
 ### Handling unreliable Worker Processes
 
