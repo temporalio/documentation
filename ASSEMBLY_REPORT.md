@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 08:46:36 AM -0600
+Last assembled: Tuesday May 30 2023 08:48:39 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -903,5 +903,7 @@ java/metrics -> /dev-guide/java/observability#metrics
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
+
+java/versioning -> /dev-guide/java/versioning#
 
 
