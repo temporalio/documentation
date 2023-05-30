@@ -1,7 +1,7 @@
 ---
 id: versioning
 title: Versioning
-description: Versioning lets you update Workflow Definitions without disrupting current long-running Workflows.
+description: Versioning lets you update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.
 sidebar_label: Versioning
 tags:
   - guide-context
