@@ -329,7 +329,7 @@ module.exports = {
       defer: true,
     },
     {
-      src: "/scripts/vectara.js",
+      src: "/scripts/temporal-iq.js",
       async: true,
       defer: true,
     },
