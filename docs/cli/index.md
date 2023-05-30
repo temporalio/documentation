@@ -16,7 +16,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 The Temporal CLI is a command-line tool that includes a distribution of a Temporal Cluster (<a class="tdlp" href="/clusters#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#temporal-server">Learn more</a></span></span></a>, persistence (SQLite), and the <a class="tdlp" href="/web-ui#">Temporal Web UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Web UI?</span><br /><br /><span class="tdlppd">The Temporal Web UI</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/web-ui#">Learn more</a></span></span></a>).
-The tool runs as a single process with zero runtime dependencies and supports persistence to disk and in-memory mode through SQLite.
 
 ### Available commands
 
@@ -31,9 +30,25 @@ The tool runs as a single process with zero runtime dependencies and supports pe
 
 ## Installation
 
-Temporal CLI can be installed through several different methods.
+### cURL
 
-For more information, see our guide to <a class="tdlp" href="/dev-guide/typescript/foundations#run-a-development-server">running a Development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/foundations#run-a-development-server">Learn more</a></span></span></a>.
+`curl -sSf https://temporal.download/cli.sh | sh`
+
+### Homebrew
+
+`brew install temporal`
+
+### Manual
+
+1. Download the version for your OS and architecture:
+   - [Linux amd64](https://temporal.download/cli/archive/latest?platform=linux&arch=amd64)
+   - [Linux arm64](https://temporal.download/cli/archive/latest?platform=linux&arch=arm64)
+   - [macOS amd64](https://temporal.download/cli/archive/latest?platform=darwin&arch=amd64)
+   - [macOS arm64](https://temporal.download/cli/archive/latest?platform=darwin&arch=arm64) (Apple silicon)
+   - [Windows amd64](https://temporal.download/cli/archive/latest?platform=windows&arch=amd64)
+   - [Windows arm64](https://temporal.download/cli/archive/latest?platform=windows&arch=arm64)
+2. Extract the downloaded archive.
+3. Add the `temporal` binary to your PATH. (`temporal.exe` for Windows)
 
 ## Starting the Temporal Server
 
@@ -45,16 +60,202 @@ temporal server start-dev
 ```
 
 At this point you should have a server running on `localhost:7233` and a web interface at <http://localhost:8233>.
-A default Namespace has also been created.
 
-Run individual commands to interact with the local Temporal Server.
+By default, it doesn’t persist your data—if you start a Workflow, Ctrl-C, and run the command again, your Workflow will be gone.
+
+If you'd like your Workflows to be saved, use the `--db-filename` flag:
 
 ```bash
-temporal operator namespace list
-temporal workflow list
+temporal server start-dev --db-filename temporal.db
 ```
 
-## Configuration
+## Interacting with the Server
+
+In another terminal, you can run commands to interact with the Server. This command starts a Workflow:
+
+```bash
+$ temporal workflow start \
+  --task-queue hello-world \
+  --type MyWorkflow \
+  --workflow-id 123 \
+  --input 456
+
+Running execution:
+  WorkflowId                                   123
+  RunId       357074e4-0dd8-4c44-8367-d92536dd0943
+  Type        MyWorkflow
+  Namespace   default
+  TaskQueue   hello-world
+  Args        [456]
+```
+
+The shorthand options are:
+
+```bash
+temporal workflow start -t hello-world --type MyWorkflow -w 123 -i 456
+```
+
+You can also list and describe Workflows:
+
+```bash
+$ temporal workflow list
+
+  Status   WorkflowId     Name       StartTime
+  Running         123  MyWorkflow  14 seconds ago
+
+$ temporal workflow describe --workflow-id 123
+
+{
+  "executionConfig": {
+    "taskQueue": {
+      "name": "hello-world",
+      "kind": "Normal"
+    },
+    "workflowExecutionTimeout": "0s",
+    "workflowRunTimeout": "0s",
+    "defaultWorkflowTaskTimeout": "10s"
+  },
+  "workflowExecutionInfo": {
+    "execution": {
+      "workflowId": "123",
+      "runId": "357074e4-0dd8-4c44-8367-d92536dd0943"
+    },
+    "type": {
+      "name": "MyWorkflow"
+    },
+    "startTime": "2023-04-15T06:42:31.191137Z",
+    "status": "Running",
+    "historyLength": "2",
+    "executionTime": "2023-04-15T06:42:31.191137Z",
+    "memo": {
+
+    },
+    "autoResetPoints": {
+
+    },
+    "stateTransitionCount": "1"
+  },
+  "pendingWorkflowTask": {
+    "state": "Scheduled",
+    "scheduledTime": "2023-04-15T06:42:31.191173Z",
+    "originalScheduledTime": "2023-04-15T06:42:31.191173Z",
+    "attempt": 1
+  }
+}
+```
+
+When listing, you can get more Workflow fields and output in JSON:
+
+```bash
+$ temporal workflow list --fields long --output json
+
+[
+  {
+    "execution": {
+      "workflow_id": "123",
+      "run_id": "357074e4-0dd8-4c44-8367-d92536dd0943"
+    },
+    "type": {
+      "name": "MyWorkflow"
+    },
+    "start_time": "2023-04-15T06:42:31.191137Z",
+    "status": 1,
+    "execution_time": "2023-04-15T06:42:31.191137Z",
+    "memo": {},
+    "task_queue": "hello-world"
+  }
+]
+```
+
+Filter out just the type with [jq](https://stedolan.github.io/jq/):
+
+```bash
+$ temporal workflow list --fields long -o json | jq '.[].type.name'
+
+"OtherWorkflow"
+"MyWorkflow"
+"MyWorkflow"
+```
+
+And count how many Workflows of each type you have:
+
+```bash
+$ temporal workflow list --fields long -o json | jq '.[].type.name' | uniq -c
+
+   1 "OtherWorkflow"
+   2 "MyWorkflow"
+```
+
+To see what else you can do to Workflows, run `temporal workflow` or visit [CLI ▶️ workflow](/cli/workflow).
+
+To see the list of top-level commands, run `temporal` or visit [Available commands](#available-commands).
+
+## Environments
+
+So far, the CLI has been talking to the Server at the default address, `localhost:7233`. To talk to another Server, like a production namespace on Temporal Cloud:
+
+1. Create an environment named `prod`.
+2. Pass `--env prod` to commands, like `temporal workflow list --env prod`.
+
+To create a new environment, start setting its properties:
+
+```bash
+temporal env set prod.namespace production.f45a2
+temporal env set prod.address production.f45a2.tmprl.cloud:7233
+temporal env set prod.tls-cert-path /temporal/certs/prod.pem
+temporal env set prod.tls-key-path /temporal/certs/prod.key
+```
+
+Check that you set them correctly:
+
+```bash
+$ temporal env get prod
+
+  address        production.f45a2.tmprl.cloud:7233
+  namespace      production.f45a2
+  tls-cert-path  /temporal/certs/prod.pem
+  tls-key-path   /temporal/certs/prod.key
+```
+
+If they’re correct, then this shouldn’t log a connection error:
+
+```bash
+$ temporal workflow list --env prod
+```
+
+For the full list of properties you can set, see the below options:
+
+```bash
+$ temporal env set -h
+
+OPTIONS:
+   Client Options:
+
+   --address value                          The host and port (formatted as host:port) for the Temporal Frontend Service. [$TEMPORAL_CLI_ADDRESS]
+   --codec-auth value                       Sets the authorization header on requests to the Codec Server. [$TEMPORAL_CLI_CODEC_AUTH]
+   --codec-endpoint value                   Endpoint for a remote Codec Server. [$TEMPORAL_CLI_CODEC_ENDPOINT]
+   --context-timeout value                  An optional timeout for the context of an RPC call (in seconds). (default: 5) [$TEMPORAL_CONTEXT_TIMEOUT]
+   --env value                              Name of the environment to read environmental variables from. (default: "default")
+   --grpc-meta value [ --grpc-meta value ]  Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
+   --namespace value, -n value              Identifies a Namespace in the Temporal Workflow. (default: "default") [$TEMPORAL_CLI_NAMESPACE]
+   --tls-ca-path value                      Path to server CA certificate. [$TEMPORAL_CLI_TLS_CA]
+   --tls-cert-path value                    Path to x509 certificate. [$TEMPORAL_CLI_TLS_CERT]
+   --tls-disable-host-verification          Disables TLS host name verification if already enabled. (default: false) [$TEMPORAL_CLI_TLS_DISABLE_HOST_VERIFICATION]
+   --tls-key-path value                     Path to private certificate key. [$TEMPORAL_CLI_TLS_KEY]
+   --tls-server-name value                  Provides an override for the target TLS server name. [$TEMPORAL_CLI_TLS_SERVER_NAME]
+
+   Display Options:
+
+   --color value  when to use color: auto, always, never. (default: "auto")
+```
+
+For example, to set `--codec-endpoint`, you would do:
+
+```bash
+$ temporal env set prod.codec-endpoint localhost:3000
+```
+
+## Server configuration
 
 Use the help flag to see a full list of CLI options:
 
@@ -75,16 +276,6 @@ You can also register Namespaces with the following command:
 
 ```bash
 temporal operator namespace create foo
-```
-
-### Persistence modes
-
-By default, `temporal server start-dev` runs in an in-memory mode.
-
-To persist the state to a file on disk, use `--db-filename`:
-
-```bash
-temporal server start-dev --db-filename my_test.db
 ```
 
 ### Enable or disable Temporal UI
@@ -160,4 +351,18 @@ Bash auto-completion relies on `bash-completion`.
 Install the software with the steps provided in the [bash-completion README](https://github.com/scop/bash-completion#installation), or use your preferred package manager on your operating system.
 
 For more information, see [the Bash Completion page on Repology](https://repology.org/project/bash-completion/versions).
+
+### Aliases
+
+You can also add aliases to your `~/.bash_profile` such as:
+
+```bash
+alias t='temporal'
+alias tw='temporal workflow'
+alias ts='temporal server start-dev'
+alias tsdb='temporal server start-dev --db-filename ~/temporal.db'
+
+# send process to background so you can continue using the terminal
+alias tsbg='temporal server start-dev &> /dev/null & disown'
+```
 

@@ -155,8 +155,6 @@ git clone git@github.com:temporalio/sdk-go.git
 
 ### API reference
 
-Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
-
 The Temporal Go SDK API reference is published on [pkg.go.dev](https://pkg.go.dev/go.temporal.io/sdk).
 
 - Short link: [`t.mp/go-api`](https://t.mp/go-api)

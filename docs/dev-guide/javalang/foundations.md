@@ -165,8 +165,6 @@ Select an SDK version to see available scripts.
 
 ### API reference
 
-Each SDK has its own API reference. Select a programming language and follow the link to be taken to that reference page.
-
 The Temporal Java SDK API reference is published on [javadoc.io](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/index.html).
 
 - Short link: [`t.mp/java-api`](https://t.mp/java-api)
