@@ -1,18 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 12:35:14 PM -0600
+Last assembled: Tuesday May 30 2023 11:20:37 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 77 guide configurations found.
 
-1430 information nodes found.
+1434 information nodes found.
 
-1174 information nodes are attached to guides.
+1177 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -430,6 +430,8 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
+concepts/what-is-persistence -> #persistence
+
 concepts/what-is-a-history-shard -> #history-shard
 
 go/namespaces -> /dev-guide/go/features#namespaces
@@ -437,6 +439,8 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
+
+cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -901,6 +905,8 @@ go/metrics -> /dev-guide/go/observability#metrics
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 java/metrics -> /dev-guide/java/observability#metrics
 
