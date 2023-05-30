@@ -1,18 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 11:20:37 AM -0700
+Last assembled: Tuesday May 30 2023 16:51:41 PM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 77 guide configurations found.
 
-1434 information nodes found.
+1430 information nodes found.
 
-1177 information nodes are attached to guides.
+1175 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /clusters#visibility
+concepts/what-is-visibility -> /visibility#
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -342,6 +342,8 @@ concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converte
 
 concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
 
+prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
+
 concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-type -> #activity-type
@@ -430,8 +432,6 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
-concepts/what-is-persistence -> #persistence
-
 concepts/what-is-a-history-shard -> #history-shard
 
 go/namespaces -> /dev-guide/go/features#namespaces
@@ -440,15 +440,11 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
-cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
-
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
-
-prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
@@ -905,8 +901,6 @@ go/metrics -> /dev-guide/go/observability#metrics
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 java/metrics -> /dev-guide/java/observability#metrics
 
