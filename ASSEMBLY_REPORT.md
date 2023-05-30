@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 09:54:43 AM -0700
+Last assembled: Tuesday May 30 2023 12:35:14 PM -0600
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-76 guide configurations found.
+77 guide configurations found.
 
 1430 information nodes found.
 
-1173 information nodes are attached to guides.
+1174 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -557,6 +557,10 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
+
+java/versioning -> /dev-guide/java/versioning#
+
+typescript/versioning -> /dev-guide/typescript/versioning#
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
