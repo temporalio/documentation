@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Clusters.
 
-A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a>, combined with <a class="tdlp" href="#persistence">Persistence stores<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Persistence?</span><br /><br /><span class="tdlppd">Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a>, that together act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a>, combined with <a class="tdlp" href="#persistence">Persistence<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Persistence?</span><br /><br /><span class="tdlppd">Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> and <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> stores, that together act as a component of the Temporal Platform.
 
 - [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
@@ -271,6 +271,8 @@ Archival is not supported when running Temporal through Docker and is disabled b
 Cluster configuration is the setup and configuration details of your self-hosted Temporal Cluster, defined using YAML.
 You must define your Cluster configuration when setting up your Temporal Cluster.
 
+For details on using Temporal Cloud, see [Temporal Cloud documentation](/cloud).
+
 Cluster configuration is composed of two types of configurations: Static configuration and Dynamic configuration.
 
 ### Static configuration
@@ -284,20 +286,26 @@ Depending on how you want to deploy your self-hosted Temporal Cluster, your stat
 - TLS, Auth
 - Server log level
 - Metrics
-- Cluster Metadata
-- Dynamic Config Client
+- Cluster metadata
+- Dynamic config Client
 
 Static configuration values cannot be changed at runtime.
-Some values, such as Metrics configuration or Server log level can be changed in the static configuration but require restarting the Cluster for the changes to take effect.
+Some values, such as the Metrics configuration or Server log level can be changed in the static configuration but require restarting the Cluster for the changes to take effect.
 
 For details on static configuration keys, see [Cluster configuration reference](/references/configuration).
 
 ### Dynamic configuration
 
-Dynamic configuration is the ability to change the behavior of Temporal Server without having to redeploy the server images.
+Dynamic configuration are configuration keys that you can update in your Cluster setup without having to redeploy the server images.
 
 Some configuration fields are truly dynamic; that is, changes to those values take effect immediately.
 Other configuration fields require a server restart because they are checked only at server startup (such as thread pool size).
+Setting dynamic configuration for your Cluster is optional.
+
+All dynamic configuration keys provided by Temporal have default values that are used by the Cluster.
+You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.
+
+Use dynamic configuration keys to fine-tune your self-deployed Cluster setup.
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
 
@@ -374,16 +382,16 @@ Currently, we test with the following Prometheus and Grafana versions:
 
 Temporal Cloud emits metrics through a Prometheus HTTP API endpoint which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
-On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints. You can then set up your observability platform (such as Grafana) to use this as a datasource.
-
-Metrics reference:
+For details on Cloud metrics and setup, see:
 
 - [Temporal Cloud metrics reference](/cloud/how-to-monitor-temporal-cloud-metrics)
-- [Temporal Cluster OSS metrics reference](/references/cluster-metrics)
-
-For details on setting up metrics on Temporal Cloud and self-hosted Clusters, see:
-
 - [Set up Grafana with Temporal Cloud observability to view metrics](/kb/prometheus-grafana-setup-cloud#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana)
+
+On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints. You can then set up your observability platform (such as Grafana) to use this as a datasource.
+
+For details on self-hosted Cluster metrics and setup, see:
+
+- [Temporal Cluster OSS metrics reference](/references/cluster-metrics)
 - [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/kb/prometheus-grafana-setup)
 
 ## Multi-Cluster Replication

@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday May 24 2023 16:37:26 PM -0700
+Last assembled: Tuesday May 30 2023 11:06:03 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
 75 guide configurations found.
 
-1437 information nodes found.
+1432 information nodes found.
 
-1179 information nodes are attached to guides.
+1175 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -79,6 +79,8 @@ concepts/what-is-a-workflow-type -> /workflows#workflow-type
 concepts/what-is-a-run-id -> /workflows#run-id
 
 concepts/what-is-a-task-queue -> /tasks#task-queue
+
+concepts/what-is-a-state-transition -> /workflows#state-transition
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -678,8 +680,6 @@ cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-clusters/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
-
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 cli/cmd-options/name -> /cli/cmd-options#name
@@ -858,6 +858,8 @@ concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
+clusters/how-to-install-temporal-cli -> #run-a-development-server
+
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
@@ -907,7 +909,5 @@ java/metrics -> /dev-guide/java/observability#metrics
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
-
-concepts/what-is-a-state-transition -> /workflows#state-transition
 
 
