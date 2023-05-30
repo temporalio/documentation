@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 16 2023 15:14:13 PM -0700
+Last assembled: Tuesday May 30 2023 11:20:37 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -79,6 +79,8 @@ concepts/what-is-a-workflow-type -> /workflows#workflow-type
 concepts/what-is-a-run-id -> /workflows#run-id
 
 concepts/what-is-a-task-queue -> /tasks#task-queue
+
+concepts/what-is-a-state-transition -> /workflows#state-transition
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -428,6 +430,8 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
+concepts/what-is-persistence -> #persistence
+
 concepts/what-is-a-history-shard -> #history-shard
 
 go/namespaces -> /dev-guide/go/features#namespaces
@@ -676,8 +680,6 @@ cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-clusters/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
-
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
 cli/cmd-options/name -> /cli/cmd-options#name
@@ -856,6 +858,8 @@ concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
+clusters/how-to-install-temporal-cli -> #run-a-development-server
+
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
@@ -898,14 +902,12 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-concepts/what-is-cluster-configuration -> /clusters#dynamic-configuration
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 java/metrics -> /dev-guide/java/observability#metrics
 
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
-
-concepts/what-is-a-state-transition -> /workflows#state-transition
 
 

@@ -371,13 +371,15 @@ Use the access tokens to validate access and then return decoded payloads from t
 You can enable this by selecting **Pass access token** in your Codec Server endpoint interface where you add your endpoint.
 Enabling this option in the Temporal Cloud UI adds an authorization header to each request sent to the Codec Server endpoint that you set.
 
-In your Codec Server implementation, verify the signature on this access token (in your authorization header) against the JWKS endpoint provided to you. <!--Is this process defined? when a customer signs up for temporal cloud, do we provide them with the JWKS as part of the onboarding process?-->
-If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.
-The claims in the token provided from Temporal Cloud UI contain the following detail:
+In your Codec Server implementation, verify the signature on this access token (in your authorization header) against the JWKS endpoint provided to you.
 
-- `id`: Email identifier of the person requesting access to the payloads.
+<!--Is this process defined? when a customer signs up for temporal cloud, do we provide them with the JWKS as part of the onboarding process? also the JWKS endpoint is rate-limited - something we should call out when providing the link to users.-->
 
-Based on the identity information in the claims, you can set conditions in your Codec Server whether to return decoded payloads or just return the original encoded payloads.
+<!-- Commenting this for now.-->
+<!--If you want to unpack the claims in your token to add additional checks on whether the user has valid access to the Namespace and payloads they are trying to access, you can implement it using Auth0 SDKs, middleware, or one of the third-party libraries at JWT.io.-->
+
+The token provided from Temporal Cloud UI contains the email identifier of the person requesting access to the payloads.
+Based on the permissions you have provided to the user in your access control systems, set conditions in your Codec Server whether to return decoded payloads or just return the original encoded payloads.
 
 **Self-hosted Temporal Cluster**
 
