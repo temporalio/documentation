@@ -9,7 +9,7 @@ description: Set the deprecated_patch() function on the Workflow.
 
 ```python
 from temporalio import workflow
-# . . .
+# ...
 @workflow.defn
 class MyWorkflow:
     @workflow.run

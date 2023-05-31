@@ -12,5 +12,9 @@ Each Temporal SDK provides a [Data Converter](/concepts/what-is-a-data-converter
 
 For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-readiness/develop#data-encryption).
 
+#### Codec Server
+
 You can use a [Codec Server](/concepts/what-is-a-codec-server) with your custom Payload Codec to decode the data you see on your Web UI and CLI locally through remote endpoints.
 However, ensure that you consider all security implications of [remote data encoding](/concepts/what-is-remote-data-encoding) before using a Codec Server.
+
+For details on how to set up a Codec Server, see [Codec Server setup](/production-readiness/develop#codec-server-setup).
