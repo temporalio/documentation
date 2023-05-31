@@ -18,8 +18,8 @@ A single argument to the Activity is positional. Multiple arguments are not supp
 
 ```python
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run

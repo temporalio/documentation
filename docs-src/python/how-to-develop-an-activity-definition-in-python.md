@@ -12,8 +12,8 @@ Register the function as an Activity with a custom name through a decorator argu
 
 ```python
 from temporalio import activity
-# . . .
-# . . .
+# ...
+# ...
 @activity.defn(name="your_activity")
 async def your_activity(input: YourParams) -> str:
     return f"{input.greeting}, {input.name}!"

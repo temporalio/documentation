@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday May 30 2023 15:51:01 PM -0500
+Last assembled: Wednesday May 31 2023 11:45:30 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -340,6 +340,8 @@ concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converte
 
 concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
 
+prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
+
 concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-type -> #activity-type
@@ -441,8 +443,6 @@ concepts/what-is-a-default-data-converter -> #default-data-converter
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
-
-prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
