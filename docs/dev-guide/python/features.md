@@ -53,66 +53,50 @@ A <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-### Define Signal
-
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
-- The arguments must be <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
-
-To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
-
-```python
-@workflow.signal
-def your_signal(self, value: str) -> None:
-    self._signal = value
-```
-
-The [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) decorator defines a method as a Signal. Signals can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated.
-
-**Dynamic Signals**
-
-You can use `@workflow.signal(dynamic=True)`, which means all other unhandled Signals fall through to this.
-
-Your method parameters must be `self`, a string Signal name, and a `*args` variable argument parameter.
-
-```python
-@workflow.signal(dynamic=True)
-def signal_dynamic(self, name: str, *args: Any) -> None:
-    self._last_event = f"signal_dynamic {name}: {args[0]}"
-```
+- The arguments must be serializable.
+  To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
 
 **Customize name**
 
-Non-dynamic methods can only have positional arguments. Temporal suggests taking a single argument that is an
-object or data class of fields that can be added to as needed.
+Non-dynamic methods can only have positional arguments.
+Temporal suggests taking a single argument that is an object or data class of fields that can be added to as needed.
 
 Return values from Signal methods are ignored.
 
 You can have a name parameter to customize the Signal's name, otherwise it defaults to the unqualified method `__name__`.
 
-The following example sets a custom Signal name.
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/wf_signal_dacx.py">View source code</a>
 
 ```python
-@workflow.signal(name="Custom-Name")
-def signal(self, arg: str) -> None:
-    self._last_event = f"signal: {arg}"
+from temporalio import workflow
+# ...
+# ...
+    @workflow.signal
+    async def submit_greeting(self, name: str) -> None:
+        await self._pending_greetings.put(name)
+
+    @workflow.signal
+    def exit(self) -> None:
+# ...
+    @workflow.signal(name="Custom Signal Name")
+    async def custom_signal(self, name: str) -> None:
+        await self._pending_greetings.put(name)
 ```
-
-:::note
-
-You can either set the `name` or the `dynamic` parameter in a Signal's decorator, but not both.
-
-:::
-
-### Handle Signal
 
 Workflows listen for Signals by the Signal's name.
 
-To send a Signal to the Workflow, use the [`signal`](https://python.temporal.io/temporalio.client.workflowhandle#signal) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.workflowhandle) class.
+To send a Signal to the Workflow, use the [signal](https://python.temporal.io/temporalio.client.WorkflowHandle.html#signal) method from the [WorkflowHandle](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_dacx.py">View source code</a>
 
 ```python
-await handle.signal("some signal")
+from temporalio.client import Client
+# ...
+# ...
+    await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
 ```
 
 ### Send Signal from Client
@@ -127,13 +111,19 @@ To get the Workflow handle, you can use any of the following options.
 - Use the [get_workflow_handle_for()](https://python.temporal.io/temporalio.client.Client.html#get_workflow_handle_for) method to get a type-safe Workflow handle by its Workflow Id.
 - Use the [start_workflow()](https://python.temporal.io/temporalio.client.Client.html#start_workflow) to start a Workflow and return its handle.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_dacx.py">View source code</a>
+
 ```python
-async def your_function():
+from temporalio.client import Client
+# ...
+# ...
     client = await Client.connect("localhost:7233")
-    handle = client.get_workflow_handle_for(
-        "your-workflow-id",
+    handle = await client.start_workflow(
+        GreetingWorkflow.run,
+        id="your-greeting-workflow",
+        task_queue="signal-tq",
     )
-    await handle.signal()
+    await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
 ```
 
 ### Send Signal from Workflow
@@ -145,22 +135,26 @@ When an External Signal is sent:
 - A [SignalExternalWorkflowExecutionInitiated](/references/events#signalexternalworkflowexecutioninitiated) Event appears in the sender's Event History.
 - A [WorkflowExecutionSignaled](/references/events#workflowexecutionsignaled) Event appears in the recipient's Event History.
 
-Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for) to get a typed Workflow handle to an existing Workflow by its identifier. Use [`get_external_workflow_handle`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle) when you don't know the type of the other Workflow.
-
-```python
-@workflow.defn
-class MyWorkflow:
-    @workflow.run
-    async run(self) -> None:
-        handle = workflow.get_external_workflow_handle_for(OtherWorkflow.run, "other-workflow-id")
-        await handle.signal(OtherWorkflow.other_signal, "other signal arg")
-```
+Use [`get_external_workflow_handle_for`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle_for) to get a typed Workflow handle to an existing Workflow by its identifier.
+Use [`get_external_workflow_handle`](https://python.temporal.io/temporalio.workflow.html#get_external_workflow_handle) when you don't know the type of the other Workflow.
 
 :::note
 
 The Workflow Type passed is only for type annotations and not for validation.
 
 :::
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_external_wf_dacx.py">View source code</a>
+
+```python
+# ...
+@workflow.defn
+class WorkflowB:
+    @workflow.run
+    async def run(self) -> None:
+        handle = workflow.get_external_workflow_handle_for(WorkflowA.run, "workflow-a")
+        await handle.signal(WorkflowA.your_signal, "signal argument")
+```
 
 ### Signal-With-Start
 
@@ -169,18 +163,22 @@ It takes a Workflow Id, Workflow arguments, a Signal name, and Signal arguments.
 
 If there's a Workflow running with the given Workflow Id, it will be signaled. If there isn't, a new Workflow will be started and immediately signaled.
 
-To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal, instead of using a traditional Workflow start.
+To send a Signal-With-Start in Python, use the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method and pass the `start_signal` argument with the name of your Signal.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_with_start_dacx.py">View source code</a>
 
 ```python
+from temporalio.client import Client
+# ...
+# ...
 async def main():
-    client = await Client.connect("localhost:7233", namespace="your-namespace")
-
-    handle = await client.start_workflow(
-        "your-workflow-name",
-        "some arg",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        start_signal="your-signal-name",
+    client = await Client.connect("localhost:7233")
+    await client.start_workflow(
+        GreetingWorkflow.run,
+        id="your-signal-with-start-workflow",
+        task_queue="signal-tq",
+        start_signal="submit_greeting",
+        start_signal_args=["User Signal with Start"],
     )
 ```
 
@@ -197,41 +195,24 @@ A Query has a name and can have arguments.
 
 To define a Query, set the Query decorator [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) on the Query function inside your Workflow.
 
-```python
-@workflow.query
-async def current_greeting(self) -> str:
-    return self._current_greeting
-```
-
-The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
-
-**Dynamic Queries**
-
-You can use `@workflow.query(dynamic=True)`, which means all other unhandled Queries fall through to this.
-
-```python
-@workflow.query(dynamic=True)
-def query_dynamic(self, name: str, *args: Any) -> str:
-    return f"query_dynamic {name}: {args[0]}"
-```
-
 **Customize names**
 
 You can have a name parameter to customize the Query's name, otherwise it defaults to the unqualified method `__name__`.
-
-The following example sets a custom Query name.
-
-```python
-@workflow.query(name="Custom-Name")
-def query(self, arg: str) -> None:
-    self._last_event = f"query: {arg}"
-```
 
 :::note
 
 You can either set the `name` or the `dynamic` parameter in a Query's decorator, but not both.
 
 :::
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py">View source code</a>
+
+```python
+# ...
+    @workflow.query
+    def greeting(self) -> str:
+        return self._greeting
+```
 
 ### Handle Query
 
@@ -242,8 +223,11 @@ Including such logic causes unexpected behavior.
 
 To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py">View source code</a>
+
 ```python
-await handle.query("some query")
+# ...
+    result = await handle.query(GreetingWorkflow.greeting)
 ```
 
 ### Send Query
@@ -252,8 +236,11 @@ Queries are sent from a Temporal Client.
 
 To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py">View source code</a>
+
 ```python
-await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
+# ...
+    result = await handle.query(GreetingWorkflow.greeting)
 ```
 
 ## Workflow timeouts
@@ -642,7 +629,7 @@ Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/start_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 
@@ -673,7 +660,7 @@ method on the Schedule Handle.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/backfill_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -717,7 +704,7 @@ You can get a complete list of the attributes of the Scheduled Workflow Executio
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/describe_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -739,7 +726,7 @@ If a schedule is added or deleted, it may not be available in the list immediate
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/list_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main() -> None:
     client = await Client.connect("localhost:7233")
     async for schedule in await client.list_schedules():
@@ -756,7 +743,7 @@ You can pass a `note` to the `pause()` method to provide a reason for pausing th
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/pause_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -775,7 +762,7 @@ To trigger a Scheduled Workflow Execution in Python, use the [trigger()](https:/
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/trigger_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -796,7 +783,7 @@ The following example updates the Schedule to use a new argument.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/update_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
     async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
         schedule_action = input.description.schedule.action
 

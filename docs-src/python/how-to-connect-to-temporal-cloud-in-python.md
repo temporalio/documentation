@@ -13,8 +13,8 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 
 ```python
 from temporalio.client import Client, TLSConfig
-# . . .
-# . . .
+# ...
+# ...
 async def main():
     with open("client-cert.pem", "rb") as f:
         client_cert = f.read()
