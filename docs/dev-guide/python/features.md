@@ -7,10 +7,10 @@ description: The Features section of the Temporal Developer's guide provides bas
 toc_max_heading_level: 4
 tags:
 - guide-context
-- developer-guide
-- sdk
 - python
 - how-to
+- developer-guide
+- sdk
 - timers
 - sleep
 ---

@@ -35,7 +35,7 @@ global:
     broadcastAddress: "127.0.0.1"
   metrics:
     prometheus:
-      framework: "opentelemetry"
+      framework: "tally"
       listenAddress: "127.0.0.1:8000"
 ```
 

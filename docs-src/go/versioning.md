@@ -1,6 +1,10 @@
 ---
 id: versioning
 title: Versioning
+description: Use versioning to safely update your Workflow Definition code.
+sidebar_label: Versioning
+tags:
+  - guide-context
 ---
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
