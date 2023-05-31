@@ -1,6 +1,11 @@
 ---
 id: versioning
 title: Versioning
+description: Version Workflows in Go
+sidebar_label: Versioning
+tags:
+  - go
+  - versioning
 ---
 
 The definition code of a Temporal Workflow must be deterministic because Temporal uses event sourcing
