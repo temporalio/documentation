@@ -1,7 +1,7 @@
 ---
 id: versioning
 title: Versioning
-description: Use versioning to safely update your Workflow Definition code.
+description: Version Workflows in Go
 sidebar_label: Versioning
 tags:
   - go
