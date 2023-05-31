@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday May 31 2023 11:45:30 AM -0700
+Last assembled: Wednesday May 31 2023 16:35:57 PM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 78 guide configurations found.
 
 1430 information nodes found.
 
-1175 information nodes are attached to guides.
+1174 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -79,6 +79,8 @@ concepts/what-is-a-workflow-type -> /workflows#workflow-type
 concepts/what-is-a-run-id -> /workflows#run-id
 
 concepts/what-is-a-task-queue -> /tasks#task-queue
+
+concepts/what-is-a-state-transition -> /workflows#state-transition
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -556,6 +558,10 @@ python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
 
+java/versioning -> /dev-guide/java/versioning#
+
+typescript/versioning -> /dev-guide/typescript/versioning#
+
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
 concepts/what-is-an-activity -> /activities#
@@ -673,8 +679,6 @@ cli/cmd-options/reason -> /cli/cmd-options#reason
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
-
-clusters/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -854,6 +858,8 @@ concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
+clusters/how-to-install-temporal-cli -> #run-a-development-server
+
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
@@ -901,11 +907,5 @@ java/metrics -> /dev-guide/java/observability#metrics
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
-
-concepts/what-is-a-state-transition -> /workflows#state-transition
-
-java/versioning -> /dev-guide/java/versioning#
-
-typescript/versioning -> /dev-guide/typescript/versioning#
 
 
