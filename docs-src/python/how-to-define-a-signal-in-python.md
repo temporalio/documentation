@@ -9,7 +9,7 @@ A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
 - The arguments must be serializable.
-  To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside your Workflow.
+  To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
 
 **Customize name**
 
