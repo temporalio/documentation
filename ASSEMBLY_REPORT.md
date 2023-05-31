@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday May 31 2023 11:45:30 AM -0700
+Last assembled: Wednesday May 31 2023 12:40:19 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -8,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 1430 information nodes found.
 
-1174 information nodes are attached to guides.
+1173 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -342,8 +342,6 @@ concepts/what-is-a-custom-data-converter -> /dataconversion#custom-data-converte
 
 concepts/what-is-a-payload-converter -> /dataconversion#payload-converter
 
-prod-readiness-context/how-to-set-up-codec-server -> #codec-server-setup
-
 concepts/what-is-an-activity-definition -> #activity-definition
 
 concepts/what-is-an-activity-type -> #activity-type
@@ -445,6 +443,8 @@ concepts/what-is-a-default-data-converter -> #default-data-converter
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
+
+prod-readiness-context/how-to-set-up-codec-server -> #setting-codec-server-endpoints
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
 
@@ -557,10 +557,6 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
-
-java/versioning -> /dev-guide/java/versioning#
-
-typescript/versioning -> /dev-guide/typescript/versioning#
 
 concepts/what-is-a-temporal-application -> /temporal#temporal-application
 
@@ -679,6 +675,8 @@ cli/cmd-options/reason -> /cli/cmd-options#reason
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
+
+clusters/how-to-install-temporal-cli -> /dev-guide/typescript/foundations#run-a-development-server
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
 
@@ -858,8 +856,6 @@ concepts/what-is-a-task-token -> /activities#task-token
 
 cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
 
-clusters/how-to-install-temporal-cli -> #run-a-development-server
-
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
@@ -907,5 +903,9 @@ java/metrics -> /dev-guide/java/observability#metrics
 python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
+
+java/versioning -> /dev-guide/java/versioning#
+
+typescript/versioning -> /dev-guide/typescript/versioning#
 
 
