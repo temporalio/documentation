@@ -45,18 +45,11 @@ A <a class="tdlp" href="/workflows#signal">Signal<span class="tdlpiw"><img src="
 Signals are defined in your code and handled in your Workflow Definition.
 Signals can be sent to Workflow Executions from a Temporal Client or from another Workflow Execution.
 
-### Define Signal
-
-A Signal has a name and can have arguments.
-
-- The name, also called a Signal type, is a string.
-- The arguments must be <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
-
 A Signal has a name and can have arguments.
 
 - The name, also called a Signal type, is a string.
 - The arguments must be serializable.
-  To define a Signal, set the Signal decorator `@workflow.signal` on the Signal function inside your Workflow.
+  To define a Signal, set the Signal decorator [`@workflow.signal`](https://python.temporal.io/temporalio.workflow.html#signal) on the Signal function inside your Workflow.
 
 **Customize name**
 
@@ -84,10 +77,6 @@ from temporalio import workflow
     async def custom_signal(self, name: str) -> None:
         await self._pending_greetings.put(name)
 ```
-
-### Handle Signal
-
-Workflows listen for Signals by the Signal's name.
 
 Workflows listen for Signals by the Signal's name.
 
@@ -198,41 +187,24 @@ A Query has a name and can have arguments.
 
 To define a Query, set the Query decorator [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) on the Query function inside your Workflow.
 
-```python
-@workflow.query
-async def current_greeting(self) -> str:
-    return self._current_greeting
-```
-
-The [`@workflow.query`](https://python.temporal.io/temporalio.workflow.html#query) decorator defines a method as a Query. Queries can be asynchronous or synchronous methods and can be inherited; however, if a method is overridden, the override must also be decorated. Queries should return a value.
-
-**Dynamic Queries**
-
-You can use `@workflow.query(dynamic=True)`, which means all other unhandled Queries fall through to this.
-
-```python
-@workflow.query(dynamic=True)
-def query_dynamic(self, name: str, *args: Any) -> str:
-    return f"query_dynamic {name}: {args[0]}"
-```
-
 **Customize names**
 
 You can have a name parameter to customize the Query's name, otherwise it defaults to the unqualified method `__name__`.
-
-The following example sets a custom Query name.
-
-```python
-@workflow.query(name="Custom-Name")
-def query(self, arg: str) -> None:
-    self._last_event = f"query: {arg}"
-```
 
 :::note
 
 You can either set the `name` or the `dynamic` parameter in a Query's decorator, but not both.
 
 :::
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py">View source code</a>
+
+```python
+# ...
+    @workflow.query
+    def greeting(self) -> str:
+        return self._greeting
+```
 
 ### Handle Query
 
@@ -243,8 +215,11 @@ Including such logic causes unexpected behavior.
 
 To send a Query to the Workflow, use the [`query`](https://python.temporal.io/temporalio.client.WorkflowHandle.html#query) method from the [`WorkflowHandle`](https://python.temporal.io/temporalio.client.WorkflowHandle.html) class.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py">View source code</a>
+
 ```python
-await handle.query("some query")
+# ...
+    result = await handle.query(GreetingWorkflow.greeting)
 ```
 
 ### Send Query
@@ -253,8 +228,11 @@ Queries are sent from a Temporal Client.
 
 To send a Query to a Workflow Execution from Client code, use the `query()` method on the Workflow handle.
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py">View source code</a>
+
 ```python
-await my_workflow_handle.query(MyWorkflow.my_query, "my query arg")
+# ...
+    result = await handle.query(GreetingWorkflow.greeting)
 ```
 
 ## Workflow timeouts
