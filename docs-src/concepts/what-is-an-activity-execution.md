@@ -19,7 +19,7 @@ An Activity Execution is the full chain of [Activity Task Executions](/concepts/
 ![Activity Execution](/diagrams/activity-execution.svg)
 
 By default, an Activity Execution has no time limit.
-Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and [retry policies](/concepts/what-is-a-retry-policy) can be customized.
+[Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and [retry policies](/concepts/what-is-a-retry-policy) can be customized.
 
 If an Activity Execution fails (because it exhausted all retries, threw a [non-retryable error](/concepts/what-is-a-retry-policy#non-retryable-errors), or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
