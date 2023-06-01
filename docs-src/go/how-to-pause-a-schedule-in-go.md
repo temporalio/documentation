@@ -11,7 +11,7 @@ Pausing a Schedule halts all future Workflow Runs.
 Pause a Schedule by setting `State.Paused` to `true`, or by using `Pause()` on the `ScheduleHandle`.
 
 Unpausing a Schedule allows the Workflow to execute as planned.
-To unpause a Schedule, use `Unpause()` on the `ScheduleHandle`.
+To unpause a Schedule, use `Unpause()` on the `ScheduleHandle`, or set `State.Paused` to `false`.
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/pause/main_dacx.go">View source code</a>
 
