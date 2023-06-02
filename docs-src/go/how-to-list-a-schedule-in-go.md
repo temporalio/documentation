@@ -7,7 +7,7 @@ description: List all Schedules in a Namespace in Go.
 
 The `List` action returns a list of existing [Schedules](/concepts/what-is-a-schedule) and their respective Schedule IDs.
 
-To return information on all Schedules, use `ScheduleClient.List()`.
+To return information on all Schedules, use [`ScheduleClient.List()`](https://pkg.go.dev/go.temporal.io/sdk@v1.23.0/internal#ScheduleClient).
 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/list/main_dacx.go">View source code</a>
 
