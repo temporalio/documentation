@@ -6,7 +6,7 @@
     "sidebar_label": "Commands",
     "description": "A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.",
     "toc_max_heading_level": 4,
-    "add_tabs_support": true,
+    "add_tabs_support": false,
     "sections": [
         {
             "type": "p",
