@@ -19,11 +19,19 @@ The Temporal Client can then be used to both Heartbeat Activity Execution progre
 
 #### When to use Async Completion
 
-The intended use-case for this feature is when an external system has the final result of a computation, started by an Activity.
+The intended use case for this feature is when an external system has the final result of a computation, started by an Activity.
+However, often it works better for the Activity to notify the external system, complete normally, and then wait in the Workflow for a [Signal](/concepts/what-is-a-signal) from the external system.
 
-Consider using Asynchronous Activities instead of Signals if the external process is unreliable and might fail to send critical status updates through a Signal.
+Consider using Async Completion when
 
-Consider using [Signals](/concepts/what-is-a-signal) as an alternative to Asynchronous Activities to return data back to a Workflow Execution if there is a human in the process loop.
-The reason is that a human in the loop means multiple steps in the process.
-The first is the Activity Function that stores state in an external system and at least one other step where a human would “complete” the activity.
-If the first step fails, you want to detect that quickly and retry instead of waiting for the entire process, which could be significantly longer when humans are involved.
+- the external process is unreliable and might fail to send critical status updates through a Signal
+- you want the external process to Heartbeat or receive Cancellation
+
+Consider using Signals when you want to immediatly retry a failure to notify the external system.
+
+Immediate retries are helpful when the external process might take long time.
+For example, if the external process is waiting for a human to review something and respond, and may take days, then if you set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one week on an Activity with Async Completion, it's possible that the Activity fails to notify the external system and doesn't throw an error (for example, if the Worker dies).
+In this case, the Activity will be retried in a week.
+It would be better to be able to retry the Activity immediately.
+If the Activity completes normally after notifying the external system, it can have a short Start-To-Close Timeout of 10 seconds (for example, if the external system is notified by an API call that should never take more than 10 seconds).
+In this case, if the notification fails, it will be retried after 10 seconds.
