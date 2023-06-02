@@ -24,4 +24,3 @@ The following modifier controls the behavior of the command.
 ##### `--disable-pop-up`
 
 Disables a browser pop-up if set to `true`. The default value is `false`.
-

@@ -525,7 +525,7 @@ There are three steps to follow:
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 
-1. Provide the external system with a Task Token to complete the Activity Execution.
+4. Provide the external system with a Task Token to complete the Activity Execution.
    To do this, use the `GetInfo()` API from the `go.temporal.io/sdk/activity` package.
 
 ```go
@@ -1246,4 +1246,3 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
     converter.NewJSONPayloadConverter(),
   )
   ```
-

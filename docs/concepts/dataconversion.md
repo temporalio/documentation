@@ -502,4 +502,3 @@ codec:
 ```
 
 Start the UI server to use this endpoint on the Web UI for decoding data in Workflow Executions in the specified Namespace.
-

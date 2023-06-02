@@ -793,6 +793,7 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 ## Schedule
 
 :::tip Support, stability, and dependency info
+
 - Introduced in Temporal Server version 1.17.0
 - Available in tctl v1.17 and Temporal CLI
 - Available in Temporal Cloud via tctl and CLI
@@ -992,4 +993,3 @@ Each State Transition is recorded in a persistence store.
 Some operations, such as <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a>, require only one State Transition each.
 Most operations require multiple State Transitions.
 For example, a simple Workflow with two sequential <a class="tdlp" href="/tasks#activity-task">Activity Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task">Learn more</a></span></span></a> (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
-
