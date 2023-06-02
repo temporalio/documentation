@@ -38,6 +38,8 @@ This behavior allows you to test the Activity in isolation by calling it directl
 
 ## Test Workflows
 
+
+
 ### Mock Activities
 
 Mock the Activity invocation when unit testing your Workflows.
@@ -193,3 +195,4 @@ if (getenv('RUN_TEMPORAL_TEST_SERVER') !== false) {
 ```gitignore
 temporal-test-server
 ```
+
