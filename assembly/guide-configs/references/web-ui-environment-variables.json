@@ -1,0 +1,16 @@
+{
+    "file_name": "web-ui-environment-variables.md",
+    "id": "web-ui-environment-variables",
+    "file_dir": "references",
+    "title": "Temporal Web UI environment variables reference",
+    "sidebar_label": "Web UI env vars",
+    "description": "How to set  environmental variables for Temporal Web UI.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "references/web-ui-environment-variables"
+        }
+    ]
+}

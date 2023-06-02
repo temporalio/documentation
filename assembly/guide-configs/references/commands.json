@@ -1,0 +1,16 @@
+{
+    "file_name": "commands.md",
+    "id": "commands",
+    "file_dir": "references",
+    "title": "Temporal Commands reference",
+    "sidebar_label": "Commands",
+    "description": "A Command is a requested action issued by a Worker to the Temporal Cluster after a Workflow Task Execution completes.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "references/commands"
+        }
+    ]
+}

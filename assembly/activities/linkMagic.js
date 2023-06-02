@@ -23,7 +23,7 @@ export async function linkMagic(config) {
   matchedGuides.cfgs = updatedGuides;
   console.log("writing matcheded guides again...");
   await fs.writeJSON(matchedGuidesPath, matchedGuides);
-  await linkMagicReferences(config, matchedGuides.full_index);
+  // await linkMagicReferences(config, matchedGuides.full_index);
   const linkMappingPath = path.join(config.root_dir, config.temp_write_dir, config.link_mapping_file_name);
   await fs.writeJSON(linkMappingPath, linkMapping);
   return;
@@ -54,30 +54,30 @@ async function replaceWithLocalRefs(guideConfig, fullIndex) {
   return guideConfig;
 }
 
-async function linkMagicReferences(config, link_index) {
-  console.log("link magic on references...");
-  const sourceNodesPath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
-  let sourceNodes = await fs.readJSON(sourceNodesPath);
-  let isReference = false;
-  for (const node of sourceNodes) {
-    if (node.tags !== undefined) {
-      tagloop: for (const tag of node.tags) {
-        if (tag == "reference") {
-          node.markdown_content = await parseAndReplace(node.markdown_content, link_index, "");
-          isReference = true;
-          break tagloop;
-        }
-      }
-    }
-    if (isReference) {
-      const refString = await genRefString(node);
-      const refWritePath = path.join(config.root_dir, config.content_write_dir, `${node.id}.md`);
-      await fs.writeFile(refWritePath, refString);
-    }
-    isReference = false;
-  }
-  return;
-}
+// async function linkMagicReferences(config, link_index) {
+//   console.log("link magic on references...");
+//   const sourceNodesPath = path.join(config.root_dir, config.temp_write_dir, config.source_info_nodes_file_name);
+//   let sourceNodes = await fs.readJSON(sourceNodesPath);
+//   let isReference = false;
+//   for (const node of sourceNodes) {
+//     if (node.tags !== undefined) {
+//       tagloop: for (const tag of node.tags) {
+//         if (tag == "reference") {
+//           node.markdown_content = await parseAndReplace(node.markdown_content, link_index, "");
+//           isReference = true;
+//           break tagloop;
+//         }
+//       }
+//     }
+//     if (isReference) {
+//       const refString = await genRefString(node);
+//       const refWritePath = path.join(config.root_dir, config.content_write_dir, `${node.id}.md`);
+//       await fs.writeFile(refWritePath, refString);
+//     }
+//     isReference = false;
+//   }
+//   return;
+// }
 
 async function genRefString(node) {
   const parts = node.id.split("/");

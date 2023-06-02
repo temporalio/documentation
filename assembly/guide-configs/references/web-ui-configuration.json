@@ -1,0 +1,16 @@
+{
+    "file_name": "web-ui-configuration.md",
+    "id": "web-ui-configuration",
+    "file_dir": "references",
+    "title": "Temporal Web UI configuration reference",
+    "sidebar_label": "Web UI configuration",
+    "description": "The Temporal Web UI Server uses a configuration file for many of the UI's settings.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "references/web-ui-configuration"
+        }
+    ]
+}

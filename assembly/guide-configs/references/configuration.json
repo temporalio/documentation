@@ -1,0 +1,16 @@
+{
+    "file_name": "configuration.md",
+    "id": "configuration",
+    "file_dir": "references",
+    "title": "Temporal Cluster configuration reference",
+    "sidebar_label": "Commands",
+    "description": "Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "references/configuration"
+        }
+    ]
+}
