@@ -389,7 +389,7 @@ Based on the permissions you have provided to the user in your access control sy
 
 **Self-hosted Temporal Cluster**
 
-On self-hosted Temporal Clusters, configure [authorization in the Web UI configuration](/references/web-ui-configuration#auth) in your Temporal Cluster setup.
+On self-hosted Temporal Clusters, configure <a class="tdlp" href="/references/web-ui-configuration#auth">authorization in the Web UI configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#auth">Learn more</a></span></span></a> in your Temporal Cluster setup.
 
 With this enabled, you can pass access tokens to your Codec Server and validate the requests from the Web UI to the Codec Server endpoints that you set.
 
@@ -494,7 +494,7 @@ This sets the codec endpoint on the currently selected Namespace.
 Refresh your Workflow Execution page to see encoded/decoded data.
 
 In self-hosted Temporal Clusters where you set up your UI Server, you can also set the codec endpoint in the UI server configuration file.
-Specify the codec endpoint in the UI server [configuration file](/references/web-ui-configuration#codec) as shown in the following example.
+Specify the codec endpoint in the UI server <a class="tdlp" href="/references/web-ui-configuration#codec">configuration file<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Web UI configuration reference</span><br /><br /><span class="tdlppd">The Temporal Web UI Server uses a configuration file for many of the UI's settings.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/web-ui-configuration#codec">Learn more</a></span></span></a> as shown in the following example.
 
 ```yaml
 codec:
