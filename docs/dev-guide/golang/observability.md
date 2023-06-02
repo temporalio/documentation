@@ -40,7 +40,7 @@ This section covers features related to viewing the state of the application, in
 ## Metrics
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
-For a complete list of metrics capable of being emitted, see the [SDK metrics reference](/references/sdk-metrics).
+For a complete list of metrics capable of being emitted, see the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a>.
 
 Metrics can be scraped and stored in time series databases, such as:
 
@@ -63,7 +63,7 @@ client.Options{
 		}
 ```
 
-The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the [`WithCustomMetricsReporter`](/references/server-options#withcustommetricsreporter) API.
+The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the <a class="tdlp" href="/references/server-options#withcustommetricsreporter"> `WithCustomMetricsReporter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withcustommetricsreporter">Learn more</a></span></span></a> API.
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 

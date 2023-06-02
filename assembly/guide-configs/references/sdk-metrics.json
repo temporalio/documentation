@@ -1,0 +1,16 @@
+{
+    "file_name": "sdk-metrics.md",
+    "id": "sdk-metrics",
+    "file_dir": "references",
+    "title": "Temporal SDK metrics reference",
+    "sidebar_label": "SDK metrics",
+    "description": "The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.",
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+        {
+            "type": "p",
+            "id": "references/sdk-metrics"
+        }
+    ]
+}
