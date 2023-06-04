@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 02 2023 15:25:26 PM -0500
+Last assembled: Sunday June 04 2023 00:26:15 AM -0400
 
-Assembly Workflow Id: docs-full-assembly-djsanti
+Assembly Workflow Id: docs-full-assembly
 
-87 guide configurations found.
+88 guide configurations found.
 
-1439 information nodes found.
+1441 information nodes found.
 
-1182 information nodes are attached to guides.
+1193 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -378,6 +378,8 @@ concepts/what-is-a-schedule-to-start-timeout -> /activities#schedule-to-start-ti
 
 concepts/what-is-a-local-activity -> /activities#local-activity
 
+concepts/what-is-a-temporal-client -> /temporal#temporal-client
+
 references/web-ui-environment-variables -> /references/web-ui-environment-variables#temporaluienabled
 
 concepts/what-is-a-frontend-service -> /clusters#frontend-service
@@ -555,8 +557,6 @@ python/child-workflows -> /dev-guide/python/features#child-workflows
 typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
 
 concepts/what-is-a-worker-process -> /workers#worker-process
-
-concepts/what-is-a-temporal-client -> #temporal-client
 
 concepts/what-is-a-worker-program -> /workers#worker-program
 

@@ -1,0 +1,16 @@
+{
+  "file_name": "server-api.md",
+  "id": "server-api",
+  "file_dir": "references",
+  "title": "Temporal Server API reference",
+  "sidebar_label": "Server API",
+  "description": "You can interact with Temporal Server via one of its APIs.",
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "references/server-api"
+    }
+  ]
+}
