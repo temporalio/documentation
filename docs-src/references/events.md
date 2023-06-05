@@ -543,7 +543,7 @@ As no Event is generated when an Update is initially requested, this Event both 
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | protocol_instance_id                 | The Id of the instance of the Update protocol that is executing this Update.                                                                                           |
 | accepted_request_messge_id           | The Id of the request message sent by [Temporal Server](/concepts/what-is-the-temporal-server) to the [Worker](/concepts/what-is-a-worker).                            |
-| accepted_request_sequencing_event_id | The Id of the event after which this Update can be executed.                                                                                                           |
+| accepted_request_sequencing_event_id | The Id of the Event after which this Update can be executed.                                                                                                           |
 | accepted_request                     | The request input and metadata initially provided by the invoker of the Update and subsequently relayed by Temporal Server to the Worker for acceptance and execution. |
 
 ### WorkflowExecutionUpdateCompletedEvent
