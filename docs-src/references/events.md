@@ -537,7 +537,7 @@ This [Event](/concepts/what-is-an-event) type indicates that the Workflow [Searc
 ### WorkflowExecutionUpdateAcceptedEvent
 
 This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/workflows#workflow-execution) has accepted an [Update](/concepts/what-is-an-update) for execution.
-As no event is generated when an Update is initially requested, this event both indicates acceptance _and_ stores all of the original request input payload.
+As no Event is generated when an Update is initially requested, this Event both indicates acceptance _and_ stores all of the original request input payload.
 
 | Field                                | Description                                                                                                                                                            |
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
