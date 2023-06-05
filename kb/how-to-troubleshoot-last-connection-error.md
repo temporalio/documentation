@@ -4,7 +4,7 @@ title: Troubleshoot the "failed reaching server" error
 tags:
   - cloud
   - namespaces
-date: 2023-05-23T00:00:00Z
+date: 2023-06-05T00:00:00Z
 ---
 
 The message `Failed reaching server: last connection error` can often result from an expired TLS certificate or during the Server startup process, in which the Client requests reach the Server before the roles are fully initialized.

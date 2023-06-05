@@ -928,18 +928,4 @@ python/metrics -> /dev-guide/python/observability#metrics
 
 typescript/metrics -> /dev-guide/typescript/observability#metrics
 
-cloud/tcld/user/delete -> #delete
-
-cloud/tcld/user/get -> #get
-
-cloud/tcld/user/invite -> #invite
-
-cloud/tcld/user/list -> #list
-
-cloud/tcld/user/resend-invite -> #resend-invite
-
-cloud/tcld/user/set-account-role -> #set-account-role
-
-cloud/tcld/user/set-namespace-permissions -> #set-namespace-permissions
-
 
