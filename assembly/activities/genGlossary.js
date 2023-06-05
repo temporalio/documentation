@@ -7,6 +7,7 @@ title: Glossary
 description: The following terms have specific definitions within the context of the Temporal Platform.
 sidebar_label: Glossary
 sidebar_position: 11
+toc_max_heading_level: 4
 tags:
   - reference
 ---
@@ -41,6 +42,8 @@ async function getTerms(config, sourceNodes) {
           const term = {
             label: node.label,
             markdown_link: `[${node.label}](${slug})`,
+            description: node.description,
+            tags: node.tags ? node.tags : [],
           };
           terms.push(term);
           break tagloop;
@@ -54,7 +57,7 @@ async function getTerms(config, sourceNodes) {
 async function genGlossString(terms) {
   let glossStr = `${glossFrontmatter}\n\n`;
   for (const term of terms) {
-    glossStr = `${glossStr}- ${term.markdown_link}\n`;
+    glossStr = `${glossStr}#### ${term.markdown_link}\n${term.description}\n\n${genTagString(term.tags)}\n`;
   }
   return glossStr;
 }
@@ -90,4 +93,14 @@ async function findSlug(fullIndex, nodeId) {
     }
   }
   return `/${nodeId}`;
+}
+
+function genTagString(tags) {
+  let s = "_Tags: ";
+  for (const tag of tags) {
+    s = `${s}[${tag}](/tags/${tag}), `;
+  }
+  s = s.slice(0, -2);
+  s = `${s}_\n\n`;
+  return s;
 }

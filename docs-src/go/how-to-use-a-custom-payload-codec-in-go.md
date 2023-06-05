@@ -82,8 +82,6 @@ func (Codec) Decode(payloads []*commonpb.Payload) ([]*commonpb.Payload, error) {
 }
 ```
 
-For remote data encoding/decoding, see [Codec Server](/concepts/what-is-a-codec-server).
-
 **Set Data Converter to use custom Payload Codec**
 
 Set your custom `PayloadCodec` with an instance of `DataConverter` in your `Dial` client options that you use to create the client.
