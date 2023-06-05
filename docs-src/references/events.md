@@ -553,5 +553,5 @@ This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Executi
 | Field             | Description                                                                                                                                       |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | meta              | The metadata associated with this Update, sourced from the initial request.                                                                       |
-| accepted_event_id | The Id of the [WorkflowExecutionUpdateAcceptedEvent](#WorkflowExecutionUpdateAcceptedEvent) event wherein this Update was accepted for execution. |
+| accepted_event_id | The Id of the [WorkflowExecutionUpdateAcceptedEvent](#WorkflowExecutionUpdateAcceptedEvent) Event wherein this Update was accepted for execution. |
 | outcome           | The outcome of execution of this Update whether the execution resulted in a success or a failure.                                                 |
