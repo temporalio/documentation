@@ -14,8 +14,8 @@ When a Worker is created, it accepts a list of Workflows in the workflows parame
 ```python
 from temporalio.client import Client
 from temporalio.worker import Worker
-# . . .
-# . . .
+# ...
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
     worker = Worker(

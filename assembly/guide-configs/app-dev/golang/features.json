@@ -193,6 +193,42 @@
     },
     {
       "type": "h2",
+      "id": "go/schedules"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-create-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-backfill-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-delete-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-describe-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-list-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-pause-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-trigger-a-schedule-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-update-a-schedule-in-go"
+    },
+    {
+      "type": "h2",
       "id": "go/cron-jobs"
     },
     {
