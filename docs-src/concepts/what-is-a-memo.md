@@ -22,6 +22,5 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 - Unlike Workflow inputs, Memos lack type safety
 - Memos are subject to eventual consistency and may not be immediately available
 - Excessive reliance on memos hides mutable state from the Workflow Execution History
-- Storing data as memos can have a performance penalty
 
 :::
