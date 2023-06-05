@@ -27,7 +27,7 @@ Consider using Async Completion when
 - the external process is unreliable and might fail to send critical status updates through a Signal
 - you want the external process to Heartbeat or receive Cancellation
 
-Consider using Signals when you want to immediatly retry a failure to notify the external system.
+Consider using Signals when you want to immediately retry a failure to notify the external system.
 
 Immediate retries are helpful when the external process might take long time.
 For example, if the external process is waiting for a human to review something and respond, and may take days, then if you set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one week on an Activity with Async Completion, it's possible that the Activity fails to notify the external system and doesn't throw an error (for example, if the Worker dies).
