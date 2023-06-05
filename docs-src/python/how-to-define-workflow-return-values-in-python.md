@@ -13,8 +13,8 @@ To return the results of a Workflow Execution, use either `start_workflow()` or 
 
 ```python
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
