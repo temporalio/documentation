@@ -16,7 +16,7 @@ If the Workflow does not exist, this call fails.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/get_workflow_results_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 

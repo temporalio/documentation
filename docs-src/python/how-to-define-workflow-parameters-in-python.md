@@ -13,8 +13,8 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 
 ```python
 from dataclasses import dataclass
-# . . .
-# . . .
+# ...
+# ...
 @dataclass
 class YourParams:
     greeting: str

@@ -2,12 +2,19 @@
 id: saml-intro
 title: How to manage SAML authentication with Temporal Cloud
 sidebar_label: Manage SAML
-description: To authenticate users of your Temporal Cloud account, you can connect a SAML IdP.
+description: To authenticate users of your Temporal Cloud account, you can connect an IdP using SAML 2.0.
 tags:
   - guide-context
 ---
 
-To authenticate the users of your Temporal Cloud account, you can connect a Security Assertion Markup Language (SAML) identity provider (IdP).
+To authenticate the users of your Temporal Cloud account, you can connect an identity provider (IdP) to your account by using Security Assertion Markup Language (SAML) 2.0.
+
+:::info
+
+Enabling this feature adds a charge to your account.
+For more information, contact your account manager.
+
+:::
 
 ## Integrate SAML with your Temporal Cloud account
 

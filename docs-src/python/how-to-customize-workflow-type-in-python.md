@@ -11,8 +11,8 @@ You can customize the Workflow name with a custom name in the decorator argument
 
 ```python
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run

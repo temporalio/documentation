@@ -15,8 +15,8 @@ Use the `@workflow.run` to mark the entry point method to be invoked. This must 
 
 ```python
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run
