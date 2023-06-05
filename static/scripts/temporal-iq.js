@@ -1,8 +1,9 @@
 function isDesktop() {
-  const userAgent = navigator.userAgent;
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  return !isMobile && windowWidth >= 992;
+  // const userAgent = navigator.userAgent;
+  // const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  // const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  // return !isMobile && windowWidth >= 992;
+  return true;
 }
 
 (function (window, document) {
@@ -144,7 +145,7 @@ function isDesktop() {
       }
     });
     widgetToggleButton.innerHTML = `
-                    <div style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px">
+                    <div style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px; border-radius: 3px; background-color: #fff;">
                       <div id='widget-text' style='display: flex; gap: 8px; align-items:center; flex-grow:1; flex-direction:row; padding-left:16px; opacity: 0; animation: fadeInText 1s forwards 2s;'>
                         <div style='flex-grow:'>Ask</div>
                         <div id="ai-container" style="position:relative; display: inline-flex;">
