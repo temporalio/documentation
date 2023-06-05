@@ -924,4 +924,10 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
+java/metrics -> /dev-guide/java/observability#metrics
+
+python/metrics -> /dev-guide/python/observability#metrics
+
+typescript/metrics -> /dev-guide/typescript/observability#metrics
+
 
