@@ -1,9 +1,8 @@
 function isDesktop() {
-  // const userAgent = navigator.userAgent;
-  // const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  // const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  // return !isMobile && windowWidth >= 992;
-  return true;
+  const userAgent = navigator.userAgent;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  return !isMobile && windowWidth >= 992;
 }
 
 (function (window, document) {
