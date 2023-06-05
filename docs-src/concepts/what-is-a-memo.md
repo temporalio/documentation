@@ -15,6 +15,8 @@ The primary purpose of using a Memo is to enhance the organization and managemen
 Add your own metadata, such as notes or descriptions, to a Workflow Execution, which lets you annotate and categorize Workflow Executions based on user-defined criteria.
 This feature is particularly useful when dealing with numerous Workflow Executions because it facilitates the addition of context, reminders, or any other relevant information that aids in understanding or tracking the Workflow Execution.
 
+<!--
+
 :::note Use Memos judiciously
 
 Memos shouldn't store data that's critical to the execution of a Workflow, for some of the following reasons:
@@ -24,3 +26,5 @@ Memos shouldn't store data that's critical to the execution of a Workflow, for s
 - Excessive reliance on memos hides mutable state from the Workflow Execution History
 
 :::
+
+-->
