@@ -37,7 +37,6 @@ To enhance this feature, Temporal supports an <a class="tdlp" href="/cluster-dep
 - Elasticsearch v6.8 is supported up to Temporal version 1.17.x
 - Elasticsearch v6.8 and v7.10 versions are explicitly supported with AWS Elasticsearch -->
 
-
 ## Temporal Server
 
 The Temporal Server consists of four independently scalable services:
