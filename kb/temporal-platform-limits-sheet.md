@@ -11,9 +11,9 @@ date: 2023-04-28T00:00:00Z
 Running into limits can cause unexpected failures.
 Knowing the limits of Temporal can prevent that.
 
-This page details many of the hard and soft limits coded into the Temporal Platform.
-Hard limits fail with an error.
-Soft limits produce a warning log on the server side.
+This page details many of the errors and warnings coded into the Temporal Platform.
+Errors are hard limits that fail when reached.
+Warnings are soft limits that produce a warning log on the server side.
 
 <!-- truncate -->
 
@@ -41,7 +41,7 @@ Soft limits produce a warning log on the server side.
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-  - The open source Temporal Cluster doesn't have a default limit, but you can set them in the dynamic configuration using these variables:
+  - The open source Temporal Cluster has a default value of 50,000 for these limits:
     - `limit.numPendingActivities.error`
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
