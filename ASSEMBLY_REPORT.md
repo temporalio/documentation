@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 02 2023 15:58:23 PM -0700
+Last assembled: Tuesday June 06 2023 14:49:21 PM -0500
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 87 guide configurations found.
 
 1440 information nodes found.
 
-1192 information nodes are attached to guides.
+1193 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -923,11 +923,5 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-java/metrics -> /dev-guide/java/observability#metrics
-
-python/metrics -> /dev-guide/python/observability#metrics
-
-typescript/metrics -> /dev-guide/typescript/observability#metrics
 
 

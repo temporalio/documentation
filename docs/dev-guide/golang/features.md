@@ -928,7 +928,7 @@ func main() {
 ### Update Schedule
 
 Updating a <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> changes the configuration of an existing Schedule.
-These changes can be made to <a class="tdlp" href="/workflows#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a>, Action parameters, <a class="tdlp" href="/workflows#memo">Memos<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a>, and the Workflow's Cancellation Policy.
+These changes can be made to <a class="tdlp" href="/workflows#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#action">Learn more</a></span></span></a>, Action parameters, <a class="tdlp" href="/workflows#memo">Memos<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with filtered list results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a>, and the Workflow's Cancellation Policy.
 
 Use `Update()` on the `ScheduleHandle` to modify a Schedule.
 
@@ -1246,3 +1246,67 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
     converter.NewJSONPayloadConverter(),
   )
   ```
+
+## Error Handling in Go
+
+An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different
+error cases.
+
+If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is converted into `*temporal.ApplicationError`.
+
+If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error is returned as `*temporal.ApplicationError`.
+
+There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
+`*temporal.PanicError`.
+Following is an example of what your error code might look like:
+
+Here's an example of handling Activity errors within Workflow code that differentiates between different error types.
+
+```go
+err := workflow.ExecuteActivity(ctx, YourActivity, ...).Get(ctx, nil)
+if err != nil {
+	var applicationErr *ApplicationError
+	if errors.As(err, &applicationErr) {
+		// retrieve error message
+		fmt.Println(applicationError.Error())
+
+		// handle Activity errors (created via NewApplicationError() API)
+		var detailMsg string // assuming Activity return error by NewApplicationError("message", true, "string details")
+		applicationErr.Details(&detailMsg) // extract strong typed details
+
+		// handle Activity errors (errors created other than using NewApplicationError() API)
+		switch applicationErr.Type() {
+		case "CustomErrTypeA":
+			// handle CustomErrTypeA
+		case CustomErrTypeB:
+			// handle CustomErrTypeB
+		default:
+			// newer version of Activity could return new errors that Workflow was not aware of.
+		}
+	}
+
+	var canceledErr *CanceledError
+	if errors.As(err, &canceledErr) {
+		// handle cancellation
+	}
+
+	var timeoutErr *TimeoutError
+	if errors.As(err, &timeoutErr) {
+		// handle timeout, could check timeout type by timeoutErr.TimeoutType()
+        switch err.TimeoutType() {
+        case commonpb.ScheduleToStart:
+                // Handle ScheduleToStart timeout.
+        case commonpb.StartToClose:
+                // Handle StartToClose timeout.
+        case commonpb.Heartbeat:
+                // Handle heartbeat timeout.
+        default:
+        }
+	}
+
+	var panicErr *PanicError
+	if errors.As(err, &panicErr) {
+		// handle panic, message and stack trace are available by panicErr.Error() and panicErr.StackTrace()
+	}
+}
+```

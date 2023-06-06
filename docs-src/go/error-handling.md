@@ -1,6 +1,12 @@
 ---
 id: error-handling
 title: Error Handling in Go
+sidebar_label: Error Handling in Go
+description: Handling Activity or Workflow errors in Go.
+tags:
+- developer-guide
+- sdk
+- Go
 ---
 
 An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different

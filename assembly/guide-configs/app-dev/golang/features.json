@@ -262,6 +262,10 @@
     {
       "type": "p",
       "id": "go/how-to-use-a-custom-payload-converter-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/error-handling"
     }
   ]
 }
