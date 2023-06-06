@@ -397,37 +397,61 @@ It can be enabled on the `history` and `visibility`.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
 
-- `state` : Supported values are `enabled`, `disabled` or `paused`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+- `state` : State for Archival setting. Supported values are `enabled`, `disabled` or `paused`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+  - `enabled`: Enables Archival in your Cluster setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
+  - `disabled`: Disables Archival in your Cluster setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
 - `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
 - `provider`: Location where data should be archived. Subprovider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. Default configuration specifies `filestore`.
 
 Example:
 
-```yaml
-# Cluster level Archival config
-archival:
-  # Event History configuration
-  history:
-    # Archival is enabled for the History service data
-    state: "enabled"
-    enableRead: true
-    # Namespaces can use either the local filestore provider or the Google Cloud provider
-    provider:
-      filestore:
-        fileMode: "0666"
-        dirMode: "0766"
-      gstorage:
-        credentialsPath: "/tmp/gcloud/keyfile.json"
-  # Configuration for archiving Visibility data.
-  visibility:
-    # Archival is enabled for Visibility data
-    state: "enabled"
-    enableRead: true
-    provider:
-      filestore:
-        fileMode: "0666"
-        dirMode: "0766":
-```
+- To enable Archival in your Cluster configuration:
+
+  ```yaml
+  # Cluster level Archival config enabled
+  archival:
+    # Event History configuration
+    history:
+      # Archival is enabled for the History service data
+      state: "enabled"
+      enableRead: true
+      # Namespaces can use either the local filestore provider or the Google Cloud provider
+      provider:
+        filestore:
+          fileMode: "0666"
+          dirMode: "0766"
+        gstorage:
+          credentialsPath: "/tmp/gcloud/keyfile.json"
+    # Configuration for archiving Visibility data.
+    visibility:
+      # Archival is enabled for Visibility data
+      state: "enabled"
+      enableRead: true
+      provider:
+        filestore:
+          fileMode: "0666"
+          dirMode: "0766":
+  ```
+
+- To disable Archival in your Cluster configuration:
+
+  ```yaml
+  # Cluster level Archival config disabled
+  archival:
+    history:
+      state: "disabled"
+      enableRead: false
+    visibility:
+      state: "disabled"
+      enableRead: false
+
+  namespaceDefaults:
+    archival:
+      history:
+        state: "disabled"
+      visibility:
+        state: "disabled"
+  ```
 
 For more details on Archival setup, see [Set up Archival](/cluster-deployment-guide#set-up-archival).
 
@@ -485,7 +509,6 @@ Example":
 #...
 dcRedirectionPolicy:
   policy: "selected-apis-forwarding"
-  toDC: ""
 #...
 ```
 
@@ -498,7 +521,7 @@ Configuration for setting up file-based [dynamic configuration](/concepts/what-i
 This setting is required if specifying dynamic configuration. Supported configuration values are:
 
 - `filepath`: Specifies the filepath where the dynamic configuration YAML file is store. The filepath should be relative to the root directory.
-- `PollInterval`: Interval (in seconds) between the file-based client polls to check for dynamic configuration updates. The minimum period you can set here is 5 seconds.
+- `pollInterval`: Interval between the file-based client polls to check for dynamic configuration updates. The minimum period you can set here is 5 seconds.
 
 Example:
 

@@ -218,7 +218,7 @@ The database stores the following types of data:
 - <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
-An Elasticsearch database must be added to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
+An Elasticsearch database must be configured in a self-hosted Cluster to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
 
 With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
 
@@ -240,9 +240,9 @@ You can verify supported databases in the [Temporal Server release notes](https:
 
 ## Visibility
 
-The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
-The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores the Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 - [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
 
@@ -269,21 +269,21 @@ Archival is not supported when running Temporal through Docker and is disabled b
 ## Cluster configuration
 
 Cluster configuration is the setup and configuration details of your self-hosted Temporal Cluster, defined using YAML.
-You must define your Cluster configuration when setting up your Temporal Cluster.
+You must define your Cluster configuration when setting up your self-hosted Temporal Cluster.
 
 For details on using Temporal Cloud, see [Temporal Cloud documentation](/cloud).
 
-Cluster configuration is composed of two types of configurations: Static configuration and Dynamic configuration.
+Cluster configuration is composed of two types of configuration: [Static configuration](#static-configuration) and [Dynamic configuration](#dynamic-configuration).
 
 ### Static configuration
 
-Static configuration contains details of how the Cluster should be set up. The static configuration is read just once and used to configure service nodes container/pod at startup.
+Static configuration contains details of how the Cluster should be set up. The static configuration is read just once and used to configure service nodes at startup.
 Depending on how you want to deploy your self-hosted Temporal Cluster, your static configuration must contain details for setting up:
 
 - Temporal Services - Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
 - Persistence (including Shard count), Visibility and Advanced Visibility, Archival store setups.
-- TLS, Auth
+- TLS, authentication, authorization
 - Server log level
 - Metrics
 - Cluster metadata
@@ -294,20 +294,24 @@ Some values, such as the Metrics configuration or Server log level can be change
 
 For details on static configuration keys, see [Cluster configuration reference](/references/configuration).
 
+For static configuration examples, see <https://github.com/temporalio/temporal/tree/master/config>.
+
 ### Dynamic configuration
 
-Dynamic configuration are configuration keys that you can update in your Cluster setup without having to redeploy the server images.
-
-Some configuration fields are truly dynamic; that is, changes to those values take effect immediately.
-Other configuration fields require a server restart because they are checked only at server startup (such as thread pool size).
-Setting dynamic configuration for your Cluster is optional.
+Dynamic configuration are configuration keys that you can update in your Cluster setup without having to restart the server processes.
 
 All dynamic configuration keys provided by Temporal have default values that are used by the Cluster.
 You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.
+Setting dynamic configuration for your Cluster is optional since all keys have reasonable default values.
+
+Setting overrides for some configuration keys upates the Cluster configuration immediately.
+However, for configuration fields that are checked at startup (such as thread pool size), you must restart the server for the changes to take effect.
 
 Use dynamic configuration keys to fine-tune your self-deployed Cluster setup.
 
 For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
+
+For dynamic configuration examples, see <https://github.com/temporalio/temporal/tree/master/config/dynamicconfig>.
 
 ### Temporal Cluster security configuration
 
@@ -352,13 +356,13 @@ This measure can be used for `internode` and `frontend` endpoints.
 
 For more information on mTLS configuration, see [tls configuration reference](/references/configuration#tls).
 
-#### Auth
+#### Authentication and authorization
 
 <!-- commenting this very generic explanation out. Can include it back in if everyone feels strongly.
  **Authentication** is the process of verifying users who want to access your application are actually the users you want accessing it.
 **Authorization** is the verification of applications and data that a user on your Cluster or application has access to. -->
 
-Temporal provides authentication protocols that can be set to restrict access to your data.
+Temporal provides authentication interfaces that can be set to restrict access to your data.
 These protocols address three areas: servers, client connections, and users.
 
 Temporal offers two plugin interfaces for API call authentication and authorization.
@@ -369,9 +373,9 @@ Temporal offers two plugin interfaces for API call authentication and authorizat
 The logic of both plugins can be customized to fit a variety of use cases.
 When provided, the Frontend Service invokes the implementation of the plugins before running the requested operation.
 
-## Monitoring and observation
+### Monitoring and observation
 
-You can monitor and observe performance by using the metrics emitted by your self-hosted Temporal Cluster or by Temporal Cloud.
+You can monitor and observe performance with metrics emitted by your self-hosted Temporal Cluster or by Temporal Cloud.
 
 Temporal emits metrics by default in a format that is supported by Prometheus.
 Any metrics software that supports the same format can be used.

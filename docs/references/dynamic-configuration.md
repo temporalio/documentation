@@ -28,16 +28,10 @@ Note that setting dynamic configuration is optional.
 Change these values only if you need to override the default values to achieve better performance on your Temporal Cluster.
 Also, ensure that you test your changes before setting these in production.
 
+## Format
+
 To override the default dynamic configuration values, specify your custom values and constraints for the dynamic configuration keys that you want to change in a YAML configuration file.
-
-- Each dyanmic configuration key can have zero or more values.
-- Each value can have zero or more constraints.
-- There are only three types of constraints that you can define:
-  - `namespace`: `string`
-  - `taskQueueName`: `string`
-  - `taskType`: `int` (`1`:`Workflow`, `2`:`Activity`) A value is selected and returned if all its has exactly the same constraints as the ones specified in query filters (including the number of constraints).
-
-Use the following format in your dynamic configuration file.
+Use the following format when creating your dynamic configuration file.
 
 ```yaml
 testGetBoolPropertyKey:
@@ -66,6 +60,47 @@ testGetMapPropertyKey:
         - key4: true
           key5: 2.0
 ```
+
+### Constraints
+
+Some dynamic configuration keys are set globally, and others can be customized on a Namespace or Task Queue level.
+
+- To set global values for the configuration key with no constraints, use:
+
+  ```yaml
+  keyName:
+    - value: "my-value"
+  ```
+
+- For keys that can be customized at Namespace level, you can specify multiple values for different Namespaces in addition to one default value that applies globally to all Namespaces.
+  To set values at a Namespace level, use `namespace` (String) as shown in the following example.
+
+  ```yaml
+  keyName:
+    - constraints: {} # Sets default value that applies to all Namespaces
+      value: "value-for-all-the-rest"
+  - constraints: {namespace: "namespace1"} # Sets value for "namespace1" Namespace
+      value: "value-for-namespace1"
+    - constraints: {namespace: "namespace2"}
+      value: "value-for-namespace2"
+  ```
+
+- For keys that can be customized at a Task Queue level, you can specify Task Queue name and Task type in addition to Namespace.
+  To set values at a Task Queue level, use `taskqueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`), as shown in the following exmaple.
+
+  ```yaml
+  keyName:
+  - constraints: {namespace: "namespace1", taskQueueName: "tq"}  #Applies to both Workflow and Activity tasks on the "tq" Task Queue.
+    value: 44
+  - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} #Applies to Activity tasks on the "other_tq" Task Queue.
+    value: 33
+  - constraints: {namespace: "namespace2"}  #Applies to all task queues in "namespace2".
+    value: 22
+  - constraints: {}  # Applies to all other task queues in "namespace1" and all other Namespaces.
+    value: 11
+  ```
+
+Note that these values are not applied first to last; values set on specific constraints override default values defined for that configuration key.
 
 For example to override the default maximum queries per second made to the Persistence database from the Frontend Service, add the following to your dynamic configuration file.
 
@@ -97,7 +132,10 @@ For examples on how dynamic configuration is set, see:
 
 The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Cluster.
 
-Note that the dynamic configuration key setting is optional. If you choose to update these values for your Temporal Cluster, ensure that you are provisioning enough resources to handle the loads.
+Note that the dynamic configuration key setting is optional. If you choose to update these values for your Temporal Cluster, ensure that you are provisioning enough resources to handle the load.
+
+All values listed here are for Temporal server v1.20 <!--Update to 1.21 when released-->.
+Check [server release notes](https://github.com/temporalio/temporal/releases) to verify any potential breaking changes when upgrading your versions.
 
 ### Service-level RPS limits
 
@@ -109,12 +147,12 @@ When scaling your services, tune the RPS to test your workload and set acceptabl
 | -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | Frontend                               |      |                                                                                                                                                                                                                                    |               |
 | `frontend.rps`                         | Int  | Rate limit per second. This value applies to each Frontend service host.                                                                                                                                                           | 2400          |
-| `frontend.namespaceRPS`                | Int  | Rate limit per second applied at each Namespace level.                                                                                                                                                                             | 2400          |
+| `frontend.namespaceRPS`                | Int  | Rate limit per second applied for each Namespace.                                                                                                                                                                                  | 2400          |
+| `frontend.namespaceCount`              | Int  | Rate limit on concurrent Task Queue polls per Namespace per instance.                                                            | 1200 |
 | `frontend.globalNamespaceRPS`          | Int  | Namespace rate limit per second applied globally on the entire Cluster. The limit is evenly distributed among available Frontend service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
 | `internal-frontend.globalNamespaceRPS` | Int  | Namespace rate limit per second across all internal-frontends.                                                                                                                                                                     | 0             |
 | History                                |      |                                                                                                                                                                                                                                    |               |
 | `history.rps`                          | Int  | Request rate per second for each History host.                                                                                                                                                                                     | 3000          |
-| `history.archiveRequestRPS`            | Int  | Request rate per second on the number of Archive requests.                                                                                                                                                                         | 300           |
 | Matching                               |      |                                                                                                                                                                                                                                    |               |
 | `matching.rps`                         | Int  | Request rate per second for each Matching host                                                                                                                                                                                     | 1200          |
 
@@ -145,7 +183,7 @@ If the number of queries made to the Persistence database is more than what the 
 
 #### Activity and Workflow default policy setting
 
-You can define default values for Activity and Workflow <a class="tdlp" href="/retry-policies#">Retry Policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> at the Cluster level with the following dyanmic configuration keys.
+You can define default values for Activity and Workflow <a class="tdlp" href="/retry-policies#">Retry Policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> at the Cluster level with the following dynamic configuration keys.
 Th, the default values will apply. Also, setting custom retry polici
 
 | Dynamic configuration key            | Type                          | Description                                                                                                                   | Default value                                                                      |
@@ -161,17 +199,18 @@ The default values on these keys have been set based on extensive testing. While
 
 For details on platform limits, see the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet).
 
-| Dynamic configuration key               | Type | Description                                                                                                                                                                                                                                | Default value             |
-| --------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
-| `limit.maxIDLength`                     | Int  | Length limit for various IDs, including: `Namespace`, `TaskQueue`, `WorkflowID`, `ActivityID`, `TimerID`, `WorkflowType`, `ActivityType`, `SignalName`, `MarkerName`, `ErrorReason`/`FailureReason`/`CancelCause`, `Identity`, `RequestID` | 1000                      |
-| `system.transactionSizeLimit`           | Int  | Largest allowed transaction size to the Persistence database.                                                                                                                                                                              | 4 MB (`4 * 1024 * 1024`)  |
-| `limit.blobSize.warn`                   | Int  | Limit, in MBs, for BLOBs size in an event when a warning is thrown in the server logs.                                                                                                                                                     | 512 KB (`512 * 1024`)     |
-| `limit.blobSize.error`                  | Int  | Limit, in MBs, for BLOBs size in an event when an error occurs in the transaction.                                                                                                                                                         | 2 MB (`2 * 1024 * 1024`)  |
-| `limit.historySize.warn`                | Int  | Limit, in MBs, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                                 | 10 MB (`50*1024*1024`)    |
-| `limit.historySize.error`               | Int  | Limit, in MBs, at which an error occurs in the Workflow Execution for exceeding allowed size.                                                                                                                                              | 50 MB (`50*1024*1024`)    |
-| `limit.historyCount.warn`               | Int  | Limit, in count, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                               | 10,240 events (`10*1024`) |
-| `limit.historyCount.error`              | Int  | Limit, in count, at which an error occurs in the Workflow Execution for exceeding allowed number of Events.                                                                                                                                | 51200 events (`50*1024`)  |
-| `limit.numPendingActivities.error`      | Int  | Maximum number of pending Activities that a Workflow Execution can have before the `ScheduleActivityTask` fails with an error.                                                                                                             | 50000                     |
-| `limit.numPendingSignals.error`         | Int  | Maximum number of pending Signals that a Workflow Execution can have before the `SignalExternalWorkflowExecution` commands from this Workflow fail with an error.                                                                          | 50000                     |
-| `limit.numPendingCancelRequests.error`  | Int  | Maximum number of pending requests to cancel other Workflows that a Workflow Execution can have before the `RequestCancelExternalWorkflowExecution` commands fail with an error.                                                           | 50000                     |
-| `limit.numPendingChildExecutions.error` | Int  | Maximum number of pending Child Workflows that a Workflow Execution can have before the `StartChildWorkflowExecution` commands fail with an error.                                                                                         | 50000                     |
+| Dynamic configuration key               | Type | Description                                                                                                                                                                                                                                | Default value               |
+| --------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
+| `limit.maxIDLength`                     | Int  | Length limit for various IDs, including: `Namespace`, `TaskQueue`, `WorkflowID`, `ActivityID`, `TimerID`, `WorkflowType`, `ActivityType`, `SignalName`, `MarkerName`, `ErrorReason`/`FailureReason`/`CancelCause`, `Identity`, `RequestID` | 1000                        |
+| `system.transactionSizeLimit`           | Int  | Largest allowed size for each history event batch persisted in the Persistence store.                                                                                                                                                      | 4 MB (`4 * 1024 * 1024`)    |
+| `limit.blobSize.warn`                   | Int  | Limit, in MBs, for BLOBs size in an event when a warning is thrown in the server logs.                                                                                                                                                     | 512 KB (`512 * 1024`)       |
+| `limit.blobSize.error`                  | Int  | Limit, in MBs, for BLOBs size in an event when an error occurs in the transaction.                                                                                                                                                         | 2 MB (`2 * 1024 * 1024`)    |
+| `limit.historySize.warn`                | Int  | Limit, in MBs, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                                 | 10 MB (`50*1024*1024`)      |
+| `limit.historySize.error`               | Int  | Limit, in MBs, at which an error occurs in the Workflow Execution for exceeding allowed size.                                                                                                                                              | 50 MB (`50*1024*1024`)      |
+| `limit.historyCount.warn`               | Int  | Limit, in count, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                               | 10,240 events (`10*1024`)   |
+| `limit.historyCount.error`              | Int  | Limit, in count, at which an error occurs in the Workflow Execution for exceeding allowed number of Events.                                                                                                                                | 51200 events (`50*1024`)    |
+| `limit.numPendingActivities.error`      | Int  | Maximum number of pending Activities that a Workflow Execution can have before the `ScheduleActivityTask` fails with an error.                                                                                                             | 50000 <!--2000 for v1.21--> |
+| `limit.numPendingSignals.error`         | Int  | Maximum number of pending Signals that a Workflow Execution can have before the `SignalExternalWorkflowExecution` commands from this Workflow fail with an error.                                                                          | 50000 <!--2000 for v1.21--> |
+| `history.maximumSignalsPerExecution`    | Int  | Maximum number of Signals that a Workflow Execution can receive before it throws an `Invalid Argument` error.                                                                                                           | 0 <!--10000 for v1.21-->    |
+| `limit.numPendingCancelRequests.error`  | Int  | Maximum number of pending requests to cancel other Workflows that a Workflow Execution can have before the `RequestCancelExternalWorkflowExecution` commands fail with an error.                                                           | 50000 <!--2000 for v1.21--> |
+| `limit.numPendingChildExecutions.error` | Int  | Maximum number of pending Child Workflows that a Workflow Execution can have before the `StartChildWorkflowExecution` commands fail with an error.                                                                                         | 2000                        |

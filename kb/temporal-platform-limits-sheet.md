@@ -40,7 +40,7 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-  - The open-source Temporal Cluster does not have a default limit, but you can set them in the dynamic configuration using these variables:
+  - The open-source Temporal Cluster has a default limit of 50000 on pending Activities, Child Workflows, Signals, or Workflow cancellation requests, but you can override them in the dynamic configuration using these variables:
     - `limit.numPendingActivities.error`
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
