@@ -2120,7 +2120,7 @@ tctl workflow start --memo_key <key>
 
 ### --memo
 
-Pass information for a <a class="tdlp" href="/workflows#memo">memo<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a> from a JSON file.
+Pass information for a <a class="tdlp" href="/workflows#memo">memo<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Memo?</span><br /><br /><span class="tdlppd">A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is returned when you describe or list Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#memo">Learn more</a></span></span></a> from a JSON file.
 
 Memos are immutable key/value pairs that can be attached to a workflow run when starting the workflow.
 Memos are visible when listing workflows.
