@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 06 2023 17:20:46 PM -0600
+Last assembled: Tuesday June 06 2023 17:25:22 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -140,6 +140,10 @@ tctl-v1/admin/workflow/refresh_tasks -> #refresh_tasks
 
 tctl-v1/admin/workflow/delete -> #delete
 
+concepts/what-is-a-task -> /workers#task
+
+concepts/what-is-a-workflow -> /workflows#
+
 tctl-v1/batch/start -> #start
 
 tctl-v1/batch/describe -> #describe
@@ -163,8 +167,6 @@ tctl-v1/workflow/start -> /tctl-v1/workflow#start
 tctl-v1/dataconverter/web -> #web
 
 concepts/what-is-a-namespace -> /namespaces#
-
-concepts/what-is-a-workflow -> /workflows#
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -338,7 +340,7 @@ references/sdk-metrics -> /references/sdk-metrics#
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 
-concepts/what-is-a-worker -> /workers#
+concepts/what-is-a-worker -> /workers#worker
 
 concepts/what-is-a-workflow-task-execution -> /workers#workflow-task-execution
 
@@ -925,7 +927,5 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-a-task -> /workers#task
 
 

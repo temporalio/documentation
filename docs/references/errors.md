@@ -59,7 +59,7 @@ Restart the [Worker](/workers) that the [Workflow](/workflows) and [Activity](/a
 
 ## Bad Modify Workflow Properties Attributes
 
-This error indicastes that the <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a> failed to validate attributes on a property in the Upsert Memo or in a payload.
+This error indicates that the <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a> failed to validate attributes on a property in the Upsert Memo or in a payload.
 These attributes are either unset or exceeding size limits.
 
 Reset any unset and empty atrributes.
@@ -204,7 +204,7 @@ Let the Workflow complete any current Activities before redeploying the code.
 This error indicates that the [Workflow](/workflows) has reached capacity for pending [Child Workflows](/workflows/#child-workflows).
 Therefore, the <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>was failed to prevent additional Child Workflows from being added.
 
-Wait for the system to finish any currently running Child Workflows before redploying this Task.
+Wait for the system to finish any currently running Child Workflows before redeploying this Task.
 
 ## Pending Request Cancel Limit Exceeded
 

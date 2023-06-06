@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicastes that the [Workflow Task](/concepts/what-is-a-workflow-task) failed to validate attributes on a property in the Upsert Memo or in a payload.
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed to validate attributes on a property in the Upsert Memo or in a payload.
 These attributes are either unset or exceeding size limits.
 
 Reset any unset and empty atrributes.

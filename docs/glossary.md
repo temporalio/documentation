@@ -218,7 +218,7 @@ _Tags: [term](/tags/term)_
 
 
 #### [Memo](/workflows#memo)
-A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with filtered list results.
+A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is returned when you describe or list Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
