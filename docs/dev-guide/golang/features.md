@@ -1265,7 +1265,7 @@ Enable the Worker to use Sessions.
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">View source code</a>
 
 ```go
 // ...
@@ -1291,17 +1291,18 @@ You can adjust the maximum concurrent Sessions of a Worker.
 To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.
 By default, this field is set to a very large value, so there's no need to manually set it if no limitation is needed.
 
-If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed. `CreateSession()` will return an error if the session can't be created within `CreationTimeout`.
+If a Worker hits this limitation, it won't accept any new `CreateSession()` requests until one of the existing sessions is completed.
+If the session can't be created within `CreationTimeout`, `CreateSession()` returns an error .
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
 	workerOptions := worker.Options{
 // ...
-		// This configures the maximum allowed concurrent sessions
-		// Only customize this value if you need to.
+		// This configures the maximum allowed concurrent sessions.
+		// Customize this value only if you need to.
 		MaxConcurrentSessionExecutionSize: 1000,
 // ...
 }
@@ -1314,27 +1315,28 @@ Within the Workflow code use the Workflow APIs to create a Session with whicheve
 
 Use the [`CreateSession`](https://pkg.go.dev/go.temporal.io/sdk/workflow#CreateSession) API to create a Context object that can be passed to calls to spawn Activity Executions.
 
-Pass an instance of `workflow.Context` and [`SessionOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SessionOptions) to the `CreateSession` API call and get a Session Context which contains metadata information of the Session.
+Pass an instance of `workflow.Context` and [`SessionOptions`](https://pkg.go.dev/go.temporal.io/sdk/workflow#SessionOptions) to the `CreateSession` API call and get a Session Context that contains metadata information of the Session.
 
 Use the Session Context to spawn all Activity Executions that should belong to the Session.
 All associated Activity Tasks are then processed by the same Worker Entity.
-When the `CreateSession` API is called, the Task Queue name that is specified in the `ActivityOptions` is used (or in the `StartWorkflowOptions` if the Task Queue name is not specified in `ActivityOptions`), and a Session is created with one of the Workers polling that Task Queue.
+When the `CreateSession` API is called, the Task Queue name that is specified in `ActivityOptions` (or in `StartWorkflowOptions` if the Task Queue name is not specified in `ActivityOptions`) is used, and a Session is created with one of the Workers polling that Task Queue.
 
 The Session Context is cancelled if the Worker executing this Session dies or `CompleteSession()` is called.
-When using the returned Session Context to spawn Activity Executions, a `workflow.ErrSessionFailed` error may be returned if the Session framework detects that the Worker executing this Session has died.
+When using the returned Session Context to spawn Activity Executions, a `workflow.ErrSessionFailed` error is returned if the Session framework detects that the Worker executing this Session has died.
 The failure of Activity Executions won't affect the state of the Session, so you still need to handle the errors returned from your Activities and call `CompleteSession()` if necessary.
 
-`CreateSession()` will return an error if the context passed in already contains an open Session.
-If all the Workers are currently busy and unable to handle a new Session, the framework will keep retrying until the `CreationTimeout` you specified in `SessionOptions` has passed before returning an error (check the **Concurrent Session Limitation** section for more details).
+If the context passed in already contains an open Session, `CreateSession()` returns an error.
+If all the Workers are currently busy and unable to handle a new Session, the framework keeps retrying until the `CreationTimeout` period you specified in `SessionOptions` has passed before returning an error.
+(For more details, check the "Concurrent Session Limitation" section.)
 
 `CompleteSession()` releases the resources reserved on the Worker, so it's important to call it as soon as you no longer need the Session.
-It will cancel the session context and therefore all the Activity Executions using that Session Context.
+It cancels the session context and therefore all the Activity Executions using that Session Context.
 It is safe to call `CompleteSession()` on a failed Session, meaning that you can call it from a `defer` function after the Session is successfully created.
 
 If the Worker goes down between Activities, any scheduled Activities meant for the Session Worker are canceled.
-If not, you will get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
+If not, you get a `workflow.ErrSessionFailed` error when the next call of `workflow.ExecuteActivity()` is made from that Workflow.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/workflow_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/workflow_dacx.go">View source code</a>
 
 ```go
 package sessions
@@ -1346,7 +1348,7 @@ import (
 )
 
 // ...
-// SomeFileProcessingWorkflow is a Workflow Definition
+// SomeFileProcessingWorkflow is a Workflow Definition.
 func SomeFileProcessingWorkflow(ctx workflow.Context, param FileProcessingWFParam) error {
 	activityOptions := workflow.ActivityOptions{
 		StartToCloseTimeout: time.Minute,

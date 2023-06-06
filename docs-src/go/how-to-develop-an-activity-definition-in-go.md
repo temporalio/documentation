@@ -17,10 +17,7 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp

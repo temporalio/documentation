@@ -202,10 +202,7 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/gateway/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/gateway/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -260,10 +257,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/cloud/client/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/client/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -316,10 +310,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
 Below is an example of a basic Workflow Definition.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -358,10 +349,7 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -398,10 +386,7 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -444,10 +429,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#develop-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-worker">Learn more</a></span></span></a>.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/worker/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -503,10 +485,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/dev-guide/go/observability#tracing) for more information about context propagation.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 ```
@@ -525,10 +504,7 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -582,10 +558,7 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityParam is the struct passed to your Activity.
@@ -609,10 +582,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_activity_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityResultObject is the struct returned from your Activity.
@@ -640,10 +610,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/worker/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 func main() {
@@ -684,10 +651,7 @@ The Activity function name can be provided as a variable object (no quotations) 
 The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
 The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/your_workflow_definition_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
@@ -815,10 +779,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/worker/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -893,10 +854,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/cloud/worker/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/worker/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
 
 ```go
 package main

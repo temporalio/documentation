@@ -7,7 +7,7 @@ description: Set EnableSessionWorker to true in the Worker options.
 
 Set `EnableSessionWorker` to `true` in the Worker options.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/sessions/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/sessions/worker/main_dacx.go">View source code</a>
 
 ```go
 // ...

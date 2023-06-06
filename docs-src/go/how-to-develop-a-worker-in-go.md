@@ -28,10 +28,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/worker/main_dacx.go">View source code</a>
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
->>>>>>> main
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
