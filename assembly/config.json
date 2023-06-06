@@ -36,7 +36,8 @@
     "documentation_samples_repos": [
         {
             "org": "temporalio",
-            "name": "documentation-samples-go"
+            "name": "documentation-samples-go",
+            "ref": "add-go-schedule-sample"
         },
         {
             "org": "temporalio",
