@@ -290,6 +290,10 @@
     {
       "type": "p",
       "id": "go/how-to-create-a-session-from-the-workflow-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/additional-session-info"
     }
   ]
 }
