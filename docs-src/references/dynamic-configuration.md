@@ -61,65 +61,47 @@ testGetMapPropertyKey:
 
 ### Constraints
 
-Some dynamic configuration keys are set globally, and others can be customized on a Namespace or Task Queue level.
+You can define constraints on some dynamic configuration keys to set specific values that apply on a Namespace or Task Queue level.
+Not defining constraints on a dynamic configuration key sets the values globally across the Cluster.
 
 - To set global values for the configuration key with no constraints, use:
 
   ```yaml
-  keyName:
-    - value: "my-value"
+  history.rps: # Rate limit on the number of requests made per second to each History service host.
+    - value: 5000 # The default value for this is 3000.
   ```
 
 - For keys that can be customized at Namespace level, you can specify multiple values for different Namespaces in addition to one default value that applies globally to all Namespaces.
   To set values at a Namespace level, use `namespace` (String) as shown in the following example.
 
   ```yaml
-  keyName:
+  frontend.rps: # Rate limit on the number of requests sent to the Frontend host.
     - constraints: {} # Sets default value that applies to all Namespaces
-      value: "value-for-all-the-rest"
+      value: 2000 # The defaul value for this key on the history host is 3000.
   - constraints: {namespace: "namespace1"} # Sets value for "namespace1" Namespace
-      value: "value-for-namespace1"
+      value: "4000"
     - constraints: {namespace: "namespace2"}
-      value: "value-for-namespace2"
+      value: "1000"
   ```
 
 - For keys that can be customized at a Task Queue level, you can specify Task Queue name and Task type in addition to Namespace.
-  To set values at a Task Queue level, use `taskqueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`), as shown in the following exmaple.
+  To set values at a Task Queue level, use `taskqueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`).
+
+  For example to override the default maximum queries per second made to the Persistence database from the Frontend Service, add the following to your dynamic configuration file.
 
   ```yaml
-  keyName:
-  - constraints: {namespace: "namespace1", taskQueueName: "tq"}  #Applies to both Workflow and Activity tasks on the "tq" Task Queue.
-    value: 44
-  - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} #Applies to Activity tasks on the "other_tq" Task Queue.
-    value: 33
-  - constraints: {namespace: "namespace2"}  #Applies to all task queues in "namespace2".
-    value: 22
+  frontend.persistenceMaxQPS:
+  - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
+    value: 3500 # The default value for this key on the Frontend Service is 2400.
+  - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
+    value: 4000 
+  - constraints: {namespace: "namespace2"}  # Applies to all task queues in "namespace2".
+    value: 1500
   - constraints: {}  # Applies to all other task queues in "namespace1" and all other Namespaces.
-    value: 11
+    value: 3000
   ```
 
-Note that these values are not applied first to last; values set on specific constraints override default values defined for that configuration key.
-
-For example to override the default maximum queries per second made to the Persistence database from the Frontend Service, add the following to your dynamic configuration file.
-
-```yaml
-#...
-frontend.persistenceMaxQPS:
-  - value: 3000 # The default value for this key on the Frontend Service is 2000.
-    constraints: {}
-#...
-```
-
-You can also set the maximum queries that can be made from a Namespace on the Frontend with the `frontend.PersistenceNamespaceMaxQPS` key.
-
-```yaml
-#...
-frontend.PersistenceNamespaceMaxQPS:
-  - value: 3500 # The default value for this key on the Frontend Service is 2000.
-    constraints:
-      namespace: "your-namespace"
-#...
-```
+Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key.
 
 For examples on how dynamic configuration is set, see:
 
@@ -144,7 +126,7 @@ When scaling your services, tune the RPS to test your workload and set acceptabl
 | Dynamic configuration key              | Type | Description                                                                                                                                                                                                                        | Default value |
 | -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
 | Frontend                               |      |                                                                                                                                                                                                                                    |               |
-| `frontend.rps`                         | Int  | Rate limit per second. This value applies to each Frontend service host.                                                                                                                                                           | 2400          |
+| `frontend.rps`                         | Int  | Rate limit per second on the number of requests send to each Frontend service host.                                                                                                                                                | 2400          |
 | `frontend.namespaceRPS`                | Int  | Rate limit per second applied for each Namespace.                                                                                                                                                                                  | 2400          |
 | `frontend.namespaceCount`              | Int  | Rate limit on concurrent Task Queue polls per Namespace per instance.                                                                                                                                                              | 1200          |
 | `frontend.globalNamespaceRPS`          | Int  | Namespace rate limit per second applied globally on the entire Cluster. The limit is evenly distributed among available Frontend service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |

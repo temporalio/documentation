@@ -390,7 +390,6 @@ publicClient:
 
 Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 
-
 ## archival
 
 _Optional_
@@ -410,31 +409,31 @@ Example:
 
 - To enable Archival in your Cluster configuration:
 
-    ```yaml
-    # Cluster level Archival config enabled
-    archival:
-      # Event History configuration
-      history:
-        # Archival is enabled for the History service data
-        state: "enabled"
-        enableRead: true
-        # Namespaces can use either the local filestore provider or the Google Cloud provider
-        provider:
-          filestore:
-            fileMode: "0666"
-            dirMode: "0766"
-          gstorage:
-            credentialsPath: "/tmp/gcloud/keyfile.json"
-      # Configuration for archiving Visibility data.
-      visibility:
-        # Archival is enabled for Visibility data
-        state: "enabled"
-        enableRead: true
-        provider:
-          filestore:
-            fileMode: "0666"
-            dirMode: "0766":
-    ```
+  ```yaml
+  # Cluster level Archival config enabled
+  archival:
+    # Event History configuration
+    history:
+      # Archival is enabled for the History service data
+      state: "enabled"
+      enableRead: true
+      # Namespaces can use either the local filestore provider or the Google Cloud provider
+      provider:
+        filestore:
+          fileMode: "0666"
+          dirMode: "0766"
+        gstorage:
+          credentialsPath: "/tmp/gcloud/keyfile.json"
+    # Configuration for archiving Visibility data.
+    visibility:
+      # Archival is enabled for Visibility data
+      state: "enabled"
+      enableRead: true
+      provider:
+        filestore:
+          fileMode: "0666"
+          dirMode: "0766":
+  ```
 
 - To disable Archival in your Cluster configuration:
 
@@ -533,3 +532,4 @@ dynamicConfigClient:
   filepath: "config/dynamicconfig/development-cass.yaml"
   pollInterval: "10s"
 ```
+

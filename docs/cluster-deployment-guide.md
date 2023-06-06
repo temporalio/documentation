@@ -637,7 +637,7 @@ The following table showcases acceptable values for each configuration and what 
 | `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
 | `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
-Additional resources: [Cluster configuration reference](/references/configuration).
+Additional resources: <a class="tdlp" href="/references/configuration#">Cluster configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#">Learn more</a></span></span></a>.
 
 #### Namespace creation
 

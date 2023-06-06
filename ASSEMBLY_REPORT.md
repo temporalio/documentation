@@ -1,15 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 05 2023 21:22:46 PM -0700
+Last assembled: Tuesday June 06 2023 16:07:29 PM -0700
 
-
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 87 guide configurations found.
 
-1434 information nodes found.
+1445 information nodes found.
 
-1177 information nodes are attached to guides.
+1197 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -350,6 +349,8 @@ concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /tasks#activity-task
+
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
@@ -717,8 +718,6 @@ cli/cmd-options/job-id -> /cli/cmd-options#job-id
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 
-concepts/what-is-a-frontend-service -> /clusters#frontend-service
-
 cli/cmd-options/name -> /cli/cmd-options#name
 
 cli/cmd-options/enable-connection -> /cli/cmd-options#enable-connection
@@ -895,8 +894,6 @@ clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 python/tracing -> /dev-guide/python/observability#tracing
@@ -932,13 +929,5 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
-
-java/metrics -> /dev-guide/java/observability#metrics
-
-python/metrics -> /dev-guide/python/observability#metrics
-
-typescript/metrics -> /dev-guide/typescript/observability#metrics
 
 

@@ -295,7 +295,7 @@ Depending on how you want to deploy your self-hosted Temporal Cluster, your stat
 Static configuration values cannot be changed at runtime.
 Some values, such as the Metrics configuration or Server log level can be changed in the static configuration but require restarting the Cluster for the changes to take effect.
 
-For details on static configuration keys, see [Cluster configuration reference](/references/configuration).
+For details on static configuration keys, see <a class="tdlp" href="/references/configuration#">Cluster configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#">Learn more</a></span></span></a>.
 
 For static configuration examples, see <https://github.com/temporalio/temporal/tree/master/config>.
 
@@ -304,8 +304,8 @@ For static configuration examples, see <https://github.com/temporalio/temporal/t
 Dynamic configuration are configuration keys that you can update in your Cluster setup without having to restart the server processes.
 
 All dynamic configuration keys provided by Temporal have default values that are used by the Cluster.
-You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.
-Setting dynamic configuration for your Cluster is optional since all keys have reasonable default values.
+You can override the default values by setting different values for the keys in a YAML file and setting the <a class="tdlp" href="/references/configuration#dynamicconfigclient">dynamic configuration client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#dynamicconfigclient">Learn more</a></span></span></a> to poll this file for updates.
+Setting dynamic configuration for your Cluster is optional.
 
 Setting overrides for some configuration keys upates the Cluster configuration immediately.
 However, for configuration fields that are checked at startup (such as thread pool size), you must restart the server for the changes to take effect.
@@ -326,10 +326,10 @@ For details on setting up your Temporal Cluster security, see [Temporal Platform
 
 Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traffic between services within a Temporal Cluster, or between application processes and a Cluster.
 
-On self-hosted Temporal Clusters, configure mTLS in the `tls` section of the [Cluster configuration](/references/configuration#tls).
+On self-hosted Temporal Clusters, configure mTLS in the `tls` section of the <a class="tdlp" href="/references/configuration#tls">Cluster configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
 mTLS configuration is a [static configuration](#static-configuration) property.
 
-You can then use either [`WithConfig`](/references/server-options#withconfig) or [`WithConfigLoader`](/references/server-options#withconfigloader) server options to start your Temporal Cluster with this configuration.
+You can then use either <a class="tdlp" href="/references/server-options#withconfig"> `WithConfig`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfig">Learn more</a></span></span></a> or <a class="tdlp" href="/references/server-options#withconfigloader"> `WithConfigLoader`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfigloader">Learn more</a></span></span></a> server options to start your Temporal Cluster with this configuration.
 
 The mTLS configuration includes two sections that serve to separate communication within a Temporal Cluster and client calls made from your application the Cluster.
 
@@ -344,9 +344,9 @@ Use CA certificates to authenticate client connections to your Temporal Cluster.
 
 On Temporal Cloud, you can <a class="tdlp" href="/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates">set your CA certificates in your Temporal Cloud settings<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Get started - Certificates</span><br /><br /><span class="tdlppd">Learn requirements for CA certificates</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates">Learn more</a></span></span></a> and use the end-entity certificates in your client calls.
 
-On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the [`requireClientAuth`](/references/configuration#tls) property in your Cluster configuration.
-These properties can be specified in both the `internode` and `frontend` sections of the [mTLS configuration](/references/configuration#tls).
-For details, see the [tls confiuration reference](/references/configuration#tls).
+On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the <a class="tdlp" href="/references/configuration#tls"> `requireClientAuth`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a> property in your Cluster configuration.
+These properties can be specified in both the `internode` and `frontend` sections of the <a class="tdlp" href="/references/configuration#tls">mTLS configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
+For details, see the <a class="tdlp" href="/references/configuration#tls">tls confiuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
 
 ##### Server name specification
 
@@ -357,7 +357,7 @@ This ensures that the server certificate presented to any connected client has t
 
 This measure can be used for `internode` and `frontend` endpoints.
 
-For more information on mTLS configuration, see [tls configuration reference](/references/configuration#tls).
+For more information on mTLS configuration, see <a class="tdlp" href="/references/configuration#tls">tls configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
 
 #### Authentication and authorization
 
@@ -398,7 +398,7 @@ On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster co
 
 For details on self-hosted Cluster metrics and setup, see:
 
-- [Temporal Cluster OSS metrics reference](/references/cluster-metrics)
+- <a class="tdlp" href="/references/cluster-metrics#">Temporal Cluster OSS metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal OSS Cluster metrics reference</span><br /><br /><span class="tdlppd">The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/cluster-metrics#">Learn more</a></span></span></a>
 - [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/kb/prometheus-grafana-setup)
 
 ## Multi-Cluster Replication
