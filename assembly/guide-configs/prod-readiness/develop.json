@@ -37,6 +37,10 @@
             "id": "none"
           }
         ]
+      },
+      {
+        "type": "h2",
+        "id": "prod-readiness-context/how-to-set-up-codec-server"
       }
     ]
   }
