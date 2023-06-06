@@ -2,9 +2,9 @@
 id: retention
 title: temporal  retention
 sidebar_label: retention
-description: Definition for the retention command option.
+description: Workflow Execution retention
 tags:
-	- cli
+    - cli
 ---
 
-Workflow Execution retention
+Workflow Execution retention.

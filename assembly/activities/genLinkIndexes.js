@@ -3,11 +3,7 @@ import path from "path";
 
 export async function genLinkIndexes(config) {
   console.log("generating link indexes...");
-  const matchedGuidesPath = path.join(
-    config.root_dir,
-    config.temp_write_dir,
-    config.guide_configs_with_attached_nodes_file_name
-  );
+  const matchedGuidesPath = path.join(config.root_dir, config.temp_write_dir, config.attached_nodes_file_name);
   const matchedGuides = await fs.readJSON(matchedGuidesPath);
   const updatedCfgs = [];
   const fullIndex = [];
@@ -37,6 +33,7 @@ async function generateLinkIndex(guideConfig) {
             linkIndex.push({
               file_dir: guideConfig.file_dir,
               guide_id: guideConfig.id,
+              slug: guideConfig.slug ? guideConfig.slug : "none",
               local_ref: "",
               node_id: section.node.id,
               node_title: section.node.title,
@@ -50,6 +47,7 @@ async function generateLinkIndex(guideConfig) {
               linkIndex.push({
                 file_dir: guideConfig.file_dir,
                 guide_id: guideConfig.id,
+                slug: guideConfig.slug ? guideConfig.slug : "none",
                 local_ref: localRef(section.node.id, previousSection.node.label),
                 node_id: section.node.id,
                 node_title: section.node.title,
@@ -66,6 +64,7 @@ async function generateLinkIndex(guideConfig) {
                 linkIndex.push({
                   file_dir: guideConfig.file_dir,
                   guide_id: guideConfig.id,
+                  slug: guideConfig.slug ? guideConfig.slug : "none",
                   local_ref: "",
                   node_id: langtab.node.id,
                   node_title: langtab.node.title,
@@ -83,6 +82,7 @@ async function generateLinkIndex(guideConfig) {
                   linkIndex.push({
                     file_dir: guideConfig.file_dir,
                     guide_id: guideConfig.id,
+                    slug: guideConfig.slug ? guideConfig.slug : "none",
                     local_ref: localRef(langtab.node.id, previousSection.node.label),
                     node_id: langtab.node.id,
                     node_title: langtab.node.title,
@@ -99,6 +99,7 @@ async function generateLinkIndex(guideConfig) {
           linkIndex.push({
             file_dir: guideConfig.file_dir,
             guide_id: guideConfig.id,
+            slug: guideConfig.slug ? guideConfig.slug : "none",
             local_ref: localRef(section.node.id, section.node.label),
             node_id: section.node.id,
             node_title: section.node.title,
@@ -112,10 +113,10 @@ async function generateLinkIndex(guideConfig) {
   }
   return linkIndex;
   function localRef(id, a_string) {
-    try {  
-      a_string = a_string.toLowerCase();   
+    try {
+      a_string = a_string.toLowerCase();
     } catch (e) {
-      throw new Error(`Sidebar metadata is missing in ${id}`); 
+      throw new Error(`Sidebar metadata is missing in ${id}`);
     }
     a_string = a_string.replaceAll(" ", "-");
     return a_string;

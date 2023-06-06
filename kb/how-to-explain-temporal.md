@@ -13,7 +13,7 @@ Temporal doesn't have a monopoly on explaining Temporal.
 
 Here, we list great blogposts and videos by Temporal staff and users that might be helpful in increasing your understanding or convincing your team.
 
-If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/master/kb/how-to-explain-temporal.md) so that others can find it!
+If you have made a tutorial or explanation of Temporal, please [submit them here](https://github.com/temporalio/documentation/edit/main/kb/how-to-explain-temporal.md) so that others can find it!
 
 ## Press announcements
 
@@ -101,7 +101,7 @@ Temporal's previous iteration was Cadence, which shares a lot of the same design
 
 ## External content
 
-_Note: Each of [our SDK docs](/application-development) have a Hello World and Run Your First App tutorial!_
+_Note: Each of [our SDK docs](/dev-guide) have a Hello World and Run Your First App tutorial!_
 
 - Architecture
   - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)

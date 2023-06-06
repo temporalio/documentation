@@ -5,7 +5,10 @@ sidebar_label: Customize Activity Type
 description: To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.
 ---
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/worker/main_dacx.go">View source code</a>
+# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/yourapp/worker/main_dacx.go">View source code</a>
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
+>>>>>>> main
 
 ```go
 func main() {

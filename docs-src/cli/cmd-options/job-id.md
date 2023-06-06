@@ -2,9 +2,9 @@
 id: job-id
 title: temporal  job-id
 sidebar_label: job-id
-description: Definition for the job-id command option.
+description: Batch Job Id
 tags:
-	- cli
+    - cli
 ---
 
-Batch Job Id
+Batch Job Id.

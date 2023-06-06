@@ -2,9 +2,10 @@
 id: log-format
 title: temporal  log-format
 sidebar_label: log-format
-description: Definition for the log-format command option.
+description: Set the log formatting.
 tags:
-	- cli
+    - cli
 ---
 
-Set the log formatting. Options: ["json", "pretty"]. (default: json)
+Set the log formatting.
+Options: ["json", "pretty"].

@@ -2,10 +2,9 @@
 id: schedule-id
 title: temporal  schedule-id
 sidebar_label: schedule-id
-description: Definition for the schedule-id command option.
+description: Schedule Id
 tags:
-	- cli
+    - cli
 ---
 
-Alias: **-s**
-Schedule Id
+Schedule Id.

@@ -2,42 +2,42 @@
 id: what-is-a-codec-server
 title: What is a Codec Server?
 sidebar_label: Codec Server
-description: A Codec Server is an HTTP server that runs data from tctl or the Web UI through a Payload Codec.
+description: A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 tags:
   - term
 ---
 
-A Codec Server is an HTTP server that runs data from [tctl](/tctl-v1) or the [Web UI](/web-ui) through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codec).
-
-- [How to set up a Codec Server](/security/how-to-set-up-codec-server)
-
-By default, tctl and the Web UI use the [Default Data Converter](/concepts/what-is-a-data-converter#default-data-converter) without a [Payload Codec](/concepts/what-is-a-data-converter#payload-codec).
-If you use a Payload Codec with your SDK, you may not be able to understand the Payload data displayed in the Web UI/tctl (for example, it may be encrypted or compressed).
-In order to convert the data to its original format, you can configure the Web UI/tctl to use a Codec Server that uses your Payload Codec.
+A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#data-encryption) to decode your data remotely through endpoints.
 
 ![](/img/tctl-diagram-codec-server.svg)
 
-## Use case: tctl
+A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
+It implements two endpoints:
 
-Suppose that you want to view Workflow History.
-This information needs to be decoded before it can be viewed.
+- `/encode`
+- `/decode`
 
-You can use [tctl workflow showid](/tctl-v1/workflow#show) to view a Workflow Execution Event History.
+Each endpoint receives and responds with a JSON body that has a `payloads` property with an array of [Payloads](/concepts/what-is-a-payload).
+The endpoints run the Payloads through a [Payload Codec](/concepts/what-is-a-data-converter#payload-codec) before returning them.
 
-```bash
-tctl workflow showid <workflowID>
-```
+Most SDKs provide example Codec Server implementation samples, listed here:
 
-With a Codec Server, Payloads that are part of the Event History will be sent to the Codec Server to be decoded before being deserialized by the Default Data Converter and displayed in your terminal.
+- [Go](https://github.com/temporalio/samples-go/tree/main/codec-server)
+- [Java](https://github.com/temporalio/sdk-java/tree/master/temporal-remote-data-encoder)
+- [Python](https://github.com/temporalio/samples-python/blob/main/encryption/codec_server.py)
+- [TypeScript](https://github.com/temporalio/samples-typescript/blob/main/encryption/src/codec-server.ts)
 
-- [How to configure tctl with a Codec Server](/security/how-to-set-up-codec-server#configure-tctl)
+#### Usage
 
-## Use case: Web UI
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/production-readiness/develop#data-encryption).
 
-Workflow Execution Event History is available in the Web UI.
-Payload information for each Event is captured within Event 'input' and 'result' fields.
-Without a Codec Server, this information remains encoded.
+To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and CLI.
+When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
 
-Passing these Payloads through a Codec Server returns decoded results to the Web UI.
+For details on creating your Codec Server, see [Codec Server Setup](/production-readiness/develop#codec-server-setup).
 
-- [How to configure the Web UI with a Codec Server](/security/how-to-set-up-codec-server#configure-the-web-ui)
+After you start your Codec Server, [configure your Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli).
+
+<!-- You can set your Codec Server endpoints to encode data sent to the Temporal Server (see [Remote data encoding](/concepts/what-is-remote-data-encoding)).
+However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
+For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers. -->

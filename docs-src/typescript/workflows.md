@@ -992,7 +992,7 @@ import PCP from '../concepts/what-is-a-parent-close-policy.md'
 
 ## `continueAsNew`
 
-We need to call `continueAsNew` before our Workflow hits the 50,000 Event limit. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
+We need to call `continueAsNew` before our Workflow History exceeds 51,200 Events. [Events](../concepts/what-is-an-event) are generated when a Workflow does various things involving Temporal Server, including calling an Activity, receiving a Signal, or calling `sleep`, but not handling a Query.
 
 <details>
 <summary>More info</summary>
@@ -1041,7 +1041,7 @@ export async function loopingWorkflow(foo: any, isContinued?: boolean) {
 You should not try to call `continueAsNew` too often - if at all!
 Its primary purpose is to truncate event history, which if too large may slow down your workflows and eventually cause an error. Calling it too frequently to be preemptive can cause other performance issues as each new Workflow Execution has overhead.
 
-Temporal's default limits are set to warn you at 10,000 events in a single Workflow Execution, and error at 50,000.
+Temporal's default limits are set to warn you after the Event History exceeds 10,240 Events in a single Workflow Execution, and error after the Event History exceeds 51,200 Events.
 This is sufficient for:
 
 - If executing one activity a day, it can support an infinite loop for over 2 decades (27 years)

@@ -2,9 +2,9 @@
 id: max-field-length
 title: temporal  max-field-length
 sidebar_label: max-field-length
-description: Definition for the max-field-length command option.
+description: Maximum length for each attribute field. 
 tags:
-	- cli
+    - cli
 ---
 
-Maximum length for each attribute field. (default: 0)
+Maximum length for each attribute field.

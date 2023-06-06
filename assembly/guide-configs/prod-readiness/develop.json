@@ -1,0 +1,46 @@
+{
+    "file_name": "develop.md",
+    "id": "develop",
+    "file_dir": "/production-readiness",
+    "title": "Temporal production readiness - Develop",
+    "sidebar_label": "Develop",
+    "description": "This guide explains what you need to develop to use Temporal in your production environment.",
+    "use_description": true,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": false,
+    "sections": [
+      {
+        "type": "h2",
+        "id": "prod-readiness-context/data-encryption"
+      },
+      {
+        "type": "langtabs",
+        "langtabs": [
+          {
+            "lang": "go",
+            "id": "go/how-to-use-a-custom-payload-codec-in-go"
+          },
+          {
+            "lang": "java",
+            "id": "java/how-to-use-a-custom-payload-codec-in-java"
+          },
+          {
+            "lang": "php",
+            "id": "none"
+          },
+          {
+            "lang": "python",
+            "id": "none"
+          },
+          {
+            "lang": "typescript",
+            "id": "none"
+          }
+        ]
+      },
+      {
+        "type": "h2",
+        "id": "prod-readiness-context/how-to-set-up-codec-server"
+      }
+    ]
+  }

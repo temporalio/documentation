@@ -2,10 +2,9 @@
 id: workflow-id
 title: temporal  workflow-id
 sidebar_label: workflow-id
-description: Definition for the workflow-id command option.
+description: Workflow Id
 tags:
-	- cli
+    - cli
 ---
 
-Alias: **-w**
-Workflow Id
+Workflow Id.

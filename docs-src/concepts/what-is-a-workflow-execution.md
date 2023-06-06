@@ -11,8 +11,12 @@ tags:
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
 It is the main unit of execution of a [Temporal Application](/concepts/what-is-a-temporal-application).
 
-- [How to start a Workflow Execution using an SDK](/application-development/foundations#start-workflow-execution)
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
+- [How to start a Workflow Execution using the Go SDK](/go/spawning-workflows)
+- [How to start a Workflow Execution using the Java SDK](/java/how-to-spawn-a-workflow-execution-in-java)
+- [How to start a Workflow Execution using the PHP SDK](/php/spawning-workflows)
+- [How to start a Workflow Execution using the Python SDK](/python/spawning-workflows)
+- [How to start a Workflow Execution using the TypeScript SDK](/typescript/spawning-workflows)
 
 Each Temporal Workflow Execution has exclusive access to its local state.
 It executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions through [Signals](/concepts/what-is-a-signal) and the environment through [Activities](/concepts/what-is-an-activity).
@@ -46,7 +50,10 @@ For more information, see [Deterministic constraints](/concepts/what-is-a-workfl
 
 If a failure occurs, the Workflow Execution picks up where the last recorded event occurred in the Event History.
 
-- [How to use Replay APIs to test Workflow Definitions](/app-dev-context/replays)
+- [How to use Replay APIs using the Go SDK](/go/replays)
+- [How to use Replay APIs using the Java SDK](/java/replays)
+- [How to use Replay APIs using the Python SDK](/python/replays)
+- [How to use Replay APIs using the TypeScript SDK](/typescript/replays)
 
 ### Commands and awaitables
 
@@ -126,9 +133,8 @@ No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-There is a hard limit of 50,000 Events in a Workflow Execution Event History, as well as a hard limit of 50 MB in terms of size.
-The Temporal Cluster logs a warning at every 10,000 Events.
-When the Event History reaches 50,000 Events or the size limit of 50 MB, the Workflow Execution is forcefully terminated.
+The Temporal Cluster logs a warning after 10K (10,240) Events and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).

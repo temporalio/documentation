@@ -5,7 +5,7 @@ tags:
   - error
   - warn
   - limits
-date: 2023-02-23T00:00:00Z
+date: 2023-04-28T00:00:00Z
 ---
 
 Running into limits can cause unexpected failures.
@@ -31,8 +31,8 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
   - We error at 50 MB: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistorySizeLimitError and HistorySizeLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L380-L381), if you know what you are doing.
 - **History total count limit** (leading to a terminated Workflow Execution):
-  - We warn at 10,000 Events: `history size exceeds warn limit`.
-  - We error at 50,000 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
+  - We warn after 10,240 Events: `history size exceeds warn limit`.
+  - We error after 51,200 Events: [history size exceeds error limit](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/workflowExecutionContext.go#L1204).
   - This is configurable with [HistoryCountLimitError and HistoryCountLimitWarn](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L382-L383), if you know what you are doing.
 - **Concurrent Action limit**
   - We fail the following action Commands on Cloud if the concurrent running count exceeds 2,000:
@@ -45,9 +45,11 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
     - `limit.numPendingChildExecutions.error`
-- [Search Attributes maximums](/visibility/#search-attributes-maximums)
+- [Custom Search Attributes limits](/visibility/#custom-search-attributes-limits)
 
-**Default limits for Temporal Cloud**
+## Default limits for Temporal Cloud
+
+The Temporal Cloud service sets default limits for the following aspects:
 
 - **Account level**
   - Namespaces: 10
@@ -64,3 +66,8 @@ Hard limits fail with an error; soft limits produce a warning log on the server 
     - keyword: 20
     - text: 5
   - Retention Period: 30 days (configurable; range of 1–90 days)
+- **List Filters**
+  - The **ORDER BY** operator is not supported in List Filters in Temporal Cloud.
+    This means that you cannot apply custom ordering of Workflows with Cloud Visibility features.
+    Lists of Workflows are still ordered by a default ordering rule.
+    Be aware that this rule might change.

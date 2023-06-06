@@ -2,10 +2,9 @@
 id: output
 title: temporal  output
 sidebar_label: output
-description: Definition for the output command option.
+description: Output format.
 tags:
-	- cli
+    - cli
 ---
 
-Alias: **-o**
-format output as: table, json, card. (default: table)
+format output as: table, json, card.

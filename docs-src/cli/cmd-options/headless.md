@@ -2,9 +2,9 @@
 id: headless
 title: temporal  headless
 sidebar_label: headless
-description: Definition for the headless command option.
+description: Disable the Web UI.
 tags:
-	- cli
+    - cli
 ---
 
 Disable the Web UI.

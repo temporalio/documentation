@@ -113,7 +113,7 @@ The reason for the failure is in the `cause` field.
 
 ## Timeout Failure
 
-A Timeout Failure represents the timeout of an [Activity](/application-development/features#activity-timeouts) or [Workflow](/application-development/features#workflow-timeouts) Execution.
+A Timeout Failure represents the timeout of an Activity or Workflow.
 
 When an Activity times out, the last Heartbeat details it emitted is attached.
 

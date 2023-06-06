@@ -2,9 +2,10 @@
 id: sqlite-pragma
 title: temporal  sqlite-pragma
 sidebar_label: sqlite-pragma
-description: Definition for the sqlite-pragma command option.
+description: Specify sqlite pragma statements in pragma=value format.
 tags:
-	- cli
+    - cli
 ---
 
-Specify sqlite pragma statements in pragma=value format. Pragma options: ["journal_mode" "synchronous"].
+Specify sqlite pragma statements in pragma=value format.
+Pragma options: ["journal_mode" "synchronous"].

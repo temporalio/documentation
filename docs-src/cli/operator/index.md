@@ -1,13 +1,13 @@
 ---
 id: index
-title: temporal operator terminate
-sidebar_label: operator terminate
+title: temporal operator index
+sidebar_label: operator
 description: Operations performed on the Temporal Server.
 tags:
-	- cli
+    - cli
 ---
 
 Operator commands enable actions on [Namespaces](/concepts/what-is-a-namespace), [Search Attributes](/concepts/what-is-a-search-attribute), and [Temporal Clusters](/concepts/what-is-a-temporal-cluster).
-These actions are performed through subcommands for each Operator area.
+These actions are performed through subcommands.
 
-To run an Operator command, run `temporal operator [command] [subcommand] [command options] [arguments]`.
+To run an Operator command, run `temporal operator [command] [subcommand] [command options]`.

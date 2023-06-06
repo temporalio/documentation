@@ -2,11 +2,11 @@
     "content_source_dirs": [
         "docs-src/cloud-context",
         "docs-src/cloud",
-        "docs-src/app-dev-context",
         "docs-src/cluster-ops-context",
         "docs-src/clusters",
         "docs-src/concept-context",
         "docs-src/concepts",
+        "docs-src/prod-readiness-context",
         "docs-src/go-new",
         "docs-src/go",
         "docs-src/java",
@@ -26,7 +26,9 @@
     "temp_archive_dir": "archive",
     "source_info_nodes_file_name": "source-info-nodes.json",
     "guide_configs_path": "assembly/guide-configs",
-    "guide_configs_with_attached_nodes_file_name": "matched-guides.json",
+    "attached_nodes_file_name": "matched-guides.json",
+    "link_mapping_file_name": "link-mapping.json",
+    "assembly_report_file_name": "ASSEMBLY_REPORT.md",
     "notion_store_file_name": "notion-questions.json",
     "glossary_file_name": "glossary.md",
     "samples_file_paths_filename": "samples-file-paths.json",
@@ -35,6 +37,10 @@
             "org": "temporalio",
             "name": "documentation-samples-go",
             "ref": "sessions"
+        },
+        {
+            "org": "temporalio",
+            "name": "documentation-samples-python"
         }
     ]
 }

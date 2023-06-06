@@ -4,12 +4,13 @@ title: temporal schedule trigger
 sidebar_label: trigger
 description: Triggers an immediate action.
 tags:
-	- cli
+    - cli
 ---
 
 The `temporal schedule trigger` command triggers an immediate action with a given [Schedule](/concepts/what-is-a-schedule).
 By default, this action is subject to the Overlap Policy of the Schedule.
 
+Schedule triggers are passed in this format:
 `temporal schedule trigger` can be used to start a Workflow Run immediately.
 `temporal schedule trigger --sid 'your-schedule-id'`
 
@@ -18,32 +19,18 @@ The Overlap Policy of the Schedule can be overridden as well.
 
 Use the options provided below to change this command's behavior.
 
-- [--address](/cli/cmd-options/address)
+- [--fields](/cli/cmd-options/fields)
 
-- [--codec-auth](/cli/cmd-options/codec-auth)
+- [--limit](/cli/cmd-options/limit)
 
-- [--codec-endpoint](/cli/cmd-options/codec-endpoint)
+- [--no-pager](/cli/cmd-options/no-pager)
 
-- [--color](/cli/cmd-options/color)
-
-- [--context-timeout](/cli/cmd-options/context-timeout)
-
-- [--env](/cli/cmd-options/env)
-
-- [--grpc-meta](/cli/cmd-options/grpc-meta)
-
-- [--namespace](/cli/cmd-options/namespace)
+- [--output](/cli/cmd-options/output)
 
 - [--overlap-policy](/cli/cmd-options/overlap-policy)
 
+- [--pager](/cli/cmd-options/pager)
+
 - [--schedule-id](/cli/cmd-options/schedule-id)
 
-- [--tls-ca-path](/cli/cmd-options/tls-ca-path)
-
-- [--tls-cert-path](/cli/cmd-options/tls-cert-path)
-
-- [--tls-disable-host-verification](/cli/cmd-options/tls-disable-host-verification)
-
-- [--tls-key-path](/cli/cmd-options/tls-key-path)
-
-- [--tls-server-name](/cli/cmd-options/tls-server-name)
+- [--time-format](/cli/cmd-options/time-format)

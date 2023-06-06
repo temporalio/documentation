@@ -17,7 +17,10 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/cloud/worker/main_dacx.go">View source code</a>
+# <<<<<<< HEAD<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sessions/cloud/worker/main_dacx.go">View source code</a>
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/worker/main_dacx.go">View source code</a>
+>>>>>>> main
 
 ```go
 package main
