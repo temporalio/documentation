@@ -15,7 +15,7 @@ This could also mean employing multiple Task Queues, each one paired with a Work
 Task Routing has many applicable use cases.
 
 Some SDKs provide a [Session API](/concepts/what-is-a-worker-session) that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
-It also includes features like **concurrent session limitations** and **worker failure detection**.
+It also includes features like concurrent session limitations and worker failure detection.
 
 ### Flow control
 
