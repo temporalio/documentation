@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 02 2023 15:58:23 PM -0700
+Last assembled: Tuesday June 06 2023 13:55:13 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 87 guide configurations found.
 
@@ -923,11 +923,5 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-java/metrics -> /dev-guide/java/observability#metrics
-
-python/metrics -> /dev-guide/python/observability#metrics
-
-typescript/metrics -> /dev-guide/typescript/observability#metrics
 
 
