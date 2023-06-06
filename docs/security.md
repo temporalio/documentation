@@ -53,7 +53,7 @@ The configuration includes two sections such that intra-Cluster and external tra
 - `internode`: Configuration for encrypting communication between nodes in the cluster.
 - `frontend`: Configuration for encrypting the Frontend's public endpoints.
 
-A customized configuration can be passed using either the [WithConfig](/references/server-options#withconfig) or [WithConfigLoader](/references/server-options#withconfigloader) Server options.
+A customized configuration can be passed using either the <a class="tdlp" href="/references/server-options#withconfig">WithConfig<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfig">Learn more</a></span></span></a> or <a class="tdlp" href="/references/server-options#withconfigloader">WithConfigLoader<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfigloader">Learn more</a></span></span></a> Server options.
 
 See [TLS configuration reference](/references/configuration/#tls) for more details.
 
@@ -246,7 +246,7 @@ The following arguments must be passed to `Authorizer`:
 
 :::
 
-Configure your `Authorizer` when you start the server via the [`temporal.WithAuthorizer`](/references/server-options#withauthorizer) server option.
+Configure your `Authorizer` when you start the server via the <a class="tdlp" href="/references/server-options#withauthorizer">`temporal.WithAuthorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withauthorizer">Learn more</a></span></span></a> server option.
 
 If an `Authorizer` is not set in the server options, Temporal uses the `nopAuthority` authorizer that unconditionally allows all API calls to pass through.
 
