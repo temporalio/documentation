@@ -100,6 +100,10 @@
       "id": "go/how-to-handle-an-update-in-go"
     },
     {
+      "type": "h4",
+      "id": "go/how-to-set-an-update-validator-function-in-go"
+    },
+    {
       "type": "h3",
       "id": "go/how-to-send-an-update-from-a-client-in-go"
     },

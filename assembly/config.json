@@ -37,7 +37,7 @@
         {
             "org": "temporalio",
             "name": "documentation-samples-go",
-            "ref": "add-go-schedule-sample"
+            "ref": "sync_update"
         },
         {
             "org": "temporalio",

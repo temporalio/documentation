@@ -2,15 +2,26 @@
 id: how-to-define-an-update-type-in-go
 title: How to define an Update Type in Go
 sidebar_label: Update type
-description: An Update type, also called an Update name, is a `string` value.
-tags:
-  - go
-  - how-to
+description: An Update type, also called an Update name, is a string value.
 ---
 
-In Go, an Update type, also called an Update name, is a `string` value.
-The arguments and result must be [serializable](/concepts/what-is-a-data-converter).
+In Go, you define an Update type, also known as an Update name, as a `string` value.
+You must ensure the arguments and result are [serializable](/concepts/what-is-a-data-converter).
+When sending and receiving the Update, use the Update name as an identifier.
+The name does not link to the data type(s) sent with the Update.
+Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
-updateType := "your_update_name"
+// YourUpdateName holds a string value used to correlate Updates.
+const YourUpdateName = "your_update_name"
+// ...
+func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
+// ...
+	workflow.SetUpdateHandler(ctx, YourUpdateName, func(arg YourUpdateArg) (YourUpdateResult, error) {
+// ...
+	})
+// ...
+}
 ```

@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 05 2023 17:47:46 PM -0600
+Last assembled: Monday June 05 2023 18:29:37 PM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 87 guide configurations found.
 
-1445 information nodes found.
+1447 information nodes found.
 
-1197 information nodes are attached to guides.
+1198 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -363,6 +363,8 @@ concepts/what-is-a-workflow-task-timeout -> /workflows#workflow-task-timeout
 concepts/what-is-an-activity-type -> /activities#activity-type
 
 concepts/what-is-an-activity-task-execution -> /tasks#activity-task-execution
+
+concepts/what-is-an-update -> /workflows#update
 
 references/cluster-metrics -> /references/cluster-metrics#
 
@@ -921,8 +923,6 @@ java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-resu
 go/tracing -> /dev-guide/go/observability#tracing
 
 go/logging -> /dev-guide/go/observability#logging
-
-concepts/what-is-an-update -> /workflows#update
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 

@@ -531,27 +531,27 @@ This [Event](/concepts/what-is-an-event) type indicates that the Workflow [Searc
 
 | Field                            | Description                                                                                          |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| workflow_task_completed_event_id | The Id of the [WorkflowTaskCompleted](#workflowtaskcompleted) that the Event was reported with.      |
+| workflow_task_completed_event_id | The [WorkflowTaskCompleted](#workflowtaskcompleted) Event reported the Event with this Id.           |
 | search_attributes                | Provides data for setting up a Workflow's [Search Attributes](/concepts/what-is-a-search-attribute). |
 
 ### WorkflowExecutionUpdateAcceptedEvent
 
-This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/workflows#workflow-execution) has accepted an [Update](/concepts/what-is-an-update) for execution.
-As no Event is generated when an Update is initially requested, this Event both indicates acceptance _and_ stores all of the original request input payload.
+This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/concepts/what-is-a-workflow-execution) has accepted an [Update](/concepts/what-is-an-update) for execution.
+The original request input payload is both indicated and stored by this Event, as it generates no Event when initially requesting an Update.
 
 | Field                                | Description                                                                                                                                                            |
 | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| protocol_instance_id                 | The Id of the instance of the Update protocol that is executing this Update.                                                                                           |
-| accepted_request_messge_id           | The Id of the request message sent by [Temporal Server](/concepts/what-is-the-temporal-server) to the [Worker](/concepts/what-is-a-worker).                            |
-| accepted_request_sequencing_event_id | The Id of the Event after which this Update can be executed.                                                                                                           |
+| protocol_instance_id                 | The instance of the Update protocol with this Id is executing this Update.                                                                                             |
+| accepted_request_message_id          | The Id of the request message sent by [Temporal Server](/concepts/what-is-the-temporal-server) to the [Worker](/concepts/what-is-a-worker).                            |
+| accepted_request_sequencing_event_id | Execute this Update after the Event with this Id.                                                                                                                      |
 | accepted_request                     | The request input and metadata initially provided by the invoker of the Update and subsequently relayed by Temporal Server to the Worker for acceptance and execution. |
 
 ### WorkflowExecutionUpdateCompletedEvent
 
-This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/workflows#workflow-execution) has executed an [Update](/concepts/what-is-an-update) to completion.
+This [Event](/concepts/what-is-an-event) type indicates that a [Workflow Execution](/concepts/what-is-a-workflow-execution) has executed an [Update](/concepts/what-is-an-update) to completion.
 
-| Field             | Description                                                                                                                                       |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| meta              | The metadata associated with this Update, sourced from the initial request.                                                                       |
-| accepted_event_id | The Id of the [WorkflowExecutionUpdateAcceptedEvent](#WorkflowExecutionUpdateAcceptedEvent) Event wherein this Update was accepted for execution. |
-| outcome           | The outcome of execution of this Update whether the execution resulted in a success or a failure.                                                 |
+| Field             | Description                                                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| meta              | The metadata associated with this Update, sourced from the initial request.                                                                  |
+| accepted_event_id | The Id of the [WorkflowExecutionUpdateAcceptedEvent](#WorkflowExecutionUpdateAcceptedEvent) The Platform accepted this Update for execution. |
+| outcome           | The outcome of execution of this Update whether the execution resulted in a success or a failure.                                            |
