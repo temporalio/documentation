@@ -27,7 +27,7 @@ Usually you interact with the API via high-level methods like `client.workflow.s
 
 If you're not using an SDK Client (rare), you can generate gRPC client stubs by:
 
-- Adding [`temporalio/api`](https://github.com/temporalio/api) (repo with the protobuf files) as a git submodule or subtree inside your repo
+- Cloning [`temporalio/api`](https://github.com/temporalio/api) (repo with the protobuf files)
 - Generating code in [your language](https://grpc.io/docs/languages/)
 
 ### Use manually
