@@ -1253,7 +1253,7 @@ To set your custom Payload Converter, use [`NewCompositeDataConverter`](https://
 
 :::tip Support, stability, and dependency info
 
-- This feaure is currently only available in the Go SDK
+- This feature is currently available only in the Go SDK.
 
 :::
 
