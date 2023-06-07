@@ -298,6 +298,10 @@
     {
       "type": "h2",
       "id": "go/error-handling"
+    },
+    {
+      "type": "h2",
+      "id": "go/selectors"
     }
   ]
 }
