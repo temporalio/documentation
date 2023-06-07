@@ -77,7 +77,7 @@ Not defining constraints on a dynamic configuration key sets the values globally
   ```yaml
   frontend.rps: # Rate limit on the number of requests sent to the Frontend host.
     - constraints: {} # Sets default value that applies to all Namespaces
-      value: 2000 # The defaul value for this key on the history host is 3000.
+      value: 2000 # The default value for this key on the history host is 3000.
   - constraints: {namespace: "namespace1"} # Sets value for "namespace1" Namespace
       value: "4000"
     - constraints: {namespace: "namespace2"}
