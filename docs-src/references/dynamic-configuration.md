@@ -67,8 +67,8 @@ Not defining constraints on a dynamic configuration key sets the values globally
 - To set global values for the configuration key with no constraints, use:
 
   ```yaml
-  history.rps: # Rate limit on the number of requests made per second to each History service host.
-    - value: 5000 # The default value for this is 3000.
+  frontend.globalNamespaceRPS: # Rate limit on the number of requests made per second to each History service host.
+    - value: 5000 # The default value for this is 2400.
   ```
 
 - For keys that can be customized at Namespace level, you can specify multiple values for different Namespaces in addition to one default value that applies globally to all Namespaces.
@@ -77,33 +77,33 @@ Not defining constraints on a dynamic configuration key sets the values globally
   ```yaml
   frontend.rps: # Rate limit on the number of requests sent to the Frontend host.
     - constraints: {} # Sets default value that applies to all Namespaces
-      value: 2000 # The defaul value for this key on the history host is 3000.
+      value: 2000 # The default value for this key on the Frontend host is 3000.
   - constraints: {namespace: "namespace1"} # Sets value for "namespace1" Namespace
-      value: "4000"
+      value: 4000
     - constraints: {namespace: "namespace2"}
-      value: "1000"
+      value: 1000
   ```
 
 - For keys that can be customized at a Task Queue level, you can specify Task Queue name and Task type in addition to Namespace.
   To set values at a Task Queue level, use `taskqueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`).
 
-  For example to override the default maximum queries per second made to the Persistence database from the Frontend Service, add the following to your dynamic configuration file.
+  For example if you have Workers creating a large number of Workflow and Activity tasks per second, you can add more partitions to your Task Queues (default is 4) to accomodate the high number of polls. To do this, you can add the following to your dynamic configuration file.
 
   ```yaml
-  frontend.persistenceMaxQPS:
+  matching.numTaskqueueReadPartitions:
   - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
-    value: 3500 # The default value for this key on the Frontend Service is 2400.
+    value: 8 # The default value for this key is 4. Task Queues hat need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
   - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
-    value: 4000 
+    value: 20 
   - constraints: {namespace: "namespace2"}  # Applies to all task queues in "namespace2".
-    value: 1500
+    value: 10
   - constraints: {}  # Applies to all other task queues in "namespace1" and all other Namespaces.
-    value: 3000
+    value: 16
   ```
 
-Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key.
+<!-- Note that the values set with most constraints take priority over values that are set with fewer constraints, regardless of the order in which they are set in the dynamic configuration key. -->
 
-For examples on how dynamic configuration is set, see:
+For more examples on how dynamic configuration is set, see:
 
 - [docker-compose](https://github.com/temporalio/docker-compose/tree/main/dynamicconfig)
 - [samples-server](https://github.com/temporalio/samples-server/blob/main/tls/config/dynamicconfig/development.yaml)
@@ -123,18 +123,20 @@ The Rate Per Second (RPS) dynamic configuration keys set the rate at which reque
 
 When scaling your services, tune the RPS to test your workload and set acceptable provisioning benchmarks. Exceeding these limits will result in `ResourceExhaustedError`.
 
-| Dynamic configuration key              | Type | Description                                                                                                                                                                                                                        | Default value |
-| -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| Frontend                               |      |                                                                                                                                                                                                                                    |               |
-| `frontend.rps`                         | Int  | Rate limit per second on the number of requests send to each Frontend service host.                                                                                                                                                | 2400          |
-| `frontend.namespaceRPS`                | Int  | Rate limit per second applied for each Namespace.                                                                                                                                                                                  | 2400          |
-| `frontend.namespaceCount`              | Int  | Rate limit on concurrent Task Queue polls per Namespace per instance.                                                                                                                                                              | 1200          |
-| `frontend.globalNamespaceRPS`          | Int  | Namespace rate limit per second applied globally on the entire Cluster. The limit is evenly distributed among available Frontend service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
-| `internal-frontend.globalNamespaceRPS` | Int  | Namespace rate limit per second across all internal-frontends.                                                                                                                                                                     | 0             |
-| History                                |      |                                                                                                                                                                                                                                    |               |
-| `history.rps`                          | Int  | Request rate per second for each History host.                                                                                                                                                                                     | 3000          |
-| Matching                               |      |                                                                                                                                                                                                                                    |               |
-| `matching.rps`                         | Int  | Request rate per second for each Matching host                                                                                                                                                                                     | 1200          |
+| Dynamic configuration key              | Type | Description                                                                                                                                                                                                                                                                                                                                | Default value |
+| -------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| Frontend                               |      |                                                                                                                                                                                                                                                                                                                                            |               |
+| `frontend.rps`                         | Int  | Rate limit per second on the number of requests send to each Frontend service host.                                                                                                                                                                                                                                                        | 2400          |
+| `frontend.namespaceRPS`                | Int  | Rate limit per second applied for each Namespace.                                                                                                                                                                                                                                                                                          | 2400          |
+| `frontend.namespaceCount`              | Int  | Rate limit on concurrent Task Queue polls per Namespace per instance.                                                                                                                                                                                                                                                                      | 1200          |
+| `frontend.globalNamespaceRPS`          | Int  | Namespace rate limit per second applied globally on the entire Cluster. The limit is evenly distributed among available Frontend service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`).                                                                                                         | 0             |
+| `internal-frontend.globalNamespaceRPS` | Int  | Namespace rate limit per second across all internal-frontends.                                                                                                                                                                                                                                                                             | 0             |
+| History                                |      |                                                                                                                                                                                                                                                                                                                                            |               |
+| `history.rps`                          | Int  | Request rate per second for each History host.                                                                                                                                                                                                                                                                                             | 3000          |
+| Matching                               |      |                                                                                                                                                                                                                                                                                                                                            |               |
+| `matching.rps`                         | Int  | Request rate per second for each Matching host                                                                                                                                                                                                                                                                                             | 1200          |
+| `matching.numTaskqueueWritePartitions` | Int  | Number of read partitions for a Task Queue. Note that to increase the number of partitions (on a running cluster), first increase `numTaskqueueReadPartitions` and then `numTaskqueueWritePartitions`. To decrease the number of partitions, first decrease `numTaskqueueWritePartitions` and then decrease `numTaskqueueReadPartitions`.  | 4             |
+| `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue. Note that to increase the number of partitions (on a running cluster), first increase `numTaskqueueReadPartitions` and then `numTaskqueueWritePartitions`. To decrease the number of partitions, first decrease `numTaskqueueWritePartitions` and then decrease `numTaskqueueReadPartitions`. | 4             |
 
 ### QPS limits for Persistence database
 
