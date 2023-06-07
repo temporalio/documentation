@@ -1429,3 +1429,67 @@ It's per Worker Process, so make sure there's only one Worker Process running on
 
 - The current implementation assumes that all Sessions are consuming the same type of resource and there's only one global limitation.
   Our plan is to allow you to specify what type of resource your Session will consume and enforce different limitations on different types of resources.
+
+## Error Handling in Go
+
+An Activity, or a Child Workflow, might fail, and you could handle errors differently based on the different
+error cases.
+
+If the Activity returns an error as `errors.New()` or `fmt.Errorf()`, that error is converted into `*temporal.ApplicationError`.
+
+If the Activity returns an error as `temporal.NewNonRetryableApplicationError("error message", details)`, that error is returned as `*temporal.ApplicationError`.
+
+There are other types of errors such as `*temporal.TimeoutError`, `*temporal.CanceledError` and
+`*temporal.PanicError`.
+Following is an example of what your error code might look like:
+
+Here's an example of handling Activity errors within Workflow code that differentiates between different error types.
+
+```go
+err := workflow.ExecuteActivity(ctx, YourActivity, ...).Get(ctx, nil)
+if err != nil {
+	var applicationErr *ApplicationError
+	if errors.As(err, &applicationErr) {
+		// retrieve error message
+		fmt.Println(applicationError.Error())
+
+		// handle Activity errors (created via NewApplicationError() API)
+		var detailMsg string // assuming Activity return error by NewApplicationError("message", true, "string details")
+		applicationErr.Details(&detailMsg) // extract strong typed details
+
+		// handle Activity errors (errors created other than using NewApplicationError() API)
+		switch applicationErr.Type() {
+		case "CustomErrTypeA":
+			// handle CustomErrTypeA
+		case CustomErrTypeB:
+			// handle CustomErrTypeB
+		default:
+			// newer version of Activity could return new errors that Workflow was not aware of.
+		}
+	}
+
+	var canceledErr *CanceledError
+	if errors.As(err, &canceledErr) {
+		// handle cancellation
+	}
+
+	var timeoutErr *TimeoutError
+	if errors.As(err, &timeoutErr) {
+		// handle timeout, could check timeout type by timeoutErr.TimeoutType()
+        switch err.TimeoutType() {
+        case commonpb.ScheduleToStart:
+                // Handle ScheduleToStart timeout.
+        case commonpb.StartToClose:
+                // Handle StartToClose timeout.
+        case commonpb.Heartbeat:
+                // Handle heartbeat timeout.
+        default:
+        }
+	}
+
+	var panicErr *PanicError
+	if errors.As(err, &panicErr) {
+		// handle panic, message and stack trace are available by panicErr.Error() and panicErr.StackTrace()
+	}
+}
+```

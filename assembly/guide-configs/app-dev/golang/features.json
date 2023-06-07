@@ -294,6 +294,10 @@
     {
       "type": "h3",
       "id": "go/additional-session-info"
+    },
+    {
+      "type": "h2",
+      "id": "go/error-handling"
     }
   ]
 }
