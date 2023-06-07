@@ -12,5 +12,5 @@ tags:
 To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
 
 ```python
-workflow.continue_as_new("your-workflow-name")
+workflow.continue_as_new(input)
 ```
