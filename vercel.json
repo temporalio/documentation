@@ -46,6 +46,10 @@
       "destination": "/glossary"
     },
     {
+      "source": "/tasks:path*",
+      "destination": "/workers:path*"
+    },
+    {
       "source": "/application-development-guide",
       "destination": "/dev-guide"
     },
@@ -455,7 +459,7 @@
     },
     {
       "source": "/concepts/task-queues",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
@@ -759,7 +763,7 @@
     },
     {
       "source": "/go/task-queues",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/go/testing",
@@ -1303,11 +1307,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task",
-      "destination": "/tasks#activity-task"
+      "destination": "/workers#activity-task"
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",
-      "destination": "/tasks#activity-task-execution"
+      "destination": "/workers#activity-task-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-type",
@@ -1419,15 +1423,15 @@
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
-      "destination": "/tasks#sticky-execution"
+      "destination": "/workers#sticky-execution"
     },
     {
       "source": "/concepts/what-is-a-task-queue",
-      "destination": "/tasks#task-queue"
+      "destination": "/workers#task-queue"
     },
     {
       "source": "/concepts/what-is-task-routing",
-      "destination": "/tasks#task-routing"
+      "destination": "/workers#task-routing"
     },
     {
       "source": "/concepts/what-is-a-task-token",
@@ -1435,7 +1439,7 @@
     },
     {
       "source": "/concepts/what-is-a-task",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/concepts/what-is-temporal",
@@ -1511,7 +1515,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-task-execution",
-      "destination": "/tasks#workflow-task-execution"
+      "destination": "/workers#workflow-task-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",

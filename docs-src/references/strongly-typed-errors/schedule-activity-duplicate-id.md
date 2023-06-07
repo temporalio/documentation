@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-The [Workflow Task](/tasks#workflow-task) failed because the [Activity](/activities) Id is already in use.
+The [Workflow Task](/concepts/what-is-a-workflow-task) failed because the [Activity](/activities) Id is already in use.
 
 Check your code to see if you've already specified the same Activity Id in your [Workflow](/workflows).
 Enter another Activity Id, and try running the Workflow Task again.
