@@ -87,12 +87,13 @@ Not defining constraints on a dynamic configuration key sets the values globally
 - For keys that can be customized at a Task Queue level, you can specify Task Queue name and Task type in addition to Namespace.
   To set values at a Task Queue level, use `taskqueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`).
 
-  For example if you have Workers creating a large number of Workflow and Activity tasks per second, you can add more partitions to your Task Queues (default is 4) to accomodate the high number of polls. To do this, you can add the following to your dynamic configuration file.
+  For example if you have Workers creating a large number of Workflow and Activity tasks per second, you can add more partitions to your Task Queues (default is 4) to accomodate the high number of polls.
+  To do this, add the following to your dynamic configuration file.
 
   ```yaml
   matching.numTaskqueueReadPartitions:
   - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
-    value: 8 # The default value for this key is 4. Task Queues hat need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
+    value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
   - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
     value: 20 
   - constraints: {namespace: "namespace2"}  # Applies to all task queues in "namespace2".
