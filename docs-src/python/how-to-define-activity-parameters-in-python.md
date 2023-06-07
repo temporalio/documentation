@@ -14,6 +14,7 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 ```python
 from temporalio import activity
 from your_dataobject_dacx import YourParams
+
 # ...
 # ...
 @activity.defn(name="your_activity")

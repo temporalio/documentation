@@ -254,7 +254,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 
 ### Matching Service
 
-The Matching Service is responsible for hosting user-facing <a class="tdlp" href="/tasks#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a> for Task dispatching.
+The Matching Service is responsible for hosting user-facing <a class="tdlp" href="/workers#task-queue">Task Queues<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a> for Task dispatching.
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Matching Service</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/temporal-matching-service.svg" alt="Matching Service" height="980" width="870" /></div></div>
 
