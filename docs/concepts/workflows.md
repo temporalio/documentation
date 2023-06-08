@@ -279,8 +279,8 @@ No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-The Temporal Cluster logs a warning after 10K (10,240) Events and periodically logs additional warnings as new Events are added.
-If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
+The Temporal Cluster logs a warning after 10Ki (10,240) Events and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
@@ -365,8 +365,8 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-The Temporal Cluster logs a [warning after 10K (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
-If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
+The Temporal Cluster logs a [warning after 10Ki (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 #### Continue-As-New
 
@@ -766,7 +766,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
