@@ -4,7 +4,7 @@ Last assembled: Wednesday June 07 2023 19:11:12 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
-87 guide configurations found.
+86 guide configurations found.
 
 1445 information nodes found.
 
@@ -929,5 +929,9 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+concepts/what-is-a-worker-session -> #worker-session
+
+go/worker-sessions -> /dev-guide/go/features#worker-sessions
 
 

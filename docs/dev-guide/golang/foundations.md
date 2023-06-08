@@ -136,7 +136,7 @@ An SDK provides you with the following:
 
 - A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 - APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
-- APIs to create and manage <a class="tdlp" href="/workers#">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a>.
+- APIs to create and manage <a class="tdlp" href="/workers#worker">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a>.
 - APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
 
 [![Build Status](https://badge.buildkite.com/ce6df3b1a8b375270261ae70fb2d2756af298fef3a0dac4d20.svg?theme=github&branch=master)](https://buildkite.com/temporal/temporal-go-client) [![Coverage Status](https://coveralls.io/repos/github/temporalio/temporal-go-sdk/badge.svg?branch=master)](https://coveralls.io/github/temporalio/temporal-go-sdk?branch=master) [![Go reference](https://pkg.go.dev/badge/go.temporal.io/sdk)](https://pkg.go.dev/go.temporal.io/sdk)
@@ -202,7 +202,7 @@ If you don't provide [`HostPort`](https://pkg.go.dev/go.temporal.io/sdk/internal
 
 If you don't set a custom Namespace name in the Namespace field, the client connects to the default Namespace.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/gateway/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/gateway/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -257,7 +257,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/client/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/client/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -310,7 +310,7 @@ Workflows are the fundamental unit of a Temporal Application, and it all starts 
 In the Temporal Go SDK programming model, a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a> is an exportable function.
 Below is an example of a basic Workflow Definition.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -349,7 +349,7 @@ However, the best practice is to pass a single parameter that is of a `struct` t
 
 All Workflow Definition parameters must be serializable and can't be channels, functions, variadic, or unsafe pointers.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -386,7 +386,7 @@ However, it's not possible to receive both a custom value and an error in the ca
 The caller will receive either one or the other.
 Returning a non-nil `error` from a Workflow indicates that an error was encountered during its execution and the Workflow Execution should be terminated, and any custom return values will be ignored by the system.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -429,7 +429,7 @@ In Go, by default, the Workflow Type name is the same as the function name.
 
 To customize the Workflow Type, set the `Name` parameter with `RegisterOptions` when registering your Workflow with a <a class="tdlp" href="#develop-worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Worker in Go</span><br /><br /><span class="tdlppd">Develop an instance of a Worker by calling worker.New(), available via the go.temporal.io/sdk/worker package.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-worker">Learn more</a></span></span></a>.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -485,7 +485,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/dev-guide/go/observability#tracing) for more information about context propagation.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 ```
@@ -504,7 +504,7 @@ Activities written as struct methods can use shared struct variables, such as:
 
 Because this is such a common need, the rest of this guide shows Activities written as `struct` methods.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 package yourapp
@@ -544,7 +544,7 @@ A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
 Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
-This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a>.
+This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>.
 
 <!--TODO link to gRPC limit section when available -->
 
@@ -558,7 +558,7 @@ This parameter is optional for an Activity Definition, though it is recommended,
 An Activity Definition can support as many other custom parameters as needed.
 However, all parameters must be serializable (parameters can’t be channels, functions, variadic, or unsafe pointers), and it is recommended to pass a single struct that can be updated later.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityParam is the struct passed to your Activity.
@@ -582,7 +582,7 @@ There is no explicit limit to the amount of data that can be returned by an Acti
 A Go-based Activity Definition can return either just an `error` or a `customValue, error` combination (same as a Workflow Definition).
 You may wish to use a `struct` type to hold all custom values, just keep in mind they must all be serializable.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_activity_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_activity_definition_dacx.go">View source code</a>
 
 ```go
 // YourActivityResultObject is the struct returned from your Activity.
@@ -610,7 +610,7 @@ func (a *YourActivityObject) YourActivityDefinition(ctx context.Context, param Y
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 func main() {
@@ -632,7 +632,7 @@ func main() {
 
 Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
-This results in the set of three <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task">Learn more</a></span></span></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
+This results in the set of three <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
 Therefore, the Activity implementation code must be _stateless_.
@@ -651,7 +651,7 @@ The Activity function name can be provided as a variable object (no quotations) 
 The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
 The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
@@ -779,7 +779,7 @@ gow run worker/main.go # automatically reloads when file changes
 
 :::
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -854,7 +854,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/cloud/worker/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/cloud/worker/main_dacx.go">View source code</a>
 
 ```go
 package main
@@ -990,7 +990,7 @@ workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, "Yo
 
 ### Set Task Queue
 
-In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>.
+In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
 For any code to execute, a Worker Process must be running that contains a Worker Entity that is polling the same Task Queue name.
 

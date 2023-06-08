@@ -262,6 +262,46 @@
     {
       "type": "p",
       "id": "go/how-to-use-a-custom-payload-converter-in-go"
+    },
+    {
+      "type": "h2",
+      "id": "go/worker-sessions"
+    },
+    {
+      "type": "h3",
+      "id": "go/enable-worker-sessions"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-enable-sessions-on-a-worker"
+    },
+    {
+      "type": "h4",
+      "id": "go/max-concurrent-sessions"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-configure-max-concurrent-sessions"
+    },
+    {
+      "type": "h3",
+      "id": "go/create-a-session"
+    },
+    {
+      "type": "p",
+      "id": "go/how-to-create-a-session-from-the-workflow-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/additional-session-info"
+    },
+    {
+      "type": "h2",
+      "id": "go/error-handling"
+    },
+    {
+      "type": "h2",
+      "id": "go/selectors"
     }
   ]
 }
