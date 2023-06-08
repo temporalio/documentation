@@ -8,8 +8,16 @@ tags:
   - explanation
 ssdi:
   - Introduced in Temporal Server version 1.17.0
-  - Available in tctl v1.17 and Temporal CLI
-  - Available in Temporal Cloud via tctl and CLI
+  - Available in: 
+    - Temporal CLI (and tctl v1.17)
+    - Temporal Cloud
+    - [Go SDK](/dev-guide/go/features#schedule-a-workflow)
+    - [Python SDK](/dev-guide/python/features#schedule-a-workflow)
+    - [Python SDK](/dev-guide/python/features#schedule-a-workflow)
+    - [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules)
+    - [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html)
+    - [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
+  - In development in [Java SDK](https://github.com/temporalio/sdk-java/pull/1776)
 ---
 
 A Schedule contains instructions for starting a [Workflow Execution](/workflows#workflow-execution) at specific times.
@@ -183,16 +191,6 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 
 ### Limitations
 
-:::info Experimental
-
-The Scheduled Workflows feature is available in Temporal Server version 1.18.
-
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
-
-:::
-
-Native support for Schedules in language SDKs is coming soon.
-For now, `tctl` and the web UI are the main interfaces to Schedules.
-For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
