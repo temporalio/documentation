@@ -813,8 +813,15 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 :::tip Support, stability, and dependency info
 
 - Introduced in Temporal Server version 1.17.0
-- Available in tctl v1.17 and Temporal CLI
-- Available in Temporal Cloud via tctl and CLI
+- Available in Temporal CLI (and tctl v1.17)
+- Available in Temporal Cloud
+- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow)
+- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow)
+- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow)
+- Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html)
+- Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
+- In development in [Java SDK](https://github.com/temporalio/sdk-java/pull/1776)
 
 :::
 
@@ -989,19 +996,9 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 
 ### Limitations
 
-:::info Experimental
-
-The Scheduled Workflows feature is available in Temporal Server version 1.18.
-
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
-
-:::
-
-Native support for Schedules in language SDKs is coming soon.
-For now, `tctl` and the web UI are the main interfaces to Schedules.
-For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
 
 ## State Transition
 
