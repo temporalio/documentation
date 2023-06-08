@@ -44,6 +44,7 @@ The Developer's guide is divided into the following sections:
    - [Async Activity Completion](/dev-guide/typescript/features#asynchronous-activity-completion)
    - [Child Workflows](/dev-guide/typescript/features#child-workflows)
    - [Continue-As-New](/dev-guide/typescript/features#continue-as-new)
+   - [Schedules](/dev-guide/typescript/features#schedule-a-workflow)
    - [Cron Jobs](/dev-guide/typescript/features#temporal-cron-jobs)
 
 3. [**Observability**](/dev-guide/typescript/observability): Methods for observing a Temporal Application.
