@@ -56,14 +56,13 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    // announcementBar: {
-    //   id: "replay_announcement",
-    //   content:
-    //     'Content HERE',
-    //      backgroundColor: "#141414",
-    //      textColor: "#ffffff",
-    //      isCloseable: true,
-    //   },
+    announcementBar: {
+      id: "replay_announcement",
+      content: 'Get your tickets for <a href="https://temporal.io/replay">Replay 2023</a>!',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {
