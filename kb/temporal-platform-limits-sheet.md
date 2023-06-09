@@ -70,6 +70,7 @@ The Temporal Cloud service sets default limits for the following aspects:
     - keyword: 20
     - text: 5
   - Retention Period: 30 days (configurable; range of 1—90 days)
+  - Number of Signals received per Workflow Execution: 10000
 - **List Filters**
   - The **ORDER BY** operator isn't supported in List Filters in Temporal Cloud.
     This means that you can't apply custom ordering of Workflows with Cloud Visibility features.
