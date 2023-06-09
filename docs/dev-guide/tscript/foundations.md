@@ -598,7 +598,7 @@ A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make progress on Workflow Executions and Activity Executions, respectively.
 
 Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
 
@@ -694,7 +694,7 @@ There are three main things the Worker needs:
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
 | Options         | Description                                                                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
 | `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
 | `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
