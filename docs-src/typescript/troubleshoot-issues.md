@@ -46,7 +46,7 @@ Double check that your Workers are registering the right Workflow and Activity D
 [ERROR] Module not found: Error: Can't resolve '@temporalio/workflow/lib/worker-interface.js' in '/src'
 ```
 
-Our [Next.js tutorial](/typescript/nextjs-tutorial) is written for people setting up Temporal **within an existing monorepo** which may be of use here.
+Our [Next.js tutorial](https://learn.temporal.io/tutorials/typescript/nextjs) is written for people setting up Temporal **within an existing monorepo**, which may be of use here.
 
 When you pass a `workflowsPath`, our Webpack config expects to find `node_modules` in the same or a parent/ancestor directory.
 
@@ -61,11 +61,12 @@ When you pass a `workflowsPath`, our Webpack config expects to find `node_module
 ```
 
 Temporal Workflow Bundles need to [export a set of methods that fit the compiled `worker-interface.ts` from `@temporalio/workflow`](https://github.com/temporalio/sdk-typescript/blob/eaa2d205c9bc5ff4a3b17c0b34f2dcf6b1e0264a/packages/worker/src/workflow/bundler.ts#L81) as an entry point.
-We do offer a [bundleWorkflowCode](/typescript/workers/#prebuilt-workflow-bundles) method to assist you with this, though it uses our Webpack settings.
+We do offer a `bundleWorkflowCode` method to assist you with this, though it uses our Webpack settings.
+For more information, see the [Register types](dev-guide/typescript/foundations#register-types) section.
 
 ### Webpack errors
 
-The TypeScript SDK's [Worker](/typescript/workers) bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
+The TypeScript SDK's Worker bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
 If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/typescript/logging#logs-generated-by-sdk-components).
 
