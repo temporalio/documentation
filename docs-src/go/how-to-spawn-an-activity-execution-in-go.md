@@ -12,7 +12,7 @@ The Activity function name can be provided as a variable object (no quotations) 
 The benefit of passing the actual function object is that the framework can validate the parameters against the Activity Definition.
 The `ExecuteActivity` call returns a Future, which can be used to get the result of the Activity Execution.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/yourapp/your_workflow_definition_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/your_workflow_definition_dacx.go">View source code</a>
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	

@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed while trying to cancel an [external Workflow](/workflows/#external-workflows).
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed while trying to cancel an [external Workflow](/workflows/#external-workflows).
 Unset or invalid attributes can cause this to occur.
 
 Reset any missing attributes, such as Workflow Id or Run Id.
