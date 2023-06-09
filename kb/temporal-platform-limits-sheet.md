@@ -41,7 +41,7 @@ Warnings are soft limits that produce a warning log on the server side.
     - `SignalExternalWorkflowExecution`
     - `RequestCancelExternalWorkflowExecution`
     - `StartChildWorkflowExecution`
-  - The open source Temporal Cluster has a default value of 50,000 for these limits:
+  - The open source Temporal Cluster has a default value of 2,000 for these limits:
     - `limit.numPendingActivities.error`
     - `limit.numPendingSignals.error`
     - `limit.numPendingCancelRequests.error`
