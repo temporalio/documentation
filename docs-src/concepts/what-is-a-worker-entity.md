@@ -11,7 +11,7 @@ tags:
 A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
 
 A Worker Entity listens and polls on a single Task Queue.
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make progress on Workflow Executions and Activity Executions, respectively.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 **Can a Worker handle more Workflow Executions than its cache size or number of supported threads?**
 
