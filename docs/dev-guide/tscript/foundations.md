@@ -598,7 +598,7 @@ A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-A Worker Entity contains a Workflow Worker and/or an Activity Worker, which make progress on Workflow Executions and Activity Executions, respectively.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
 
