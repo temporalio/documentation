@@ -78,9 +78,11 @@ MySignal struct {
 
 ### Handle Signal
 
-Workflows listen for Signals by the Signal's name.
+Workflows listen for Signals by the Signal's name. 
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
+
+A common use-case is to block a workflow while waiting for a Signal, like in the following snippet:
 
 ```go
 func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
@@ -94,6 +96,28 @@ func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error
   // ...
 }
 ```
+
+alternatively, you might want the workflow to proceed, and still be capable of handling external signals
+
+```go
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
+  var signal MySignal
+  signalChan := workflow.GetSignalChannel(ctx, "your-signal-name")
+	workflow.Go(ctx, func(ctx workflow.Context) {
+		for {
+			selector := workflow.NewSelector(ctx)
+			selector.AddReceive(signalChan, func(c workflow.ReceiveChannel, more bool) {
+				c.Receive(ctx, &mySignal)
+			})
+			selector.Select(ctx)
+		}
+	})
+  // submit activity 1
+  // signal can be received while activity one is pending
+
+}
+
+
 
 In the example above, the Workflow code uses `workflow.GetSignalChannel` to open a `workflow.Channel` for the Signal type (identified by the Signal name).
 
