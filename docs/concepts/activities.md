@@ -77,7 +77,7 @@ Therefore, an Activity Definition has no restrictions on the code it contains.
 
 An Activity Definition can support as many parameters as needed.
 
-All values passed through these parameters are recorded in the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> of the Workflow Execution.
+All values passed through these parameters are recorded in the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> of the Workflow Execution.
 Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:

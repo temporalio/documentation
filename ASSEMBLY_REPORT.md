@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 08 2023 15:58:18 PM -0700
+Last assembled: Saturday June 10 2023 23:33:07 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 86 guide configurations found.
 
@@ -920,7 +920,7 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
+go/tracing -> /dev-guide/go/observability#tracing
 
 go/logging -> /dev-guide/go/observability#logging
 
