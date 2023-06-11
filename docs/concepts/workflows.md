@@ -817,7 +817,6 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 - Available in Temporal Cloud
 - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow)
 - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow)
-- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow)
 - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules)
 - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html)
 - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
