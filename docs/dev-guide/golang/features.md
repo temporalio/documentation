@@ -78,7 +78,7 @@ MySignal struct {
 
 ### Handle Signal
 
-Workflows listen for Signals by the Signal's name. 
+Workflows listen for Signals by the Signal's name.
 
 Use the `GetSignalChannel()` API from the `go.temporal.io/sdk/workflow` package to get the Signal Channel.
 
