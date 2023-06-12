@@ -157,6 +157,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/how-to-run-a-worker-on-docker"
+    },
+    {
+      "type": "h2",
       "id": "typescript/run-a-temporal-cloud-worker"
     },
     {
