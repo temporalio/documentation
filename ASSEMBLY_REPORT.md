@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 08 2023 15:58:18 PM -0700
+Last assembled: Monday June 12 2023 13:44:27 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 86 guide configurations found.
 
-1448 information nodes found.
+1449 information nodes found.
 
-1204 information nodes are attached to guides.
+1205 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -880,6 +880,8 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+typescript/testing -> /dev-guide/typescript/testing#replay
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -891,6 +893,8 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
