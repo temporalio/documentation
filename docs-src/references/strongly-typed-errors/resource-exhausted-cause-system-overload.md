@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the system is overloaded and cannot allocate further resources to [Workflow Tasks](/tasks#workflow-task).
+This error indicates that the system is overloaded and cannot allocate further resources to [Workflow Tasks](/concepts/what-is-a-workflow-task).
 
 <!--TODO: more info needed -->

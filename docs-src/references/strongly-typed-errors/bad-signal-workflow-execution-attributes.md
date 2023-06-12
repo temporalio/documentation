@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed to validate attributes for [SignalExternalWorkflowExecution](/references/commands/#signalexternalworkflowexecution).
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed to validate attributes for [SignalExternalWorkflowExecution](/references/commands/#signalexternalworkflowexecution).
 
 Reset any unset, missing, nil, or invalid attributes.
 Adjust the input to fit within the system's size limits.

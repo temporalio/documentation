@@ -49,13 +49,13 @@ A unique identifier for an Activity Execution.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Activity Task](/tasks#activity-task)
+#### [Activity Task](/workers#activity-task)
 An Activity Task contains the context needed to make an Activity Task Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Activity Task Execution](/tasks#activity-task-execution)
+#### [Activity Task Execution](/workers#activity-task-execution)
 An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -218,7 +218,7 @@ _Tags: [term](/tags/term)_
 
 
 #### [Memo](/workflows#memo)
-A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with filtered list results.
+A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is returned when you describe or list Workflow Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -349,25 +349,25 @@ A State Transition is a unit of progress by a Workflow Execution.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Sticky Execution](/tasks#sticky-execution)
+#### [Sticky Execution](/workers#sticky-execution)
 A Sticky Execution is a when a Worker Entity caches the Workflow Execution Event History and creates a dedicated Task Queue to listen on.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Task](/tasks#)
+#### [Task](/workers#task)
 A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Task Queue](/tasks#task-queue)
+#### [Task Queue](/workers#task-queue)
 A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Task Routing](/tasks#task-routing)
+#### [Task Routing](/workers#task-routing)
 Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -469,7 +469,7 @@ The term Visibility, within the Temporal Platform, refers to the subsystems and 
 _Tags: [term](/tags/term)_
 
 
-#### [Worker](/workers#)
+#### [Worker](/workers#worker)
 In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
@@ -497,6 +497,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 The Worker Service runs background processing for the replication queue, system Workflows, and (in versions older than 1.5.0) the Kafka visibility processor.
 
 _Tags: [term](/tags/term)_
+
+
+#### [Worker Session](/workers#worker-session)
+A Worker Session is a feature provided by some SDKs that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Workflow](/workflows#)
@@ -541,13 +547,13 @@ This is the maximum amount of time that a single Workflow Run is restricted to.
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [timeouts](/tags/timeouts)_
 
 
-#### [Workflow Task](/tasks#workflow-task)
+#### [Workflow Task](/workers#workflow-task)
 A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Workflow Task Execution](/tasks#workflow-task-execution)
+#### [Workflow Task Execution](/workers#workflow-task-execution)
 A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
