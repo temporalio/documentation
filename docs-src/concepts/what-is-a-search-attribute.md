@@ -31,26 +31,26 @@ These Search Attributes are created when the initial index is created.
 
 | NAME                       | TYPE     | DEFINITION                                                                                                                                                                   |
 | -------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| WorkflowType               | Keyword  | The type of Workflow.                                                                                                                                                        |
 | WorkflowId                 | Keyword  | Identifies the Workflow Execution.                                                                                                                                           |
+| RunId                      | Keyword  | Identifies the current Workflow Execution Run.                                                                                                                               |
+| WorkflowType               | Keyword  | The type of Workflow.                                                                                                                                                        |
 | ExecutionStatus            | Keyword  | The current state of the Workflow Execution.                                                                                                                                 |
 | StartTime                  | Datetime | The time at which the Workflow Execution started.                                                                                                                            |
 | CloseTime                  | Datetime | The time at which the Workflow Execution completed.                                                                                                                          |
-| ExecutionTime              | Datetime | Same as StartTime for the most cases but different for cron Workflows and retried Workflows. For them it is the time at which the Workflow Execution actually begin running. |
-| RunId                      | Keyword  | Identifies the current Workflow Execution Run.                                                                                                                               |
-| ExecutionDuration          | Int      | The time needed to run the Workflow Execution. Available only for closed Workflows.                                                                                          |
-| HistoryLength              | Int      | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                              |
+| ExecutionTime              | Datetime | Same as StartTime for the most cases but different for Cron Workflows and retried Workflows; the time at which the Workflow Execution actually begins running. |
+| ExecutionDuration          | Int      | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                          |
 | StateTransitionCount       | Int      | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                    |
-| TaskQueue                  | Keyword  | Task Queue used by Workflow Execution.                                                                                                                                       |
-| TemporalChangeVersion      | Keyword  | If Workflow versioning is enabled, list of change/version pairs will be stored here.                                                                                         |
-| BinaryChecksums            | Keyword  | List of binary Ids of Workers that run the Workflow Execution.                                                                                                               |
-| BatcherNamespace           | Keyword  | Used by internal batcher to indicate the Namespace where batch operation was applied to.                                                                                     |
-| BatcherUser                | Keyword  | Used by internal batcher workflow that run in `TemporalBatcher` namespace division to indicate the user who started the batch operation.                                                                                               |
-| NamespaceId                | Keyword  | Identifies the Namespace of the Search Attribute.                                                                                                                            |
-| TemporalScheduledStartTime | Datetime | The time that the Workflow is schedule to start at.                                                                                                                          |
-| TemporalScheduledById      | Keyword  | Identifies each scheduled Workflow by an Id.                                                                                                                                 |
-| TemporalSchedulePaused     | Boolean  | Indicates if the Schedule has been paused.                                                                                                                                   |
+| HistoryLength              | Int      | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                              |
 | HistorySizeBytes           | Long     | The size of the Event History.                                                                                                                                               |
+| TaskQueue                  | Keyword  | Task Queue used by Workflow Execution.                                                                                                                                       |
+| TemporalChangeVersion      | Keyword  | Stores change/version pairs if the GetVersion API is enabled.                     |
+| BinaryChecksums            | Keyword  | List of binary Ids of Workers that run the Workflow Execution.                                                                                                               |
+| BuildId | Keyword | Returns a list of Worker Build Ids that have processed Workflow Executions, or of a compatible Workflow version. | 
+| TemporalScheduledStartTime | Datetime | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                                                         |
+| TemporalScheduledById      | Keyword  | The Id of the Schedule that started the Workflow.                                                                                                                            |
+| TemporalSchedulePaused     | Boolean  | Indicates if the Schedule has been paused. Set on Schedules.                                                                                                                                  |
+| BatcherUser                | Keyword  | Used by internal batcher Workflow that run in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                                               |
+
 
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.
