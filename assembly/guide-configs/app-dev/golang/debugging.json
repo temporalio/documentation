@@ -22,6 +22,10 @@
     {
       "type": "h3",
       "id": "go/debug-environment-production"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-test-workflow-definitions-in-go"
     }
   ]
 }
