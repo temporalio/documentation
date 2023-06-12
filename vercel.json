@@ -1540,6 +1540,82 @@
     {
       "source": "/java/:path*",
       "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
-    }
+    },
+    {
+      "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/",
+      "destination": "/cluster-deployment-guide#create-custom-search-attributes"
+    },
+    {
+      "source": "/server-archive-data",
+      "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/blog/airbyte-case-study/",
+      "destination": "https://temporal.io/case-studies/airbyte-case-study"
+    },
+    {
+      "source": "/blog/build-an-ecommerce-app-with-temporal-part-1/",
+      "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-1"
+    },
+    {
+      "source": "/blog/descript-case-study/",
+      "destination": "https://temporal.io/case-studies/descript-case-study"
+    },
+    {
+      "source": "/blog/tags/case-study",
+      "destination": "https://temporal.io/use-cases"
+    },
+    {
+      "source": "/blog/zebra-medical-case-study/",
+      "destination": "https://temporal.io/case-studies/zebra-medical-case-study"
+    },
+    {
+      "source": "/clusters/how-to-upgrade-the-temporal-server-version",
+      "destination": "/cluster-deployment-guide#upgrade-server"
+    },
+    {
+      "source": "/concepts/what-is-a-claimmapper-plugin",
+      "destination": "/security#claim-mapper"
+    },
+    {
+      "source": "/concepts/what-is-a-claimmapper-plugin/#default-jwt-claimmapper",
+      "destination": "/security#default-jwt-claimmapper"
+    },
+    {
+      "source": "/concepts/what-is-a-retention-period",
+      "destination": "/clusters#retention-period"
+    },
+    {
+      "source": "/concepts/what-is-multi-cluster-replication",
+      "destination": "/clusters#multi-cluster-replication"
+    },
+    {
+      "source": "configure-temporal-server",
+      "destination": ""
+    },
+    {
+      "source": "configuring-temporal-server",
+      "destination": ""
+    },
+    {
+      "source": "filter-workflows",
+      "destination": ""
+    },
+    {
+      "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl/",
+      "destination": "/cluster-deployment-guide#create-custom-search-attributes"
+    },
+    {
+      "source": "/docs/archive-data#providers",
+      "destination": "/cluster-deployment-guide#providers"
+    },
+    {
+      "source": "",
+      "destination": ""
+    },
+    {
+      "source": "",
+      "destination": ""
+    },
   ]
 }
