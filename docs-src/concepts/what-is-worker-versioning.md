@@ -198,3 +198,24 @@ no longer needed.
 There is also a limit on the size of each Build ID / version string, which defaults to 255
 characters. This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic
 config property.
+
+### Build ID Reachability
+
+Eventually you'll want to know if you can retire old worker versions. We provide functionality
+to help you determine if a version is still in by open or closed workflows. You can use the
+`temporal` cli to do this with the `temporal task-queue get-build-id-reachability` command. The
+command will tell you if the Build ID in question is unreachable, only reachable
+by closed workflows, or reachable by open and/or new workflows on a per-task-queue basis. For
+example, this "2.0" Build ID is shown here by the cli to be reachable by both new workflows and
+some existing workflows:
+
+```
+λ  temporal task-queue get-build-id-reachability --build-id "2.0"
+  BuildId                         TaskQueue                                   Reachability
+      2.0  build-id-versioning-dc0068f6-0426-428f-b0b2-703a7e409a97  [NewWorkflows
+                                                                     ExistingWorkflows]
+```
+
+For more information, see the [CLI documentation](/cli/) or help output.
+
+You can also use this API (`GetWorkerTaskReachability`) directly from within language SDKs.
