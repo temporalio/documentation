@@ -35,7 +35,8 @@
     "documentation_samples_repos": [
         {
             "org": "temporalio",
-            "name": "documentation-samples-go"
+            "name": "documentation-samples-go",
+            "ref": "tags"
         },
         {
             "org": "temporalio",
