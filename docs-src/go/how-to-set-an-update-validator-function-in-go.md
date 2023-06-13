@@ -14,7 +14,9 @@ If the Update is rejected, it's not recorded in the Event History.
 If it's accepted, the `WorkflowExecutionUpdateAccepted` Event occurs.
 Afterwards, the Worker executes the accepted Update and, upon completion, a `WorkflowExecutionUpdateCompleted` Event gets written into the Event History.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/your_updatable_workflow_dacx.go">View source code</a>
+The platform treats a panic in the Validator function as a rejection of the Update."
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
 // UpdatableWorkflowWithValidator is a Workflow Definition.
@@ -23,28 +25,31 @@ Afterwards, the Worker executes the accepted Update and, upon completion, a `Wor
 // Updates can be sent to the Workflow during this time.
 func UpdatableWorkflowWithValidator(ctx workflow.Context, param WFParam) (WFResult, error) {
 	counter := param.StartCount
-	if err := workflow.SetUpdateHandlerWithOptions(
+	err := workflow.SetUpdateHandlerWithOptions(
 		ctx, YourValidatedUpdateName,
-		func(arg YourUpdateArg) (YourUpdateResult, error) {
+		func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
 // ...
 		},
 		// Set the isPositive validator.
 		workflow.UpdateHandlerOptions{Validator: isPositive},
-	); err != nil {
+	)
+	if err != nil {
 		return WFResult{}, err
 	}
 // ...
 }
-// ...
+
 // isPositive is a validator function.
 // It returns an error if the int value is below 1.
+// This function can not change the state of the Workflow.
+// workflow.Context can be used to log
 func isPositive(ctx workflow.Context, u YourUpdateArg) error {
 	log := workflow.GetLogger(ctx)
 	if u.Add < 1 {
-		log.Debug("Rejecting non-positive number, positive integers only", "update value:", u.Add)
+		log.Debug("Rejecting non-positive number, positive integers only", "UpdateValue", u.Add)
 		return fmt.Errorf("addend must be a positive integer (%v)", u.Add)
 	}
-	log.Debug("Accepting update", "update value:", u.Add)
+	log.Debug("Accepting Update", "UpdateValue", u.Add)
 	return nil
 }
 ```

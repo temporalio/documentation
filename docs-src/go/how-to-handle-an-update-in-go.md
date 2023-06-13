@@ -10,19 +10,18 @@ The handler function can accept multiple serializable input parameters, but we r
 This practice enables you to add fields in future versions while maintaining backward compatibility.
 You can optionally include a `workflow.Context` parameter in the first position of the function.
 The function can return either a serializable value with an error or just an error.
+The Workflow's WorkflowPanicPolicy configuration determines how panics are handled inside the Handler function.
+WorkflowPanicPolicy is set in the Worker Options.
 
-Update handlers, unlike Query handlers, can observe and mutate Workflow state.
+Update handlers, unlike Query handlers, can change Workflow state.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/your_updatable_workflow_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
-// YourUpdatableWorkflow is a Workflow Definition.
-// This Workflow sets an Update handler and then sleeps for a minute.
-// After setting the Update hanlder it sleeps for 1 minutue.
-// Updates can be sent to the Workflow during this time.
+// ...
 func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
 	counter := param.StartCount
-	workflow.SetUpdateHandler(ctx, YourUpdateName, func(arg YourUpdateArg) (YourUpdateResult, error) {
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
 		counter += arg.Add
 		result := YourUpdateResult{
 			Total: counter,

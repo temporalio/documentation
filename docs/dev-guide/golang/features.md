@@ -301,7 +301,7 @@ When sending and receiving the Update, use the Update name as an identifier.
 The name does not link to the data type(s) sent with the Update.
 Ensure that every Workflow listening to the same Update name can handle the same Update arguments.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/your_updatable_workflow_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
 // YourUpdateName holds a string value used to correlate Updates.
@@ -309,35 +309,41 @@ const YourUpdateName = "your_update_name"
 // ...
 func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
 // ...
-	workflow.SetUpdateHandler(ctx, YourUpdateName, func(arg YourUpdateArg) (YourUpdateResult, error) {
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
 // ...
-	})
+	}
 // ...
 }
 ```
 
 ### Handle Update
 
-Use the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package to register an Update handler for a given name.
+Register an Update handler for a given name using the [SetUpdateHandler](https://pkg.go.dev/go.temporal.io/sdk/workflow#SetUpdateHandler) API from the `go.temporal.io/sdk/workflow` package.
+The handler function can accept multiple serializable input parameters, but we recommend using only a single parameter.
+This practice enables you to add fields in future versions while maintaining backward compatibility.
+You can optionally include a `workflow.Context` parameter in the first position of the function.
+The function can return either a serializable value with an error or just an error.
+The Workflow's WorkflowPanicPolicy configuration determines how panics are handled inside the Handler function.
+WorkflowPanicPolicy is set in the Worker Options.
+
+Update handlers, unlike Query handlers, can change Workflow state.
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) error {
-  counter := 0
-  workflow.SetUpdateHandler(ctx, "fetchAdd", func(i int) (int, error) {
-    tmp := counter
-    counter += i
-    return tmp, nil
-  })
-  // ...
+// ...
+func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error) {
+	counter := param.StartCount
+	err := workflow.SetUpdateHandler(ctx, YourUpdateName, func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
+		counter += arg.Add
+		result := YourUpdateResult{
+			Total: counter,
+		}
+		return result, nil
+	})
+// ...
 }
 ```
-
-In the preceding example, the Workflow code uses `workflow.SetUpdateHandler` to register a function to handle Workflow Updates.
-The function can take multiple serializable input parameters, although we recommend that you use only a single parameter to allow for fields to be added in future versions while retaining backward compatibility.
-The function can optionally take a `workflow.Context` parameter in the first position.
-The function returns either a serializable value and an error or just an error.
-
-Unlike Query handlers, Update handlers can safely observe and mutate Workflow state.
 
 #### Validator function
 
@@ -350,7 +356,9 @@ If the Update is rejected, it's not recorded in the Event History.
 If it's accepted, the `WorkflowExecutionUpdateAccepted` Event occurs.
 Afterwards, the Worker executes the accepted Update and, upon completion, a `WorkflowExecutionUpdateCompleted` Event gets written into the Event History.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/your_updatable_workflow_dacx.go">View source code</a>
+The platform treats a panic in the Validator function as a rejection of the Update."
+
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
 
 ```go
 // UpdatableWorkflowWithValidator is a Workflow Definition.
@@ -359,28 +367,31 @@ Afterwards, the Worker executes the accepted Update and, upon completion, a `Wor
 // Updates can be sent to the Workflow during this time.
 func UpdatableWorkflowWithValidator(ctx workflow.Context, param WFParam) (WFResult, error) {
 	counter := param.StartCount
-	if err := workflow.SetUpdateHandlerWithOptions(
+	err := workflow.SetUpdateHandlerWithOptions(
 		ctx, YourValidatedUpdateName,
-		func(arg YourUpdateArg) (YourUpdateResult, error) {
+		func(ctx workflow.Context, arg YourUpdateArg) (YourUpdateResult, error) {
 // ...
 		},
 		// Set the isPositive validator.
 		workflow.UpdateHandlerOptions{Validator: isPositive},
-	); err != nil {
+	)
+	if err != nil {
 		return WFResult{}, err
 	}
 // ...
 }
-// ...
+
 // isPositive is a validator function.
 // It returns an error if the int value is below 1.
+// This function can not change the state of the Workflow.
+// workflow.Context can be used to log
 func isPositive(ctx workflow.Context, u YourUpdateArg) error {
 	log := workflow.GetLogger(ctx)
 	if u.Add < 1 {
-		log.Debug("Rejecting non-positive number, positive integers only", "update value:", u.Add)
+		log.Debug("Rejecting non-positive number, positive integers only", "UpdateValue", u.Add)
 		return fmt.Errorf("addend must be a positive integer (%v)", u.Add)
 	}
-	log.Debug("Accepting update", "update value:", u.Add)
+	log.Debug("Accepting Update", "UpdateValue", u.Add)
 	return nil
 }
 ```
@@ -392,27 +403,26 @@ Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/update/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/update/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
 	// Set the Update argument values.
-	updateArg := sync_update.YourUpdateArg{
+	updateArg := yourupdate.YourUpdateArg{
 		Add: n,
 	}
 	// Call the UpdateWorkflow API.
-	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), sync_update.YourUpdateWFID, "", sync_update.YourUpdateName, updateArg)
+	// A blank RunID means that the Update is routed to the most recent Workflow Run of the specified Workflow ID.
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), yourupdate.YourUpdateWFID, "", yourupdate.YourUpdateName, updateArg)
 	if err != nil {
 		log.Fatalln("Error issuing Update request", err)
-		return
 	}
 	// Get the result of the Update.
-	var updateResult sync_update.YourUpdateResult
+	var updateResult yourupdate.YourUpdateResult
 	err = updateHandle.Get(context.Background(), &updateResult)
 	if err != nil {
 		log.Fatalln("Update encountered an error", err)
-		return
 	}
 	log.Println("Update succeeded, new total: ", updateResult.Total)
 }

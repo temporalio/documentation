@@ -10,27 +10,26 @@ Invoke the UpdateWorkflow() method on an instance of the [Go SDK Temporal Client
 You must provide the Workflow Id, but specifying a Run Id is optional.
 If you supply only the Workflow Id (and provide an empty string as the Run Id param), the currently running Workflow Execution receives the Update.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/sync_update/sync_update/update/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/update/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
 	// Set the Update argument values.
-	updateArg := sync_update.YourUpdateArg{
+	updateArg := yourupdate.YourUpdateArg{
 		Add: n,
 	}
 	// Call the UpdateWorkflow API.
-	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), sync_update.YourUpdateWFID, "", sync_update.YourUpdateName, updateArg)
+	// A blank RunID means that the Update is routed to the most recent Workflow Run of the specified Workflow ID.
+	updateHandle, err := temporalClient.UpdateWorkflow(context.Background(), yourupdate.YourUpdateWFID, "", yourupdate.YourUpdateName, updateArg)
 	if err != nil {
 		log.Fatalln("Error issuing Update request", err)
-		return
 	}
 	// Get the result of the Update.
-	var updateResult sync_update.YourUpdateResult
+	var updateResult yourupdate.YourUpdateResult
 	err = updateHandle.Get(context.Background(), &updateResult)
 	if err != nil {
 		log.Fatalln("Update encountered an error", err)
-		return
 	}
 	log.Println("Update succeeded, new total: ", updateResult.Total)
 }
