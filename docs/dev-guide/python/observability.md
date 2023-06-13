@@ -91,9 +91,10 @@ Send logs and errors to a logging service, so that when things go wrong, you can
 
 The SDK core uses `WARN` for its default logging level.
 
-You can log from a Workflow using Python's standard library, by importing the logging module `logging`.
+You can log from a Workflow using Python's standard library, by importing the logging module `import logging`.
 
 Set your logging configuration to a level you want to expose logs to.
+The following example sets the logging information level to `INFO`.
 
 ```python
 logging.basicConfig(level=logging.INFO)
@@ -101,12 +102,28 @@ logging.basicConfig(level=logging.INFO)
 
 Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio.workflow.html#logger) and level on the Workflow. The following example logs the Workflow.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_loggers/your_workflow_dacx.py">View source code</a>
-
 ```python
-# ...
-        workflow.logger.info("Workflow input parameter: %s", name)
+@workflow.defn
+class SayHelloWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        workflow.logger.info(f"Running workflow with parameter {name}")
+        return await workflow.execute_activity(
+            your_activity, name, start_to_close_timeout=timedelta(seconds=10)
+        )
 ```
+
+The following is an example output:
+
+```
+INFO:temporalio.workflow:Running workflow with parameter Temporal ({'attempt': 1, 'your-custom-namespace': 'default', 'run_id': 'your-run-id', 'task_queue': 'your-task-queue', 'workflow_id': 'your-workflow-id', 'workflow_type': 'SayHelloWorkflow'})
+```
+
+:::note
+
+Logs are skipped during replay by default.
+
+:::
 
 ### Custom logger
 
@@ -150,12 +167,9 @@ Here is how to query Workflow Executions:
 
 Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.html#list_workflows) method on the Client handle and pass a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> as an argument to filter the listed Workflows.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">View source code</a>
-
 ```python
-# ...
-    async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
-        print(f"Workflow: {workflow.id}")
+async for workflow in client.list_workflows('WorkflowType="MyWorkflowClass"'):
+    print(f"Workflow: {workflow.id}")
 ```
 
 ### Custom Search Attributes
@@ -164,17 +178,13 @@ After you've created custom Search Attributes in your Cluster (using `tctl searc
 
 To set custom Search Attributes, use the `search_attributes` parameter of the ['start_workflow()'](https://python.temporal.io/temporalio.client.Client.html#start_workflow) method.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">View source code</a>
-
 ```python
-# ...
-    handle = await client.start_workflow(
-        GreetingWorkflow.run,
-        id="search-attributes-workflow-id",
-        task_queue="search-attributes-task-queue",
-        # Start with default set of search attributes
-        search_attributes={"CustomKeywordField": ["old-value"]},
-    )
+handle = await client.start_workflow(
+    "your-workflow-name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    search_attributes={"Your-Custom-Keyword-Field": ["value"]},
+)
 ```
 
 ### Upsert Search Attributes
@@ -198,9 +208,6 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 
 To remove a Search Attribute, use the [`upsert_search_attributes()`](https://python.temporal.io/temporalio.workflow.html#upsert_search_attributes) function with an empty list as its value.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">View source code</a>
-
 ```python
-# ...
-        workflow.upsert_search_attributes({"CustomKeywordField": []})
+workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": []})
 ```

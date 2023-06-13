@@ -7,10 +7,10 @@ description: The Features section of the Temporal Developer's guide provides bas
 toc_max_heading_level: 4
 tags:
 - guide-context
-- developer-guide
-- sdk
 - python
 - how-to
+- developer-guide
+- sdk
 - timers
 - sleep
 ---
@@ -253,7 +253,7 @@ Workflow timeouts are set when <a class="tdlp" href="#workflow-timeouts">startin
 - **<a class="tdlp" href="/workflows#workflow-run-timeout">Workflow Run Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Run Timeout?</span><br /><br /><span class="tdlppd">This is the maximum amount of time that a single Workflow Run is restricted to.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-run-timeout">Learn more</a></span></span></a>**: restricts the maximum amount of time that a single Workflow Run can last.
 - **<a class="tdlp" href="/workflows#workflow-task-timeout">Workflow Task Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Timeout?</span><br /><br /><span class="tdlppd">A Workflow Task Timeout is the maximum amount of time that the Temporal Server will wait for a Worker to start processing a Workflow Task after the Task has been pulled from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-task-timeout">Learn more</a></span></span></a>**: restricts the maximum amount of time that a Worker can execute a Workflow Task.
 
-Set the timeout to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 Available timeouts are:
 
@@ -261,20 +261,32 @@ Available timeouts are:
 - `run_timeout`
 - `task_timeout`
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/workflow_timeouts_retries/workflows_dacx.py">View source code</a>
+```python
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    # Set Workflow Timeout duration
+    execution_timeout=timedelta(seconds=2),
+    # run_timeout=timedelta(seconds=2),
+    # task_timeout=timedelta(seconds=2),
+)
+```
 
 ```python
-# ...
-    result = await client.execute_workflow(
-        YourWorkflow.run,
-        "your timeout",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        # Set Workflow Timeout duration
-        execution_timeout=timedelta(seconds=2),
-        # run_timeout=timedelta(seconds=2),
-        # task_timeout=timedelta(seconds=2),
-    )
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    # Set Workflow Timeout duration
+    execution_timeout=timedelta(seconds=2),
+    # run_timeout=timedelta(seconds=2),
+    # task_timeout=timedelta(seconds=2),
+)
 ```
 
 ### Workflow retries
@@ -285,19 +297,28 @@ Use a <a class="tdlp" href="/retry-policies#">Retry Policy<span class="tdlpiw"><
 
 Workflow Executions do not retry by default, and Retry Policies should be used with Workflow Executions only in certain situations.
 
-Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/workflow_timeouts_retries/workflows_dacx.py">View source code</a>
+Set the Retry Policy from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 ```python
-# ...
-    handle = await client.execute_workflow(
-        YourWorkflow.run,
-        "your retry policy",
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
-    )
+handle = await client.start_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
+```
+
+```python
+handle = await client.execute_workflow(
+    "your-workflow-name",
+    "some arg",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    start_signal="your-signal-name",
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
 ```
 
 ## Activity timeouts
@@ -307,8 +328,8 @@ Each Activity timeout controls the maximum duration of a different aspect of an 
 The following timeouts are available in the Activity Options.
 
 - **<a class="tdlp" href="/activities#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-close-timeout">Learn more</a></span></span></a>**: is the maximum amount of time allowed for the overall <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
-- **<a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>**: is the maximum time allowed for a single <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a>.
-- **<a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Start Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></span></span></a>**: is the maximum amount of time that is allowed from when an <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task">Learn more</a></span></span></a> is scheduled to when a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> starts that Activity Task.
+- **<a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>**: is the maximum time allowed for a single <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a>.
+- **<a class="tdlp" href="/activities#schedule-to-start-timeout">Schedule-To-Start Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Start Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Start Timeout is the maximum amount of time that is allowed from when an Activity Task is placed in a Task Queue to when a Worker picks it up from the Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#schedule-to-start-timeout">Learn more</a></span></span></a>**: is the maximum amount of time that is allowed from when an <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> is scheduled to when a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> starts that Activity Task.
 
 An Activity Execution must have either the Start-To-Close or the Schedule-To-Close Timeout set.
 
@@ -320,15 +341,15 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
-
 ```python
-# ...
-        your_activity_timeout = await workflow.execute_activity(
+@workflow.defn
+class YourWorkflow:
+    @workflow.run
+    async def run(self, name: str) -> str:
+        return await workflow.execute_activity(
             your_activity,
-            YourParams(greeting, "Activity Timeout"),
-            # Activity Execution Timeout
-            start_to_close_timeout=timedelta(seconds=10),
+            name,
+            schedule_to_close_timeout=timedelta(seconds=5),
             # schedule_to_start_timeout=timedelta(seconds=5),
             # start_to_close_timeout=timedelta(seconds=5),
         )
@@ -342,24 +363,15 @@ Activity Executions are automatically associated with a default <a class="tdlp" 
 
 To create an Activity Retry Policy in Python, set the [RetryPolicy](https://python.temporal.io/temporalio.common.RetryPolicy.html) class within the [`start_activity()`](https://python.temporal.io/temporalio.workflow.html#start_activity) or [`execute_activity()`](https://python.temporal.io/temporalio.workflow.html#execute_activity) function.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
+The following example sets the maximum interval to 2 seconds.
 
 ```python
-from temporalio.common import RetryPolicy
-# ...
-        your_retry_policy = await workflow.execute_activity(
-            your_activity,
-            YourParams(greeting, "Retry Policy"),
-            start_to_close_timeout=timedelta(seconds=10),
-            # Retry Policy
-            retry_policy=RetryPolicy(
-                backoff_coefficient=2.0,
-                maximum_attempts=5,
-                initial_interval=timedelta(seconds=1),
-                maximum_interval=timedelta(seconds=2),
-                # non_retryable_error_types=["ValueError"],
-            ),
-        )
+workflow.execute_activity(
+    your_activity,
+    name,
+    start_to_close_timeout=timedelta(seconds=10),
+    retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
+)
 ```
 
 ### Activity retry simulator
@@ -383,7 +395,7 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> is making progress and the Worker has not crashed.
-If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a> may be scheduled according to the Retry Policy.
+If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> may be scheduled according to the Retry Policy.
 
 Heartbeats may not always be sent to the Cluster—they may be <a class="tdlp" href="/activities#throttling">throttled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#throttling">Learn more</a></span></span></a> by the Worker.
 
@@ -577,11 +589,8 @@ The Workflow Execution spawned from the use of Continue-As-New has the same Work
 
 To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temporal.io/temporalio.workflow.html#continue_as_new) function from inside your Workflow, which will stop the Workflow immediately and Continue-As-New.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/continue_as_new/your_workflows_dacx.py">View source code</a>
-
 ```python
-# ...
-        workflow.continue_as_new(iteration + 1)
+workflow.continue_as_new("your-workflow-name")
 ```
 
 ## Timers
@@ -596,11 +605,8 @@ Sleeping is a resource-light operation: it does not tie up the process, and you 
 
 To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3/library/asyncio-task.html#sleeping) function and pass the duration in seconds you want to wait before continuing.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/continue_as_new/your_workflows_dacx.py">View source code</a>
-
 ```python
-# ...
-        await asyncio.sleep(1)
+await asyncio.sleep(5)
 ```
 
 ## Schedule a Workflow
@@ -792,17 +798,13 @@ A <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span cla
 
 A Cron Schedule is provided as an option when the call to spawn a Workflow Execution is made.
 
-You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
-
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_cron_job/your_cron_dacx.py">View source code</a>
+You can set each Workflow to repeat on a schedule with the `cron_schedule` option from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods:
 
 ```python
-# ...
-    result = await client.execute_workflow(
-        LoopingWorkflow.run,
-        0,
-        id="your-workflow-id",
-        task_queue="your-task-queue",
-        cron_schedule="* * * * *",
-    )
+await client.start_workflow(
+    "your_workflow_name",
+    id="your-workflow-id",
+    task_queue="your-task-queue",
+    cron_schedule="* * * * *",
+)
 ```

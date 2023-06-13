@@ -8,6 +8,6 @@ tags:
   - strongly-typed
 ---
 
-The [Workflow Task](/tasks#workflow-task) failed due to unset [CancelWorkflowExecution](/references/commands/#cancelworkflowexecution) attributes.
+The [Workflow Task](/concepts/what-is-a-workflow-task) failed due to unset [CancelWorkflowExecution](/references/commands/#cancelworkflowexecution) attributes.
 
 Reset any missing attributes and redeploy the Workflow Task.
