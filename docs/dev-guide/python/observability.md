@@ -195,11 +195,8 @@ To upsert custom Search Attributes, use the [`upsert_search_attributes()`](https
 
 The keys are added to or replace the existing Search Attributes, similar to [`dict.update()`](https://docs.python.org/3/library/stdtypes.html#dict.update).
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">View source code</a>
-
 ```python
-# ...
-        workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
+workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": ["new-value"]})
 ```
 
 ### Remove Search Attribute
