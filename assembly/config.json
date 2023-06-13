@@ -35,6 +35,10 @@
     "documentation_samples_repos": [
         {
             "org": "temporalio",
+            "name": "documentation-samples-go"
+        },
+        {
+            "org": "temporalio",
             "name": "documentation-samples-python"
         }
     ]
