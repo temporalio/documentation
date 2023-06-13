@@ -117,3 +117,10 @@ This Command is triggered by a call to "upsert" Workflow <a class="tdlp" href="/
 - Awaitable: No, a Workflow Execution can not await on the action resulting from this Command.
 - Corresponding Event: [UpsertWorkflowSearchAttributes](/references/events/#upsertworkflowsearchattributes)
 
+### ProtocolMessageCommand
+
+This Command helps guarantee ordering constraints for features such as Updates
+
+This Command points at the message from which the Event is created.
+Therefore, just from the Command, you can't predict the resulting Event type.
+
