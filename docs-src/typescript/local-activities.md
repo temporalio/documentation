@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-To call [Local Activities](/concepts/what-is-a-local-activity/) in TypeScript, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
+To call [Local Activities](/concepts/what-is-a-local-activity) in TypeScript, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
 
 ```ts
 import * as workflow from '@temporalio/workflow';
