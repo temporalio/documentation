@@ -1727,7 +1727,7 @@
     },
     {
       "source": "/typescript/versioning",
-      "destination": "/dev-guide/typescript"
+      "destination": "/dev-guide/typescript/versioning"
     },
     {
       "source": "/typescript/:path*",
