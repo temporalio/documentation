@@ -149,6 +149,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/local-activities"
+    },
+    {
+      "type": "h2",
       "id": "typescript/cancel-activity"
     },
     {
