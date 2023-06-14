@@ -1774,10 +1774,6 @@
       "destination": "/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates"
     },
     {
-      "source": "/typescript/versioning",
-      "destination": "/dev-guide/typescript"
-    },
-    {
       "source": "/server/production-deployment/#scaling-and-metrics",
       "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
     }
