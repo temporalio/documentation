@@ -29,5 +29,6 @@ In this section you can find the following:
 - [Develop an Activity](/typescript/developing-activities)
 - [Start an Activity Execution](/typescript/spawning-activities)
 - [Run a dev Worker](/typescript/run-a-dev-worker)
+- [Run a Worker on Docker](/typescript/how-to-run-a-worker-on-docker)
 - [Run a Temporal Cloud Worker](/typescript/run-a-dev-worker)
 - [Start a Workflow Execution](/typescript/spawning-workflows)
