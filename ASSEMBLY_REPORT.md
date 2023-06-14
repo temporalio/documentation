@@ -2,13 +2,11 @@
 
 Last assembled: Wednesday June 14 2023 13:31:21 PM -0500
 
-Assembly Workflow Id: docs-full-assembly
-
 86 guide configurations found.
 
-1448 information nodes found.
+1449 information nodes found.
 
-1204 information nodes are attached to guides.
+1203 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -876,6 +874,8 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+typescript/testing -> /dev-guide/typescript/testing#replay
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -887,6 +887,8 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
@@ -929,5 +931,4 @@ concepts/what-is-a-worker-session -> #worker-session
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
 
 go/testing -> /dev-guide/go/testing#replay
-
 
