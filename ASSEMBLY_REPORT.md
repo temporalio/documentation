@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 12 2023 17:10:59 PM -0700
+Last assembled: Wednesday June 14 2023 07:58:10 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -880,6 +880,8 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+typescript/testing -> /dev-guide/typescript/testing#replay
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -891,6 +893,8 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
