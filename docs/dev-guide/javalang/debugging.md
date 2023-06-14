@@ -24,7 +24,7 @@ To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable t
 
 In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
 
-## Prod env debugging
+## Debug in a production environment
 
 You can debug production Workflows using:
 

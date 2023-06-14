@@ -2,7 +2,7 @@
 id: debug-environment-production
 title: How to debug in a production environment
 description: Debug production Workflows using the Web UI, tctl, Replays, Tracing, or Logging.
-sidebar_label: Prod env debugging
+sidebar_label: Debug in a production environment
 tags:
   - guide-context
 ---
