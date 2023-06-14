@@ -1,12 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 14 2023 13:31:21 PM -0500
+Last assembled: Wednesday June 14 2023 13:59:53 PM -0700
+
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 86 guide configurations found.
 
-1449 information nodes found.
+1451 information nodes found.
 
-1203 information nodes are attached to guides.
+1208 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -74,7 +76,7 @@ references/events -> /references/events#
 
 concepts/what-is-a-run-id -> /workflows#run-id
 
-concepts/what-is-a-task-queue -> /tasks#task-queue
+concepts/what-is-a-task-queue -> /workers#task-queue
 
 concepts/what-is-a-state-transition -> /workflows#state-transition
 
@@ -138,6 +140,10 @@ tctl-v1/admin/workflow/refresh_tasks -> #refresh_tasks
 
 tctl-v1/admin/workflow/delete -> #delete
 
+concepts/what-is-a-task -> /workers#task
+
+concepts/what-is-a-workflow -> /workflows#
+
 tctl-v1/batch/start -> #start
 
 tctl-v1/batch/describe -> #describe
@@ -161,8 +167,6 @@ tctl-v1/workflow/start -> /tctl-v1/workflow#start
 tctl-v1/dataconverter/web -> #web
 
 concepts/what-is-a-namespace -> /namespaces#
-
-concepts/what-is-a-workflow -> /workflows#
 
 tctl-v1/how-to-install-tctl -> #install
 
@@ -234,7 +238,7 @@ tctl-v1/workflow/stack -> #stack
 
 tctl-v1/workflow/terminate -> #terminate
 
-concepts/what-is-a-workflow-task -> /tasks#workflow-task
+concepts/what-is-a-workflow-task -> /workers#workflow-task
 
 concepts/what-is-an-event-history -> /workflows#event-history
 
@@ -336,9 +340,9 @@ references/sdk-metrics -> /references/sdk-metrics#
 
 concepts/what-is-a-temporal-sdk -> /temporal#temporal-sdk
 
-concepts/what-is-a-worker -> /workers#
+concepts/what-is-a-worker -> /workers#worker
 
-concepts/what-is-a-workflow-task-execution -> /tasks#workflow-task-execution
+concepts/what-is-a-workflow-task-execution -> /workers#workflow-task-execution
 
 concepts/what-is-continue-as-new -> /workflows#continue-as-new
 
@@ -346,11 +350,9 @@ concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 
 concepts/what-is-an-activity -> /activities#
 
-concepts/what-is-an-activity-task -> /tasks#activity-task
+concepts/what-is-an-activity-task -> /workers#activity-task
 
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
-
-concepts/what-is-a-task -> /tasks#
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
 
@@ -360,7 +362,7 @@ concepts/what-is-a-workflow-task-timeout -> /workflows#workflow-task-timeout
 
 concepts/what-is-an-activity-type -> /activities#activity-type
 
-concepts/what-is-an-activity-task-execution -> /tasks#activity-task-execution
+concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
 references/cluster-metrics -> /references/cluster-metrics#
 
@@ -514,44 +516,6 @@ python/workflow-retries -> /dev-guide/python/features#workflow-retries
 
 typescript/workflow-retries -> /dev-guide/typescript/features#workflow-retries
 
-concepts/what-is-a-worker-entity -> /workers#worker-entity
-
-concepts/what-is-task-routing -> #task-routing
-
-go/spawning-workflows -> /dev-guide/go/foundations#start-workflow-execution
-
-java/how-to-spawn-a-workflow-execution-in-java -> /dev-guide/java/foundations#start-workflow-execution
-
-php/spawning-workflows -> /dev-guide/php/foundations#start-workflow-execution
-
-python/spawning-workflows -> /dev-guide/python/foundations#start-workflow-execution
-
-typescript/spawning-workflows -> /dev-guide/typescript/foundations#start-workflow-execution
-
-go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
-
-java/how-to-develop-a-worker-program-in-java -> /dev-guide/java/foundations#run-a-dev-worker
-
-php/run-a-dev-worker -> /dev-guide/php/foundations#run-a-dev-worker
-
-python/run-a-dev-worker -> /dev-guide/python/foundations#run-a-dev-worker
-
-typescript/run-a-dev-worker -> /dev-guide/typescript/foundations#run-a-dev-worker
-
-go/run-a-temporal-cloud-worker -> /dev-guide/go/foundations#run-a-temporal-cloud-worker
-
-typescript/run-a-temporal-cloud-worker -> /dev-guide/typescript/foundations#run-a-temporal-cloud-worker
-
-go/child-workflows -> /dev-guide/go/features#child-workflows
-
-java/child-workflows -> /dev-guide/java/features#child-workflows
-
-php/child-workflows -> /dev-guide/php/features#child-workflows
-
-python/child-workflows -> /dev-guide/python/features#child-workflows
-
-typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
-
 concepts/what-is-a-worker-process -> /workers#worker-process
 
 concepts/what-is-a-temporal-client -> #temporal-client
@@ -579,6 +543,48 @@ php/visibility -> /dev-guide/php/observability#visibility
 python/visibility -> /dev-guide/python/observability#visibility
 
 typescript/visibility -> /dev-guide/typescript/observability#visibility
+
+concepts/what-is-a-worker-entity -> #worker-entity
+
+go/how-to-develop-a-worker-in-go -> /dev-guide/go/foundations#develop-worker
+
+java/how-to-develop-a-worker-program-in-java -> /dev-guide/java/foundations#run-a-dev-worker
+
+php/run-a-dev-worker -> /dev-guide/php/foundations#run-a-dev-worker
+
+python/run-a-dev-worker -> /dev-guide/python/foundations#run-a-dev-worker
+
+typescript/run-a-dev-worker -> /dev-guide/typescript/foundations#run-a-dev-worker
+
+go/run-a-temporal-cloud-worker -> /dev-guide/go/foundations#run-a-temporal-cloud-worker
+
+typescript/run-a-temporal-cloud-worker -> /dev-guide/typescript/foundations#run-a-temporal-cloud-worker
+
+concepts/what-is-task-routing -> #task-routing
+
+go/spawning-workflows -> /dev-guide/go/foundations#start-workflow-execution
+
+java/how-to-spawn-a-workflow-execution-in-java -> /dev-guide/java/foundations#start-workflow-execution
+
+php/spawning-workflows -> /dev-guide/php/foundations#start-workflow-execution
+
+python/spawning-workflows -> /dev-guide/python/foundations#start-workflow-execution
+
+typescript/spawning-workflows -> /dev-guide/typescript/foundations#start-workflow-execution
+
+go/child-workflows -> /dev-guide/go/features#child-workflows
+
+java/child-workflows -> /dev-guide/java/features#child-workflows
+
+php/child-workflows -> /dev-guide/php/features#child-workflows
+
+python/child-workflows -> /dev-guide/python/features#child-workflows
+
+typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
+
+concepts/what-is-a-worker-session -> #worker-session
+
+go/worker-sessions -> /dev-guide/go/features#worker-sessions
 
 go/developing-workflows -> /dev-guide/go/foundations#develop-workflows
 
@@ -918,7 +924,9 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/tracing -> /dev-guide/go/observability#tracing
+go/testing -> /dev-guide/go/testing#replay
+
+go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
@@ -926,9 +934,4 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-concepts/what-is-a-worker-session -> #worker-session
-
-go/worker-sessions -> /dev-guide/go/features#worker-sessions
-
-go/testing -> /dev-guide/go/testing#replay
 

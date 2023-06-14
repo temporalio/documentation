@@ -242,6 +242,10 @@
     {
       "type": "h2",
       "id": "typescript/custom-payload-conversion"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-implement-interceptors-in-typescript"
     }
   ]
 }
