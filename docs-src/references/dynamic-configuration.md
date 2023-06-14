@@ -62,30 +62,30 @@ testGetMapPropertyKey:
 ### Constraints
 
 You can define constraints on some dynamic configuration keys to set specific values that apply on a Namespace or Task Queue level.
-Not defining constraints on a dynamic configuration key sets the values globally across the Cluster.
+Not defining constraints on a dynamic configuration key sets the values across the Cluster.
 
 - To set global values for the configuration key with no constraints, use:
 
   ```yaml
-  frontend.globalNamespaceRPS: # Namespace rate limit per second applied globally on the entire Cluster.
-    - value: 5000 # There is no default limit. If set, this value overrides frontend.namespacerps.
+  frontend.globalNamespaceRPS: # Total per-Namespace RPC rate limit applied across the Cluster.
+    - value: 5000
   ```
 
 - For keys that can be customized at Namespace level, you can specify multiple values for different Namespaces in addition to one default value that applies globally to all Namespaces.
   To set values at a Namespace level, use `namespace` (String) as shown in the following example.
 
   ```yaml
-  frontend.rps: # Rate limit on the number of requests sent to the Frontend host.
+  frontend.persistenceNamespaceMaxQPS: # Rate limit on the number of queries the Frontend sends to the Persistence store.
     - constraints: {} # Sets default value that applies to all Namespaces
-      value: 2000 # The default value for this key on the Frontend host is 3000.
-  - constraints: {namespace: "namespace1"} # Sets value for "namespace1" Namespace
+      value: 2000 # The default value for this key is 0.
+    - constraints: {namespace: "namespace1"} # Sets limit on number of queries that can be sent from "namespace1" Namespace to the Persistence store.
       value: 4000
     - constraints: {namespace: "namespace2"}
       value: 1000
   ```
 
 - For keys that can be customized at a Task Queue level, you can specify Task Queue name and Task type in addition to Namespace.
-  To set values at a Task Queue level, use `taskqueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`).
+  To set values at a Task Queue level, use `taskQueueName` (String) with `taskType` (optional; supported values: `Workflow` and `Activity`).
 
   For example if you have Workflow Executions creating a large number of Workflow and Activity tasks per second, you can add more partitions to your Task Queues (default is 4) to handle the high throughput of tasks.
   To do this, add the following to your dynamic configuration file.
@@ -130,24 +130,24 @@ Check [server release notes](https://github.com/temporalio/temporal/releases) to
 
 ### Service-level RPS limits
 
-The Rate Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Cluster.
+The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Cluster.
 
 When scaling your services, tune the RPS to test your workload and set acceptable provisioning benchmarks. Exceeding these limits will result in `ResourceExhaustedError`.
 
-| Dynamic configuration key              | Type | Description                                                                                                                                                                                                                        | Default value |
-| -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| Frontend                               |      |                                                                                                                                                                                                                                    |               |
-| `frontend.rps`                         | Int  | Rate limit per second on the number of requests send to each Frontend service host.                                                                                                                                                | 2400          |
-| `frontend.namespaceRPS`                | Int  | Rate limit per second applied for each Namespace.                                                                                                                                                                                  | 2400          |
-| `frontend.namespaceCount`              | Int  | Rate limit on concurrent Task Queue polls per Namespace per instance.                                                                                                                                                              | 1200          |
-| `frontend.globalNamespaceRPS`          | Int  | Namespace rate limit per second applied globally on the entire Cluster. The limit is evenly distributed among available Frontend service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
-| `internal-frontend.globalNamespaceRPS` | Int  | Namespace rate limit per second across all internal-frontends.                                                                                                                                                                     | 0             |
-| History                                |      |                                                                                                                                                                                                                                    |               |
-| `history.rps`                          | Int  | Request rate per second for each History host.                                                                                                                                                                                     | 3000          |
-| Matching                               |      |                                                                                                                                                                                                                                    |               |
-| `matching.rps`                         | Int  | Request rate per second for each Matching host                                                                                                                                                                                     | 1200          |
-| `matching.numTaskqueueReadPartitions`  | Int  | Number of read partitions for a Task Queue. Must be set with `matching.numTaskqueueWritePartitions`.                                                                                                                               | 4             |
-| `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue.                                                                                                                                                                                       | 4             |
+| Dynamic configuration key              | Type | Description                                                                                                                                                                                                                                          | Default value |
+| -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| Frontend                               |      |                                                                                                                                                                                                                                                      |               |
+| `frontend.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Frontend Service host.                                                                                                                                                                    | 2400          |
+| `frontend.namespaceRPS`                | Int  | Rate limit (requests/second) for requests accepted by each Namespace on the Frontend Service.                                                                                                                                                        | 2400          |
+| `frontend.namespaceCount`              | Int  | Limit on the number of concurrent Task Queue polls per Namespace per Frontend Service host.                                                                                                                                                          | 1200          |
+| `frontend.globalNamespaceRPS`          | Int  | Rate limit (requests/second) for requests accepted per Namespace, applied across Cluster. The limit is evenly distributed among available Frontend Service instances. If this is set, it overrides the per-instance limit (`frontend.namespaceRPS`). | 0             |
+| `internal-frontend.globalNamespaceRPS` | Int  | Rate limit (requests/second) for requests accepted on each Internal-Frontend Service host applied across the Cluster.                                                                                                                                | 0             |
+| History                                |      |                                                                                                                                                                                                                                                      |               |
+| `history.rps`                          | Int  | Rate limit (requests/second) for requests accepted by each History Service host.                                                                                                                                                                     | 3000          |
+| Matching                               |      |                                                                                                                                                                                                                                                      |               |
+| `matching.rps`                         | Int  | Rate limit (requests/second) for requests accepted by each Matching Service host.                                                                                                                                                                    | 1200          |
+| `matching.numTaskqueueReadPartitions`  | Int  | Number of read partitions for a Task Queue. Must be set with `matching.numTaskqueueWritePartitions`.                                                                                                                                                 | 4             |
+| `matching.numTaskqueueWritePartitions` | Int  | Number of write partitions for a Task Queue.                                                                                                                                                                                                         | 4             |
 
 ### QPS limits for Persistence database
 
@@ -156,37 +156,36 @@ The Queries Per Second (QPS) dynamic configuration keys set the maximum number o
 Persistence rate limits are evaluated synchronously. Adjust these keys according to your database capacity and workload.
 If the number of queries made to the Persistence database is more than what the dynamic configuration value set, you will see latencies and timeouts on your tasks.
 
-| Dynamic configuration key                 | Type | Description                                                                                                                                                                                                                        | Default value           |
-| ----------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| Frontend                                  |      |                                                                                                                                                                                                                                    |                         |
-| `frontend.persistenceMaxQPS`              | Int  | Maximum queries per second that the Frontend service host can query the Persistence store database.                                                                                                                                | 2000 queries per second |
-| `frontend.persistenceNamespaceMaxQPS`     | Int  | Maximum queries per second that each Namespace on Frontend service host can query the Persistence store database. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply. | 0                       |
-| History                                   |      |                                                                                                                                                                                                                                    |                         |
-| `history.persistenceMaxQPS`               | Int  | Maximum queries per second that the History host can query the Persistence store database.                                                                                                                                         | 9000                    |
-| `history.persistenceNamespaceMaxQPS`      | Int  | Maximum queries per second that each Namespace on History host can query the Persistence store database. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply.          | 0                       |
-| Matching                                  |      |                                                                                                                                                                                                                                    |                         |
-| `matching.persistenceMaxQPS`              | Int  | Maximum queries per second that the Matching service host can query the Persistence store database.                                                                                                                                | 9000                    |
-| `matching.persistenceNamespaceMaxQPS`     | Int  | Maximum queries per second that the Matching host can query the Persistence store database for each Namespace. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply.    | 0                       |
-| Worker                                    |      |                                                                                                                                                                                                                                    |                         |
-| `worker.persistenceMaxQPS`                | Int  | Maximum queries per second that the Worker service host can query the Persistence store database.                                                                                                                                  | 100                     |
-| `worker.persistenceNamespaceMaxQPS`       | Int  | Maximum queries per second that the Worker host can query the Persistence store database for each Namespace. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply.      | 0                       |
-| Visibility                                |      |                                                                                                                                                                                                                                    |                         |
-| `system.visibilityPersistenceMaxReadQPS`  | Int  | Maximum queries per second that Visibility database be queried for read operations.                                                                                                                                                | 9000                    |
-| `system.visibilityPersistenceMaxWriteQPS` | Int  | Maximum queries per second that Visibility database be queried for write operations.                                                                                                                                               | 9000                    |
+| Dynamic configuration key                 | Type | Description                                                                                                                                                                                                                                        | Default value           |
+| ----------------------------------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| Frontend                                  |      |                                                                                                                                                                                                                                                    |                         |
+| `frontend.persistenceMaxQPS`              | Int  | Maximum number queries per second that the Frontend Service host can send to the Persistence store database.                                                                                                                                       | 2000 queries per second |
+| `frontend.persistenceNamespaceMaxQPS`     | Int  | Maximum number of queries per second that each Namespace on the Frontend Service host can send to the Persistence store database. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply. | 0                       |
+| History                                   |      |                                                                                                                                                                                                                                                    |                         |
+| `history.persistenceMaxQPS`               | Int  | Maximum number of queries per second that the History host can send to the Persistence store database.                                                                                                                                             | 9000                    |
+| `history.persistenceNamespaceMaxQPS`      | Int  | Maximum number of queries per second for each Namespace that the History host can send to the Persistence store database. <br /> If the value set for this config is 0 or less than the , the value set for `PersistenceMaxQS` will apply.         | 0                       |
+| Matching                                  |      |                                                                                                                                                                                                                                                    |                         |
+| `matching.persistenceMaxQPS`              | Int  | Maximum number of queries per second that the Matching Service host can send to the Persistence store database.                                                                                                                                    | 9000                    |
+| `matching.persistenceNamespaceMaxQPS`     | Int  | Maximum number of queries per second that the Matching host can send to the Persistence store database for each Namespace. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply.        | 0                       |
+| Worker                                    |      |                                                                                                                                                                                                                                                    |                         |
+| `worker.persistenceMaxQPS`                | Int  | Maximum number of queries per second that the Worker Service host can send to the Persistence store database.                                                                                                                                      | 100                     |
+| `worker.persistenceNamespaceMaxQPS`       | Int  | Maximum number of queries per second that the Worker host can send to the Persistence store database for each Namespace. <br /> If the value set for this config is less or equal to 0, the value set for  `PersistenceMaxQS` will apply.          | 0                       |
+| Visibility                                |      |                                                                                                                                                                                                                                                    |                         |
+| `system.visibilityPersistenceMaxReadQPS`  | Int  | Maximum number queries per second that Visibility database can receive for read operations.                                                                                                                                                        | 9000                    |
+| `system.visibilityPersistenceMaxWriteQPS` | Int  | Maximum number of queries per second that Visibility database can receive for write operations.                                                                                                                                                    | 9000                    |
 
 #### Activity and Workflow default policy setting
 
 You can define default values for Activity and Workflow [Retry Policies](/concepts/what-is-a-retry-policy) at the Cluster level with the following dynamic configuration keys.
-Th, the default values will apply. Also, setting custom retry polici
 
 | Dynamic configuration key            | Type                          | Description                                                                                                                   | Default value                                                                      |
 | ------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Out-of-the-box server configuration for an activity retry policy when it is not explicitly set for the Activity in your code. | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
+| `history.defaultActivityRetryPolicy` | Map (key-value pair elements) | Out-of-the-box server configuration for an Activity Retry Policy when it is not explicitly set for the Activity in your code. | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
 | `history.defaultWorkflowRetryPolicy` | Map (key-value pair elements) | Out-of-box Retry Policy for unset fields where the user has set an explicit `RetryPolicy`, but not specified all the fields.  | [Default values for retry Policy](/retry-policies#default-values-for-retry-policy) |
 
 ### Size limit settings
 
-The Persistence database in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
+The Persistence store in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
 The default values on these keys have been set based on extensive testing. While these values can be changed, ensure that you are provisioning enough database resources to handle the changed values.
 
@@ -194,8 +193,7 @@ For details on platform limits, see the [Temporal Platform limits sheet](/kb/tem
 
 | Dynamic configuration key               | Type | Description                                                                                                                                                                                                                                | Default value               |
 | --------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
-| `limit.maxIDLength`                     | Int  | Length limit for various IDs, including: `Namespace`, `TaskQueue`, `WorkflowID`, `ActivityID`, `TimerID`, `WorkflowType`, `ActivityType`, `SignalName`, `MarkerName`, `ErrorReason`/`FailureReason`/`CancelCause`, `Identity`, `RequestID` | 1000                        |
-| `system.transactionSizeLimit`           | Int  | Largest allowed size for each history event batch persisted in the Persistence store.                                                                                                                                                      | 4 MB (`4 * 1024 * 1024`)    |
+| `limit.maxIDLength`                     | Int  | Length limit for various Ids, including: `Namespace`, `TaskQueue`, `WorkflowID`, `ActivityID`, `TimerID`, `WorkflowType`, `ActivityType`, `SignalName`, `MarkerName`, `ErrorReason`/`FailureReason`/`CancelCause`, `Identity`, `RequestID` | 1000                        |
 | `limit.blobSize.warn`                   | Int  | Limit, in MBs, for BLOBs size in an event when a warning is thrown in the server logs.                                                                                                                                                     | 512 KB (`512 * 1024`)       |
 | `limit.blobSize.error`                  | Int  | Limit, in MBs, for BLOBs size in an event when an error occurs in the transaction.                                                                                                                                                         | 2 MB (`2 * 1024 * 1024`)    |
 | `limit.historySize.warn`                | Int  | Limit, in MBs, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                                 | 10 MB (`50*1024*1024`)      |

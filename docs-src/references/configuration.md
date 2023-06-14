@@ -397,7 +397,7 @@ It can be enabled on the `history` and `visibility`.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
 
-- `state` : State for Archival setting. Supported values are `enabled`, `disabled` or `paused`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+- `state` : State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
   - `enabled`: Enables Archival in your Cluster setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
   - `disabled`: Disables Archival in your Cluster setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
 - `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
@@ -430,7 +430,7 @@ Example:
       provider:
         filestore:
           fileMode: "0666"
-          dirMode: "0766":
+          dirMode: "0766"
   ```
 
 - To disable Archival in your Cluster configuration:
