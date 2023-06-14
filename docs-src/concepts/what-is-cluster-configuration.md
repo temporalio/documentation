@@ -17,12 +17,13 @@ Cluster configuration is composed of two types of configuration: [Static configu
 
 ### Static configuration
 
-Static configuration contains details of how the Cluster should be set up. The static configuration is read just once and used to configure service nodes at startup.
+Static configuration contains details of how the Cluster should be set up.
+The static configuration is read just once and used to configure service nodes at startup.
 Depending on how you want to deploy your self-hosted Temporal Cluster, your static configuration must contain details for setting up:
 
-- Temporal Services - Frontend, History, Matching, Worker
+- Temporal Services—Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
-- Persistence (including Shard count), Visibility and Advanced Visibility, Archival store setups.
+- Persistence (including History Shard count), Visibility and Advanced Visibility, Archival store setups.
 - TLS, authentication, authorization
 - Server log level
 - Metrics
@@ -38,7 +39,7 @@ For static configuration examples, see <https://github.com/temporalio/temporal/t
 
 ### Dynamic configuration
 
-Dynamic configuration are configuration keys that you can update in your Cluster setup without having to restart the server processes.
+Dynamic configuration contains configuration keys that you can update in your Cluster setup without having to restart the server processes.
 
 All dynamic configuration keys provided by Temporal have default values that are used by the Cluster.
 You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.

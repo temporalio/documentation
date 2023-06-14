@@ -2,7 +2,7 @@
 id: what-is-a-temporal-cluster
 title: What is a Temporal Cluster?
 sidebar_label: Temporal Cluster
-description: A Temporal Cluster is a Temporal Server paired with a Persistence store.
+description: A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.
 tags:
   - term
   - explanation

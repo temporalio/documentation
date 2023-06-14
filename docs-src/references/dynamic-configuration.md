@@ -1,7 +1,7 @@
 ---
 id: dynamic-configuration
 title: Dynamic configuration reference
-description: Dynamic condifiguration key values can be set to override the default values in a Cluster configuration.
+description: Dynamic configuration key values can be set to override the default values in a Cluster configuration.
 sidebar_label: Dynamic configuration
 tags:
   - reference
@@ -13,16 +13,16 @@ The dynamic configuration keys are set with default values when you create your 
 You can override these values as you test your Cluster setup for optimal performance according to your workload requirements.
 
 For the complete list of dynamic configuration keys, see <https://github.com/temporalio/temporal/blob/master/common/dynamicconfig/constants.go>.
-Ensure that you check server releases notes for any changes to these keys and values.
+Ensure that you check server release notes for any changes to these keys and values.
 
-To check the default values set for a dynamic configuration key, check the following links:
+For the default values of dynamic configuration keys, check the following links:
 
 - [Frontend Service](https://github.com/temporalio/temporal/blob/5783e781504d8ffac59f9848b830868f3139b980/service/frontend/service.go#L176)
 - [History Service](https://github.com/temporalio/temporal/blob/5783e781504d8ffac59f9848b830868f3139b980/service/history/configs/config.go#L309)
 - [Matching Service](https://github.com/temporalio/temporal/blob/5783e781504d8ffac59f9848b830868f3139b980/service/matching/config.go#L125)
 - [Worker Service](https://github.com/temporalio/temporal/blob/5783e781504d8ffac59f9848b830868f3139b980/service/worker/service.go#L193)
 
-Note that setting dynamic configuration is optional.
+Setting dynamic configuration is optional.
 Change these values only if you need to override the default values to achieve better performance on your Temporal Cluster.
 Also, ensure that you test your changes before setting these in production.
 
@@ -64,7 +64,7 @@ testGetMapPropertyKey:
 You can define constraints on some dynamic configuration keys to set specific values that apply on a Namespace or Task Queue level.
 Not defining constraints on a dynamic configuration key sets the values across the Cluster.
 
-- To set global values for the configuration key with no constraints, use:
+- To set global values for the configuration key with no constraints, use the following:
 
   ```yaml
   frontend.globalNamespaceRPS: # Total per-Namespace RPC rate limit applied across the Cluster.
@@ -92,7 +92,7 @@ Not defining constraints on a dynamic configuration key sets the values across t
   Note that if changing the number of partitions, you must set the same count for both read and write operations on Task Queues.
 
   ```yaml
-  matching.numTaskqueueReadPartitions: # Number of Task Queue partitions for read operations
+  matching.numTaskqueueReadPartitions: # Number of Task Queue partitions for read operations.
   - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
     value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
   - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
@@ -101,7 +101,7 @@ Not defining constraints on a dynamic configuration key sets the values across t
     value: 10
   - constraints: {}  # Applies to all other task queues in "namespace1" and all other Namespaces.
     value: 16
-  matching.numTaskqueueWritePartitions:  # Number of Task Queue partitions for write operations
+  matching.numTaskqueueWritePartitions:  # Number of Task Queue partitions for write operations.
   - constraints: {namespace: "namespace1", taskQueueName: "tq"}  # Applies to the "tq" Task Queue for both Workflows and Activities.
     value: 8 # The default value for this key is 4. Task Queues that need to support high traffic require higher number of partitions. Set these values in accordance to your poller count. 
   - constraints: {namespace: "namespace1", taskQueueName: "other-tq", taskType: "Activity"} # Applies to the "other_tq" Task Queue for Activities specifically.
@@ -123,16 +123,18 @@ For more examples on how dynamic configuration is set, see:
 
 The following table lists commonly used dynamic configuration keys that can be used for rate limiting requests to the Temporal Cluster.
 
-Note that the dynamic configuration key setting is optional. If you choose to update these values for your Temporal Cluster, ensure that you are provisioning enough resources to handle the load.
+Setting dynamic configuration keys is optional.
+If you choose to update these values for your Temporal Cluster, ensure that you are provisioning enough resources to handle the load.
 
-All values listed here are for Temporal server v1.20 <!--Update to 1.21 when released-->.
+All values listed here are for Temporal server v1.20. <!--Update to 1.21 when released-->
 Check [server release notes](https://github.com/temporalio/temporal/releases) to verify any potential breaking changes when upgrading your versions.
 
 ### Service-level RPS limits
 
 The Requests Per Second (RPS) dynamic configuration keys set the rate at which requests can be made to each service in your Cluster.
 
-When scaling your services, tune the RPS to test your workload and set acceptable provisioning benchmarks. Exceeding these limits will result in `ResourceExhaustedError`.
+When scaling your services, tune the RPS to test your workload and set acceptable provisioning benchmarks.
+Exceeding these limits results in `ResourceExhaustedError`.
 
 | Dynamic configuration key              | Type | Description                                                                                                                                                                                                                                          | Default value |
 | -------------------------------------- | ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -153,8 +155,9 @@ When scaling your services, tune the RPS to test your workload and set acceptabl
 
 The Queries Per Second (QPS) dynamic configuration keys set the maximum number of queries a service can make per second to the Persistence store.
 
-Persistence rate limits are evaluated synchronously. Adjust these keys according to your database capacity and workload.
-If the number of queries made to the Persistence database is more than what the dynamic configuration value set, you will see latencies and timeouts on your tasks.
+Persistence rate limits are evaluated synchronously.
+Adjust these keys according to your database capacity and workload.
+If the number of queries made to the Persistence database exceeds the dynamic configuration value, you will see latencies and timeouts on your tasks.
 
 | Dynamic configuration key                 | Type | Description                                                                                                                                                                                                                                        | Default value           |
 | ----------------------------------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
@@ -187,19 +190,20 @@ You can define default values for Activity and Workflow [Retry Policies](/concep
 
 The Persistence store in the Cluster has default size limits set for optimal performance. The dynamic configuration keys relating to some of these are listed below.
 
-The default values on these keys have been set based on extensive testing. While these values can be changed, ensure that you are provisioning enough database resources to handle the changed values.
+The default values on these keys are based on extensive testing.
+You can change these values, but ensure that you are provisioning enough database resources to handle the changed values.
 
 For details on platform limits, see the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet).
 
 | Dynamic configuration key               | Type | Description                                                                                                                                                                                                                                | Default value               |
 | --------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
 | `limit.maxIDLength`                     | Int  | Length limit for various Ids, including: `Namespace`, `TaskQueue`, `WorkflowID`, `ActivityID`, `TimerID`, `WorkflowType`, `ActivityType`, `SignalName`, `MarkerName`, `ErrorReason`/`FailureReason`/`CancelCause`, `Identity`, `RequestID` | 1000                        |
-| `limit.blobSize.warn`                   | Int  | Limit, in MBs, for BLOBs size in an event when a warning is thrown in the server logs.                                                                                                                                                     | 512 KB (`512 * 1024`)       |
-| `limit.blobSize.error`                  | Int  | Limit, in MBs, for BLOBs size in an event when an error occurs in the transaction.                                                                                                                                                         | 2 MB (`2 * 1024 * 1024`)    |
-| `limit.historySize.warn`                | Int  | Limit, in MBs, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                                 | 10 MB (`50*1024*1024`)      |
-| `limit.historySize.error`               | Int  | Limit, in MBs, at which an error occurs in the Workflow Execution for exceeding allowed size.                                                                                                                                              | 50 MB (`50*1024*1024`)      |
-| `limit.historyCount.warn`               | Int  | Limit, in count, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                               | 10,240 events (`10*1024`)   |
-| `limit.historyCount.error`              | Int  | Limit, in count, at which an error occurs in the Workflow Execution for exceeding allowed number of Events.                                                                                                                                | 51200 events (`50*1024`)    |
+| `limit.blobSize.warn`                   | Int  | Limit, in MBs, for BLOBs size in an Event when a warning is thrown in the server logs.                                                                                                                                                     | 512 KB (512 × 1024)       |
+| `limit.blobSize.error`                  | Int  | Limit, in MBs, for BLOBs size in an Event when an error occurs in the transaction.                                                                                                                                                         | 2 MB (2 × 1024 × 1024)    |
+| `limit.historySize.warn`                | Int  | Limit, in MBs, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                                 | 10 MB (10 × 1024 × 1024)      |
+| `limit.historySize.error`               | Int  | Limit, in MBs, at which an error occurs in the Workflow Execution for exceeding allowed size.                                                                                                                                              | 50 MB (50 × 1024 × 1024)      |
+| `limit.historyCount.warn`               | Int  | Limit, in count, at which a warning is thrown for the Workflow Execution Event History size.                                                                                                                                               | 10,240 Events   |
+| `limit.historyCount.error`              | Int  | Limit, in count, at which an error occurs in the Workflow Execution for exceeding allowed number of Events.                                                                                                                                | 51,200 events    |
 | `limit.numPendingActivities.error`      | Int  | Maximum number of pending Activities that a Workflow Execution can have before the `ScheduleActivityTask` fails with an error.                                                                                                             | 50000 <!--2000 for v1.21--> |
 | `limit.numPendingSignals.error`         | Int  | Maximum number of pending Signals that a Workflow Execution can have before the `SignalExternalWorkflowExecution` commands from this Workflow fail with an error.                                                                          | 50000 <!--2000 for v1.21--> |
 | `history.maximumSignalsPerExecution`    | Int  | Maximum number of Signals that a Workflow Execution can receive before it throws an `Invalid Argument` error.                                                                                                                              | 0 <!--10000 for v1.21-->    |

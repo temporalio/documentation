@@ -2,13 +2,13 @@
 id: what-is-persistence
 title: What is Persistence?
 sidebar_label: Persistence
-description: Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
+description: The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
 tags:
   - term
   - explanation
 ---
 
-Temporal Persistence store is a database used by [Temporal Services](/concepts/what-is-the-temporal-server) to persist events generated and processed in your Temporal Cluster and SDK.
+The Temporal Persistence store is a database used by [Temporal Services](/concepts/what-is-the-temporal-server) to persist events generated and processed in your Temporal Cluster and SDK.
 
 A Temporal Cluster's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
@@ -20,14 +20,14 @@ The database stores the following types of data:
 - Tasks: Tasks to be dispatched.
 - State of Workflow Executions:
   - Execution table: A capture of the mutable state of Workflow Executions.
-  - History table: An append only log of Workflow Execution History Events.
+  - History table: An append-only log of Workflow Execution History Events.
 - Namespace metadata: Metadata of each Namespace in the Cluster.
 - [Visibility](/concepts/what-is-visibility) data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
 An Elasticsearch database must be configured in a self-hosted Cluster to enable [Advanced Visibility](/concepts/what-is-advanced-visibility) on Temporal Server versions 1.19.1 and earlier.
 
-With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
+With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later), and Elasticsearch.
 
 #### Dependency versions
 

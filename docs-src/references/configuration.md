@@ -363,10 +363,10 @@ _Required_
 
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
-- `grpcPort` : Port on which gRPC will listen.
+- `grpcPort`: Port on which gRPC will listen.
 - `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
   Each service should use different port.
-  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each cCluster should use different membershipPort.
+  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each Cluster should use a different membership port.
 - `bindOnLocalHost`: Determines whether uses `127.0.0.1` as the listener address.
 - `bindOnIP`: Used to bind service on specific IP, or `0.0.0.0`.
   Check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
@@ -393,7 +393,7 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 _Optional_
 
 Archival is an optional configuration needed to set up the [Archival store](/concepts/what-is-archival).
-It can be enabled on the `history` and `visibility`.
+It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
 
@@ -408,7 +408,7 @@ Example:
 - To enable Archival in your Cluster configuration:
 
   ```yaml
-  # Cluster level Archival config enabled
+  # Cluster-level Archival config enabled
   archival:
     # Event History configuration
     history:
@@ -436,7 +436,7 @@ Example:
 - To disable Archival in your Cluster configuration:
 
   ```yaml
-  # Cluster level Archival config disabled
+  # Cluster-level Archival config disabled
   archival:
     history:
       state: "disabled"
@@ -489,11 +489,11 @@ _Optional_
 
 Contains the Frontend datacenter API redirection policy that you can use for cross-DC replication.
 
-Supported values are:
+Supported values:
 
-- `policy`: Supported values are `noop`, `selected-apis-forwarding`, `all-apis-forwarding`.
+- `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
   - `noop`: Not setting a value or setting `noop` means no redirection. This is the default value.
-  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace:
+  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace.
     - `StartWorkflowExecution`
     - `SignalWithStartWorkflowExecution`
     - `SignalWorkflowExecution`
@@ -503,7 +503,7 @@ Supported values are:
       See [SDK documentation](/dev-guide) for details.
   - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
 
-Example":
+Example:
 
 ```yaml
 #...
@@ -518,10 +518,10 @@ _Optional_
 
 Configuration for setting up file-based [dynamic configuration](/concepts/what-is-cluster-configuration#dynamicconfiguration) client for the Cluster.
 
-This setting is required if specifying dynamic configuration. Supported configuration values are:
+This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 
-- `filepath`: Specifies the filepath where the dynamic configuration YAML file is store. The filepath should be relative to the root directory.
-- `pollInterval`: Interval between the file-based client polls to check for dynamic configuration updates. The minimum period you can set here is 5 seconds.
+- `filepath`: Specifies the path where the dynamic configuration YAML file is stored. The path should be relative to the root directory.
+- `pollInterval`: Interval between the file-based client polls to check for dynamic configuration updates. The minimum period you can set is 5 seconds.
 
 Example:
 
