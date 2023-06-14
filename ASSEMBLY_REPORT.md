@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 12 2023 15:46:46 PM -0500
+Last assembled: Wednesday June 14 2023 10:49:13 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -927,5 +927,7 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 concepts/what-is-a-worker-session -> #worker-session
 
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
+
+go/testing -> /dev-guide/go/testing#replay
 
 
