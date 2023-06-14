@@ -49,7 +49,7 @@ These Search Attributes are created when the initial index is created.
 | TemporalScheduledStartTime | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                |
 | TemporalScheduledById      | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                           |
 | TemporalSchedulePaused     | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                                |
-| BatcherUser                | Keyword      | Used by internal batcher Workflow that run in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
+| BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
 
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.
