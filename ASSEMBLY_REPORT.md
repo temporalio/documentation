@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 14 2023 10:28:57 AM -0500
+Last assembled: Wednesday June 14 2023 11:20:41 AM -0500
 
 86 guide configurations found.
 
 1449 information nodes found.
 
-1205 information nodes are attached to guides.
+1203 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -930,4 +930,5 @@ concepts/what-is-a-worker-session -> #worker-session
 
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
 
+go/testing -> /dev-guide/go/testing#replay
 

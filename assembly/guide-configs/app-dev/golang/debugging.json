@@ -12,16 +12,20 @@
   "add_tabs_support": false,
   "sections": [
     {
-      "type": "h2",
+      "type": "p",
       "id": "go/debugging"
     },
     {
-      "type": "h3",
+      "type": "h2",
       "id": "go/debug-environment-development"
     },
     {
-      "type": "h3",
+      "type": "h2",
       "id": "go/debug-environment-production"
+    },
+    {
+      "type": "h2",
+      "id": "go/how-to-test-workflow-definitions-in-go"
     }
   ]
 }
