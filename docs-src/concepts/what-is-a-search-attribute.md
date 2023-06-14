@@ -48,7 +48,7 @@ These Search Attributes are created when the initial index is created.
 | BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
 | TemporalScheduledStartTime | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                |
 | TemporalScheduledById      | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                           |
-| TemporalSchedulePaused     | Boolean      | Indicates if the Schedule has been paused. Set on Schedules.                                                                                                                                                |
+| TemporalSchedulePaused     | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                                |
 | BatcherUser                | Keyword      | Used by internal batcher Workflow that run in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
 
 - All default Search Attributes are reserved and read-only.
