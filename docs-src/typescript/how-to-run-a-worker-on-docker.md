@@ -11,16 +11,16 @@ tags:
 
 Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 
-At this moment, we recommend usage of Node.js 16.
-(Node.js 18 has known issues.)
+At this moment, we recommend using Node.js 18.
+(Node.js 20 has known issues.)
 Both `amd64` and `arm64` platforms are supported.
 A glibc-based image is required; musl-based images are _not_ supported (see below).
 
-The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:16-bullseye` image.
+The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:18-bullseye` image.
 For example:
 
 ```dockerfile
-FROM node:16-bullseye
+FROM node:18-bullseye
 
 COPY . /app
 WORKDIR /app
@@ -31,18 +31,20 @@ RUN npm install --only=production \
 CMD ["build/worker.js"]
 ```
 
-For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:16-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:16`) with the following caveats.
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:18-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:18`) with the following caveats.
 
 ### Using `node:slim` images
 
 `node:slim` images do not contain some of the common packages found in regular images. This results in significantly smaller images.
 
-However, TypeScript SDK requires the presence of root TLS certificates (the `ca-certificates` package), which are not included in `slim` images. `ca-certificates` package is required even when connecting to a local Temporal Server or when using a server connection config that doesn't explicitly use TLS.
+However, TypeScript SDK requires the presence of root TLS certificates (the `ca-certificates` package), which are not included in `slim` images.
+The `ca-certificates` package is required even when connecting to a local Temporal Server or when using a server connection config that doesn't explicitly use TLS.
 
-For this reason, the `ca-certificates` package must be installed during the construction of the Docker image. For example:
+For this reason, the `ca-certificates` package must be installed during the construction of the Docker image.
+For example:
 
 ```dockerfile
-FROM node:16-bulleyes-slim
+FROM node:18-bulleyes-slim
 
 RUN apt-get update \
     && apt-get install -y ca-certificates \
@@ -70,7 +72,7 @@ For example:
 ```dockerfile
 # -- BUILD STEP --
 
-FROM node:16-bulleyes AS builder
+FROM node:18-bulleyes AS builder
 
 COPY . /app
 WORKDIR /app
@@ -80,7 +82,7 @@ RUN npm install --only=production \
 
 # -- RESULTING IMAGE --
 
-FROM gcr.io/distroless/nodejs:16
+FROM gcr.io/distroless/nodejs:18
 
 COPY --from=builder /app /app
 WORKDIR /app
