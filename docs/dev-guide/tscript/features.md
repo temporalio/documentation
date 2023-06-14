@@ -764,3 +764,137 @@ To support custom Payload conversion, create a <a class="tdlp" href="/dataconver
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+## Interceptors
+
+Interceptors are a mechanism for modifying inbound and outbound SDK calls.
+Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
+You can compare these to "middleware" in other frameworks.
+
+The TypeScript SDK comes with an optional interceptor package that adds tracing with [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry).
+See how to use it in the [interceptors-opentelemetry](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) code sample.
+
+### Interceptor types
+
+- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/): Intercept Workflow inbound calls like execution, Signals, and Queries.
+- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/): Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
+- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor): Intercept inbound calls to an Activity (such as `execute`).
+- [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptor/): Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
+
+### How interceptors work
+
+Interceptors are run in a chain, and all interceptors work similarly.
+They accept two arguments: `input` and `next`, where `next` calls the next interceptor in the chain.
+All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
+
+### Interceptor examples
+
+<!--TODO use snipsync-->
+
+**Log start and completion of Activities**
+
+```ts
+import {
+  ActivityInput,
+  Next,
+  WorkflowOutboundCallsInterceptor,
+} from '@temporalio/workflow';
+
+export class ActivityLogInterceptor
+  implements WorkflowOutboundCallsInterceptor
+{
+  constructor(public readonly workflowType: string) {}
+
+  async scheduleActivity(
+    input: ActivityInput,
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
+  ): Promise<unknown> {
+    console.log('Starting activity', { activityType: input.activityType });
+    try {
+      return await next(input);
+    } finally {
+      console.log('Completed activity', {
+        workflow: this.workflowType,
+        activityType: input.activityType,
+      });
+    }
+  }
+}
+```
+
+**Authorization**
+
+```ts
+import {
+  defaultDataConverter,
+  Next,
+  WorkflowInboundCallsInterceptor,
+  WorkflowInput,
+} from '@temporalio/workflow';
+
+/**
+ * WARNING: This demo is meant as a simple auth example.
+ * Do not use this for actual authorization logic.
+ * Auth headers should be encrypted and credentials
+ * stored outside of the codebase.
+ */
+export class DumbWorkflowAuthInterceptor
+  implements WorkflowInboundCallsInterceptor
+{
+  public async execute(
+    input: WorkflowInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
+  ): Promise<unknown> {
+    const authHeader = input.headers.auth;
+    const { user, password } = authHeader
+      ? await defaultDataConverter.fromPayload(authHeader)
+      : undefined;
+
+    if (!(user === 'admin' && password === 'admin')) {
+      throw new Error('Unauthorized');
+    }
+    return await next(input);
+  }
+}
+```
+
+To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation.
+Please contact us if you need to discuss this further.
+
+### Interceptor registration
+
+**Activity and client interceptors registration**
+
+- Activity interceptors are registered on Worker creation by passing an array of [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+
+- Client interceptors are registered on `WorkflowClient` construction by passing an array of [WorkflowClientCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptorFactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#interceptors).
+
+**Workflow interceptors registration**
+
+Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate.
+To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+
+At the time of construction, the Workflow context is already initialized for the current Workflow.
+Use [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) to add Workflow-specific information in the interceptor.
+
+`src/workflows/your-interceptors.ts`
+
+```ts
+import { workflowInfo } from '@temporalio/workflow';
+
+export const interceptors = () => ({
+  outbound: [new ActivityLogInterceptor(workflowInfo().workflowType)],
+  inbound: [],
+});
+```
+
+`src/worker/index.ts`
+
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  interceptors: {
+    workflowModules: [require.resolve('./workflows/your-interceptors')],
+  },
+});
+```
