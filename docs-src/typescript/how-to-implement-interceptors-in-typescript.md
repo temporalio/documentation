@@ -31,7 +31,7 @@ All interceptor methods are optional—it's up to the implementor to choose whic
 
 <!--TODO use snipsync-->
 
-#### Log start and completion of Activities
+**Log start and completion of Activities**
 
 ```ts
 import {
@@ -62,7 +62,7 @@ export class ActivityLogInterceptor
 }
 ```
 
-#### Authorization
+**Authorization**
 
 ```ts
 import {
@@ -103,13 +103,13 @@ Please contact us if you need to discuss this further.
 
 ### Interceptor registration
 
-#### Activity and client interceptors registration
+**Activity and client interceptors registration**
 
 - Activity interceptors are registered on Worker creation by passing an array of [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
 
 - Client interceptors are registered on `WorkflowClient` construction by passing an array of [WorkflowClientCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptorFactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#interceptors).
 
-#### Workflow interceptors registration
+**Workflow interceptors registration**
 
 Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate.
 To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
