@@ -17,5 +17,5 @@ An append-log of [Events](/concepts/what-is-an-event) for your application.
 
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-The Temporal Cluster logs a [warning after 10K (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
-If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
+The Temporal Cluster logs a [warning after 10Ki (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.

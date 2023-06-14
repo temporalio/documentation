@@ -2,7 +2,7 @@
 
 Last assembled: Wednesday June 14 2023 14:50:36 PM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 86 guide configurations found.
 
@@ -926,7 +926,7 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/tracing -> /dev-guide/go/observability#tracing
+go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
