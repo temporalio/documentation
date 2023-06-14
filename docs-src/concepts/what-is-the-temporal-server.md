@@ -28,7 +28,7 @@ Each service is aware of the others, including scaled instances, through a membe
 
 All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 
-Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
+We support upgrade paths from every version beginning with Temporal v1.7.0.
 For details on upgrading your Temporal Cluster, see [Upgrade Server](/cluster-deployment-guide#upgrade-server).
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.

@@ -365,10 +365,10 @@ _Required_
 
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
-- `grpcPort` : Port on which gRPC will listen.
+- `grpcPort`: Port on which gRPC will listen.
 - `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
   Each service should use different port.
-  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each cCluster should use different membershipPort.
+  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each Cluster should use a different membership port.
 - `bindOnLocalHost`: Determines whether uses `127.0.0.1` as the listener address.
 - `bindOnIP`: Used to bind service on specific IP, or `0.0.0.0`.
   Check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
@@ -395,11 +395,11 @@ Use `dns:///` prefix to enable round-robin between IP address for DNS name.
 _Optional_
 
 Archival is an optional configuration needed to set up the <a class="tdlp" href="/clusters#archival">Archival store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a>.
-It can be enabled on the `history` and `visibility`.
+It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
 
-- `state` : State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+- `state`: State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
   - `enabled`: Enables Archival in your Cluster setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
   - `disabled`: Disables Archival in your Cluster setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
 - `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
@@ -410,14 +410,14 @@ Example:
 - To enable Archival in your Cluster configuration:
 
   ```yaml
-  # Cluster level Archival config enabled
+  # Cluster-level Archival config enabled
   archival:
     # Event History configuration
     history:
-      # Archival is enabled for the History service data
+      # Archival is enabled for the History Service data.
       state: "enabled"
       enableRead: true
-      # Namespaces can use either the local filestore provider or the Google Cloud provider
+      # Namespaces can use either the local filestore provider or the Google Cloud provider.
       provider:
         filestore:
           fileMode: "0666"
@@ -426,7 +426,7 @@ Example:
           credentialsPath: "/tmp/gcloud/keyfile.json"
     # Configuration for archiving Visibility data.
     visibility:
-      # Archival is enabled for Visibility data
+      # Archival is enabled for Visibility data.
       state: "enabled"
       enableRead: true
       provider:
@@ -438,7 +438,7 @@ Example:
 - To disable Archival in your Cluster configuration:
 
   ```yaml
-  # Cluster level Archival config disabled
+  # Cluster-level Archival config disabled
   archival:
     history:
       state: "disabled"
@@ -471,14 +471,14 @@ For more details on setting Namespace defaults on Archival, see [Namespace creat
 Example:
 
 ```yaml
-# Default values for a Namespace if none are provided at creation
+# Default values for a Namespace if none are provided at creation.
 namespaceDefaults:
-  # Archival defaults
+  # Archival defaults.
   archival:
-    # Event History defaults
+    # Event History defaults.
     history:
       state: "enabled"
-      # New Namespaces will default to the local provider
+      # New Namespaces will default to the local provider.
       URI: "file:///tmp/temporal_archival/development"
     visibility:
       state: "disabled"
@@ -491,21 +491,20 @@ _Optional_
 
 Contains the Frontend datacenter API redirection policy that you can use for cross-DC replication.
 
-Supported values are:
+Supported values:
 
-- `policy`: Supported values are `noop`, `selected-apis-forwarding`, `all-apis-forwarding`.
+- `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
   - `noop`: Not setting a value or setting `noop` means no redirection. This is the default value.
-  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace:
+  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace.
     - `StartWorkflowExecution`
     - `SignalWithStartWorkflowExecution`
     - `SignalWorkflowExecution`
     - `RequestCancelWorkflowExecution`
     - `TerminateWorkflowExecution`
     - `QueryWorkflow`
-      See [SDK documentation](/dev-guide) for details.
   - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
 
-Example":
+Example:
 
 ```yaml
 #...
@@ -520,10 +519,10 @@ _Optional_
 
 Configuration for setting up file-based <a class="tdlp" href="/clusters#dynamicconfiguration">dynamic configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dynamicconfiguration">Learn more</a></span></span></a> client for the Cluster.
 
-This setting is required if specifying dynamic configuration. Supported configuration values are:
+This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
 
-- `filepath`: Specifies the filepath where the dynamic configuration YAML file is store. The filepath should be relative to the root directory.
-- `pollInterval`: Interval between the file-based client polls to check for dynamic configuration updates. The minimum period you can set here is 5 seconds.
+- `filepath`: Specifies the path where the dynamic configuration YAML file is stored. The path should be relative to the root directory.
+- `pollInterval`: Interval between the file-based client polls to check for dynamic configuration updates. The minimum period you can set is 5 seconds.
 
 Example:
 

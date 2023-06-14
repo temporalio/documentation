@@ -266,7 +266,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Persistence](/clusters#persistence)
-Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
+The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -440,7 +440,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Temporal Cluster](/clusters#)
-A Temporal Cluster is a Temporal Server paired with a Persistence store.
+A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

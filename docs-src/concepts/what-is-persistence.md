@@ -31,7 +31,7 @@ With Temporal Server version 1.20 and later, Advanced Visibility features are av
 
 #### Dependency versions
 
-Temporal tests compatibility by spanning the **minimum** and **maximum** stable major versions for each supported database.
+Temporal tests compatibility by spanning the minimum and maximum stable major versions for each supported database.
 The following versions are used in our test pipelines and actively tested before we release any version of Temporal:
 
 - **Cassandra v3.11 and v4.0**

@@ -23,7 +23,7 @@ tctl is expected to be fully deprecated by Temporal Server version 1.22
 
 :::
 
-The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> operations.
+The `tctl cluster` command enables <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> operations.
 
 - <a class="tdlp" href="#health">tctl cluster health<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl cluster health</span><br /><br /><span class="tdlppd">How to check the health of the Frontend Service using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#health">Learn more</a></span></span></a>
 - <a class="tdlp" href="#get-search-attributes">tctl cluster get-search-attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl cluster get-search-attributes</span><br /><br /><span class="tdlppd">How to list all Search Attributes using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get-search-attributes">Learn more</a></span></span></a>
@@ -71,7 +71,7 @@ The admin version of this command displays default and custom Search Attributes 
 
 ## health
 
-The `tctl cluster health` command checks the health of the <a class="tdlp" href="/clusters#frontend-service">Frontend Service<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#frontend-service">Learn more</a></span></span></a>.
+The `tctl cluster health` command checks the health of the <a class="tdlp" href="/clusters#frontend-service">Frontend Service<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#frontend-service">Learn more</a></span></span></a>.
 
 `tctl cluster health`
 

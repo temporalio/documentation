@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Clusters.
 
-A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a>, combined with <a class="tdlp" href="#persistence">Persistence<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Persistence?</span><br /><br /><span class="tdlppd">Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> and <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> stores, that together act as a component of the Temporal Platform.
+A Temporal Cluster is the group of services, known as the <a class="tdlp" href="#temporal-server">Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a>, combined with <a class="tdlp" href="#persistence">Persistence<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Persistence?</span><br /><br /><span class="tdlppd">The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> and <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> stores, that together act as a component of the Temporal Platform.
 
 - [How to quickly install a Temporal Cluster for testing and development](/kb/all-the-ways-to-run-a-cluster)
 - [Cluster deployment guide](/cluster-deployment-guide)
@@ -59,7 +59,7 @@ Each service is aware of the others, including scaled instances, through a membe
 
 All Temporal Server releases abide by the [Semantic Versioning Specification](https://semver.org/).
 
-Fairly precise upgrade paths and support have been established starting from Temporal `v1.7.0`.
+We support upgrade paths from every version beginning with Temporal v1.7.0.
 For details on upgrading your Temporal Cluster, see [Upgrade Server](/cluster-deployment-guide#upgrade-server).
 
 We provide maintenance support for previously published minor and major versions by continuing to release critical bug fixes related to security, the prevention of data loss, and reliability, whenever they are found.
@@ -204,7 +204,7 @@ If you don't set the Retention Period value when using the Register Namespace Re
 
 ## Persistence
 
-Temporal Persistence store is a database used by <a class="tdlp" href="#temporal-server">Temporal Services<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a> to persist events generated and processed in your Temporal Cluster and SDK.
+The Temporal Persistence store is a database used by <a class="tdlp" href="#temporal-server">Temporal Services<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Server?</span><br /><br /><span class="tdlppd">The Temporal Server is a grouping of four horizontally scalable services.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-server">Learn more</a></span></span></a> to persist events generated and processed in your Temporal Cluster and SDK.
 
 A Temporal Cluster's only required dependency for basic operation is the Persistence database.
 Multiple types of databases are supported.
@@ -216,18 +216,18 @@ The database stores the following types of data:
 - Tasks: Tasks to be dispatched.
 - State of Workflow Executions:
   - Execution table: A capture of the mutable state of Workflow Executions.
-  - History table: An append only log of Workflow Execution History Events.
+  - History table: An append-only log of Workflow Execution History Events.
 - Namespace metadata: Metadata of each Namespace in the Cluster.
 - <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
 An Elasticsearch database must be configured in a self-hosted Cluster to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
 
-With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later) and Elasticsearch.
+With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later), and Elasticsearch.
 
 #### Dependency versions
 
-Temporal tests compatibility by spanning the **minimum** and **maximum** stable major versions for each supported database.
+Temporal tests compatibility by spanning the minimum and maximum stable major versions for each supported database.
 The following versions are used in our test pipelines and actively tested before we release any version of Temporal:
 
 - **Cassandra v3.11 and v4.0**
@@ -245,7 +245,7 @@ You can verify supported databases in the [Temporal Server release notes](https:
 
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
-The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with a Persistence store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 - [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
 
@@ -280,12 +280,13 @@ Cluster configuration is composed of two types of configuration: [Static configu
 
 ### Static configuration
 
-Static configuration contains details of how the Cluster should be set up. The static configuration is read just once and used to configure service nodes at startup.
+Static configuration contains details of how the Cluster should be set up.
+The static configuration is read just once and used to configure service nodes at startup.
 Depending on how you want to deploy your self-hosted Temporal Cluster, your static configuration must contain details for setting up:
 
-- Temporal Services - Frontend, History, Matching, Worker
+- Temporal Services—Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
-- Persistence (including Shard count), Visibility and Advanced Visibility, Archival store setups.
+- Persistence (including History Shard count), Visibility and Advanced Visibility, Archival store setups.
 - TLS, authentication, authorization
 - Server log level
 - Metrics
@@ -301,7 +302,7 @@ For static configuration examples, see <https://github.com/temporalio/temporal/t
 
 ### Dynamic configuration
 
-Dynamic configuration are configuration keys that you can update in your Cluster setup without having to restart the server processes.
+Dynamic configuration contains configuration keys that you can update in your Cluster setup without having to restart the server processes.
 
 All dynamic configuration keys provided by Temporal have default values that are used by the Cluster.
 You can override the default values by setting different values for the keys in a YAML file and setting the <a class="tdlp" href="/references/configuration#dynamicconfigclient">dynamic configuration client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#dynamicconfigclient">Learn more</a></span></span></a> to poll this file for updates.
@@ -329,26 +330,26 @@ Temporal supports Mutual Transport Layer Security (mTLS) to encrypt network traf
 On self-hosted Temporal Clusters, configure mTLS in the `tls` section of the <a class="tdlp" href="/references/configuration#tls">Cluster configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
 mTLS configuration is a [static configuration](#static-configuration) property.
 
-You can then use either <a class="tdlp" href="/references/server-options#withconfig"> `WithConfig`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfig">Learn more</a></span></span></a> or <a class="tdlp" href="/references/server-options#withconfigloader"> `WithConfigLoader`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfigloader">Learn more</a></span></span></a> server options to start your Temporal Cluster with this configuration.
+You can then use either the <a class="tdlp" href="/references/server-options#withconfig"> `WithConfig`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfig">Learn more</a></span></span></a> or <a class="tdlp" href="/references/server-options#withconfigloader"> `WithConfigLoader`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withconfigloader">Learn more</a></span></span></a> server option to start your Temporal Cluster with this configuration.
 
-The mTLS configuration includes two sections that serve to separate communication within a Temporal Cluster and client calls made from your application the Cluster.
+The mTLS configuration includes two sections that serve to separate communication within a Temporal Cluster and client calls made from your application to the Cluster.
 
 - `internode`: configuration for encrypting communication between nodes within the Cluster.
-- `frontend`: configuration for encrypting the Frontend's public endpoints
+- `frontend`: configuration for encrypting the public endpoints of the Frontend Service.
 
-Setting mTLS for `internode` and `frontend` separately allows you to use different certificates and settings to encrypt each section of traffic.
+Setting mTLS for `internode` and `frontend` separately lets you use different certificates and settings to encrypt each section of traffic.
 
 #### Using certificates for Client connections
 
 Use CA certificates to authenticate client connections to your Temporal Cluster.
 
-On Temporal Cloud, you can <a class="tdlp" href="/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates">set your CA certificates in your Temporal Cloud settings<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Get started - Certificates</span><br /><br /><span class="tdlppd">Learn requirements for CA certificates</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates">Learn more</a></span></span></a> and use the end-entity certificates in your client calls.
+On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/how-to-manage-certificates-in-temporal-cloud) and use the end-entity certificates in your client calls.
 
 On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the <a class="tdlp" href="/references/configuration#tls"> `requireClientAuth`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a> property in your Cluster configuration.
 These properties can be specified in both the `internode` and `frontend` sections of the <a class="tdlp" href="/references/configuration#tls">mTLS configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
-For details, see the <a class="tdlp" href="/references/configuration#tls">tls confiuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
+For details, see the <a class="tdlp" href="/references/configuration#tls">tls configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
 
-##### Server name specification
+#### Server name specification
 
 On self-hosted Temporal Clusters, you can specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
@@ -374,7 +375,7 @@ Temporal offers two plugin interfaces for API call authentication and authorizat
 - <a class="tdlp" href="/security#authorizer-plugin"> `Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>
 
 The logic of both plugins can be customized to fit a variety of use cases.
-When provided, the Frontend Service invokes the implementation of the plugins before running the requested operation.
+When plugins are provided, the Frontend Service invokes their implementation before running the requested operation.
 
 ### Monitoring and observation
 
@@ -387,16 +388,17 @@ Currently, we test with the following Prometheus and Grafana versions:
 - **Prometheus >= v2.0**
 - **Grafana >= v2.5**
 
-Temporal Cloud emits metrics through a Prometheus HTTP API endpoint which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
+Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can be directly used as a Prometheus data source in Grafana or to query and export Cloud metrics to any observability platform.
 
-For details on Cloud metrics and setup, see:
+For details on Cloud metrics and setup, see the following:
 
 - [Temporal Cloud metrics reference](/cloud/how-to-monitor-temporal-cloud-metrics)
 - [Set up Grafana with Temporal Cloud observability to view metrics](/kb/prometheus-grafana-setup-cloud#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana)
 
-On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints. You can then set up your observability platform (such as Grafana) to use this as a datasource.
+On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints.
+You can then set up your observability platform (such as Grafana) to use Prometheus as a data source.
 
-For details on self-hosted Cluster metrics and setup, see:
+For details on self-hosted Cluster metrics and setup, see the following:
 
 - <a class="tdlp" href="/references/cluster-metrics#">Temporal Cluster OSS metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal OSS Cluster metrics reference</span><br /><br /><span class="tdlppd">The Temporal Cluster emits a range of metrics to help operators get visibility into the Cluster’s performance and set up alerts.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/cluster-metrics#">Learn more</a></span></span></a>
 - [Set up Prometheus and Grafana to view SDK and self-hosted Cluster metrics](/kb/prometheus-grafana-setup)

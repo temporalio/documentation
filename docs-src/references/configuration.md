@@ -397,7 +397,7 @@ It can be enabled on `history` and `visibility` data.
 
 The following list describes supported values for each configuration on the `history` and `visibility` data.
 
-- `state` : State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+- `state`: State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
   - `enabled`: Enables Archival in your Cluster setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
   - `disabled`: Disables Archival in your Cluster setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
 - `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
@@ -412,10 +412,10 @@ Example:
   archival:
     # Event History configuration
     history:
-      # Archival is enabled for the History service data
+      # Archival is enabled for the History Service data.
       state: "enabled"
       enableRead: true
-      # Namespaces can use either the local filestore provider or the Google Cloud provider
+      # Namespaces can use either the local filestore provider or the Google Cloud provider.
       provider:
         filestore:
           fileMode: "0666"
@@ -424,7 +424,7 @@ Example:
           credentialsPath: "/tmp/gcloud/keyfile.json"
     # Configuration for archiving Visibility data.
     visibility:
-      # Archival is enabled for Visibility data
+      # Archival is enabled for Visibility data.
       state: "enabled"
       enableRead: true
       provider:
@@ -469,14 +469,14 @@ For more details on setting Namespace defaults on Archival, see [Namespace creat
 Example:
 
 ```yaml
-# Default values for a Namespace if none are provided at creation
+# Default values for a Namespace if none are provided at creation.
 namespaceDefaults:
-  # Archival defaults
+  # Archival defaults.
   archival:
-    # Event History defaults
+    # Event History defaults.
     history:
       state: "enabled"
-      # New Namespaces will default to the local provider
+      # New Namespaces will default to the local provider.
       URI: "file:///tmp/temporal_archival/development"
     visibility:
       state: "disabled"
@@ -500,7 +500,6 @@ Supported values:
     - `RequestCancelWorkflowExecution`
     - `TerminateWorkflowExecution`
     - `QueryWorkflow`
-      See [SDK documentation](/dev-guide) for details.
   - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
 
 Example:

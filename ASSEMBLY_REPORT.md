@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 14 2023 14:50:36 PM -0700
+Last assembled: Wednesday June 14 2023 16:14:25 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 86 guide configurations found.
 
-1453 information nodes found.
+1456 information nodes found.
 
-1208 information nodes are attached to guides.
+1213 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -886,8 +886,6 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
-typescript/testing -> /dev-guide/typescript/testing#replay
-
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -899,8 +897,6 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
-
-typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
@@ -930,14 +926,18 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/testing -> /dev-guide/go/testing#replay
-
-go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
+go/tracing -> /dev-guide/go/observability#tracing
 
 go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+typescript/testing -> /dev-guide/typescript/testing#replay
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
+
+go/testing -> /dev-guide/go/testing#replay
 
 
