@@ -65,7 +65,7 @@ Here are some important differences:
 
 - A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
   An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
-- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](/concepts/what-is-a-parent-close-policy/) of `ABANDON`.
+- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](/concepts/what-is-a-parent-close-policy) of `ABANDON`.
   An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
   (It can react to a cancellation Signal for cleanup.)
   The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
