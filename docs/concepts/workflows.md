@@ -295,7 +295,7 @@ Each pending Activity generates a metadata entry in the Workflow's mutable state
 Too many entries create a large mutable state, which causes unstable persistence.
 
 To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, Signals, and Workflow cancellation requests.
-Currently, there is no limit on the total number of Signals that a Workflow Execution receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
+Currently, there is no limit on the total number of Signals that a Workflow Execution can receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
 - `limit.numPendingChildExecutions.error`

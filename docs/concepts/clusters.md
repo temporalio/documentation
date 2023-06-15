@@ -351,7 +351,7 @@ For details, see the <a class="tdlp" href="/references/configuration#tls">tls co
 
 #### Server name specification
 
-On self-hosted Temporal Clusters, you can specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+On self-hosted Temporal Clusters, you can specify `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
 Entering a value for `serverName` enables established connections to authenticate the endpoint.
 This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
@@ -369,7 +369,7 @@ For more information on mTLS configuration, see <a class="tdlp" href="/reference
 Temporal provides authentication interfaces that can be set to restrict access to your data.
 These protocols address three areas: servers, client connections, and users.
 
-Temporal offers two plugin interfaces for API call authentication and authorization.
+Temporal offers two plugin interfaces for authentication and authorization of API calls.
 
 - <a class="tdlp" href="/security#claim-mapper"> `ClaimMapper`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a ClaimMapper Plugin?</span><br /><br /><span class="tdlppd">The Claim Mapper component is a pluggable component that extracts Claims from JSON Web Tokens (JWTs).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#claim-mapper">Learn more</a></span></span></a>
 - <a class="tdlp" href="/security#authorizer-plugin"> `Authorizer`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Authorizer Plugin?</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/security#authorizer-plugin">Learn more</a></span></span></a>

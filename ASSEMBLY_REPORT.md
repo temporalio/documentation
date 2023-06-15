@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 14 2023 17:57:44 PM -0700
+Last assembled: Thursday June 15 2023 16:47:54 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
 86 guide configurations found.
 
-1456 information nodes found.
+1457 information nodes found.
 
-1213 information nodes are attached to guides.
+1216 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -482,8 +482,6 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
-cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
-
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
@@ -886,6 +884,8 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+typescript/testing -> /dev-guide/typescript/testing#replay
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -897,6 +897,8 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
@@ -926,18 +928,14 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-go/tracing -> /dev-guide/go/observability#tracing
+go/testing -> /dev-guide/go/testing#replay
+
+go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-typescript/testing -> /dev-guide/typescript/testing#replay
-
-typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
-
-go/testing -> /dev-guide/go/testing#replay
 
 
