@@ -321,7 +321,7 @@ inlineSignal(`task-${taskBId}`, (payload) => {
     API Design FAQs
   </summary>
 
-#### Why not `new Signal` and `new Query`?
+**Why not "new Signal" and "new Query"?**
 
 The semantic of `defineSignal` and `defineQuery` is intentional.
 They return Signal and Query **definitions**, not unique instances of Signals and Queries themselves
@@ -358,7 +358,7 @@ Signals and Queries are instantiated only in `setHandler` and are specific to pa
 These distinctions might seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
 This will be clearer if you refer to the Client-side APIs.
 
-#### Why `setHandler` and not OTHER_API?
+**Why setHandler and not OTHER_API?**
 
 We named it `setHandler` instead of `subscribe` because a Signal or Query can have only one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers and is a higher-level construct.
 
