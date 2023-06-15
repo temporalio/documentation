@@ -15,10 +15,15 @@ Each function retrieves Workflow Executions according to a given [Query](/concep
 To list all Workflow Executions, use [`ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the [Temporal Client](/concepts/what-is-a-temporal-client).
 
 ```go
-resp, err := temporalClient.ListWorkflow(context.Background(), sampleListRequest)
+resp, err := temporalClient.ListWorkflow(ctx.Background(), req)
+if err != nil {
+  return err
+}
 
-for i := 0; i < range resp {
-  fmt.Println(resp[i])
+fmt.Println("First page of results:")
+for _, exec := range resp.Executions {
+  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
+  fmt.Println("Next page of results:")
 }
 ```
 
@@ -29,9 +34,14 @@ Make sure that the Temporal Cluster or target [Namespace](/concepts/what-is-a-na
 ctxWithTimeout, cancel := context.WithTimeout(context.Background(), time.Minute)
 
 resp, err := temporalClient.ListArchivedWorkflow(ctxWithTimeout, sampleListRequest)
+if err != nil {
+  return err
+}
 
-for i := 0; i < range resp {
-  fmt.Println(resp[i])
+fmt.Println("First page of results:")
+for _, exec := range resp.Executions {
+  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
+  fmt.Println("Next page of results:")
 }
 ```
 
@@ -40,9 +50,14 @@ Retrieved Workflow Executions are sorted by `StartTime` in descending order.
 
 ```go
 resp, err := temporalClient.ListOpenWorkflows(context.Background(), sampleListRequest)
+if err != nil {
+  return err
+}
 
-for i := 0; i < range resp {
-  fmt.Println(resp[i])
+fmt.Println("First page of results:")
+for _, exec := range resp.Executions {
+  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
+  fmt.Println("Next page of results:")
 }
 ```
 
@@ -51,8 +66,13 @@ Retrieved Workflow Executions are sorted by `CloseTime` in descending order.
 
 ```go
 resp, err := temporalClient.ListClosedWorkflow(context.Background(), sampleListRequest)
+if err != nil {
+  return err
+}
 
-for i := 0; i < range resp {
-  fmt.Println(resp[i])
+fmt.Println("First page of results:")
+for _, exec := range resp.Executions {
+  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
+  fmt.Println("Next page of results:")
 }
 ```
