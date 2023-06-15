@@ -9,29 +9,42 @@ tags:
   - client
 ---
 
-There are several functions for listing Workflow Executions using the [Client]() in Go.
-Workflow Executions are returned based on a given [Query]() or request filter.
+There are several functions for listing [Workflow Executions](/concepts/what-is-a-workflow-execution) available on the [Temporal Go SDK](https://pkg.go.dev/go.temporal.io/sdk).
+Each function retrieves Workflow Executions according to a given [Query](/concepts/what-is-a-query) or request filters.
 
-To list all Workflows, use [`ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the Temporal Client.
+To list all Workflow Executions, use [`ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the [Temporal Client](/concepts/what-is-a-temporal-client).
 
 ```go
+resp, err := temporalClient.ListWorkflow(context.Background(), sampleListRequest)
 
+// print?
 ```
 
-To return a list of archived Workflows only, use `ListArchivedWorkflow()` on the Client.
+To return a list of archived Workflow Executions, use `ListArchivedWorkflow()` on the Client.
+Make sure that the Temporal Cluster or target [Namespace](/concepts/what-is-a-namespace) is configured for [visibility archival](/concepts/what-is-standard-visibility) before using this function.
 
 ```go
+ctxWithTimeout, cancel := context.WithTimeout(context.Background(), time.Minute)
 
+resp, err := temporalClient.ListArchivedWorkflow(ctxWithTimeout, sampleListRequest)
+
+// print?
+```
+
+To view a list of currently open Workflows, use `ListOpenWorkflows()` on the Temporal Client.
+Retrieved Workflow Executions are sorted by `StartTime` in descending order.
+
+```go
+resp, err := temporalClient.ListOpenWorkflows(context.Background(), sampleListRequest)
+
+// print?
 ```
 
 To return a list of closed Workflows, use `ListClosedWorkflow()` on the Temporal Client.
+Retrieved Workflow Executions are sorted by `CloseTime` in descending order.
 
 ```go
+resp, err := temporalClient.ListClosedWorkflow(context.Background(), sampleListRequest)
 
-```
-
-To only view a list of currently open Workflows, use `ListOpenWorkflows()` on the Temporal Client.
-
-```go
-
+// print?
 ```
