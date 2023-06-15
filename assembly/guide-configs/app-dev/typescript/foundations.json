@@ -41,6 +41,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/linting-and-types"
+    },
+    {
+      "type": "h2",
       "id": "typescript/connect-to-a-dev-cluster"
     },
     {

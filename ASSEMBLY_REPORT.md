@@ -2,11 +2,15 @@
 
 Last assembled: Thursday June 15 2023 08:39:05 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 86 guide configurations found.
 
+<<<<<<< HEAD
 1452 information nodes found.
+=======
+1450 information nodes found.
+>>>>>>> b3e7117335e89d269ad898dc428f238ab614a116
 
 1209 information nodes are attached to guides.
 
