@@ -41,6 +41,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/linting-and-types"
+    },
+    {
+      "type": "h2",
       "id": "typescript/connect-to-a-dev-cluster"
     },
     {
@@ -154,6 +158,10 @@
     {
       "type": "p",
       "id": "typescript/how-to-develop-a-worker-program-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-run-a-worker-on-docker"
     },
     {
       "type": "h2",
