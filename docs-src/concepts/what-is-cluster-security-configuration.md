@@ -39,7 +39,7 @@ For details, see the [tls configuration reference](/references/configuration#tls
 
 #### Server name specification
 
-On self-hosted Temporal Clusters, you can specify the `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+On self-hosted Temporal Clusters, you can specify `serverName` in the `client` section of your mTLS configuration to prevent spoofing and [MITM attacks](https://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
 Entering a value for `serverName` enables established connections to authenticate the endpoint.
 This ensures that the server certificate presented to any connected client has the specified server name in its CN property.
@@ -57,7 +57,7 @@ For more information on mTLS configuration, see [tls configuration reference](/r
 Temporal provides authentication interfaces that can be set to restrict access to your data.
 These protocols address three areas: servers, client connections, and users.
 
-Temporal offers two plugin interfaces for API call authentication and authorization.
+Temporal offers two plugin interfaces for authentication and authorization of API calls.
 
 - [`ClaimMapper`](/concepts/what-is-a-claimmapper-plugin)
 - [`Authorizer`](/concepts/what-is-an-authorizer-plugin)
