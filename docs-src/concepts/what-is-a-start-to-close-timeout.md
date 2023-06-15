@@ -23,12 +23,12 @@ An Activity Execution must have either this timeout (Start-To-Close) or the [Sch
 We recommend always setting this timeout; however, make sure that Start-To-Close Timeout is always set to be longer than the maximum possible time for the Activity Execution to complete.
 For long running Activity Executions, we recommend also using [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/concepts/what-is-a-heartbeat-timeout).
 
-:::caution
+:::tip
 
-We strongly recommend setting Start-To-Close Timeout.
+We strongly recommend setting a Start-To-Close Timeout.
 
-The Temporal Server does not detect failures when a Worker loses communication with the Server or crashes.
-Therefore, the Temporal Server relies on this timeout to force Activity retries.
+The Temporal Server doesn't detect failures when a Worker loses communication with the Server or crashes.
+Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Activity retries.
 
 :::
 
