@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 14 2023 16:51:11 PM -0700
+Last assembled: Thursday June 15 2023 08:54:20 AM -0600
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 86 guide configurations found.
 
-1451 information nodes found.
+1450 information nodes found.
 
-1208 information nodes are attached to guides.
+1209 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
