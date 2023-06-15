@@ -277,7 +277,9 @@ To list all Workflow Executions, use [`ListWorkflow`](https://pkg.go.dev/go.temp
 ```go
 resp, err := temporalClient.ListWorkflow(context.Background(), sampleListRequest)
 
-// print?
+for i := 0; i < range resp {
+  fmt.Println(resp[i])
+}
 ```
 
 To return a list of archived Workflow Executions, use `ListArchivedWorkflow()` on the Client.
@@ -288,7 +290,9 @@ ctxWithTimeout, cancel := context.WithTimeout(context.Background(), time.Minute)
 
 resp, err := temporalClient.ListArchivedWorkflow(ctxWithTimeout, sampleListRequest)
 
-// print?
+for i := 0; i < range resp {
+  fmt.Println(resp[i])
+}
 ```
 
 To view a list of currently open Workflows, use `ListOpenWorkflows()` on the Temporal Client.
@@ -297,7 +301,9 @@ Retrieved Workflow Executions are sorted by `StartTime` in descending order.
 ```go
 resp, err := temporalClient.ListOpenWorkflows(context.Background(), sampleListRequest)
 
-// print?
+for i := 0; i < range resp {
+  fmt.Println(resp[i])
+}
 ```
 
 To return a list of closed Workflows, use `ListClosedWorkflow()` on the Temporal Client.
@@ -306,7 +312,9 @@ Retrieved Workflow Executions are sorted by `CloseTime` in descending order.
 ```go
 resp, err := temporalClient.ListClosedWorkflow(context.Background(), sampleListRequest)
 
-// print?
+for i := 0; i < range resp {
+  fmt.Println(resp[i])
+}
 ```
 
 ### Custom Search Attributes
