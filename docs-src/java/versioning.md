@@ -1,6 +1,11 @@
 ---
 id: versioning
-title: Versioning
+title: How to version Workflows in Java
+sidebar_label: Versioning
+description: Properly version your Workflows to avoid non-deterministic errors.
+tags:
+  - java
+  - workflow-versions
 ---
 
 As outlined in the _Workflow Implementation Constraints_ section, Workflow code has to be deterministic by taking the same
