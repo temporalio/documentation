@@ -1,18 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 15 2023 14:17:18 PM -0600
+Last assembled: Thursday June 15 2023 16:47:54 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 86 guide configurations found.
 
-1452 information nodes found.
+1457 information nodes found.
 
-1211 information nodes are attached to guides.
+1216 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -352,6 +352,8 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
+
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
@@ -469,6 +471,8 @@ concepts/what-is-a-reset -> /workflows#reset
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+concepts/what-is-persistence -> #persistence
 
 concepts/what-is-a-history-shard -> #history-shard
 
