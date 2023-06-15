@@ -89,6 +89,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/how-to-define-signals-and-queries-statically-or-dynamically"
+    },
+    {
+      "type": "h2",
       "id": "typescript/workflow-timeouts"
     },
     {
