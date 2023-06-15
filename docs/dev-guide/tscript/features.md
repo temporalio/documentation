@@ -235,6 +235,142 @@ async function run(): Promise<void> {
 
 <!--SNIPEND-->
 
+## Static and dynamic Signals and Queries
+
+- Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
+- Only Signal Handlers can mutate state, and only Query Handlers can return values.
+
+### Define Signals and Queries statically
+
+If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
+
+<!--SNIPSTART typescript-blocked-workflow-->
+
+[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
+
+export async function unblockOrCancel(): Promise<void> {
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  console.log('Blocked');
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log('Unblocked');
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log('Cancelled');
+    }
+    throw err;
+  }
+}
+```
+
+<!--SNIPEND-->
+
+This technique helps provide type safety because you can export the type signature of the Signal or Query to be called by the Client.
+
+### Define Signals and Queries dynamically
+
+For more flexible use cases, you might want a dynamic Signal (such as a generated ID).
+You can handle it in two ways:
+
+- Avoid making it dynamic by collapsing all Signals into one handler and move the ID to the payload.
+- Actually make the Signal name dynamic by inlining the Signal definition per handler.
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+// "fat handler" solution
+wf.setHandler(`genericSignal`, (payload) => {
+  switch (payload.taskId) {
+    case taskAId:
+      // do task A things
+      break;
+    case taskBId:
+      // do task B things
+      break;
+    default:
+      throw new Error('Unexpected task.');
+  }
+});
+
+// "inline definition" solution
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
+  /* do task A things */
+});
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
+  /* do task B things */
+});
+
+// utility "inline definition" helper
+const inlineSignal = (signalName, handler) =>
+  wf.setHandler(wf.defineSignal(signalName), handler);
+inlineSignal(`task-${taskBId}`, (payload) => {
+  /* do task B things */
+});
+```
+
+<details>
+  <summary>
+    API Design FAQs
+  </summary>
+
+**Why not "new Signal" and "new Query"?**
+
+The semantic of `defineSignal` and `defineQuery` is intentional.
+They return Signal and Query **definitions**, not unique instances of Signals and Queries themselves
+The following is their [entire source code](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L883-L907):
+
+```ts
+/**
+ * Define a signal method for a Workflow.
+ */
+export function defineSignal<Args extends any[] = []>(
+  name: string,
+): SignalDefinition<Args> {
+  return {
+    type: 'signal',
+    name,
+  };
+}
+
+/**
+ * Define a query method for a Workflow.
+ */
+export function defineQuery<Ret, Args extends any[] = []>(
+  name: string,
+): QueryDefinition<Ret, Args> {
+  return {
+    type: 'query',
+    name,
+  };
+}
+```
+
+Signals and Queries are instantiated only in `setHandler` and are specific to particular Workflow Executions.
+
+These distinctions might seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+This will be clearer if you refer to the Client-side APIs.
+
+**Why setHandler and not OTHER_API?**
+
+We named it `setHandler` instead of `subscribe` because a Signal or Query can have only one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers and is a higher-level construct.
+
+```ts
+wf.setHandler(MySignal, handlerFn1);
+wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
+```
+
+If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signals and Queries into Observables if you want, or you could dynamically reassign the listener based on your business logic or Workflow state.
+
+</details>
+
 ## Workflow timeouts
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
@@ -510,6 +646,25 @@ async function doSomeWork(taskToken: Uint8Array): Promise<void> {
 
 <!--SNIPEND-->
 
+## Local Activities
+
+To call <a class="tdlp" href="/activities#local-activity">Local Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Local Activity?</span><br /><br /><span class="tdlppd">A Local Activity is an Activity Execution that executes in the same process as the Workflow Execution that spawns it.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#local-activity">Learn more</a></span></span></a> in TypeScript, use [`proxyLocalActivities`](https://typescript.temporal.io/api/namespaces/workflow/#proxylocalactivities).
+
+```ts
+import * as workflow from '@temporalio/workflow';
+
+const { getEnvVar } = workflow.proxyLocalActivities({
+  startToCloseTimeout: '2 seconds',
+});
+
+export async function yourWorkflow(): Promise<void> {
+  const someSetting = await getEnvVar('SOME_SETTING');
+  // ...
+}
+```
+
+Local Activities must be registered with the Worker the same way non-local Activities are.
+
 ## Cancel an Activity
 
 Canceling an Activity from within a Workflow requires that the Activity Execution sends Heartbeats and sets a Heartbeat Timeout.
@@ -745,3 +900,137 @@ To support custom Payload conversion, create a <a class="tdlp" href="/dataconver
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+## Interceptors
+
+Interceptors are a mechanism for modifying inbound and outbound SDK calls.
+Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
+You can compare these to "middleware" in other frameworks.
+
+The TypeScript SDK comes with an optional interceptor package that adds tracing with [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry).
+See how to use it in the [interceptors-opentelemetry](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) code sample.
+
+### Interceptor types
+
+- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/): Intercept Workflow inbound calls like execution, Signals, and Queries.
+- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/): Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
+- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor): Intercept inbound calls to an Activity (such as `execute`).
+- [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptor/): Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
+
+### How interceptors work
+
+Interceptors are run in a chain, and all interceptors work similarly.
+They accept two arguments: `input` and `next`, where `next` calls the next interceptor in the chain.
+All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
+
+### Interceptor examples
+
+<!--TODO use snipsync-->
+
+**Log start and completion of Activities**
+
+```ts
+import {
+  ActivityInput,
+  Next,
+  WorkflowOutboundCallsInterceptor,
+} from '@temporalio/workflow';
+
+export class ActivityLogInterceptor
+  implements WorkflowOutboundCallsInterceptor
+{
+  constructor(public readonly workflowType: string) {}
+
+  async scheduleActivity(
+    input: ActivityInput,
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
+  ): Promise<unknown> {
+    console.log('Starting activity', { activityType: input.activityType });
+    try {
+      return await next(input);
+    } finally {
+      console.log('Completed activity', {
+        workflow: this.workflowType,
+        activityType: input.activityType,
+      });
+    }
+  }
+}
+```
+
+**Authorization**
+
+```ts
+import {
+  defaultDataConverter,
+  Next,
+  WorkflowInboundCallsInterceptor,
+  WorkflowInput,
+} from '@temporalio/workflow';
+
+/**
+ * WARNING: This demo is meant as a simple auth example.
+ * Do not use this for actual authorization logic.
+ * Auth headers should be encrypted and credentials
+ * stored outside of the codebase.
+ */
+export class DumbWorkflowAuthInterceptor
+  implements WorkflowInboundCallsInterceptor
+{
+  public async execute(
+    input: WorkflowInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
+  ): Promise<unknown> {
+    const authHeader = input.headers.auth;
+    const { user, password } = authHeader
+      ? await defaultDataConverter.fromPayload(authHeader)
+      : undefined;
+
+    if (!(user === 'admin' && password === 'admin')) {
+      throw new Error('Unauthorized');
+    }
+    return await next(input);
+  }
+}
+```
+
+To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation.
+Please contact us if you need to discuss this further.
+
+### Interceptor registration
+
+**Activity and client interceptors registration**
+
+- Activity interceptors are registered on Worker creation by passing an array of [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+
+- Client interceptors are registered on `WorkflowClient` construction by passing an array of [WorkflowClientCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptorFactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#interceptors).
+
+**Workflow interceptors registration**
+
+Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate.
+To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+
+At the time of construction, the Workflow context is already initialized for the current Workflow.
+Use [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) to add Workflow-specific information in the interceptor.
+
+`src/workflows/your-interceptors.ts`
+
+```ts
+import { workflowInfo } from '@temporalio/workflow';
+
+export const interceptors = () => ({
+  outbound: [new ActivityLogInterceptor(workflowInfo().workflowType)],
+  inbound: [],
+});
+```
+
+`src/worker/index.ts`
+
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  interceptors: {
+    workflowModules: [require.resolve('./workflows/your-interceptors')],
+  },
+});
+```

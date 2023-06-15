@@ -1,14 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 08 2023 15:58:18 PM -0700
+Last assembled: Thursday June 15 2023 08:39:05 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 86 guide configurations found.
 
-1448 information nodes found.
+<<<<<<< HEAD
+1452 information nodes found.
+=======
+1450 information nodes found.
+>>>>>>> b3e7117335e89d269ad898dc428f238ab614a116
 
-1204 information nodes are attached to guides.
+1209 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -880,6 +884,8 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+typescript/testing -> /dev-guide/typescript/testing#replay
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -891,6 +897,8 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
@@ -919,6 +927,8 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
+
+go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
