@@ -180,6 +180,13 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 [Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
+## Linting and types
+
+If you started your project with `@temporalio/create`, you already have our recommended TypeScript and ESLint configurations.
+
+If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop.
+Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) file and tweak to suit your needs.
+
 ## Connect to a dev Cluster
 
 A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.

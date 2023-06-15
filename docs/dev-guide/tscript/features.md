@@ -235,6 +235,142 @@ async function run(): Promise<void> {
 
 <!--SNIPEND-->
 
+## Static and dynamic Signals and Queries
+
+- Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
+- Only Signal Handlers can mutate state, and only Query Handlers can return values.
+
+### Define Signals and Queries statically
+
+If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
+
+<!--SNIPSTART typescript-blocked-workflow-->
+
+[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
+
+export async function unblockOrCancel(): Promise<void> {
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  console.log('Blocked');
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log('Unblocked');
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log('Cancelled');
+    }
+    throw err;
+  }
+}
+```
+
+<!--SNIPEND-->
+
+This technique helps provide type safety because you can export the type signature of the Signal or Query to be called by the Client.
+
+### Define Signals and Queries dynamically
+
+For more flexible use cases, you might want a dynamic Signal (such as a generated ID).
+You can handle it in two ways:
+
+- Avoid making it dynamic by collapsing all Signals into one handler and move the ID to the payload.
+- Actually make the Signal name dynamic by inlining the Signal definition per handler.
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+// "fat handler" solution
+wf.setHandler(`genericSignal`, (payload) => {
+  switch (payload.taskId) {
+    case taskAId:
+      // do task A things
+      break;
+    case taskBId:
+      // do task B things
+      break;
+    default:
+      throw new Error('Unexpected task.');
+  }
+});
+
+// "inline definition" solution
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
+  /* do task A things */
+});
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
+  /* do task B things */
+});
+
+// utility "inline definition" helper
+const inlineSignal = (signalName, handler) =>
+  wf.setHandler(wf.defineSignal(signalName), handler);
+inlineSignal(`task-${taskBId}`, (payload) => {
+  /* do task B things */
+});
+```
+
+<details>
+  <summary>
+    API Design FAQs
+  </summary>
+
+**Why not "new Signal" and "new Query"?**
+
+The semantic of `defineSignal` and `defineQuery` is intentional.
+They return Signal and Query **definitions**, not unique instances of Signals and Queries themselves
+The following is their [entire source code](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L883-L907):
+
+```ts
+/**
+ * Define a signal method for a Workflow.
+ */
+export function defineSignal<Args extends any[] = []>(
+  name: string,
+): SignalDefinition<Args> {
+  return {
+    type: 'signal',
+    name,
+  };
+}
+
+/**
+ * Define a query method for a Workflow.
+ */
+export function defineQuery<Ret, Args extends any[] = []>(
+  name: string,
+): QueryDefinition<Ret, Args> {
+  return {
+    type: 'query',
+    name,
+  };
+}
+```
+
+Signals and Queries are instantiated only in `setHandler` and are specific to particular Workflow Executions.
+
+These distinctions might seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+This will be clearer if you refer to the Client-side APIs.
+
+**Why setHandler and not OTHER_API?**
+
+We named it `setHandler` instead of `subscribe` because a Signal or Query can have only one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers and is a higher-level construct.
+
+```ts
+wf.setHandler(MySignal, handlerFn1);
+wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
+```
+
+If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signals and Queries into Observables if you want, or you could dynamically reassign the listener based on your business logic or Workflow state.
+
+</details>
+
 ## Workflow timeouts
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
@@ -698,6 +834,157 @@ A Workflow can sleep for months.
 Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
 
 Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+## Asynchronous design patterns
+
+The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
+Here are some examples we use the most; we welcome more if you can think of them!
+
+<details>
+<summary>
+Racing Timers
+</summary>
+
+Use `Promise.race` with Timers to dynamically adjust delays.
+
+```ts
+export async function processOrderWorkflow({
+  orderProcessingMS,
+  sendDelayedEmailTimeoutMS,
+}: ProcessOrderOptions): Promise<void> {
+  let processing = true;
+  const processOrderPromise = processOrder(orderProcessingMS).then(() => {
+    processing = false;
+  });
+
+  await Promise.race([processOrderPromise, sleep(sendDelayedEmailTimeoutMS)]);
+
+  if (processing) {
+    await sendNotificationEmail();
+    await processOrderPromise;
+  }
+}
+```
+
+</details>
+<details>
+<summary>
+Racing Signals
+</summary>
+
+Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
+
+```ts
+import { defineSignal, sleep, Trigger } from '@temporalio/workflow';
+
+const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
+
+export async function yourWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
+  const userInteracted = await Promise.race([
+    userInteraction,
+    sleep('30 days'),
+  ]);
+  if (!userInteracted) {
+    await sendReminderEmail(userId);
+  }
+}
+```
+
+You can invert this to create a reminder pattern where the promise resolves _if_ no Signal is received.
+
+:::warning Antipattern: Racing sleep.then
+
+Be careful when racing a chained `sleep`.
+This might cause bugs because the chained `.then` will still continue to execute.
+
+```js
+await Promise.race([
+  sleep('5s').then(() => (status = 'timed_out')),
+  somethingElse.then(() => (status = 'processed')),
+]);
+
+if (status === 'processed') await complete(); // takes more than 5 seconds
+// status = timed_out
+```
+
+:::
+
+</details>
+
+<details>
+<summary>
+Updatable Timer
+</summary>
+
+Here is how you can build an updatable Timer with `condition`:
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+// usage
+export async function countdownWorkflow(): Promise<void> {
+  const target = Date.now() + 24 * 60 * 60 * 1000; // 1 day!!!
+  const timer = new UpdatableTimer(target);
+  console.log('timer set for: ' + new Date(target).toString());
+  wf.setHandler(setDeadlineSignal, (deadline) => {
+    // send in new deadlines via Signal
+    timer.deadline = deadline;
+    console.log('timer now set for: ' + new Date(deadline).toString());
+  });
+  wf.setHandler(timeLeftQuery, () => timer.deadline - Date.now());
+  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
+  console.log('countdown done!');
+}
+```
+
+This is available in the third-party package [`temporal-time-utils`](https://www.npmjs.com/package/temporal-time-utils#user-content-updatabletimer), where you can also see the implementation:
+
+```ts
+// implementation
+export class UpdatableTimer implements PromiseLike<void> {
+  deadlineUpdated = false;
+  #deadline: number;
+
+  constructor(deadline: number) {
+    this.#deadline = deadline;
+  }
+
+  private async run(): Promise<void> {
+    /* eslint-disable no-constant-condition */
+    while (true) {
+      this.deadlineUpdated = false;
+      if (
+        !(await wf.condition(
+          () => this.deadlineUpdated,
+          this.#deadline - Date.now(),
+        ))
+      ) {
+        break;
+      }
+    }
+  }
+
+  then<TResult1 = void, TResult2 = never>(
+    onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>,
+  ): PromiseLike<TResult1 | TResult2> {
+    return this.run().then(onfulfilled, onrejected);
+  }
+
+  set deadline(value: number) {
+    this.#deadline = value;
+    this.deadlineUpdated = true;
+  }
+
+  get deadline(): number {
+    return this.#deadline;
+  }
+}
+```
+
+</details>
 
 ## Temporal Cron Jobs
 
