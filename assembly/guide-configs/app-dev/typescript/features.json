@@ -225,6 +225,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/async-design-patterns"
+    },
+    {
+      "type": "h2",
       "id": "typescript/cron-jobs"
     },
     {
