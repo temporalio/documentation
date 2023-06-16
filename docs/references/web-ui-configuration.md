@@ -176,12 +176,12 @@ disableWriteActions: false
 Setting this variable to `true` disables all Workflow Actions on the Web UI.
 :::
 
-## workflowTerminatedDisabled
+## workflowTerminateDisabled
 
 Prevents the user from terminating Workflow Executions from the Web UI.
 
 ```yaml
-workflowTerminatedDisabled: false
+workflowTerminateDisabled: false
 ```
 
 ## workflowCancelDisabled

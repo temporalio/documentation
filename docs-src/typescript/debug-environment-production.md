@@ -11,7 +11,7 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
+- [Replay](/typescript/testing#replay)
 - [Tracing](/typescript/tracing)
 - [Logging](/typescript/logging)
 
