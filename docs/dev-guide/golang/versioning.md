@@ -265,7 +265,8 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
 By default, Activities, Child Workflows, and Continue-as-New use the same compatible version
 set as the Workflow that invoked them if they're also using the same Task Queue.
 
-If you want to run them using the latest default version, set the `UseLatestBuildId` option to true.
+If you want to override this behavior, you can specify your intent via the `VersioningIntent` field
+on the appropriate options struct.
 
 <!-- Refer to the
 <a class="tdlp" href="/workers#worker-versioning">conceptual documentation<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Worker Versioning?</span><br /><br /><span class="tdlppd">Worker Versioning allows you to more easily deploy changes to Workflow Definitions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-versioning">Learn more</a></span></span></a> for more information.-->
@@ -276,7 +277,7 @@ inside your Workflow code:
 ```go
 // ...
 ao := workflow.ActivityOptions{
-    UseLatestBuildId: true,
+    VersioningIntent: VersioningIntentDefault,
     // ...other options
 }
 activityCtx := workflow.WithActivityOptions(ctx, ao)
