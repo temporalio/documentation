@@ -97,6 +97,12 @@ undefined
 _Tags: [term](/tags/term)_
 
 
+#### [Build ID](/concepts/what-is-a-build-id)
+A Build ID is any string that you associate with a version of a Workflow.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [worker-versioning](/tags/worker-versioning)_
+
+
 #### [Child Workflow](/workflows#child-workflow)
 A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.
 
@@ -127,6 +133,12 @@ A Command is a requested action issued by a Worker to the Temporal Cluster after
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
+#### [Compatible Version Set](/concepts/what-is-a-compatible-version-set)
+A Compatible Version Set is a user-defined collection of Build IDs that indicates which versions of the Workflow code are mutually compatible.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [worker-versioning](/tags/worker-versioning)_
+
+
 #### [Continue-As-New](/workflows#continue-as-new)
 Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.
 
@@ -143,6 +155,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Default Build ID](/concepts/what-is-a-default-build-id)
+A Default Build ID is the specific Build ID that a Worker refers to when executing Tasks.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [worker-versioning](/tags/worker-versioning)_
 
 
 #### [Default Data Converter](/dataconversion#default-data-converter)
@@ -473,6 +491,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 The Temporal Web UI
 
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
+
+
+#### [Version Set](/concepts/what-is-a-version-set)
+A Version Set groups multiple Build IDs for compatibility, management, and display purposes within a Workflow.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [worker-versioning](/tags/worker-versioning)_
 
 
 #### [Visibility](/clusters#visibility)

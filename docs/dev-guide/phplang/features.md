@@ -923,3 +923,4 @@ The following example sets a Cron Schedule in PHP:
 
 Setting `withCronSchedule` turns the Workflow Execution into a Temporal Cron Job.
 For more information, see the [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code or the PHP SDK `WorkflowOptions` [source code](https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php).
+
