@@ -3,6 +3,7 @@ id: activity-design-patterns
 title: Important design patterns for Activities
 sidebar_label: Activity design patterns
 description: Patterns that illustrate using Activity APIs to address common needs and use cases.
+toc_max_heading_level: 3
 tags:
   - guide-context
 ---
@@ -10,7 +11,7 @@ tags:
 The following are some important (and frequently requested) patterns for using our Activities APIs.
 These patterns address common needs and use cases.
 
-### Share dependencies in Activity functions (dependency injection)
+#### Share dependencies in Activity functions (dependency injection)
 
 Because Activities are "just functions," you can also create functions that create Activities.
 This is a helpful pattern for using closures to do the following:
@@ -97,7 +98,7 @@ const { greet, greet_es } = proxyActivities<
 
 </details>
 
-### Import multiple Activities simultaneously
+#### Import multiple Activities simultaneously
 
 You can proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts, retries, and options:
 
@@ -111,7 +112,7 @@ export async function Workflow(name: string): Promise<string> {
 }
 ```
 
-### Dynamically reference Activities
+#### Dynamically reference Activities
 
 Because Activities are referenced only by their string names, you can reference them dynamically if needed:
 

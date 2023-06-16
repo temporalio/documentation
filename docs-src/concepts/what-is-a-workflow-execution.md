@@ -148,19 +148,21 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, Signals, and Workflow cancellation requests.
+Currently, there is no limit on the total number of Signals that a Workflow Execution can receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
-- `NumPendingChildExecutionsLimit`
-- `NumPendingActivitiesLimit`
-- `NumPendingSignals`
-- `NumPendingCancelRequestsLimit`
+- `limit.numPendingChildExecutions.error`
+- `limit.numPendingActivities.error`
+- `limit.numPendingSignals.error`
+- `limit.numPendingCancelRequests.error`
+- `history.maximumSignalsPerExecution`
 
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 <!--2000 in from v1.21--> pending Activities, Child Workflows, Workflow cancellation requests, or Signals. <!-- The Workflow Execution fails if the number of pending Signals exceeds 2000, or if the total number of Signals received exceeds 10000. -->
 Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
 
 :::note
 
-Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, Workflow cancellation requests, and Signals.
 
 :::
