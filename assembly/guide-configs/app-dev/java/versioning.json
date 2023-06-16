@@ -14,6 +14,10 @@
         {
             "type": "p",
             "id": "java/versioning"
+        },
+        {
+            "type": "h2",
+            "id": "java/how-to-use-worker-versioning-in-java"
         }
     ]
 }
