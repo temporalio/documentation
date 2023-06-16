@@ -8,127 +8,118 @@ tags:
   - versioning
 ---
 
-Worker Versioning simplifies the process of deploying changes to [WorkflowDefinitions](/workflows/#workflow-definition). We recommend that you read about Workflow Definitions
-before proceeding, because Workflow Versioning is largely concerned with helping to manage
-nondeterministic changes to those definitions.
+Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition). It does this by allowing you to define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker. The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
 
-This feature can help you manage nondeterministic changes by providing a convenient way to ensure
-that [Workers](/workers) with different Workflow & Activity Definitions operating on the same [TaskQueue](/tasks/#task-queue) do not attempt to process [Workflow Tasks](/tasks/#workflow-task) and
-[Activity Tasks](/tasks/#actvitiy-task) that they can't successfully process, according to sets of
-versions associated with that Task Queue that you define.
+We recommend that you read about Workflow Definitions before proceeding, because Workflow Versioning is largely concerned with helping to manage nondeterministic changes to those definitions.
 
-You accomplish this goal by assigning a build identifier (a free-form string) to the code that
-defines a Worker, and specifying which build identifiers are compatible with each other by updating
-the version sets associated with the Task Queue, stored by the Temporal Server.
+Worker Versioning helps manage nondeterministic changes by providing a convenient way to ensure that [Workers](#workers) with different Workflow and Activity Definitions operating on the same [Task Queue](#task-queue) don't attempt to process [Workflow Tasks](#workflow-task) and [Activity Tasks](#activity-task-execution) that they can't successfully process, according to sets of versions associated with that Task Queue that you've defined.
 
-### When and for what should you use Worker Versioning?
+Accomplish this goal by assigning a Build ID (a free-form string) to the code that defines a Worker, and specifying which Build IDs are compatible with each other by updating the version sets associated with the Task Queue, stored by the Temporal Server.
 
-The primary use case for this feature is the deployment of incompatible changes to short-lived
-[Workflows](/workflows). On Task Queues using this feature, the Workflow starter does not need to know
-when new versions are introduced. New [Workflow Executions](/workflows#workflow-execution) run using
-the new code in the newly deployed Workers, and old Workflow Executions are processed only by
-Workers with an appropriate version. Old workers can be decommissioned after the archival of any
-open workflows using their version, or if you do not care about querying closed workflows, once
-there are no longer any open workflows at that version.
+### When and why should you use Worker Versioning
 
-For example, if you have a Workflow that never takes longer than a day to execute, a great strategy
-is to always assign a new build identifier to every new build of your Worker and add it to the
-version sets as the new overall default. Because you know that your Workflow never takes more than a
-day to complete, you know that you'll never have to leave older Workers running for more than a day
-after you deploy the new version (assuming availability). You don't need to worry about removing old
-versions from the sets. Leaving them there is harmless.
+The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows). On Task Queues using this feature, the Workflow starter doesn't have to know about the introduction of new versions.
 
-You can use this technique with longer-lived Workflows as well. Just be aware that you might need to
-keep multiple versions of Workers running while open Workflows complete.
+The new code in the newly deployed Workers executes new [Workflow Executions](#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
-You can also use the feature to make compatible changes to, or prevent a buggy codepath from being
-taken, on currently open Workflows. You can do this by adding a new version to an existing set and
-specifying it as _compatible_ with an existing version on which no future Workflow Tasks should
-execute. Because the new version processes existing [Event Histories](/workflows/#event-history), it
-is subject to the normal [deterministic constraints](/workflows/#deterministic-constraints), and you
-might need to use one of the [versioning APIs](/workflows/#workflow-versioning).
+#### Decommision old Workers
 
-The feature also permits you to make incompatible changes to Activity Definitions in conjunction
-with incompatible changes to Workflow Definitions that use those Activities. This works because any
-Activity scheduled by a Workflow on the same Task Queue will, by default, only be dispatched to
-Workers that have a compatible build ID with the Workflow that scheduled it. Thus, if you wish
-to change the type signature of an Activity Definition while creating a new incompatible build ID
-for a Worker, you can do so without concern that the Activity will fail to execute on some other
-Worker with an incompatible definition. The same principle applies to Child Workflows. It's
-important to keep in mind that "publicly facing" workflows on a versioned Task Queue should not
-change their signature, as this defeats the purpose of workflow-launching clients being oblivious
-to changes in the Workflow Definition. If you need to change the signature of a Workflow, you should
-use a different Workflow Type or an entirely new Task Queue.
+You can decommission old Workers once you archive all open Workflows using their version, or if you have no need to Query closed Workflows, you can decommission them once no open Workflows remain at that version.
 
-Note that if you schedule an Activity or a Child Workflow on _different_ Task Queue from the one
-the Workflow is running on, they will be not be assigned any particular version. Meaning if the
-target queue is versioned, they will run on the latest default, and if it is unversioned, they will
-operate as they normally would have without this feature.
+For example, if you have a Workflow that completes within a day. A good strategy is to assign a new Build ID to every new Worker build and add it as the new overall default in the version sets.
 
-Continue-as-new from a Workflow on a versioned Task Queue will, by default, start the continued
-Workflow on the same compatible set as the original Workflow. Continuing-as-new onto a different
-task queue will not assign any particular version. You may also optionally indicate that the
-continued workflow should start using the latest default version of the Task Queue.
+Because your Workflow completes in a day, you know that you won't need to keep older Workers running for more than a day after you deploy the new version (assuming availability).
+
+Removing old versions from the sets isn't necessary. Leaving them doesn't cause any harm.
+
+You can apply this technique to longer-lived Workflows too; however, you may need to run multiple Worker versions simultaneously while open Workflows complete.
+
+#### Deploy code changes to Workers
+
+The feature also allows you to implement compatible changes to or prevent a buggy code path from executing on currently open Workflows. You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks. Since the new version processes existing [Event Histories](/workflows/#event-history), it must adhere to the usual [deterministic constraints](/workflows/#deterministic-constraints), and you may need to use one of the [versioning APIs](/workflows/#workflow-versioning).
+
+Moreover, this feature enables you to make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities. This functionality works because any Activity that a Workflow schedules on the same Task Queue only gets dispatched to Workers compatible with the Workflow that scheduled it.
+If you want to change an Activity Definition's type signature while creating a new incompatible Build ID for a Worker, you can do so without worrying about the Activity failing to execute on some other Worker with an incompatible definition. The same principle applies to Child Workflows.
+
+:::tip
+
+Public facing Workflows on a versioned Task Queue shouldn't change their signature as it contradicts the purpose of Workflow-launching Clients remaining unaware of changes in the Workflow Definition. If you need to change a Workflow's signature, use a different Workflow Type or a completely new Task Queue.
+
+:::
+
+:::note
+
+If you schedule an Activity or a Child Workflow on _a different_ Task Queue from the one the Workflow runs on, the system doesn't assign a specific version. This means if the target queue is versioned, they run on the latest default, and if its unversioned, they operate as they would have without this feature.
+
+:::
+
+**Continue-As-New and Worker Versioning**
+
+By default, a versioned Task Queue's Continue-as-New function starts the continued Workflow on the same compatible set as the original Workflow.
+
+If you continue-as-new onto a different Task Queue, the system doesn't assign any particular version. You also have the option to specify that the continued Workflow should start using the Task Queue's latest default version.
 
 ### How to use Worker Versioning
 
-To use this feature, you'll need to:
+To use Worker Versioning:
 
 1. Define Worker build-identifier version sets for the Task Queue.
    You can use either the `temporal` CLI or your choice of SDK.
-2. Enable the feature on your Worker by specifying a build identifier.
+2. Enable the feature on your Worker by specifying a Build ID.
 
 #### Defining the version sets
 
-Whether you use `temporal` [cli](/cli/) or an SDK, updating the version sets feels the same. You
-specify the Task Queue that you're targeting, the build identifier that you're adding (or
+Whether you use `temporal` [CLI](/cli/) or an SDK, updating the version sets feels the same. You
+specify the Task Queue that you're targeting, the Build ID that you're adding (or
 promoting), whether it becomes the new default version, and any existing versions it should be
 considered compatible with.
 
 The rest of this section uses updates to one Task Queue's version sets as examples.
 
-By default, both Task Queues and Workers are in an unversioned state. Unversioned Workers can poll
+By default, both Task Queues and Workers are in an unversioned state. [Unversioned Worker](#unversioned-workers) can poll
 unversioned Task Queues and receive tasks. To use this feature, both the Task Queue and the Worker
-have to have build ids associated with them. If you run a Worker using versioning against a Task
-Queue that has not been set up to use versioning (or is missing that Worker's build id), it won't
-get any tasks. Likewise, a unversioned worker polling a Task Queue with versioning won't work
-either.
+have to have Build IDs associated with them.
+
+If you run a Worker using versioning against a Task Queue that has not been set up to use versioning (or is missing that Worker's Build ID), it won't
+get any tasks. Likewise, a unversioned Worker polling a Task Queue with versioning won't work either.
 
 :::note Versions don't need to follow semver or any other semantic versioning scheme!
 
-The versions in the following examples look like semver versions for clarity, but they don't need to
-be. Versions can be any arbitrary string.
+The versions in the following examples look like semver versions for clarity, but they don't need to be.
+Versions can be any arbitrary string.
 
 :::
 
-First, we add a version `1.0` to the Task Queue as the new default.
-Our version sets now look like this:
+First, add a version `1.0` to the Task Queue as the new default.
+Your version sets now look like this:
 
 | set 1 (default) |
 | --------------- |
 | 1.0 (default)   |
 
-All new Workflows started on the Task Queue have their first Tasks assigned to version `1.0`.
-Workers with their build identifier set to `1.0` receive these Tasks.
+All new Workflows started on the Task Queue have their first tasks assigned to version `1.0`.
+Workers with their Build ID set to `1.0` receive these Tasks.
 
 If Workflows that don't have an assigned version are still running on the Task Queue, Workers
-without a version take those tasks. So ensure that such Workers are still operational if any
+without a version, take those tasks. So ensure that such Workers are still operational if any
 Workflows were open when you added the first version. If you deployed any Workers with a _different_
 version, those Workers receive no Tasks.
 
-Now we need to change the Workflow for some reason, so we add `2.0` to the sets as the new default:
+Now, imagine you need change the Workflow for some reason.
+
+Add `2.0` to the sets as the new default:
 
 | set 1         | set 2 (default) |
 | ------------- | --------------- |
 | 1.0 (default) | 2.0 (default)   |
 
-All new Workflows started on the Task Queue have their first Tasks assigned to version `2.0`.
-Existing `1.0` Workflows keep generating Tasks targeting `1.0`.
-Each deployment of Workers receive their respective Tasks.
+All new Workflows started on the Task Queue have their first tasks assigned to version `2.0`.
+Existing `1.0` Workflows keep generating tasks targeting `1.0`.
+Each deployment of Workers receives their respective Tasks.
 This same concept carries forward for each new incompatible version.
 
-Maybe we have a bug in `2.0`, and we want to make sure all open `2.0` Workflows switch to some new
-code as fast as possible. So we add `2.1` to the sets, marking it as compatible with `2.0`. Now our
+Maybe you have a bug in `2.0`, and you want to make sure all open `2.0` Workflows switch to some new
+code as fast as possible. So, you'll add `2.1` to the sets, marking it as compatible with `2.0`. Now your
 sets look like this:
 
 | set 1         | set 2 (default) |
@@ -137,11 +128,11 @@ sets look like this:
 |               | 2.1 (default)   |
 
 All new Workflow Tasks that are generated for Workflows whose last Workflow Task completion was on
-version `2.0` are now assigned to version `2.1`. Because we specified that `2.1` is compatible with
+version `2.0` are now assigned to version `2.1`. Because you specified that `2.1` is compatible with
 `2.0`, Temporal Server assumes that Workers with this version can process the existing Event
 Histories successfully.
 
-We continue with our normal development cycle, adding a `3.0` version.
+Continue with your normal development cycle, adding a `3.0` version.
 Nothing new here:
 
 | set 1         | set 2         | set 3 (default) |
@@ -150,7 +141,7 @@ Nothing new here:
 |               | 2.1 (default) |                 |
 
 Now imagine that version `3.0` doesn't have an explicit bug, but something about the business logic
-is less than ideal. We are OK with existing `3.0` Workflows running to completion, but we want new
+is less than ideal. You are okay with existing `3.0` Workflows running to completion, but you want new
 Workflows to use the old `2.x` branch. This operation is supported by performing an update targeting
 `2.1` (or `2.0`) and setting it's set as the current default, which results in these sets:
 
@@ -159,27 +150,27 @@ Workflows to use the old `2.x` branch. This operation is supported by performing
 | 1.0 (default) | 3.0 (default) | 2.0             |
 |               |               | 2.1 (default)   |
 
-Now new workflows start on `2.1`.
+Now new Workflows start on `2.1`.
 
 #### Permitted and forbidden operations on version sets
 
 A request to change the sets can do one of the following:
 
 - Add a version to the sets as new the default version in a new overall-default compatible set.
-- Add a version to an existing set that is compatible with an existing version.
+- Add a version to an existing set that's compatible with an existing version.
   - Optionally making it the default for that set
   - Optionally making that set the overall-default set.
 - Promote a version within an existing set to become the default for that set.
 - Promote a set to become the overall-default set.
 
 You can't explicitly delete versions. This helps you avoid the situation in which Workflows
-accidentally become stuck with no means of making progress because the version they are associated
+accidentally become stuck with no means of making progress because the version they're associated
 with no longer exists.
 
 However, sometimes you might want to do this intentionally. If you _want_ to make sure that all
 Workflows currently being processed by, say, `2.0` stop (even if you don't yet have a new version
 ready) you can add a new version `2.1` to the sets marked as compatible with `2.0`. New tasks will
-target `2.1`, but since you have not yet deployed any `2.1` workers, they will not make any
+target `2.1`, but since you haven't deployed any `2.1` Workers, they won't make any
 progress.
 
 #### Set constraints
@@ -191,31 +182,42 @@ Operations to add new Build IDs to the sets will fail if the limit would be exce
 There is also a limit on the number of sets, which defaults to 10. This limit is configurable via
 the `limit.versionCompatibleSetsPerQueue` dynamic config property.
 
-In practice these limits should rarely be a concern, because a version is no longer needed after no
+In practice, these limits should rarely be a concern because a version is no longer needed after no
 open Workflows are using that version, and a background process will delete IDs and sets which are
 no longer needed.
 
-There is also a limit on the size of each Build ID / version string, which defaults to 255
+There is also a limit on the size of each Build ID or version string, which defaults to 255
 characters. This limit is configurable on the server via the `limit.workerBuildIdSize` dynamic
 config property.
 
-### Build ID Reachability
+### Build ID reachability
 
-Eventually you'll want to know if you can retire old worker versions. We provide functionality
-to help you determine if a version is still in by open or closed workflows. You can use the
-`temporal` cli to do this with the `temporal task-queue get-build-id-reachability` command. The
-command will tell you if the Build ID in question is unreachable, only reachable
-by closed workflows, or reachable by open and/or new workflows on a per-task-queue basis. For
-example, this "2.0" Build ID is shown here by the cli to be reachable by both new workflows and
-some existing workflows:
+Eventually, you'll want to know if you can retire the old Worker versions. Temporal provides functionality
+to help you determine if a version is still in by open or closed Workflows. You can use the
+`temporal` CLI to do this with the following command:
 
+```command
+temporal task-queue get-build-id-reachability
 ```
-λ  temporal task-queue get-build-id-reachability --build-id "2.0"
-  BuildId                         TaskQueue                                   Reachability
-      2.0  build-id-versioning-dc0068f6-0426-428f-b0b2-703a7e409a97  [NewWorkflows
-                                                                     ExistingWorkflows]
+
+The command tells if the Build ID in question is unreachable, only reachable by closed Workflows, or reachable by open and new Workflows on a per-Task-Queue basis.
+For example, this "2.0" Build ID is shown here by the CLI to be reachable by both new Workflows and
+some existing Workflows:
+
+```command
+temporal task-queue get-build-id-reachability --build-id "2.0"
+```
+
+```output
+BuildId                         TaskQueue                                   Reachability
+    2.0  build-id-versioning-dc0068f6-0426-428f-b0b2-703a7e409a97  [NewWorkflows
+                                                                   ExistingWorkflows]
 ```
 
 For more information, see the [CLI documentation](/cli/) or help output.
 
-You can also use this API (`GetWorkerTaskReachability`) directly from within language SDKs.
+You can also use this API `GetWorkerTaskReachability` directly from within language SDKs.
+
+### Unversioned Workers
+
+Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration. They will only receive tasks from Task Queues which do not have any version sets defined on them, or which have open workflows that began executing before versions were added to the queue.

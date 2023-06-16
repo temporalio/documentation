@@ -16,8 +16,8 @@
             "id": "go/versioning"
         },
         {
-            "type": "h3",
-            "id": "go/how-to-use-build-id-versioning-in-go"
+            "type": "h2",
+            "id": "go/how-to-use-worker-versioning-in-go"
         }
     ]
 }
