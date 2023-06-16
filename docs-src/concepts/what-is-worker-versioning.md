@@ -18,7 +18,7 @@ Accomplish this goal by assigning a Build ID (a free-form string) to the code th
 
 ### When and why should you use Worker Versioning
 
-The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows). When you use this feature on Task Queues, the Workflow starter doesn't have to know about the introduction of new versions.
+The main reason to use this feature is to deploy incompatible changes to short-lived [Workflows](/workflows). On Task Queues using this feature, the Workflow starter doesn't have to know about the introduction of new versions.
 
 The new code in the newly deployed Workers executes new [Workflow Executions](#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
@@ -61,7 +61,7 @@ If you continue-as-new onto a different Task Queue, the system doesn't assign an
 
 ### How to use Worker Versioning
 
-To use this Worker Versioning:
+To use Worker Versioning:
 
 1. Define Worker build-identifier version sets for the Task Queue.
    You can use either the `temporal` CLI or your choice of SDK.
@@ -76,7 +76,7 @@ considered compatible with.
 
 The rest of this section uses updates to one Task Queue's version sets as examples.
 
-By default, both Task Queues and Workers are in an unversioned state. [Unversioned Worker](#unversioned-workers can poll
+By default, both Task Queues and Workers are in an unversioned state. [Unversioned Worker](#unversioned-workers) can poll
 unversioned Task Queues and receive tasks. To use this feature, both the Task Queue and the Worker
 have to have Build IDs associated with them.
 
@@ -220,5 +220,4 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 
 ### Unversioned Workers
 
-Unversioned Workers refer to Workers operating on a Task Queue before versioning capabilities were added to that Task Queue.
-They don't have any specific version or Build IDs associated with them, hence they're in the _compatible set zero_, or unversioned state.
+Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration. They will only receive tasks from Task Queues which do not have any version sets defined on them, or which have open workflows that began executing before versions were added to the queue.

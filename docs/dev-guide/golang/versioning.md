@@ -260,7 +260,7 @@ err := client.UpdateWorkerBuildIdCompatibility(ctx, &client.UpdateWorkerBuildIdC
 })
 ```
 
-### Specify versions
+### Specify versions for Commands
 
 By default, Activities, Child Workflows, and Continue-as-New use the same compatible version
 set as the Workflow that invoked them if they're also using the same Task Queue.
