@@ -299,4 +299,3 @@ Some troubleshooting actions you can take:
 - If what's timing out is a query, check the logs of your Workers to see if they are having issues handling the query.
 
 If none of the preceding actions help you discover why timeouts are occurring, please try to produce a minimal repro and we'll be glad to help.
-

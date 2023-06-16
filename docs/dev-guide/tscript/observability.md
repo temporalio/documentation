@@ -420,4 +420,3 @@ async function yourWorkflow() {
   upsertSearchAttributes({ CustomIntField: [] });
 }
 ```
-

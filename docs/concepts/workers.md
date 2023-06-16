@@ -538,4 +538,3 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 ### Unversioned Workers
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration. They will only receive tasks from Task Queues which do not have any version sets defined on them, or which have open workflows that began executing before versions were added to the queue.
-

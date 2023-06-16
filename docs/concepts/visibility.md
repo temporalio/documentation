@@ -91,7 +91,7 @@ Paginate the results with the `ListWorkflow` API by using the page token to retr
 
 #### List Filter examples
 
-The following is a List Filter set with <a class="tdlp" href="/tctl-v1/workflow#list">`tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow list</span><br /><br /><span class="tdlppd">How to list open or closed Workflow Executions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></span></span></a>:
+The following is a List Filter set with <a class="tdlp" href="/tctl-v1/workflow#list"> `tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow list</span><br /><br /><span class="tdlppd">How to list open or closed Workflow Executions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></span></span></a>:
 
 ```
 WorkflowType = "main.YourWorkflowDefinition" and ExecutionStatus != "Running" and (StartTime > "2021-06-07T16:46:34.236-08:00" or CloseTime > "2021-06-07T16:46:34-08:00")
@@ -335,4 +335,3 @@ Their names indicate their types:
 - CustomKeywordField
 - CustomTextField
 -->
-

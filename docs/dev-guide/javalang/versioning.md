@@ -207,4 +207,3 @@ private final MyActivity activity =
     );
 // ...
 ```
-
