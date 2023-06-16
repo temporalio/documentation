@@ -132,6 +132,10 @@
       "id": "typescript/how-to-customize-activity-type-in-typescript"
     },
     {
+      "type": "h3",
+      "id": "typescript/activity-design-patterns"
+    },
+    {
       "type": "h2",
       "id": "typescript/spawning-activities"
     },
