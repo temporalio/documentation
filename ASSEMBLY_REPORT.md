@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 15 2023 19:43:06 PM -0700
+Last assembled: Friday June 16 2023 11:27:45 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -12,7 +12,7 @@ Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -352,6 +352,8 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
+
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
@@ -469,6 +471,8 @@ concepts/what-is-a-reset -> /workflows#reset
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+concepts/what-is-persistence -> #persistence
 
 concepts/what-is-a-history-shard -> #history-shard
 
@@ -933,9 +937,5 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
-
-concepts/what-is-persistence -> #persistence
 
 

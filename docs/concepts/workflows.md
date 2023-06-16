@@ -677,6 +677,25 @@ As all Workflow Executions, they can communicate only via asynchronous <a class=
 As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
 
+### When to use a Child Workflow versus an Activity
+
+Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
+Here are some important differences:
+
+- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
+  An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
+- A Child Workflow Execution can continue on if its Parent is canceled with a <a class="tdlp" href="#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#parent-close-policy">Learn more</a></span></span></a> of `ABANDON`.
+  An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
+  (It can react to a cancellation Signal for cleanup.)
+  The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
+- Temporal tracks all state changes within a Child Workflow Execution in Event History.
+  Only the input, output, and retry attempts of an Activity Execution is tracked.
+
+A Workflow models composite operations that consist of multiple Activities or other Child Workflows.
+An Activity usually models a single operation on the external world.
+
+Our advice: **When in doubt, use an Activity.**
+
 ### Parent Close Policy
 
 A Parent Close Policy determines what happens to a <a class="tdlp" href="#child-workflow">Child Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Child Workflow Execution?</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is spawned from within another Workflow.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#child-workflow">Learn more</a></span></span></a> if its Parent changes to a Closed status (Completed, Failed, or Timed out).
