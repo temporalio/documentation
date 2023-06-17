@@ -181,6 +181,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/how-to-shut-down-a-worker"
+    },
+    {
+      "type": "h2",
       "id": "typescript/spawning-workflows"
     },
     {
