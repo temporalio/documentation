@@ -180,7 +180,7 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 | `system.visibilityPersistenceMaxReadQPS`  | Int  | Maximum number queries per second that Visibility database can receive for read operations.                                                                                                                                                             | 9000          |
 | `system.visibilityPersistenceMaxWriteQPS` | Int  | Maximum number of queries per second that Visibility database can receive for write operations.                                                                                                                                                         | 9000          |
 
-#### Activity and Workflow default policy setting
+### Activity and Workflow default policy setting
 
 You can define default values for Activity and Workflow <a class="tdlp" href="/retry-policies#">Retry Policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> at the Cluster level with the following dynamic configuration keys.
 
