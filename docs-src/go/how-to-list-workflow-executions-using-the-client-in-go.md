@@ -9,8 +9,8 @@ tags:
   - client
 ---
 
-There are several functions for listing [Workflow Executions](/concepts/what-is-a-workflow-execution) available on the [Temporal Go SDK](https://pkg.go.dev/go.temporal.io/sdk).
-Each function retrieves Workflow Executions according to a given [Query](/concepts/what-is-a-query) or request filters.
+Several functions for listing [Workflow Executions](/concepts/what-is-a-workflow-execution) are available on the [Temporal Go SDK](https://pkg.go.dev/go.temporal.io/sdk).
+Each function retrieves Workflow Executions according to a specified [Query](/concepts/what-is-a-query) or request filters.
 
 To list all Workflow Executions, use [`ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the [Temporal Client](/concepts/what-is-a-temporal-client).
 
