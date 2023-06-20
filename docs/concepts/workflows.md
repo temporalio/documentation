@@ -298,8 +298,8 @@ To protect the system, Temporal enforces a maximum of 50,000 pending Activities,
 Currently, there is no limit on the total number of Signals that a Workflow Execution can receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
-- `limit.numPendingChildExecutions.error`
 - `limit.numPendingActivities.error`
+- `limit.numPendingChildExecutions.error`
 - `limit.numPendingSignals.error`
 - `limit.numPendingCancelRequests.error`
 - `history.maximumSignalsPerExecution`
