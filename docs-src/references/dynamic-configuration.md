@@ -177,7 +177,7 @@ If the number of queries made to the Persistence store exceeds the dynamic confi
 | `system.visibilityPersistenceMaxReadQPS`  | Int  | Maximum number queries per second that Visibility database can receive for read operations.                                                                                                                                                             | 9000          |
 | `system.visibilityPersistenceMaxWriteQPS` | Int  | Maximum number of queries per second that Visibility database can receive for write operations.                                                                                                                                                         | 9000          |
 
-#### Activity and Workflow default policy setting
+### Activity and Workflow default policy setting
 
 You can define default values for Activity and Workflow [Retry Policies](/concepts/what-is-a-retry-policy) at the Cluster level with the following dynamic configuration keys.
 

@@ -45,7 +45,7 @@ All dynamic configuration keys provided by Temporal have default values that are
 You can override the default values by setting different values for the keys in a YAML file and setting the [dynamic configuration client](/references/configuration#dynamicconfigclient) to poll this file for updates.
 Setting dynamic configuration for your Cluster is optional.
 
-Setting overrides for some configuration keys upates the Cluster configuration immediately.
+Setting overrides for some configuration keys updates the Cluster configuration immediately.
 However, for configuration fields that are checked at startup (such as thread pool size), you must restart the server for the changes to take effect.
 
 Use dynamic configuration keys to fine-tune your self-deployed Cluster setup.

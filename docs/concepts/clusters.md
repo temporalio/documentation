@@ -308,12 +308,12 @@ All dynamic configuration keys provided by Temporal have default values that are
 You can override the default values by setting different values for the keys in a YAML file and setting the <a class="tdlp" href="/references/configuration#dynamicconfigclient">dynamic configuration client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#dynamicconfigclient">Learn more</a></span></span></a> to poll this file for updates.
 Setting dynamic configuration for your Cluster is optional.
 
-Setting overrides for some configuration keys upates the Cluster configuration immediately.
+Setting overrides for some configuration keys updates the Cluster configuration immediately.
 However, for configuration fields that are checked at startup (such as thread pool size), you must restart the server for the changes to take effect.
 
 Use dynamic configuration keys to fine-tune your self-deployed Cluster setup.
 
-For details on dynamic configuration keys, see [Dynamic configuration reference](/references/dynamic-configuration).
+For details on dynamic configuration keys, see <a class="tdlp" href="/references/dynamic-configuration#">Dynamic configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Dynamic configuration reference</span><br /><br /><span class="tdlppd">Dynamic configuration key values can be set to override the default values in a Cluster configuration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/dynamic-configuration#">Learn more</a></span></span></a>.
 
 For dynamic configuration examples, see <https://github.com/temporalio/temporal/tree/master/config/dynamicconfig>.
 
