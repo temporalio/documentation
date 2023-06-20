@@ -133,6 +133,10 @@
     },
     {
       "type": "h3",
+      "id": "typescript/activity-import-esm"
+    },
+    {
+      "type": "h3",
       "id": "typescript/activity-design-patterns"
     },
     {
