@@ -28,7 +28,7 @@ for _, exec := range resp.Executions {
 ```
 
 To return a list of archived Workflow Executions, use `ListArchivedWorkflow()` on the Client.
-Make sure that the Temporal Cluster or target [Namespace](/concepts/what-is-a-namespace) is configured for [visibility archival](/concepts/what-is-standard-visibility) before using this function.
+Make sure that the Temporal Cluster or target [Namespace](/concepts/what-is-a-namespace) is configured for [Archival](/concepts/what-is-archival) before using this function.
 
 ```go
 ctxWithTimeout, cancel := context.WithTimeout(context.Background(), time.Minute)
