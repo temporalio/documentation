@@ -532,9 +532,10 @@ async function run() {
 
 ### ECMAScript modules
 
-The JavaScript ecosystem is increasingly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules; for example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
+The JavaScript ecosystem is quickly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules.
+For example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
 
-If you want to import a pure ESM dependency, see our [Fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for the necessary configuration changes:
+For more information about importing a pure ESM dependency, see our [Fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for the necessary configuration changes:
 
 - `package.json` must have include the `"type": "module"` attribute.
 - `tsconfig.json` should output in `esnext` format.
