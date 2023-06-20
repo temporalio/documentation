@@ -40,6 +40,10 @@
       "id": "typescript/code-samples-typescript"
     },
     {
+      "type": "h3",
+      "id": "typescript/how-to-import-an-ecmascript-module"
+    },
+    {
       "type": "h2",
       "id": "typescript/linting-and-types"
     },
@@ -130,10 +134,6 @@
     {
       "type": "p",
       "id": "typescript/how-to-customize-activity-type-in-typescript"
-    },
-    {
-      "type": "h3",
-      "id": "typescript/how-to-import-an-ecmascript-module"
     },
     {
       "type": "h3",
