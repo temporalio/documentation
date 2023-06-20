@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 16 2023 10:28:07 AM -0700
+Last assembled: Tuesday June 20 2023 10:49:27 AM -0600
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 86 guide configurations found.
 
-1451 information nodes found.
+1461 information nodes found.
 
-1207 information nodes are attached to guides.
+1222 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -929,6 +929,8 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
 concepts/what-is-worker-versioning -> /workers#worker-versioning
+
+go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
