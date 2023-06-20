@@ -1504,7 +1504,7 @@ The following fields are available:
 | [`Memo`](#memo)                                         | No                   | string                                                                                                               |
 | [`SearchAttributes`](#searchattributes)                 | No                   | Map<String, Object>                                                                                                  |
 
-#### Id
+#### WorkflowId
 
 Set the Workflow Id with the [`WorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html) instance in the Client code using [`WorkflowOptions.Builder.setWorkflowId​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowOptions.Builder.html).
 
@@ -1607,7 +1607,10 @@ YourWorkflowInterface workflow1 =
 
 - Type: `WorkflowIdReusePolicy`
 - Default: `AllowDuplicate`
-- Values: - `enums.AllowDuplicateFailedOnly`: The Workflow can start if the earlier Workflow Execution failed, Canceled, or Terminated. - `AllowDuplicate`: The Workflow can start regardless of the earlier Execution's closure status. - `RejectDuplicate`: The Workflow can not start if there is a earlier Run.
+- Values:
+  - `enums.AllowDuplicateFailedOnly`: The Workflow can start if the earlier Workflow Execution failed, Canceled, or Terminated.
+  - `AllowDuplicate`: The Workflow can start regardless of the earlier Execution's closure status.
+  - `RejectDuplicate`: The Workflow can not start if there is a earlier Run.
 
 ```java
 //create Workflow stub for GreetWorkflowInterface
