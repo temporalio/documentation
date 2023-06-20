@@ -530,6 +530,16 @@ async function run() {
 
 <!--SNIPEND-->
 
+### ECMAScript modules
+
+The JavaScript ecosystem is increasingly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules; for example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
+
+If you want to import a pure ESM dependency, see our [Fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for the necessary configuration changes:
+
+- `package.json` must have include the `"type": "module"` attribute.
+- `tsconfig.json` should output in `esnext` format.
+- Imports must include the `.js` file extension.
+
 ### Activity design patterns
 
 The following are some important (and frequently requested) patterns for using our Activities APIs.
