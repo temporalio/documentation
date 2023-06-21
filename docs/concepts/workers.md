@@ -325,7 +325,7 @@ It also includes features like concurrent session limitations and Worker failure
 
 ## Worker Versioning
 
-:::info
+:::caution
 
 This feature has not yet been released. Follow [Cluster Releases](https://github.com/temporalio/temporal/releases) to find out when it's available.
 
