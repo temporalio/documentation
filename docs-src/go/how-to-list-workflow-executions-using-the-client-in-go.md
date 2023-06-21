@@ -9,63 +9,18 @@ tags:
   - client
 ---
 
-Several functions for listing [Workflow Executions](/concepts/what-is-a-workflow-execution) are available on the [Temporal Go SDK](https://pkg.go.dev/go.temporal.io/sdk).
-Each function retrieves Workflow Executions according to a specified [Query](/concepts/what-is-a-query) or request filters.
+The `ListWorkflow()` function retrieves [Workflow Executions](/concepts/what-is-a-workflow-execution) based on a [Query](/concepts/what-is-a-query) or [List Filter](/concepts/what-is-a-list-filter).
+
+Use a Query to retrieve Workflow Executions based on state characteristics.
+Queries include one or more conditions to return Workflow Executions with relevant [Workflow Ids](/concepts/what-is-a-workflow-id), [Workflow Types](/concepts/what-is-a-workflow-type), or start and end times.
+
+Use a List Filter to retrieve Workflow Executions that contain certain [Search Attribute](/concepts/what-is-a-search-attribute) characteristics, such as name, values, and operators.
+List Filters return a list of valid Workflow Executions from the Visibility store.
 
 To list all Workflow Executions, use [`ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the [Temporal Client](/concepts/what-is-a-temporal-client).
 
 ```go
 resp, err := temporalClient.ListWorkflow(ctx.Background(), req)
-if err != nil {
-  return err
-}
-
-fmt.Println("First page of results:")
-for _, exec := range resp.Executions {
-  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
-  fmt.Println("Next page of results:")
-}
-```
-
-To return a list of archived Workflow Executions, use `ListArchivedWorkflow()` on the Client.
-Make sure that the Temporal Cluster or target [Namespace](/concepts/what-is-a-namespace) is configured for [Archival](/concepts/what-is-archival) before using this function.
-
-```go
-ctxWithTimeout, cancel := context.WithTimeout(context.Background(), time.Minute)
-
-resp, err := temporalClient.ListArchivedWorkflow(ctxWithTimeout, sampleListRequest)
-if err != nil {
-  return err
-}
-
-fmt.Println("First page of results:")
-for _, exec := range resp.Executions {
-  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
-  fmt.Println("Next page of results:")
-}
-```
-
-To view a list of currently open Workflows, use `ListOpenWorkflows()` on the Temporal Client.
-Retrieved Workflow Executions are sorted by `StartTime` in descending order.
-
-```go
-resp, err := temporalClient.ListOpenWorkflows(context.Background(), sampleListRequest)
-if err != nil {
-  return err
-}
-
-fmt.Println("First page of results:")
-for _, exec := range resp.Executions {
-  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
-  fmt.Println("Next page of results:")
-}
-```
-
-To return a list of closed Workflows, use `ListClosedWorkflow()` on the Temporal Client.
-Retrieved Workflow Executions are sorted by `CloseTime` in descending order.
-
-```go
-resp, err := temporalClient.ListClosedWorkflow(context.Background(), sampleListRequest)
 if err != nil {
   return err
 }
