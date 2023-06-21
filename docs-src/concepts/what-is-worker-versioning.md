@@ -8,6 +8,12 @@ tags:
   - versioning
 ---
 
+:::warning
+
+This feature has not yet been released. Follow [Cluster Releases](https://github.com/temporalio/temporal/releases) to find out when it's available.
+
+:::
+
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
