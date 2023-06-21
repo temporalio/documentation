@@ -234,13 +234,13 @@ To set a browser override for the Namespace-level endpoint, do the following.
 3. Select whether you want to use the Namespace-level (or Cluster-level for self-hosted Cluster) or the browser-level Codec Endpoint setting as the default for your browser.
    In Temporal Cloud:
    - **Use Namespace-level settings, where available. Otherwise, use my browser setting.**
-      Uses the Namespace-level Codec Server endpoint by default.
-      If no endpoint is set on the Namespace, your browser setting is applied.
+     Uses the Namespace-level Codec Server endpoint by default.
+     If no endpoint is set on the Namespace, your browser setting is applied.
    - **Use my browser setting and ignore Namespace-level setting.**
-      Applies your browser-level setting by default, overriding the Namespace-level Codec Server endpoint.
-1. Enter your Codec Server endpoint and port number.
-1. Optional: If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
-1. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
+     Applies your browser-level setting by default, overriding the Namespace-level Codec Server endpoint.
+4. Enter your Codec Server endpoint and port number.
+5. Optional: If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
+6. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
 
 In self-hosted Temporal Clusters where you set up your UI Server, you can also set the codec endpoint in the UI server [configuration file](/references/web-ui-configuration#codec), as shown in the following example.
 
