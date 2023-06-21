@@ -10,7 +10,8 @@ tags:
 
 :::caution
 
-This feature has not yet been released. Follow [Cluster Releases](https://github.com/temporalio/temporal/releases) to find out when it's available.
+This feature has not yet been released.
+To find out when it's available, watch the [Releases](https://github.com/temporalio/temporal/releases) page of the `temporalio/temporal` repository.
 
 :::
 
