@@ -36,7 +36,7 @@ Apply your encryption logic in a custom Payload Codec and use it locally to encr
 You maintain all the encryption keys, and the Temporal Server sees only encrypted data.
 Your data exists unencrypted only on the Client and the Worker process that is executing the Workflows and Activities, on hosts that you control.
 
-For details, see [Data encryption](/production-readiness/develop#data-encryption).
+For details, see [Securing your data](/production-readiness/develop#securing-your-data).
 
 The following samples use encryption (AES GCM with 256-bit key) in a custom Data Converter:
 

@@ -212,7 +212,7 @@ After you create your Codec Server and expose the requisite endpoints, set the e
 
 On Temporal Cloud and self-hosted Temporal Clusters, you can configure a Codec Server endpoint to be used for a Namespace in the Web UI.
 
-![Codec Server endpoint setting](/img/docs/data-encoder-button.png)
+![Codec Server endpoint Namespace setting](/img/docs/set-codec-endpoint-form.png)
 
 To set a Codec Server endpoint on a Namespace, do the following.
 
@@ -227,9 +227,12 @@ On Temporal Cloud, you must have [Namespace Admin privileges](/cloud/#namespace-
 All users on a Namespace have the option to override the Namespace-level setting at the browser level.
 Overriding the Namespace-level endpoint only affects your browser.
 This can be useful when developing, testing, or troubleshooting encoding functionality.
+
+![Codec Server endpoint browser setting](/img/docs/data-encoder-button.png)
+
 To set a browser override for the Namespace-level endpoint, do the following.
 
-1. Navigate to Workflows in your Namespace.
+1. Navigate to **Workflows** in your Namespace.
 2. In the top-right corner, select **Configure Codec Server**.
 3. Select whether you want to use the Namespace-level (or Cluster-level for self-hosted Cluster) or the browser-level Codec Endpoint setting as the default for your browser.
    In Temporal Cloud:

@@ -7,7 +7,7 @@ tags:
   - term
 ---
 
-A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#data-encryption) to decode your data remotely through endpoints.
+A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#securing-your-data) to decode your data remotely through endpoints.
 
 ![](/img/tctl-diagram-codec-server.svg)
 

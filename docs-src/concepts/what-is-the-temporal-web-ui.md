@@ -2,7 +2,7 @@
 id: what-is-the-temporal-web-ui
 title: What is the Temporal Web UI?
 sidebar_label: Temporal Web UI
-description: The Temporal Web UI
+description: The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 tags:
   - term
   - web-ui
@@ -114,7 +114,7 @@ Click a Schedule to see details, such as configured frequency, start and end tim
 
 ### Settings
 
-On Temporal Cloud, the Settings option is visible only to [Global Admins](/cloud/#account-level-roles).
+On Temporal Cloud, the Settings page is visible only to [Global Admins](/cloud/#account-level-roles).
 
 Click Settings to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/how-to-monitor-temporal-cloud-metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
 

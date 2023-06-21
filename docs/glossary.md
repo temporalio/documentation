@@ -116,7 +116,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Codec Server](/dataconversion#codec-server)
-A Codec Server is an HTTP/HTTPS server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
+A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 
 _Tags: [term](/tags/term)_
 
@@ -470,7 +470,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Temporal Web UI](/web-ui#)
-The Temporal Web UI
+The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
