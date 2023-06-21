@@ -726,7 +726,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
 
 <!--SNIPEND-->
 
-#### Parent Close Policy
+### Parent Close Policy
 
 A <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></span></span></a> determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
@@ -786,6 +786,58 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 ```
 
 <!--SNIPEND-->
+
+### Single-entity pattern
+
+The following is a simple pattern that represents a single entity.
+It tracks the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
+
+```tsx
+interface Input {
+  /* Define your Workflow input type here */
+}
+interface Update {
+  /* Define your Workflow update type here */
+}
+
+const MAX_ITERATIONS = 1;
+
+export async function entityWorkflow(
+  input: Input,
+  isNew = true,
+): Promise<void> {
+  try {
+    const pendingUpdates = Array<Update>();
+    setHandler(updateSignal, (updateCommand) => {
+      pendingUpdates.push(updateCommand);
+    });
+
+    if (isNew) {
+      await setup(input);
+    }
+
+    for (let iteration = 1; iteration <= MAX_ITERATIONS; ++iteration) {
+      // Ensure that we don't block the Workflow Execution forever waiting
+      // for updates, which means that it will eventually Continue-As-New
+      // even if it does not receive updates.
+      await condition(() => pendingUpdates.length > 0, '1 day');
+
+      while (pendingUpdates.length) {
+        const update = pendingUpdates.shift();
+        await runAnActivityOrChildWorkflow(update);
+      }
+    }
+  } catch (err) {
+    if (isCancellation(err)) {
+      await CancellationScope.nonCancellable(async () => {
+        await cleanup();
+      });
+    }
+    throw err;
+  }
+  await continueAsNew<typeof entityWorkflow>(input, false);
+}
+```
 
 ## Schedule a Workflow
 
