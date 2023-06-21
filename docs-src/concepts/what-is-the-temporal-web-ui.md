@@ -23,7 +23,7 @@ The Web UI is packed with several features.
 
 ### Namespaces
 
-All Namespaces in your self-hosted Cluster or Temporal Cloud account at listed under **Namespaces** in the left section of the window.
+All Namespaces in your self-hosted Cluster or Temporal Cloud account are listed under **Namespaces** in the left section of the window.
 You can also switch Namespaces from the Workflows view by selecting from the Namespace switcher at the top right corner of the window.
 After you select a Namespace, the Web UI shows the Recent Workflows page for that Namespace.
 In Temporal Cloud, users can access only the Namespaces that they have been granted access to.
@@ -110,11 +110,11 @@ Lists all Queries sent to the Workflow Execution.
 
 On Temporal Cloud and self-hosted Temporal Cluster Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
 
-Click on a Schedule to see details, such as configured frequency, start and end time, recent and upcoming runs.
+Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
 
 ### Settings
 
-On Temporal Cloud, the Settings option shows only to [Global admins](/cloud/#account-level-roles).
+On Temporal Cloud, the Settings option is visible only to [Global Admins](/cloud/#account-level-roles).
 
 Click Settings to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/how-to-monitor-temporal-cloud-metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
 
@@ -137,14 +137,15 @@ Displays the following information:
 
 On self-hosted Temporal Clusters, Archive shows [Archived](/concepts/what-is-archival) data of your Workflow Executions on the Namespace.
 
-You must have [Archival set up and configured](/cluster-deployment-guide#archival) in your self-hosted Cluster to see data.
+To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/cluster-deployment-guide#archival).
 
 <!--AB: Needs some statement for Temporal Cloud users. Maybe:
  Temporal Cloud users can contact <support?> for details.-->
 
 ### Codec Server
 
-The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values. See [Securing your data](/production-readiness/develop#securing-your-data) for details.
+The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values.
+For details, see [Securing your data](/production-readiness/develop#securing-your-data).
 The UI supports both a [Codec Server endpoint](/production-readiness/develop#web-ui) and the `tctl` plugin port.
 
 For details on setting the Codec Server endpoint, see [Codec Server setup](/production-readiness/develop#codec-server-setup).

@@ -24,7 +24,9 @@ Note that when you use a Codec Server, the decoded payloads are visible only to 
 Because you create, operate, and manage access to your Codec Server in your controlled environment, ensure that you consider the following:
 
 - When you set your codec endpoint with your Web UI, expect your Codec Server to receive a large number of requests per Workflow Execution from the Web UI.
-- Ensure that you secure access your Codec Server. See [Authorization](#authorization) for details.<!--Need a better way to explain this; with temporal cloud, the decrypted data is sent to the browser; there is no guarantee that the cloud ui is hosted in a particular region etc.> need clearer way to set this expectation.-->
+- Ensure that you secure access your Codec Server.
+  For details, see [Authorization](#authorization).
+  <!--Need a better way to explain this; with temporal cloud, the decrypted data is sent to the browser; there is no guarantee that the cloud ui is hosted in a particular region etc.> need clearer way to set this expectation.-->
 - The Temporal Web UI only displays the decoded payloads received from your Codec Server in real-time; it does not store or send the data back to the Temporal Server (whether on Cloud or self-hosted Temporal Cluster).
 - You might have latencies introduced in the Web UI when sending and receiving payloads to the Codec Server.
 
@@ -35,7 +37,8 @@ To create a Codec Server, you need the following components:
   However, if you are writing your Codec Server in a different SDK from the one that applies the Data Converter, ensure that your logic and keys are correctly replicated.
 - Key management infrastructure or plan for sharing your encryption keys between the Workers and your Codec Server.
 - [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) configuration on the HTTP/HTTPS endpoints in your Codec Server for sending and receiving requests from the Temporal Web UI.
-- [Optional] Secure access through VPN and access control. See [Authorization](#authorization) for details.
+- Optional: Secure access through VPN and access control.
+  For details, see [Authorization](#authorization).
 
 For examples on how to create your Codec Server, see following Codec Server implementation samples:
 
@@ -214,12 +217,12 @@ On Temporal Cloud and self-hosted Temporal Clusters, you can configure a Codec S
 To set a Codec Server endpoint on a Namespace, do the following.
 
 1. In the Web UI, go to Namespaces, select the Namespace where you want to configure the Codec Server endpoint, and click **Edit**.
-2. In the Codec Server section on the Namespace configuration page, enter your Codec Server endpoint and port number.
-3. [Optional] If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
-4. [Optional] If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
+1. In the **Codec Server** section on the Namespace configuration page, enter your Codec Server endpoint and port number.
+1. Optional: If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
+1. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
 
 Setting a Codec Server endpoint on a Namespace enables it for all users on the Namespace.
-On Temporal Cloud, you must have [Namespace admin privileges](/cloud/#namespace-level-permissions) to add a Codec Server endpoint on the Namespace.
+On Temporal Cloud, you must have [Namespace Admin privileges](/cloud/#namespace-level-permissions) to add a Codec Server endpoint on the Namespace.
 
 All users on a Namespace have the option to override the Namespace-level setting at the browser level.
 Overriding the Namespace-level endpoint only affects your browser.
@@ -230,11 +233,14 @@ To set a browser override for the Namespace-level endpoint, do the following.
 2. In the top-right corner, select **Configure Codec Server**.
 3. Select whether you want to use the Namespace-level (or Cluster-level for self-hosted Cluster) or the browser-level Codec Endpoint setting as the default for your browser.
    In Temporal Cloud:
-   - Selecting **Use Namespace-level settings, where available. Otherwise, use my browser setting.** uses the Namespace-level Codec Server endpoint by default. If no endpoint is set on the Namespace, your browser setting is applied.
-   - Selecting **Use my browser setting and ignore Namespace-level setting.** applies your browser-level setting by default, overriding the Namespace-level Codec Server endpoint.
-4. Enter your Codec Server endpoint and port number.
-5. [Optional] If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
-6. [Optional] If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
+   - **Use Namespace-level settings, where available. Otherwise, use my browser setting.**
+      Uses the Namespace-level Codec Server endpoint by default.
+      If no endpoint is set on the Namespace, your browser setting is applied.
+   - **Use my browser setting and ignore Namespace-level setting.**
+      Applies your browser-level setting by default, overriding the Namespace-level Codec Server endpoint.
+1. Enter your Codec Server endpoint and port number.
+1. Optional: If your Codec Server is configured to [authenticate requests](#authorization) from Temporal Web UI, enable **Pass access token** to send a JWT access token with the HTTPS requests.
+1. Optional: If your Codec Server is configured to [verify origins of requests](#cors), enable **Include cross-origin credentials**.
 
 In self-hosted Temporal Clusters where you set up your UI Server, you can also set the codec endpoint in the UI server [configuration file](/references/web-ui-configuration#codec), as shown in the following example.
 
