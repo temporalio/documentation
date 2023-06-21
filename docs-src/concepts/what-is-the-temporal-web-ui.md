@@ -108,7 +108,7 @@ Lists all Queries sent to the Workflow Execution.
 
 ### Schedules
 
-On Temporal Cloud and slef-hosted Temporal Cluster Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
+On Temporal Cloud and self-hosted Temporal Cluster Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
 
 Click on a Schedule to see details, such as configured frequency, start and end time, recent and upcoming runs.
 
