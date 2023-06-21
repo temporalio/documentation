@@ -116,7 +116,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Codec Server](/dataconversion#codec-server)
-A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
+A Codec Server is an HTTP/HTTPS server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 
 _Tags: [term](/tags/term)_
 

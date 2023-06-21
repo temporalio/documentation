@@ -44,6 +44,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](/cloud/#cloud-namespace) and region
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace
+- [Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespaces. See [Securing your data](/production-readiness/develop#data-encryption) for details.
 - [Permissions](/cloud/#namespace-level-permissions) for each user
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
@@ -61,6 +62,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
    (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
+1. [Optional] In **Codec Server**, enter the URL and port number of your Codec Server endpoint. See [Securing your data](/production-readiness/develop#data-encryption) for details.
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
@@ -88,7 +90,7 @@ To list Namespaces:
 
 - On the left side of the window, select **Namespaces**.
 
-To edit a Namespace (including custom Search Attributes, certificates, certificate filters, permissions, and users), find the Namespace and do either of the following:
+To edit a Namespace (including custom Search Attributes, certificates, certificate filters, Codec Server endpoints, permissions, and users), find the Namespace and do either of the following:
 
 - On the right end of the Namespace row, select the three vertical dots (⋮). Click **Edit**.
 - Select the Namespace name. In the top-right portion of the page, select **Edit**.
@@ -98,6 +100,7 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud).
 - [Manage certificate filters](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters-using-temporal-cloud-ui).
+- Set [Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace. Note that all users on the Namespace have the option to override this setting.
 - Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
 - Add users.
 

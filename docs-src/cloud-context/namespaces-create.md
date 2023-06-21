@@ -31,6 +31,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](/cloud/#cloud-namespace) and region
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace
+- [Codec Server endpoints](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespaces. See [Securing your data](/production-readiness/develop#data-encryption) for details.
 - [Permissions](/cloud/#namespace-level-permissions) for each user
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
@@ -48,6 +49,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
    (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
+1. [Optional] In **Codec Server**, enter the URL and port number of your Codec Server endpoint. See [Securing your data](/production-readiness/develop#data-encryption) for details.
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->

@@ -2,7 +2,7 @@
 id: what-is-a-codec-server
 title: What is a Codec Server?
 sidebar_label: Codec Server
-description: A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
+description: A Codec Server is an HTTP/HTTPS server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 tags:
   - term
 ---
@@ -29,7 +29,7 @@ Most SDKs provide example Codec Server implementation samples, listed here:
 
 #### Usage
 
-When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Data encryption](/production-readiness/develop#data-encryption).
+When you apply custom encoding with encryption or compression on your Workflow data, it is stored in the encrypted/compressed format on the Temporal Server. For details on what data is encoded, see [Securing your data](/production-readiness/develop#data-encryption).
 
 To see decoded data when using the CLI or Web UI to perform some operations on a Workflow Execution, configure the Codec Server endpoint in the Web UI and CLI.
 When you configure the Codec Server endpoints, the CLI and Web UI send the encoded data to the Codec Server, and display the decoded data received from the Codec Server.
