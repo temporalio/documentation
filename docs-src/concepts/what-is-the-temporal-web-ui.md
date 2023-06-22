@@ -114,9 +114,9 @@ Click a Schedule to see details, such as configured frequency, start and end tim
 
 ### Settings
 
-On Temporal Cloud, the Settings page is visible only to [Global Admins](/cloud/#account-level-roles).
+On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/#account-level-roles).
 
-Click Settings to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/how-to-monitor-temporal-cloud-metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
+Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/how-to-monitor-temporal-cloud-metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
 
 On self-hosted Temporal Clusters, manage your users, metrics, and logging in your [server configuration](/references/configuration).
 
@@ -139,8 +139,7 @@ On self-hosted Temporal Clusters, Archive shows [Archived](/concepts/what-is-arc
 
 To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/cluster-deployment-guide#archival).
 
-<!--AB: Needs some statement for Temporal Cloud users. Maybe:
- Temporal Cloud users can contact <support?> for details.-->
+For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
 
 ### Codec Server
 

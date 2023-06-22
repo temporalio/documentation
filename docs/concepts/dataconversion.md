@@ -286,7 +286,6 @@ Because you create, operate, and manage access to your Codec Server in your cont
 - When you set your codec endpoint with your Web UI, expect your Codec Server to receive a large number of requests per Workflow Execution from the Web UI.
 - Ensure that you secure access your Codec Server.
   For details, see [Authorization](#authorization).
-  <!--Need a better way to explain this; with temporal cloud, the decrypted data is sent to the browser; there is no guarantee that the cloud ui is hosted in a particular region etc.> need clearer way to set this expectation.-->
 - The Temporal Web UI only displays the decoded payloads received from your Codec Server in real-time; it does not store or send the data back to the Temporal Server (whether on Cloud or self-hosted Temporal Cluster).
 - You might have latencies introduced in the Web UI when sending and receiving payloads to the Codec Server.
 
