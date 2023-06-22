@@ -1,44 +1,52 @@
-# Cancellation Scopes
+---
+id: cancellation-scopes
+title: Cancellation scopes in Typescript
+sidebar_label: Cancellation scopes
+tags:
+  - developer-guide
+  - typescript
+---
 
-In the TypeScript SDK, Workflows are represented internally by a tree of **Cancellation Scopes**, each with cancellation behaviors you can specify.
-Everything runs in the "root" scope by default.
+In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify.
+By default, everything runs in the "root" scope.
 
-Scopes are created using the [`CancellationScope`](https://typescript.temporal.io/api/classes/workflow.CancellationScope) constructor, or one of 3 static helpers:
+Scopes are created using the [CancellationScope](https://typescript.temporal.io/api/classes/workflow.CancellationScope) constructor or one of three static helpers:
 
-- [`cancellable(fn)`](https://typescript.temporal.io/api/classes/workflow.CancellationScope#cancellable-1): children are automatically cancelled when their containing scope is cancelled.
+- [cancellable(fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#cancellable-1): Children are automatically cancelled when their containing scope is cancelled.
   - Equivalent to `new CancellationScope().run(fn)`.
-- [`nonCancellable(fn)`](https://typescript.temporal.io/api/classes/workflow.CancellationScope#noncancellable): prevents cancellation from propagating to children.
+- [nonCancellable(fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#noncancellable): Cancellation does not propagate to children.
   - Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
-- [`withTimeout(timeoutMs, fn)`](https://typescript.temporal.io/api/classes/workflow.CancellationScope#withtimeout): if timeout triggers before `fn` resolves the scope will be cancelled, triggering cancellation of enclosed operations, such as activities and timers.
+- [withTimeout(timeoutMs, fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#withtimeout): If a timeout triggers before `fn` resolves, the scope is cancelled, triggering cancellation of any enclosed operations, such as Activities and Timers.
   - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
 
-Cancellations are applied to _cancellation scopes_, which can encompass an entire Workflow or just part of one.
+Cancellations are applied to cancellation scopes, which can encompass an entire Workflow or just part of one.
 Scopes can be nested, and cancellation propagates from outer scopes to inner ones.
 A Workflow's `main` function runs in the outermost scope.
-Cancellations are handled by catching `CancelledFailure`s thrown by _cancellable operations_ (see below).
+Cancellations are handled by catching `CancelledFailure`s thrown by cancelable operations.
 
-`CancellationScope.run()` and the static helpers mentioned above all return native JS Promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your async logic.
-Other APIs you can use:
+`CancellationScope.run()` and the static helpers mentioned earlier return native JavaScript promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your asynchronous logic.
+You can also use the following APIs:
 
-- `CancellationScope.current()`: get the current scope
-- `scope.cancel()`: cancel all operations inside a `scope`
-- `scope.run(fn)`: run an async function within a `scope`, returns the result of `fn`
-- `scope.cancelRequested`: a promise that resolves when a scope cancellation is requested, e.g. when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
+- `CancellationScope.current()`: Get the current scope.
+- `scope.cancel()`: Cancel all operations inside a `scope`.
+- `scope.run(fn)`: Run an async function within a `scope` and return the result of `fn`.
+- `scope.cancelRequested`: A promise that resolves when a scope cancellation is requested, such as when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
 
-When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any _cancellable operations_ created within it, such as:
+When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancelable operations created within it, such as the following:
 
 - Activities
-- Timers (created with the [`sleep`](https://typescript.temporal.io/api/namespaces/workflow#sleep) function)
-- [`Trigger`](https://typescript.temporal.io/api/classes/workflow.Trigger)s
+- Timers (created with the [sleep](https://typescript.temporal.io/api/namespaces/workflow#sleep) function)
+- [Triggers](https://typescript.temporal.io/api/classes/workflow.Trigger)
 
-### [CancelledFailure](/typescript/handling-failure/#cancelledfailure)
+### CancelledFailure
 
-`Timer`s and `Trigger`s throw `CancelledFailure` when cancelled while Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
-One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or workflow) in which case they'll propagate the `CancelledFailure` that was thrown to cancel the scope.
+Timers and Triggers throw [CancelledFailure](https://typescript.temporal.io/api/classes/client.CancelledFailure) when cancelled; Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
+One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or Workflow).
+In this case, they propagate the `CancelledFailure` that was thrown to cancel the scope.
 
-In order to simplify checking for cancellation, use the [`isCancellation(err)`](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) function.
+To simplify checking for cancellation, use the [isCancellation(err)](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) function.
 
-## Internal cancellation example
+### Internal cancellation example
 
 <!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
 
@@ -71,7 +79,7 @@ export async function cancelTimer(): Promise<void> {
 
 <!--SNIPEND-->
 
-Alternatively, the preceding can be written as:
+Alternatively, the preceding can be written as the following.
 
 <!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
 
@@ -102,9 +110,9 @@ export async function cancelTimerAltImpl(): Promise<void> {
 
 <!--SNIPEND-->
 
-## External cancellation example
+### External cancellation example
 
-Handle Workflow cancellation by an external client while an Activity is running:
+The following code shows how to handle Workflow cancellation by an external client while an Activity is running.
 
 <!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle -->
 
@@ -145,9 +153,9 @@ export async function handleExternalWorkflowCancellationWhileActivityRunning(
 
 <!--SNIPEND-->
 
-## `nonCancellable` example
+### nonCancellable example
 
-`CancellationScope.nonCancellable` prevents cancellation from propagating to children:
+`CancellationScope.nonCancellable` prevents cancellation from propagating to children.
 
 <!--SNIPSTART typescript-non-cancellable-shields-children-->
 
@@ -170,9 +178,10 @@ export async function nonCancellable(url: string): Promise<any> {
 
 <!--SNIPEND-->
 
-## `withTimeout` example
+### withTimeout example
 
-A very common operation is to cancel one or more activities if a deadline elapses, `withTimeout` creates a `CancellationScope` that is automatically cancelled after a given timeout.
+A common operation is to cancel one or more Activities if a deadline elapses.
+`withTimeout` creates a `CancellationScope` that is automatically cancelled after a timeout.
 
 <!--SNIPSTART typescript-multiple-activities-single-timeout-workflow-->
 
@@ -201,9 +210,9 @@ export function multipleActivitiesSingleTimeout(
 
 <!--SNIPEND-->
 
-## `scope.cancelRequested`
+### scope.cancelRequested
 
-You can await `cancelRequested` to make Workflow aware of cancellation while waiting on `nonCancellable` scopes:
+You can await `cancelRequested` to make a Workflow aware of cancellation while waiting on `nonCancellable` scopes.
 
 <!--SNIPSTART typescript-cancel-requested-with-non-cancellable-->
 
@@ -240,10 +249,10 @@ export async function resumeAfterCancellation(url: string): Promise<any> {
 
 <!--SNIPEND-->
 
-## CancellationScopes and callbacks
+### Cancellation scopes and callbacks
 
-Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return Promises.
-In the rare case that user code utilizes callbacks and needs to handle cancellation, a callback can be used to consume the `CancellationScope.cancelRequested` `Promise`.
+Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return promises.
+In the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the `CancellationScope.cancelRequested` promise.
 
 <!--SNIPSTART typescript-cancellation-scopes-with-callbacks-->
 
@@ -266,9 +275,9 @@ export async function cancellationScopesWithCallbacks(): Promise<void> {
 
 <!--SNIPEND-->
 
-## Nesting Cancellation Scopes
+### Nesting cancellation scopes
 
-Complex flows may be achieved by nesting cancellation scopes:
+You can achieve complex flows by nesting cancellation scopes.
 
 <!--SNIPSTART typescript-nested-cancellation-scopes-->
 
@@ -309,7 +318,8 @@ export async function nestedCancellation(url: string): Promise<void> {
 
 ## Sharing promises between scopes
 
-Operations like timers and Activities are cancelled by the cancellation scope they were created in. Promises returned by these operations can be awaited in different scopes.
+Operations like Timers and Activities are cancelled by the cancellation scope they were created in.
+Promises returned by these operations can be awaited in different scopes.
 
 <!--SNIPSTART typescript-shared-promise-scopes-->
 
