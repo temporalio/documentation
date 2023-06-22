@@ -19,7 +19,7 @@ Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 request := "CloseTime = missing"
 ```
 
-This `request` value will only return open Workflows.
+This `request` value returns only open Workflows.
 To list all Workflow Executions that satisfy this List Filter, use [`ListWorkflow()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the [Temporal Client](/concepts/what-is-a-temporal-client).
 
 ```go
