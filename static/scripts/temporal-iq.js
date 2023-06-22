@@ -57,12 +57,6 @@ function isDesktop() {
 
       document.getElementById("temporal-ball").style.display = "block";
       document.getElementById("search").style.display = "none";
-
-      document.getElementById("widget-chevron-down-container").style.display = "flex";
-      setTimeout(() => {
-        document.getElementById("widget-chevron-down-container").style.transform = "rotate(180deg)";
-        document.getElementById("widget-chevron-down-container").style.opacity = "1";
-      }, 0);
     };
 
     const closeWidget = () => {
