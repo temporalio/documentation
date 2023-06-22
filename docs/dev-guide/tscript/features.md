@@ -235,6 +235,142 @@ async function run(): Promise<void> {
 
 <!--SNIPEND-->
 
+## Static and dynamic Signals and Queries
+
+- Handlers for both Signals and Queries can take arguments, which can be used inside `setHandler` logic.
+- Only Signal Handlers can mutate state, and only Query Handlers can return values.
+
+### Define Signals and Queries statically
+
+If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
+
+<!--SNIPSTART typescript-blocked-workflow-->
+
+[signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+export const unblockSignal = wf.defineSignal('unblock');
+export const isBlockedQuery = wf.defineQuery<boolean>('isBlocked');
+
+export async function unblockOrCancel(): Promise<void> {
+  let isBlocked = true;
+  wf.setHandler(unblockSignal, () => void (isBlocked = false));
+  wf.setHandler(isBlockedQuery, () => isBlocked);
+  console.log('Blocked');
+  try {
+    await wf.condition(() => !isBlocked);
+    console.log('Unblocked');
+  } catch (err) {
+    if (err instanceof wf.CancelledFailure) {
+      console.log('Cancelled');
+    }
+    throw err;
+  }
+}
+```
+
+<!--SNIPEND-->
+
+This technique helps provide type safety because you can export the type signature of the Signal or Query to be called by the Client.
+
+### Define Signals and Queries dynamically
+
+For more flexible use cases, you might want a dynamic Signal (such as a generated ID).
+You can handle it in two ways:
+
+- Avoid making it dynamic by collapsing all Signals into one handler and move the ID to the payload.
+- Actually make the Signal name dynamic by inlining the Signal definition per handler.
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+// "fat handler" solution
+wf.setHandler(`genericSignal`, (payload) => {
+  switch (payload.taskId) {
+    case taskAId:
+      // do task A things
+      break;
+    case taskBId:
+      // do task B things
+      break;
+    default:
+      throw new Error('Unexpected task.');
+  }
+});
+
+// "inline definition" solution
+wf.setHandler(wf.defineSignal(`task-${taskAId}`), (payload) => {
+  /* do task A things */
+});
+wf.setHandler(wf.defineSignal(`task-${taskBId}`), (payload) => {
+  /* do task B things */
+});
+
+// utility "inline definition" helper
+const inlineSignal = (signalName, handler) =>
+  wf.setHandler(wf.defineSignal(signalName), handler);
+inlineSignal(`task-${taskBId}`, (payload) => {
+  /* do task B things */
+});
+```
+
+<details>
+  <summary>
+    API Design FAQs
+  </summary>
+
+**Why not "new Signal" and "new Query"?**
+
+The semantic of `defineSignal` and `defineQuery` is intentional.
+They return Signal and Query **definitions**, not unique instances of Signals and Queries themselves
+The following is their [entire source code](https://github.com/temporalio/sdk-typescript/blob/fc658d3760e6653aec47732ab17a0062b7dd23fc/packages/workflow/src/workflow.ts#L883-L907):
+
+```ts
+/**
+ * Define a signal method for a Workflow.
+ */
+export function defineSignal<Args extends any[] = []>(
+  name: string,
+): SignalDefinition<Args> {
+  return {
+    type: 'signal',
+    name,
+  };
+}
+
+/**
+ * Define a query method for a Workflow.
+ */
+export function defineQuery<Ret, Args extends any[] = []>(
+  name: string,
+): QueryDefinition<Ret, Args> {
+  return {
+    type: 'query',
+    name,
+  };
+}
+```
+
+Signals and Queries are instantiated only in `setHandler` and are specific to particular Workflow Executions.
+
+These distinctions might seem minor, but they model how Temporal works under the hood, because Signals and Queries are messages identified by "just strings" and don't have meaning independent of the Workflow having a listener to handle them.
+This will be clearer if you refer to the Client-side APIs.
+
+**Why setHandler and not OTHER_API?**
+
+We named it `setHandler` instead of `subscribe` because a Signal or Query can have only one "handler" at a time, whereas `subscribe` could imply an Observable with multiple consumers and is a higher-level construct.
+
+```ts
+wf.setHandler(MySignal, handlerFn1);
+wf.setHandler(MySignal, handlerFn2); // replaces handlerFn1
+```
+
+If you are familiar with [RxJS](https://rxjs.dev/), you are free to wrap your Signals and Queries into Observables if you want, or you could dynamically reassign the listener based on your business logic or Workflow state.
+
+</details>
+
 ## Workflow timeouts
 
 Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.
@@ -401,7 +537,7 @@ import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
 
 ## Activity Heartbeats
 
-An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Each Heartbeat informs the Temporal Cluster that the <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> is making progress and the Worker has not crashed.
 If the Cluster does not receive a Heartbeat within a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a> time period, the Activity will be considered failed and another <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> may be scheduled according to the Retry Policy.
 
@@ -590,7 +726,7 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
 
 <!--SNIPEND-->
 
-#### Parent Close Policy
+### Parent Close Policy
 
 A <a class="tdlp" href="/workflows#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#parent-close-policy">Learn more</a></span></span></a> determines what happens to a Child Workflow Execution if its Parent changes to a Closed status (Completed, Failed, or Timed Out).
 
@@ -651,6 +787,58 @@ export async function loopingWorkflow(iteration = 0): Promise<void> {
 
 <!--SNIPEND-->
 
+### Single-entity pattern
+
+The following is a simple pattern that represents a single entity.
+It tracks the number of iterations regardless of frequency, and calls `continueAsNew` while properly handling pending updates from Signals.
+
+```tsx
+interface Input {
+  /* Define your Workflow input type here */
+}
+interface Update {
+  /* Define your Workflow update type here */
+}
+
+const MAX_ITERATIONS = 1;
+
+export async function entityWorkflow(
+  input: Input,
+  isNew = true,
+): Promise<void> {
+  try {
+    const pendingUpdates = Array<Update>();
+    setHandler(updateSignal, (updateCommand) => {
+      pendingUpdates.push(updateCommand);
+    });
+
+    if (isNew) {
+      await setup(input);
+    }
+
+    for (let iteration = 1; iteration <= MAX_ITERATIONS; ++iteration) {
+      // Ensure that we don't block the Workflow Execution forever waiting
+      // for updates, which means that it will eventually Continue-As-New
+      // even if it does not receive updates.
+      await condition(() => pendingUpdates.length > 0, '1 day');
+
+      while (pendingUpdates.length) {
+        const update = pendingUpdates.shift();
+        await runAnActivityOrChildWorkflow(update);
+      }
+    }
+  } catch (err) {
+    if (isCancellation(err)) {
+      await CancellationScope.nonCancellable(async () => {
+        await cleanup();
+      });
+    }
+    throw err;
+  }
+  await continueAsNew<typeof entityWorkflow>(input, false);
+}
+```
+
 ## Schedule a Workflow
 
 Scheduling Workflows is a crucial aspect of any automation process, especially when dealing with time-sensitive tasks. By scheduling a Workflow, you can automate repetitive tasks, reduce the need for manual intervention, and ensure timely execution of your business processes
@@ -698,6 +886,157 @@ A Workflow can sleep for months.
 Timers are persisted, so even if your Worker or Temporal Cluster is down when the time period completes, as soon as your Worker and Cluster are back up, the `sleep()` call will resolve and your code will continue executing.
 
 Sleeping is a resource-light operation: it does not tie up the process, and you can run millions of Timers off a single Worker.
+
+## Asynchronous design patterns
+
+The real value of `sleep` and `condition` is in knowing how to use them to model asynchronous business logic.
+Here are some examples we use the most; we welcome more if you can think of them!
+
+<details>
+<summary>
+Racing Timers
+</summary>
+
+Use `Promise.race` with Timers to dynamically adjust delays.
+
+```ts
+export async function processOrderWorkflow({
+  orderProcessingMS,
+  sendDelayedEmailTimeoutMS,
+}: ProcessOrderOptions): Promise<void> {
+  let processing = true;
+  const processOrderPromise = processOrder(orderProcessingMS).then(() => {
+    processing = false;
+  });
+
+  await Promise.race([processOrderPromise, sleep(sendDelayedEmailTimeoutMS)]);
+
+  if (processing) {
+    await sendNotificationEmail();
+    await processOrderPromise;
+  }
+}
+```
+
+</details>
+<details>
+<summary>
+Racing Signals
+</summary>
+
+Use `Promise.race` with Signals and Triggers to have a promise resolve at the earlier of either system time or human intervention.
+
+```ts
+import { defineSignal, sleep, Trigger } from '@temporalio/workflow';
+
+const userInteraction = new Trigger<boolean>();
+const completeUserInteraction = defineSignal('completeUserInteraction');
+
+export async function yourWorkflow(userId: string) {
+  setHandler(completeUserInteraction, () => userInteraction.resolve(true)); // programmatic resolve
+  const userInteracted = await Promise.race([
+    userInteraction,
+    sleep('30 days'),
+  ]);
+  if (!userInteracted) {
+    await sendReminderEmail(userId);
+  }
+}
+```
+
+You can invert this to create a reminder pattern where the promise resolves _if_ no Signal is received.
+
+:::warning Antipattern: Racing sleep.then
+
+Be careful when racing a chained `sleep`.
+This might cause bugs because the chained `.then` will still continue to execute.
+
+```js
+await Promise.race([
+  sleep('5s').then(() => (status = 'timed_out')),
+  somethingElse.then(() => (status = 'processed')),
+]);
+
+if (status === 'processed') await complete(); // takes more than 5 seconds
+// status = timed_out
+```
+
+:::
+
+</details>
+
+<details>
+<summary>
+Updatable Timer
+</summary>
+
+Here is how you can build an updatable Timer with `condition`:
+
+```ts
+import * as wf from '@temporalio/workflow';
+
+// usage
+export async function countdownWorkflow(): Promise<void> {
+  const target = Date.now() + 24 * 60 * 60 * 1000; // 1 day!!!
+  const timer = new UpdatableTimer(target);
+  console.log('timer set for: ' + new Date(target).toString());
+  wf.setHandler(setDeadlineSignal, (deadline) => {
+    // send in new deadlines via Signal
+    timer.deadline = deadline;
+    console.log('timer now set for: ' + new Date(deadline).toString());
+  });
+  wf.setHandler(timeLeftQuery, () => timer.deadline - Date.now());
+  await timer; // if you send in a signal with a new time, this timer will resolve earlier!
+  console.log('countdown done!');
+}
+```
+
+This is available in the third-party package [`temporal-time-utils`](https://www.npmjs.com/package/temporal-time-utils#user-content-updatabletimer), where you can also see the implementation:
+
+```ts
+// implementation
+export class UpdatableTimer implements PromiseLike<void> {
+  deadlineUpdated = false;
+  #deadline: number;
+
+  constructor(deadline: number) {
+    this.#deadline = deadline;
+  }
+
+  private async run(): Promise<void> {
+    /* eslint-disable no-constant-condition */
+    while (true) {
+      this.deadlineUpdated = false;
+      if (
+        !(await wf.condition(
+          () => this.deadlineUpdated,
+          this.#deadline - Date.now(),
+        ))
+      ) {
+        break;
+      }
+    }
+  }
+
+  then<TResult1 = void, TResult2 = never>(
+    onfulfilled?: (value: void) => TResult1 | PromiseLike<TResult1>,
+    onrejected?: (reason: any) => TResult2 | PromiseLike<TResult2>,
+  ): PromiseLike<TResult1 | TResult2> {
+    return this.run().then(onfulfilled, onrejected);
+  }
+
+  set deadline(value: number) {
+    this.#deadline = value;
+    this.deadlineUpdated = true;
+  }
+
+  get deadline(): number {
+    return this.#deadline;
+  }
+}
+```
+
+</details>
 
 ## Temporal Cron Jobs
 
@@ -764,3 +1103,137 @@ To support custom Payload conversion, create a <a class="tdlp" href="/dataconver
 The order in which your encoding Payload Converters are applied depend on the order given to the Data Converter.
 You can set multiple encoding Payload Converters to run your conversions.
 When the Data Converter receives a value for conversion, it passes through each Payload Converter in sequence until the converter that handles the data type does the conversion.
+
+## Interceptors
+
+Interceptors are a mechanism for modifying inbound and outbound SDK calls.
+Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities.
+You can compare these to "middleware" in other frameworks.
+
+The TypeScript SDK comes with an optional interceptor package that adds tracing with [OpenTelemetry](https://www.npmjs.com/package/@temporalio/interceptors-opentelemetry).
+See how to use it in the [interceptors-opentelemetry](https://github.com/temporalio/samples-typescript/tree/main/interceptors-opentelemetry) code sample.
+
+### Interceptor types
+
+- [WorkflowInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowInboundCallsInterceptor/): Intercept Workflow inbound calls like execution, Signals, and Queries.
+- [WorkflowOutboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/workflow.WorkflowOutboundCallsInterceptor/): Intercept Workflow outbound calls to Temporal APIs like scheduling Activities and starting Timers.
+- [ActivityInboundCallsInterceptor](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor): Intercept inbound calls to an Activity (such as `execute`).
+- [WorkflowClientCallsInterceptor](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptor/): Intercept methods of [`WorkflowClient`](https://typescript.temporal.io/api/classes/client.WorkflowClient/) and [`WorkflowHandle`](https://typescript.temporal.io/api/interfaces/client.WorkflowHandle) like starting or signaling a Workflow.
+
+### How interceptors work
+
+Interceptors are run in a chain, and all interceptors work similarly.
+They accept two arguments: `input` and `next`, where `next` calls the next interceptor in the chain.
+All interceptor methods are optional—it's up to the implementor to choose which methods to intercept.
+
+### Interceptor examples
+
+<!--TODO use snipsync-->
+
+**Log start and completion of Activities**
+
+```ts
+import {
+  ActivityInput,
+  Next,
+  WorkflowOutboundCallsInterceptor,
+} from '@temporalio/workflow';
+
+export class ActivityLogInterceptor
+  implements WorkflowOutboundCallsInterceptor
+{
+  constructor(public readonly workflowType: string) {}
+
+  async scheduleActivity(
+    input: ActivityInput,
+    next: Next<WorkflowOutboundCallsInterceptor, 'scheduleActivity'>,
+  ): Promise<unknown> {
+    console.log('Starting activity', { activityType: input.activityType });
+    try {
+      return await next(input);
+    } finally {
+      console.log('Completed activity', {
+        workflow: this.workflowType,
+        activityType: input.activityType,
+      });
+    }
+  }
+}
+```
+
+**Authorization**
+
+```ts
+import {
+  defaultDataConverter,
+  Next,
+  WorkflowInboundCallsInterceptor,
+  WorkflowInput,
+} from '@temporalio/workflow';
+
+/**
+ * WARNING: This demo is meant as a simple auth example.
+ * Do not use this for actual authorization logic.
+ * Auth headers should be encrypted and credentials
+ * stored outside of the codebase.
+ */
+export class DumbWorkflowAuthInterceptor
+  implements WorkflowInboundCallsInterceptor
+{
+  public async execute(
+    input: WorkflowInput,
+    next: Next<WorkflowInboundCallsInterceptor, 'execute'>,
+  ): Promise<unknown> {
+    const authHeader = input.headers.auth;
+    const { user, password } = authHeader
+      ? await defaultDataConverter.fromPayload(authHeader)
+      : undefined;
+
+    if (!(user === 'admin' && password === 'admin')) {
+      throw new Error('Unauthorized');
+    }
+    return await next(input);
+  }
+}
+```
+
+To properly do authorization from Workflow code, the Workflow would need to access encryption keys and possibly authenticate against an external user database, which requires the Workflow to break isolation.
+Please contact us if you need to discuss this further.
+
+### Interceptor registration
+
+**Activity and client interceptors registration**
+
+- Activity interceptors are registered on Worker creation by passing an array of [ActivityInboundCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptorFactory) through [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+
+- Client interceptors are registered on `WorkflowClient` construction by passing an array of [WorkflowClientCallsInterceptor factory functions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientCallsInterceptorFactory) via [WorkflowClientOptions](https://typescript.temporal.io/api/interfaces/client.WorkflowClientOptions#interceptors).
+
+**Workflow interceptors registration**
+
+Workflow interceptor registration is different from the other interceptors because they run in the Workflow isolate.
+To register Workflow interceptors, export an `interceptors` function from a file located in the `workflows` directory and provide the name of that file to the Worker on creation via [WorkerOptions](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#interceptors).
+
+At the time of construction, the Workflow context is already initialized for the current Workflow.
+Use [`workflowInfo`](https://typescript.temporal.io/api/namespaces/workflow#workflowinfo) to add Workflow-specific information in the interceptor.
+
+`src/workflows/your-interceptors.ts`
+
+```ts
+import { workflowInfo } from '@temporalio/workflow';
+
+export const interceptors = () => ({
+  outbound: [new ActivityLogInterceptor(workflowInfo().workflowType)],
+  inbound: [],
+});
+```
+
+`src/worker/index.ts`
+
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  interceptors: {
+    workflowModules: [require.resolve('./workflows/your-interceptors')],
+  },
+});
+```

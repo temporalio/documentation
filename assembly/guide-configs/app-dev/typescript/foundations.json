@@ -8,7 +8,7 @@
   "sidebar_position": 1,
   "description": "The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.",
   "use_description": false,
-  "toc_max_heading_level": 4,
+  "toc_max_heading_level": 3,
   "add_tabs_support": true,
   "sections": [
     {
@@ -38,6 +38,14 @@
     {
       "type": "p",
       "id": "typescript/code-samples-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/how-to-import-an-ecmascript-module"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/linting-and-types"
     },
     {
       "type": "h2",
@@ -128,6 +136,10 @@
       "id": "typescript/how-to-customize-activity-type-in-typescript"
     },
     {
+      "type": "h3",
+      "id": "typescript/activity-design-patterns"
+    },
+    {
       "type": "h2",
       "id": "typescript/spawning-activities"
     },
@@ -170,6 +182,10 @@
     {
       "type": "p",
       "id": "typescript/how-to-register-types-with-a-worker-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-shut-down-a-worker"
     },
     {
       "type": "h2",

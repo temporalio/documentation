@@ -66,7 +66,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-### Code changes can cause non-deterministic behavior
+### Code changes can cause non-deterministic behavior {#non-deterministic-change}
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
@@ -124,7 +124,7 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning
+### Workflow Versioning {#workflow-versioning}
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
@@ -186,7 +186,7 @@ The Temporal Platform ensures the state of the Workflow Execution persists in th
 Scalability is responsiveness in the presence of load.
 
 A single Workflow Execution is limited in size and throughput but is scalable because it can <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a> in response to load.
-A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
 
 ### Replays
 
@@ -294,26 +294,28 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, Signals, and Workflow cancellation requests.
+Currently, there is no limit on the total number of Signals that a Workflow Execution can receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
-- `NumPendingChildExecutionsLimit`
-- `NumPendingActivitiesLimit`
-- `NumPendingSignals`
-- `NumPendingCancelRequestsLimit`
+- `limit.numPendingActivities.error`
+- `limit.numPendingChildExecutions.error`
+- `limit.numPendingSignals.error`
+- `limit.numPendingCancelRequests.error`
+- `history.maximumSignalsPerExecution`
 
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 <!--2000 in from v1.21--> pending Activities, Child Workflows, Workflow cancellation requests, or Signals. <!-- The Workflow Execution fails if the number of pending Signals exceeds 2000, or if the total number of Signals received exceeds 10000. -->
 Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
 
 :::note
 
-Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, Workflow cancellation requests, and Signals.
 
 :::
 
 ### Command
 
-A Command is a requested action issued by a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> after a <a class="tdlp" href="/workers#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task-execution">Learn more</a></span></span></a> completes.
+A Command is a requested action issued by a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> after a <a class="tdlp" href="/workers#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task-execution">Learn more</a></span></span></a> completes.
 
 The action that the Cluster takes is recorded in the [Workflow Execution's](/workflows#workflow-execution) <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a>.
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
@@ -674,6 +676,25 @@ As all Workflow Executions, they can communicate only via asynchronous <a class=
 
 As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
+
+### When to use a Child Workflow versus an Activity
+
+Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
+Here are some important differences:
+
+- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
+  An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
+- A Child Workflow Execution can continue on if its Parent is canceled with a <a class="tdlp" href="#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#parent-close-policy">Learn more</a></span></span></a> of `ABANDON`.
+  An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
+  (It can react to a cancellation Signal for cleanup.)
+  The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
+- Temporal tracks all state changes within a Child Workflow Execution in Event History.
+  Only the input, output, and retry attempts of an Activity Execution is tracked.
+
+A Workflow models composite operations that consist of multiple Activities or other Child Workflows.
+An Activity usually models a single operation on the external world.
+
+Our advice: **When in doubt, use an Activity.**
 
 ### Parent Close Policy
 

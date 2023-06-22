@@ -5,7 +5,7 @@ sidebar_label: Foundations
 sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/foundations
-toc_max_heading_level: 4
+toc_max_heading_level: 3
 tags:
 - guide-context
 - developer-guide
@@ -137,7 +137,7 @@ A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"
 
 An SDK provides you with the following:
 
-- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 - APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
 - APIs to create and manage <a class="tdlp" href="/workers#worker">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a>.
 - APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
@@ -180,9 +180,27 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 [Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
+### ECMAScript modules
+
+The JavaScript ecosystem is quickly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules.
+For example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
+
+For more information about importing a pure ESM dependency, see our [Fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for the necessary configuration changes:
+
+- `package.json` must have include the `"type": "module"` attribute.
+- `tsconfig.json` should output in `esnext` format.
+- Imports must include the `.js` file extension.
+
+## Linting and types
+
+If you started your project with `@temporalio/create`, you already have our recommended TypeScript and ESLint configurations.
+
+If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop.
+Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) file and tweak to suit your needs.
+
 ## Connect to a dev Cluster
 
-A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -522,6 +540,136 @@ async function run() {
 ```
 
 <!--SNIPEND-->
+
+### Activity design patterns
+
+The following are some important (and frequently requested) patterns for using our Activities APIs.
+These patterns address common needs and use cases.
+
+#### Share dependencies in Activity functions (dependency injection)
+
+Because Activities are "just functions," you can also create functions that create Activities.
+This is a helpful pattern for using closures to do the following:
+
+- Store expensive dependencies for sharing, such as database connections.
+- Inject secret keys (such as environment variables) from the Worker to the Activity.
+
+<!--SNIPSTART typescript-activity-with-deps-->
+
+[activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/activities.ts)
+
+```ts
+export interface DB {
+  get(key: string): Promise<string>;
+}
+
+export const createActivities = (db: DB) => ({
+  async greet(msg: string): Promise<string> {
+    const name = await db.get('name'); // simulate read from db
+    return `${msg}: ${name}`;
+  },
+  async greet_es(mensaje: string): Promise<string> {
+    const name = await db.get('name'); // simulate read from db
+    return `${mensaje}: ${name}`;
+  },
+});
+```
+
+<!--SNIPEND-->
+
+<details>
+  <summary>See full example</summary>
+
+When you register these in the Worker, pass your shared dependencies accordingly:
+
+<!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
+
+```ts
+import { createActivities } from './activities';
+
+async function run() {
+  // Mock DB connection initialization in Worker
+  const db = {
+    async get(_key: string) {
+      return 'Temporal';
+    },
+  };
+
+  const worker = await Worker.create({
+    taskQueue: 'dependency-injection',
+    workflowsPath: require.resolve('./workflows'),
+    activities: createActivities(db),
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+<!--SNIPEND-->
+
+Because Activities are always referenced by name, inside the Workflow they can be proxied as normal, although the types need some adjustment:
+
+<!--SNIPSTART typescript-activity-deps-workflow-->
+
+[activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/workflows.ts)
+
+```ts
+import type { createActivities } from './activities';
+
+// Note usage of ReturnType<> generic since createActivities is a factory function
+const { greet, greet_es } = proxyActivities<
+  ReturnType<typeof createActivities>
+>({
+  startToCloseTimeout: '30 seconds',
+});
+```
+
+<!--SNIPEND-->
+
+</details>
+
+#### Import multiple Activities simultaneously
+
+You can proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts, retries, and options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  // destructuring multiple activities with the same options
+  const { act1, act2, act3 } = proxyActivities<typeof activities>();
+  /* activityOptions */
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+#### Dynamically reference Activities
+
+Because Activities are referenced only by their string names, you can reference them dynamically if needed:
+
+```js
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = proxyActivities(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  // dynamic reference to activities using activityName
+  let result = await acts[activityName](...args);
+}
+```
+
+Type safety is still supported here, but we encourage you to validate and handle mismatches in Activity names.
+An invalid Activity name leads to a `NotFoundError` with a message that looks like this:
+
+```
+ApplicationFailure: Activity function actC is not registered on this Worker, available activities: ["actA", "actB"]
+```
 
 ## Activity Execution
 
@@ -908,6 +1056,36 @@ async function run() {
 ```
 
 <!--SNIPEND-->
+
+## Shut down a worker
+
+Workers shut down if they receive any of the Signals enumerated in [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`, `'SIGTERM'`, `'SIGQUIT'`, and `'SIGUSR2'`.
+
+In development, we shut down Workers with `Ctrl+C` (`SIGINT`) or [nodemon](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, you usually want to give Workers time to finish any in-progress Activities by setting [shutdownGraceTime](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdowngracetime).
+
+As soon as a Worker receives a shutdown Signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached.
+Any Activities that are still running at that time will stop running and will be rescheduled by Temporal Server when an Activity timeout occurs.
+
+If you must guarantee that the Worker eventually shuts down, you can set [shutdownForceTime](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdownforcetime).
+
+You might want to programmatically shut down Workers (with [Worker.shutdown()](https://typescript.temporal.io/api/classes/worker.Worker#shutdown)) in integration tests or when automating a fleet of Workers.
+
+### Worker states
+
+At any time, you can Query Worker state with [Worker.getState()](https://typescript.temporal.io/api/classes/worker.Worker#getstate).
+A Worker is always in one of seven states:
+
+- `INITIALIZED`: The initial state of the Worker after calling [Worker.create()](https://typescript.temporal.io/api/classes/worker.Worker#create) and successfully connecting to the server.
+- `RUNNING`: [Worker.run()](https://typescript.temporal.io/api/classes/worker.Worker#run) was called and the Worker is polling Task Queues.
+- `FAILED`: The Worker encountered an unrecoverable error; `Worker.run()` should reject with the error.
+- The last four states are related to the Worker shutdown process:
+  - `STOPPING`: The Worker received a shutdown Signal or `Worker.shutdown()` was called.
+    The Worker will forcefully shut down after `shutdownGraceTime` expires.
+  - `DRAINING`: All Workflow Tasks have been drained; waiting for Activities and cached Workflows eviction.
+  - `DRAINED`: All Activities and Workflows have completed; ready to shut down.
+  - `STOPPED`: Shutdown complete; `worker.run()` resolves.
+
+If you need more visibility into internal Worker state, see the [Worker class](https://typescript.temporal.io/api/classes/worker.Worker) in the API reference.
 
 ## Start Workflow Execution
 
