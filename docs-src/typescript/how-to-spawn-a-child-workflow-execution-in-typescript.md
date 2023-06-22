@@ -75,4 +75,4 @@ Two advanced options are unique to Child Workflows:
 - `parentClosePolicy`: Explained in the next section.
 
 If you need to cancel a Child Workflow Execution, use [cancellation scopes](/dev-guide/typescript/foundations#cancellation-scopes).
-A Child Workflow Execution is automatically canceled when its containing scope is cancelled.
+A Child Workflow Execution is automatically cancelled when its containing scope is cancelled.
