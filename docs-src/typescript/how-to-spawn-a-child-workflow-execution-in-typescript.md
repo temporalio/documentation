@@ -33,7 +33,7 @@ By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
 
-[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/main/child-workflows/src/workflows.ts)
+[child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
 
 ```ts
 import { executeChild } from '@temporalio/workflow';
@@ -68,10 +68,11 @@ export async function terminateWorkflow() {
 }
 ```
 
- If the Child Workflow options aren't explicitly set, they inherit their values from the Parent Workflow options.
- Two advanced options are unique to Child Workflows:
-  - [cancellationType](https://typescript.temporal.io/api/enums/proto.coresdk.child_workflow.ChildWorkflowCancellationType): Controls when to throw the `CanceledFailure` exception when a Child Workflow is canceled.
-  - `parentClosePolicy`: Explained in the next section.
+If the Child Workflow options aren't explicitly set, they inherit their values from the Parent Workflow options.
+Two advanced options are unique to Child Workflows:
+
+- [cancellationType](https://typescript.temporal.io/api/enums/proto.coresdk.child_workflow.ChildWorkflowCancellationType): Controls when to throw the `CanceledFailure` exception when a Child Workflow is canceled.
+- `parentClosePolicy`: Explained in the next section.
 
 If you need to cancel a Child Workflow Execution, use [cancellation scopes](/dev-guide/typescript/foundations#cancellation-scopes).
 A Child Workflow Execution is automatically canceled when its containing scope is cancelled.
