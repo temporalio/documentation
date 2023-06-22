@@ -285,10 +285,9 @@ if err != nil {
   return err
 }
 
-fmt.Println("First page of results:")
+fmt.Println("List of results:")
 for _, exec := range resp.Executions {
   fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
-  fmt.Println("Next page of results:")
 }
 ```
 
