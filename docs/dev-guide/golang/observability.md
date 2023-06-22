@@ -269,18 +269,23 @@ The steps to using custom Search Attributes are:
 
 Here is how to query Workflow Executions:
 
-The `ListWorkflow()` function retrieves <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> based on a <a class="tdlp" href="/workflows#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Query?</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#query">Learn more</a></span></span></a> or <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
+The `ListWorkflow()` function retrieves <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> that match the properties specified in a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
+These properties are defined by <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>, which are used to retrieve Workflow Executions from the <a class="tdlp" href="/clusters#visibility">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a>.
 
-Use a Query to retrieve Workflow Executions based on state characteristics.
-Queries include one or more conditions to return Workflow Executions with relevant <a class="tdlp" href="/workflows#workflow-id">Workflow Ids<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a>, <a class="tdlp" href="/workflows#workflow-type">Workflow Types<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Type?</span><br /><br /><span class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></span></span></a>, or start and end times.
-
-Use a List Filter to retrieve Workflow Executions that contain certain <a class="tdlp" href="/visibility#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> characteristics, such as name, values, and operators.
-List Filters return a list of valid Workflow Executions from the Visibility store.
-
-To list all Workflow Executions, use [`ListWorkflow`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a>.
+Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 
 ```go
-resp, err := temporalClient.ListWorkflow(ctx.Background(), req)
+// ...
+request := "CloseTime = missing"
+```
+
+This `request` value will only return open Workflows.
+To list all Workflow Executions that satisfy this List Filter, use [`ListWorkflow()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a>.
+
+```go
+// ...
+
+resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
 if err != nil {
   return err
 }
@@ -289,6 +294,8 @@ fmt.Println("List of results:")
 for _, exec := range resp.Executions {
   fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
 }
+
+//...
 ```
 
 ### Custom Search Attributes
