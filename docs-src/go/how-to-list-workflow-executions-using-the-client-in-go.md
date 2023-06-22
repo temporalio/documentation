@@ -35,5 +35,5 @@ for _, exec := range resp.Executions {
   fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
 }
 
-//...
+// ...
 ```
