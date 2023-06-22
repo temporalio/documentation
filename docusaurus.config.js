@@ -200,13 +200,13 @@ module.exports = {
         },
       ],
     },
-    algolia: {
-      apiKey: "4a2fa646f476d7756a7cdc599b625bec",
-      indexName: "temporal",
-      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
-      // searchParameters: {}, // Optional, if provided by Algolia
-      externalUrlRegex: "temporal\\.io",
-    },
+    // algolia: {
+    //   apiKey: "4a2fa646f476d7756a7cdc599b625bec",
+    //   indexName: "temporal",
+    //   appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
+    //   // searchParameters: {}, // Optional, if provided by Algolia
+    //   externalUrlRegex: "temporal\\.io",
+    // },
   },
   presets: [
     [

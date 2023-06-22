@@ -20,11 +20,14 @@ function isDesktop() {
     widgetStyle.maxWidth = "600px";
     widgetStyle.height = "calc(80% - 108px)";
     widgetStyle.position = "fixed";
-    widgetStyle.right = "40px";
-    widgetStyle.bottom = "108px";
+    widgetStyle.top = "40%";
+    widgetStyle.left = "50%";
+    widgetStyle.transform = "translate(-50%, -50%)";
     widgetStyle.background = "#F4F4F4";
     widgetStyle.borderRadius = "16px";
     widgetStyle.zIndex = "99999";
+    widgetStyle.boxShadow = "inset 1px 1px 0 0 hsla(0,0%,100%,.5),0 3px 8px 0 #555a64";
+
 
     const iframe = document.createElement("iframe");
     const iframeStyle = iframe.style;
@@ -87,16 +90,16 @@ function isDesktop() {
     widgetToggleButton.display = "flex";
 
     widgetToggleButtonStyle.position = "fixed";
-    widgetToggleButtonStyle.bottom = "40px";
-    widgetToggleButtonStyle.right = "40px";
+    widgetToggleButtonStyle.top = "10px";
+    widgetToggleButtonStyle.right = "60px";
+    widgetToggleButtonStyle.width = "400px";
     widgetToggleButtonStyle.fontFamily = "Inter, sans-serif";
     widgetToggleButtonStyle.fontSize = "16px";
     widgetToggleButtonStyle.fontWeight = "400";
     widgetToggleButtonStyle.borderRadius = "100px";
-    widgetToggleButtonStyle.paddingTop = "16px";
-    widgetToggleButtonStyle.paddingBottom = "16px";
     widgetToggleButtonStyle.color = "#7B7B7B";
-    widgetToggleButtonStyle.border = "none";
+    widgetToggleButtonStyle.backgroundColor = '#969faf';
+    widgetToggleButtonStyle.border = "1px solid #7B7B7B";
     widgetToggleButtonStyle.zIndex = "99999";
     widgetToggleButtonStyle.cursor = "pointer";
     widgetToggleButtonStyle.outline = "none";
@@ -145,7 +148,7 @@ function isDesktop() {
     });
     widgetToggleButton.innerHTML = `
                     <div style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px; border-radius: 3px; background-color: #fff;">
-                      <div id='widget-text' style='display: flex; gap: 8px; align-items:center; flex-grow:1; flex-direction:row; padding-left:16px; opacity: 0; animation: fadeInText 1s forwards 2s;'>
+                      <div id='widget-text' style='display: flex; gap: 8px; align-items:center; flex-grow:1; flex-direction:row; padding-left:16px; opacity: 0; animation: fadeInText .5s forwards 1s;'>
                         <div style='flex-grow:'>Ask</div>
                         <div id="ai-container" style="position:relative; display: inline-flex;">
                           <div id="ai-gradient" style="position: absolute; top: 0; left: 50%; width: 100%; height: 100%;"></div>
@@ -153,7 +156,7 @@ function isDesktop() {
                         </div>
                       </div>
                       <div id='ball-chevron-container' style='width:40px; height:40px; position:relative;'>
-                        <img id="temporal-ball" style="position:absolute; top:0; left:0; flex-shrink:0; opacity: 0; animation: fadeInBall 1s forwards, popBall 1s 1s;" src='/img/Temporal_Logo_Animation.gif' width='40px' height='40px'/>                    
+                        <img id="temporal-ball" style="position:absolute; top:0; left:0; flex-shrink:0; opacity: 0; animation: fadeInBall .5s forwards, popBall .5s 5s;" src='/img/Temporal_Logo_Animation.gif' width='40px' height='40px'/>                    
                         <div id='widget-chevron-down-container' style="opacity:1; position:absolute; top:0; left:0; display:none; transform: rotate(0deg); transition: all 1s ease-in-out; align-items: center; justify-content:center; width:40px; height:40px; border-radius:50%; background:#ffffff;">
                           <img id='widget-chevron-down' style='flex-shrink:0;' src='/img/chevron-up-solid.svg' width='18px' height='18px'/>
                         </div>
@@ -165,23 +168,23 @@ function isDesktop() {
 
     widgetToggleButton.style.animation = "expandButton 1s forwards 1s";
 
-    widgetToggleButton.addEventListener("mouseover", () => {
-      widgetToggleButton.style.transform = "scale(1.1)";
-      document.getElementById("temporal-ball").style.animation =
-        "fadeInBall 1s forwards 1s, popBall 1s 1s, spinBall 2s linear infinite";
-      document.getElementById("ai-gradient").style.animation = "shimmer 0.5s 1 forwards";
-    });
+    // widgetToggleButton.addEventListener("mouseover", () => {
+    //   widgetToggleButton.style.transform = "scale(1.1)";
+    //   document.getElementById("temporal-ball").style.animation =
+    //     "fadeInBall .5s forwards .5s, popBall .5s .5s, spinBall 2s linear infinite";
+    //   document.getElementById("ai-gradient").style.animation = "shimmer 0.5s 1 forwards";
+    // });
 
     widgetToggleButton.addEventListener("mouseout", () => {
       widgetToggleButton.style.transform = "scale(1)";
-      document.getElementById("temporal-ball").style.animation = "fadeInBall 1s forwards 1s, popBall 1s 1s";
+      document.getElementById("temporal-ball").style.animation = "fadeInBall .5s forwards .5s, popBall .5s .5s";
       document.getElementById("ai-gradient").style.animation = "none";
     });
 
     // Append widget to body
     widgetElement.appendChild(iframe);
 
-    window.addEventListener("temporalIframeReady", (event) => {});
+    window.addEventListener("temporalIframeReady", (event) => { });
 
     iframe.addEventListener("load", () => {
       setTimeout(() => {
