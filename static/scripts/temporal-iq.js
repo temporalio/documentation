@@ -55,8 +55,9 @@ function isDesktop() {
       widgetStyle.display = "block";
       modalStyle.display = "block";
 
-      document.getElementById("temporal-ball").style.display = "none";
-      document.getElementById("widget-text").style.display = "none";
+      document.getElementById("temporal-ball").style.display = "block";
+      document.getElementById("search").style.display = "none";
+
       document.getElementById("widget-chevron-down-container").style.display = "flex";
       setTimeout(() => {
         document.getElementById("widget-chevron-down-container").style.transform = "rotate(180deg)";
@@ -67,17 +68,11 @@ function isDesktop() {
     const closeWidget = () => {
       widgetStyle.display = "none";
       modalStyle.display = "none";
-      document.getElementById("temporal-ball").style.display = "block";
+
+      document.getElementById("temporal-ball").style.display = "none";
+      document.getElementById("search").style.display = "block";
+
       document.getElementById("widget-text").style.display = "flex";
-      document.getElementById("widget-chevron-down-container").style.transform = "rotate(0deg)";
-
-      setTimeout(() => {
-        document.getElementById("widget-chevron-down-container").style.opacity = "0";
-      }, 600);
-
-      setTimeout(() => {
-        document.getElementById("widget-chevron-down-container").style.display = "none";
-      }, 1300);
     };
 
     modal.addEventListener("click", closeWidget);
@@ -90,7 +85,7 @@ function isDesktop() {
     widgetToggleButton.display = "flex";
 
     widgetToggleButtonStyle.position = "fixed";
-    widgetToggleButtonStyle.top = "10px";
+    widgetToggleButtonStyle.top = "14px";
     widgetToggleButtonStyle.right = "60px";
     widgetToggleButtonStyle.width = "400px";
     widgetToggleButtonStyle.fontFamily = "Inter, sans-serif";
@@ -98,8 +93,8 @@ function isDesktop() {
     widgetToggleButtonStyle.fontWeight = "400";
     widgetToggleButtonStyle.borderRadius = "100px";
     widgetToggleButtonStyle.color = "#7B7B7B";
-    widgetToggleButtonStyle.backgroundColor = '#969faf';
-    widgetToggleButtonStyle.border = "1px solid #7B7B7B";
+    widgetToggleButtonStyle.background = '#ebedf0';
+    widgetToggleButtonStyle.border = "2px solid #ffffff";
     widgetToggleButtonStyle.zIndex = "99999";
     widgetToggleButtonStyle.cursor = "pointer";
     widgetToggleButtonStyle.outline = "none";
@@ -147,38 +142,27 @@ function isDesktop() {
       }
     });
     widgetToggleButton.innerHTML = `
-                    <div style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px; border-radius: 3px; background-color: #fff;">
-                      <div id='widget-text' style='display: flex; gap: 8px; align-items:center; flex-grow:1; flex-direction:row; padding-left:16px; opacity: 0; animation: fadeInText .5s forwards 1s;'>
-                        <div style='flex-grow:'>Ask</div>
-                        <div id="ai-container" style="position:relative; display: inline-flex;">
-                          <div id="ai-gradient" style="position: absolute; top: 0; left: 50%; width: 100%; height: 100%;"></div>
-                          <span id="ai-text" style="padding:2px 8px; font-weight:600; border-radius:4px; background:#141414; color: #FFFFFF; display:inline-flex; position: relative; z-index: 1;">Temporal IQ</span>
-                        </div>
+                    <div style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px; border-radius: 3px;">
+                      <div id='widget-text' style='position: relative; display: flex; gap: 8px; align-items:center; flex-grow:1; flex-direction:row; padding-left:16px;'>
+                        <img id="temporal-ball" style="position: absolute; left: 0px; display: none; animation: popBall .5s 5s;" src='/img/Temporal_Logo_Animation.gif' width='40px' height='40px'/>
+                        <img id='search' style='position: absolute; left: 8px; top: 1px; flex-shrink:0;' src='/img/search.svg' width='20px' height='20px'/>
+                        <div style='margin-left: 20px;'>Ask</div>
                       </div>
-                      <div id='ball-chevron-container' style='width:40px; height:40px; position:relative;'>
-                        <img id="temporal-ball" style="position:absolute; top:0; left:0; flex-shrink:0; opacity: 0; animation: fadeInBall .5s forwards, popBall .5s 5s;" src='/img/Temporal_Logo_Animation.gif' width='40px' height='40px'/>                    
-                        <div id='widget-chevron-down-container' style="opacity:1; position:absolute; top:0; left:0; display:none; transform: rotate(0deg); transition: all 1s ease-in-out; align-items: center; justify-content:center; width:40px; height:40px; border-radius:50%; background:#ffffff;">
-                          <img id='widget-chevron-down' style='flex-shrink:0;' src='/img/chevron-up-solid.svg' width='18px' height='18px'/>
-                        </div>
+                      <div id="ai-container" style="position:relative; display: inline-flex; text-align:right;">
+                        <div id="ai-gradient" style="position: absolute; top: 0; left: 50%; width: 100%; height: 100%; background:#141414;"></div>
+                        <span id="ai-text" style="padding:2px 8px; font-weight:500; background:#141414; color: #FFFFFF; display:inline-flex; position: relative; z-index: 1;">Temporal IQ</span>
+                      </div>
+
                       </div>
                     </div>`;
 
-    widgetToggleButton.style.animation =
-      "showBallContainer 1s forwards, addPadding 1s forwards 1s, expandButton 1s forwards 2s";
+    widgetToggleButton.addEventListener("mouseover", () => {
+      widgetToggleButtonStyle.border = "2px solid #7B7B7B";
+    });
 
-    widgetToggleButton.style.animation = "expandButton 1s forwards 1s";
-
-    // widgetToggleButton.addEventListener("mouseover", () => {
-    //   widgetToggleButton.style.transform = "scale(1.1)";
-    //   document.getElementById("temporal-ball").style.animation =
-    //     "fadeInBall .5s forwards .5s, popBall .5s .5s, spinBall 2s linear infinite";
-    //   document.getElementById("ai-gradient").style.animation = "shimmer 0.5s 1 forwards";
-    // });
 
     widgetToggleButton.addEventListener("mouseout", () => {
-      widgetToggleButton.style.transform = "scale(1)";
-      document.getElementById("temporal-ball").style.animation = "fadeInBall .5s forwards .5s, popBall .5s .5s";
-      document.getElementById("ai-gradient").style.animation = "none";
+      widgetToggleButtonStyle.border = "2px solid #ffffff";
     });
 
     // Append widget to body
@@ -203,8 +187,7 @@ function isDesktop() {
     modal.appendChild(widgetElement);
     document.body.appendChild(widgetToggleButton);
 
-    document.getElementById("widget-chevron-down-container").style.transition = "all 0.5s ease-in-out";
-    document.getElementById("widget-text").style.animation = "fadeInText 1s forwards 1s";
+    document.getElementById("widget-text").style.animation = "fadeInText .1s forwards .1s";
 
     console.log({
       iframe,
