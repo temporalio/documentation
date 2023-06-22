@@ -9,22 +9,19 @@ tags:
   - client
 ---
 
-The `ListWorkflow()` function retrieves [Workflow Executions](/concepts/what-is-a-workflow-execution) that match the properties specified in a [List Filter](/concepts/what-is-a-list-filter).
-These properties are defined by [Search Attributes](/concepts/what-is-a-search-attribute), which are used to retrieve Workflow Executions from the [Visibility store](/concepts/what-is-visibility).
+The [`ListWorkflow()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that match the [Search Attributes](/concepts/what-is-a-search-attribute) of a given [List Filter](/concepts/what-is-a-list-filter).
+The metadata returned from the [Visibility store](/concepts/what-is-visibility) can be used to get a Workflow Execution's history and details from the [Persistence store](/concepts/what-is-a-temporal-cluster#persistence).
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 
 ```go
-// ...
 request := "CloseTime = missing"
 ```
 
 This `request` value returns only open Workflows.
-To list all Workflow Executions that satisfy this List Filter, use [`ListWorkflow()`](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) on the [Temporal Client](/concepts/what-is-a-temporal-client).
+For more List Filter examples, see the [examples provided for List Filters in Temporal's Visibility guide.](/concepts/what-is-a-list-filter#list-filter-examples)
 
 ```go
-// ...
-
 resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
 if err != nil {
   return err
@@ -34,6 +31,4 @@ fmt.Println("List of results:")
 for _, exec := range resp.Executions {
   fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
 }
-
-// ...
 ```
