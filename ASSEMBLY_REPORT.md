@@ -942,4 +942,8 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
+go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+
 
