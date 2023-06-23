@@ -17,13 +17,11 @@ Options for registering an Activity
 | [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
 | [`SkipInvalidStructFunctions`](#skipinvalidstructfunctions)       | No       | `bool`   |
 
-### `Name`
+#### Name
 
-import CustomizeActivityType from './how-to-customize-activity-type-in-go.md'
+See [How to customize Activity Type in Go](/go/how-to-customize-activity-type-in-go).
 
-<CustomizeActivityType/>
-
-### `DisableAlreadyRegisteredCheck`
+#### DisableAlreadyRegisteredCheck
 
 Disables the check to see if the Activity has already been registered.
 
@@ -41,7 +39,7 @@ w.RegisterActivityWithOptions(a.YourActivityDefinition, registerOptions)
 // ...
 ```
 
-### `SkipInvalidStructFunctions`
+#### SkipInvalidStructFunctions
 
 When registering a struct that has Activities, skip functions that are not valid.
 If false, registration panics.

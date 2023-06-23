@@ -26,39 +26,104 @@ The following fields are available:
 | [`Memo`](#memo)                                                                         | No       | `map[string]interface{}`                                                                        |
 | [`SearchAttributes`](#searchattributes)                                                 | No       | `map[string]interface{}`                                                                        |
 
-### `ID`
+#### ID
 
-import WorkflowId from './how-to-set-a-workflow-id-in-go.md'
+Although it is not required, we recommend providing your own [Workflow Id](/concepts/what-is-a-workflow-id) that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
-<WorkflowId/>
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `ID` field, and pass the instance to the `ExecuteWorkflow` call.
 
-### `TaskQueue`
+- Type: `string`
+- Default: System generated UUID
 
-import TaskQueue from './how-to-set-a-workflow-task-queue-in-go.md'
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  ID: "Your-Custom-Workflow-Id",
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
 
-<TaskQueue/>
+#### TaskQueue
 
-### `WorkflowExecutionTimeout`
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
 
-import WFETimeout from './how-to-set-a-workflow-execution-timeout-in-go.md'
+- Type: `string`
+- Default: None; this is a required field to be set by the developer
 
-<WFETimeout/>
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  TaskQueue: "your-task-queue",
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
 
-### `WorkflowRunTimeout`
+#### WorkflowExecutionTimeout
 
-import WFRTimeout from './how-to-set-a-workflow-run-timeout-in-go.md'
+Create an instance of StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowExecutionTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
 
-<WFRTimeout/>
+- Type: `time.Duration`
+- Default: Unlimited
 
-### `WorkflowTaskTimeout`
+```go
+workflowOptions := client.StartWorkflowOptions{
+  // ...
+  WorkflowExecutionTimeout: time.Hours * 24 * 365 * 10,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
 
-import WFTTimeout from './how-to-set-a-workflow-task-timeout-in-go.md'
+#### WorkflowRunTimeout
 
-<WFTTimeout/>
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowRunTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
 
-### `WorkflowIDReusePolicy`
+- Type: `time.Duration`
+- Default: Same as [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)
 
-- Type: [`WorkflowIdReusePolicy`](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy)
+```go
+workflowOptions := client.StartWorkflowOptions{
+  WorkflowRunTimeout: time.Hours * 24 * 365 * 10,
+  // ...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+#### WorkflowTaskTimeout
+
+Create an instance of [StartWorkflowOptions](https://pkg.go.dev/go.temporal.io/sdk/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `WorkflowTaskTimeout` field, and pass the instance to the `ExecuteWorkflow` call.
+
+- Type: `time.Duration`
+- Default: `time.Seconds * 10`
+
+```go
+workflowOptions := client.StartWorkflowOptions{
+  WorkflowTaskTimeout: time.Second * 10,
+  //...
+}
+workflowRun, err := c.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+#### WorkflowIDReusePolicy
+
+- Type: [WorkflowIdReusePolicy](https://pkg.go.dev/go.temporal.io/api/enums/v1#WorkflowIdReusePolicy)
 - Default: `enums.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE`
 
 Set a value from the `go.temporal.io/api/enums/v1` package.
@@ -74,7 +139,7 @@ if err != nil {
 }
 ```
 
-### `WorkflowExecutionErrorWhenAlreadyStarted`
+#### WorkflowExecutionErrorWhenAlreadyStarted
 
 - Type: `bool`
 - Default: `false`
@@ -90,13 +155,30 @@ if err != nil {
 }
 ```
 
-### `RetryPolicy`
+#### RetryPolicy
 
-import RetryPolicy from './how-to-set-a-workflow-retry-policy-in-go.md'
+Create an instance of a [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) from the `go.temporal.io/sdk/temporal` package and provide it as the value to the `RetryPolicy` field of the instance of `StartWorkflowOptions`.
 
-<RetryPolicy/>
+- Type: [RetryPolicy](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default: None
 
-### `CronSchedule`
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+workflowOptions := client.StartWorkflowOptions{
+  RetryPolicy: retrypolicy,
+  // ...
+}
+workflowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, YourWorkflowDefinition)
+if err != nil {
+  // ...
+}
+```
+
+#### CronSchedule
 
 - Type: `string`
 - Default: None
@@ -114,7 +196,7 @@ if err != nil {
 
 [Sample](https://github.com/temporalio/samples-go/tree/master/cron)
 
-### `Memo`
+#### Memo
 
 - Type: `map[string]interface{}`
 - Default: Empty
@@ -132,7 +214,7 @@ if err != nil {
 }
 ```
 
-### `SearchAttributes`
+#### SearchAttributes
 
 **How to set Workflow Execution Search Attributes in Go**
 
