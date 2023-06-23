@@ -15,7 +15,7 @@ This document walks through the elements of Temporal Cloud pricing and is a guid
 
 Actions are the fundamental consumption pricing unit in Temporal Cloud. An Action in Temporal is an event that occurs as part of an execution of your Workflow. Each time you execute a Temporal Workflow (a Workflow Execution), the associated Actions are collected and ultimately represent the state and progress of your Temporal Application.
 
-For a deeper description of Actions, please refer to [this section](LINK:https://docs.temporal.io/cloud#action) of our documentation. You can also [reach out to our team] (https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
+For a deeper description of Actions, please refer to [this section](/cloud#action) of our documentation. You can also [reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
 ## Billing of Actions
 
