@@ -1,7 +1,7 @@
 ---
 id: async-design-patterns
 title: Asynchronous design patterns in TypeScript
-description: TKTKTK.
+description: Examples that demonstrate how to use `sleep` and `condition` to model asynchronous business logic.
 sidebar_label: Asynchronous design patterns
 tags:
   - guide-context

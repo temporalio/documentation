@@ -168,7 +168,7 @@
       "id": "typescript/how-to-spawn-a-child-workflow-execution-in-typescript"
     },
     {
-      "type": "h4",
+      "type": "h3",
       "id": "typescript/parent-close-policy"
     },
     {
@@ -182,6 +182,10 @@
     {
       "type": "p",
       "id": "typescript/how-to-continue-as-new-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/single-entity-pattern"
     },
     {
       "type": "h2",

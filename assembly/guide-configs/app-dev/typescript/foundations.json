@@ -185,6 +185,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/how-to-shut-down-a-worker"
+    },
+    {
+      "type": "h2",
       "id": "typescript/spawning-workflows"
     },
     {
@@ -214,6 +218,10 @@
     {
       "type": "p",
       "id": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/cancellation-scopes"
     }
   ]
 }
