@@ -30,6 +30,17 @@ if err != nil {
 // ...
 ```
 
+The `response` returned by the Query needs to be decoded into a `result` string.
+Since this is a future, use `Get()` on the `response` to get a readable string.
+
+```go
+var result string
+if err != response.Get(&result); err != nil {
+  // ...
+}
+log.Println("Received Query result. Result: " + result)
+```
+
 The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
 When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
 
