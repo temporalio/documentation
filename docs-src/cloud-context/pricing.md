@@ -86,7 +86,7 @@ We offer single sign-on (SSO) integration using SAML at a monthly fixed fee base
 
 ## Pricing Estimates
 
-Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next. You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production scale cost. Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
+Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next. You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost. Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
 
 ## Temporal Pricing FAQ
 
