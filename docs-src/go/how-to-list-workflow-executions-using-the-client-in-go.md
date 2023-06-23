@@ -15,7 +15,7 @@ The metadata returned from the [Visibility store](/concepts/what-is-visibility) 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 
 ```go
-request := "CloseTime = missing"
+request := &workflowservice.ListWorkflowExecutionsRequest{ Query: "CloseTime = missing" }
 ```
 
 This `request` value returns only open Workflows.
