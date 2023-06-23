@@ -11,13 +11,11 @@ Temporal Cloud is a consumption-based service; you pay only for what you need wh
 
 This page introduces the elements of Temporal Cloud pricing so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
 
-## Pricing Element: Temporal Actions
+## Temporal Actions
 
 Actions are the fundamental consumption pricing unit in Temporal Cloud. An Action in Temporal occurs as part of an execution of your Workflow. Each time you execute a Temporal Workflow (a Workflow Execution), the associated Actions are collected and ultimately represent the state and progress of your Temporal Application.
 
 For a deeper description of Actions, please refer to [this section](/cloud#action) of our documentation. You can also [reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
-
-## Billing of Actions
 
 Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
 
@@ -34,7 +32,7 @@ Alternatively, Temporal also offers a credit system. Credits provide an addition
 | 30,000 to 149,999                | $7.90                 | $237,000–$1,185,000 | ~57,000                |
 | > 150,000                        | $5.90                 | $885,000 ->         | –                      |
 
-## Pricing Element: Storage
+## Storage
 
 An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever. Temporal collects the Event History during this time and dispatches work when necessary. In this context, a Workflow Execution has only two states, open (active) or closed.
 
@@ -56,7 +54,7 @@ If you purchase Temporal Cloud credits (as outlined above), running storage cost
 | 500 to 1999         | $0.013           |
 | 2000 or more        | $0.010           |
 
-## Pricing Element: Support
+## Support
 
 With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
 
@@ -72,7 +70,7 @@ If an issue occurs, the team provides support through email, phone, forums, know
 | Response times | P0: 1 business hour<br>P1: 4 business hours<br>P2: 1 business days<br>P3: 2 business days | P0: 30 minutes<br>P1: 1 business hour<br>P2: 4 business hours<br>P3: 1 business day |
 | Pricing        | Greater of $200 or 10% monthly usage (per month)                                          | Greater of $2,000 or 10% monthly activity (per month)                               |
 
-## Pricing Element: SSO and SAML
+## SSO and SAML
 
 We offer single sign-on (SSO) integration using SAML at a monthly fixed fee based on the number of users registered in Temporal Cloud:
 
