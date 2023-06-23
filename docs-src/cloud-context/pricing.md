@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused components.
+Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.
 
 This page introduces the elements of Temporal Cloud pricing so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
 
@@ -40,8 +40,10 @@ Storage costs are measured in gigabyte-hours (GBh) and include charges for activ
 
 Running storage is a measure of the amount of storage used to store active Workflows. When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is retained storage. Typical uses include compliance, debugging, workload refresh, and business analytics. Both kinds of storage have fixed costs.
 
-| **Retained storage** | $0.00042 per GBh |
-| **Running storage** | $0.042 per GBh |
+| **Storage** | **Cost per GBh** |
+| ----------- | ---------------- |
+| Retained    | $0.00042         |
+| Running     | $0.042           |
 
 If you purchase Temporal Cloud credits (as outlined above), running storage costs are tiered and measured in gigabyte-hours.
 
