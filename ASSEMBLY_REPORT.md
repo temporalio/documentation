@@ -1,12 +1,12 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 23 2023 08:44:40 AM -0600
+Last assembled: Friday June 23 2023 09:08:04 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 87 guide configurations found.
 
-1463 information nodes found.
+1462 information nodes found.
 
 1230 information nodes are attached to guides.
 
@@ -943,5 +943,7 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 

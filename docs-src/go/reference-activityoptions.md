@@ -24,7 +24,7 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 | [`OriginalTaskQueueName`](#originaltaskqueuename)   | No                                | `string`                                                                    |
 | [`RetryPolicy`](#retrypolicy)                       | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
 
-### `ActivityID`
+#### ActivityID
 
 - Type: `string`
 - Default: None
@@ -43,7 +43,7 @@ if err != nil {
 
 - [What is an Activity Id](/concepts/what-is-an-activity-id)
 
-### `TaskQueueName`
+#### TaskQueueName
 
 - Type: `string`
 - Default: Inherits the TaskQueue name from the Workflow.
@@ -62,7 +62,7 @@ if err != nil {
 
 - [What is a Task Queue](/concepts/what-is-a-task-queue)
 
-### `ScheduleToCloseTimeout`
+#### ScheduleToCloseTimeout
 
 To set a [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
@@ -83,7 +83,7 @@ if err != nil {
 }
 ```
 
-### `ScheduleToStartTimeout`
+#### ScheduleToStartTimeout
 
 To set a [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
@@ -102,7 +102,7 @@ if err != nil {
 }
 ```
 
-### `StartToCloseTimeout`
+#### StartToCloseTimeout
 
 To set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
@@ -123,7 +123,7 @@ if err != nil {
 }
 ```
 
-### `HeartbeatTimeout`
+#### HeartbeatTimeout
 
 To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
@@ -139,7 +139,7 @@ if err != nil {
 }
 ```
 
-### `WaitForCancellation`
+#### WaitForCancellation
 
 If `true` the Activity Execution will finish executing should there be a Cancellation request.
 
@@ -158,7 +158,7 @@ if err != nil {
 }
 ```
 
-### `OriginalTaskQueueName`
+#### OriginalTaskQueueName
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -172,7 +172,7 @@ if err != nil {
 }
 ```
 
-### `RetryPolicy`
+#### RetryPolicy
 
 To set a [RetryPolicy](/concepts/what-is-a-retry-policy), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 

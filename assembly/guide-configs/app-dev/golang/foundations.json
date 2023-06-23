@@ -81,10 +81,6 @@
     },
     {
       "type": "h3",
-      "id": "go/workflow-type"
-    },
-    {
-      "type": "p",
       "id": "go/how-to-customize-workflow-type-in-go"
     },
     {
@@ -170,6 +166,10 @@
     {
       "type": "p",
       "id": "go/how-to-register-types-with-a-worker-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-set-registerworkflowoptions-in-go"
     },
     {
       "type": "h3",
