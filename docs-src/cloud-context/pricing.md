@@ -40,32 +40,31 @@ An execution of a particular Workflow could exist for a few seconds, a day, mont
 
 Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, "running" storage, and the long-term, "retained" storage of Event Histories of closed Workflows. These are measured per Namespace.
 
-Running storage is a measure of the amount of storage used to store active Workflows. When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is retained storage. Typical use includes compliance, debugging, workload refresh, and business analytics. These both have fixed costs:
+Running storage is a measure of the amount of storage used to store active Workflows. When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is retained storage. Typical uses include compliance, debugging, workload refresh, and business analytics. Both kinds of storage have fixed costs.
 
-| **Retained Storage** | $0.00042 per GBh |
-| -------------------- | ---------------- |
-| **Running Storage**  | $0.042 per GBh   |
+| **Retained storage** | $0.00042 per GBh |
+| **Running storage**  | $0.042 per GBh   |
 
 If you purchase Temporal Cloud credits (as outlined above), running storage costs are tiered and measured in gigabyte-hours.
 
-| **Running Storage** | **Cost per GBh** |
+| **Running storage** | **Cost per GBh** |
 | ------------------- | ---------------- |
-| < 10                | $0.042           |
+| Less than 10                | $0.042           |
 | 10 to 39            | $0.031           |
 | 40 to 119           | $0.023           |
 | 120 to 499          | $0.018           |
 | 500 to 1999         | $0.013           |
-| > 2000              | $0.010           |
+| 2000 or more             | $0.010           |
 
 ## Pricing Element: Support
 
-With a subscription to Temporal Cloud you also gain access to our support organization made up of developer success engineers and solution architects. Our team of experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
+With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
 
 The Temporal Developer Success team is composed of open source contributors and is backed by the main contributors to the open source Temporal project. They provide deep knowledge of how Temporal works and how you can optimize your deployment.
 
 They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage. They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
-If an issue occurs, the team provides support through email, phone, forums, knowledge base and an optional dedicated slack channel. Temporal offers two levels of support defined by their availability and SLAs in the following table.
+If an issue occurs, the team provides support through email, phone, forums, knowledge base, and an optional dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
 
 | **Type**       | **Basic Support**                                                                         | **Premium Support**                                                                 |
 | -------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -83,11 +82,11 @@ We offer single sign-on (SSO) integration using SAML at a monthly fixed fee base
 | 26 to 50  | $300               |
 | 51+       | $500               |
 
-## Pricing Estimates
+## Pricing estimates
 
 Temporal Cloud employs a consumption-based pricing model that's based on storage and execution, factors that vary from one Workflow to the next. You can estimate the cost of a specific Workflow by running it at a low volume and then using its storage and compute measurements to project your production-scale cost. Our team is happy to [help you estimate the cost](https://pages.temporal.io/contact-us) for your specific workloads.
 
-## Temporal Pricing FAQ
+## Temporal pricing FAQ
 
 Q: What’s the minimum cost to run Temporal Cloud?
 
