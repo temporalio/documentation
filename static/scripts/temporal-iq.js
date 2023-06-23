@@ -1,5 +1,4 @@
 function isDesktop() {
-  return true
   const userAgent = navigator.userAgent;
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -9,7 +8,7 @@ function isDesktop() {
 (function (window, document) {
   const script = document.currentScript;
 
-  if (isDesktop()) {
+  if (true) {
     console.log("loading temporal widget");
     // Widget element
     const widgetElement = document.createElement("div");
@@ -49,7 +48,6 @@ function isDesktop() {
     modalStyle.width = "100%";
     modalStyle.height = "100%";
     modalStyle.background = "rgba(101,108,133,.8)";
-    // modalStyle.background = "rgba(0,0,0,0.3)";
     modalStyle.zIndex = "9999";
 
     const openWidget = () => {
@@ -83,20 +81,19 @@ function isDesktop() {
     widgetToggleButtonStyle.position = "fixed";
     widgetToggleButtonStyle.top = "14px";
     widgetToggleButtonStyle.right = "60px";
-    widgetToggleButtonStyle.width = "240px";
-    widgetToggleButtonStyle.minWidth = "240px";
+    widgetToggleButtonStyle.width = "calc(30% - 60px)";
+    widgetToggleButtonStyle.minWidth = "220px";
     widgetToggleButtonStyle.fontFamily = "Inter, sans-serif";
-    widgetToggleButtonStyle.fontSize = "14px";
+    widgetToggleButtonStyle.fontSize = "16px";
     widgetToggleButtonStyle.fontWeight = "400";
     widgetToggleButtonStyle.borderRadius = "100px";
     widgetToggleButtonStyle.color = "#7B7B7B";
     widgetToggleButtonStyle.background = '#ebedf0';
     widgetToggleButtonStyle.border = "2px solid #ffffff";
-    widgetToggleButtonStyle.zIndex = "99999";
+    widgetToggleButtonStyle.zIndex = "9999";
     widgetToggleButtonStyle.cursor = "pointer";
     widgetToggleButtonStyle.outline = "none";
     widgetToggleButton.style.overflow = "hidden";
-
 
     const keyframes = document.createElement("style");
     keyframes.innerHTML = `
@@ -126,15 +123,6 @@ function isDesktop() {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-  
-
-  @media screen and (min-width: 992px) {
-    #widget-container {
-      width: 30%;
-      min-width: 200px;
-      font-size: 16px;
-    }
-  }
   `;
     document.head.appendChild(keyframes);
 
@@ -147,7 +135,7 @@ function isDesktop() {
       }
     });
     widgetToggleButton.innerHTML = `
-                    <div style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px; border-radius: 3px;">
+                    <div id="widget" style="display:flex; flex-direction:row; gap:16px; align-items:center; padding-right:16px; border-radius: 3px;">
                       <div id='widget-text' style='position: relative; display: flex; gap: 8px; align-items:center; flex-grow:1; flex-direction:row; padding-left:16px;'>
                         <img id="temporal-ball" style="position: absolute; left: 0px; display: none; animation: popBall .5s 5s;" src='/img/Temporal_Logo_Animation.gif' width='40px' height='40px'/>
                         <img id='search' style='position: absolute; left: 8px; top: 1px; flex-shrink:0;' src='/img/search.svg' width='20px' height='20px'/>
@@ -202,4 +190,29 @@ function isDesktop() {
   } else {
     console.log("widget already loaded");
   }
+
+  // addEventListener("DOMContentLoaded", (event) => {
+  //   setTimeout(() => {
+  //     const toggleNavButton = document.getElementsByClassName('navbar__toggle')[0];
+  //     if (toggleNavButton) {
+  //       toggleNavButton.addEventListener("click", (e) => {
+  //         const widget = document.getElementById('widget-container');
+  //         if (widget) {
+  //           widget.style.display = 'none';
+  //         }
+  //         const closeNavButton = document.getElementsByClassName('navbar-sidebar__close')[0];
+  //         if (closeNavButton) {
+  //           closeNavButton.addEventListener("click", (e) => {
+  //             const widget = document.getElementById('widget-container');
+  //             if (widget) {
+  //               widget.style.display = 'flex';
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+
+  //   }, 500)
+  // })
+
 })(window, document);
