@@ -22,7 +22,7 @@ If using PostgreSQL v12 or later as your Visibility store with Temporal Server v
 
 Set your PostgreSQL Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
 
-The following example shows how to set a Visibility store `postgres-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
+The following example shows how to set a Visibility store `postgres-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 #...
@@ -52,12 +52,12 @@ See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) for d
 
 **Database schema and setup**
 
-Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in the following:
+Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions):
 
 - [PostgreSQL v12 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v12/visibility)
 - [PostgreSQL v9.6 and later](https://github.com/temporalio/temporal/tree/master/schema/postgresql/v96/visibility)
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to set up your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up your PostgreSQL Visibility store.
 
 ```bash
 #...

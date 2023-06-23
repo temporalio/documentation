@@ -62,13 +62,16 @@ Advanced Visibility, within the Temporal Platform, is the subsystem and APIs tha
 ## Dual Visibility
 
 Dual Visibility is a feature that allows you to set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
-Setting up Dual Visibility enables smoother migration of your Visibility data from one database to another.
-For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and migrate your data before .
+Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/cluster-deployment-guide#migrating-visibility-database) or create a backup Visibility store..
 
-A Dual visibility setup requires two configurations:
+For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and gradually migrate your data to the secondary store before deprecating your primary one.
 
-- **Primary Visibility**: This is a required primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
-- **Secondary Visibility**: This is an optional additional Visibility store that is a secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
+A Dual Visibility setup requires two Visibility store configurations:
+
+- **Primary Visibility**: The primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
+- **Secondary Visibility**: A secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
+
+For configuration details, see [Dual Visibility setup](/cluster-deployment-guide#set-up-secondary-visibility).
 
 The following combinations are allowed in a Dual Visbility setting.
 
@@ -82,7 +85,7 @@ With Dual Visibility, you can read from only one Visibility store at a time, but
 When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
 
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
-For details on migrating your Visibility store databases, see [Setting up Dual Visibility](//clusters/how-to-set-up-dual-visibility).
+For details on migrating your Visibility store databases, see <a class="tdlp" href="/cluster-deployment-guide#dual-visibility">Setting up Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Dual Visibility</span><br /><br /><span class="tdlppd">To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#dual-visibility">Learn more</a></span></span></a>.
 
 ## List Filter
 
@@ -102,13 +105,14 @@ A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute
 - **AND, OR, ()**
 - **BETWEEN ... AND**
 - **IN**
-- **ORDER BY**
 
-The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
+<!-- - **ORDER BY** -->
+
+<!-- The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
 
 The **ORDER BY** operator is currently not supported in Temporal Cloud.
 
-Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses. -->
 
 ### Partial string match
 
@@ -156,9 +160,9 @@ WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
 ```
 
-```sql
+<!-- ```sql
 WorkflowId = '<workflow-id>' order by StartTime desc
-```
+``` -->
 
 ```sql
 WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
@@ -180,7 +184,7 @@ ExecutionTime between '2021-08-22T15:04:05+00:00' and '2021-08-28T15:04:05+00:00
 ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04:05+00:00'
 ```
 
-```sql
+<!-- ```sql
 order by ExecutionTime
 ```
 
@@ -190,7 +194,7 @@ order by StartTime desc, CloseTime asc
 
 ```sql
 order by CustomIntField asc
-```
+``` -->
 
 ## Search Attribute
 

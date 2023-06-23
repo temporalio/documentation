@@ -8,7 +8,7 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - Support for Cassandra as a Visbility database will be deprecated from Temporal Server v1.21 onwards. Check Server release notes for updates.
+  - Support for Cassandra as a Visibility database will be deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
   - We recommend migrating from Cassandra to any of the other supported databases for Visibility.
 ---
 
@@ -18,14 +18,15 @@ Verify [supported versions](#supported-databases) before you proceed.
 Advanced Visibility is not supported with Cassandra.
 
 To enable advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Visibility store.
-To migrate from Cassandra to a supported SQL database, see LINK.
 We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize performance.
+
+To migrate from Cassandra to a supported SQL database, see [Migrate Visibility database](/cluster-deployment-guide#migrating-visibility-database).
 
 **Persistence configuration**
 
 Set your Cassandra Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
 
-The following example shows how to set a Visibility store `cass-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
+The following example shows how to set a Visibility store `cass-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 #...
@@ -47,7 +48,7 @@ persistence:
 
 Visibility data is stored in a database table called `executions_visibility` that must be set up according to the schemas defined (by supported versions) in https://github.com/temporalio/temporal/tree/master/schema/cassandra/visibility.
 
-The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script is used to set up your Visibility store.
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up your Visibility store.
 
 ```bash
 #...

@@ -25,7 +25,7 @@ If using SQLite v3.31.0 and later as your Visibility store with Temporal Server 
 
 Set your SQLite Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
 
-The following example shows how to set a Visibility store `sqlite-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
+The following example shows how to set a Visibility store `sqlite-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 persistence:

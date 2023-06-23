@@ -11,17 +11,19 @@ ssdi:
   - Supported from Temporal Server v1.21 onwards.
 ---
 
-To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.
+To enable [Dual Visibility](/concepts/what-is-dual-visibility), set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.
 
 With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Cluster to write to primary only, secondary only, or to both primary and secondary Visibility stores.
 
-### Set up secondary Visibility
+#### Set up secondary Visibility
 
 Set the secondary Visibility store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and then define the secondary Visibility store configuration under `datastores`.
 
-You can configure any of the supported databases as your secondary Visibility store.
+You can configure any of the [supported databases](/cluster-deployment-guide#supported-databases) as your secondary Visibility store.
 
-For example, to migrate from Cassandra to MySQL, set up MySQL as your secondary Visibility store as shown.
+Examples:
+
+To set up MySQL as a secondary Visibility store with Cassandra as your primary store, do the following.
 
 ```yaml
 persistence:
@@ -63,9 +65,7 @@ persistence:
 
 #### Database schema and setup
 
-The database schema and setup for the secondary Visibility database is the same as what is set for the primary database.
-
-The following databases are supported.
+The database schema and setup for secondary Visibility depends on the database you plan to use.
 
 - [MySQL](/cluster-deployment-guide#mysql)
 - [PostgresSQL](/cluster-deployment-guide#postgresql)
@@ -209,9 +209,9 @@ setup_es_index() {
 
 ``` -->
 
-### Update Cluster configuration
+#### Update Cluster configuration
 
-With the primary and secondary Visibility stores set, update the `system.secondaryVisibilityWritingMode` and syst`em.enableReadFromSecondaryVisibility` configuuration keys in your self-hosted Cluster's dynamic configuration YAML file to enable read and/or write operations to the secondary Visibility store.
+With the primary and secondary Visibility stores set, update the `system.secondaryVisibilityWritingMode` and `system.enableReadFromSecondaryVisibility` configuuration keys in your self-hosted Cluster's dynamic configuration YAML file to enable read and/or write operations to the secondary Visibility store.
 
 For example, to enable write operations to both primary and secondary Visibility, but disable reading from secondary, use the following.
 

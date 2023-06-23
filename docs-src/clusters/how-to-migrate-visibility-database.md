@@ -63,7 +63,7 @@ The following steps describe how to migrate your Visibility database with exampl
    - value: true
    constraints: {}
    ```
-   At this point, Visibility data is being read from the secondary store only. Verify whether data on the secondary store is stored correctly.
+   At this point, Visibility data is read from the secondary store only. Verify whether data on the secondary store is correct.
 
 4. When secondary Visibility store is vetted and ready to replace your current primary store, change your Cluster configuration to set the secondary store as your primary, and remove the dynamic configuration set in the previous steps.
    Example:
