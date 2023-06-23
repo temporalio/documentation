@@ -38,7 +38,7 @@ Alternatively, Temporal also offers a credit system. Credits provide an addition
 
 An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever. Temporal collects the Event History during this time and dispatches work when necessary. In this context, a Workflow Execution has only two states, open (active) or closed.
 
-Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, "running storage," and the long-term, "retained" storage of Event Histories of closed Workflows. These are measured per Namespace.
+Storage costs are measured in gigabyte-hours (GBh) and include charges for active Workflows, "running" storage, and the long-term, "retained" storage of Event Histories of closed Workflows. These are measured per Namespace.
 
 Running storage is a measure of the amount of storage used to store active Workflows. When the execution of a Workflow ends, Temporal Cloud stores Event History for a defined Retention Period, for historical use. This is retained storage. Typical use includes compliance, debugging, workload refresh, and business analytics. These both have fixed costs:
 
