@@ -9,7 +9,7 @@ tags:
 
 Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused components.
 
-This document walks through the elements of Temporal Cloud pricing and is a guide to help you understand concepts so you can estimate costs for your implementation. To gain a reliable estimate, you should [engage with our team](https://pages.temporal.io/contact-us).
+This page introduces the elements of Temporal Cloud pricing so that you can estimate costs for your implementation. To gain a reliable estimate, [contact our team](https://pages.temporal.io/contact-us).
 
 ## Pricing Element: Temporal Actions
 
