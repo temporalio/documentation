@@ -17,7 +17,7 @@ Verify [supported versions](/clusters/how-to-set-up-visibility-in-a-temporal-clu
 Temporal supports only an in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
 
 You can change the configuration to use a file-based database so that it is preserved when Temporal Server stops.
-However, if you use a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
+However, if you use a file-based SQLite database, upgrading your database schema to enable advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
 
 If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any [custom Search Attributes](/concepts/what-is-a-search-attribute#custom-search-attributes) that you create must be associated with a Namespace in that Cluster.
 
@@ -57,7 +57,7 @@ persistence:
           serverName: ""
 ```
 
-SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
+SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
 **Database schema and setup**
 

@@ -67,12 +67,6 @@ An Activity Type is the mapping of a name to an Activity Definition.
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Advanced Visibility](/visibility#advanced-visibility)
-Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
-
-
 #### [Archival](/clusters#archival)
 Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.
 
@@ -149,6 +143,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 The default Data Converter is used by the Temporal SDK to convert objects into bytes using a series of Payload Converters.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Dual Visibility](/visibility#dual-visibility)
+Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
 
 #### [Event](/workflows#event)
@@ -341,12 +341,6 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 A Signal is an asynchronous request to a Workflow Execution.
 
 _Tags: [term](/tags/term), [signals](/tags/signals), [explanation](/tags/explanation)_
-
-
-#### [Standard Visibility](/visibility#standard-visibility)
-Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
-
-_Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
 
 #### [Start-To-Close Timeout](/activities#start-to-close-timeout)

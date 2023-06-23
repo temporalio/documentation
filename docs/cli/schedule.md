@@ -192,7 +192,7 @@ Use the options below to change this command's output.
 ## list
 
 The `temporal schedule list` command lists all <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> configurations.
-Listing Schedules in <a class="tdlp" href="/visibility#standard-visibility">Standard Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Standard Visibility?</span><br /><br /><span class="tdlppd">Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#standard-visibility">Learn more</a></span></span></a> will only provide Schedule IDs.
+Listing Schedules in <a class="tdlp" href="/visibility#standard-visibility">Standard Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is standard Visibility?</span><br /><br /><span class="tdlppd">Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#standard-visibility">Learn more</a></span></span></a> will only provide Schedule IDs.
 
 `temporal schedule list`
 

@@ -40,6 +40,10 @@
     },
     {
       "type": "h3",
+      "id": "clusters/how-to-set-up-dual-visibility"
+    },
+    {
+      "type": "h3",
       "id": "cluster-ops-context/manage-custom-search-attributes"
     },
     {

@@ -26,7 +26,19 @@ The [Visibility store](/cluster-deployment-guide#visibility-store) in your Tempo
 
 - [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
 
-A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
+With Temporal Server v1.21, you can set up <a class="tdlp" href="#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#dual-visibility">Learn more</a></span></span></a> to migrate your Visibility store from one database to another.
+
+<!-- A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
+
+Support for separate Standard and Advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
+
+:::tip Support, stability, and dependency info
+
+- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
+- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
+- From Temporal Server v1.21 and later, - Standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). - Visibility configuration in the Temporal Cluster is updated. For details see [Visbility store setup](/cluster-deployment-guide#visibility-store). - Dual Visibility is enabled.
+
+:::
 
 ## Standard Visibility
 
@@ -36,14 +48,41 @@ Open Workflow Executions can be filtered by a time constraint and either a Workf
 
 Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
 
+Support for Standard Visibility will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates.
+
 ## Advanced Visibility
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
 
-- With Temporal Cluster version 1.20 and later, Advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to supporting Elasticsearch.
-- For Temporal Server versions 1.19.1 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate with ElasticSearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use Advanced Visibility.
+- From Temporal Cluster version 1.20 and later, advanced Visibility is available on SQL databases like MySQL (version 8.0.17 and later) and PostgreSQL (version 12 and later), in addition to support for Elasticsearch.
+- For Temporal Server versions 1.19.1 and earlier, you must <a class="tdlp" href="/cluster-deployment-guide#elasticsearch">integrate with ElasticSearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#elasticsearch">Learn more</a></span></span></a> to use advanced Visibility.
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
+
+## Dual Visibility
+
+Dual Visibility is a feature that allows you to set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
+Setting up Dual Visibility enables smoother migration of your Visibility data from one database to another.
+For example, if you have Cassandra configured as your Visibility database, you can set up a supported SQL database as your secondary Visibility store and migrate your data before .
+
+A Dual visibility setup requires two configurations:
+
+- **Primary Visibility**: This is a required primary Visibility store where Visibility data is written to and read from by default. The primary Visibility store is set with the `visibilityStore` configuration key in your Temporal Cluster.
+- **Secondary Visibility**: This is an optional additional Visibility store that is a secondary storage for your Visibility data. The secondary Visibility store is set with the `secondaryVisibilityStore` configuration key in your Temporal Cluster.
+
+The following combinations are allowed in a Dual Visbility setting.
+
+| Primary                     | Secondary                       |
+| --------------------------- | ------------------------------- |
+| Standard (Cassandra or SQL) | Advanced (SQL or Elasticsearch) |
+| Advanced (SQL)              | Advanced (SQL)                  |
+| Advanced (Elasticsearch)    | Advanced (Elasticsearch)        |
+
+With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Cluster to write to primary only, secondary only, or to both primary and secondary Visibility stores.
+When migrating from one Visibility store database to another, set up the database you want to migrate to as your secondary Visibility store.
+
+You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
+For details on migrating your Visibility store databases, see [Setting up Dual Visibility](//clusters/how-to-set-up-dual-visibility).
 
 ## List Filter
 

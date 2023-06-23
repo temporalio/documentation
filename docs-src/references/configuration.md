@@ -210,7 +210,8 @@ Below is an example minimal specification for a password-secured Cluster using C
 ```yaml
 persistence:
   defaultStore: default
-  visibilityStore: visibility
+  visibilityStore: cass-visibility
+  secondaryVisibilityStore: es-visibility
   numHistoryShards: 512
   datastores:
     default:
@@ -219,10 +220,20 @@ persistence:
         keyspace: "temporal"
         user: "username"
         password: "password"
-    visibility:
+    cass-visibility:
       cassandra:
         hosts: "127.0.0.1"
         keyspace: "temporal_visibility"
+    es-visibility:
+      elasticsearch:
+        version: "v7"
+        logLevel: "error"
+        url:
+          scheme: "http"
+          host: "127.0.0.1:9200"
+        indices:
+          visibility: temporal_visibility_v1
+        closeIdleConnectionsInterval: 15s
 ```
 
 The following top level configuration items are required:
@@ -240,7 +251,11 @@ _Required_ - The name of the data store definition that should be used by the Te
 
 ### visibilityStore
 
-_Required_ - the name of the data store definition that should be used by the Temporal visibility server.
+_Required_ - The name of the primary data store definition that should be used to set up [Visibility](/concepts/what-is-visibility) on the Temporal Cluster.
+
+### secondaryVisibilityStore
+
+_Optional_ - The name of the secondary data store definition that should be used to set up [Dual Visibility](/concepts/what-is-dual-visibility) on the Temporal Cluster.
 
 ### datastores
 

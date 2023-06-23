@@ -35,29 +35,32 @@ A <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><im
 A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and `tctl` to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
 With the Visibility store, you can use <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to list and filter Workflow Executions that you want to review.
-Setting up <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> enables access to creating and using multiple custom Search Attributes with your List Filters.
+
+<!-- Setting up <a class="tdlp" href="/visibility#advanced-visibility">advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> enables access to creating and using multiple custom Search Attributes with your List Filters. -->
+
 For details, see <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>.
 
-Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later supports Advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite (v3.31.0 and later), in addition to Elasticsearch.
+Note that if you use MySQL, PostgreSQL, or SQLite as your Visibility store, Temporal Server version 1.20 and later supports advanced Visibility features on MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later) and SQLite (v3.31.0 and later), in addition to Elasticsearch.
 
-To enable Advanced Visibility on your SQL databases, ensure that you do the following:
+To enable advanced Visibility on your SQL databases, ensure that you do the following:
 
 - <a class="tdlp" href="#upgrade-server">Upgrade your Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> to version 1.20.
 - <a class="tdlp" href="#upgrade-mysql-or-postgresql-schema">Update your database schemas<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-mysql-or-postgresql-schema">Learn more</a></span></span></a> for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
+
+From Temporal Server v1.21 onwards, you can set up a secondary Visibility store in your Temporal Cluster to enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>. This is useful for migrating your Visibility store to another supported database.
 
 #### Supported databases
 
 The following databases are supported as Visibility stores:
 
 - <a class="tdlp" href="#mysql">MySQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up MySQL Visibility store</span><br /><br /><span class="tdlppd">You can set MySQL (v5.7 and later) as your Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#mysql">Learn more</a></span></span></a> v5.7 and later.
-  Use v8.0.17 (or later) with Temporal Server v1.20 or later for Advanced Visibility capabilities.
+  Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
 - <a class="tdlp" href="#postgresql">PostgreSQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up PostgreSQL Visibility store</span><br /><br /><span class="tdlppd">You can set PostgreSQL as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#postgresql">Learn more</a></span></span></a> v9.6 and later.
-  Use v12 (or later) with Temporal Server v1.20 or later for Advanced Visibility capabilities.
-- <a class="tdlp" href="#sqlite">SQLite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up SQLite Visibility store</span><br /><br /><span class="tdlppd">You can set SQLite as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#sqlite">Learn more</a></span></span></a> v3.31.0 and later for Advanced Visibility capabilities.
-- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>.
+  Use v12 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
+- <a class="tdlp" href="#sqlite">SQLite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up SQLite Visibility store</span><br /><br /><span class="tdlppd">You can set SQLite as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#sqlite">Learn more</a></span></span></a> v3.31.0 and later for advanced Visibility capabilities.
+- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>. Support for Cassandra as a Visibility database will be deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
 - <a class="tdlp" href="#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#elasticsearch">Learn more</a></span></span></a> supported versions.
-  We recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than a few Workflow Executions.
-  You can set Elasticsearch as your Visibility store or set it specifically for Advanced Visibility with a different Visibility store.
+  We recommend operating a Temporal Cluster with Elasticsearch as your Visibility store for any use case that spawns more than a few Workflow Executions.
 
 You can use any combination of the supported databases for your Persistence and Visibility stores.
 
@@ -66,7 +69,7 @@ You can use any combination of the supported databases for your Persistence and 
 :::tip Support, stability, and dependency info
 - MySQL v5.7 and later.
 - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20.
-- With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later.
+- With Temporal Server version 1.20 and later, advanced Visibility is available on MySQL v8.0.17 and later.
 
 :::
 
@@ -92,7 +95,7 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities
+        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for advanced Visibility capabilities
         databaseName: "temporal_visibility"
         connectAddr: " " # remote address of this database; for example, 127.0.0.0:3306
         connectProtocol: " " # protocol example: tcp
@@ -106,7 +109,7 @@ persistence:
 
 For details on the configuration parameters and values, see <a class="tdlp" href="/references/configuration#sql">Cluster configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#sql">Learn more</a></span></span></a>.
 
-To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
+To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
 See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> on how to upgrade your Temporal Server and database schemas.
 
 For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).
@@ -154,7 +157,7 @@ Note that the script uses [temporal-sql-tool](https://github.com/temporalio/temp
 
 :::tip Support, stability, and dependency info
 - PostgreSQL v9.6 and later.
-- With Temporal Cluster version 1.20 and later, Advanced Visibility is available on PostgreSQL v12 and later.
+- With Temporal Cluster version 1.20 and later, advanced Visibility is available on PostgreSQL v12 and later.
 - Support for PostgreSQL v9.6 through v11 will be deprecated for all Temporal Server versions after v1.20; we recommend upgrading to PostgreSQL 12 or later.
 
 :::
@@ -181,7 +184,7 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: "postgres" # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for Advanced Visibility capabilities
+        pluginName: "postgres" # if using PostgreSQL v12 or later with Temporal Server v1.20, use "postgres12" plugin for advanced Visibility capabilities
         databaseName: "temporal_visibility"
         connectAddr: " " # remote address of this database; for example, 127.0.0.0:5432
         connectProtocol: " " # protocol example: tcp
@@ -193,7 +196,7 @@ persistence:
 #...
 ```
 
-To enable Advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later.
+To enable advanced Visibility features on your PostgreSQL Visibility store, upgrade to PostgreSQL v12 or later with Temporal Server v1.20 or later.
 See <a class="tdlp" href="#upgrade-server">Upgrade Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> for details on how to upgrade your Temporal Server and database schemas.
 
 **Database schema and setup**
@@ -245,7 +248,7 @@ Verify <a class="tdlp" href="#supported-databases">supported versions<span class
 Temporal supports only an in-memory database with SQLite; this means that the database is automatically created when Temporal Server starts and is destroyed when Temporal Server stops.
 
 You can change the configuration to use a file-based database so that it is preserved when Temporal Server stops.
-However, if you use a file-based SQLite database, upgrading your database schema to enable Advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
+However, if you use a file-based SQLite database, upgrading your database schema to enable advanced Visibility features is not supported; in this case, you must delete the database and create it again to upgrade.
 
 If using SQLite v3.31.0 and later as your Visibility store with Temporal Server v1.20 and later, any <a class="tdlp" href="/visibility#custom-search-attributes">custom Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#custom-search-attributes">Learn more</a></span></span></a> that you create must be associated with a Namespace in that Cluster.
 
@@ -285,7 +288,7 @@ persistence:
           serverName: ""
 ```
 
-SQLite (v3.31.0 and later) has Advanced Visiibility enabled by default.
+SQLite (v3.31.0 and later) has advanced Visibility enabled by default.
 
 **Database schema and setup**
 
@@ -295,11 +298,19 @@ For an example of setting up the SQLite schema, see [Temporalite](https://github
 
 ### Cassandra
 
+:::tip Support, stability, and dependency info
+- Support for Cassandra as a Visbility database will be deprecated from Temporal Server v1.21 onwards. Check Server release notes for updates.
+- We recommend migrating from Cassandra to any of the other supported databases for Visibility.
+
+:::
+
 You can set Cassandra as your <a class="tdlp" href="/clusters#visibility">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a>.
 Verify [supported versions](#supported-databases) before you proceed.
 
 Advanced Visibility is not supported with Cassandra.
-To enable Advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Advanced Visibility store.
+
+To enable advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Visibility store.
+To migrate from Cassandra to a supported SQL database, see LINK.
 We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize performance.
 
 **Persistence configuration**
@@ -372,7 +383,7 @@ setup_cassandra_schema() {
 
 :::
 
-You can integrate Elasticsearch with your Temporal Cluster for <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> to take on the Visibility request load.
+You can integrate Elasticsearch with your Temporal Cluster for <a class="tdlp" href="/visibility#advanced-visibility">advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> to take on the Visibility request load.
 We recommend using Elasticsearch for large-scale operations on the Temporal Cluster.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
@@ -388,25 +399,17 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 **Persistence configuration**
 
-1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
-   For example usage, you can look at [several development_es.yaml files](https://github.com/temporalio/temporal/tree/master/config) in the `temporalio/temporal` repo.
-   The configuration instructs the Temporal Cluster how and where to connect to Elasticsearch storage.
+Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
+
+The following example shows how to set a Visibility store `mysql-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
 
 ```yaml
 persistence:
   ...
-  advancedVisibilityStore: es-visibility
-```
-
-2. Define the Elasticsearch datastore connection information under the `es-visibility` key:
-
-```yaml
-persistence:
-  ...
-  advancedVisibilityStore: es-visibility
+  visibilityStore: es-visibility
   datastores:
     ...
-    es-visibility:
+    es-visibility: # Define the Elasticsearch datastore connection information under the `es-visibility` key
       elasticsearch:
         version: "v7"
         url:
@@ -443,6 +446,231 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 - **Custom Search Attributes**
   - [index privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-indices): `manage`
   - [cluster privileges](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html#privileges-list-cluster): `monitor` or `manage`.
+
+### Dual Visibility
+
+:::tip Support, stability, and dependency info
+- Supported from Temporal Server v1.21 onwards.
+
+:::
+
+To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.
+
+With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Cluster to write to primary only, secondary only, or to both primary and secondary Visibility stores.
+
+### Set up secondary Visibility
+
+Set the secondary Visibility store with the `secondaryVisibilityStore` configuration key in your Persistence configuration, and then define the secondary Visibility store configuration under `datastores`.
+
+You can configure any of the supported databases as your secondary Visibility store.
+
+For example, to migrate from Cassandra to MySQL, set up MySQL as your secondary Visibility store as shown.
+
+```yaml
+persistence:
+  visibilityStore: cass-visibility # This is your primary Visibility store
+  secondaryVisibilityStore: mysql-visibility # This is your secondary Visibility store
+  datastores:
+    cass-visibility:
+      cassandra:
+        hosts: "127.0.0.1"
+        keyspace: "temporal_primary_visibility"
+    mysql-visibility:
+      sql:
+        pluginName: "mysql8" # Verify supported versions. Use a version of SQL that supports advanced Visibility.
+        databaseName: "temporal_secondary_visibility"
+        connectAddr: "127.0.0.1:3306"
+        connectProtocol: "tcp"
+        user: "temporal"
+        password: "temporal"
+```
+
+To set Elasticsearch as both your primary and secondary Visibility store, use the configuration key `elasticsearch.indices.secondary_visibility`, as shown in the following example.
+
+```yaml
+persistence:
+  visibilityStore: es-visibility
+  datastores:
+    es-visibility:
+      elasticsearch:
+        version: "v7"
+        logLevel: "error"
+        url:
+          scheme: "http"
+          host: "127.0.0.1:9200"
+        indices:
+          visibility: temporal_visibility_v1
+          secondary_visibility: temporal_visibility_v2
+        closeIdleConnectionsInterval: 15s
+```
+
+#### Database schema and setup
+
+The database schema and setup for the secondary Visibility database is the same as what is set for the primary database.
+
+The following databases are supported.
+
+- [MySQL](/cluster-deployment-guide#mysql)
+- [PostgresSQL](/cluster-deployment-guide#postgresql)
+- [SQLite](/cluster-deployment-guide#sqlite)
+- [Elasticsearch](/cluster-deployment-guide#elasticsearch)
+
+For the Cassandra and MySQL configuration in the previous example, an example setup script would be as follows.
+
+```bash
+#...
+# set your Cassandra environment variables
+: "${KEYSPACE:=temporal}"
+: "${VISIBILITY_KEYSPACE:=temporal_primary_visibility}"
+
+: "${CASSANDRA_SEEDS:=}"
+: "${CASSANDRA_PORT:=9042}"
+: "${CASSANDRA_USER:=}"
+: "${CASSANDRA_PASSWORD:=}"
+: "${CASSANDRA_TLS_ENABLED:=}"
+: "${CASSANDRA_CERT:=}"
+: "${CASSANDRA_CERT_KEY:=}"
+: "${CASSANDRA_CA:=}"
+: "${CASSANDRA_REPLICATION_FACTOR:=1}"
+#...
+# set connection details
+#...
+# set up Cassandra schema
+setup_cassandra_schema() {
+  #...
+  # use valid schema for the version of the database you want to set up for Visibility
+    VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/cassandra/visibility/versioned
+    if [[ ${SKIP_DB_CREATE} != true ]]; then
+        temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" create -k "${VISIBILITY_KEYSPACE}" --rf "${CASSANDRA_REPLICATION_FACTOR}"
+    fi
+    temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${VISIBILITY_KEYSPACE}" setup-schema -v 0.0
+    temporal-cassandra-tool --ep "${CASSANDRA_SEEDS}" -k "${VISIBILITY_KEYSPACE}" update-schema -d "${VISIBILITY_SCHEMA_DIR}"
+  #...
+}
+#...
+# set your MySQL environment variables
+: "${DBNAME:=temporal}"
+: "${VISIBILITY_DBNAME:=temporal_secondary_visibility}"
+: "${DB_PORT:=}"
+: "${MYSQL_SEEDS:=}"
+: "${MYSQL_USER:=}"
+: "${MYSQL_PWD:=}"
+: "${MYSQL_TX_ISOLATION_COMPAT:=false}"
+
+#...
+# set connection details
+#...
+# set up MySQL schema
+setup_mysql_schema() {
+    #...
+    # use valid schema for the version of the database you want to set up for Visibility
+    VISIBILITY_SCHEMA_DIR=${TEMPORAL_HOME}/schema/mysql/${MYSQL_VERSION_DIR}/visibility/versioned
+    if [[ ${SKIP_DB_CREATE} != true ]]; then
+        temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" create
+    fi
+    temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" setup-schema -v 0.0
+    temporal-sql-tool --ep "${MYSQL_SEEDS}" -u "${MYSQL_USER}" -p "${DB_PORT}" "${MYSQL_CONNECT_ATTR[@]}" --db "${VISIBILITY_DBNAME}" update-schema -d "${VISIBILITY_SCHEMA_DIR}"
+#...
+}
+```
+
+<!-- AB: Should I add this example? Is this correct?
+For Elasticsearch as both primary and secondary Visibility store configuration in the previous example, an example setup script would be as follows.
+
+```bash
+#...
+# Elasticsearch
+: "${ENABLE_ES:=false}"
+: "${ES_SCHEME:=http}"
+: "${ES_SEEDS:=}"
+: "${ES_PORT:=9200}"
+: "${ES_USER:=}"
+: "${ES_PWD:=}"
+: "${ES_VERSION:=v7}"
+: "${ES_VIS_INDEX:=temporal_visibility_v1}"
+: "${ES_SEC_VIS_INDEX:=}"
+: "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
+
+#...
+
+# Validate your ES environment
+#...
+# Wait for ES to start
+#...
+# Set up Elasticsearch index
+setup_es_index() {
+    ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
+    # ES_SERVER is the URL of Elasticsearch server i.e. "http://localhost:9200".
+    SETTINGS_URL="${ES_SERVER}/_cluster/settings"
+    SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
+    TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v1_template"
+    SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
+    INDEX_URL="${ES_SERVER}/${ES_VIS_INDEX}"
+    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
+    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
+    curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
+    if [[ ! -z "${ES_SEC_VIS_INDEX}" ]]; then
+      SEC_INDEX_URL="${ES_SERVER}/${ES_SEC_VIS_INDEX}"
+      curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${SEC_INDEX_URL}" --write-out "\n"
+    fi
+}
+#...
+# Elasticsearch
+: "${ENABLE_ES:=false}"
+: "${ES_SCHEME:=http}"
+: "${ES_SEEDS:=}"
+: "${ES_PORT:=9200}"
+: "${ES_USER:=}"
+: "${ES_PWD:=}"
+: "${ES_VERSION:=v7}"
+: "${ES_VIS_INDEX:=temporal_visibility_v2}"
+: "${ES_SEC_VIS_INDEX:=}"
+: "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
+#...
+# Validate your ES environment
+#...
+# Wait for ES to start
+#...
+# Set up Elasticsearch index
+setup_es_index() {
+    ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
+# @@@SNIPSTART setup-es-template-commands
+    # ES_SERVER is the URL of Elasticsearch server i.e. "http://localhost:9200".
+    SETTINGS_URL="${ES_SERVER}/_cluster/settings"
+    SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
+    TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v2_template"
+    SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
+    INDEX_URL="${ES_SERVER}/${ES_VIS_INDEX}"
+    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
+    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
+    curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
+    if [[ ! -z "${ES_SEC_VIS_INDEX}" ]]; then
+      SEC_INDEX_URL="${ES_SERVER}/${ES_SEC_VIS_INDEX}"
+      curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${SEC_INDEX_URL}" --write-out "\n"
+    fi
+}
+
+``` -->
+
+### Update Cluster configuration
+
+With the primary and secondary Visibility stores set, update the `system.secondaryVisibilityWritingMode` and syst`em.enableReadFromSecondaryVisibility` configuuration keys in your self-hosted Cluster's dynamic configuration YAML file to enable read and/or write operations to the secondary Visibility store.
+
+For example, to enable write operations to both primary and secondary Visibility, but disable reading from secondary, use the following.
+
+```yaml
+system.secondaryVisibilityWritingMode:
+ - value: "dual"
+   constraints: {}
+system.enableReadFromSecondaryVisibility:
+ - value: false
+   constraints: {}
+```
+
+For details on the configuration options, see:
+
+- <a class="tdlp" href="/references/dynamic-configuration#secondary-visibility-settings">Secondary Visibility dynamic configuration reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Dynamic configuration reference</span><br /><br /><span class="tdlppd">Dynamic configuration key values can be set to override the default values in a Cluster configuration.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/dynamic-configuration#secondary-visibility-settings">Learn more</a></span></span></a>
+- [Migrating Visibility databases](/cluster-deployment-guide#migrating-visibility-database)
 
 ### Custom Search Attributes
 

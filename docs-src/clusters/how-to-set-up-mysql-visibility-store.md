@@ -10,7 +10,7 @@ tags:
 ssdi:
   - MySQL v5.7 and later.
   - Support for MySQL v5.7 will be deprecated for all Temporal Server versions after v1.20.
-  - With Temporal Server version 1.20 and later, Advanced Visibility is available on MySQL v8.0.17 and later.
+  - With Temporal Server version 1.20 and later, advanced Visibility is available on MySQL v8.0.17 and later.
 ---
 
 You can set MySQL as your [Visibility store](/concepts/what-is-visibility).
@@ -35,7 +35,7 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for Advanced Visibility capabilities
+        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for advanced Visibility capabilities
         databaseName: "temporal_visibility"
         connectAddr: " " # remote address of this database; for example, 127.0.0.0:3306
         connectProtocol: " " # protocol example: tcp
@@ -49,7 +49,7 @@ persistence:
 
 For details on the configuration parameters and values, see [Cluster configuration](/references/configuration#sql).
 
-To enable Advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
+To enable advanced Visibility features on your MySQL Visibility store, upgrade to MySQL v8.0.17 or later with Temporal Server v1.20 or later.
 See [Upgrade Server](/clusters/how-to-upgrade-the-temporal-server-version) on how to upgrade your Temporal Server and database schemas.
 
 For example configuration templates, see [MySQL Visibility store configuration](https://github.com/temporalio/temporal/blob/master/config/development-mysql.yaml).

@@ -14,7 +14,7 @@ ssdi:
   - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch.
 ---
 
-You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load.
+You can integrate Elasticsearch with your Temporal Cluster for [advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load.
 We recommend using Elasticsearch for large-scale operations on the Temporal Cluster.
 
 To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
@@ -30,25 +30,17 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 **Persistence configuration**
 
-1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
-   For example usage, you can look at [several development_es.yaml files](https://github.com/temporalio/temporal/tree/master/config) in the `temporalio/temporal` repo.
-   The configuration instructs the Temporal Cluster how and where to connect to Elasticsearch storage.
+Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
+
+The following example shows how to set a Visibility store `mysql-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
 
 ```yaml
 persistence:
   ...
-  advancedVisibilityStore: es-visibility
-```
-
-2. Define the Elasticsearch datastore connection information under the `es-visibility` key:
-
-```yaml
-persistence:
-  ...
-  advancedVisibilityStore: es-visibility
+  visibilityStore: es-visibility
   datastores:
     ...
-    es-visibility:
+    es-visibility: # Define the Elasticsearch datastore connection information under the `es-visibility` key
       elasticsearch:
         version: "v7"
         url:

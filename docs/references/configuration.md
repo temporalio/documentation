@@ -212,7 +212,8 @@ Below is an example minimal specification for a password-secured Cluster using C
 ```yaml
 persistence:
   defaultStore: default
-  visibilityStore: visibility
+  visibilityStore: cass-visibility
+  secondaryVisibilityStore: es-visibility
   numHistoryShards: 512
   datastores:
     default:
@@ -221,10 +222,20 @@ persistence:
         keyspace: "temporal"
         user: "username"
         password: "password"
-    visibility:
+    cass-visibility:
       cassandra:
         hosts: "127.0.0.1"
         keyspace: "temporal_visibility"
+    es-visibility:
+      elasticsearch:
+        version: "v7"
+        logLevel: "error"
+        url:
+          scheme: "http"
+          host: "127.0.0.1:9200"
+        indices:
+          visibility: temporal_visibility_v1
+        closeIdleConnectionsInterval: 15s
 ```
 
 The following top level configuration items are required:
@@ -242,7 +253,11 @@ _Required_ - The name of the data store definition that should be used by the Te
 
 ### visibilityStore
 
-_Required_ - the name of the data store definition that should be used by the Temporal visibility server.
+_Required_ - The name of the primary data store definition that should be used to set up <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> on the Temporal Cluster.
+
+### secondaryVisibilityStore
+
+_Optional_ - The name of the secondary data store definition that should be used to set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> on the Temporal Cluster.
 
 ### datastores
 

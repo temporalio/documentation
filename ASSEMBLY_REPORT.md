@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 20 2023 14:05:16 PM -0600
+Last assembled: Thursday June 22 2023 17:30:22 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 87 guide configurations found.
 
-1462 information nodes found.
+1465 information nodes found.
 
-1224 information nodes are attached to guides.
+1226 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -23,6 +23,8 @@ concepts/what-is-a-search-attribute -> /visibility#search-attribute
 concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
 
 clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
+
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
 
 clusters/how-to-set-up-mysql-visibility-store -> #mysql
 
