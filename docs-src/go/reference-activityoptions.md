@@ -24,7 +24,7 @@ The instance of `workflow.Context` is then passed to the `ExecuteActivity()` cal
 | [`OriginalTaskQueueName`](#originaltaskqueuename)   | No                                | `string`                                                                    |
 | [`RetryPolicy`](#retrypolicy)                       | No                                | [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy) |
 
-### `ActivityID`
+#### ActivityID
 
 - Type: `string`
 - Default: None
@@ -43,7 +43,7 @@ if err != nil {
 
 - [What is an Activity Id](/concepts/what-is-an-activity-id)
 
-### `TaskQueueName`
+#### TaskQueueName
 
 - Type: `string`
 - Default: Inherits the TaskQueue name from the Workflow.
@@ -62,31 +62,84 @@ if err != nil {
 
 - [What is a Task Queue](/concepts/what-is-a-task-queue)
 
-### `ScheduleToCloseTimeout`
+#### ScheduleToCloseTimeout
 
-import ScheduleToCloseTimeout from './how-to-set-a-schedule-to-close-timeout-in-go.md'
+To set a [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-<ScheduleToCloseTimeout/>
+This or `StartToCloseTimeout` must be set.
 
-### `ScheduleToStartTimeout`
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
 
-import ScheduleToStartTimeout from './how-to-set-a-schedule-to-start-timeout-in-go.md'
+```go
+activityoptions := workflow.ActivityOptions{
+  ScheduleToCloseTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
 
-<ScheduleToStartTimeout/>
+#### ScheduleToStartTimeout
 
-### `StartToCloseTimeout`
+To set a [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `ScheduleToStartTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-import StartToCloseTimeout from './how-to-set-a-start-to-close-timeout-in-go.md'
+- Type: `time.Duration`
+- Default: ∞ (infinity - no limit)
 
-<StartToCloseTimeout/>
+```go
+activityoptions := workflow.ActivityOptions{
+  ScheduleToStartTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
 
-### `HeartbeatTimeout`
+#### StartToCloseTimeout
 
-import HeartbeatTimeout from './how-to-set-a-heartbeat-timeout-in-go.md'
+To set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-<HeartbeatTimeout/>
+This or `ScheduleToCloseTimeout` must be set.
 
-### `WaitForCancellation`
+- Type: `time.Duration`
+- Default: Same as the `ScheduleToCloseTimeout`
+
+```go
+activityoptions := workflow.ActivityOptions{
+  StartToCloseTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### HeartbeatTimeout
+
+To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+
+```go
+activityoptions := workflow.ActivityOptions{
+  HeartbeatTimeout: 10 * time.Second,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
+
+#### WaitForCancellation
 
 If `true` the Activity Execution will finish executing should there be a Cancellation request.
 
@@ -105,7 +158,7 @@ if err != nil {
 }
 ```
 
-### `OriginalTaskQueueName`
+#### OriginalTaskQueueName
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -119,8 +172,39 @@ if err != nil {
 }
 ```
 
-### `RetryPolicy`
+#### RetryPolicy
 
-import RetryPolicy from './how-to-set-an-activity-retry-policy-in-go.md'
+To set a [RetryPolicy](/concepts/what-is-a-retry-policy), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-<RetryPolicy/>
+- Type: [`RetryPolicy`](https://pkg.go.dev/go.temporal.io/sdk/temporal#RetryPolicy)
+- Default:
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100, // 100 * InitialInterval
+  MaximumAttempts:    0, // Unlimited
+  NonRetryableErrorTypes: []string, // empty
+}
+```
+
+Providing a Retry Policy here is a customization that overwrites individual Field defaults.
+
+```go
+retrypolicy := &temporal.RetryPolicy{
+  InitialInterval:    time.Second,
+  BackoffCoefficient: 2.0,
+  MaximumInterval:    time.Second * 100,
+}
+
+activityoptions := workflow.ActivityOptions{
+  RetryPolicy: retrypolicy,
+}
+ctx = workflow.WithActivityOptions(ctx, activityoptions)
+var yourActivityResult YourActivityResult
+err = workflow.ExecuteActivity(ctx, YourActivityDefinition, yourActivityParam).Get(ctx, &yourActivityResult)
+if err != nil {
+  // ...
+}
+```
