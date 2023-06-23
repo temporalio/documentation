@@ -1,16 +1,16 @@
 {
-  "file_name": "operational-envelope.md",
-  "id": "what-is-the-operational-envelope-of-temporal-cloud",
+  "file_name": "security.md",
+  "id": "what-is-the-security-of-temporal-cloud",
   "file_dir": "cloud",
-  "title": "Temporal Cloud's Operational Envelope",
-  "sidebar_label": "Operational envelope",
-  "description": "Temporal Cloud's SLA, throughput, and latency.",
+  "title": "Temporal Cloud's Security",
+  "sidebar_label": "Security",
+  "description": "Temporal Cloud's security",
   "use_description": false,
   "toc_max_heading_level": 4,
   "add_tabs_support": false,
   "sections": [
     {
-      "type": "h2",
+      "type": "p",
       "id": "cloud-context/what-is-the-sla-of-temporal-cloud"
     },
     {
