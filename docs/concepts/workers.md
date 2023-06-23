@@ -325,6 +325,15 @@ It also includes features like concurrent session limitations and Worker failure
 
 ## Worker Versioning
 
+:::tip Support, stability, and dependency info
+
+- Introduced in Temporal Server version 1.21.0
+- Will come to Temporal CLI in version 0.10.0
+- Coming soon to SDKs
+- Not yet available in Temporal Cloud
+
+:::
+
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
