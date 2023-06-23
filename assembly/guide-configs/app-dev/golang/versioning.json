@@ -14,6 +14,10 @@
         {
             "type": "p",
             "id": "go/versioning"
+        },
+        {
+            "type": "h2",
+            "id": "go/how-to-use-worker-versioning-in-go"
         }
     ]
 }

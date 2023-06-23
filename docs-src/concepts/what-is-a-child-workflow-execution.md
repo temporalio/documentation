@@ -57,3 +57,22 @@ As all Workflow Executions, they can communicate only via asynchronous [Signals]
 
 As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
+
+### When to use a Child Workflow versus an Activity
+
+Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
+Here are some important differences:
+
+- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
+  An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
+- A Child Workflow Execution can continue on if its Parent is canceled with a [Parent Close Policy](/concepts/what-is-a-parent-close-policy) of `ABANDON`.
+  An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
+  (It can react to a cancellation Signal for cleanup.)
+  The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
+- Temporal tracks all state changes within a Child Workflow Execution in Event History.
+  Only the input, output, and retry attempts of an Activity Execution is tracked.
+
+A Workflow models composite operations that consist of multiple Activities or other Child Workflows.
+An Activity usually models a single operation on the external world.
+
+Our advice: **When in doubt, use an Activity.**

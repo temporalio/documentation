@@ -1,18 +1,18 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 13 2023 13:02:23 PM -0600
+Last assembled: Friday June 23 2023 10:13:37 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-86 guide configurations found.
+87 guide configurations found.
 
-1454 information nodes found.
+1468 information nodes found.
 
-1210 information nodes are attached to guides.
+1236 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -352,11 +352,13 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
+
+concepts/what-is-a-retry-policy -> /retry-policies#
+
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
-
-concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-task-timeout -> /workflows#workflow-task-timeout
 
@@ -472,6 +474,8 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
+concepts/what-is-persistence -> #persistence
+
 concepts/what-is-a-history-shard -> #history-shard
 
 go/namespaces -> /dev-guide/go/features#namespaces
@@ -479,6 +483,8 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
+
+references/dynamic-configuration -> /references/dynamic-configuration#
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -884,6 +890,8 @@ cli/cmd-options/fold -> /cli/cmd-options#fold
 
 cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
+typescript/testing -> /dev-guide/typescript/testing#replay
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -895,6 +903,8 @@ cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-c
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
+
+typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
@@ -924,6 +934,10 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
+go/testing -> /dev-guide/go/testing#replay
+
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
 
 go/logging -> /dev-guide/go/observability#logging
@@ -931,5 +945,9 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+
+go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
 

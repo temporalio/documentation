@@ -89,6 +89,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/how-to-define-signals-and-queries-statically-or-dynamically"
+    },
+    {
+      "type": "h2",
       "id": "typescript/workflow-timeouts"
     },
     {
@@ -149,6 +153,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/local-activities"
+    },
+    {
+      "type": "h2",
       "id": "typescript/cancel-activity"
     },
     {
@@ -160,7 +168,7 @@
       "id": "typescript/how-to-spawn-a-child-workflow-execution-in-typescript"
     },
     {
-      "type": "h4",
+      "type": "h3",
       "id": "typescript/parent-close-policy"
     },
     {
@@ -174,6 +182,10 @@
     {
       "type": "p",
       "id": "typescript/how-to-continue-as-new-in-typescript"
+    },
+    {
+      "type": "h3",
+      "id": "typescript/single-entity-pattern"
     },
     {
       "type": "h2",
@@ -217,6 +229,10 @@
     },
     {
       "type": "h2",
+      "id": "typescript/async-design-patterns"
+    },
+    {
+      "type": "h2",
       "id": "typescript/cron-jobs"
     },
     {
@@ -238,6 +254,10 @@
     {
       "type": "h2",
       "id": "typescript/custom-payload-conversion"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/how-to-implement-interceptors-in-typescript"
     }
   ]
 }

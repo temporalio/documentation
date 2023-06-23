@@ -44,7 +44,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-### Code changes can cause non-deterministic behavior
+### Code changes can cause non-deterministic behavior {#non-deterministic-change}
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
@@ -102,7 +102,7 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning
+### Workflow Versioning {#workflow-versioning}
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
