@@ -1,6 +1,6 @@
 ---
-id: what-is-the-security-of-temporal-cloud
-title: What is the Security of Temporal Cloud
+id: security
+title: Temporal Cloud's Security
 sidebar_label: Security
 description: Temporal Cloud's Security
 sidebar_position: 3
@@ -14,13 +14,13 @@ Temporal Cloud is a managed service environment; it does not manage a customer�
 
 ### Client-side Encryption
 
-Temporal provides a [Data Converter](concepts/what-is-a-data-converter)—a plugin that can be configured to transparently encrypt and decrypt workflow data on the customer side; the Temporal Server does not need decrypted data to operate. If this feature is configured by our customers, data stored in Temporal Cloud remains secure even if the service itself is compromised. Temporal’s Data Converter also allows customers to securely decrypt data in the Temporal UI without sharing encryption material with Temporal.
+Temporal provides a [Data Converter](/dataconversion)—a plugin that can be configured to transparently encrypt and decrypt workflow data on the customer side; the Temporal Server does not need decrypted data to operate. If this feature is configured by our customers, data stored in Temporal Cloud remains secure even if the service itself is compromised. Temporal’s Data Converter also allows customers to securely decrypt data in the Temporal UI without sharing encryption material with Temporal.
 
 ## Temporal Cloud Platform Security
 
 ### Isolation
 
-The base unit of isolation in a Temporal environment is the “namespace.” Each customer can have dozens of namespaces associated with their account. Namespaces (regardless of account) cannot interact with other namespaces. Each namespace is available through a secure gRPC (mTLS) endpoint and an HTTPS (TLS) endpoint. These can be made more secure by routing all communication through AWS PrivateLink.
+The base unit of isolation in a Temporal environment is the [Namespace](/namespaces). Each customer can have dozens of namespaces associated with their account. Namespaces (regardless of account) cannot interact with other namespaces. Each namespace is available through a secure gRPC (mTLS) endpoint and an HTTPS (TLS) endpoint. These can be made more secure by routing all communication through AWS PrivateLink.
 
 Temporal Cloud is a multi-tenant service by default. Namespaces in the same environment are logically segregated from each other. Namespaces do not share data processing or data storage across regional boundaries.
 

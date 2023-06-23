@@ -1,5 +1,5 @@
 ---
-id: temporal-cloud-faq
+id: faq
 title: Temporal Cloud FAQ
 sidebar_label: FAQ
 description: Temporal Cloud FAQ
