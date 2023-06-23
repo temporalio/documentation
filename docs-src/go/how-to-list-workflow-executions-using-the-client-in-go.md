@@ -27,7 +27,7 @@ if err != nil {
   return err
 }
 
-fmt.Println("List of results:")
+fmt.Println("First page of results:")
 for _, exec := range resp.Executions {
   fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
 }
