@@ -15,11 +15,13 @@ This page introduces the elements of Temporal Cloud pricing so that you can esti
 
 Actions are the fundamental consumption pricing unit in Temporal Cloud. An Action in Temporal occurs as part of an execution of your Workflow. Each time you execute a Temporal Workflow (a Workflow Execution), the associated Actions are collected and ultimately represent the state and progress of your Temporal Application.
 
-For a deeper description of Actions, please refer to [this section](/cloud#action) of our documentation. You can also [reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
+For a deeper description of Actions, see [Action](/cloud#action). You can also [reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.
 
 Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
 
-| **Actions** | $25 per one million (prorated) |
+| **Actions per month** | **Cost per 1M (USD)** |
+| --------------------- | --------------------- |
+| Any number            | $25.00 (prorated)     |
 
 Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and storage? Credits do not expire. The following table outlines cost estimates and discount bands for the credits system. Please reach out to the team if you are interested in this option.
 
