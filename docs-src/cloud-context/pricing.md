@@ -22,7 +22,6 @@ For a deeper description of Actions, please refer to [this section](/cloud#actio
 Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
 
 | **Actions** | $25 per one million (prorated) |
-| ----------- | ------------------------------ |
 
 Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and storage? Credits do not expire. The following table outlines cost estimates and discount bands for the credits system. Please reach out to the team if you are interested in this option.
 
