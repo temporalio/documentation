@@ -92,7 +92,7 @@ Temporal Cloud employs a consumption-based pricing model that's based on storage
 
 Q: What’s the minimum fee to run Temporal Cloud?
 
-A: The Temporal Cloud service is consumption based. You pay only for what you need with no minimum. Basic Support has a minimum monthly fee of $200 per month.
+A: The Temporal Cloud service is consumption based. You pay only for what you need with no minimum. Basic support has a minimum monthly fee of $200 per month.
 
 Q: How do I pay for Temporal Cloud?
 
