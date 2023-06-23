@@ -295,7 +295,7 @@ if err != nil {
 
 An <a class="tdlp" href="/workflows#update">Update<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Update?</span><br /><br /><span class="tdlppd">An Update is a request to and a response from Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#update">Learn more</a></span></span></a> is an operation that can mutate the state of a Workflow Execution and return a response.
 
-### Update type
+### Define Update
 
 In Go, you define an Update type, also known as an Update name, as a `string` value.
 You must ensure the arguments and result are <a class="tdlp" href="/dataconversion#">serializable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a>.
@@ -349,6 +349,9 @@ func YourUpdatableWorkflow(ctx workflow.Context, param WFParam) (WFResult, error
 
 #### Validator function
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
+
+```go
 Validate certain aspects of the data sent to the Workflow using an Update validator function.
 For instance, a counter Workflow might never want to accept a non-positive number.
 Invoke the `SetUpdateHandlerWithOptions` API and define a validator function as one of the options.
@@ -357,12 +360,10 @@ When you use a Validator function, the Worker receives the Update first, before 
 If the Update is rejected, it's not recorded in the Event History.
 If it's accepted, the `WorkflowExecutionUpdateAccepted` Event occurs.
 Afterwards, the Worker executes the accepted Update and, upon completion, a `WorkflowExecutionUpdateCompleted` Event gets written into the Event History.
+The Validator function, unlike the Update Handler, can not change the state of the Workflow.
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
-
-```go
 // UpdatableWorkflowWithValidator is a Workflow Definition.
 // This Workflow Definition has an Update handler that uses the isPositive() validator function.
 // After setting the Update hanlder it sleeps for 1 minutue.

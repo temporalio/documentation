@@ -5,6 +5,9 @@ sidebar_label: Validator function
 description: Use the SetUpdateHandlerWithOptions API and pass it a validator function to validate inputs.
 ---
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
+
+```go
 Validate certain aspects of the data sent to the Workflow using an Update validator function.
 For instance, a counter Workflow might never want to accept a non-positive number.
 Invoke the `SetUpdateHandlerWithOptions` API and define a validator function as one of the options.
@@ -13,12 +16,10 @@ When you use a Validator function, the Worker receives the Update first, before 
 If the Update is rejected, it's not recorded in the Event History.
 If it's accepted, the `WorkflowExecutionUpdateAccepted` Event occurs.
 Afterwards, the Worker executes the accepted Update and, upon completion, a `WorkflowExecutionUpdateCompleted` Event gets written into the Event History.
+The Validator function, unlike the Update Handler, can not change the state of the Workflow.
 
 The platform treats a panic in the Validator function as a rejection of the Update."
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourupdate/your_updatable_workflow_dacx.go">View source code</a>
-
-```go
 // UpdatableWorkflowWithValidator is a Workflow Definition.
 // This Workflow Definition has an Update handler that uses the isPositive() validator function.
 // After setting the Update hanlder it sleeps for 1 minutue.
