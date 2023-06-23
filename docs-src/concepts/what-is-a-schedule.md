@@ -11,11 +11,11 @@ ssdi:
   - Available in Temporal CLI (and tctl v1.17)
   - Available in Temporal Cloud
   - Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow)
+  - Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html)
   - Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow)
   - Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules)
   - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html)
   - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
-  - In development in [Java SDK](https://github.com/temporalio/sdk-java/pull/1776)
 ---
 
 A Schedule contains instructions for starting a [Workflow Execution](/workflows#workflow-execution) at specific times.
