@@ -19,7 +19,7 @@ For a deeper description of Actions, please refer to [this section](/cloud#actio
 
 ## Billing of Actions
 
-Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use less than one million Actions per month, your bill will be lower than $25 for that month.
+Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
 
 | **Actions** | $25 per one million (prorated) |
 | ----------- | ------------------------------ |
