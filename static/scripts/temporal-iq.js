@@ -1,4 +1,5 @@
 function isDesktop() {
+  return true
   const userAgent = navigator.userAgent;
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -12,12 +13,11 @@ function isDesktop() {
     console.log("loading temporal widget");
     // Widget element
     const widgetElement = document.createElement("div");
-
     const widgetStyle = widgetElement.style;
     widgetStyle.display = "none";
     widgetStyle.boxSizing = "border-box";
     widgetStyle.width = "100%";
-    widgetStyle.maxWidth = "600px";
+    widgetStyle.maxWidth = "540px";
     widgetStyle.height = "calc(80% - 108px)";
     widgetStyle.position = "fixed";
     widgetStyle.top = "40%";
@@ -48,7 +48,8 @@ function isDesktop() {
     modalStyle.left = "0";
     modalStyle.width = "100%";
     modalStyle.height = "100%";
-    modalStyle.background = "rgba(0,0,0,0.3)";
+    modalStyle.background = "rgba(101,108,133,.8)";
+    // modalStyle.background = "rgba(0,0,0,0.3)";
     modalStyle.zIndex = "9999";
 
     const openWidget = () => {
@@ -76,14 +77,16 @@ function isDesktop() {
 
     const widgetToggleButton = document.createElement("div");
     const widgetToggleButtonStyle = widgetToggleButton.style;
+    widgetToggleButton.id = 'widget-container'
     widgetToggleButton.display = "flex";
 
     widgetToggleButtonStyle.position = "fixed";
     widgetToggleButtonStyle.top = "14px";
     widgetToggleButtonStyle.right = "60px";
-    widgetToggleButtonStyle.width = "400px";
+    widgetToggleButtonStyle.width = "240px";
+    widgetToggleButtonStyle.minWidth = "240px";
     widgetToggleButtonStyle.fontFamily = "Inter, sans-serif";
-    widgetToggleButtonStyle.fontSize = "16px";
+    widgetToggleButtonStyle.fontSize = "14px";
     widgetToggleButtonStyle.fontWeight = "400";
     widgetToggleButtonStyle.borderRadius = "100px";
     widgetToggleButtonStyle.color = "#7B7B7B";
@@ -92,8 +95,8 @@ function isDesktop() {
     widgetToggleButtonStyle.zIndex = "99999";
     widgetToggleButtonStyle.cursor = "pointer";
     widgetToggleButtonStyle.outline = "none";
-
     widgetToggleButton.style.overflow = "hidden";
+
 
     const keyframes = document.createElement("style");
     keyframes.innerHTML = `
@@ -124,6 +127,14 @@ function isDesktop() {
     100% { transform: rotate(360deg); }
   }
   
+
+  @media screen and (min-width: 992px) {
+    #widget-container {
+      width: 30%;
+      min-width: 200px;
+      font-size: 16px;
+    }
+  }
   `;
     document.head.appendChild(keyframes);
 
