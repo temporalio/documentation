@@ -30,7 +30,7 @@ Alternatively, Temporal also offers a credit system. Credits provide an addition
 | 1,500 to 7,499                   | $14.10                | $21,150–$105,750    | ~2,860                 |
 | 7,500 to 29,999                  | $10.50                | $78,750–$315,000    | ~11,400                |
 | 30,000 to 149,999                | $7.90                 | $237,000–$1,185,000 | ~57,000                |
-| > 150,000                        | $5.90                 | $885,000 ->         | –                      |
+| 150,000 or more                  | $5.90                 | Begins at $885,000  | n/a                    |
 
 ## Storage
 
@@ -64,12 +64,12 @@ They also investigate your Workflows to optimize their environments and possibly
 
 If an issue occurs, the team provides support through email, phone, forums, knowledge base, and an optional dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
 
-| **Type**       | **Basic Support**                                                                         | **Premium Support**                                                                 |
-| -------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Availability   | 0900–1700 Mon–Fri (Pacific Time)                                                          | 24×7                                                                                |
-| Response times | P0: 1 business hour<br>P1: 4 business hours<br>P2: 1 business days<br>P3: 2 business days | P0: 30 minutes<br>P1: 1 business hour<br>P2: 4 business hours<br>P3: 1 business day |
-| Pricing        | Greater of $200 or 10% monthly usage (per month)                                          | Greater of $2,000 or 10% monthly activity (per month)                               |
-| //             |                                                                                           |                                                                                     |
+| **Type**       | **Basic support**                                                                            | **Premium support**                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Availability   | 0900–1700 Mon–Fri (Pacific Time)                                                             | 24×7                                                                                   |
+| Response times | P0: 1 business hour<br/>P1: 4 business hours<br/>P2: 1 business days<br/>P3: 2 business days | P0: 30 minutes<br/>P1: 1 business hour<br/>P2: 4 business hours<br/>P3: 1 business day |
+| Pricing        | Greater of $200 or 10% monthly usage (per month)                                             | Greater of $2,000 or 10% monthly activity (per month)                                  |
+| //             |                                                                                              |                                                                                        |
 
 ## SSO and SAML
 
