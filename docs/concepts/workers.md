@@ -328,9 +328,9 @@ It also includes features like concurrent session limitations and Worker failure
 :::tip Support, stability, and dependency info
 
 - Introduced in Temporal Server version 1.21.0
-- Will come to Temporal CLI in version 0.10.0
+- Will come to CLI in version 0.10.0
 - Coming soon to SDKs
-- Not yet available in Temporal Cloud
+- Not yet available in Cloud
 
 :::
 
