@@ -2,6 +2,7 @@
 id: what-is-the-operational-envelope-of-temporal-cloud
 title: Temporal Cloud's Operational Envelope
 sidebar_label: Operational envelope
+sidebar_position: 2
 description: Temporal Cloud's SLA, throughput, and latency.
 toc_max_heading_level: 4
 tags:

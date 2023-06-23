@@ -3,7 +3,6 @@ id: what-is-the-sla-of-temporal-cloud
 title: What is the SLA of Temporal Cloud?
 sidebar_label: SLA
 description: Temporal Cloud SLA
-sidebar_position: 1
 tags:
   - guide-context
 ---
