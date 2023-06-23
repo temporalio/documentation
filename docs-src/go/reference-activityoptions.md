@@ -106,7 +106,7 @@ if err != nil {
 
 To set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-This or `ScheduleToClose` must be set.
+This or `ScheduleToCloseTimeout` must be set.
 
 - Type: `time.Duration`
 - Default: Same as the `ScheduleToCloseTimeout`
@@ -125,7 +125,7 @@ if err != nil {
 
 #### HeartbeatTimeout
 
-To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -184,12 +184,12 @@ retrypolicy := &temporal.RetryPolicy{
   InitialInterval:    time.Second,
   BackoffCoefficient: 2.0,
   MaximumInterval:    time.Second * 100, // 100 * InitialInterval
-  MaximumAttempts: 0, // Unlimited
+  MaximumAttempts:    0, // Unlimited
   NonRetryableErrorTypes: []string, // empty
 }
 ```
 
-Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
+Providing a Retry Policy here is a customization that overwrites individual Field defaults.
 
 ```go
 retrypolicy := &temporal.RetryPolicy{

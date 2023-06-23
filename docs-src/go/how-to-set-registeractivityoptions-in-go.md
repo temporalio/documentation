@@ -19,7 +19,7 @@ Options for registering an Activity
 
 #### Name
 
-See [How to customize Activity Type in Go.](/go/how-to-customize-activity-type-in-go).
+See [How to customize Activity Type in Go](/go/how-to-customize-activity-type-in-go).
 
 #### DisableAlreadyRegisteredCheck
 

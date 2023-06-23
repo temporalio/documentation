@@ -52,7 +52,7 @@ if err != nil {
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`
-- Default: None, this is a required field to be set by the developer
+- Default: None; this is a required field to be set by the developer
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
