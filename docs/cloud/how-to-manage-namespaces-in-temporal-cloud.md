@@ -44,7 +44,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 - [Namespace Name](/cloud/#cloud-namespace) and region.
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
 - [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace.
-- [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details see [Securing your data](/production-readiness/develop#securing-your-data).
+- [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
 - [Permissions](/cloud/#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
