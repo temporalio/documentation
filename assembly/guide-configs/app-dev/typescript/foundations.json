@@ -218,6 +218,10 @@
     {
       "type": "p",
       "id": "typescript/how-to-get-the-result-of-a-workflow-execution-in-typescript"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/cancellation-scopes"
     }
   ]
 }
