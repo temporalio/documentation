@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 23 2023 09:59:07 AM -0600
+Last assembled: Friday June 23 2023 12:32:27 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 87 guide configurations found.
 
@@ -942,8 +942,8 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
+
+go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
 

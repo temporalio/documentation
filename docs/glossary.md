@@ -470,7 +470,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Temporal Web UI](/web-ui#)
-The Temporal Web UI
+The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
