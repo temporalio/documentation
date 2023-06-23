@@ -168,6 +168,10 @@
       "id": "go/how-to-register-types-with-a-worker-in-go"
     },
     {
+      "type": "h3",
+      "id": "go/how-to-set-workeroptions-in-go"
+    },
+    {
       "type": "h2",
       "id": "go/spawning-workflows"
     },
