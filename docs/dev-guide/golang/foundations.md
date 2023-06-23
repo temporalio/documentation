@@ -804,7 +804,7 @@ if err != nil {
 
 To set a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `StartToCloseTimeout` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
-This or `ScheduleToClose` must be set.
+This or `ScheduleToCloseTimeout` must be set.
 
 - Type: `time.Duration`
 - Default: Same as the `ScheduleToCloseTimeout`
@@ -823,7 +823,7 @@ if err != nil {
 
 #### HeartbeatTimeout
 
-To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>, Create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
+To set a <a class="tdlp" href="/activities#heartbeat-timeout">Heartbeat Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#heartbeat-timeout">Learn more</a></span></span></a>, create an instance of `ActivityOptions` from the `go.temporal.io/sdk/workflow` package, set the `RetryPolicy` field, and then use the `WithActivityOptions()` API to apply the options to the instance of `workflow.Context`.
 
 ```go
 activityoptions := workflow.ActivityOptions{
@@ -882,12 +882,12 @@ retrypolicy := &temporal.RetryPolicy{
   InitialInterval:    time.Second,
   BackoffCoefficient: 2.0,
   MaximumInterval:    time.Second * 100, // 100 * InitialInterval
-  MaximumAttempts: 0, // Unlimited
+  MaximumAttempts:    0, // Unlimited
   NonRetryableErrorTypes: []string, // empty
 }
 ```
 
-Providing a Retry Policy here is a customization, and overwrites individual Field defaults.
+Providing a Retry Policy here is a customization that overwrites individual Field defaults.
 
 ```go
 retrypolicy := &temporal.RetryPolicy{
@@ -1606,7 +1606,7 @@ Options for registering an Activity
 
 #### Name
 
-See <a class="tdlp" href="#customize-activity-type">How to customize Activity Type in Go.<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to customize Activity Type in Go</span><br /><br /><span class="tdlppd">To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#customize-activity-type">Learn more</a></span></span></a>.
+See <a class="tdlp" href="#customize-activity-type">How to customize Activity Type in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to customize Activity Type in Go</span><br /><br /><span class="tdlppd">To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#customize-activity-type">Learn more</a></span></span></a>.
 
 #### DisableAlreadyRegisteredCheck
 
@@ -1795,7 +1795,7 @@ if err != nil {
 Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io/sdk@v1.10.0/client#StartWorkflowOptions) from the `go.temporal.io/sdk/client` package, set the `TaskQueue` field, and pass the instance to the `ExecuteWorkflow` call.
 
 - Type: `string`
-- Default: None, this is a required field to be set by the developer
+- Default: None; this is a required field to be set by the developer
 
 ```go
 workflowOptions := client.StartWorkflowOptions{
