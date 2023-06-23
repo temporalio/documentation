@@ -25,14 +25,14 @@ Actions are collected and billed monthly for each Namespace. The base rate is $2
 
 Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and storage? Credits do not expire. The following table outlines cost estimates and discount bands for the credits system. Please reach out to the team if you are interested in this option.
 
-| **Actions per month (millions)** | **Cost per 1M (USD)** | **Cost band**         | **Actions per second** |
-| -------------------------------- | --------------------- | --------------------- | ---------------------- |
+| **Actions per month (millions)** | **Cost per 1M (USD)** | **Cost band**       | **Actions per second** |
+| -------------------------------- | --------------------- | ------------------- | ---------------------- |
 | 0 to 299                         | $23.25                | $0–$7,500           | ~115                   |
 | 300 to 1,499                     | $18.80                | $5,640–$28,200      | ~570                   |
 | 1,500 to 7,499                   | $14.10                | $21,150–$105,750    | ~2,860                 |
 | 7,500 to 29,999                  | $10.50                | $78,750–$315,000    | ~11,400                |
 | 30,000 to 149,999                | $7.90                 | $237,000–$1,185,000 | ~57,000                |
-| > 150,000                        | $5.90                 | $885,000 ->           | –                      |
+| > 150,000                        | $5.90                 | $885,000 ->         | –                      |
 
 ## Pricing Element: Storage
 
