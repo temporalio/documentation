@@ -29,6 +29,6 @@ if err != nil {
 
 fmt.Println("First page of results:")
 for _, exec := range resp.Executions {
-  fmt.Println("Workflow ID %v\n", exec.Execution.WorkflowId)
+  fmt.Printf("Workflow ID %v\n", exec.Execution.WorkflowId)
 }
 ```
