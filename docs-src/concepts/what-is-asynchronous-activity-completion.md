@@ -24,14 +24,15 @@ However, often it works better for the Activity to notify the external system, c
 
 Consider using Async Completion when
 
-- the external process is unreliable and might fail to send critical status updates through a Signal
-- you want the external process to Heartbeat or receive Cancellation
+- the external process is unreliable and might fail to send critical status updates through a Signal.
+- you want the external process to Heartbeat or receive Cancellation.
 
 Consider using Signals when you want to immediately retry a failure to notify the external system.
 
-Immediate retries are helpful when the external process might take long time.
-For example, if the external process is waiting for a human to review something and respond, and may take days, then if you set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one week on an Activity with Async Completion, it's possible that the Activity fails to notify the external system and doesn't throw an error (for example, if the Worker dies).
-In this case, the Activity will be retried in a week.
+Immediate retries are helpful when the external process might take a long time.
+For example, consider an external process that is waiting for a human to review something and respond, and might take days.
+If you set a [Start-To-Close Timeout](/activities#start-to-close-timeout) of one week on an Activity with Async Completion, the Activity might fail to notify the external system and not throw an error (for example, if the Worker dies).
+In this case, the Activity is retried in a week.
 It would be better to be able to retry the Activity immediately.
 If the Activity completes normally after notifying the external system, it can have a short Start-To-Close Timeout of 10 seconds (for example, if the external system is notified by an API call that should never take more than 10 seconds).
-In this case, if the notification fails, it will be retried after 10 seconds.
+In this case, if the notification fails, the Activity is retried after 10 seconds.
