@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 23 2023 12:32:27 PM -0700
+Last assembled: Monday June 26 2023 11:31:23 AM -0600
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
-87 guide configurations found.
+88 guide configurations found.
 
-1462 information nodes found.
+1469 information nodes found.
 
-1230 information nodes are attached to guides.
+1237 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -368,6 +368,8 @@ concepts/what-is-an-activity-type -> /activities#activity-type
 
 concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
+concepts/what-is-an-update -> /workflows#update
+
 references/cluster-metrics -> /references/cluster-metrics#
 
 go/metrics -> /dev-guide/go/observability#metrics
@@ -663,6 +665,8 @@ php/queries -> /dev-guide/php/features#queries
 python/queries -> /dev-guide/python/features#queries
 
 typescript/queries -> /dev-guide/typescript/features#queries
+
+go/updates -> /dev-guide/go/features#updates
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
