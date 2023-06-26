@@ -27,7 +27,7 @@ Consider using Async Completion when
 - the external process is unreliable and might fail to send critical status updates through a Signal.
 - you want the external process to Heartbeat or receive Cancellation.
 
-Consider using Signals when you want to immediately retry a failure to notify the external system.
+Consider using Signals when you want to retry sooner a failure to notify the external system.
 
 Immediate retries are helpful when the external process might take a long time.
 For example, consider an external process that is waiting for a human to review something and respond, and might take days.
