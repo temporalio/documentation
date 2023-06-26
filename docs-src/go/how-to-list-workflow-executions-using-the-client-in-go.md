@@ -19,7 +19,7 @@ request := &workflowservice.ListWorkflowExecutionsRequest{ Query: "CloseTime = m
 ```
 
 This `request` value returns only open Workflows.
-For more List Filter examples, see the [examples provided for List Filters in Temporal's Visibility guide.](/concepts/what-is-a-list-filter#list-filter-examples)
+For more List Filter examples, see the [examples provided for List Filters in the Temporal Visibility guide.](/concepts/what-is-a-list-filter#list-filter-examples)
 
 ```go
 resp, err := temporalClient.ListWorkflow(ctx.Background(), request)
