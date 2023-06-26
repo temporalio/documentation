@@ -34,7 +34,7 @@ If you're not using an SDK Client (rare), you can generate gRPC client stubs by:
 
 To query the API manually via command line or a GUI, first:
 
-- Run [`temporal server start-dev`](/cli/#starting-the-temporal-server)
+- If you don't already have a Server to connect to, run [`temporal server start-dev`](/cli/#starting-the-temporal-server)
 - Clone this repo:
 
   ```sh
@@ -50,6 +50,14 @@ Install [`evans`](https://github.com/ktr0731/evans#installation).
 cd /path/to/api
 evans --proto temporal/api/workflowservice/v1/service.proto --port 7233
 ```
+
+To connect to Temporal Cloud, set the host, cert, cert key, and TLS flag:
+
+```
+evans --proto temporal/api/workflowservice/v1/service.proto --host devrel.a2dd6.tmprl.cloud --port 7233 --tls --cert /Users/me/certs/temporal.pem --certkey /Users/me/certs/temporal.key
+```
+
+Once inside the evans prompt, you can run commands like `help`, `show service` to list available methods, and `call ListWorkflowExecutions`.
 
 #### With a GUI
 
@@ -69,6 +77,9 @@ evans --proto temporal/api/workflowservice/v1/service.proto --port 7233
 One downside compared to [command line](#with-command-line) is it doesn't show enum names, just numbers like `"task_queue_type": 1`.
 
 ![DescribeTaskQueue](/img/DescribeTaskQueue.png)
+
+<!-- 
+TODO redo this section when we publish a stable HTTP API
 
 ## HTTP API
 
@@ -105,4 +116,4 @@ $ curl localhost:8233/api/v1/namespaces/default/workflows
   ],
   "nextPageToken": null
 }
-```
+``` -->
