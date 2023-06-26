@@ -220,7 +220,7 @@ Batch Job Id.
 
 ## limit
 
-Number of items to print on a page. 
+Number of items to print on a page.
 By default, `--limit` is set to 0, allowing all results to print to one page.
 
 ## log-format
