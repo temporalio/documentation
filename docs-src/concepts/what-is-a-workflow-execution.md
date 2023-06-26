@@ -148,13 +148,12 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, external Workflows, and Signals.
+To protect the system, Temporal enforces a maximum number (2,000 by default) of pending Activities, Child Workflows, Signals, or Cancellation requests per Workflow.
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
-- `NumPendingChildExecutionsLimit`
 - `NumPendingActivitiesLimit`
-- `NumPendingSignals`
+- `NumPendingChildExecutionsLimit`
+- `NumPendingSignalsLimit`
 - `NumPendingCancelRequestsLimit`
 
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 2,000 pending Activities, Child Workflows, external Workflows, or Signals.
-Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass any of these limits (by producing enough `ScheduleActivityTask`, `StartChildWorkflowExecution`, `SignalExternalWorkflowExecution`, or `RequestCancelExternalWorkflowExecution` Commands to exceed a limit).
