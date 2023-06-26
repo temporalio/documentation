@@ -10,7 +10,7 @@ tags:
 ---
 
 The [ListWorkflow()](https://pkg.go.dev/go.temporal.io/sdk/client#Client.ListWorkflow) function retrieves a list of [Workflow Executions](/concepts/what-is-a-workflow-execution) that match the [Search Attributes](/concepts/what-is-a-search-attribute) of a given [List Filter](/concepts/what-is-a-list-filter).
-The metadata returned from the [Visibility store](/concepts/what-is-visibility) can be used to get a Workflow Execution's history and details from the [Persistence store](/concepts/what-is-a-temporal-cluster#persistence).
+The metadata returned from the [Visibility](/concepts/what-is-visibility) store can be used to get a Workflow Execution's history and details from the [Persistence](/concepts/what-is-a-temporal-cluster#persistence) store.
 
 Use a List Filter to define a `request` to pass into `ListWorkflow()`.
 
