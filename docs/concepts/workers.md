@@ -362,7 +362,7 @@ The feature also lets you implement compatible changes to or prevent a buggy cod
 You can achieve this by adding a new version to an existing set and defining it as _compatible_ with an existing version, which shouldn't execute any future Workflow Tasks.
 Because the new version processes existing [Event Histories](/workflows/#event-history), it must adhere to the usual [deterministic constraints](/workflows/#deterministic-constraints), and you might need to use one of the [versioning APIs](/workflows/#workflow-versioning).
 
-Moreover, this feature let you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
+Moreover, this feature lets you make incompatible changes to Activity Definitions in conjunction with incompatible changes to Workflow Definitions that use those Activities.
 This functionality works because any Activity that a Workflow schedules on the same Task Queue gets dispatched only to Workers compatible with the Workflow that scheduled it.
 If you want to change an Activity Definition's type signature while creating a new incompatible Build ID for a Worker, you can do so without worrying about the Activity failing to execute on some other Worker with an incompatible definition.
 The same principle applies to Child Workflows.
