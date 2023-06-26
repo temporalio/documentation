@@ -620,6 +620,13 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 ## Update
 
+:::tip Support, stability, and dependency info
+
+- Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+- Avaible in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions).
+
+:::
+
 An Update is a request to and a response from a Temporal Client to a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution">Learn more</a></span></span></a>.
 
 - <a class="tdlp" href="/dev-guide/go/features#updates">How to develop, send, and handle Updates in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Updates</span><br /><br /><span class="tdlppd">An Update is an operation that can mutate the state of a Workflow Execution and return a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#updates">Learn more</a></span></span></a>
