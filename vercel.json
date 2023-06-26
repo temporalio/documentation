@@ -374,6 +374,10 @@
       "destination": "/dev-guide"
     },
     {
+      "source": "/dev-guide/golang/versioning:path*",
+      "destination": "/dev-guide/go/versioning:path*"
+    },
+    {
       "source": "/change-log",
       "destination": "/changelog"
     },
