@@ -475,6 +475,12 @@ The Temporal Web UI provides users with Workflow Execution state and metadata fo
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
 
+#### [Update](/workflows#update)
+An Update is a request to and a response from Workflow Execution.
+
+_Tags: [term](/tags/term), [updates](/tags/updates), [explanation](/tags/explanation)_
+
+
 #### [Visibility](/clusters#visibility)
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
