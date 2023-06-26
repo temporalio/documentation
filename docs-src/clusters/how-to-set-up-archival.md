@@ -89,6 +89,8 @@ The following table showcases acceptable values for each configuration and what 
 | `namespaceDefaults.archival.history.state`     | `enabled`, `disabled`                                                              | Default state of the Archival feature whenever a new Namespace is created without specifying the Archival state.             |
 | `namespaceDefaults.archival.history.URI`       | Valid URI                                                                          | Must be a URI of the file store location and match a schema that correlates to a provider.                                   |
 
+Additional resources: [Cluster configuration reference](/references/configuration).
+
 #### Namespace creation
 
 Although Archival is configured at the cluster level, it operates independently within each Namespace.

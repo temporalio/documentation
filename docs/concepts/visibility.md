@@ -20,7 +20,13 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Visibility.
 
-The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
+The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
+
+The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
+
+- [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
+
+A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
 
 ## Standard Visibility
 
@@ -41,7 +47,7 @@ Advanced Visibility, within the Temporal Platform, is the subsystem and APIs tha
 
 ## List Filter
 
-A List Filter is the SQL-like string that is provided as the parameter to a <a class="tdlp" href="#">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a> List API.
+A List Filter is the SQL-like string that is provided as the parameter to a <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> List API.
 
 A List Filter contains <a class="tdlp" href="#search-attribute">Search Attribute<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#search-attribute">Learn more</a></span></span></a> names, Search Attribute values, and [operators](#supported-operators) to pull a filtered list of Workflow Executions from the Visibility store.
 
@@ -168,23 +174,27 @@ A Temporal Cluster has a set of default Search Attributes already available.
 Default Search Attributes are set globally in any Namespace.
 These Search Attributes are created when the initial index is created.
 
-| NAME                  | TYPE     | DEFINITION                                                                                                                                                                   |
-| --------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| WorkflowType          | Keyword  | The type of Workflow.                                                                                                                                                        |
-| WorkflowId            | Keyword  | Identifies the Workflow Execution.                                                                                                                                           |
-| ExecutionStatus       | Keyword  | The current state of the Workflow Execution.                                                                                                                                 |
-| StartTime             | Datetime | The time at which the Workflow Execution started.                                                                                                                            |
-| CloseTime             | Datetime | The time at which the Workflow Execution completed.                                                                                                                          |
-| ExecutionTime         | Datetime | Same as StartTime for the most cases but different for cron Workflows and retried Workflows. For them it is the time at which the Workflow Execution actually begin running. |
-| RunId                 | Keyword  | Identifies the current Workflow Execution Run.                                                                                                                               |
-| ExecutionDuration     | Int      | The time needed to run the Workflow Execution. Available only for closed Workflows.                                                                                          |
-| HistoryLength         | Int      | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                              |
-| StateTransitionCount  | Int      | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                    |
-| TaskQueue             | Keyword  | Task Queue used by Workflow Execution.                                                                                                                                       |
-| TemporalChangeVersion | Keyword  | If Workflow versioning is enabled, list of change/version pairs will be stored here.                                                                                         |
-| BinaryChecksums       | Keyword  | List of binary Ids of Workers that run the Workflow Execution.                                                                                                               |
-| BatcherNamespace      | Keyword  | Used by internal batcher to indicate the Namespace where batch operation was applied to.                                                                                     |
-| BatcherUser           | Keyword  | Used by internal batcher to indicate the user who started the batch operation.                                                                                               |
+| NAME                       | TYPE         | DEFINITION                                                                                                                                                                                                   |
+| -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
+| BinaryChecksums            | Keyword      | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
+| BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
+| CloseTime                  | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                          |
+| ExecutionDuration          | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                         |
+| ExecutionStatus            | Keyword      | The current state of the Workflow Execution.                                                                                                                                                                 |
+| ExecutionTime              | Datetime     | The time at which the Workflow Execution actually begins running; same as `StartTime` for most cases but different for Cron Workflows and retried Workflows.                                                 |
+| HistoryLength              | Int          | The number of events in the history of Workflow Execution. Available only for closed Workflows.                                                                                                              |
+| HistorySizeBytes           | Long         | The size of the Event History.                                                                                                                                                                               |
+| RunId                      | Keyword      | Identifies the current Workflow Execution Run.                                                                                                                                                               |
+| StartTime                  | Datetime     | The time at which the Workflow Execution started.                                                                                                                                                            |
+| StateTransitionCount       | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                    |
+| TaskQueue                  | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                       |
+| TemporalChangeVersion      | Keyword      | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
+| TemporalScheduledStartTime | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                 |
+| TemporalScheduledById      | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                            |
+| TemporalSchedulePaused     | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                            |
+| WorkflowId                 | Keyword      | Identifies the Workflow Execution.                                                                                                                                                                           |
+| WorkflowType               | Keyword      | The type of Workflow.                                                                                                                                                                                        |
 
 - All default Search Attributes are reserved and read-only.
   You cannot create a custom one with the same name or alter the existing one.

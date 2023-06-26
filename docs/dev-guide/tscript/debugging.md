@@ -24,7 +24,7 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
+- <a class="tdlp" href="/dev-guide/typescript/testing#replay">Replay<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Testing</span><br /><br /><span class="tdlppd">The Testing section of the Temporal Application development guide describes the frameworks that facilitate Workflow and integration testing.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/testing#replay">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/typescript/observability#tracing">Tracing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to setup Tracing</span><br /><br /><span class="tdlppd">Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#tracing">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/typescript/observability#logging">Logging<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#logging">Learn more</a></span></span></a>
 

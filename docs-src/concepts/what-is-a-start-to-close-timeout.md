@@ -20,8 +20,17 @@ A Start-To-Close Timeout is the maximum time allowed for a single [Activity Task
 **The default Start-To-Close Timeout is the same as the default [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout).**
 
 An Activity Execution must have either this timeout (Start-To-Close) or the [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout) set.
-We recommend always setting this timeout; however, make sure that it is always set to be longer than the maximum possible time for the Activity Execution to take place.
+We recommend always setting this timeout; however, make sure that Start-To-Close Timeout is always set to be longer than the maximum possible time for the Activity Execution to complete.
 For long running Activity Executions, we recommend also using [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat) and [Heartbeat Timeouts](/concepts/what-is-a-heartbeat-timeout).
+
+:::tip
+
+We strongly recommend setting a Start-To-Close Timeout.
+
+The Temporal Server doesn't detect failures when a Worker loses communication with the Server or crashes.
+Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Activity retries.
+
+:::
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
