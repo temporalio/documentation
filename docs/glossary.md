@@ -158,7 +158,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Event History](/workflows#event-history)
-An append log of Events that represents the full state a Workflow Execution.
+An append-only log of Events that represents the full state a Workflow Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

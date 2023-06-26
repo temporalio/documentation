@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 26 2023 10:45:57 AM -0700
+Last assembled: Monday June 26 2023 19:16:12 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 88 guide configurations found.
 
@@ -366,8 +366,6 @@ concepts/what-is-an-activity-type -> /activities#activity-type
 
 concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
-concepts/what-is-an-update -> /workflows#update
-
 references/cluster-metrics -> /references/cluster-metrics#
 
 go/metrics -> /dev-guide/go/observability#metrics
@@ -664,8 +662,6 @@ python/queries -> /dev-guide/python/features#queries
 
 typescript/queries -> /dev-guide/typescript/features#queries
 
-go/updates -> /dev-guide/go/features#updates
-
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
 go/parent-close-policy -> /dev-guide/go/features#parent-close-policy
@@ -945,6 +941,10 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+concepts/what-is-an-update -> /workflows#update
+
+go/updates -> /dev-guide/go/features#updates
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
