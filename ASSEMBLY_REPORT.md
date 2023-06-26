@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 23 2023 10:24:50 AM -0600
+Last assembled: Monday June 26 2023 09:28:52 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-87 guide configurations found.
+88 guide configurations found.
 
-1468 information nodes found.
+1469 information nodes found.
 
-1236 information nodes are attached to guides.
+1237 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
