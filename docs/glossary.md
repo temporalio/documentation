@@ -13,8 +13,6 @@ tags:
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
-[![Temporal Diagram](/img/temporal.png)](/img/temporal.png)
-
 #### [Action](/cloud#action)
 An Action is the fundamental pricing unit in Temporal Cloud.
 
