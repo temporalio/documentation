@@ -85,6 +85,10 @@
     },
     {
       "type": "h2",
+      "id": "concepts/what-is-an-update"
+    },
+    {
+      "type": "h2",
       "id": "concepts/what-is-a-side-effect"
     },
     {

@@ -109,6 +109,12 @@ The Claim Mapper component is a pluggable component that extracts Claims from JS
 _Tags: [term](/tags/term)_
 
 
+#### [Cluster configuration](/clusters#cluster-configuration)
+Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Codec Server](/dataconversion#codec-server)
 A Codec Server is an HTTP server that uses your custom Payload Codec to encode and decode your data remotely through endpoints.
 
@@ -255,6 +261,12 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 #### [Payload Converter](/dataconversion#payload-converter)
 A Payload Converter serializes data, converting objects or values to bytes and back.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
+#### [Persistence](/clusters#persistence)
+The Temporal Persistence store is a database used by Temporal Services to persist events generated and processed in the Temporal Cluster and SDK.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -428,7 +440,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Temporal Cluster](/clusters#)
-A Temporal Cluster is the Temporal Server paired with persistence.
+A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -458,12 +470,18 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Temporal Web UI](/web-ui#)
-The Temporal Web UI
+The Temporal Web UI provides users with Workflow Execution state and metadata for debugging purposes.
 
 _Tags: [term](/tags/term), [web-ui](/tags/web-ui)_
 
 
-#### [Visibility](/visibility#)
+#### [Update](/workflows#update)
+An Update is a request to and a response from Workflow Execution.
+
+_Tags: [term](/tags/term), [updates](/tags/updates), [explanation](/tags/explanation)_
+
+
+#### [Visibility](/clusters#visibility)
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
 _Tags: [term](/tags/term)_

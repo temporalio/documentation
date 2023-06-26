@@ -331,7 +331,7 @@ The information you are looking for may be found in the [legacy docs](https://le
 
 Each Temporal SDK provides a <a class="tdlp" href="/dataconversion#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#">Learn more</a></span></span></a> that can be customized with a custom <a class="tdlp" href="/dataconversion#payload-codec">Payload Codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dataconversion#payload-codec">Learn more</a></span></span></a> to encode and secure your data.
 
-For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-readiness/develop#data-encryption).
+For details on what data can be encoded, how to secure it, and what to consider when using encryption, see [Data encryption](/production-readiness/develop#securing-your-data).
 
 #### Codec Server
 
