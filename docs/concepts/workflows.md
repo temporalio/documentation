@@ -623,7 +623,7 @@ Stack Trace Queries are available only for running Workflow Executions.
 :::tip Support, stability, and dependency info
 
 - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Avaible in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions).
+- Available in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions)
 
 :::
 
@@ -828,7 +828,7 @@ You can also pass any of the [predefined schedules](https://pkg.go.dev/github.co
 
 ```
 | Schedules              | Description                                | Equivalent To |
-| ---------------------- | ------------------------------------------ | ------------- |
+|------------------------|--------------------------------------------|---------------|
 | @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
 | @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
 | @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
