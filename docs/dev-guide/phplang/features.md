@@ -923,3 +923,34 @@ The following example sets a Cron Schedule in PHP:
 
 Setting `withCronSchedule` turns the Workflow Execution into a Temporal Cron Job.
 For more information, see the [PHP samples](https://github.com/temporalio/samples-php/tree/master/app/src/Cron) for example code or the PHP SDK `WorkflowOptions` [source code](https://github.com/temporalio/sdk-php/blob/master/src/Client/WorkflowOptions.php).
+
+## Side Effects
+
+Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising deterministic in the Workflow. This is done by storing the non-deterministic results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
+
+A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+
+Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+
+An Activity or a Local Activity may also be used instead of a Side effect, as its result is also persisted in Workflow Execution History.
+
+:::note
+
+You shouldn’t modify the Workflow state inside a Side Effect function, because it is not reexecuted during Replay. Side Effect function should be used to return a value.
+
+:::
+
+To use a Side Effect in PHP, set the `Workflow::sideEffect()` function in your Workflow Execution and return the non-deterministic code.
+
+```php
+#[Workflow\WorkflowMethod]
+public function run()
+{
+    $random = yield Workflow::sideEffect(fn()=> return random_int(0, 100));
+    if ($random < 50) {
+        // ...
+    } else {
+        // ...
+    }
+}
+```
