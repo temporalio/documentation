@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 26 2023 22:51:59 PM -0400
+Last assembled: Tuesday June 27 2023 12:31:47 PM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 88 guide configurations found.
 
@@ -366,6 +366,8 @@ concepts/what-is-an-activity-type -> /activities#activity-type
 
 concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
 
+concepts/what-is-an-update -> /workflows#update
+
 references/cluster-metrics -> /references/cluster-metrics#
 
 go/metrics -> /dev-guide/go/observability#metrics
@@ -662,6 +664,8 @@ python/queries -> /dev-guide/python/features#queries
 
 typescript/queries -> /dev-guide/typescript/features#queries
 
+go/updates -> /dev-guide/go/features#updates
+
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
 go/parent-close-policy -> /dev-guide/go/features#parent-close-policy
@@ -888,9 +892,7 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
+typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -942,12 +944,12 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-concepts/what-is-an-update -> /workflows#update
-
-go/updates -> /dev-guide/go/features#updates
-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+typescript/tracing -> /dev-guide/typescript/observability#tracing
+
+typescript/logging -> /dev-guide/typescript/observability#logging
 
 
