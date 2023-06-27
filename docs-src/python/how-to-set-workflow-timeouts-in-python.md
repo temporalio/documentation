@@ -2,13 +2,10 @@
 id: how-to-set-workflow-timeouts-in-python
 title: How to set Workflow Timeouts in Python
 sidebar_label: Workflow Timeouts
-description: Set the timeout from either start_workflow() or execute_workflow().
-tags:
-  - python
-  - how-to
+description: Set the timeout to either start_workflow() or execute_workflow().
 ---
 
-Set the timeout from either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
+Set the timeout to either the [`start_workflow()`](https://python.temporal.io/temporalio.client.Client.html#start_workflow) or [`execute_workflow()`](https://python.temporal.io/temporalio.client.Client.html#execute_workflow) asynchronous methods.
 
 Available timeouts are:
 
@@ -16,30 +13,18 @@ Available timeouts are:
 - `run_timeout`
 - `task_timeout`
 
-```python
-handle = await client.start_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    # Set Workflow Timeout duration
-    execution_timeout=timedelta(seconds=2),
-    # run_timeout=timedelta(seconds=2),
-    # task_timeout=timedelta(seconds=2),
-)
-```
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/workflow_timeouts_retries/workflows_dacx.py">View source code</a>
 
 ```python
-handle = await client.execute_workflow(
-    "your-workflow-name",
-    "some arg",
-    id="your-workflow-id",
-    task_queue="your-task-queue",
-    start_signal="your-signal-name",
-    # Set Workflow Timeout duration
-    execution_timeout=timedelta(seconds=2),
-    # run_timeout=timedelta(seconds=2),
-    # task_timeout=timedelta(seconds=2),
-)
+# ...
+    result = await client.execute_workflow(
+        YourWorkflow.run,
+        "your timeout",
+        id="your-workflow-id",
+        task_queue="your-task-queue",
+        # Set Workflow Timeout duration
+        execution_timeout=timedelta(seconds=2),
+        # run_timeout=timedelta(seconds=2),
+        # task_timeout=timedelta(seconds=2),
+    )
 ```
