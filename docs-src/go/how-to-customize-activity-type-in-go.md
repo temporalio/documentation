@@ -5,6 +5,8 @@ sidebar_label: Customize Activity Type
 description: To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.
 ---
 
+To customize the Activity Type, set the `Name` parameter with `RegisterOptions` when registering your Activity with a Worker.
+
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/yourapp/worker/main_dacx.go">View source code</a>
 
 ```go
