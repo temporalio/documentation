@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 26 2023 22:51:59 PM -0400
+Last assembled: Tuesday June 27 2023 08:31:33 AM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 88 guide configurations found.
 
@@ -12,7 +12,7 @@ Assembly Workflow Id: docs-full-assembly
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
-concepts/what-is-visibility -> /visibility#
+concepts/what-is-visibility -> /clusters#visibility
 
 concepts/what-is-a-temporal-cluster -> /clusters#persistence
 
@@ -352,17 +352,21 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
+concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
+
+concepts/what-is-a-retry-policy -> /retry-policies#
+
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
 
 concepts/what-is-a-workflow-execution-timeout -> /workflows#workflow-execution-timeout
-
-concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-task-timeout -> /workflows#workflow-task-timeout
 
 concepts/what-is-an-activity-type -> /activities#activity-type
 
 concepts/what-is-an-activity-task-execution -> /workers#activity-task-execution
+
+concepts/what-is-an-update -> /workflows#update
 
 references/cluster-metrics -> /references/cluster-metrics#
 
@@ -470,6 +474,8 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
+concepts/what-is-persistence -> #persistence
+
 concepts/what-is-a-history-shard -> #history-shard
 
 go/namespaces -> /dev-guide/go/features#namespaces
@@ -477,6 +483,8 @@ go/namespaces -> /dev-guide/go/features#namespaces
 java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
+
+references/dynamic-configuration -> /references/dynamic-configuration#
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -655,6 +663,8 @@ php/queries -> /dev-guide/php/features#queries
 python/queries -> /dev-guide/python/features#queries
 
 typescript/queries -> /dev-guide/typescript/features#queries
+
+go/updates -> /dev-guide/go/features#updates
 
 concepts/what-is-a-parent-close-policy -> #parent-close-policy
 
@@ -884,7 +894,7 @@ typescript/testing -> /dev-guide/typescript/testing#replay
 
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
-typescript/logging -> /dev-guide/typescript/observability#logging
+typescript/observability -> /dev-guide/typescript/observability#logging
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -924,6 +934,8 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -933,18 +945,6 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
-
-concepts/what-is-persistence -> #persistence
-
-references/dynamic-configuration -> /references/dynamic-configuration#
-
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
-concepts/what-is-an-update -> /workflows#update
-
-go/updates -> /dev-guide/go/features#updates
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
