@@ -241,16 +241,16 @@ To serialize values as [Protocol Buffers](https://protobuf.dev/) (protobufs):
 - Patch `json-module.js`:
 
   <!--SNIPSTART typescript-protobuf-root -->
-  
-  [protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/master/protobufs/protos/root.js)
-  
-  ```js
-  const { patchProtobufRoot } = require('@temporalio/common/lib/protobufs');
-  const unpatchedRoot = require('./json-module');
-  module.exports = patchProtobufRoot(unpatchedRoot);
-  ```
 
-  <!--SNIPEND-->
+[protobufs/protos/root.js](https://github.com/temporalio/samples-typescript/blob/master/protobufs/protos/root.js)
+
+```js
+const { patchProtobufRoot } = require('@temporalio/common/lib/protobufs');
+const unpatchedRoot = require('./json-module');
+module.exports = patchProtobufRoot(unpatchedRoot);
+```
+
+<!--SNIPEND-->
 
 - Generate `root.d.ts` with the following command:
 
@@ -261,147 +261,147 @@ To serialize values as [Protocol Buffers](https://protobuf.dev/) (protobufs):
 - Create a [`DefaultPayloadConverterWithProtobufs`](https://typescript.temporal.io/api/classes/protobufs.DefaultPayloadConverterWithProtobufs/):
 
   <!--SNIPSTART typescript-protobuf-converter -->
-  
-  [protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/payload-converter.ts)
-  
-  ```ts
-  import { DefaultPayloadConverterWithProtobufs } from '@temporalio/common/lib/protobufs';
-  import root from '../protos/root';
-  
-  export const payloadConverter = new DefaultPayloadConverterWithProtobufs({
-    protobufRoot: root,
-  });
-  ```
-  
-  <!--SNIPEND-->
-  
-  Alternatively, we can use Protobuf Payload Converters directly, or with other converters.
-  If we know that we only use Protobuf objects, and we want them binary encoded (which saves space over proto3 JSON, but can't be viewed in the Web UI), we could do the following:
-  
-  ```ts
-  import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
-  import root from '../protos/root';
-  
-  export const payloadConverter = new ProtobufBinaryPayloadConverter(root);
-  ```
-  
-  Similarly, if we wanted binary-encoded Protobufs in addition to the other default types, we could do the following:
-  
-  ```ts
-  import {
-    BinaryPayloadConverter,
-    CompositePayloadConverter,
-    JsonPayloadConverter,
-    UndefinedPayloadConverter,
-  } from '@temporalio/common';
-  import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
-  import root from '../protos/root';
-  
-  export const payloadConverter = new CompositePayloadConverter(
-    new UndefinedPayloadConverter(),
-    new BinaryPayloadConverter(),
-    new ProtobufBinaryPayloadConverter(root),
-    new JsonPayloadConverter(),
-  );
-  ```
+
+[protobufs/src/payload-converter.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/payload-converter.ts)
+
+```ts
+import { DefaultPayloadConverterWithProtobufs } from '@temporalio/common/lib/protobufs';
+import root from '../protos/root';
+
+export const payloadConverter = new DefaultPayloadConverterWithProtobufs({
+  protobufRoot: root,
+});
+```
+
+<!--SNIPEND-->
+
+Alternatively, we can use Protobuf Payload Converters directly, or with other converters.
+If we know that we only use Protobuf objects, and we want them binary encoded (which saves space over proto3 JSON, but can't be viewed in the Web UI), we could do the following:
+
+```ts
+import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
+import root from '../protos/root';
+
+export const payloadConverter = new ProtobufBinaryPayloadConverter(root);
+```
+
+Similarly, if we wanted binary-encoded Protobufs in addition to the other default types, we could do the following:
+
+```ts
+import {
+  BinaryPayloadConverter,
+  CompositePayloadConverter,
+  JsonPayloadConverter,
+  UndefinedPayloadConverter,
+} from '@temporalio/common';
+import { ProtobufBinaryPayloadConverter } from '@temporalio/common/lib/protobufs';
+import root from '../protos/root';
+
+export const payloadConverter = new CompositePayloadConverter(
+  new UndefinedPayloadConverter(),
+  new BinaryPayloadConverter(),
+  new ProtobufBinaryPayloadConverter(root),
+  new JsonPayloadConverter(),
+);
+```
 
 - Provide it to the Worker:
 
   <!--SNIPSTART typescript-protobuf-worker -->
-  
-  [protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/worker.ts)
-  
-  ```ts
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    taskQueue: 'protobufs',
-    dataConverter: {
-      payloadConverterPath: require.resolve('./payload-converter'),
-    },
-  });
-  ```
-  
-  <!--SNIPEND-->
 
-  [WorkerOptions.dataConverter](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
+[protobufs/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/worker.ts)
+
+```ts
+const worker = await Worker.create({
+  workflowsPath: require.resolve('./workflows'),
+  activities,
+  taskQueue: 'protobufs',
+  dataConverter: {
+    payloadConverterPath: require.resolve('./payload-converter'),
+  },
+});
+```
+
+<!--SNIPEND-->
+
+[WorkerOptions.dataConverter](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#dataconverter)
 
 - Provide it to the Client:
 
   <!--SNIPSTART typescript-protobuf-client -->
-  
-  [protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/client.ts)
-  
-  ```ts
-  import { Client } from '@temporalio/client';
-  import { v4 as uuid } from 'uuid';
-  import { foo, ProtoResult } from '../protos/root';
-  import { example } from './workflows';
-  
-  async function run() {
-    const client = new Client({
-      dataConverter: {
-        payloadConverterPath: require.resolve('./payload-converter'),
-      },
-    });
-  
-    const handle = await client.workflow.start(example, {
-      args: [foo.bar.ProtoInput.create({ name: 'Proto', age: 2 })],
-      // can't do:
-      // args: [new foo.bar.ProtoInput({ name: 'Proto', age: 2 })],
-      taskQueue: 'protobufs',
-      workflowId: 'my-business-id-' + uuid(),
-    });
-  
-    console.log(`Started workflow ${handle.workflowId}`);
-  
-    const result: ProtoResult = await handle.result();
-   console.log(result.toJSON());
-  }
-  ```
-  
-  <!--SNIPEND-->
+
+[protobufs/src/client.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/client.ts)
+
+```ts
+import { Client } from '@temporalio/client';
+import { v4 as uuid } from 'uuid';
+import { foo, ProtoResult } from '../protos/root';
+import { example } from './workflows';
+
+async function run() {
+  const client = new Client({
+    dataConverter: {
+      payloadConverterPath: require.resolve('./payload-converter'),
+    },
+  });
+
+  const handle = await client.workflow.start(example, {
+    args: [foo.bar.ProtoInput.create({ name: 'Proto', age: 2 })],
+    // can't do:
+    // args: [new foo.bar.ProtoInput({ name: 'Proto', age: 2 })],
+    taskQueue: 'protobufs',
+    workflowId: 'my-business-id-' + uuid(),
+  });
+
+  console.log(`Started workflow ${handle.workflowId}`);
+
+  const result: ProtoResult = await handle.result();
+  console.log(result.toJSON());
+}
+```
+
+<!--SNIPEND-->
 
 - Use protobufs in your Workflows and Activities:
 
   <!--SNIPSTART typescript-protobuf-workflow -->
-  
-  [protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/workflows.ts)
-  
-  ```ts
-  import { proxyActivities } from '@temporalio/workflow';
-  import { foo, ProtoResult } from '../protos/root';
-  import type * as activities from './activities';
-  
-  const { protoActivity } = proxyActivities<typeof activities>({
-    startToCloseTimeout: '1 minute',
-  });
-  
-  export async function example(input: foo.bar.ProtoInput): Promise<ProtoResult> {
-    const result = await protoActivity(input);
-    return result;
-  }
-  ```
-  
-  <!--SNIPEND-->
 
-  <!--SNIPSTART typescript-protobuf-activity -->
-  
-  [protobufs/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/activities.ts)
-  
-  ```ts
-  import { foo, ProtoResult } from '../protos/root';
-  
-  export async function protoActivity(
-    input: foo.bar.ProtoInput,
-  ): Promise<ProtoResult> {
-    return ProtoResult.create({
-      sentence: `${input.name} is ${input.age} years old.`,
-    });
-  }
-  ```
-  
-  <!--SNIPEND-->
+[protobufs/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/workflows.ts)
+
+```ts
+import { proxyActivities } from '@temporalio/workflow';
+import { foo, ProtoResult } from '../protos/root';
+import type * as activities from './activities';
+
+const { protoActivity } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '1 minute',
+});
+
+export async function example(input: foo.bar.ProtoInput): Promise<ProtoResult> {
+  const result = await protoActivity(input);
+  return result;
+}
+```
+
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-protobuf-activity -->
+
+[protobufs/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/protobufs/src/activities.ts)
+
+```ts
+import { foo, ProtoResult } from '../protos/root';
+
+export async function protoActivity(
+  input: foo.bar.ProtoInput,
+): Promise<ProtoResult> {
+  return ProtoResult.create({
+    sentence: `${input.name} is ${input.age} years old.`,
+  });
+}
+```
+
+<!--SNIPEND-->
 
 ### Payload Codec
 

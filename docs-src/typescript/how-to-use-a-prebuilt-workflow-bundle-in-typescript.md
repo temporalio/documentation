@@ -7,7 +7,6 @@ tags:
   - guide-context
 ---
 
-
 If you're an advanced user, you can pass a prebuilt bundle instead of `workflowsPath`, or you can use the `bundleWorkflowCode` helper:
 
 ```ts
