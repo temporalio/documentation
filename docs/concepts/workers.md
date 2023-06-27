@@ -325,6 +325,16 @@ It also includes features like concurrent session limitations and Worker failure
 
 ## Worker Versioning
 
+:::tip Support, stability, and dependency info
+
+- Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+- Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Will come to CLI in version 0.10.0
+- Not yet available in Temporal Cloud
+
+:::
+
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
 It does this by letting you define sets of versions that are compatible with each other, and then assigning a Build ID to the code that defines a Worker.
 The Temporal Server uses the Build ID to determine which versions of a Workflow Definition a Worker can process.
