@@ -23,16 +23,6 @@ import TabItem from '@theme/TabItem';
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
@@ -842,11 +832,11 @@ There are three main things the Worker needs:
 
 This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
 
-| Options         | Description                                                                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
-| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
+| Options         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see <a class="tdlp" href="/dev-guide/typescript/observability#logging">Logging docs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#logging">Learn more</a></span></span></a>)                                                                           |
+| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see <a class="tdlp" href="/dev-guide/typescript/features#interceptors">Interceptors<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to implement interceptors in TypeScript</span><br /><br /><span class="tdlppd">Interceptors are a mechanism for modifying inbound and outbound SDK calls, commonly used to add tracing and authorization.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#interceptors">Learn more</a></span></span></a>) |
 
 **Operation guides:**
 
@@ -1004,7 +994,7 @@ async function run() {
 
 In this snippet, the Worker bundles the Workflow code at runtime.
 
-In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](https://legacy-documentation-sdks.temporal.io/typescript/workers#prebuilt-workflow-bundles):
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call `bundleWorkflowCode`:
 
 <!--SNIPSTART typescript-bundle-workflow -->
 
@@ -1115,7 +1105,7 @@ Calling `client.start()` and `client.execute()` send a command to Temporal Serve
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](https://legacy-documentation-sdks.temporal.io/typescript/determinism).
+Workflow Execution run in a separate V8 isolate context in order to provide a <a class="tdlp" href="/workflows#deterministic-constraints">deterministic runtime<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
 
 ### Set Task Queue
 

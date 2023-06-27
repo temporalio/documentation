@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 26 2023 10:45:57 AM -0700
+Last assembled: Monday June 26 2023 18:22:22 PM -0600
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 88 guide configurations found.
 
@@ -590,6 +590,8 @@ python/child-workflows -> /dev-guide/python/features#child-workflows
 
 typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
 
+go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
+
 concepts/what-is-a-worker-session -> #worker-session
 
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
@@ -603,6 +605,8 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
+
+go/versioning -> /dev-guide/go/versioning#
 
 java/versioning -> /dev-guide/java/versioning#
 
@@ -906,6 +910,8 @@ typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
+typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
+
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 python/tracing -> /dev-guide/python/observability#tracing
@@ -945,6 +951,8 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+go/selectors -> /dev-guide/go/features#selectors
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 

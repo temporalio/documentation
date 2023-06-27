@@ -1,8 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
-const plannedText = `Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).`;
+const plannedText = `Content is planned but not yet available.`;
 
 export async function genMarkdownGuides(config) {
   console.log(`generating the full markdown for all guides...`);

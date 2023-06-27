@@ -19,16 +19,6 @@ tags:
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the <a class="tdlp" href="/temporal#temporal-platform">Temporal Platform<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Platform?</span><br /><br /><span class="tdlppd">The Temporal Platform consists of a Temporal Cluster and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-platform">Learn more</a></span></span></a> and the state of any specified Workflow Execution, either currently or at points of an execution.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 This section covers features related to viewing the state of the application, including:
 
 - [Metrics](#metrics)
@@ -57,7 +47,7 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](https://legacy-documentation-sdks.temporal.io/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our <a class="tdlp" href="#opentelemetry-tracing">opentelemetry-interceptors<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#opentelemetry-tracing">Learn more</a></span></span></a> package.
 
 ```typescript
 telemetryOptions: {
@@ -132,7 +122,7 @@ To work around these limitations, we recommend using the Sinks feature in the Ty
 Sinks enable one-way export of logs, metrics, and traces from the Workflow isolate to the Node.js environment.
 
 <!--
-Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking [determinism](https://legacy-documentation-sdks.temporal.io/typescript/determinism), in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
+Workflows in Temporal may be replayed from the beginning of their history when resumed. In order for Temporal to recreate the exact state Workflow code was in, the code is required to be fully deterministic. To prevent breaking determinism, in the TypeScript SDK, Workflow code runs in an isolated execution environment and may not use any of the Node.js APIs or communicate directly with the outside world. -->
 
 Sinks are written as objects with methods. Similar to Activities, they are declared in the Worker and then proxied in Workflow code, and it helps to share types between both.
 

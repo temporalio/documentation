@@ -1735,15 +1735,15 @@
     },
     {
       "source": "/typescript/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"
+      "destination": "/dev-guide/typescript"
     },
     {
       "source": "/go/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/go/:path*"
+      "destination": "/dev-guide/go"
     },
     {
       "source": "/java/:path*",
-      "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
+      "destination": "/dev-guide/java"
     },
     {
       "source": "/concepts/what-is-a-retry-policy",
