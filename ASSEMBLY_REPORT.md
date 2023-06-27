@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 27 2023 09:35:26 AM -0700
+Last assembled: Tuesday June 27 2023 09:43:06 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -949,5 +949,7 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+typescript/observability -> /dev-guide/typescript/observability#tracing
 
 

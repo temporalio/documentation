@@ -1057,6 +1057,32 @@ async function run() {
 
 <!--SNIPEND-->
 
+## Prebuilt workflow bundles
+
+If you're an advanced user, you can pass a prebuilt bundle instead of `workflowsPath`, or you can use the `bundleWorkflowCode` helper:
+
+```ts
+import { bundleWorkflowCode, Worker } from '@temporalio/worker';
+
+// Option 1: passing path to prebuilt bundle
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle: {
+    codePath: './path-to-bundle.js',
+    sourceMapPath: './path-to-bundle.js.map',
+  },
+});
+
+// Option 2: bundling code using Temporal's bundler settings
+const workflowBundle = await bundleWorkflowCode({
+  workflowsPath: require.resolve('./path-to-your-workflows'),
+});
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle,
+});
+```
+
 ## Shut down a worker
 
 Workers shut down if they receive any of the Signals enumerated in [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`, `'SIGTERM'`, `'SIGQUIT'`, and `'SIGUSR2'`.
