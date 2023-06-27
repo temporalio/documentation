@@ -124,10 +124,6 @@
       "id": "typescript/how-to-set-an-activity-retry-policy-in-typescript"
     },
     {
-      "type": "h3",
-      "id": "typescript/activity-retry-simulator"
-    },
-    {
       "type": "h2",
       "id": "typescript/activity-heartbeats"
     },
