@@ -51,9 +51,7 @@ function Modal({ show, close }) {
 }
 
 
-export default function Search(props) {
-  // You can fully customize this implementation
-  // including changing the JSX, CSS and React hooks
+export default function Search() {
   const [open, setOpen] = useState(false);
 
   return (
