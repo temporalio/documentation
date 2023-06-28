@@ -14,7 +14,7 @@ from temporalio.workflow import ParentClosePolicy
 # ...
 # ...
 @workflow.defn
-class ComposeGreeting:
+class ComposeGreetingWorkflow:
     @workflow.run
     async def run(self, input: ComposeGreetingInput) -> str:
         return f"{input.greeting}, {input.name}!"
@@ -25,7 +25,7 @@ class GreetingWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_child_workflow(
-            ComposeGreeting.run,
+            ComposeGreetingWorkflow.run,
             ComposeGreetingInput("Hello", name),
             id="hello-child-workflow-workflow-child-id",
             parent_close_policy=ParentClosePolicy.ABANDON,

@@ -20,7 +20,7 @@ This is useful if you want to do something after it has only started, or to get 
 ```python
 # ...
 @workflow.defn
-class ComposeGreeting:
+class ComposeGreetingWorkflow:
     @workflow.run
     async def run(self, input: ComposeGreetingInput) -> str:
         return f"{input.greeting}, {input.name}!"
@@ -31,7 +31,7 @@ class GreetingWorkflow:
     @workflow.run
     async def run(self, name: str) -> str:
         return await workflow.execute_child_workflow(
-            ComposeGreeting.run,
+            ComposeGreetingWorkflow.run,
             ComposeGreetingInput("Hello", name),
             id="hello-child-workflow-workflow-child-id",
 # ...
