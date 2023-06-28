@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 27 2023 09:56:23 AM -0700
+Last assembled: Wednesday June 28 2023 09:41:54 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -8,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 1469 information nodes found.
 
-1237 information nodes are attached to guides.
+1233 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -892,9 +892,7 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
+typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -949,7 +947,5 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/observability -> /dev-guide/typescript/observability#tracing
 
 

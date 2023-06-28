@@ -69,7 +69,7 @@ The members of the Temporal Developer Success team are engineers who are Tempora
 
 They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage. They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
-If an issue occurs, the team provides support through our [portal](/cloud/how-to-create-a-ticket-for-temporal-support), [community forum](https://community.temporal.io/), knowledge base, and an optional dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
+If an issue occurs, the team provides support through our [support portal](/cloud/how-to-create-a-ticket-for-temporal-support), [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
 
 |                     | **Basic**                                                                                   | **Premium**                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
