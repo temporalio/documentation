@@ -328,11 +328,6 @@ module.exports = {
       async: true,
       defer: true,
     },
-    {
-      src: "/scripts/temporal-iq.js",
-      async: true,
-      defer: true,
-    },
     // {
     //   src: "/scripts/feedback.js",
     //   async: true,
