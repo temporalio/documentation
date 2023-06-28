@@ -15,7 +15,7 @@ A Visibility store is required in a Temporal Cluster setup because it is used by
 
 With the Visibility store, you can use [List Filters](/concepts/what-is-a-list-filter) with [Search Attributes](/concepts/what-is-a-search-attribute) to list and filter Workflow Executions that you want to review.
 
-<!-- Setting up [advanced Visibility](/concepts/what-is-advanced-visibility) enables access to creating and using multiple custom Search Attributes with your List Filters. -->
+Setting up [advanced Visibility](/concepts/what-is-advanced-visibility) enables access to creating and using multiple custom Search Attributes with your List Filters.
 
 For details, see [Search Attributes](/concepts/what-is-a-search-attribute).
 
@@ -34,8 +34,10 @@ The following databases are supported as Visibility stores:
 
 - [MySQL](/clusters/how-to-set-up-mysql-visibility-store) v5.7 and later.
   Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
+  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions MySQL (v5.7 and earlier) will be dropped.
 - [PostgreSQL](/clusters/how-to-set-up-postgresql-visibility-store) v9.6 and later.
   Use v12 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
+  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of PostgreSQL (v9.6 and earlier) will be dropped.
 - [SQLite](/clusters/how-to-set-up-sqlite-visibility-store) v3.31.0 and later for advanced Visibility capabilities.
 - [Cassandra](/clusters/how-to-set-up-cassandra-visibility-store). Support for Cassandra as a Visibility database is deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
 - [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) supported versions.

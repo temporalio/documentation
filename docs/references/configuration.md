@@ -206,14 +206,14 @@ global:
 
 ## persistence
 
-The `persistence` section holds configuration for the data store / persistence layer.
-Below is an example minimal specification for a password-secured Cluster using Cassandra.
+The `persistence` section holds configuration for the data store/persistence layer.
+The following example shows a minimal specification for a password-secured Cluster using Cassandra.
 
 ```yaml
 persistence:
   defaultStore: default
-  visibilityStore: cass-visibility
-  secondaryVisibilityStore: es-visibility
+  visibilityStore: cass-visibility # This is the primary Visibility store.
+  secondaryVisibilityStore: es-visibility # Secondary Visibility store added to enable Dual Visibility.
   numHistoryShards: 512
   datastores:
     default:
@@ -234,7 +234,7 @@ persistence:
           scheme: "http"
           host: "127.0.0.1:9200"
         indices:
-          visibility: temporal_visibility_v1
+          visibility: temporal_visibility_v1_dev
         closeIdleConnectionsInterval: 15s
 ```
 

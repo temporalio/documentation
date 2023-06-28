@@ -15,4 +15,4 @@ Open Workflow Executions can be filtered by a time constraint and either a Workf
 
 Closed Workflow Executions can be filtered by a time constraint and either a Workflow Type, Workflow Id, Run Id, or Execution Status (Completed, Failed, Timed Out, Terminated, Canceled, or Continued-As-New).
 
-Support for Standard Visibility will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates.
+Support for standard Visibility will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates.

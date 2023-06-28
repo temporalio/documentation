@@ -10,7 +10,7 @@ ssdi:
   - For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
   - From Temporal Server v1.21 and later,
       - Standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases).
-      - Visibility configuration in the Temporal Cluster is updated. For details see [Visbility store setup](/cluster-deployment-guide#visibility-store).
+      - Visibility configuration in Temporal Cluster is updated. For details see [Visbility store setup](/cluster-deployment-guide#visibility-store).
       - Dual Visibility is enabled.
 ---
 

@@ -47,7 +47,7 @@ persistence:
           scheme: "http"
           host: "127.0.0.1:9200"
         indices:
-          visibility: temporal_visibility_v1
+          visibility: temporal_visibility_v1_dev
 ```
 
 **Index schema and index**

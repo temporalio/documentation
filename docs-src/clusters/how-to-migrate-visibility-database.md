@@ -13,10 +13,16 @@ ssdi:
 
 To migrate your Visibility database, [set up a secondary Visibility](/cluster-deployment-guide#set-up-secondary-visibility) to enable [Dual Visibility](/concepts/what-is-dual-visibility), and update the dynamic configuration in your Cluster to update the Visibility store read and write operations.
 
+Dual Visibility setup is optional but useful in gradually migrating your Visibility data to another database.
+
 Before you begin, verify [supported databases and versions](/cluster-deployment-guide#supported-databases) for a Visibility store.
+
 The following steps describe how to migrate your Visibility database with examples.
 
+#### Set up secondary Visibility store
+
 1. In your Cluster configuration, [add a secondary Visibility store](/references/configuration#secondaryvisibilitystore) to your Visibility setup under the Persistence configuration.
+
    Example: To migrate from Cassandra to Elasticsearch, add Elasticsearch as your secondary database, and set it up. For details, see [secondary Visibility database schema and setup](/cluster-deployment-guide#set-up-secondary-visibility).
 
    ```yaml
@@ -36,12 +42,13 @@ The following steps describe how to migrate your Visibility database with exampl
            scheme: "http"
            host: "127.0.0.1:9200"
            indices:
-           visibility: temporal_visibility_v1
+           visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```
 
-2. Update the dynamic configuration keys on your self-hosted Temporal Cluster to enable write operations to the secondary Visibility store, and disable read operations at first.
+1. Update the dynamic configuration keys on your self-hosted Temporal Cluster to enable write operations to the secondary store and disable read operations.
    Example:
+
    ```yaml
    system.secondaryVisibilityWritingMode:
    - value: "dual"
@@ -50,11 +57,35 @@ The following steps describe how to migrate your Visibility database with exampl
    - value: false
    constraints: {}
    ```
-   At this point, Visibility data is read from the primary Visibility store, and all Visibility data is written to both the primary and secondary store.
-   For details on write options to the secondary Visibility store, see [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings).
 
-3. When you are ready to deprecate your primary Visibility store, update the dynamic configuration YAML to enable read operations from the secondary Visibility store.
+At this point, Visibility data is read from the primary store, and all Visibility data is written to both the primary and secondary store.
+This setting applies only to new Visibility data generated after Dual Visibility is enabled.
+It does not migrate any existing data in the primary store to the secondary store.
+
+For details on write options to the secondary store, see [Secondary Visibility dynamic configuration reference](/references/dynamic-configuration#secondary-visibility-settings).
+
+#### Run in dual mode
+
+When you enable a secondary store, only new Visibility data is written to both primary and secondary stores.
+The primary store still holds the Workflow Execution data from before the secondary store was set up.
+
+Running in dual mode allows you to plan for closed and open Workflow Executions data from before the secondary store was set up in your self-hosted Temporal Cluster.
+
+Example:
+
+- To manage closed Workflow Executions data, run in dual mode until the Namespace [Retention Period](/clusters#retention-period) is reached.
+  After the retention period, Workflow Execution data is removed from the Persistence and Visibility stores.
+  If you want to keep the closed Workflow Executions data after the set Retention period, you must set up [Archival](/cluster-deployment-guide#archival).
+- To manage data for all open Workflow Executions, run in dual mode until all the Workflow Executions started before enabling Dual Visibility mode are closed.
+  Once the Workflow Executions are closed, verify the Retention Period and set up [Archival](/cluster-deployment-guide#archival) if you need to keep the data beyond the [Retention Period](/clusters#retention-period).
+
+You can run your Visibility setup in dual mode for an indefinite period, or until you are ready to deprecate the primary store and move completely to the secondary store without losing data.
+
+#### Deprecate primary Visibility store
+
+1. When you are ready to deprecate your primary store, update the dynamic configuration YAML to enable read operations from the secondary store.
    Example:
+
    ```yaml
    system.secondaryVisibilityWritingMode:
    - value: "dual"
@@ -63,10 +94,12 @@ The following steps describe how to migrate your Visibility database with exampl
    - value: true
    constraints: {}
    ```
+
    At this point, Visibility data is read from the secondary store only. Verify whether data on the secondary store is correct.
 
-4. When secondary Visibility store is vetted and ready to replace your current primary store, change your Cluster configuration to set the secondary store as your primary, and remove the dynamic configuration set in the previous steps.
+1. When the secondary store is vetted and ready to replace your current primary store, change your Cluster configuration to set the secondary store as your primary, and remove the dynamic configuration set in the previous steps.
    Example:
+
    ```yaml
    persistence:
    visibilityStore: es-visibility
@@ -79,6 +112,6 @@ The following steps describe how to migrate your Visibility database with exampl
            scheme: "http"
            host: "127.0.0.1:9200"
            indices:
-           visibility: temporal_visibility_v1
+           visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```

@@ -209,7 +209,7 @@ For details on platform limits, see the [Temporal Platform limits sheet](/kb/tem
 | `history.maximumSignalsPerExecution`    | Int  | Maximum number of Signals that a Workflow Execution can receive before it throws an `Invalid Argument` error.                                                                                                                                   | 10000                    |
 | `limit.numPendingCancelRequests.error`  | Int  | Maximum number of pending requests to cancel other Workflows that a Workflow Execution can have before the `RequestCancelExternalWorkflowExecution` commands fail with an error.                                                                | 2000                     |
 | `limit.numPendingChildExecutions.error` | Int  | Maximum number of pending Child Workflows that a Workflow Execution can have before the `StartChildWorkflowExecution` commands fail with an error.                                                                                              | 2000                     |
-| `frontend.visibilityMaxPageSize`        | Int  | Maximum number of Workflow Exections shown from the ListWorkflowExecutions API in one page.                                                                                                                                                     | 1000                     |
+| `frontend.visibilityMaxPageSize`        | Int  | Maximum number of Workflow Executions shown from the ListWorkflowExecutions API in one page.                                                                                                                                                    | 1000                     |
 
 ### Secondary Visibility settings
 

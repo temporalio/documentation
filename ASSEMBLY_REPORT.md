@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 26 2023 11:31:23 AM -0600
+Last assembled: Tuesday June 27 2023 17:24:47 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 88 guide configurations found.
 
-1469 information nodes found.
+1472 information nodes found.
 
-1237 information nodes are attached to guides.
+1240 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -39,6 +39,8 @@ clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearc
 clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
 
 references/configuration -> /references/configuration#sql
+
+references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
 
 concepts/what-is-archival -> /clusters#archival
 
@@ -486,8 +488,6 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
-references/dynamic-configuration -> /references/dynamic-configuration#
-
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
@@ -539,6 +539,8 @@ java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
 typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
 
@@ -948,11 +950,8 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
-clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
 
 

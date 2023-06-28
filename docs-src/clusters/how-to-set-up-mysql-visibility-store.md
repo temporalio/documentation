@@ -35,10 +35,10 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql" # if using MySQL 8.0.17 or later with Temporal Server v1.20, use "mysql8" plugin for advanced Visibility capabilities
+        pluginName: "mysql8" # For MySQL v8.0.7 and later. If using MySQL 5.7 or earlier, use "mysql" plugin.
         databaseName: "temporal_visibility"
-        connectAddr: " " # remote address of this database; for example, 127.0.0.0:3306
-        connectProtocol: " " # protocol example: tcp
+        connectAddr: " " # Remote address of this database; for example, 127.0.0.0:3306
+        connectProtocol: " " # Protocol example: tcp
         user: "username_for_auth"
         password: "password_for_auth"
         maxConns: 2
