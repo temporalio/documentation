@@ -594,7 +594,6 @@ setup_mysql_schema() {
 }
 ```
 
-<!-- AB: Should I add this example? Is this correct?
 For Elasticsearch as both primary and secondary Visibility store configuration in the previous example, an example setup script would be as follows.
 
 ```bash
@@ -608,7 +607,7 @@ For Elasticsearch as both primary and secondary Visibility store configuration i
 : "${ES_PWD:=}"
 : "${ES_VERSION:=v7}"
 : "${ES_VIS_INDEX:=temporal_visibility_v1}"
-: "${ES_SEC_VIS_INDEX:=}"
+: "${ES_SEC_VIS_INDEX:=temporal_visibility_v2"
 : "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
 
 #...
@@ -629,48 +628,14 @@ setup_es_index() {
     curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
     curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
     curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
+    
+    # Checks for and sets up Elasticsearch as a secondary Visibility store
     if [[ ! -z "${ES_SEC_VIS_INDEX}" ]]; then
       SEC_INDEX_URL="${ES_SERVER}/${ES_SEC_VIS_INDEX}"
       curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${SEC_INDEX_URL}" --write-out "\n"
     fi
 }
-#...
-# Elasticsearch
-: "${ENABLE_ES:=false}"
-: "${ES_SCHEME:=http}"
-: "${ES_SEEDS:=}"
-: "${ES_PORT:=9200}"
-: "${ES_USER:=}"
-: "${ES_PWD:=}"
-: "${ES_VERSION:=v7}"
-: "${ES_VIS_INDEX:=temporal_visibility_v2}"
-: "${ES_SEC_VIS_INDEX:=}"
-: "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
-#...
-# Validate your ES environment
-#...
-# Wait for ES to start
-#...
-# Set up Elasticsearch index
-setup_es_index() {
-    ES_SERVER="${ES_SCHEME}://${ES_SEEDS%%,*}:${ES_PORT}"
-# @@@SNIPSTART setup-es-template-commands
-    # ES_SERVER is the URL of Elasticsearch server i.e. "http://localhost:9200".
-    SETTINGS_URL="${ES_SERVER}/_cluster/settings"
-    SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
-    TEMPLATE_URL="${ES_SERVER}/_template/temporal_visibility_v2_template"
-    SCHEMA_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/index_template_${ES_VERSION}.json
-    INDEX_URL="${ES_SERVER}/${ES_VIS_INDEX}"
-    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${SETTINGS_URL}" -H "Content-Type: application/json" --data-binary "@${SETTINGS_FILE}" --write-out "\n"
-    curl --fail --user "${ES_USER}":"${ES_PWD}" -X PUT "${TEMPLATE_URL}" -H 'Content-Type: application/json' --data-binary "@${SCHEMA_FILE}" --write-out "\n"
-    curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${INDEX_URL}" --write-out "\n"
-    if [[ ! -z "${ES_SEC_VIS_INDEX}" ]]; then
-      SEC_INDEX_URL="${ES_SERVER}/${ES_SEC_VIS_INDEX}"
-      curl --user "${ES_USER}":"${ES_PWD}" -X PUT "${SEC_INDEX_URL}" --write-out "\n"
-    fi
-}
-
-``` -->
+```
 
 #### Update Cluster configuration
 
@@ -803,6 +768,8 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
            visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```
+
+After the Visibility store is updated in your self-hosted Cluster configuration, you can remove the secondary Visibility dynamic configuration.
 
 ### Custom Search Attributes
 
