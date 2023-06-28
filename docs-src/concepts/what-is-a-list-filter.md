@@ -2,7 +2,7 @@
 id: what-is-a-list-filter
 title: What is a List Filter?
 sidebar_label: List Filter
-description: A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.
+description: A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
 tags:
   - term
   - explanation

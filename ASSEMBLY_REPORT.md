@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 28 2023 15:36:27 PM -0700
+Last assembled: Wednesday June 28 2023 16:11:53 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -8,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly
 
 1472 information nodes found.
 
-1240 information nodes are attached to guides.
+1236 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -896,7 +896,9 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
-typescript/observability -> /dev-guide/typescript/observability#tracing
+typescript/tracing -> /dev-guide/typescript/observability#tracing
+
+typescript/logging -> /dev-guide/typescript/observability#logging
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -951,5 +953,7 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+typescript/observability -> /dev-guide/typescript/observability#tracing
 
 

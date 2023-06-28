@@ -34,7 +34,7 @@ A <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><im
 
 A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and `CLI` to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
-With the Visibility store, you can use <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to list and filter Workflow Executions that you want to review.
+With the Visibility store, you can use <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to list and filter Workflow Executions that you want to review.
 
 Setting up <a class="tdlp" href="/visibility#advanced-visibility">advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> enables access to creating and using multiple custom Search Attributes with your List Filters.
 
@@ -768,8 +768,7 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
            visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```
-
-After the Visibility store is updated in your self-hosted Cluster configuration, you can remove the secondary Visibility dynamic configuration.
+  You can also remove the secondary Visibility dynamic configuration in your self-hosted Cluster configuration.
 
 ### Custom Search Attributes
 
@@ -787,7 +786,7 @@ These constraints do not apply if you use Elasticsearch.
 
 Add custom Search Attributes to your Visibility store using `tctl` for a self-hosted Temporal Cluster and `tcld` for Temporal Cloud.
 
-Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
+Creating a custom Search Attribute in your Visibility store makes it available to use in your Workflow metadata and <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>.
 
 **On Temporal Cloud**
 
@@ -797,7 +796,7 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 **On self-hosted Temporal Cluster**
 
-If you're self-hosting your Temporal Cluster, verify whether your <a class="tdlp" href="#supported-databases">Visibility database<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> version supports Advanced Visibility features.
+If you're self-hosting your Temporal Cluster, verify whether your <a class="tdlp" href="#supported-databases">Visibility database<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Visibility in a Temporal Cluster</span><br /><br /><span class="tdlppd">Visibility storage is set up as a part of your Persistence store to enable listing and filtering details about Worklfow Executions that exist on your Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#supported-databases">Learn more</a></span></span></a> version supports advanced Visibility features.
 
 To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `tctl search-attribute create` with `--name` and `--type` modifiers.
 
@@ -805,7 +804,7 @@ For example, to create a Search Attribute called `CustomSA` of type `Keyword`, r
 
 `tctl search-attribute create --name CustomSA --type Keyword`
 
-Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
+Note that if you use a SQL database with advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
 For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
 
 You can also create multiple custom Search Attributes when you set up your Visibility store.
@@ -835,7 +834,7 @@ add_custom_search_attributes() {
 
 Note that this script has been updated for Temporal Server v1.20, which requires associating every custom Search Attribute with a Namespace when using a SQL database.
 
-For Temporal Server v1.19 and earlier, or if using Elasticsearch for Advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
+For Temporal Server v1.19 and earlier, or if using Elasticsearch for advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
 
 ```bash
 add_custom_search_attributes() {
@@ -858,11 +857,11 @@ When your Visibility store is set up and running, these custom Search Attributes
 To remove a Search Attribute key from your self-hosted Temporal Cluster Visibility store, use the command `tctl search-attribute remove`.
 Removing Search Attributes is not supported on Temporal Cloud.
 
-For example, if using Elasticsearch for Advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
+For example, if using Elasticsearch for advanced Visibility, to remove a custom Search Attribute called `CustomSA` of type Keyword use the following command:
 
 `tctl search-attribute remove --name CustomSA`
 
-With Temporal Server v1.20, if using a SQL database for Advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
+With Temporal Server v1.20, if using a SQL database for advanced Visibility, you need to specify the Namespace in your command, as shown in the following command:
 
 `tctl  --ns yournamespace search-attribute remove --name CustomSA`
 
@@ -1218,7 +1217,7 @@ Refer to this [Makefile](https://github.com/temporalio/temporal/blob/v1.4.1/Make
 	--ep localhost -p 5432 -u temporal -pw temporal --pl postgres --db temporal_visibility update-schema -d ./schema/postgresql/v96/visibility/versioned
 ```
 
-If you're upgrading PostgreSQL to v12 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
+If you're upgrading PostgreSQL to v12 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade your PostgreSQL version first, and then run `temporal-sql-tool` with the `postgres12` plugin, as shown in the following example:
 
 ```bash
 ./temporal-sql-tool \
@@ -1256,7 +1255,7 @@ If you're upgrading PostgreSQL to v12 or later to enable Advanced Visibility fea
 	--ep localhost -p 3036 -u root -pw root --pl mysql --db temporal_visibility update-schema -d ./schema/mysql/v57/visibility/versioned/
 ```
 
-If you're upgrading MySQL to v8.0.17 or later to enable Advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
+If you're upgrading MySQL to v8.0.17 or later to enable advanced Visibility features with Temporal Server v1.20, upgrade your MySQL version first, and then run `temporal-sql-tool` with the `mysql8` plugin, as shown in the following example:
 
 ```bash
 ./temporal-sql-tool \

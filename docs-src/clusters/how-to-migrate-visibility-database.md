@@ -116,4 +116,4 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
            closeIdleConnectionsInterval: 15s
    ```
 
-After the Visibility store is updated in your self-hosted Cluster configuration, you can remove the secondary Visibility dynamic configuration.
+You can also remove the secondary Visibility dynamic configuration in your self-hosted Cluster configuration.

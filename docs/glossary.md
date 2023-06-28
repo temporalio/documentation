@@ -206,7 +206,7 @@ _Tags: [term](/tags/term)_
 
 
 #### [List Filter](/visibility#list-filter)
-A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.
+A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 

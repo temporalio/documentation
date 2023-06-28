@@ -22,6 +22,6 @@ The [Visibility store](/cluster-deployment-guide#visibility-store) in your Tempo
 
 With Temporal Server v1.21, you can set up [Dual Visibility](/concepts/what-is-dual-visibility) to migrate your Visibility store from one database to another.
 
-<!-- A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
+<!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
-Support for separate Standard and Advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
