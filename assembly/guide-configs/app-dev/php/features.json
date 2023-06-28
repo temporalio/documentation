@@ -116,10 +116,6 @@
       "id": "php/how-to-set-activity-retry-options-in-php"
     },
     {
-      "type": "h3",
-      "id": "php/activity-retry-simulator"
-    },
-    {
       "type": "h2",
       "id": "php/activity-heartbeats"
     },
