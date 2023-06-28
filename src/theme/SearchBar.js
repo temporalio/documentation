@@ -39,7 +39,7 @@ function SearchBar({ onClick, open }) {
 function Modal({ show, close }) {
   if (show) {
     return (
-      <div className="modal-overlay" onClick={close} >
+      <div stl className="modal-overlay" onClick={close} >
         <div className="modal" onClick={e => e.stopPropagation()}>
           <iframe src="https://iq.temporal.io" />
         </div>

@@ -14,6 +14,16 @@ module.exports = {
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preload',
+        href: 'https://iq.temporal.io',
+        as: 'document',
+      },
+    },
+  ],
   plugins: [
     function preloadFontPlugin() {
       return {
