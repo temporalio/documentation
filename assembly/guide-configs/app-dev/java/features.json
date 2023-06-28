@@ -112,10 +112,6 @@
       "id": "java/how-to-set-activity-retry-options-in-java"
     },
     {
-      "type": "h3",
-      "id": "java/activity-retry-simulator"
-    },
-    {
       "type": "h2",
       "id": "java/activity-heartbeats"
     },

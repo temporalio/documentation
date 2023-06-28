@@ -158,7 +158,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Event History](/workflows#event-history)
-An append log of Events that represents the full state a Workflow Execution.
+An append-only log of Events that represents the full state a Workflow Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
@@ -380,7 +380,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Task Token](/activities#task-token)
-A Task Token is a unique Id that correlates to an Activity Execution.
+A Task Token is a unique identifier for an Activity Task Execution.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 

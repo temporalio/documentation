@@ -5,7 +5,7 @@ sidebar_label: Update
 description: An Update is a request to and a response from Workflow Execution.
 ssdi:
   - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-  - Avaible in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions).
+  - Available in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions)
 tags:
   - term
   - updates

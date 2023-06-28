@@ -111,10 +111,6 @@
       "id": "python/how-to-set-an-activity-retry-policy-in-python"
     },
     {
-      "type": "h3",
-      "id": "python/activity-retry-simulator"
-    },
-    {
       "type": "h2",
       "id": "python/activity-heartbeats"
     },
