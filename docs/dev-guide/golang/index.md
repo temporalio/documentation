@@ -44,6 +44,7 @@ The Developer's guide is divided into the following sections:
    - [Async Activity Completion](/dev-guide/go/features#asynchronous-activity-completion)
    - [Child Workflows](/dev-guide/go/features#child-workflows)
    - [Continue-As-New](/dev-guide/go/features#continue-as-new)
+   - [Schedules](/dev-guide/go/features#schedule-a-workflow)
    - [Cron Jobs](/dev-guide/go/features#temporal-cron-jobs)
 
 3. [**Observability**](/dev-guide/go/observability): Methods for observing a Temporal Application.

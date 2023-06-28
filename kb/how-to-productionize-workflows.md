@@ -64,7 +64,7 @@ Be sure that all previously received Signals have been processed and that all ru
 The newly started Workflow then unpacks the state in the input and can "resume" the Workflow according to your business logic.
 
 A huge benefit of this approach is that you avoid making patches to running Workflows.
-Instead, tell them all to continue onto a new [Task Queue](/tasks#task-queue) with [Workers](/workers) that have the updated Workflow code.
+Instead, tell them all to continue onto a new [Task Queue](/workers#task-queue) with [Workers](/workers) that have the updated Workflow code.
 
 ## When and how to make changes to your Workflow code
 

@@ -15,8 +15,8 @@ You must provide either `schedule_to_close_timeout` or `start_to_close_timeout`.
 
 ```python
 from temporalio import workflow
-# . . .
-# . . .
+# ...
+# ...
 @workflow.defn(name="YourWorkflow")
 class YourWorkflow:
     @workflow.run

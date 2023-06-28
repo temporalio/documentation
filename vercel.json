@@ -46,6 +46,10 @@
       "destination": "/glossary"
     },
     {
+      "source": "/tasks:path*",
+      "destination": "/workers:path*"
+    },
+    {
       "source": "/application-development-guide",
       "destination": "/dev-guide"
     },
@@ -370,16 +374,12 @@
       "destination": "/dev-guide"
     },
     {
+      "source": "/dev-guide/golang/versioning:path*",
+      "destination": "/dev-guide/go/versioning:path*"
+    },
+    {
       "source": "/change-log",
       "destination": "/changelog"
-    },
-    {
-      "source": "/blog/airbyte-case-study/",
-      "destination": "https://temporal.io/case-studies/airbyte-case-study"
-    },
-    {
-      "source": "/blog/zebra-medical-case-study/",
-      "destination": "https://temporal.io/case-studies/zebra-medical-case-study"
     },
     {
       "source": "/blog/how-datadog-ensures-database-reliability-with-temporal",
@@ -455,7 +455,7 @@
     },
     {
       "source": "/concepts/task-queues",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/concepts/what-is-a-retry-policy/#visualizing-retry-policies",
@@ -759,7 +759,7 @@
     },
     {
       "source": "/go/task-queues",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/go/testing",
@@ -1303,11 +1303,11 @@
     },
     {
       "source": "/concepts/what-is-an-activity-task",
-      "destination": "/tasks#activity-task"
+      "destination": "/workers#activity-task"
     },
     {
       "source": "/concepts/what-is-an-activity-task-execution",
-      "destination": "/tasks#activity-task-execution"
+      "destination": "/workers#activity-task-execution"
     },
     {
       "source": "/concepts/what-is-an-activity-type",
@@ -1419,15 +1419,15 @@
     },
     {
       "source": "/concepts/what-is-a-sticky-execution",
-      "destination": "/tasks#sticky-execution"
+      "destination": "/workers#sticky-execution"
     },
     {
       "source": "/concepts/what-is-a-task-queue",
-      "destination": "/tasks#task-queue"
+      "destination": "/workers#task-queue"
     },
     {
       "source": "/concepts/what-is-task-routing",
-      "destination": "/tasks#task-routing"
+      "destination": "/workers#task-routing"
     },
     {
       "source": "/concepts/what-is-a-task-token",
@@ -1435,7 +1435,7 @@
     },
     {
       "source": "/concepts/what-is-a-task",
-      "destination": "/tasks"
+      "destination": "/workers"
     },
     {
       "source": "/concepts/what-is-temporal",
@@ -1511,7 +1511,7 @@
     },
     {
       "source": "/concepts/what-is-a-workflow-task-execution",
-      "destination": "/tasks#workflow-task-execution"
+      "destination": "/workers#workflow-task-execution"
     },
     {
       "source": "/concepts/what-is-a-workflow-task-timeout",
@@ -1526,6 +1526,214 @@
       "destination": "/workflows#workflow-type"
     },
     {
+      "source": "/content/how-to-add-a-custom-search-attribute-to-a-cluster-using-tctl",
+      "destination": "/cluster-deployment-guide#create-custom-search-attributes"
+    },
+    {
+      "source": "archive-data",
+      "destination": "/cluster-deployment-guide#archival"
+    },
+    {
+      "source": "/blog/airbyte-case-study/",
+      "destination": "https://temporal.io/case-studies/airbyte-case-study"
+    },
+    {
+      "source": "/blog/build-an-ecommerce-app-with-temporal-part-1/",
+      "destination": "https://learn.temporal.io/tutorials/go/ecommerce/build-an-ecommerce-app-with-temporal-part-1"
+    },
+    {
+      "source": "/blog/descript-case-study/",
+      "destination": "https://temporal.io/case-studies/descript-case-study"
+    },
+    {
+      "source": "/blog/tags/case-study",
+      "destination": "https://temporal.io/use-cases"
+    },
+    {
+      "source": "/blog/zebra-medical-case-study/",
+      "destination": "https://temporal.io/case-studies/zebra-medical-case-study"
+    },
+    {
+      "source": "/clusters/how-to-upgrade-the-temporal-server-version",
+      "destination": "/cluster-deployment-guide#upgrade-server"
+    },
+    {
+      "source": "/concepts/what-is-a-claimmapper-plugin",
+      "destination": "/security#claim-mapper"
+    },
+    {
+      "source": "/concepts/what-is-a-claimmapper-plugin/#default-jwt-claimmapper",
+      "destination": "/security#default-jwt-claimmapper"
+    },
+    {
+      "source": "/concepts/what-is-a-retention-period",
+      "destination": "clusters#retention-period"
+    },
+    {
+      "source": "/concepts/what-is-multi-cluster-replication",
+      "destination": "/clusters#multi-cluster-replication"
+    },
+    {
+      "source": "/configure-temporal-server",
+      "destination": "/references/configuration"
+    },
+    {
+      "source": "/configuring-temporal-server",
+      "destination": "/references/configuration"
+    },
+    {
+      "source": "/archive-data#providers",
+      "destination": "/cluster-deployment-guide#provider"
+    },
+    {
+      "source": "/configure-temporal-server#membership---required",
+      "destination": "/blog/workflow-engine-principles#membership-and-routing-1350"
+    },
+    {
+      "source": "/configuring-temporal-server#clustermetadata",
+      "destination": "/references/configuration#clustermetadata"
+    },
+    {
+      "source": "/filter-workflows",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/go-queries",
+      "destination": "/dev-guide/go/features#queries"
+    },
+    {
+      "source": "/go-sessions",
+      "destination": "/dev-guide/go"
+    },
+    {
+      "source": "/go-sessions#use-cases",
+      "destination": "/dev-guide/go"
+    },
+    {
+      "source": "/go-workers",
+      "destination": "/dev-guide/go/foundations#develop-worker"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go#workflow-logic-requirements-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/go/side-effect",
+      "destination": "/dev-guide/go/features#side-effects"
+    },
+    {
+      "source": "/install-temporal-server",
+      "destination": "/clusters#temporal-server"
+    },
+    {
+      "source": "/java-quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/java/how-to-provide-an-authorization-token-in-java",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/learn-archival",
+      "destination": "/clusters#archival"
+    },
+    {
+      "source": "/learn-cli",
+      "destination": "/cli"
+    },
+    {
+      "source": "/learn-server-configuration#tls",
+      "destination": "/references/configuration#tls"
+    },
+    {
+      "source": "/learn-workflow-filtering",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/php-sdk-overview",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/queries",
+      "destination": "/workflows#query"
+    },
+    {
+      "source": "/server-workflow-search",
+      "destination": "/visibility#search-attribute"
+    },
+    {
+      "source": "/server/elasticsearch-setup",
+      "destination": "/cluster-deployment-guide#elasticsearch"
+    },
+    {
+      "source": "/server/versions-and-dependencies",
+      "destination": "/clusters/#version-and-support"
+    },
+    {
+      "source": "/shared/continue-as-new",
+      "destination": "/workflows#continue-as-new"
+    },
+    {
+      "source": "/external-resources",
+      "destination": "https://docs.temporal.io"
+    },
+    {
+      "source": "/filter-workflows",
+      "destination": "/visibility#list-filter"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/learn-server-configuration",
+      "destination": "/references/configuration"
+    },
+    {
+      "source": "/next/java/how-to-develop-an-activity-in-java",
+      "destination": "/dev-guide/java/foundations#develop-activities"
+    },
+    {
+      "source": "/next/java/how-to-develop-an-activity-in-java/#return-values",
+      "destination": "/dev-guide/java/foundations#workflow-return-values"
+    },
+    {
+      "source": "/php/versioning",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/php/versioning#workflowgetversion",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/server-architecture",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/server/production-deployment",
+      "destination": "/kb/legacy-oss-prod-deploy#temporal-server"
+    },
+    {
+      "source": "/tctl-next",
+      "destination": "/cli"
+    },
+    {
+      "source": "/tctl-next/modifiers#--event-id",
+      "destination": "/cli/cmd-options#event-id"
+    },
+    {
+      "source": "/tctl-next/workflow#reset",
+      "destination": "/cli"
+    },
+    {
+      "source": "/java/quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/typescript/versioning",
+      "destination": "/dev-guide/typescript/versioning"
+    },
+    {
       "source": "/typescript/:path*",
       "destination": "https://legacy-documentation-sdks.temporal.io/typescript/:path*"
     },
@@ -1536,6 +1744,42 @@
     {
       "source": "/java/:path*",
       "destination": "https://legacy-documentation-sdks.temporal.io/java/:path*"
+    },
+    {
+      "source": "/concepts/what-is-a-retry-policy",
+      "destination": "/retry-policies"
+    },
+    {
+      "source": "/php/introduction",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/external-resources/#how-temporal-works",
+      "destination": "/kb/how-to-explain-temporal#how-temporal-works"
+    },
+    {
+      "source": "/application-development/worker-performance",
+      "destination": "/dev-guide/worker-performance"
+    },
+    {
+      "source": "/cli/index",
+      "destination": "/cli"
+    },
+    {
+      "source": "/php/activities#local-activity",
+      "destination": "/dev-guide/php/foundations#develop-activities"
+    },
+    {
+      "source": "/cloud/index",
+      "destination": "/cloud"
+    },
+    {
+      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates",
+      "destination": "/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates"
+    },
+    {
+      "source": "/server/production-deployment/#scaling-and-metrics",
+      "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
     }
   ]
 }

@@ -29,10 +29,6 @@
     },
     {
       "type": "h3",
-      "id": "go/api-reference"
-    },
-    {
-      "type": "p",
       "id": "go/api-reference-go"
     },
     {
@@ -85,10 +81,6 @@
     },
     {
       "type": "h3",
-      "id": "go/workflow-type"
-    },
-    {
-      "type": "p",
       "id": "go/how-to-customize-workflow-type-in-go"
     },
     {
@@ -121,10 +113,6 @@
     },
     {
       "type": "h3",
-      "id": "go/activity-type"
-    },
-    {
-      "type": "p",
       "id": "go/how-to-customize-activity-type-in-go"
     },
     {
@@ -145,6 +133,10 @@
     },
     {
       "type": "h3",
+      "id": "go/activityoptions-reference"
+    },
+    {
+      "type": "h3",
       "id": "go/get-activity-results"
     },
     {
@@ -154,6 +146,10 @@
     {
       "type": "h2",
       "id": "go/how-to-develop-a-worker-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-set-workeroptions-in-go"
     },
     {
       "type": "h2",
@@ -170,6 +166,14 @@
     {
       "type": "p",
       "id": "go/how-to-register-types-with-a-worker-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-set-registerworkflowoptions-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/how-to-set-registeractivityoptions-in-go"
     },
     {
       "type": "h2",
@@ -190,6 +194,10 @@
     {
       "type": "h3",
       "id": "go/how-to-set-a-workflow-id-in-go"
+    },
+    {
+      "type": "h3",
+      "id": "go/startworkflowoptions-reference"
     },
     {
       "type": "h3",

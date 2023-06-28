@@ -12,16 +12,20 @@
   "add_tabs_support": false,
   "sections": [
     {
-      "type": "h2",
+      "type": "p",
       "id": "typescript/debugging"
     },
     {
-      "type": "h3",
+      "type": "h2",
       "id": "typescript/debug-environment-development"
     },
     {
-      "type": "h3",
+      "type": "h2",
       "id": "typescript/debug-environment-production"
+    },
+    {
+      "type": "h2",
+      "id": "typescript/troubleshoot-issues"
     }
   ]
 }

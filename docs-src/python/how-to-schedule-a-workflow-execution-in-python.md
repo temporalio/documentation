@@ -15,7 +15,7 @@ Other options include: `cron_expressions`, `skip`, `start_at`, and `jitter`.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/start_schedule_dacx.py">View source code</a>
 
 ```python
-# . . .
+# ...
 async def main():
     client = await Client.connect("localhost:7233")
 

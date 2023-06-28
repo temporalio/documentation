@@ -19,16 +19,8 @@
       "id": "python/signals"
     },
     {
-      "type": "h3",
-      "id": "python/define-signal"
-    },
-    {
       "type": "p",
       "id": "python/how-to-define-a-signal-in-python"
-    },
-    {
-      "type": "h3",
-      "id": "python/handle-signal"
     },
     {
       "type": "p",
@@ -117,10 +109,6 @@
     {
       "type": "p",
       "id": "python/how-to-set-an-activity-retry-policy-in-python"
-    },
-    {
-      "type": "h3",
-      "id": "python/activity-retry-simulator"
     },
     {
       "type": "h2",
