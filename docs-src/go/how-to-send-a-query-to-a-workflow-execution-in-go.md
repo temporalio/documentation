@@ -30,7 +30,7 @@ if err != nil {
 // ...
 ```
 
-The `response` returned by the Query needs to be decoded into a `result`.
+The value of `response` returned by the Query needs to be decoded into `result`.
 Because this is a future, use `Get()` on `response` to get the result, such as a string in this example.
 
 ```go
