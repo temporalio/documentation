@@ -2,7 +2,6 @@
 id: how-to-manage-certificates-in-temporal-cloud
 title: How to manage certificates in Temporal Cloud
 sidebar_label: Certificates
-sidebar_position: 3
 description: Create certificates and use them to control access to Namespaces.
 toc_max_heading_level: 4
 tags:

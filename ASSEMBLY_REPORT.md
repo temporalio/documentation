@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 27 2023 11:42:59 AM -0700
+Last assembled: Wednesday June 28 2023 17:26:01 PM -0700
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
-88 guide configurations found.
+89 guide configurations found.
 
-1469 information nodes found.
+1474 information nodes found.
 
-1233 information nodes are attached to guides.
+1238 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -947,5 +947,7 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+concepts/what-is-an-action -> /cloud/index#action
 
 

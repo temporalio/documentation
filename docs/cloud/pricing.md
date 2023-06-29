@@ -2,6 +2,7 @@
 id: pricing
 title: Temporal Cloud pricing
 sidebar_label: Pricing
+sidebar_position: 1
 description: Temporal Cloud pricing information
 toc_max_heading_level: 4
 tags:

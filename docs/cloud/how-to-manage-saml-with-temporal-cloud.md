@@ -2,7 +2,6 @@
 id: how-to-manage-saml-with-temporal-cloud
 title: How to manage SAML authentication with Temporal Cloud
 sidebar_label: SAML
-sidebar_position: 6
 description: Integrate a SAML identity provider with your Temporal Cloud account.
 toc_max_heading_level: 4
 tags:
