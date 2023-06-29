@@ -2,7 +2,7 @@
 id: index
 title: Temporal CLI command reference
 sidebar_label: CLI (temporal)
-sidebar_position: 7
+sidebar_position: 9
 description: How to use Temporal's CLI developer tool
 toc_max_heading_level: 4
 tags:
