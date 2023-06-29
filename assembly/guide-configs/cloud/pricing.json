@@ -4,6 +4,7 @@
   "file_dir": "cloud",
   "title": "Temporal Cloud pricing",
   "sidebar_label": "Pricing",
+  "sidebar_position": 1,
   "description": "Temporal Cloud pricing information",
   "use_description": false,
   "toc_max_heading_level": 4,

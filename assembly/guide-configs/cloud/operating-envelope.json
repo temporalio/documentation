@@ -1,0 +1,34 @@
+{
+  "file_name": "operating-envelope.md",
+  "id": "operating-envelope",
+  "file_dir": "cloud",
+  "title": "Temporal Cloud operating envelope",
+  "sidebar_label": "Operating envelope",
+  "sidebar_position": 10,
+  "description": "Temporal Cloud operating-envelope information, including availability, regions, throughput, and latency.",
+  "use_description": false,
+  "toc_max_heading_level": 4,
+  "add_tabs_support": false,
+  "sections": [
+    {
+      "type": "p",
+      "id": "cloud-context/operating-envelope-intro"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/operating-envelope-availability"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/operating-envelope-regions"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/operating-envelope-throughput"
+    },
+    {
+      "type": "h2",
+      "id": "cloud-context/operating-envelope-latency"
+    }
+  ]
+}
