@@ -6,10 +6,7 @@ tags:
   - reference
 ---
 
-While it's usually easiest to interact with [Temporal Server](/concepts/what-is-the-temporal-server) via a [Client SDK](/concepts/what-is-a-temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can also use one of its APIs:
-
-- [gRPC API](#grpc-api)
-- [HTTP API](#http-api)
+While it's usually easiest to interact with [Temporal Server](/concepts/what-is-the-temporal-server) via a [Client SDK](/concepts/what-is-a-temporal-client) or the [Temporal CLI](https://docs.temporal.io/cli), you can also use its gRPC API.
 
 ## gRPC API
 
@@ -70,7 +67,7 @@ Once inside the evans prompt, you can run commands like `help`, `show service` t
 
 - A list of methods should appear in the sidebar. Select one.
 - Edit the JSON in the left pane.
-- Hit `Cmd-Enter` or click the play button to get a response from the server on the right.
+- Hit `Cmd/Ctrl-Enter` or click the play button to get a response from the server on the right.
 
 ![ListWorkflowExecutions](/img/ListWorkflowExecutions.png)
 
@@ -78,7 +75,7 @@ One downside compared to [command line](#with-command-line) is it doesn't show e
 
 ![DescribeTaskQueue](/img/DescribeTaskQueue.png)
 
-<!-- 
+<!--
 TODO redo this section when we publish a stable HTTP API
 
 ## HTTP API
