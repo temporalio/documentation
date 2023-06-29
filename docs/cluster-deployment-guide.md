@@ -97,7 +97,7 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql8" # For MySQL v8.0.7 and later. For earlier versions, use "mysql" plugin.
+        pluginName: "mysql8" # For MySQL v8.0.17 and later. For earlier versions, use "mysql" plugin.
         databaseName: "temporal_visibility"
         connectAddr: " " # Remote address of this database; for example, 127.0.0.0:3306
         connectProtocol: " " # Protocol example: tcp
@@ -186,7 +186,7 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: "postgres12" # For PostgreSQL v12 and later. For earlier versions, use "postgresql" plugin.
+        pluginName: "postgres12" # For PostgreSQL v12 and later. For earlier versions, use "postgres" plugin.
         databaseName: "temporal_visibility"
         connectAddr: " " # remote address of this database; for example, 127.0.0.0:5432
         connectProtocol: " " # protocol example: tcp
@@ -701,7 +701,7 @@ Ensure that you restart your services when you make any changes to your <a class
            closeIdleConnectionsInterval: 15s
    ```
 
-1. Update the dynamic configuration keys on your self-hosted Temporal Cluster to enable write operations to the secondary store and disable read operations.
+1. Update the [dynamic configuration](/clusters#dynamic-configuration) keys on your self-hosted Temporal Cluster to enable write operations to the secondary store and disable read operations.
    Example:
 
    ```yaml
@@ -770,8 +770,6 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
            visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```
-
-You can also remove the secondary Visibility dynamic configuration in your self-hosted Cluster configuration.
 
 ### Custom Search Attributes
 

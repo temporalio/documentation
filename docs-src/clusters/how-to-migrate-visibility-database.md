@@ -48,7 +48,7 @@ Ensure that you restart your services when you make any changes to your [Cluster
            closeIdleConnectionsInterval: 15s
    ```
 
-1. Update the dynamic configuration keys on your self-hosted Temporal Cluster to enable write operations to the secondary store and disable read operations.
+1. Update the [dynamic configuration](/clusters#dynamic-configuration) keys on your self-hosted Temporal Cluster to enable write operations to the secondary store and disable read operations.
    Example:
 
    ```yaml
@@ -117,5 +117,3 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
            visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```
-
-You can also remove the secondary Visibility dynamic configuration in your self-hosted Cluster configuration.
