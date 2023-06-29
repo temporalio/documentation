@@ -19,6 +19,8 @@ Before you begin, verify [supported databases and versions](/cluster-deployment-
 
 The following steps describe how to migrate your Visibility database with examples.
 
+Ensure that you restart your services when you make any changes to your [Cluster configuration](/concepts/what-is-cluster-configuration).
+
 #### Set up secondary Visibility store
 
 1. In your Cluster configuration, [add a secondary Visibility store](/references/configuration#secondaryvisibilitystore) to your Visibility setup under the Persistence configuration.

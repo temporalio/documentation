@@ -34,10 +34,10 @@ The following databases are supported as Visibility stores:
 
 - [MySQL](/clusters/how-to-set-up-mysql-visibility-store) v5.7 and later.
   Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
-  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions MySQL (v5.7 and earlier) will be dropped.
+  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of MySQL will be dropped.
 - [PostgreSQL](/clusters/how-to-set-up-postgresql-visibility-store) v9.6 and later.
   Use v12 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
-  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of PostgreSQL (v9.6 and earlier) will be dropped.
+  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of PostgreSQL will be dropped.
 - [SQLite](/clusters/how-to-set-up-sqlite-visibility-store) v3.31.0 and later for advanced Visibility capabilities.
 - [Cassandra](/clusters/how-to-set-up-cassandra-visibility-store). Support for Cassandra as a Visibility database is deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
 - [Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) supported versions.

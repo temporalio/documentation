@@ -35,7 +35,7 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: "postgres12" # For PostgreSQL v12 and later. If using PostgreSQL v9.6 or earlier, use "postgresql" plugin.
+        pluginName: "postgres12" # For PostgreSQL v12 and later. For earlier versions, use "postgresql" plugin.
         databaseName: "temporal_visibility"
         connectAddr: " " # remote address of this database; for example, 127.0.0.0:5432
         connectProtocol: " " # protocol example: tcp

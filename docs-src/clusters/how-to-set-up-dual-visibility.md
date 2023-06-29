@@ -59,7 +59,7 @@ persistence:
           host: "127.0.0.1:9200"
         indices:
           visibility: temporal_visibility_v1
-          secondary_visibility: temporal_visibility_v2
+          secondary_visibility: temporal_visibility_v1_new
         closeIdleConnectionsInterval: 15s
 ```
 
@@ -143,8 +143,8 @@ For Elasticsearch as both primary and secondary Visibility store configuration i
 : "${ES_USER:=}"
 : "${ES_PWD:=}"
 : "${ES_VERSION:=v7}"
-: "${ES_VIS_INDEX:=temporal_visibility_v1}"
-: "${ES_SEC_VIS_INDEX:=temporal_visibility_v2"
+: "${ES_VIS_INDEX:=temporal_visibility_v1_dev}"
+: "${ES_SEC_VIS_INDEX:=temporal_visibility_v1_new}"
 : "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
 
 #...

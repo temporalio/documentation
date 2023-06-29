@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 28 2023 16:11:53 PM -0700
+Last assembled: Thursday June 29 2023 14:35:52 PM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -41,6 +41,8 @@ clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
 references/configuration -> /references/configuration#sql
 
 references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
+
+concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
 concepts/what-is-archival -> /clusters#archival
 
@@ -355,8 +357,6 @@ concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
-
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 concepts/what-is-a-retry-policy -> /retry-policies#
 
@@ -896,9 +896,7 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
+typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -953,7 +951,5 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/observability -> /dev-guide/typescript/observability#tracing
 
 

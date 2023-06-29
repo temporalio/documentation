@@ -55,10 +55,10 @@ The following databases are supported as Visibility stores:
 
 - <a class="tdlp" href="#mysql">MySQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up MySQL Visibility store</span><br /><br /><span class="tdlppd">You can set MySQL (v5.7 and later) as your Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#mysql">Learn more</a></span></span></a> v5.7 and later.
   Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
-  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions MySQL (v5.7 and earlier) will be dropped.
+  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of MySQL will be dropped.
 - <a class="tdlp" href="#postgresql">PostgreSQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up PostgreSQL Visibility store</span><br /><br /><span class="tdlppd">You can set PostgreSQL as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#postgresql">Learn more</a></span></span></a> v9.6 and later.
   Use v12 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
-  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of PostgreSQL (v9.6 and earlier) will be dropped.
+  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of PostgreSQL will be dropped.
 - <a class="tdlp" href="#sqlite">SQLite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up SQLite Visibility store</span><br /><br /><span class="tdlppd">You can set SQLite as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#sqlite">Learn more</a></span></span></a> v3.31.0 and later for advanced Visibility capabilities.
 - <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>. Support for Cassandra as a Visibility database is deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
 - <a class="tdlp" href="#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#elasticsearch">Learn more</a></span></span></a> supported versions.
@@ -97,7 +97,7 @@ persistence:
       #...
     mysql-visibility:
       sql:
-        pluginName: "mysql8" # For MySQL v8.0.7 and later. If using MySQL 5.7 or earlier, use "mysql" plugin.
+        pluginName: "mysql8" # For MySQL v8.0.7 and later. For earlier versions, use "mysql" plugin.
         databaseName: "temporal_visibility"
         connectAddr: " " # Remote address of this database; for example, 127.0.0.0:3306
         connectProtocol: " " # Protocol example: tcp
@@ -186,7 +186,7 @@ persistence:
     #...
     postgres-visibility:
       sql:
-        pluginName: "postgres12" # For PostgreSQL v12 and later. If using PostgreSQL v9.6 or earlier, use "postgresql" plugin.
+        pluginName: "postgres12" # For PostgreSQL v12 and later. For earlier versions, use "postgresql" plugin.
         databaseName: "temporal_visibility"
         connectAddr: " " # remote address of this database; for example, 127.0.0.0:5432
         connectProtocol: " " # protocol example: tcp
@@ -522,7 +522,7 @@ persistence:
           host: "127.0.0.1:9200"
         indices:
           visibility: temporal_visibility_v1
-          secondary_visibility: temporal_visibility_v2
+          secondary_visibility: temporal_visibility_v1_new
         closeIdleConnectionsInterval: 15s
 ```
 
@@ -606,8 +606,8 @@ For Elasticsearch as both primary and secondary Visibility store configuration i
 : "${ES_USER:=}"
 : "${ES_PWD:=}"
 : "${ES_VERSION:=v7}"
-: "${ES_VIS_INDEX:=temporal_visibility_v1}"
-: "${ES_SEC_VIS_INDEX:=temporal_visibility_v2"
+: "${ES_VIS_INDEX:=temporal_visibility_v1_dev}"
+: "${ES_SEC_VIS_INDEX:=temporal_visibility_v1_new}"
 : "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
 
 #...
@@ -671,6 +671,8 @@ Dual Visibility setup is optional but useful in gradually migrating your Visibil
 Before you begin, verify [supported databases and versions](/cluster-deployment-guide#supported-databases) for a Visibility store.
 
 The following steps describe how to migrate your Visibility database with examples.
+
+Ensure that you restart your services when you make any changes to your <a class="tdlp" href="/clusters#cluster-configuration">Cluster configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#cluster-configuration">Learn more</a></span></span></a>.
 
 #### Set up secondary Visibility store
 
@@ -768,7 +770,8 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
            visibility: temporal_visibility_v1_dev
            closeIdleConnectionsInterval: 15s
    ```
-  You can also remove the secondary Visibility dynamic configuration in your self-hosted Cluster configuration.
+
+You can also remove the secondary Visibility dynamic configuration in your self-hosted Cluster configuration.
 
 ### Custom Search Attributes
 
