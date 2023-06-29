@@ -54,6 +54,7 @@ For current system status and information about recent incidents, see [Temporal 
 
 Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS).
 Although Temporal Cloud currently runs only on AWS, it works with applications running in any cloud or data center.
+
 To reduce latency, we recommend that you create your <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in a region that is geographically close to where your <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> are hosted, but your Workers and <a class="tdlp" href="/temporal#temporal-client">Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> code don't need to be hosted on AWS.
 
 ## Throughput
@@ -68,6 +69,8 @@ To raise your quota, [create a ticket for Temporal Support](/cloud/how-to-create
 
 ## Latency
 
-Our Latency SLO is 200ms per region for p99.
+Our latency SLO is 200ms per region for p99.
 Latency is greatly influenced by the actual throughput of a single <a class="tdlp" href="/workflows#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a>.
 Concurrent operations on the same Workflow Execution could lead to increased latency.
+
+Typical latency for starting and signaling Workflow Executions is less than 100ms.
