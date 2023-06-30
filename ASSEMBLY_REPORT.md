@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday June 29 2023 10:25:33 AM -0500
+Last assembled: Friday June 30 2023 10:31:20 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -947,5 +947,9 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+typescript/tracing -> /dev-guide/typescript/observability#tracing
+
+typescript/logging -> /dev-guide/typescript/observability#logging
 
 
