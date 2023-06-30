@@ -1,7 +1,7 @@
 {
     "file_name": "versioning.md",
     "id": "versioning",
-    "slug": "/dev-guide/golang/versioning",
+    "slug": "/dev-guide/go/versioning",
     "file_dir": "dev-guide/golang",
     "title": "Go SDK developer's guide - Versioning",
     "sidebar_label": "Versioning",

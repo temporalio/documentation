@@ -6,9 +6,9 @@ Assembly Workflow Id: docs-full-assembly
 
 88 guide configurations found.
 
-1463 information nodes found.
+1469 information nodes found.
 
-1231 information nodes are attached to guides.
+1233 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 

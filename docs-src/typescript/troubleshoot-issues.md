@@ -68,7 +68,7 @@ For more information, see the [Register types](dev-guide/typescript/foundations#
 
 The TypeScript SDK's Worker bundles Workflows based on `workflowsPath` with [Webpack](https://webpack.js.org/) and run them inside v8 isolates.
 
-If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/typescript/logging#logs-generated-by-sdk-components).
+If Webpack fails to create the bundle, the SDK will throw an error and emit webpack logs using the SDK's [logger](/typescript/observability#logging).
 
 If you do not see Webpack output in your terminal make sure that you have not disabled SDK logging (see reference to `Runtime.install()` in the link above).
 
