@@ -948,8 +948,4 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
-
 
