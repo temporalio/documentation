@@ -21,10 +21,10 @@ To assign it in your Worker code, assign the following Worker Options:
 ```typescript
 // ...
 const worker = await Worker.create({
-    taskQueue: 'your_task_queue_name',
-    buildId: '1.0',
-    useVersioning: true,
-    // ...
+  taskQueue: 'your_task_queue_name',
+  buildId: '1.0',
+  useVersioning: true,
+  // ...
 });
 // ...
 ```
@@ -41,8 +41,8 @@ You might want to do this as part of your CI deployment process.
 ```typescript
 // ...
 await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-    operation: 'addNewIdInNewDefaultSet',
-    buildId: 'deadbeef',
+  operation: 'addNewIdInNewDefaultSet',
+  buildId: 'deadbeef',
 });
 ```
 
@@ -54,9 +54,9 @@ If, instead, you want to add the Build ID to an existing compatible set, you can
 ```typescript
 // ...
 await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-    operation: 'addNewCompatibleVersion',
-    buildId: 'deadbeef',
-    existingCompatibleBuildId: 'some-existing-build-id',
+  operation: 'addNewCompatibleVersion',
+  buildId: 'deadbeef',
+  existingCompatibleBuildId: 'some-existing-build-id',
 });
 ```
 
@@ -67,8 +67,8 @@ You can also promote an existing Build ID in a set to be the default for that se
 ```typescript
 // ...
 await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-    operation: 'promoteBuildIdWithinSet',
-    buildId: 'deadbeef',
+  operation: 'promoteBuildIdWithinSet',
+  buildId: 'deadbeef',
 });
 ```
 
@@ -77,7 +77,7 @@ You can also promote an entire set to become the default set for the queue. New 
 ```typescript
 // ...
 await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
-    operation: 'promoteSetByBuildId',
-    buildId: 'deadbeef',
+  operation: 'promoteSetByBuildId',
+  buildId: 'deadbeef',
 });
 ```
