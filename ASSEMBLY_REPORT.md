@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday June 26 2023 18:22:22 PM -0600
+Last assembled: Friday June 30 2023 10:52:00 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -8,7 +8,7 @@ Assembly Workflow Id: docs-full-assembly-flossypurse
 
 1469 information nodes found.
 
-1237 information nodes are attached to guides.
+1233 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -896,9 +896,7 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
+typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -957,5 +955,7 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+typescript/how-to-develop-a-worker-program-in-typescript -> /dev-guide/typescript/foundations#run-a-dev-worker
 
 

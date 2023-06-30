@@ -213,11 +213,11 @@ Workflow Code:
 
 <!--SNIPSTART typescript-sticky-queues-workflow-->
 
-[activities-sticky-queues/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/workflows.ts)
+[worker-specific-task-queues/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/worker-specific-task-queues/src/workflows.ts)
 
 ```ts
 const { getUniqueTaskQueue } = proxyActivities<
-  ReturnType<typeof createNonStickyActivities>
+  ReturnType<typeof createNormalActivities>
 >({
   startToCloseTimeout: '1 minute',
 });
@@ -227,7 +227,7 @@ export async function fileProcessingWorkflow(maxAttempts = 5): Promise<void> {
     try {
       const uniqueWorkerTaskQueue = await getUniqueTaskQueue();
       const activities = proxyActivities<
-        ReturnType<typeof createStickyActivities>
+        ReturnType<typeof createActivitiesForSameWorker>
       >({
         taskQueue: uniqueWorkerTaskQueue,
         // Note the use of scheduleToCloseTimeout.
@@ -266,7 +266,7 @@ Worker Code:
 
 <!--SNIPSTART typescript-sticky-queues-worker-->
 
-[activities-sticky-queues/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-sticky-queues/src/worker.ts)
+[worker-specific-task-queues/src/worker.ts](https://github.com/temporalio/samples-typescript/blob/master/worker-specific-task-queues/src/worker.ts)
 
 ```ts
 async function run() {
@@ -275,12 +275,12 @@ async function run() {
   const workers = await Promise.all([
     Worker.create({
       workflowsPath: require.resolve('./workflows'),
-      activities: createNonStickyActivities(uniqueWorkerTaskQueue),
-      taskQueue: 'sticky-activity-tutorial',
+      activities: createNormalActivities(uniqueWorkerTaskQueue),
+      taskQueue: 'normal-task-queue',
     }),
     Worker.create({
       // No workflows for this queue
-      activities: createStickyActivities(),
+      activities: createActivitiesForSameWorker(),
       taskQueue: uniqueWorkerTaskQueue,
     }),
   ]);

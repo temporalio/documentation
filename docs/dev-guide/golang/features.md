@@ -265,20 +265,15 @@ if err != nil {
 // ...
 ```
 
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
+The value of `response` returned by the Query needs to be decoded into `result`.
+Because this is a future, use `Get()` on `response` to get the result, such as a string in this example.
 
 ```go
-// ...
-response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
-    WorkflowID: workflowID,
-    RunID: runID,
-    QueryType: queryType,
-    Args: args,
-})
-if err != nil {
+var result string
+if err != response.Get(&result); err != nil {
   // ...
 }
+log.Println("Received Query result. Result: " + result)
 ```
 
 ## Updates
@@ -653,7 +648,7 @@ if err != nil {
 There are three steps to follow:
 
 1. The Activity provides the external system with identifying information needed to complete the Activity Execution.
-   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Token?</span><br /><br /><span class="tdlppd">A Task Token is a unique Id that correlates to an Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#task-token">Learn more</a></span></span></a>, or a combination of Namespace, Workflow Id, and Activity Id.
+   Identifying information can be a <a class="tdlp" href="/activities#task-token">Task Token<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Token?</span><br /><br /><span class="tdlppd">A Task Token is a unique identifier for an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#task-token">Learn more</a></span></span></a>, or a combination of Namespace, Workflow Id, and Activity Id.
 2. The Activity Function completes in a way that identifies it as waiting to be completed by an external system.
 3. The Temporal Client is used to Heartbeat and complete the Activity.
 

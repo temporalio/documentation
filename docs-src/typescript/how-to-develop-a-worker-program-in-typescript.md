@@ -1,11 +1,11 @@
 ---
 id: how-to-develop-a-worker-program-in-typescript
 title: How to develop a Worker program in TypeScript
-sidebar_label: Develop a Worker program
+sidebar_label: Run a dev Worker
 description: Develop a Worker program
 tags:
-  - developer-guide
-  - sdk
+  - dev-guide
+  - workers
   - typescript
 ---
 
@@ -105,7 +105,7 @@ This is a selected subset of options you are likely to use. Even more advanced o
 | Options         | Description                                                                                                                                                          |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                       |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](/typescript/logging))                                                                       |
+| `sinks`         | Allows injection of Workflow Sinks. See [Logging](/typescript/how-to-log-from-a-workflow-in-typescript)                                                              |
 | `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](/typescript/how-to-implement-interceptors-in-typescript)) |
 
 **Operation guides:**

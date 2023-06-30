@@ -461,7 +461,7 @@ However, there is a limit of the total size of the data ends up encoded into a g
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>.
 
 <!--TODO link to gRPC limit section when available -->
@@ -488,7 +488,7 @@ export async function greet(name: string): Promise<string> {
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
 
 In TypeScript, the return value is always a Promise.
 
@@ -739,108 +739,18 @@ For more information, see the [Worker tuning guide](/dev-guide/worker-performanc
 
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
-Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
-Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
+- Each <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-entity">Learn more</a></span></span></a> in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
-<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-entity">Learn more</a></span></span></a> is the component within a Worker Process that listens to a specific Task Queue.
 
-```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    taskQueue: 'hello-world',
-  });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
-
-  // Step 2: Start accepting tasks on the `hello-world` queue
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-
-<!--SNIPEND-->
-
-`taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
-
-A full example for Workers looks like this:
-
-```typescript
-import { NativeConnection, Worker } from '@temporalio/worker';
-import * as activities from './activities';
-
-async function run() {
-  const connection = await NativeConnection.connect({
-    // defaults port to 7233 if not specified
-    address: 'foo.bar.tmprl.cloud',
-    tls: {
-      // set to true if TLS without mTLS
-      // See docs for other TLS options
-      clientCertPair: {
-        crt: clientCert,
-        key: clientKey,
-      },
-    },
-  });
-
-  const worker = await Worker.create({
-    connection,
-    namespace: 'foo.bar', // as explained in Namespaces section
-    // ...
-  });
-  await worker.run();
-}
-
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-```
-
-See below for more Worker options.
-
-**Workflow and Activity registration**
-
-Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
-Activities are directly required and run by Workers in the Node.js environment.
-
-Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
-
-There are three main things the Worker needs:
-
-- `taskQueue`: the Task Queue to poll. This is the only required argument.
-- `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
-- Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
-- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
-
-**Additional Worker Options**
-
-This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
-
-| Options         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see <a class="tdlp" href="/dev-guide/typescript/observability#logging">Logging docs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to log from a Workflow</span><br /><br /><span class="tdlppd">Send logs and errors to a logging service, so that when things go wrong, you can see what happened.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/observability#logging">Learn more</a></span></span></a>)                                                                           |
-| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see <a class="tdlp" href="/dev-guide/typescript/features#interceptors">Interceptors<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to implement interceptors in TypeScript</span><br /><br /><span class="tdlppd">Interceptors are a mechanism for modifying inbound and outbound SDK calls, commonly used to add tracing and authorization.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/features#interceptors">Learn more</a></span></span></a>) |
-
-**Operation guides:**
-
-- [How to tune Workers](/dev-guide/worker-performance)
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
 ## Run a Worker on Docker
 
@@ -1046,6 +956,32 @@ async function run() {
 ```
 
 <!--SNIPEND-->
+
+## Prebuilt workflow bundles
+
+If you're an advanced user, you can pass a prebuilt bundle instead of `workflowsPath`, or you can use the `bundleWorkflowCode` helper:
+
+```ts
+import { bundleWorkflowCode, Worker } from '@temporalio/worker';
+
+// Option 1: passing path to prebuilt bundle
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle: {
+    codePath: './path-to-bundle.js',
+    sourceMapPath: './path-to-bundle.js.map',
+  },
+});
+
+// Option 2: bundling code using Temporal's bundler settings
+const workflowBundle = await bundleWorkflowCode({
+  workflowsPath: require.resolve('./path-to-your-workflows'),
+});
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle,
+});
+```
 
 ## Shut down a worker
 

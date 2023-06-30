@@ -515,7 +515,7 @@
     },
     {
       "source": "/content/how-to-develop-a-worker-program-in-typescript",
-      "destination": "/typescript/how-to-develop-a-worker-program-in-typescript"
+      "destination": "/typescript/run-a-dev-worker"
     },
     {
       "source": "/go/run-your-first-app-tutorial",

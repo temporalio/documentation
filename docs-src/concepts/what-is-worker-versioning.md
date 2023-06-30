@@ -6,6 +6,12 @@ description: Worker Versioning lets you more easily deploy changes to Workflow D
 tags:
   - explanation
   - versioning
+ssdi:
+  - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+  - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+  - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Will come to CLI in version 0.10.0
+  - Not yet available in Temporal Cloud
 ---
 
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
