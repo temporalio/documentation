@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 30 2023 10:52:00 AM -0600
+Last assembled: Friday June 30 2023 10:57:27 AM -0600
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -908,8 +908,6 @@ typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
-typescript/how-to-implement-interceptors-in-typescript -> /dev-guide/typescript/features#interceptors
-
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
 python/tracing -> /dev-guide/python/observability#tracing
@@ -955,7 +953,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/how-to-develop-a-worker-program-in-typescript -> /dev-guide/typescript/foundations#run-a-dev-worker
 
 
