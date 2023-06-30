@@ -65,7 +65,7 @@ persistence:
 
 #### Database schema and setup
 
-The database schema and setup for secondary store depends on the database you plan to use.
+The database schema and setup for a secondary store depends on the database you plan to use.
 
 - [MySQL](/cluster-deployment-guide#mysql)
 - [PostgresSQL](/cluster-deployment-guide#postgresql)

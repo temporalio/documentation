@@ -8,7 +8,8 @@ tags:
   - filtered-lists
   - visibility
 ssdi:
-  - Support for Cassandra as a Visibility database will be deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
+  - Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21.
+    For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
   - We recommend migrating from Cassandra to any of the other supported databases for Visibility.
 ---
 
@@ -20,7 +21,7 @@ Advanced Visibility is not supported with Cassandra.
 To enable advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Visibility store.
 We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize performance.
 
-To migrate from Cassandra to a supported SQL database, see [Migrate Visibility database](/cluster-deployment-guide#migrating-visibility-database).
+To migrate from Cassandra to a supported SQL database, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
 
 **Persistence configuration**
 

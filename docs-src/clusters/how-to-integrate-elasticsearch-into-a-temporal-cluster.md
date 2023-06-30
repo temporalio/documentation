@@ -32,7 +32,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
 
-The following example shows how to set a Visibility store named `es-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
+The following example shows how to set a Visibility store named `es-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 persistence:

@@ -210,8 +210,8 @@ The following example shows a minimal specification for a password-secured Clust
 ```yaml
 persistence:
   defaultStore: default
-  visibilityStore: cass-visibility # This is the primary Visibility store.
-  secondaryVisibilityStore: es-visibility # Secondary Visibility store added to enable Dual Visibility.
+  visibilityStore: cass-visibility # The primary Visibility store.
+  secondaryVisibilityStore: es-visibility # A secondary Visibility store added to enable Dual Visibility.
   numHistoryShards: 512
   datastores:
     default:
