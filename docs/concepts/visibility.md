@@ -338,6 +338,8 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 
 <!-- TODO - [How to configure total Search Attribute size limite](#) -->
 
+- The maximum total characters per Search Attribute value is 255.
+
 <!-- temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.
 -->
