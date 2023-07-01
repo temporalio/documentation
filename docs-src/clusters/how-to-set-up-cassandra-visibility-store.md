@@ -14,7 +14,7 @@ ssdi:
 ---
 
 You can set Cassandra as your [Visibility store](/concepts/what-is-visibility).
-Verify [supported versions](#supported-databases) before you proceed.
+Verify [supported versions](/cluster-deployment-guide#supported-databases) before you proceed.
 
 Advanced Visibility is not supported with Cassandra.
 

@@ -212,8 +212,8 @@ The following example shows a minimal specification for a password-secured Clust
 ```yaml
 persistence:
   defaultStore: default
-  visibilityStore: cass-visibility # This is the primary Visibility store.
-  secondaryVisibilityStore: es-visibility # Secondary Visibility store added to enable Dual Visibility.
+  visibilityStore: cass-visibility # The primary Visibility store.
+  secondaryVisibilityStore: es-visibility # A secondary Visibility store added to enable Dual Visibility.
   numHistoryShards: 512
   datastores:
     default:
@@ -257,7 +257,7 @@ _Required_ - The name of the primary data store definition that should be used t
 
 ### secondaryVisibilityStore
 
-_Optional_ - The name of the secondary data store definition that should be used to set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> on the Temporal Cluster.
+_Optional_ - The name of the secondary data store definition that should be used to set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> on the Temporal Cluster.
 
 ### datastores
 

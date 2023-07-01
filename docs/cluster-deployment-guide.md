@@ -32,7 +32,7 @@ Legacy production deployment information is available [here](/kb/legacy-oss-prod
 
 A <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> store is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
-A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and `CLI` to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
+A Visibility store is required in a Temporal Cluster setup because it is used by Temporal Web UI and CLI to pull Workflow Execution data and enables features like batch operations on a group of Workflow Executions.
 
 With the Visibility store, you can use <a class="tdlp" href="/visibility#list-filter">List Filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a> with <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a> to list and filter Workflow Executions that you want to review.
 
@@ -47,7 +47,8 @@ To enable advanced Visibility on your SQL databases, ensure that you do the foll
 - <a class="tdlp" href="#upgrade-server">Upgrade your Temporal Server<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-server">Learn more</a></span></span></a> to version 1.20 or later.
 - <a class="tdlp" href="#upgrade-mysql-or-postgresql-schema">Update your database schemas<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to upgrade the Temporal Server version</span><br /><br /><span class="tdlppd">If a newer version of the Temporal Server is available, a notification appears in the Temporal Web UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#upgrade-mysql-or-postgresql-schema">Learn more</a></span></span></a> for MySQL to version 8.0.17 (or later), PostgreSQL to version 12 (or later), or SQLite to v3.31.0 (or later).
 
-From Temporal Server v1.21 onwards, you can set up a secondary Visibility store in your Temporal Cluster to enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>. This is useful for migrating your Visibility store database.
+Beginning with Temporal Server v1.21, you can set up a secondary Visibility store in your Temporal Cluster to enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>.
+This is useful for migrating your Visibility store database.
 
 #### Supported databases
 
@@ -55,16 +56,18 @@ The following databases are supported as Visibility stores:
 
 - <a class="tdlp" href="#mysql">MySQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up MySQL Visibility store</span><br /><br /><span class="tdlppd">You can set MySQL (v5.7 and later) as your Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#mysql">Learn more</a></span></span></a> v5.7 and later.
   Use v8.0.17 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
-  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of MySQL will be dropped.
+  Because standard Visibility is deprecated beginning with Temporal Server v1.21, support for older versions of MySQL will be dropped.
 - <a class="tdlp" href="#postgresql">PostgreSQL<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up PostgreSQL Visibility store</span><br /><br /><span class="tdlppd">You can set PostgreSQL as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#postgresql">Learn more</a></span></span></a> v9.6 and later.
   Use v12 (or later) with Temporal Server v1.20 or later for advanced Visibility capabilities.
-  Since standard Visibility is deprecated from Temporal Server v1.21 onwards, support for older versions of PostgreSQL will be dropped.
+  Because standard Visibility is deprecated beginning with Temporal Server v1.21, support for older versions of PostgreSQL will be dropped.
 - <a class="tdlp" href="#sqlite">SQLite<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up SQLite Visibility store</span><br /><br /><span class="tdlppd">You can set SQLite as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#sqlite">Learn more</a></span></span></a> v3.31.0 and later for advanced Visibility capabilities.
-- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>. Support for Cassandra as a Visibility database is deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
+- <a class="tdlp" href="#cassandra">Cassandra<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Cassandra Visibility store</span><br /><br /><span class="tdlppd">You can set Cassandra as your Visibility store with any other supported Persistence databases.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#cassandra">Learn more</a></span></span></a>.
+  Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21.
 - <a class="tdlp" href="#elasticsearch">Elasticsearch<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to integrate Elasticsearch into a Temporal Cluster</span><br /><br /><span class="tdlppd">To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#elasticsearch">Learn more</a></span></span></a> supported versions.
   We recommend operating a Temporal Cluster with Elasticsearch as your Visibility store for any use case that spawns more than a few Workflow Executions.
 
 You can use any combination of the supported databases for your Persistence and Visibility stores.
+For updates, check [Server release notes](https://github.com/temporalio/temporal/releases).
 
 ### MySQL
 
@@ -301,20 +304,20 @@ For an example of setting up the SQLite schema, see [Temporalite](https://github
 ### Cassandra
 
 :::tip Support, stability, and dependency info
-- Support for Cassandra as a Visibility database will be deprecated from Temporal Server v1.21 onwards. Check [Server release notes](https://github.com/temporalio/temporal/releases) for updates.
+- Support for Cassandra as a Visibility database is deprecated beginning with Temporal Server v1.21. For updates, check the [Temporal Server release notes](https://github.com/temporalio/temporal/releases).
 - We recommend migrating from Cassandra to any of the other supported databases for Visibility.
 
 :::
 
 You can set Cassandra as your <a class="tdlp" href="/clusters#visibility">Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a>.
-Verify [supported versions](#supported-databases) before you proceed.
+Verify [supported versions](/cluster-deployment-guide#supported-databases) before you proceed.
 
 Advanced Visibility is not supported with Cassandra.
 
 To enable advanced Visibility features, use any of the supported databases, such as MySQL, PostgreSQL, SQLite, or Elasticsearch, as your Visibility store.
 We recommend using Elasticsearch for any Temporal Cluster setup that handles more than a few Workflow Executions because it supports the request load on the Visibility store and helps optimize performance.
 
-To migrate from Cassandra to a supported SQL database, see [Migrate Visibility database](/cluster-deployment-guide#migrating-visibility-database).
+To migrate from Cassandra to a supported SQL database, see [Migrating Visibility database](/cluster-deployment-guide#migrating-visibility-database).
 
 **Persistence configuration**
 
@@ -404,7 +407,7 @@ If you operate a Temporal Cluster using our [Helm charts](https://github.com/tem
 
 Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
 
-The following example shows how to set a Visibility store named `es-visibility` and define the datastore configuration in your Temporal Cluster Configuration YAML.
+The following example shows how to set a Visibility store named `es-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 persistence:
@@ -474,7 +477,7 @@ Ensure that the following privileges are granted for the Elasticsearch Temporal 
 
 :::
 
-To enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>, set up a secondary Visibility store with your primary Visibility store, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.
+To enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>, set up a secondary Visibility store with your primary Visibility store, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.
 
 With Dual Visibility, you can read from only one Visibility store at a time, but can configure your Temporal Cluster to write to primary only, secondary only, or to both primary and secondary stores.
 
@@ -528,7 +531,7 @@ persistence:
 
 #### Database schema and setup
 
-The database schema and setup for secondary store depends on the database you plan to use.
+The database schema and setup for a secondary store depends on the database you plan to use.
 
 - [MySQL](/cluster-deployment-guide#mysql)
 - [PostgresSQL](/cluster-deployment-guide#postgresql)
@@ -660,25 +663,26 @@ For details on the configuration options, see:
 ### Migrating Visibility database
 
 :::tip Support, stability, and dependency info
-- Supported from Temporal Server v1.21 onwards.
+- Supported beginning with Temporal Server v1.21.
 
 :::
 
-To migrate your Visibility database, [set up a secondary Visibility](/cluster-deployment-guide#set-up-secondary-visibility) to enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>, and update the dynamic configuration in your Cluster to update the Visibility store read and write operations.
+To migrate your Visibility database, [set up a secondary Visibility store](/cluster-deployment-guide#set-up-secondary-visibility-store) to enable <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a>, and update the dynamic configuration in your Cluster to update the read and write operations for the Visibility store.
 
 Dual Visibility setup is optional but useful in gradually migrating your Visibility data to another database.
 
 Before you begin, verify [supported databases and versions](/cluster-deployment-guide#supported-databases) for a Visibility store.
 
-The following steps describe how to migrate your Visibility database with examples.
+The following steps describe how to migrate your Visibility database.
 
-Ensure that you restart your services when you make any changes to your <a class="tdlp" href="/clusters#cluster-configuration">Cluster configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#cluster-configuration">Learn more</a></span></span></a>.
+After you make any changes to your <a class="tdlp" href="/clusters#cluster-configuration">Cluster configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#cluster-configuration">Learn more</a></span></span></a>, ensure that you restart your services.
 
 #### Set up secondary Visibility store
 
 1. In your Cluster configuration, <a class="tdlp" href="/references/configuration#secondaryvisibilitystore">add a secondary Visibility store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#secondaryvisibilitystore">Learn more</a></span></span></a> to your Visibility setup under the Persistence configuration.
 
-   Example: To migrate from Cassandra to Elasticsearch, add Elasticsearch as your secondary database, and set it up. For details, see [secondary Visibility database schema and setup](/cluster-deployment-guide#set-up-secondary-visibility).
+   Example: To migrate from Cassandra to Elasticsearch, add Elasticsearch as your secondary database and set it up.
+   For details, see [secondary Visibility database schema and setup](/cluster-deployment-guide#set-up-secondary-visibility-store).
 
    ```yaml
    persistence:
@@ -724,21 +728,23 @@ For details on write options to the secondary store, see <a class="tdlp" href="/
 When you enable a secondary store, only new Visibility data is written to both primary and secondary stores.
 The primary store still holds the Workflow Execution data from before the secondary store was set up.
 
-Running in dual mode allows you to plan for closed and open Workflow Executions data from before the secondary store was set up in your self-hosted Temporal Cluster.
+Running in dual mode lets you plan for closed and open Workflow Executions data from before the secondary store was set up in your self-hosted Temporal Cluster.
 
 Example:
 
 - To manage closed Workflow Executions data, run in dual mode until the Namespace [Retention Period](/clusters#retention-period) is reached.
-  After the retention period, Workflow Execution data is removed from the Persistence and Visibility stores.
-  If you want to keep the closed Workflow Executions data after the set Retention period, you must set up [Archival](/cluster-deployment-guide#archival).
+  After the Retention Period, Workflow Execution data is removed from the Persistence and Visibility stores.
+  If you want to keep the closed Workflow Executions data after the set Retention Period, you must set up [Archival](/cluster-deployment-guide#archival).
 - To manage data for all open Workflow Executions, run in dual mode until all the Workflow Executions started before enabling Dual Visibility mode are closed.
-  Once the Workflow Executions are closed, verify the Retention Period and set up [Archival](/cluster-deployment-guide#archival) if you need to keep the data beyond the [Retention Period](/clusters#retention-period).
+  After the Workflow Executions are closed, verify the Retention Period and set up Archival if you need to keep the data beyond the Retention Period.
 
 You can run your Visibility setup in dual mode for an indefinite period, or until you are ready to deprecate the primary store and move completely to the secondary store without losing data.
 
 #### Deprecate primary Visibility store
 
-1. When you are ready to deprecate your primary store, update the dynamic configuration YAML to enable read operations from the secondary store.
+When you are ready to deprecate your primary store, follow these steps.
+
+1. Update the dynamic configuration YAML to enable read operations from the secondary store.
    Example:
 
    ```yaml
@@ -750,7 +756,8 @@ You can run your Visibility setup in dual mode for an indefinite period, or unti
    constraints: {}
    ```
 
-   At this point, Visibility data is read from the secondary store only. Verify whether data on the secondary store is correct.
+   At this point, Visibility data is read from the secondary store only.
+   Verify whether data on the secondary store is correct.
 
 1. When the secondary store is vetted and ready to replace your current primary store, change your Cluster configuration to set the secondary store as your primary, and remove the dynamic configuration set in the previous steps.
    Example:

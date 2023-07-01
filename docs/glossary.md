@@ -146,7 +146,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
 #### [Dual Visibility](/visibility#dual-visibility)
-Dual Visibility is a feature that allows you to set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.
+Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation), [filtered-lists](/tags/filtered-lists), [visibility](/tags/visibility)_
 
