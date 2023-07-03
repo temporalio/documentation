@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 30 2023 10:57:27 AM -0600
+Last assembled: Friday June 30 2023 17:11:47 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 88 guide configurations found.
 
-1469 information nodes found.
+1472 information nodes found.
 
-1233 information nodes are attached to guides.
+1236 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -24,6 +24,8 @@ concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
 
 clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
 
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
+
 clusters/how-to-set-up-mysql-visibility-store -> #mysql
 
 clusters/how-to-set-up-postgresql-visibility-store -> #postgresql
@@ -37,6 +39,10 @@ clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearc
 clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
 
 references/configuration -> /references/configuration#sql
+
+references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
+
+concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
 concepts/what-is-archival -> /clusters#archival
 
@@ -352,8 +358,6 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
-
 concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
@@ -484,8 +488,6 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
-references/dynamic-configuration -> /references/dynamic-configuration#
-
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
@@ -537,6 +539,8 @@ java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
 typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
 

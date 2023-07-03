@@ -150,7 +150,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 - Internal Timer Task Queue: Durably persists Timers.
 - Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
   (Relies on the experimental Multi-Cluster feature.)
-- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> index.
+- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> index.
 
 ### Matching Service
 
@@ -221,9 +221,9 @@ The database stores the following types of data:
 - <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
-An Elasticsearch database must be configured in a self-hosted Cluster to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
+An Elasticsearch database must be configured in a self-hosted Cluster to enable <a class="tdlp" href="/visibility#advanced-visibility">advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
 
-With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later), and Elasticsearch.
+With Temporal Server version 1.20 and later, advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later), and Elasticsearch.
 
 #### Dependency versions
 
@@ -243,13 +243,25 @@ You can verify supported databases in the [Temporal Server release notes](https:
 
 ## Visibility
 
+:::tip Support, stability, and dependency info
+
+- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
+- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+
+:::
+
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
 The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 - [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
 
-A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
+With Temporal Server v1.21, you can set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> to migrate your Visibility store from one database to another.
+
+<!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
+
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
 
 ## Archival
 
@@ -286,7 +298,7 @@ Depending on how you want to deploy your self-hosted Temporal Cluster, your stat
 
 - Temporal Services—Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
-- Persistence (including History Shard count), Visibility and Advanced Visibility, Archival store setups.
+- Persistence (including History Shard count), Visibility, Archival store setups.
 - TLS, authentication, authorization
 - Server log level
 - Metrics
