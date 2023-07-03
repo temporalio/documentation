@@ -14,6 +14,7 @@ tags:
 - timeouts
 - signals
 - queries
+- updates
 - child-workflow
 - child-workflow-executions
 ---
@@ -66,7 +67,7 @@ The following are the two reasons why a Command might be generated out of sequen
 1. Code changes are made to a Workflow Definition that is in use by a running Workflow Execution.
 2. There is intrinsic non-deterministic logic (such as inline random branching).
 
-### Code changes can cause non-deterministic behavior
+### Code changes can cause non-deterministic behavior {#non-deterministic-change}
 
 The Workflow Definition can change in very limited ways once there is a Workflow Execution depending on it.
 To alleviate non-deterministic issues that arise from code changes, we recommend using [Workflow Versioning](#workflow-versioning).
@@ -124,13 +125,13 @@ When those APIs are used, the results are stored as part of the Event History, w
 
 In other words, all operations that do not purely mutate the Workflow Execution's state should occur through a Temporal SDK API.
 
-### Workflow Versioning
+### Workflow Versioning {#workflow-versioning}
 
 The Workflow Versioning feature enables the creation of logical branching inside a Workflow Definition based on a developer specified version identifier.
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/go/versioning)
+- <a class="tdlp" href="/dev-guide/go/versioning#">How to version Workflow Definitions in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">Version Workflows in Go</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/versioning#">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/java/versioning#">How to version Workflow Definitions in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to version Workflows in Java</span><br /><br /><span class="tdlppd">Properly version your Workflows to avoid non-deterministic errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/versioning#">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/typescript/versioning#">How to version Workflow Definitions in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">Versioning lets you update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/versioning#">Learn more</a></span></span></a>
 
@@ -186,7 +187,7 @@ The Temporal Platform ensures the state of the Workflow Execution persists in th
 Scalability is responsiveness in the presence of load.
 
 A single Workflow Execution is limited in size and throughput but is scalable because it can <a class="tdlp" href="#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#continue-as-new">Learn more</a></span></span></a> in response to load.
-A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
+A Temporal Application is scalable because the Temporal Platform is capable of supporting millions to billions of Workflow Executions executing concurrently, which is realized by the design and nature of the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> and <a class="tdlp" href="/workers#worker-process">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a>.
 
 ### Replays
 
@@ -266,7 +267,7 @@ The <a class="tdlp" href="#workflow-run-timeout">Workflow Run Timeout<span class
 
 ### Event loop
 
-A Workflow Execution is made up of a sequence of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> called an <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a>.
+A Workflow Execution is made up of a sequence of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> called an <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a>.
 Events are created by the Temporal Cluster in response to either Commands or actions requested by a Temporal Client (such as a request to spawn a Workflow Execution).
 
 <div class="tdiw"><div class="tditw"><p class="tdit">Workflow Execution</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/workflow-execution-swim-lane-01.svg" alt="Workflow Execution" height="1246" width="1180" /></div></div>
@@ -279,8 +280,8 @@ No, there is no time constraint on how long a Workflow Execution can be Running.
 
 However, Workflow Executions intended to run indefinitely should be written with some care.
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
-The Temporal Cluster logs a warning after 10K (10,240) Events and periodically logs additional warnings as new Events are added.
-If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
+The Temporal Cluster logs a warning after 10Ki (10,240) Events and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 To prevent _runaway_ Workflow Executions, you can use the Workflow Execution Timeout, the Workflow Run Timeout, or both.
 A Workflow Execution Timeout can be used to limit the duration of Workflow Execution Chain, and a Workflow Run Timeout can be used to limit the duration an individual Workflow Execution (Run).
@@ -294,28 +295,30 @@ For example, it may be reasonable to use Continue-As-New once per day for a long
 Each pending Activity generates a metadata entry in the Workflow's mutable state.
 Too many entries create a large mutable state, which causes unstable persistence.
 
-To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, external Workflows, and Signals.
+To protect the system, Temporal enforces a maximum of 50,000 pending Activities, Child Workflows, Signals, and Workflow cancellation requests.
+Currently, there is no limit on the total number of Signals that a Workflow Execution can receive. <!--From Temporal server v1.21, the default maximum number of Signals that a Workflow Execution can receive is 10000. -->
 These limits are set with the following [dynamic configuration keys](https://github.com/temporalio/temporal/blob/master/service/history/configs/config.go):
 
-- `NumPendingChildExecutionsLimit`
-- `NumPendingActivitiesLimit`
-- `NumPendingSignals`
-- `NumPendingCancelRequestsLimit`
+- `limit.numPendingActivities.error`
+- `limit.numPendingChildExecutions.error`
+- `limit.numPendingSignals.error`
+- `limit.numPendingCancelRequests.error`
+- `history.maximumSignalsPerExecution`
 
-By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 pending Activities, Child Workflows, external Workflows, or Signals.
+By default, Temporal fails Workflow Task Executions that would cause the Workflow to surpass 50,000 <!--2000 in from v1.21--> pending Activities, Child Workflows, Workflow cancellation requests, or Signals. <!-- The Workflow Execution fails if the number of pending Signals exceeds 2000, or if the total number of Signals received exceeds 10000. -->
 Similar constraints are enforced for `SignalExternalWorkflowExecution`, `RequestCancelExternalWorkflowExecution`, and `StartChildWorkflowExecution` Commands.
 
 :::note
 
-Cloud users are limited to 2,000 each of pending Activities, Child Workflows, external Workflows, and Signals.
+Cloud users are limited to 2,000 each of pending Activities, Child Workflows, Workflow cancellation requests, and Signals.
 
 :::
 
 ### Command
 
-A Command is a requested action issued by a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> after a <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></span></span></a> completes.
+A Command is a requested action issued by a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a> after a <a class="tdlp" href="/workers#workflow-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task-execution">Learn more</a></span></span></a> completes.
 
-The action that the Cluster takes is recorded in the [Workflow Execution's](/workflows#workflow-execution) <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a>.
+The action that the Cluster takes is recorded in the [Workflow Execution's](/workflows#workflow-execution) <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> as an <a class="tdlp" href="#event">Event<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a>.
 The Workflow Execution can await on some of the Events that come as a result from some of the Commands.
 
 Commands are generated by the use of Workflow APIs in your code. During a Workflow Task Execution there may be several Commands that are generated.
@@ -330,7 +333,7 @@ Commands are described in the <a class="tdlp" href="/references/commands#">Comma
 
 Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution. Each Event corresponds to an `enum` that is defined in the [Server API](https://github.com/temporalio/api/blob/master/temporal/api/enums/v1/event_type.proto).
 
-All Events are recorded in the <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a>.
+All Events are recorded in the <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a>.
 
 A list of all possible Events that could appear in a Workflow Execution Event History is provided in the <a class="tdlp" href="/references/events#">Event reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#">Learn more</a></span></span></a>.
 
@@ -338,7 +341,7 @@ A list of all possible Events that could appear in a Workflow Execution Event Hi
 
 Seven Activity-related Events are added to Event History at various points in an Activity Execution:
 
-- After a <a class="tdlp" href="/tasks#activity-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a> reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Cluster, and the Cluster adds an <a class="tdlp" href="/references/events#activitytaskscheduled">ActivityTaskScheduled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskscheduled">Learn more</a></span></span></a> Event to Event History.
+- After a <a class="tdlp" href="/workers#activity-task-execution">Workflow Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> reaches a line of code that starts/executes an Activity, the Worker sends the Activity Type and arguments to the Temporal Cluster, and the Cluster adds an <a class="tdlp" href="/references/events#activitytaskscheduled">ActivityTaskScheduled<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskscheduled">Learn more</a></span></span></a> Event to Event History.
 - When `ActivityTaskScheduled` is added to History, the Cluster adds a corresponding Activity Task to the Task Queue.
 - A Worker polling that Task Queue picks up the Activity Task and runs the Activity function or method.
 - If the Activity function returns, the Worker reports completion to the Cluster, and the Cluster adds <a class="tdlp" href="/references/events#activitytaskstarted">ActivityTaskStarted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskstarted">Learn more</a></span></span></a> and <a class="tdlp" href="/references/events#activitytaskcompleted">ActivityTaskCompleted<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#activitytaskcompleted">Learn more</a></span></span></a> to Event History.
@@ -356,7 +359,7 @@ While the Activity is running and retrying, <a class="tdlp" href="/references/ev
 
 ### Event History
 
-An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> for your application.
+An append-only log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event?</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event">Learn more</a></span></span></a> for your application.
 
 - Event History is durably persisted by the Temporal service, enabling seamless recovery of your application state from crashes or failures.
 - It also serves as an audit log for debugging.
@@ -365,14 +368,14 @@ An append-log of <a class="tdlp" href="#event">Events<span class="tdlpiw"><img s
 
 The Temporal Cluster stores the complete Event History for the entire lifecycle of a Workflow Execution.
 
-The Temporal Cluster logs a [warning after 10K (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
-If the Event History exceeds 50K (51,200) Events, the Workflow Execution is terminated.
+The Temporal Cluster logs a [warning after 10Ki (10,240) Events](/workflows#limits) and periodically logs additional warnings as new Events are added.
+If the Event History exceeds 50Ki (51,200) Events, the Workflow Execution is terminated.
 
 #### Continue-As-New
 
 Continue-As-New is a mechanism by which the latest relevant state is passed to a new Workflow Execution, with a fresh Event History.
 
-As a precautionary measure, the Temporal Platform limits the total <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
+As a precautionary measure, the Temporal Platform limits the total <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> to 51,200 Events or 50 MB, and will warn you after 10,240 Events or 10 MB.
 To prevent a Workflow Execution Event History from exceeding this limit and failing, use Continue-As-New to start a new Workflow Execution with a fresh Event History.
 
 All values passed to a Workflow Execution through parameters or returned through a result value are recorded into the Event History.
@@ -506,7 +509,7 @@ If the Workflow Run Timeout is reached, the Workflow Execution is Terminated.
 
 ### Workflow Task Timeout
 
-A Workflow Task Timeout is the maximum amount of time allowed for a <a class="tdlp" href="/workers#">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> to execute a <a class="tdlp" href="/tasks#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task">Learn more</a></span></span></a> after the Worker has pulled that Workflow Task from the <a class="tdlp" href="/tasks#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>.
+A Workflow Task Timeout is the maximum amount of time allowed for a <a class="tdlp" href="/workers#worker">Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> to execute a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a> after the Worker has pulled that Workflow Task from the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
 - <a class="tdlp" href="/dev-guide/go/features#workflow-timeouts">How to set a Workflow Task Timeout using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#workflow-timeouts">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/java/features#workflow-timeouts">How to set a Workflow Task Timeout using the Java SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Workflow timeouts</span><br /><br /><span class="tdlppd">Each Workflow timeout controls the maximum duration of a different aspect of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#workflow-timeouts">Learn more</a></span></span></a>
@@ -522,7 +525,25 @@ The main reason for increasing the default value would be to accommodate a Workf
 
 ### Memo
 
-A Memo is a non-indexed user-supplied set of Workflow Execution metadata that is displayed with Filtered List results.
+A Memo is a non-indexed set of Workflow Execution metadata that developers supply at start time or in Workflow code and that is returned when you describe or list Workflow Executions.
+
+The primary purpose of using a Memo is to enhance the organization and management of Workflow Executions.
+Add your own metadata, such as notes or descriptions, to a Workflow Execution, which lets you annotate and categorize Workflow Executions based on developer-defined criteria.
+This feature is particularly useful when dealing with numerous Workflow Executions because it facilitates the addition of context, reminders, or any other relevant information that aids in understanding or tracking the Workflow Execution.
+
+<!--
+
+:::note Use Memos judiciously
+
+Memos shouldn't store data that's critical to the execution of a Workflow, for some of the following reasons:
+
+- Unlike Workflow inputs, Memos lack type safety
+- Memos are subject to eventual consistency and may not be immediately available
+- Excessive reliance on Memos hides mutable state from the Workflow Execution History
+
+:::
+
+-->
 
 ## Signal
 
@@ -597,6 +618,46 @@ Stack Trace Queries are available only for running Workflow Executions.
 
 :::
 
+## Update
+
+:::tip Support, stability, and dependency info
+
+- Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+- Available in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions)
+
+:::
+
+An Update is a request to and a response from a Temporal Client to a <a class="tdlp" href="#workflow-execution">Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#workflow-execution">Learn more</a></span></span></a>.
+
+- <a class="tdlp" href="/dev-guide/go/features#updates">How to develop, send, and handle Updates in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop with Updates</span><br /><br /><span class="tdlppd">An Update is an operation that can mutate the state of a Workflow Execution and return a response.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#updates">Learn more</a></span></span></a>
+
+The Workflow must have a function to handle the Update.
+Unlike a <a class="tdlp" href="#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a> handler, the Update handler function can mutate the state of the Workflow while also returning a value to the caller.
+The Update handler listens for Updates by the Update's name.
+
+When there is the potential for multiple Updates to cause a duplication problem, Temporal recommends adding idempotency logic to your Update handler that checks for duplicates.
+
+An Update has four phases.
+
+1. **Admission.** The Temporal Cluster first validates Update submissions against the configured resource usage limits.
+   For example, limits apply to concurrent requests and requests per second.
+   See the [Temporal Platform limits sheet](/kb/temporal-platform-limits-sheet) for more details.
+   When this phase is complete, the Platform changes the status of the Update to **Admitted**.
+   At this stage, the Platform hasn't yet persisted the Update to the Workflow Execution's Event History or sent it to a Worker.
+1. **Validation.** An optional developer provided function that performs request validation.
+   This validation code, similar to a <a class="tdlp" href="#query">Query<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Query?</span><br /><br /><span class="tdlppd">A Query is a synchronous operation that is used to report the state of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#query">Learn more</a></span></span></a> handler, can observe but not change the Workflow state.
+   This means that the validation of an Update request may depend on the Workflow state at runtime.
+   If an Update request doesn't pass validation at this stage, the system rejects the request and doesn't record anything in the Workflow Event History to indicate that the Update ever happened.
+   The Update processing doesn't proceed to later phases.
+   When the Update completes the validation stage, the Platform changes its state to **Accepted**.
+   A <a class="tdlp" href="/references/events#workflowexecutionupdateacceptedevent">WorkflowExecutionUpdateAcceptedEvent<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#workflowexecutionupdateacceptedevent">Learn more</a></span></span></a> Event in the Workflow Execution [Event History](#event-history) denotes the acceptance of an Update.
+1. **Execution.** Accepted Update requests move to the execution phase.
+   In this phase, the Worker delivers the request to the Update handler.
+   Like every bit of code in a Workflow, Update handlers must be <a class="tdlp" href="#deterministic-constraints">deterministic<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#deterministic-constraints">Learn more</a></span></span></a>.
+1. **Completion.** The Update handler can return a result or a language-appropriate error/exception to indicate its completion.
+   The Platform sends the Update outcome back to the original invoking entity as an Update response.
+   A <a class="tdlp" href="/references/events#workflowexecutionupdatecompletedevent">WorkflowExecutionUpdateCompletedEvent<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Events reference</span><br /><br /><span class="tdlppd">Events are created by the Temporal Cluster in response to external occurrences and Commands generated by a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/events#workflowexecutionupdatecompletedevent">Learn more</a></span></span></a> Event in the Workflow Execution Event History denotes the completion of an Update.
+
 ## Side Effect
 
 A Side Effect is a way to execute a short, non-deterministic code snippet, such as generating a UUID, that executes the provided function once and records its result into the Workflow Execution Event History.
@@ -634,7 +695,7 @@ If a Child Workflow Execution uses Continue-As-New, from the Parent Workflow Exe
 
 **Consider Workflow Execution Event History size limits.**
 
-An individual Workflow Execution has an <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> size limit, which imposes a couple of considerations for using Child Workflows.
+An individual Workflow Execution has an <a class="tdlp" href="#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#event-history">Learn more</a></span></span></a> size limit, which imposes a couple of considerations for using Child Workflows.
 
 On one hand, because Child Workflow Executions have their own Event Histories, they are often used to partition large workloads into smaller chunks.
 For example, a single Workflow Execution does not have enough space in its Event History to spawn 100,000 <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a>.
@@ -648,7 +709,7 @@ Therefore, we recommend starting with a single Workflow implementation that uses
 
 **Consider each Child Workflow Execution as a separate service.**
 
-Because a Child Workflow Execution can be processed by a completely separate set of <a class="tdlp" href="/workers#">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#">Learn more</a></span></span></a> than the Parent Workflow Execution, it can act as an entirely separate service.
+Because a Child Workflow Execution can be processed by a completely separate set of <a class="tdlp" href="/workers#worker">Workers<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a> than the Parent Workflow Execution, it can act as an entirely separate service.
 However, this also means that a Parent Workflow Execution and a Child Workflow Execution do not share any local state.
 As all Workflow Executions, they can communicate only via asynchronous <a class="tdlp" href="#signal">Signals<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a>.
 
@@ -656,6 +717,25 @@ As all Workflow Executions, they can communicate only via asynchronous <a class=
 
 As all Workflow Executions, a Child Workflow Execution can create a one to one mapping with a resource.
 For example, a Workflow that manages host upgrades could spawn a Child Workflow Execution per host.
+
+### When to use a Child Workflow versus an Activity
+
+Child Workflow Executions and Activity Executions are both started from Workflows, so you might feel confused about when to use which.
+Here are some important differences:
+
+- A Child Workflow has access to all Workflow APIs but is subject to the same [deterministic constraints](/workflows#deterministic-constraints) as other Workflows.
+  An Activity has the inverse pros and cons—no access to Workflow APIs but no Workflow constraints.
+- A Child Workflow Execution can continue on if its Parent is canceled with a <a class="tdlp" href="#parent-close-policy">Parent Close Policy<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Parent Close Policy?</span><br /><br /><span class="tdlppd">If a Workflow Execution is a Child Workflow Execution, a Parent Close Policy determines what happens to the Workflow Execution if its Parent Workflow Execution changes to a Closed status (Completed, Failed, Timed out).</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#parent-close-policy">Learn more</a></span></span></a> of `ABANDON`.
+  An Activity Execution is _always_ canceled when its Workflow Execution is canceled.
+  (It can react to a cancellation Signal for cleanup.)
+  The decision is roughly analogous to spawning a child process in a terminal to do work versus doing work in the same process.
+- Temporal tracks all state changes within a Child Workflow Execution in Event History.
+  Only the input, output, and retry attempts of an Activity Execution is tracked.
+
+A Workflow models composite operations that consist of multiple Activities or other Child Workflows.
+An Activity usually models a single operation on the external world.
+
+Our advice: **When in doubt, use an Activity.**
 
 ### Parent Close Policy
 
@@ -992,4 +1072,4 @@ Each State Transition is recorded in a persistence store.
 
 Some operations, such as <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a>, require only one State Transition each.
 Most operations require multiple State Transitions.
-For example, a simple Workflow with two sequential <a class="tdlp" href="/tasks#activity-task">Activity Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task">Learn more</a></span></span></a> (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.
+For example, a simple Workflow with two sequential <a class="tdlp" href="/workers#activity-task">Activity Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> (and no retries) produces 11 State Transitions: two for Workflow start, four for each Activity, and one for Workflow completion.

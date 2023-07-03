@@ -21,7 +21,7 @@ For example, to add a custom Search Attributes "CustomSA" to your Temporal Cloud
 
 **On self-hosted Temporal Cluster**
 
-If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports Advanced Visibility features.
+If you're self-hosting your Temporal Cluster, verify whether your [Visibility database](/clusters/how-to-set-up-visibility-in-a-temporal-cluster#supported-databases) version supports advanced Visibility features.
 
 To create custom Search Attributes in your self-hosted Temporal Cluster Visibility store, use `tctl search-attribute create` with `--name` and `--type` modifiers.
 
@@ -29,7 +29,7 @@ For example, to create a Search Attribute called `CustomSA` of type `Keyword`, r
 
 `tctl search-attribute create --name CustomSA --type Keyword`
 
-Note that if you use a SQL database with Advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
+Note that if you use a SQL database with advanced Visibility capabilities, you are required to specify a Namespace when creating a custom Search Attribute.
 For example: `tctl --ns yournamespace search-attribute create --name CustomSA --type Keyword`
 
 You can also create multiple custom Search Attributes when you set up your Visibility store.
@@ -59,7 +59,7 @@ add_custom_search_attributes() {
 
 Note that this script has been updated for Temporal Server v1.20, which requires associating every custom Search Attribute with a Namespace when using a SQL database.
 
-For Temporal Server v1.19 and earlier, or if using Elasticsearch for Advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
+For Temporal Server v1.19 and earlier, or if using Elasticsearch for advanced Visibility, you can create custom Search Attributes without a Namespace association, as shown in the following example.
 
 ```bash
 add_custom_search_attributes() {

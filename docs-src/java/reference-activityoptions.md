@@ -26,31 +26,156 @@ The following table lists all `ActivityOptions` that can be configured for an Ac
 | [`setRetryOptions`](#retryoptions)                     | No                                                 | RetryOptions             |
 | [`setCancellationType`](#cancellationtype)             | No                                                 | ActivityCancellationType |
 
-### `ScheduleToCloseTimeout`
+#### ScheduleToCloseTimeout
 
-import ScheduleToCloseTimeout from './how-to-set-a-schedule-to-close-timeout-in-java.md'
+To set a [Schedule-To-Close Timeout](/concepts/what-is-a-schedule-to-close-timeout), use [`ActivityOptions.newBuilder.setScheduleToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
-<ScheduleToCloseTimeout/>
+This or `StartToCloseTimeout` must be set.
 
-### `ScheduleToStartTimeout`
+- Type: `Duration`
+- Default: Unlimited.
+  Note that if `WorkflowRunTimeout` and/or `WorkflowExecutionTimeout` are defined in the Workflow, all Activity retries will stop when either or both of these timeouts are reached.
 
-import ScheduleToStartTimeout from './how-to-set-a-schedule-to-start-timeout-in-java.md'
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
 
-<ScheduleToStartTimeout/>
+- With `ActivityStub`
 
-### `StartToCloseTimeout`
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                          .build());
+  ```
 
-import StartToCloseTimeout from './how-to-set-a-start-to-close-timeout-in-java.md'
+- With `WorkflowImplementationOptions`
 
-<StartToCloseTimeout/>
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                      "GetCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          .setScheduleToCloseTimeout(Duration.ofSeconds(5))
+                                          .build()))
+                      .build();
+  ```
 
-### `HeartbeatTimeout`
+#### ScheduleToStartTimeout
 
-import HeartbeatTimeout from './how-to-set-a-heartbeat-timeout-in-java.md'
+To set a [Schedule-To-Start Timeout](/concepts/what-is-a-schedule-to-start-timeout), use [`ActivityOptions.newBuilder.setScheduleToStartTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
-<HeartbeatTimeout/>
+- Type: `Duration`
+- Default: Unlimited. This timeout is non-retryable.
 
-### `TaskQueue`
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+                  ActivityOptions.newBuilder()
+                          .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                          // required when setting Activity options.
+                          .setScheduletoCloseTimeout(Duration.ofSeconds(20))
+                          .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+             WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "GetCustomerGreeting",
+                                ActivityOptions.newBuilder()
+                                    .setScheduleToStartTimeout(Duration.ofSeconds(5))
+                                    .build()))
+                      .build();
+  ```
+
+#### StartToCloseTimeout
+
+To set a [Start-To-Close Timeout](/concepts/what-is-a-start-to-close-timeout), use [`ActivityOptions.newBuilder.setStartToCloseTimeout​`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+This or `ScheduleToClose` must be set.
+
+- Type: `Duration`
+- Default: Defaults to [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) value
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  GreetingActivities activities = Workflow.newActivityStub(GreetingActivities.class,
+              ActivityOptions.newBuilder()
+                      .setStartToCloseTimeout(Duration.ofSeconds(2))
+                      .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                            // Set Activity Execution timeout (single run)
+                                            .setStartToCloseTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
+
+#### HeartbeatTimeout
+
+To set a [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout), use [`ActivityOptions.newBuilder.setHeartbeatTimeout`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
+
+- Type: `Duration`
+- Default: None
+
+You can set Activity Options using an `ActivityStub` within a Workflow implementation, or per-Activity using `WorkflowImplementationOptions` within a Worker.
+Note that if you define options per-Activity Type options with `WorkflowImplementationOptions.setActivityOptions()`, setting them again specifically with `ActivityStub` in a Workflow will override this setting.
+
+- With `ActivityStub`
+
+  ```java
+  private final GreetingActivities activities =
+      Workflow.newActivityStub(
+          GreetingActivities.class,
+          ActivityOptions.newBuilder()
+              // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+              // required when setting Activity options.
+              .setStartToCloseTimeout(Duration.ofSeconds(5))
+              .setHeartbeatTimeout(Duration.ofSeconds(2))
+              .build());
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+              WorkflowImplementationOptions.newBuilder()
+                      .setActivityOptions(
+                              ImmutableMap.of(
+                                "EmailCustomerGreeting",
+                                      ActivityOptions.newBuilder()
+                                          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                          // required when setting Activity options.
+                                            .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                            .setHeartbeatTimeout(Duration.ofSeconds(2))
+                                            .build()))
+                      .build();
+  ```
+
+#### TaskQueue
 
 - Type: `String`
 - Default: Defaults to the Task Queue that the Workflow was started with.
@@ -86,13 +211,50 @@ import HeartbeatTimeout from './how-to-set-a-heartbeat-timeout-in-java.md'
 
 See [Task Queue](/concepts/what-is-a-task-queue)
 
-### `RetryOptions`
+#### RetryOptions
 
-import ActivityRetryOptions from './how-to-set-activity-retry-options-in-java.md'
+To set a Retry Policy, known as the [Retry Options](/concepts/what-is-a-retry-policy) in Java, use [`ActivityOptions.newBuilder.setRetryOptions()`](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/activity/ActivityOptions.Builder.html).
 
-<ActivityRetryOptions/>
+- Type: `RetryOptions`
+- Default: Server-defined Activity Retry policy.
 
-### `setCancellationType`
+- With `ActivityStub`
+
+  ```java
+  private final ActivityOptions options =
+      ActivityOptions.newBuilder()
+          // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+          // required when setting Activity options.
+          .setStartToCloseTimeout(Duration.ofSeconds(5))
+          .setRetryOptions(
+              RetryOptions.newBuilder()
+                  .setInitialInterval(Duration.ofSeconds(1))
+                  .setMaximumInterval(Duration.ofSeconds(10))
+                  .build())
+          .build();
+  ```
+
+- With `WorkflowImplementationOptions`
+
+  ```java
+  WorkflowImplementationOptions options =
+          WorkflowImplementationOptions.newBuilder()
+                 .setActivityOptions(
+                      ImmutableMap.of(
+                          "EmailCustomerGreeting",
+                          ActivityOptions.newBuilder()
+                                // note that either StartToCloseTimeout or ScheduleToCloseTimeout are
+                                // required when setting Activity options.
+                                .setStartToCloseTimeout(Duration.ofSeconds(5))
+                                .setRetryOptions(
+                                      RetryOptions.newBuilder()
+                                          .setDoNotRetry(NullPointerException.class.getName())
+                                          .build())
+                                .build()))
+                .build();
+  ```
+
+#### setCancellationType
 
 - Type: `ActivityCancellationType`
 - Default: `ActivityCancellationType.TRY_CANCEL`

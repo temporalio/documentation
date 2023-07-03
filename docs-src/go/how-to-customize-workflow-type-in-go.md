@@ -3,6 +3,9 @@ id: how-to-customize-workflow-type-in-go
 title: How to customize Workflow Type in Go
 sidebar_label: Customize Workflow Type
 description: To customize the Workflow Type set the Name parameter with RegisterOptions when registering your Workflow with a Worker.
+tags:
+  - go
+  - workflow-type
 ---
 
 In Go, by default, the Workflow Type name is the same as the function name.
