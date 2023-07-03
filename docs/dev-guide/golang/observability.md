@@ -53,7 +53,7 @@ client.Options{
 		}
 ```
 
-The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the <a class="tdlp" href="/references/server-options#withcustommetricsreporter"> `WithCustomMetricsReporter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withcustommetricsreporter">Learn more</a></span></span></a> API.
+The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/contrib/tally) library; however, Tally offers [extensible custom metrics reporting](https://github.com/uber-go/tally#report-your-metrics), which is exposed through the <a class="tdlp" href="/references/server-options#withcustommetricsreporter">`WithCustomMetricsReporter`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Server options</span><br /><br /><span class="tdlppd">You can run the Temporal Server as a Go application by including the server package `go.temporal.io/server/temporal` and using it to create and start a Temporal Server.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/server-options#withcustommetricsreporter">Learn more</a></span></span></a> API.
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
@@ -363,3 +363,4 @@ To remove a Search Attribute that was previously set, set it to an empty array: 
 However, to achieve a similar effect, set the field to some placeholder value.
 For example, you could set `CustomKeywordField` to `impossibleVal`.
 Then searching `CustomKeywordField != 'impossibleVal'` will match Workflows with `CustomKeywordField` not equal to `impossibleVal`, which includes Workflows without the `CustomKeywordField` set.
+

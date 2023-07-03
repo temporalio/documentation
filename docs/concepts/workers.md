@@ -326,7 +326,6 @@ It also includes features like concurrent session limitations and Worker failure
 ## Worker Versioning
 
 :::tip Support, stability, and dependency info
-
 - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
 - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
 - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
@@ -548,3 +547,4 @@ You can also use this API `GetWorkerTaskReachability` directly from within langu
 
 Unversioned Workers refer to Workers that have not opted into the Worker Versioning feature in their configuration.
 They receive tasks only from Task Queues that do not have any version sets defined on them, or that have open workflows that began executing before versions were added to the queue.
+
