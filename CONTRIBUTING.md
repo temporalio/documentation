@@ -99,15 +99,21 @@ For example, if you found a typo in the Concept section _What is a Task?_, open 
 
 ### Local Cluster
 
-To run the Assembly Workflow using a local Cluster, such as Temporalite, do the following:
+To run the Assembly Workflow using a local Cluster, do the following:
 
-1. Make sure you are in the `assembly` directory and run the Worker:
+1. Run the Cluster:
 
 ```
-./worker.js
+temporal server start-dev
 ```
 
-2. In another terminal, from the root of the repo, run the following command:
+1. In another terminal, run the Worker:
+
+```
+yarn worker
+```
+
+2. In another terminal, run the following command:
 
 ```
 yarn assemble
