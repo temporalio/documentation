@@ -12,10 +12,10 @@ By default, this action is subject to the Overlap Policy of the Schedule.
 
 Schedule triggers are passed in this format:
 `temporal schedule trigger` can be used to start a Workflow Run immediately.
-`temporal schedule trigger --sid 'your-schedule-id'`
+`temporal schedule trigger --schedule-id 'your-schedule-id'`
 
 The Overlap Policy of the Schedule can be overridden as well.
-`temporal schedule trigger --sid 'your-schedule-id' --overlap-policy 'AllowAll'`
+`temporal schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'`
 
 Use the options provided below to change this command's behavior.
 
