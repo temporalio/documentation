@@ -37,13 +37,48 @@ Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** claus
 
 ### Partial string match
 
-The `=` operator works like **CONTAINS** to find Workflows with Search Attributes that contain a specific word.
+#### Text
 
-<!-- note: advanced vis features will be supported in SQL upon the release of v1.20.-->
+Search Attributes of type `Text` are broken up into words that match with the `=` operator.
 
-For example, if you have a custom Search Attribute named `Description` of `Text` type with the value of "The quick brown fox jumps over the lazy dog", searching for `Description='quick'` or `Description='fox'` will successfully return the Workflow.
-However, partial word searches such as `Description='qui'` or `Description='laz'` will not return the Workflow.
-This is because [Elasticsearch's tokenizer](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-tokenizer.html) is configured to return complete words as tokens.
+For example, if you have a custom `Text` Search Attribute named `Description` with either of the following values:
+
+```
+my-business-id-foobar
+my business id foobar
+```
+
+then the following List Filter will match:
+
+```
+Description = 'foobar'
+```
+
+but a partial word will not:
+
+```
+// Doesn't match
+Description = 'foo'
+```
+
+#### Keyword
+
+For Search Attributes of type `Keyword` like `WorkflowId`, the only type of partial string matching that works is using BETWEEN for suffixes.
+For example:
+
+```
+WorkflowId BETWEEN "order-" AND "order-~"
+```
+
+would match WorkflowIds that have characters after `order-` with lower ASCII values than `~` (126, the highest-value printable character), such as the following:
+
+```
+order-
+order-1234
+order-abracadabra
+```
+
+It would not match `order-~~`.
 
 ### Efficient API usage
 
