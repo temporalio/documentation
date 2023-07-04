@@ -199,4 +199,3 @@ private final MyActivity activity =
     );
 // ...
 ```
-
