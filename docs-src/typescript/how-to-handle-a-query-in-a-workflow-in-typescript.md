@@ -13,9 +13,7 @@ Use [`handleQuery`](https://typescript.temporal.io/api/interfaces/workflow.Workf
 You make a Query with `handle.query(query, ...args)`. A Query needs a return value, but can also take arguments.
 
 <!--SNIPSTART typescript-handle-query -->
-
 [state/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/state/src/workflows.ts)
-
 ```ts
 export async function trackState(): Promise<void> {
   const state = new Map<string, number>();
@@ -24,5 +22,4 @@ export async function trackState(): Promise<void> {
   await CancellationScope.current().cancelRequested;
 }
 ```
-
 <!--SNIPEND-->

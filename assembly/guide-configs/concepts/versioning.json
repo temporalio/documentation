@@ -1,0 +1,19 @@
+{
+    "file_name": "versioning.md",
+    "id": "versioning",
+    "slug": "/workflows",
+    "file_dir": "concepts",
+    "title": "Versioning",
+    "sidebar_label": "Versioning",
+    "sidebar_position": 2,
+    "description": "This guide provides a comprehensive overview of Versioning.",
+    "use_description": true,
+    "toc_max_heading_level": 4,
+    "add_tabs_support": true,
+    "sections": [
+        {
+            "type": "p",
+            "id": "concepts/what-is-a-versioning"
+        }
+    ]
+}
