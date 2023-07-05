@@ -183,7 +183,7 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 
 ### Limitations
 
-:::info Experimental
+:::info
 
 The Scheduled Workflows feature is available in Temporal Server version 1.18.
 
