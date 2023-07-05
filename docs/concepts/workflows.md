@@ -814,12 +814,12 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 
 - Introduced in Temporal Server version 1.17.0
 - Available in Temporal CLI (and tctl v1.17)
-- Available in Temporal Cloud
-- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow)
-- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html)
-- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow)
-- Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules)
-- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html)
+- Available in Temporal Cloud in Public Preview
+- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
+- Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) version [1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) version [0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
 - Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 
 :::
