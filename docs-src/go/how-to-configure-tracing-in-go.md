@@ -8,14 +8,40 @@ tags:
   - how-to
 ---
 
-The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
-Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
+The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distributed tracing with **_Interceptors_**.
+Interceptors uses generic context propagation provided by the [Client](/concepts/what-is-a-temporal-client) to create a call graph of a [Workflow](/concepts/what-is-a-workflow), along with its [Activities](/concepts/what-is-an-activity) and [Child Workflows](/concepts/what-is-a-child-workflow-execution).
 
-Tracing can be configured by providing an [opentracing.Tracer](https://pkg.go.dev/github.com/opentracing/opentracing-go#Tracer)
-implementation in [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) during client instantiation.
+There are several tracing implementations supported by the Temporal Go SDK.
+For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing#TracerOptions) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `tracingInterceptor`.
 
-For more details on how to configure and leverage tracing, see the [OpenTracing documentation](https://opentracing.io/docs/getting-started/).
+```go
+// create Interceptor
+tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{})
+```
 
-The OpenTracing support has been validated using [Jaeger](https://www.jaegertracing.io/), but other implementations mentioned [here](https://opentracing.io/docs/supported-tracers/) should also work.
+For an [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry#NewTracingInterceptor) Interceptor, use `opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})`.
 
-Tracing functionality utilizes generic context propagation provided by the Client.
+```go
+// create Interceptor
+tracingInterceptor, err := opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})
+```
+
+For a [Datadog](https://pkg.go.dev/go.temporal.io/sdk/contrib/datadog/tracing#NewTracingInterceptor) Interceptor, use `tracing.NewTracingInterceptor(tracing.TracerOptions{})`.
+
+```go
+// create Interceptor
+tracingInterceptor, err := tracing.NewTracingInterceptor(tracing.TracerOptions{})
+```
+
+Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temporal.io/sdk/internal#ClientOptions) to enable tracing.
+
+```go
+c, err := client.Dial(client.Options{
+  HostPort:           client.DefaultHostPort,
+  ContextPropagators: []workflow.ContextPropagator{ctxpropagation.NewContextPropagator()},
+  Interceptors:       []interceptor.ClientInterceptor{tracingInterceptor},
+})
+```
+
+OpenTracing and OpenTelemetry are natively supported by [Jaeger](https://www.jaegertracing.io/docs/1.46/features/#native-support-for-opentracing-and-opentelemetry).
+For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io/docs/overview/what-is-tracing/), [OpenTelemetry](https://www.dynatrace.com/support/help/extend-dynatrace/opentelemetry/overview/traces), and [Datadog](https://docs.datadoghq.com/tracing/#send-traces-to-datadog).
