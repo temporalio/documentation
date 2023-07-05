@@ -12,7 +12,7 @@ The [Go SDK](https://github.com/temporalio/sdk-go) provides support for distribu
 Interceptors uses Temporal headers to create a call graph of a [Workflow](/concepts/what-is-a-workflow), along with its [Activities](/concepts/what-is-an-activity) and [Child Workflows](/concepts/what-is-a-child-workflow-execution).
 
 There are several tracing implementations supported by the Temporal Go SDK.
-For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing#TracerOptions) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `tracingInterceptor`.
+For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) Interceptor, use `opentracing.NewInterceptor(opentracing.TracerOptions{})` to create a `TracingInterceptor`.
 
 ```go
 // create Interceptor
