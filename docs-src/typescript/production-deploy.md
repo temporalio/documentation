@@ -52,7 +52,7 @@ For more information, see [Connecting to Temporal Cloud (with mTLS)](/typescript
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
-For more information about sending logs, see [Logging](/typescript/logging).
+For more information about sending logs, see [Logging](/typescript/how-to-log-from-a-workflow-in-typescript).
 
 ## Metrics and tracing
 
@@ -63,7 +63,7 @@ Workers can emit metrics and traces. There are a few [telemetry options](https:/
 - `metrics: { otel: { url } }`: The URL of a gRPC [OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 - `metrics: { prometheus: { bindAddress } }`: Address on the Worker host that will have metrics for [Prometheus](https://prometheus.io/) to scrape.
 
-To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/logging#opentelemetry-tracing) package.
+To set up tracing of Workflows and Activities, use our [opentelemetry-interceptors](/typescript/how-to-log-from-a-workflow-in-typescript#opentelemetry-tracing) package.
 
 ### Monitoring
 
