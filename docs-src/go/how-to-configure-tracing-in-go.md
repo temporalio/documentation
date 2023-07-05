@@ -44,4 +44,4 @@ c, err := client.Dial(client.Options{
 ```
 
 OpenTracing and OpenTelemetry are natively supported by [Jaeger](https://www.jaegertracing.io/docs/1.46/features/#native-support-for-opentracing-and-opentelemetry).
-For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io/docs/overview/what-is-tracing/), [OpenTelemetry](https://www.dynatrace.com/support/help/extend-dynatrace/opentelemetry/overview/traces), and [Datadog](https://docs.datadoghq.com/tracing/#send-traces-to-datadog).
+For more information on configuring and using tracing, see the documentation provided by [OpenTracing](https://opentracing.io), [OpenTelemetry](https://opentelemetry.io/), and [Datadog](https://docs.datadoghq.com/tracing/).
