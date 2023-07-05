@@ -37,8 +37,6 @@ Pass the newly created Interceptor to [ClientOptions](https://pkg.go.dev/go.temp
 
 ```go
 c, err := client.Dial(client.Options{
-  HostPort:           client.DefaultHostPort,
-  ContextPropagators: []workflow.ContextPropagator{ctxpropagation.NewContextPropagator()},
   Interceptors:       []interceptor.ClientInterceptor{tracingInterceptor},
 })
 ```
