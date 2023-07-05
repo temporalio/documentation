@@ -196,7 +196,7 @@ You can route tasks to specific machines with the [Sticky Queues pattern](/types
 
 :::
 
-Advanced users can also register [Activity Interceptors](/typescript/interceptors) here.
+Advanced users can also register [Activity Interceptors](/typescript/how-to-implement-interceptors-in-typescript) here.
 For more on Activity and Workflow registration, see [the Worker docs](/typescript/workers) for more details.
 
 ### Using pure ESM Node Modules
@@ -506,7 +506,7 @@ Please get in touch with us if you find the need for them.
 
 ### Activity Interceptors
 
-Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/interceptors) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
+Interceptors are a mechanism for users to modify inbound and outbound SDK calls. Interceptors are commonly used to add tracing and authorization to the scheduling and execution of Workflows and Activities, but you can also use them to run code after an Activity failure (and before the next retry). See the [Interceptors docs](/typescript/how-to-implement-interceptors-in-typescript) and the [SDK API Reference](https://typescript.temporal.io/api/interfaces/worker.ActivityInboundCallsInterceptor) for more information.
 
 ### Async Activity Completion
 
