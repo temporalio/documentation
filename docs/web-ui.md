@@ -45,7 +45,7 @@ Users can list Workflow Executions by any of the following:
 - <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Type?</span><br /><br /><span class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></span></span></a>
 - Start time
 - End time
-- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>
+- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>
 
 For start time and end time, users can set their preferred date and time format as one of the following:
 

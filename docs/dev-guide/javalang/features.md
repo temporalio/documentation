@@ -24,16 +24,6 @@ import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - [How to develop Signals](#signals)
@@ -873,7 +863,7 @@ The following examples show how to spawn a Child Workflow:
 
 Related reads:
 
-- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
+- <a class="tdlp" href="#child-workflows">How to set Child Workflow Options in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#child-workflows">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/dev-guide/java/foundations#develop-workflows">How to develop a Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Workflow Definition in Java</span><br /><br /><span class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#develop-workflows">Learn more</a></span></span></a>
 

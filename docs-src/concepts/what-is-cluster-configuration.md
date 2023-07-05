@@ -23,7 +23,7 @@ Depending on how you want to deploy your self-hosted Temporal Cluster, your stat
 
 - Temporal Services—Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
-- Persistence (including History Shard count), Visibility and Advanced Visibility, Archival store setups.
+- Persistence (including History Shard count), Visibility, Archival store setups.
 - TLS, authentication, authorization
 - Server log level
 - Metrics
