@@ -25,7 +25,7 @@ Each SDK had a set of pages that described things in their own way.
 And yet there has always been a desire to have “how to” information regarding app development presented in a more standardized and structured way.
 The creation of the "Dev guide" provided that structure by which to categorize guidance on feature usage.
 
-The remaining unstructured content moved to [https://legacy-documentation-sdks.temporal.io/](https://legacy-documentation-sdks.temporal.io/).
+The remaining unstructured content moved to a legacy site which is now deprecated (use docs.temporal.io).
 
 Overall the structure of the Dev guide has proven to be effective in surfacing the “how-to” type of information.
 
