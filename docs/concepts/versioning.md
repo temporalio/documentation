@@ -4,7 +4,7 @@ title: Versioning
 sidebar_label: Versioning
 sidebar_position: 6
 description: This guide provides a comprehensive overview of Versioning.
-slug: /workflows
+slug: /versioning
 toc_max_heading_level: 4
 tags:
 - explanation
