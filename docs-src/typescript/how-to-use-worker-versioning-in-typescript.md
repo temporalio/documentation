@@ -8,7 +8,7 @@ tags:
   - how-to
 ---
 
-To use Worker Versioning in TypeScript, you need to do the following:
+To use [Worker Versioning](/workers#worker-versioning) in TypeScript, you need to do the following:
 
 1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
 2. Tell the Task Queue your Worker is listening on about that Build ID, and whether its compatible with an existing Build ID.
@@ -22,7 +22,7 @@ To assign it in your Worker code, assign the following Worker Options:
 // ...
 const worker = await Worker.create({
   taskQueue: 'your_task_queue_name',
-  buildId: '1.0',
+  buildId: 'deadbeef',
   useVersioning: true,
   // ...
 });
@@ -72,7 +72,7 @@ await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
 });
 ```
 
-You can also promote an entire set to become the default set for the queue. New Workflows will start using that set's default.
+You can also promote an entire set to become the default set for the queue. New Workflows will start using that set's default build.
 
 ```typescript
 // ...
