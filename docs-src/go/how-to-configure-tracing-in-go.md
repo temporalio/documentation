@@ -19,7 +19,7 @@ For an [OpenTracing](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentracing) 
 tracingInterceptor, err := opentracing.NewInterceptor(opentracing.TracerOptions{})
 ```
 
-For an [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry#NewTracingInterceptor) Interceptor, use `opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})`.
+For an [OpenTelemetry](https://pkg.go.dev/go.temporal.io/sdk/contrib/opentelemetry) Interceptor, use `opentelemetry.NewTracingInterceptor(opentelemetry.TracerOptions{})`.
 
 ```go
 // create Interceptor
