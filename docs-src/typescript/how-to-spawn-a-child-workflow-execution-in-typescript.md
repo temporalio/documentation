@@ -32,7 +32,9 @@ To start a Child Workflow Execution and await its completion, use [executeChild]
 By default, a child is scheduled on the same Task Queue as the parent.
 
 <!--SNIPSTART typescript-child-workflow -->
+
 [child-workflows/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/child-workflows/src/workflows.ts)
+
 ```ts
 import { executeChild } from '@temporalio/workflow';
 
@@ -46,11 +48,12 @@ export async function parentWorkflow(...names: string[]): Promise<string> {
         // cancellationType: ChildWorkflowCancellationType.WAIT_CANCELLATION_COMPLETED,
         // parentClosePolicy: ParentClosePolicy.PARENT_CLOSE_POLICY_TERMINATE
       })
-    )
+    ),
   );
   return responseArray.join('\n');
 }
 ```
+
 <!--SNIPEND-->
 
 To control any running Workflow from inside a Workflow, use [getExternalWorkflowHandle(workflowId)](https://typescript.temporal.io/api/namespaces/workflow/#getexternalworkflowhandle).

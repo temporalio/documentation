@@ -5,7 +5,7 @@
     "file_dir": "concepts",
     "title": "Versioning",
     "sidebar_label": "Versioning",
-    "sidebar_position": 2,
+    "sidebar_position": 6,
     "description": "This guide provides a comprehensive overview of Versioning.",
     "use_description": true,
     "toc_max_heading_level": 4,
@@ -13,7 +13,7 @@
     "sections": [
         {
             "type": "p",
-            "id": "concepts/what-is-a-versioning"
+            "id": "concepts/what-is-versioning"
         }
     ]
 }

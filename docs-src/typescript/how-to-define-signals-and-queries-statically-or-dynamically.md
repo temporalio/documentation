@@ -15,7 +15,9 @@ tags:
 If you know the name of your Signals and Queries upfront, we recommend declaring them outside the Workflow Definition.
 
 <!--SNIPSTART typescript-blocked-workflow-->
+
 [signals-queries/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/signals-queries/src/workflows.ts)
+
 ```ts
 import * as wf from '@temporalio/workflow';
 
@@ -38,6 +40,7 @@ export async function unblockOrCancel(): Promise<void> {
   }
 }
 ```
+
 <!--SNIPEND-->
 
 This technique helps provide type safety because you can export the type signature of the Signal or Query to be called by the Client.
