@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday June 30 2023 17:11:47 PM -0700
+Last assembled: Wednesday July 05 2023 09:23:07 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-dail-macbook
 
 88 guide configurations found.
 
@@ -957,5 +957,9 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+typescript/tracing -> /dev-guide/typescript/observability#tracing
+
+typescript/logging -> /dev-guide/typescript/observability#logging
 
 
