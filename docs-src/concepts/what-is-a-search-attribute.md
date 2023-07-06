@@ -66,9 +66,9 @@ These Search Attributes are created when the initial index is created.
 
 You can use the default Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
-- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter.
+- Without advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter.
   For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType = 'YourWorkflow'"`.
-- With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
+- With advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and ExecutionStatus != 'Running' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
 
 ### Custom Search Attributes
@@ -77,8 +77,8 @@ You can [create custom Search Attributes](/clusters/how-to-create-custom-search-
 
 Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
-- Without Advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
-- With Advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
+- Without advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
+- With advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and YourCustomSA = 'YourCustomSAValue' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
   - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) to use custom Search Attributes with List Filters.
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
@@ -133,7 +133,7 @@ The following table lists the maximum number of custom Search Attributes you can
 | Text                  |             3             |             3              |             3              |       5        |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
-Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
+Custom Search Attributes are an advanced Visibility feature and are not supported on Cassandra.
 
 Size limits for a custom Search Attribute:
 
