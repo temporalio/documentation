@@ -5,7 +5,7 @@ sidebar_label: Foundations
 sidebar_position: 1
 description: The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a Temporal Application – that is, all the relevant steps to start a Workflow Execution that executes an Activity.
 slug: /dev-guide/typescript/foundations
-toc_max_heading_level: 4
+toc_max_heading_level: 3
 tags:
 - guide-context
 - developer-guide
@@ -23,16 +23,6 @@ import TabItem from '@theme/TabItem';
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
@@ -43,6 +33,7 @@ In this section you can find the following:
 - <a class="tdlp" href="#develop-activities">Develop an Activity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a basic Activity</span><br /><br /><span class="tdlppd">One of the primary things that Workflows do is orchestrate the execution of Activities.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#develop-activities">Learn more</a></span></span></a>
 - <a class="tdlp" href="#activity-execution">Start an Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start an Activity Execution</span><br /><br /><span class="tdlppd">Calls to spawn Activity Executions are written within a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-execution">Learn more</a></span></span></a>
 - <a class="tdlp" href="#run-a-dev-worker">Run a dev Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
+- <a class="tdlp" href="#run-a-worker-on-docker">Run a Worker on Docker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run a Worker on Docker in TypeScript</span><br /><br /><span class="tdlppd">Workers based on the TypeScript SDK can be deployed and run as Docker containers.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-worker-on-docker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
@@ -136,7 +127,7 @@ A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"
 
 An SDK provides you with the following:
 
-- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+- A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 - APIs to develop <a class="tdlp" href="/workflows#">Workflows<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>.
 - APIs to create and manage <a class="tdlp" href="/workers#worker">Worker Processes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term Worker is used to denote both a Worker Program and a Worker Process. Temporal documentation aims to be explicit and differentiate between them.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker">Learn more</a></span></span></a>.
 - APIs to author <a class="tdlp" href="/activities#activity-definition">Activities<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a>.
@@ -179,9 +170,27 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 [Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
+### ECMAScript modules
+
+The JavaScript ecosystem is quickly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules.
+For example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
+
+For more information about importing a pure ESM dependency, see our [Fetch ESM](https://github.com/temporalio/samples-typescript/tree/main/fetch-esm) sample for the necessary configuration changes:
+
+- `package.json` must have include the `"type": "module"` attribute.
+- `tsconfig.json` should output in `esnext` format.
+- Imports must include the `.js` file extension.
+
+## Linting and types
+
+If you started your project with `@temporalio/create`, you already have our recommended TypeScript and ESLint configurations.
+
+If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop.
+Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) file and tweak to suit your needs.
+
 ## Connect to a dev Cluster
 
-A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is the Temporal Server paired with persistence.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
+A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
 
 - Starting Workflow Executions.
@@ -452,7 +461,7 @@ However, there is a limit of the total size of the data ends up encoded into a g
 A single argument is limited to a maximum size of 2 MB.
 And the total size of a gRPC message, which includes all the arguments, is limited to a maximum of 4 MB.
 
-Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
+Also, keep in mind that all Payload data is recorded in the <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> and large Event Histories can affect Worker performance.
 This is because the entire Event History could be transferred to a Worker Process with a <a class="tdlp" href="/workers#workflow-task">Workflow Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task?</span><br /><br /><span class="tdlppd">A Workflow Task is a Task that contains the context needed to make progress with a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task">Learn more</a></span></span></a>.
 
 <!--TODO link to gRPC limit section when available -->
@@ -479,7 +488,7 @@ export async function greet(name: string): Promise<string> {
 
 All data returned from an Activity must be serializable.
 
-There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
+There is no explicit limit to the amount of data that can be returned by an Activity, but keep in mind that all return values are recorded in a <a class="tdlp" href="/workflows#event-history">Workflow Execution Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a>.
 
 In TypeScript, the return value is always a Promise.
 
@@ -521,6 +530,136 @@ async function run() {
 ```
 
 <!--SNIPEND-->
+
+### Activity design patterns
+
+The following are some important (and frequently requested) patterns for using our Activities APIs.
+These patterns address common needs and use cases.
+
+#### Share dependencies in Activity functions (dependency injection)
+
+Because Activities are "just functions," you can also create functions that create Activities.
+This is a helpful pattern for using closures to do the following:
+
+- Store expensive dependencies for sharing, such as database connections.
+- Inject secret keys (such as environment variables) from the Worker to the Activity.
+
+<!--SNIPSTART typescript-activity-with-deps-->
+
+[activities-dependency-injection/src/activities.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/activities.ts)
+
+```ts
+export interface DB {
+  get(key: string): Promise<string>;
+}
+
+export const createActivities = (db: DB) => ({
+  async greet(msg: string): Promise<string> {
+    const name = await db.get('name'); // simulate read from db
+    return `${msg}: ${name}`;
+  },
+  async greet_es(mensaje: string): Promise<string> {
+    const name = await db.get('name'); // simulate read from db
+    return `${mensaje}: ${name}`;
+  },
+});
+```
+
+<!--SNIPEND-->
+
+<details>
+  <summary>See full example</summary>
+
+When you register these in the Worker, pass your shared dependencies accordingly:
+
+<!--SNIPSTART typescript-activity-deps-worker {"enable_source_link": false}-->
+
+```ts
+import { createActivities } from './activities';
+
+async function run() {
+  // Mock DB connection initialization in Worker
+  const db = {
+    async get(_key: string) {
+      return 'Temporal';
+    },
+  };
+
+  const worker = await Worker.create({
+    taskQueue: 'dependency-injection',
+    workflowsPath: require.resolve('./workflows'),
+    activities: createActivities(db),
+  });
+
+  await worker.run();
+}
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+<!--SNIPEND-->
+
+Because Activities are always referenced by name, inside the Workflow they can be proxied as normal, although the types need some adjustment:
+
+<!--SNIPSTART typescript-activity-deps-workflow-->
+
+[activities-dependency-injection/src/workflows.ts](https://github.com/temporalio/samples-typescript/blob/master/activities-dependency-injection/src/workflows.ts)
+
+```ts
+import type { createActivities } from './activities';
+
+// Note usage of ReturnType<> generic since createActivities is a factory function
+const { greet, greet_es } = proxyActivities<
+  ReturnType<typeof createActivities>
+>({
+  startToCloseTimeout: '30 seconds',
+});
+```
+
+<!--SNIPEND-->
+
+</details>
+
+#### Import multiple Activities simultaneously
+
+You can proxy multiple Activities from the same `proxyActivities` call if you want them to share the same timeouts, retries, and options:
+
+```ts
+export async function Workflow(name: string): Promise<string> {
+  // destructuring multiple activities with the same options
+  const { act1, act2, act3 } = proxyActivities<typeof activities>();
+  /* activityOptions */
+  await act1();
+  await Promise.all([act2, act3]);
+}
+```
+
+#### Dynamically reference Activities
+
+Because Activities are referenced only by their string names, you can reference them dynamically if needed:
+
+```js
+export async function DynamicWorkflow(activityName, ...args) {
+  const acts = proxyActivities(/* activityOptions */);
+
+  // these are equivalent
+  await acts.activity1();
+  await acts['activity1']();
+
+  // dynamic reference to activities using activityName
+  let result = await acts[activityName](...args);
+}
+```
+
+Type safety is still supported here, but we encourage you to validate and handle mismatches in Activity names.
+An invalid Activity name leads to a `NotFoundError` with a message that looks like this:
+
+```
+ApplicationFailure: Activity function actC is not registered on this Worker, available activities: ["actA", "actB"]
+```
 
 ## Activity Execution
 
@@ -600,108 +739,126 @@ For more information, see the [Worker tuning guide](/dev-guide/worker-performanc
 
 A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
-Create a Worker with `Worker.create()` (which establishes the initial gRPC connection), then call `worker.run()` on it (to start polling the Task Queue).
+The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
-Below is an example of starting a Worker that polls the Task Queue named `tutorial`.
+- Each <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-entity">Learn more</a></span></span></a> in the Worker Process must register the exact Workflow Types and Activity Types it may execute.
+- Each Worker Entity must also associate itself with exactly one <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
+- Each Worker Entity polling the same Task Queue must be registered with the same Workflow Types and Activity Types.
 
-<!--SNIPSTART typescript-hello-worker {"enable_source_link": false}-->
+A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Entity?</span><br /><br /><span class="tdlppd">A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-entity">Learn more</a></span></span></a> is the component within a Worker Process that listens to a specific Task Queue.
 
-```ts
-import { Worker } from '@temporalio/worker';
-import * as activities from './activities';
+Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
+For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-async function run() {
-  // Step 1: Register Workflows and Activities with the Worker and connect to
-  // the Temporal server.
-  const worker = await Worker.create({
-    workflowsPath: require.resolve('./workflows'),
-    activities,
-    taskQueue: 'hello-world',
-  });
-  // Worker connects to localhost by default and uses console.error for logging.
-  // Customize the Worker by passing more options to create():
-  // https://typescript.temporal.io/api/classes/worker.Worker
-  // If you need to configure server connection parameters, see docs:
-  // https://docs.temporal.io/typescript/security#encryption-in-transit-with-mtls
+A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
 
-  // Step 2: Start accepting tasks on the `hello-world` queue
-  await worker.run();
-}
+## Run a Worker on Docker
 
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+Workers based on the TypeScript SDK can be deployed and run as Docker containers.
+
+At this moment, we recommend using Node.js 18.
+(Node.js 20 has known issues.)
+Both `amd64` and `arm64` platforms are supported.
+A glibc-based image is required; musl-based images are _not_ supported (see below).
+
+The easiest way to deploy a TypeScript SDK Worker on Docker is to start with the `node:18-bullseye` image.
+For example:
+
+```dockerfile
+FROM node:18-bullseye
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install --only=production \
+    && npm run build
+
+CMD ["build/worker.js"]
 ```
 
-<!--SNIPEND-->
+For smaller images and/or more secure deployments, it is also possible to use `-slim` Docker image variants (like `node:18-bullseye-slim`) or `distroless/nodejs` Docker images (like `gcr.io/distroless/nodejs:18`) with the following caveats.
 
-`taskQueue` is the only required option, but you will also use `workflowsPath` and `activities` to register Workflows and Activities with the Worker.
+### Using `node:slim` images
 
-A full example for Workers looks like this:
+`node:slim` images do not contain some of the common packages found in regular images. This results in significantly smaller images.
 
-```typescript
-import { NativeConnection, Worker } from '@temporalio/worker';
-import * as activities from './activities';
+However, TypeScript SDK requires the presence of root TLS certificates (the `ca-certificates` package), which are not included in `slim` images.
+The `ca-certificates` package is required even when connecting to a local Temporal Server or when using a server connection config that doesn't explicitly use TLS.
 
-async function run() {
-  const connection = await NativeConnection.connect({
-    // defaults port to 7233 if not specified
-    address: 'foo.bar.tmprl.cloud',
-    tls: {
-      // set to true if TLS without mTLS
-      // See docs for other TLS options
-      clientCertPair: {
-        crt: clientCert,
-        key: clientKey,
-      },
-    },
-  });
+For this reason, the `ca-certificates` package must be installed during the construction of the Docker image.
+For example:
 
-  const worker = await Worker.create({
-    connection,
-    namespace: 'foo.bar', // as explained in Namespaces section
-    // ...
-  });
-  await worker.run();
-}
+```dockerfile
+FROM node:18-bulleyes-slim
 
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+RUN apt-get update \
+    && apt-get install -y ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# ... same as with regular image
 ```
 
-See below for more Worker options.
+Failure to install this dependency results in a `[TransportError: transport error]` runtime error, because the certificates cannot be verified.
 
-**Workflow and Activity registration**
+### Using `distroless/nodejs` images
 
-Workers bundle Workflow code and `node_modules` using Webpack v5 and execute them inside V8 isolates.
-Activities are directly required and run by Workers in the Node.js environment.
+`distroless/nodejs` images include only the files that are strictly required to execute `node`.
+This results in even smaller images (approximately half the size of `node:slim` images).
+It also significantly reduces the surface of potential security issues that could be exploited by a hacker in the resulting Docker images.
 
-Workers are very flexible – you can host any or all of your Workflows and Activities on a Worker, and you can host multiple Workers in a single machine.
+It is generally possible and safe to execute TypeScript SDK Workers using `distroless/nodejs` images (unless your code itself requires dependencies that are not included in `distroless/nodejs`).
 
-There are three main things the Worker needs:
+However, some tools required for the build process (notably the `npm` command) are _not_ included in the `distroless/nodejs` image.
+This might result in various error messages during the Docker build.
 
-- `taskQueue`: the Task Queue to poll. This is the only required argument.
-- `activities`: Optional. Imported and supplied directly to the Worker. Not the path.
-- Workflow bundle:
-- Either specify a `workflowsPath` to your `workflows.ts` file to pass to Webpack, e.g., `require.resolve('./workflows')`. Workflows will be bundled with their dependencies.
-- Or pass a prebuilt bundle to `workflowBundle` instead if you prefer to handle the bundling yourself.
+The recommanded solution is to use a multi-step Dockerfile.
+For example:
 
-**Additional Worker Options**
+```dockerfile
+# -- BUILD STEP --
 
-This is a selected subset of options you are likely to use. Even more advanced options, particularly for performance tuning, are available in [the API reference](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions).
+FROM node:18-bulleyes AS builder
 
-| Options         | Description                                                                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataConverter` | Encodes and decodes data entering and exiting a Temporal Server. Supports `undefined`, `UintBArray`, and JSON.                                                                     |
-| `sinks`         | Allows injection of Workflow Sinks (Advanced feature: see [Logging docs](https://legacy-documentation-sdks.temporal.io/typescript/logging))                                        |
-| `interceptors`  | A mapping of interceptor type to a list of factories or module paths (Advanced feature: see [Interceptors](https://legacy-documentation-sdks.temporal.io/typescript/interceptors)) |
+COPY . /app
+WORKDIR /app
 
-**Operation guides:**
+RUN npm install --only=production \
+    && npm run build
 
-- [How to tune Workers](/dev-guide/worker-performance)
+# -- RESULTING IMAGE --
+
+FROM gcr.io/distroless/nodejs:18
+
+COPY --from=builder /app /app
+WORKDIR /app
+
+CMD ["build/worker.js"]
+```
+
+### Properly configure Node.js memory in Docker
+
+By default, `node` configures its maximum old-gen memory to 25% of the _physical memory_ of the machine on which it is executing, with a maximum of 4 GB.
+This is likely inappropriate when running Node.js in a Docker environment and can result in either underusage of available memory (`node` only uses a fraction of the memory allocated to the container) or overusage (`node` tries to use more memory than what is allocated to the container, which will eventually lead to the process being killed by the operating system).
+
+Therefore we recommended that you always explicitly set the `--max-old-space-size` `node` argument to approximately 80% of the maximum size (in megabytes) that you want to allocate the `node` process.
+You might need some experimentation and adjustment to find the most appropriate value based on your specific application.
+
+In practice, it is generally easier to provide this argument through the [`NODE_OPTIONS` environment variable](https://nodejs.org/api/cli.html#node_optionsoptions).
+
+### Do not use Alpine
+
+Alpine replaces glibc with musl, which is incompatible with the Rust core of the TypeScript SDK.
+If you receive errors like the following, it's probably because you are using Alpine.
+
+```sh
+Error: Error loading shared library ld-linux-x86-64.so.2: No such file or directory (needed by /opt/app/node_modules/@temporalio/core-bridge/index.node)
+```
+
+Or like this:
+
+```sh
+Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
+```
 
 ## Run a Temporal Cloud Worker
 
@@ -747,7 +904,7 @@ async function run() {
 
 In this snippet, the Worker bundles the Workflow code at runtime.
 
-In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call [`bundleWorkflowCode`](https://legacy-documentation-sdks.temporal.io/typescript/workers#prebuilt-workflow-bundles):
+In production, you can improve your Worker's startup time by bundling in advance: as part of your production build, call `bundleWorkflowCode`:
 
 <!--SNIPSTART typescript-bundle-workflow -->
 
@@ -800,6 +957,62 @@ async function run() {
 
 <!--SNIPEND-->
 
+## Prebuilt workflow bundles
+
+If you're an advanced user, you can pass a prebuilt bundle instead of `workflowsPath`, or you can use the `bundleWorkflowCode` helper:
+
+```ts
+import { bundleWorkflowCode, Worker } from '@temporalio/worker';
+
+// Option 1: passing path to prebuilt bundle
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle: {
+    codePath: './path-to-bundle.js',
+    sourceMapPath: './path-to-bundle.js.map',
+  },
+});
+
+// Option 2: bundling code using Temporal's bundler settings
+const workflowBundle = await bundleWorkflowCode({
+  workflowsPath: require.resolve('./path-to-your-workflows'),
+});
+const worker = await Worker.create({
+  taskQueue,
+  workflowBundle,
+});
+```
+
+## Shut down a worker
+
+Workers shut down if they receive any of the Signals enumerated in [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`, `'SIGTERM'`, `'SIGQUIT'`, and `'SIGUSR2'`.
+
+In development, we shut down Workers with `Ctrl+C` (`SIGINT`) or [nodemon](https://github.com/temporalio/samples-typescript/blob/c37bae3ea235d1b6956fcbe805478aa46af973ce/hello-world/package.json#L10) (`SIGUSR2`). In production, you usually want to give Workers time to finish any in-progress Activities by setting [shutdownGraceTime](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdowngracetime).
+
+As soon as a Worker receives a shutdown Signal or request, the Worker stops polling for new Tasks and allows in-flight Tasks to complete until `shutdownGraceTime` is reached.
+Any Activities that are still running at that time will stop running and will be rescheduled by Temporal Server when an Activity timeout occurs.
+
+If you must guarantee that the Worker eventually shuts down, you can set [shutdownForceTime](https://typescript.temporal.io/api/interfaces/worker.WorkerOptions#shutdownforcetime).
+
+You might want to programmatically shut down Workers (with [Worker.shutdown()](https://typescript.temporal.io/api/classes/worker.Worker#shutdown)) in integration tests or when automating a fleet of Workers.
+
+### Worker states
+
+At any time, you can Query Worker state with [Worker.getState()](https://typescript.temporal.io/api/classes/worker.Worker#getstate).
+A Worker is always in one of seven states:
+
+- `INITIALIZED`: The initial state of the Worker after calling [Worker.create()](https://typescript.temporal.io/api/classes/worker.Worker#create) and successfully connecting to the server.
+- `RUNNING`: [Worker.run()](https://typescript.temporal.io/api/classes/worker.Worker#run) was called and the Worker is polling Task Queues.
+- `FAILED`: The Worker encountered an unrecoverable error; `Worker.run()` should reject with the error.
+- The last four states are related to the Worker shutdown process:
+  - `STOPPING`: The Worker received a shutdown Signal or `Worker.shutdown()` was called.
+    The Worker will forcefully shut down after `shutdownGraceTime` expires.
+  - `DRAINING`: All Workflow Tasks have been drained; waiting for Activities and cached Workflows eviction.
+  - `DRAINED`: All Activities and Workflows have completed; ready to shut down.
+  - `STOPPED`: Shutdown complete; `worker.run()` resolves.
+
+If you need more visibility into internal Worker state, see the [Worker class](https://typescript.temporal.io/api/classes/worker.Worker) in the API reference.
+
 ## Start Workflow Execution
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
@@ -828,7 +1041,7 @@ Calling `client.start()` and `client.execute()` send a command to Temporal Serve
 
 You can test this by executing a Workflow Client command without a matching Worker. Temporal Server records the command in Event History, but does not make progress with the Workflow Execution until a Worker starts polling with a matching Task Queue and Workflow Definition.
 
-Workflow Execution run in a separate V8 isolate context in order to provide a [deterministic runtime](https://legacy-documentation-sdks.temporal.io/typescript/determinism).
+Workflow Execution run in a separate V8 isolate context in order to provide a <a class="tdlp" href="/workflows#deterministic-constraints">deterministic runtime<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
 
 ### Set Task Queue
 
@@ -977,3 +1190,376 @@ try {
   }
 }
 ```
+
+## Cancellation scopes
+
+In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify.
+By default, everything runs in the "root" scope.
+
+Scopes are created using the [CancellationScope](https://typescript.temporal.io/api/classes/workflow.CancellationScope) constructor or one of three static helpers:
+
+- [cancellable(fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#cancellable-1): Children are automatically cancelled when their containing scope is cancelled.
+  - Equivalent to `new CancellationScope().run(fn)`.
+- [nonCancellable(fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#noncancellable): Cancellation does not propagate to children.
+  - Equivalent to `new CancellationScope({ cancellable: false }).run(fn)`.
+- [withTimeout(timeoutMs, fn)](https://typescript.temporal.io/api/classes/workflow.CancellationScope#withtimeout): If a timeout triggers before `fn` resolves, the scope is cancelled, triggering cancellation of any enclosed operations, such as Activities and Timers.
+  - Equivalent to `new CancellationScope({ cancellable: true, timeout: timeoutMs }).run(fn)`.
+
+Cancellations are applied to cancellation scopes, which can encompass an entire Workflow or just part of one.
+Scopes can be nested, and cancellation propagates from outer scopes to inner ones.
+A Workflow's `main` function runs in the outermost scope.
+Cancellations are handled by catching `CancelledFailure`s thrown by cancelable operations.
+
+`CancellationScope.run()` and the static helpers mentioned earlier return native JavaScript promises, so you can use the familiar Promise APIs like `Promise.all` and `Promise.race` to model your asynchronous logic.
+You can also use the following APIs:
+
+- `CancellationScope.current()`: Get the current scope.
+- `scope.cancel()`: Cancel all operations inside a `scope`.
+- `scope.run(fn)`: Run an async function within a `scope` and return the result of `fn`.
+- `scope.cancelRequested`: A promise that resolves when a scope cancellation is requested, such as when Workflow code calls `cancel()` or the entire Workflow is cancelled by an external client.
+
+When a `CancellationScope` is cancelled, it propagates cancellation in any child scopes and of any cancelable operations created within it, such as the following:
+
+- Activities
+- Timers (created with the [sleep](https://typescript.temporal.io/api/namespaces/workflow#sleep) function)
+- [Triggers](https://typescript.temporal.io/api/classes/workflow.Trigger)
+
+### CancelledFailure
+
+Timers and triggers throw [CancelledFailure](https://typescript.temporal.io/api/classes/client.CancelledFailure) when cancelled; Activities and Child Workflows throw `ActivityFailure` and `ChildWorkflowFailure` with cause set to `CancelledFailure`.
+One exception is when an Activity or Child Workflow is scheduled in an already cancelled scope (or Workflow).
+In this case, they propagate the `CancelledFailure` that was thrown to cancel the scope.
+
+To simplify checking for cancellation, use the [isCancellation(err)](https://typescript.temporal.io/api/namespaces/workflow#iscancellation) function.
+
+### Internal cancellation example
+
+<!--SNIPSTART typescript-cancel-a-timer-from-workflow-->
+
+[packages/test/src/workflows/cancel-timer-immediately.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/cancel-timer-immediately.ts)
+
+```ts
+import {
+  CancellationScope,
+  CancelledFailure,
+  sleep,
+} from '@temporalio/workflow';
+
+export async function cancelTimer(): Promise<void> {
+  // Timers and Activities are automatically cancelled when their containing scope is cancelled.
+  try {
+    await CancellationScope.cancellable(async () => {
+      const promise = sleep(1); // <-- Will be cancelled because it is attached to this closure's scope
+      CancellationScope.current().cancel();
+      await promise; // <-- Promise must be awaited in order for `cancellable` to throw
+    });
+  } catch (e) {
+    if (e instanceof CancelledFailure) {
+      console.log('Timer cancelled 👍');
+    } else {
+      throw e; // <-- Fail the workflow
+    }
+  }
+}
+```
+
+<!--SNIPEND-->
+
+Alternatively, the preceding can be written as the following.
+
+<!--SNIPSTART typescript-cancel-a-timer-from-workflow-alternative-impl-->
+
+[packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/cancel-timer-immediately-alternative-impl.ts)
+
+```ts
+import {
+  CancellationScope,
+  CancelledFailure,
+  sleep,
+} from '@temporalio/workflow';
+
+export async function cancelTimerAltImpl(): Promise<void> {
+  try {
+    const scope = new CancellationScope();
+    const promise = scope.run(() => sleep(1));
+    scope.cancel(); // <-- Cancel the timer created in scope
+    await promise; // <-- Throws CancelledFailure
+  } catch (e) {
+    if (e instanceof CancelledFailure) {
+      console.log('Timer cancelled 👍');
+    } else {
+      throw e; // <-- Fail the workflow
+    }
+  }
+}
+```
+
+<!--SNIPEND-->
+
+### External cancellation example
+
+The following code shows how to handle Workflow cancellation by an external client while an Activity is running.
+
+<!-- TODO: add a sample here of how this Workflow could be cancelled using a WorkflowHandle -->
+
+<!--SNIPSTART typescript-handle-external-workflow-cancellation-while-activity-running-->
+
+[packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/handle-external-workflow-cancellation-while-activity-running.ts)
+
+```ts
+import {
+  CancellationScope,
+  isCancellation,
+  proxyActivities,
+} from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpPostJSON, cleanup } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function handleExternalWorkflowCancellationWhileActivityRunning(
+  url: string,
+  data: any,
+): Promise<void> {
+  try {
+    await httpPostJSON(url, data);
+  } catch (err) {
+    if (isCancellation(err)) {
+      console.log('Workflow cancelled');
+      // Cleanup logic must be in a nonCancellable scope
+      // If we'd run cleanup outside of a nonCancellable scope it would've been cancelled
+      // before being started because the Workflow's root scope is cancelled.
+      await CancellationScope.nonCancellable(() => cleanup(url));
+    }
+    throw err; // <-- Fail the Workflow
+  }
+}
+```
+
+<!--SNIPEND-->
+
+### nonCancellable example
+
+`CancellationScope.nonCancellable` prevents cancellation from propagating to children.
+
+<!--SNIPSTART typescript-non-cancellable-shields-children-->
+
+[packages/test/src/workflows/non-cancellable-shields-children.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/non-cancellable-shields-children.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function nonCancellable(url: string): Promise<any> {
+  // Prevent Activity from being cancelled and await completion.
+  // Note that the Workflow is completely oblivious and impervious to cancellation in this example.
+  return CancellationScope.nonCancellable(() => httpGetJSON(url));
+}
+```
+
+<!--SNIPEND-->
+
+### withTimeout example
+
+A common operation is to cancel one or more Activities if a deadline elapses.
+`withTimeout` creates a `CancellationScope` that is automatically cancelled after a timeout.
+
+<!--SNIPSTART typescript-multiple-activities-single-timeout-workflow-->
+
+[packages/test/src/workflows/multiple-activities-single-timeout.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/multiple-activities-single-timeout.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+export function multipleActivitiesSingleTimeout(
+  urls: string[],
+  timeoutMs: number,
+): Promise<any> {
+  const { httpGetJSON } = proxyActivities<typeof activities>({
+    startToCloseTimeout: timeoutMs,
+  });
+
+  // If timeout triggers before all activities complete
+  // the Workflow will fail with a CancelledError.
+  return CancellationScope.withTimeout(
+    timeoutMs,
+    () => Promise.all(urls.map((url) => httpGetJSON(url))),
+  );
+}
+```
+
+<!--SNIPEND-->
+
+### scope.cancelRequested
+
+You can await `cancelRequested` to make a Workflow aware of cancellation while waiting on `nonCancellable` scopes.
+
+<!--SNIPSTART typescript-cancel-requested-with-non-cancellable-->
+
+[packages/test/src/workflows/cancel-requested-with-non-cancellable.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/cancel-requested-with-non-cancellable.ts)
+
+```ts
+import {
+  CancellationScope,
+  CancelledFailure,
+  proxyActivities,
+} from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function resumeAfterCancellation(url: string): Promise<any> {
+  let result: any = undefined;
+  const scope = new CancellationScope({ cancellable: false });
+  const promise = scope.run(() => httpGetJSON(url));
+  try {
+    result = await Promise.race([scope.cancelRequested, promise]);
+  } catch (err) {
+    if (!(err instanceof CancelledFailure)) {
+      throw err;
+    }
+    // Prevent Workflow from completing so Activity can complete
+    result = await promise;
+  }
+  return result;
+}
+```
+
+<!--SNIPEND-->
+
+### Cancellation scopes and callbacks
+
+Callbacks are not particularly useful in Workflows because all meaningful asynchronous operations return promises.
+In the rare case that code uses callbacks and needs to handle cancellation, a callback can consume the `CancellationScope.cancelRequested` promise.
+
+<!--SNIPSTART typescript-cancellation-scopes-with-callbacks-->
+
+[packages/test/src/workflows/cancellation-scopes-with-callbacks.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/cancellation-scopes-with-callbacks.ts)
+
+```ts
+import { CancellationScope } from '@temporalio/workflow';
+
+function doSomething(callback: () => any) {
+  setTimeout(callback, 10);
+}
+
+export async function cancellationScopesWithCallbacks(): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    doSomething(resolve);
+    CancellationScope.current().cancelRequested.catch(reject);
+  });
+}
+```
+
+<!--SNIPEND-->
+
+### Nesting cancellation scopes
+
+You can achieve complex flows by nesting cancellation scopes.
+
+<!--SNIPSTART typescript-nested-cancellation-scopes-->
+
+[packages/test/src/workflows/nested-cancellation.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/nested-cancellation.ts)
+
+```ts
+import {
+  CancellationScope,
+  isCancellation,
+  proxyActivities,
+} from '@temporalio/workflow';
+
+import type * as activities from '../activities';
+
+const { setup, httpPostJSON, cleanup } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function nestedCancellation(url: string): Promise<void> {
+  await CancellationScope.cancellable(async () => {
+    await CancellationScope.nonCancellable(() => setup());
+    try {
+      await CancellationScope.withTimeout(
+        1000,
+        () => httpPostJSON(url, { some: 'data' }),
+      );
+    } catch (err) {
+      if (isCancellation(err)) {
+        await CancellationScope.nonCancellable(() => cleanup(url));
+      }
+      throw err;
+    }
+  });
+}
+```
+
+<!--SNIPEND-->
+
+### Sharing promises between scopes
+
+Operations like Timers and Activities are cancelled by the cancellation scope they were created in.
+Promises returned by these operations can be awaited in different scopes.
+
+<!--SNIPSTART typescript-shared-promise-scopes-->
+
+[packages/test/src/workflows/shared-promise-scopes.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/shared-promise-scopes.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function sharedScopes(): Promise<any> {
+  // Start activities in the root scope
+  const p1 = httpGetJSON('http://url1.ninja');
+  const p2 = httpGetJSON('http://url2.ninja');
+
+  const scopePromise = CancellationScope.cancellable(async () => {
+    const first = await Promise.race([p1, p2]);
+    // Does not cancel activity1 or activity2 as they're linked to the root scope
+    CancellationScope.current().cancel();
+    return first;
+  });
+  return await scopePromise;
+  // The Activity that did not complete will effectively be cancelled when
+  // Workflow completes unless the Activity is awaited:
+  // await Promise.all([p1, p2]);
+}
+```
+
+<!--SNIPEND-->
+
+<!--SNIPSTART typescript-shield-awaited-in-root-scope-->
+
+[packages/test/src/workflows/shield-awaited-in-root-scope.ts](https://github.com/temporalio/sdk-typescript/blob/master/packages/test/src/workflows/shield-awaited-in-root-scope.ts)
+
+```ts
+import { CancellationScope, proxyActivities } from '@temporalio/workflow';
+import type * as activities from '../activities';
+
+const { httpGetJSON } = proxyActivities<typeof activities>({
+  startToCloseTimeout: '10m',
+});
+
+export async function shieldAwaitedInRootScope(): Promise<any> {
+  let p: Promise<any> | undefined = undefined;
+
+  await CancellationScope.nonCancellable(async () => {
+    p = httpGetJSON('http://example.com'); // <-- Start activity in nonCancellable scope without awaiting completion
+  });
+  // Activity is shielded from cancellation even though it is awaited in the cancellable root scope
+  return p;
+}
+```
+
+<!--SNIPEND-->

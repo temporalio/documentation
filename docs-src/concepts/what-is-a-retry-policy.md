@@ -91,10 +91,9 @@ Non-Retryable Errors = []
 
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
-  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
-  - The errors are matched against the `type` field of the [ApplicationFailure](/kb/failures#application-failure).
-- **Use case**: There may be errors that you know of that should not trigger a retry.
-  In this case, you can specify them such that, if they occur, the given execution is not retried.
+  - Errors are matched against the `type` field of the [Application Failure](/kb/failures#application-failure).
+  - If one of those errors occurs, a retry does not occur.
+- **Use case**: If you know of errors that should not trigger a retry, you can specify that, if they occur, the execution is not retried.
 
 ## Retry interval
 

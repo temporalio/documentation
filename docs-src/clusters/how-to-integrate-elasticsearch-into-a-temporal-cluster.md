@@ -14,41 +14,33 @@ ssdi:
   - Elasticsearch v6.8 and v7.10 are explicitly supported with AWS Elasticsearch.
 ---
 
-You can integrate Elasticsearch with your Temporal Cluster for [Advanced Visibility](/concepts/what-is-advanced-visibility) to take on the Visibility request load.
+You can integrate Elasticsearch with your Temporal Cluster as your Visibility store.
 We recommend using Elasticsearch for large-scale operations on the Temporal Cluster.
 
-To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file and run the index schema setup commands.
+To integrate Elasticsearch with your Temporal Cluster, edit the `persistence` section of your `development.yaml` configuration file to add Elasticsearch as the `visibilityStore`, and run the index schema setup commands.
 
-:::note
+<!-- :::note
 
 The following steps are needed only if you have a "plain" [Temporal Server Docker image](https://hub.docker.com/r/temporalio/server).
 
 If you operate a Temporal Cluster using our [Helm charts](https://github.com/temporalio/helm-charts) or
 [Docker Compose](https://github.com/temporalio/docker-compose), the Elasticsearch index schema and index are created automatically using the [auto-setup Docker image](https://hub.docker.com/r/temporalio/auto-setup).
 
-:::
+::: -->
 
 **Persistence configuration**
 
-1. Add the `advancedVisibilityStore: es-visibility` key-value pair to the `persistence` section.
-   For example usage, you can look at [several development_es.yaml files](https://github.com/temporalio/temporal/tree/master/config) in the `temporalio/temporal` repo.
-   The configuration instructs the Temporal Cluster how and where to connect to Elasticsearch storage.
+Set your Elasticsearch Visibility store name in the `visibilityStore` parameter in your Persistence configuration, and then define the Visibility store configuration under `datastores`.
+
+The following example shows how to set a Visibility store named `es-visibility` and define the datastore configuration in your Temporal Cluster configuration YAML.
 
 ```yaml
 persistence:
   ...
-  advancedVisibilityStore: es-visibility
-```
-
-2. Define the Elasticsearch datastore connection information under the `es-visibility` key:
-
-```yaml
-persistence:
-  ...
-  advancedVisibilityStore: es-visibility
+  visibilityStore: es-visibility
   datastores:
     ...
-    es-visibility:
+    es-visibility: # Define the Elasticsearch datastore connection information under the `es-visibility` key
       elasticsearch:
         version: "v7"
         url:
@@ -60,9 +52,26 @@ persistence:
 
 **Index schema and index**
 
-Run the following commands to create the index schema and index:
+The following example shows how the [auto-setup.sh](https://github.com/temporalio/docker-builds/blob/main/docker/auto-setup.sh) script sets up an Elasticsearch Visibility store.
 
 ```bash
+#...
+# Elasticsearch
+: "${ENABLE_ES:=false}"
+: "${ES_SCHEME:=http}"
+: "${ES_SEEDS:=}"
+: "${ES_PORT:=9200}"
+: "${ES_USER:=}"
+: "${ES_PWD:=}"
+: "${ES_VERSION:=v7}"
+: "${ES_VIS_INDEX:=temporal_visibility_v1}"
+: "${ES_SEC_VIS_INDEX:=}"
+: "${ES_SCHEMA_SETUP_TIMEOUT_IN_SECONDS:=0}"
+#...
+# Validate your ES environment
+#...
+# Wait for ES to start
+#...
 # ES_SERVER is the URL of Elasticsearch server; for example, "http://localhost:9200".
 SETTINGS_URL="${ES_SERVER}/_cluster/settings"
 SETTINGS_FILE=${TEMPORAL_HOME}/schema/elasticsearch/visibility/cluster_settings_${ES_VERSION}.json
