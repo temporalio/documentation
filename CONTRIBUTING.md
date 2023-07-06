@@ -97,6 +97,20 @@ If you are running this for the first time, you need to run `yarn` directly in t
 **TIP**: Make your changes in the **source files** that are named in the configuration file.
 For example, if you found a typo in the Concept section _What is a Task?_, open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there.
 
+## How to lint
+
+[Install](https://vale.sh/docs/vale-cli/installation/) Vale:
+
+```
+brew install vale
+```
+
+Run:
+
+```
+yarn lint
+```
+
 ### Local Cluster
 
 To run the Assembly Workflow using a local Cluster, do the following:
