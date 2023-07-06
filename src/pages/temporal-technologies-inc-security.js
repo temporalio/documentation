@@ -77,7 +77,7 @@ export default function Security() {
             <div className={clsx("col col--4", styles.justifyLeft)}>
               <ul>
                 <li>
-                2023-07-03: <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-3485'>CVE-2023-3485 published</a>. We recommend customers upgrade to 1.20 or later. If unable, the dynamic configuration option frontend.enableTokenNamespaceEnforcement should be set to true.
+                2023-07-03: <a href='https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-3485'>CVE-2023-3485 published</a>. We recommend customers upgrade to 1.20 or later. If unable, the dynamic configuration option <code>frontend.enableTokenNamespaceEnforcement</code> should be set to <code>true</code>.
                 </li>
               </ul>
               </div>
