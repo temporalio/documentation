@@ -124,6 +124,7 @@ temporal server start-dev
 1. In another terminal, run the Worker:
 
 ```
+cd assembly
 yarn worker
 ```
 
