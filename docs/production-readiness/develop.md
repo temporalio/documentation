@@ -306,15 +306,21 @@ For example implementations, see the following samples:
 
 Content is planned but not yet available.
 
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
 </TabItem>
 <TabItem value="python">
 
 Content is planned but not yet available.
 
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
+
 </TabItem>
 <TabItem value="typescript">
 
 Content is planned but not yet available.
+
+The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>
