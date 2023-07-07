@@ -51,7 +51,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
 
 A Worker Entity listens and polls on a single Task Queue.
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it may make progress of either a Workflow Execution or an Activity Execution.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 **Can a Worker handle more Workflow Executions than its cache size or number of supported threads?**
 
@@ -352,7 +352,7 @@ On Task Queues using this feature, the Workflow starter doesn't have to know abo
 
 The new code in the newly deployed Workers executes new [Workflow Executions](#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
-#### Decommision old Workers
+#### Decommission old Workers
 
 You can decommission old Workers after you archive all open Workflows using their version.
 If you have no need to query closed Workflows, you can decommission them when no open Workflows remain at that version.
