@@ -88,10 +88,15 @@ To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#dis
 Temporal tracks the following metrics for your various Namespaces.
 
 - temporal_cloud_v0_frontend_service_error_count
+- temporal_cloud_v0_frontend_service_pending_requests
 - temporal_cloud_v0_frontend_service_request_count
 - temporal_cloud_v0_poll_success_count
 - temporal_cloud_v0_poll_success_sync_count
 - temporal_cloud_v0_poll_timeout_count
+- temporal_cloud_v0_schedule_action_success_count
+- temporal_cloud_v0_schedule_buffer_overruns_count
+- temporal_cloud_v0_schedule_missed_catchup_window_count
+- temporal_cloud_v0_schedule_rate_limited_count
 - temporal_cloud_v0_service_latency_bucket
 - temporal_cloud_v0_service_latency_count
 - temporal_cloud_v0_service_latency_sum
