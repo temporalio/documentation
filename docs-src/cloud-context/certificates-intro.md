@@ -2,12 +2,16 @@
 id: certificates-intro
 title: How to manage certificates in Temporal Cloud
 sidebar_label: Manage certificates
-description: Access to Temporal Cloud requires a certificate from you.
+description: Certificates needed for Temporal Cloud and Worker Processes
 tags:
   - guide-context
 ---
 
-Access to [Temporal Cloud](https://temporal.io/cloud) is secured with the mutual Transport Layer Security (mTLS) protocol.
-This protocol requires a CA certificate from you.
+Temporal uses several certificates for secure access and communication.
 
-[Worker Processes](/workers/#worker-process) use both CA certificates and private keys to connect to Temporal Cloud. Private keys remain in your control; Temporal Cloud requires no exchange of secrets.
+[Temporal Cloud](https://temporal.io/cloud) access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
+
+[Worker Processes](/workers/#worker-process) require CA certificates and private keys to connect to Temporal Cloud.
+Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
+
+All certificates used by Temporal Cloud must meet the provided requirements.
