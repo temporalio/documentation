@@ -573,6 +573,18 @@ If multiple deliveries of a Signal would be a problem for your Workflow, add ide
 
 [^1]: The Cluster usually deduplicates Signals, but does not guarantee deduplication: During shard migration, two Signal Events (and therefore two deliveries to the Workflow Execution) can be recorded for a single Signal because the deduping info is stored only in memory.
 
+## Signal-With-Start
+
+Signal-With-Start is a Client method that takes the following arguments:
+
+- A Workflow Id
+- Workflow input
+- A <a class="tdlp" href="#signal">Signal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Signal?</span><br /><br /><span class="tdlppd">A Signal is an asynchronous request to a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#signal">Learn more</a></span></span></a> name
+- Signal input
+
+If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
+Otherwise, a new Workflow Execution will be started and immediately Signaled.
+
 ## Query
 
 A Query is a synchronous operation that is used to get the state of a [Workflow Execution](/workflows#workflow-execution).

@@ -343,6 +343,12 @@ A Signal is an asynchronous request to a Workflow Execution.
 _Tags: [term](/tags/term), [signals](/tags/signals), [explanation](/tags/explanation)_
 
 
+#### [Signal-With-Start](/workflows#signal-with-start)
+Signal-With-Start starts and Signals a Workflow Execution, or just Signals it if it already exists.
+
+_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+
+
 #### [Start-To-Close Timeout](/activities#start-to-close-timeout)
 A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.
 
