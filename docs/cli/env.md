@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Environment (or 'env') commands allow the user to configure the properties for the environment in use.
 
-## get
+## temporal env get {#get}
 
 The `temporal env get` command prints the environmental properties for the environment in use.
 
@@ -41,7 +41,7 @@ Use the options listed below to change the command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
 
-## set
+## temporal env set {#set}
 
 The `temporal env set` command sets the value for an environmental property.
 
@@ -62,7 +62,7 @@ Use the options listed below to change the command's behavior.
 
 - <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
 
-## delete
+## temporal env delete {#delete}
 
 The `temporal env delete` command deletes a given environment or environmental property.
 

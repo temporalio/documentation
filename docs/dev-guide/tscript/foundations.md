@@ -37,7 +37,7 @@ In this section you can find the following:
 - <a class="tdlp" href="#run-a-dev-worker">Run a Temporal Cloud Worker<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to run Worker Processes</span><br /><br /><span class="tdlppd">The Worker Process is where Workflow Functions and Activity Functions are executed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-dev-worker">Learn more</a></span></span></a>
 - <a class="tdlp" href="#start-workflow-execution">Start a Workflow Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-workflow-execution">Learn more</a></span></span></a>
 
-## Run a development server
+## How to install Temporal CLI and run a development server {#Run a development server}
 
 This section describes how to install the [Temporal CLI](/cli) and run a development Cluster.
 The local development Cluster comes packaged with the [Temporal Web UI](/web-ui).
@@ -121,7 +121,7 @@ For a full list of options, run:
 temporal server start-dev --help
 ```
 
-## Install a Temporal SDK
+## How to install a Temporal SDK {#Install a Temporal SDK}
 
 A <a class="tdlp" href="/temporal#temporal-sdk">Temporal SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal SDK?</span><br /><br /><span class="tdlppd">A Temporal SDK is a language-specific library that offers APIs to construct and use a Temporal Client to communicate with a Temporal Cluster, develop Workflow Definitions, and develop Worker Programs.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-sdk">Learn more</a></span></span></a> provides a framework for <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a> development.
 
@@ -154,11 +154,11 @@ The TypeScript SDK is designed with TypeScript-first developer experience in min
 
 :::
 
-### API reference
+### How to find the TypeScript SDK API reference {#API reference}
 
 The Temporal TypeScript SDK API reference is published to [typescript.temporal.io](https://typescript.temporal.io).
 
-### Code samples
+### Where are SDK-specific code examples? {#Code samples}
 
 You can find a complete list of executable code samples in [Temporal's GitHub repository](https://github.com/temporalio?q=samples-&type=all&language=&sort=).
 
@@ -170,7 +170,7 @@ Use the [TypeScript samples library](https://github.com/temporalio/samples-types
 
 [Temporal TypeScript YouTube playlist](https://www.youtube.com/playlist?list=PLl9kRkvFJrlTavecydpk9r6cF7qBmQJvb).
 
-### ECMAScript modules
+### How to import an ECMAScript module {#ECMAScript modules}
 
 The JavaScript ecosystem is quickly moving toward publishing ECMAScript modules (ESM) instead of CommonJS modules.
 For example, `node-fetch@3` is ESM, but `node-fetch@2` is CommonJS.
@@ -181,14 +181,14 @@ For more information about importing a pure ESM dependency, see our [Fetch ESM](
 - `tsconfig.json` should output in `esnext` format.
 - Imports must include the `.js` file extension.
 
-## Linting and types
+## Linting and types in TypeScript {#Linting and types}
 
 If you started your project with `@temporalio/create`, you already have our recommended TypeScript and ESLint configurations.
 
 If you incrementally added Temporal to an existing app, we do recommend setting up linting and types because they help catch bugs well before you ship them to production, and they improve your development feedback loop.
 Take a look at our recommended [.eslintrc](https://github.com/temporalio/samples-typescript/blob/main/.shared/.eslintrc.js) file and tweak to suit your needs.
 
-## Connect to a dev Cluster
+## How to connect a Temporal Client to a Temporal Cluster {#Connect to a dev Cluster}
 
 A <a class="tdlp" href="/temporal#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-client">Learn more</a></span></span></a> enables you to communicate with the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 Communication with a Temporal Cluster includes, but isn't limited to, the following:
@@ -230,7 +230,7 @@ run().catch((err) => {
 });
 ```
 
-## Connect to Temporal Cloud
+## How to connect to Temporal Cloud {#Connect to Temporal Cloud}
 
 When you connect to [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -286,7 +286,7 @@ run().catch((err) => {
 });
 ```
 
-## Develop Workflows
+## How to develop a basic Workflow {#Develop Workflows}
 
 Workflows are the fundamental unit of a Temporal Application, and it all starts with the development of a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 
@@ -308,7 +308,7 @@ export async function example(
 }
 ```
 
-### Workflow parameters
+### How to define Workflow parameters {#Workflow parameters}
 
 Temporal Workflows may have any number of custom parameters.
 However, we strongly recommend that objects are used as parameters, so that the object's individual fields may be altered without breaking the signature of the Workflow.
@@ -343,7 +343,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 }
 ```
 
-### Workflow return values
+### How to define Workflow return parameters {#Workflow return values}
 
 Workflow return values must also be serializable.
 Returning results, returning errors, or throwing exceptions is fairly idiomatic in each language that is supported.
@@ -363,7 +363,7 @@ export async function example({ name, born }: ExampleParam): Promise<string> {
 }
 ```
 
-### Workflow Type
+### How to customize your Workflow Type {#Workflow Type}
 
 Workflows have a Type that are referred to as the Workflow name.
 
@@ -385,7 +385,7 @@ export async function helloWorld(): Promise<string> {
 
 <!--SNIPEND-->
 
-### Workflow logic requirements
+### How develop Workflow logic {#Workflow logic requirements}
 
 Workflow logic is constrained by <a class="tdlp" href="/workflows#deterministic-constraints">deterministic execution requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
 Therefore, each language is limited to the use of certain idiomatic techniques.
@@ -428,7 +428,7 @@ for (let x = 0; x < 10; ++x) {
 
 </details>
 
-## Develop Activities
+## How to develop a basic Activity {#Develop Activities}
 
 One of the primary things that Workflows do is orchestrate the execution of Activities.
 An Activity is a normal function or method execution that's intended to execute a single, well-defined action (either short or long-running), such as querying a database, calling a third-party API, or transcoding a media file.
@@ -453,7 +453,7 @@ export async function greet(name: string): Promise<string> {
 
 <!--SNIPEND-->
 
-### Activity parameters
+### How to develop Activity Parameters {#Activity parameters}
 
 There is no explicit limit to the total number of parameters that an <a class="tdlp" href="/activities#activity-definition">Activity Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Definition?</span><br /><br /><span class="tdlppd">An Activity Definition is the code that defines the constraints of an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-definition">Learn more</a></span></span></a> may support.
 However, there is a limit of the total size of the data ends up encoded into a gRPC message Payload.
@@ -484,7 +484,7 @@ export async function greet(name: string): Promise<string> {
 
 <!--SNIPEND-->
 
-### Activity return values
+### How to define Activity return values {#Activity return values}
 
 All data returned from an Activity must be serializable.
 
@@ -500,7 +500,7 @@ export async function greet(name: string): Promise<string> {
 }
 ```
 
-### Activity Type
+### How to customize your Activity Type {#Activity Type}
 
 Activities have a Type that are referred to as the Activity name.
 The following examples demonstrate how to set a custom name for your Activity Type.
@@ -531,7 +531,7 @@ async function run() {
 
 <!--SNIPEND-->
 
-### Activity design patterns
+### Important design patterns for Activities {#Activity design patterns}
 
 The following are some important (and frequently requested) patterns for using our Activities APIs.
 These patterns address common needs and use cases.
@@ -661,7 +661,7 @@ An invalid Activity name leads to a `NotFoundError` with a message that looks li
 ApplicationFailure: Activity function actC is not registered on this Worker, available activities: ["actA", "actB"]
 ```
 
-## Activity Execution
+## How to start an Activity Execution {#Activity Execution}
 
 Calls to spawn <a class="tdlp" href="/activities#activity-execution">Activity Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> are written within a <a class="tdlp" href="/workflows#workflow-definition">Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>.
 The call to spawn an Activity Execution generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command.
@@ -696,13 +696,13 @@ export async function example(name: string): Promise<string> {
 
 This imports the individual Activities and declares the type alias for each Activity.
 
-### Required timeout
+### How to set the required Activity Timeouts {#Required timeout}
 
 Activity Execution semantics rely on several parameters.
 The only required value that needs to be set is either a <a class="tdlp" href="/activities#start-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a> or a <a class="tdlp" href="/activities#start-to-close-timeout">Start-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#start-to-close-timeout">Learn more</a></span></span></a>.
 These values are set in the Activity Options.
 
-### Get Activity results
+### How to get the results of an Activity Execution {#Get Activity results}
 
 The call to spawn an <a class="tdlp" href="/activities#activity-execution">Activity Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Execution?</span><br /><br /><span class="tdlppd">An Activity Execution is the full chain of Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-execution">Learn more</a></span></span></a> generates the [ScheduleActivityTask](/references/commands/#scheduleactivitytask) Command and provides the Workflow with an Awaitable.
 Workflow Executions can either block progress until the result is available through the Awaitable or continue progressing, making use of the result when it becomes available.
@@ -724,7 +724,7 @@ export async function DynamicWorkflow(activityName, ...args) {
 
 The `proxyActivities()` returns an object that calls the Activities in the function. `acts[activityName]()` references the Activity using the Activity name, then it returns the results.
 
-## Run a dev Worker
+## How to run Worker Processes {#Run a dev Worker}
 
 The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
@@ -752,7 +752,7 @@ For more information, see the [Worker tuning guide](/dev-guide/worker-performanc
 
 A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
-## Run a Worker on Docker
+## How to run a Worker on Docker in TypeScript {#Run a Worker on Docker}
 
 Workers based on the TypeScript SDK can be deployed and run as Docker containers.
 
@@ -860,7 +860,7 @@ Or like this:
 Error: Error relocating /opt/app/node_modules/@temporalio/core-bridge/index.node: __register_atfork: symbol not found
 ```
 
-## Run a Temporal Cloud Worker
+## How to run a Temporal Cloud Worker {#Run a Temporal Cloud Worker}
 
 To run a Worker that uses [Temporal Cloud](/cloud), you need to provide additional connection and client options that include the following:
 
@@ -872,7 +872,7 @@ For more information about managing and generating client certificates for Tempo
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
-### Register types
+### How to register types {#Register types}
 
 All Workers listening to the same Task Queue name must be registered to handle the exact same Workflows Types and Activity Types.
 
@@ -957,7 +957,7 @@ async function run() {
 
 <!--SNIPEND-->
 
-## Prebuilt workflow bundles
+## How to use a prebuilt Workflow bundle in TypeScript {#Prebuilt workflow bundles}
 
 If you're an advanced user, you can pass a prebuilt bundle instead of `workflowsPath`, or you can use the `bundleWorkflowCode` helper:
 
@@ -983,7 +983,7 @@ const worker = await Worker.create({
 });
 ```
 
-## Shut down a worker
+## How to shut down a Worker and track its state {#Shut down a worker}
 
 Workers shut down if they receive any of the Signals enumerated in [shutdownSignals](https://typescript.temporal.io/api/interfaces/worker.RuntimeOptions#shutdownsignals): `'SIGINT'`, `'SIGTERM'`, `'SIGQUIT'`, and `'SIGUSR2'`.
 
@@ -1013,7 +1013,7 @@ A Worker is always in one of seven states:
 
 If you need more visibility into internal Worker state, see the [Worker class](https://typescript.temporal.io/api/classes/worker.Worker) in the API reference.
 
-## Start Workflow Execution
+## How to start a Workflow Execution {#Start Workflow Execution}
 
 [Workflow Execution](/workflows#workflow-execution) semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.
 
@@ -1043,7 +1043,7 @@ You can test this by executing a Workflow Client command without a matching Work
 
 Workflow Execution run in a separate V8 isolate context in order to provide a <a class="tdlp" href="/workflows#deterministic-constraints">deterministic runtime<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#deterministic-constraints">Learn more</a></span></span></a>.
 
-### Set Task Queue
+### How to set a Workflow's Task Queue {#Set Task Queue}
 
 In most SDKs, the only Workflow Option that must be set is the name of the <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
@@ -1120,7 +1120,7 @@ const worker = await Worker.create({
 
 Optionally, in Workflow code, when calling an Activity, you can specify the Task Queue by passing the `taskQueue` option to `proxyActivities()`, `startChild()`, or `executeChild()`. If you do not specify a `taskQueue`, then the TypeScript SDK places Activity and Child Workflow Tasks in the same Task Queue as the Workflow Task Queue.
 
-### Workflow Id
+### How to set a Workflow Id {#Workflow Id}
 
 Although it is not required, we recommend providing your own <a class="tdlp" href="/workflows#workflow-id">Workflow Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Id?</span><br /><br /><span class="tdlppd">A Workflow Id is a customizable, application-level identifier for a Workflow Execution that is unique to an Open Workflow Execution within a Namespace.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-id">Learn more</a></span></span></a> that maps to a business process or business entity identifier, such as an order identifier or customer identifier.
 
@@ -1136,7 +1136,7 @@ const handle = await client.start(example, {
 
 This starts a new Client with the given Workflow Id, Task Queue name, and an argument.
 
-### Get Workflow results
+### How to get the results of a Workflow Execution {#Get Workflow results}
 
 If the call to start a Workflow Execution is successful, you will gain access to the Workflow Execution's Run Id.
 
@@ -1191,7 +1191,7 @@ try {
 }
 ```
 
-## Cancellation scopes
+## Cancellation scopes in Typescript {#Cancellation scopes}
 
 In the TypeScript SDK, Workflows are represented internally by a tree of cancellation scopes, each with cancellation behaviors you can specify.
 By default, everything runs in the "root" scope.

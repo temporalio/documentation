@@ -22,17 +22,17 @@ async function generateGuide(config, guideCfg) {
   for (const section of guideCfg.sections) {
     switch (section.type) {
       case "h2":
-        guideStr = `${guideStr}## ${section.node.label}\n\n`;
+        guideStr = `${guideStr}## ${section.node.title} {#${section.node.label}}\n\n`;
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h3":
-        guideStr = `${guideStr}### ${section.node.label}\n\n`;
+        guideStr = `${guideStr}### ${section.node.title} {#${section.node.label}}\n\n`;
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;
       case "h4":
-        guideStr = `${guideStr}#### ${section.node.label}\n\n`;
+        guideStr = `${guideStr}#### ${section.node.title} {#${section.node.label}}\n\n`;
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
         break;

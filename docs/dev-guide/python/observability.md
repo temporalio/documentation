@@ -24,7 +24,7 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## Metrics
+## How to emit metrics {#Metrics}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a>.
@@ -53,7 +53,7 @@ new_runtime = Runtime(telemetry=TelemetryConfig(metrics=PrometheusConfig(bind_ad
 my_client = await Client.connect("my.temporal.host:7233", runtime=new_runtime)
 ```
 
-## Tracing
+## How to setup Tracing {#Tracing}
 
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
 
@@ -75,7 +75,7 @@ Then the [`temporalio.contrib.opentelemetry.TracingInterceptor`](https://python.
 When your Client is connected, spans are created for all Client calls, Activities, and Workflow invocations on the Worker.
 Spans are created and serialized through the server to give one trace for a Workflow Execution.
 
-## Logging
+## How to log from a Workflow {#Logging}
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -115,17 +115,17 @@ Logs are skipped during replay by default.
 
 :::
 
-### Custom logger
+### How to provide a custom logger {#Custom logger}
 
 Use a custom logger for logging.
 
 Use the built-in [Logging facility for Python](https://docs.python.org/3/library/logging.html) to set a custom logger.
 
-## Visibility
+## How to use Visibility APIs {#Visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### Search Attributes
+### How to use Search Attributes {#Search Attributes}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -162,7 +162,7 @@ async for workflow in client.list_workflows('WorkflowType="MyWorkflowClass"'):
     print(f"Workflow: {workflow.id}")
 ```
 
-### Custom Search Attributes
+### How to set custom Search Attributes {#Custom Search Attributes}
 
 After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -177,7 +177,7 @@ handle = await client.start_workflow(
 )
 ```
 
-### Upsert Search Attributes
+### How to upsert Search Attributes {#Upsert Search Attributes}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -189,7 +189,7 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 workflow.upsert_search_attributes({"Your-Custom-Keyword-Field": ["new-value"]})
 ```
 
-### Remove Search Attribute
+### How to remove a Search Attribute from a Workflow {#Remove Search Attribute}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

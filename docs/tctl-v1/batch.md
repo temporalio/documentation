@@ -62,7 +62,7 @@ Terminating a batch job does not roll back the operations already performed by t
 - <a class="tdlp" href="#start">tctl batch start<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl batch start</span><br /><br /><span class="tdlppd">How to start a batch job using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start">Learn more</a></span></span></a>
 - <a class="tdlp" href="#terminate">tctl batch terminate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl batch terminate</span><br /><br /><span class="tdlppd">How to terminate a batch job using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#terminate">Learn more</a></span></span></a>
 
-## start
+## tctl batch start {#start}
 
 The `tctl batch start` command starts a batch job.
 
@@ -150,7 +150,7 @@ Alias: `y`
 tctl batch start --query <value> --yes
 ```
 
-## list
+## tctl batch list {#list}
 
 The `tctl batch list` command lists all batch jobs.
 
@@ -174,7 +174,7 @@ Specify the maximum number of batch jobs to list on a page. The default value is
 tctl batch list --pagesize <value>
 ```
 
-## describe
+## tctl batch describe {#describe}
 
 The `tctl batch describe` command describes the progress of a batch job.
 
@@ -200,7 +200,7 @@ Specify the job ID of a batch job.
 tctl batch describe --job_id <id>
 ```
 
-## terminate
+## tctl batch terminate {#terminate}
 
 The `tctl batch terminate` command terminates a batch job.
 

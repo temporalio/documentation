@@ -18,7 +18,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
 
-## Create a Namespace
+## How to create a Namespace in Temporal Cloud {#Create a Namespace}
 
 :::info
 
@@ -72,7 +72,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 This functionality is in development.
 
-## Access Namespaces
+## How to access a Namespace in Temporal Cloud {#Access Namespaces}
 
 <!--- How to access a Namespace in Temporal Cloud --->
 
@@ -81,7 +81,7 @@ Each Namespace in Temporal Cloud has two unique endpoints, both of which include
 - For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
 - For accessing Temporal Web UI, an HTTPS endpoint in the form `web.<namespaceId>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
 
-## Manage Namespaces
+## How to manage Namespaces in Temporal Cloud {#Manage Namespaces}
 
 <!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->
 
@@ -125,7 +125,7 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 To manage certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#certificate-filters">Learn more</a></span></span></a> commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
 
-## Delete a Namespace
+## How to delete a Namespace in Temporal Cloud {#Delete a Namespace}
 
 :::info
 

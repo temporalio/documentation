@@ -30,7 +30,7 @@ Alias: `t`
 - <a class="tdlp" href="#describe">tctl taskqueue describe<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl taskqueue describe</span><br /><br /><span class="tdlppd">How to describe the poller information of a Task Queue using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#describe">Learn more</a></span></span></a>
 - <a class="tdlp" href="#list-partition">tctl taskqueue list-partition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl taskqueue list-partition</span><br /><br /><span class="tdlppd">How to list Task Queue partitions and the hostname for partitions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-partition">Learn more</a></span></span></a>
 
-## describe
+## tctl taskqueue describe {#describe}
 
 The `tctl taskqueue describe` command describes the poller information of a <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>.
 
@@ -64,7 +64,7 @@ The default is `workflow`.
 tctl taskqueue describe --taskqueue <value> --taskqueuetype <type>
 ```
 
-## list-partition
+## tctl taskqueue list-partition {#list-partition}
 
 The `tctl taskqueue list-partition` command lists the partitions of a <a class="tdlp" href="/workers#task-queue">Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a> and the hostname for the partitions.
 

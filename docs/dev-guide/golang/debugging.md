@@ -25,11 +25,11 @@ Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
 
 :::
 
-## Debug in a development environment
+## How to debug in a development environment {#Debug in a development environment}
 
 In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
 
-## Debug in a production environment
+## How to debug in a production environment {#Debug in a production environment}
 
 You can debug production Workflows using:
 
@@ -44,7 +44,7 @@ For more information, see <a class="tdlp" href="/dev-guide/go/observability#metr
 
 Debug Server performance with [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics) or [self-hosted Server metrics](/kb/legacy-oss-prod-deploy#scaling-and-metrics).
 
-## Testing and debugging
+## How to test Workflow Definitions in Go {#Testing and debugging}
 
 The Temporal Go SDK provides a test framework to facilitate testing Workflow implementations.
 

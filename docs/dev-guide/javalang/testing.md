@@ -30,7 +30,7 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks
+## Test frameworks {#Test frameworks}
 
 The Temporal Java SDK provides a test framework to facilitate Workflow unit and integration testing.
 The test framework provides a `TestWorkflowEnvironment` class which includes an in-memory implementation
@@ -232,32 +232,32 @@ public class HelloActivityJUnit5Test {
 
 You can find all unit tests for the [Temporal Java samples](https://github.com/temporalio/samples-java) repository in [its test package](https://github.com/temporalio/samples-java/tree/master/src/test/java/io/temporal/samples).
 
-## Test Activities
+## Testing Activities {#Test Activities}
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-### Run an Activity
+### Run an Activity {#Run an Activity}
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
-### Listen to Heartbeats
+### Listen to Heartbeats {#Listen to Heartbeats}
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
-### Cancel an Activity
+### Cancel an Activity {#Cancel an Activity}
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
-## Test Workflows
+## Testing Workflows {#Test Workflows}
 
-### Mock Activities
+### How to mock Activities {#Mock Activities}
 
 Mock the Activity invocation when unit testing your Workflows.
 
 When integration testing Workflows with a Worker, you can mock Activities by providing mock Activity implementations to the Worker.
 
-### Skip time
+### How to skip time {#Skip time}
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -276,25 +276,25 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Setting up
+#### Set up time skipping {#Setting up}
 
 Learn to set up the time-skipping test framework in the SDK of your choice.
 
-#### Automatic method
+#### Skip time automatically {#Automatic method}
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
 For example, in the time-skipping mode, Timers, which include sleeps and conditional timeouts, are fast-forwarded except when Activities are running.
 
-#### Manual method
+#### Skip time manually {#Manual method}
 
 Learn to skip time manually in the SDK of your choice.
 
-#### Skip time in Activities
+#### Skip time in Activities {#Skip time in Activities}
 
 Learn to skip time in Activities in the SDK of your choice.
 
-## Replay
+## How to Replay a Workflow Execution {#Replay}
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

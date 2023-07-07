@@ -171,7 +171,7 @@ from one package to another package, that changes the `ActivityType`, which tech
 Activity. But, we don't want to fail on that change, so we only check the function name part of the
 `ActivityType`.
 
-## Worker Versioning
+## How to use Worker Versioning in Go {#Worker Versioning}
 
 To use Worker Versioning in Go, you need to do the following:
 

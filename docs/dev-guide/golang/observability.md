@@ -27,7 +27,7 @@ This section covers features related to viewing the state of the application, in
 - [Logging](#logging)
 - [Visibility](#visibility)
 
-## Metrics
+## How to emit metrics {#Metrics}
 
 Each Temporal SDK is capable of emitting an optional set of metrics from either the Client or the Worker process.
 For a complete list of metrics capable of being emitted, see the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a>.
@@ -57,7 +57,7 @@ The Go SDK currently supports the [Tally](https://pkg.go.dev/go.temporal.io/sdk/
 
 For more information, see the [Go sample for metrics](https://github.com/temporalio/samples-go/tree/main/metrics).
 
-## Tracing and Context Propogation
+## Tracing and Context Propagation {#Tracing and Context Propogation}
 
 The Go SDK provides support for distributed tracing through [OpenTracing](https://opentracing.io/).
 Tracing allows you to view the call graph of a Workflow along with its Activities and any Child Workflows.
@@ -155,7 +155,7 @@ The OpenTracing support has been validated using [Jaeger](https://www.jaegertrac
 
 Tracing functionality utilizes generic context propagation provided by the Client.
 
-## Logging
+## How to log from a Workflow {#Logging}
 
 Send logs and errors to a logging service, so that when things go wrong, you can see what happened.
 
@@ -196,7 +196,7 @@ workflow.WithActivityOptions(ctx, ao)
 }
 ```
 
-### Custom logger
+### How to provide a custom logger {#Custom logger}
 
 Use a custom logger for logging.
 
@@ -228,11 +228,11 @@ func main() {
 }
 ```
 
-## Visibility
+## How to use Visibility APIs {#Visibility}
 
 The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.
 
-### Search Attributes
+### How to use Search Attributes {#Search Attributes}
 
 The typical method of retrieving a Workflow Execution is by its Workflow Id.
 
@@ -283,7 +283,7 @@ for _, exec := range resp.Executions {
 }
 ```
 
-### Custom Search Attributes
+### How to set custom Search Attributes {#Custom Search Attributes}
 
 After you've created custom Search Attributes in your Cluster (using `tctl search-attribute create`or the Cloud UI), you can set the values of the custom Search Attributes when starting a Workflow.
 
@@ -317,7 +317,7 @@ func (c *Client) CallYourWorkflow(ctx context.Context, workflowID string, payloa
 }
 ```
 
-### Upsert Search Attributes
+### How to upsert Search Attributes {#Upsert Search Attributes}
 
 You can upsert Search Attributes to add or update Search Attributes from within Workflow code.
 
@@ -354,7 +354,7 @@ map[string]interface{}{
 }
 ```
 
-### Remove Search Attribute
+### How to remove a Search Attribute from a Workflow {#Remove Search Attribute}
 
 To remove a Search Attribute that was previously set, set it to an empty array: `[]`.
 

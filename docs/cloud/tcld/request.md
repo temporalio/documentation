@@ -19,7 +19,7 @@ Alias: `r`
 
 - <a class="tdlp" href="#get">tcld request get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld request get</span><br /><br /><span class="tdlppd">How to get the status of an asynchronous request in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#get">Learn more</a></span></span></a>
 
-## get
+## tcld request get {#get}
 
 The `tcld request get` command gets the status of the specified request in Temporal Cloud.
 

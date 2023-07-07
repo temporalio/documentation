@@ -28,7 +28,7 @@ There are three types of Batch Jobs:
 A successfully started Batch job will return a Job ID.
 Use this Job ID to execute other actions on the Batch job.
 
-## list
+## temporal batch list {#list}
 
 When used, `temporal batch list` returns all Batch jobs.
 Batch Jobs can be returned for an entire Cluster or a single Namespace.
@@ -48,7 +48,7 @@ Use the command options listed below to change the information returned by this 
 
 - <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
 
-## describe
+## temporal batch describe {#describe}
 
 The `temporal batch describe` command shows the progress of an ongoing Batch job.
 
@@ -71,7 +71,7 @@ Use the command options listed below to change the information returned by this 
 
 - <a class="tdlp" href="/cli/cmd-options#time-format">--time-format<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal  time-format</span><br /><br /><span class="tdlppd">Format time as either relative, iso, raw.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/cmd-options#time-format">Learn more</a></span></span></a>
 
-## terminate
+## temporal batch terminate {#terminate}
 
 The `temporal batch terminate` command terminates a Batch job with the provided Job ID.
 A reason for terminating the Batch Job can also be provided for future reference.

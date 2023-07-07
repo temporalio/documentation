@@ -40,7 +40,7 @@ Support for separate standard and advanced Visibility setups will be deprecated 
 
 :::
 
-## Standard Visibility
+## What is standard Visibility? {#Standard Visibility}
 
 Standard Visibility, within the Temporal Platform, is the subsystem and APIs that list Workflow Executions by a predefined set of filters.
 
@@ -51,7 +51,7 @@ Closed Workflow Executions can be filtered by a time constraint and either a Wor
 Support for standard Visibility is deprecated beginning with Temporal Server v1.21.
 For updates, check [Supported databases](/cluster-deployment-guide#supported-databases).
 
-## Advanced Visibility
+## What is advanced Visibility? {#Advanced Visibility}
 
 Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through a custom SQL-like <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a>.
 
@@ -60,7 +60,7 @@ Advanced Visibility, within the Temporal Platform, is the subsystem and APIs tha
   Elasticsearch takes on the Visibility request load, relieving potential performance issues.
   We highly recommend operating a Temporal Cluster with Elasticsearch for any use case that spawns more than just a few Workflow Executions.
 
-## Dual Visibility
+## What is Dual Visibility? {#Dual Visibility}
 
 Dual Visibility is a feature that lets you set a secondary Visibility store in addition to a primary store in your Temporal Cluster.
 Setting up Dual Visibility is optional and can be used to [migrate your Visibility database](/cluster-deployment-guide#migrating-visibility-database) or create a backup Visibility store.
@@ -88,7 +88,7 @@ When migrating from one Visibility store database to another, set up the databas
 You can plan your migration using specific dynamic configuration keys that help you transition your read and write operations from the primary to the secondary Visibility store.
 For details on migrating your Visibility store databases, see <a class="tdlp" href="/cluster-deployment-guide#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Dual Visibility</span><br /><br /><span class="tdlppd">To enable Dual Visibility, set up a secondary Visibility store with your primary Visibility, and configure your Temporal Cluster to enable read and/or write operations on the secondary Visibility store.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cluster-deployment-guide#dual-visibility">Learn more</a></span></span></a>.
 
-## List Filter
+## What is a List Filter? {#List Filter}
 
 A List Filter is the SQL-like string that is provided as the parameter to a <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> List API.
 
@@ -197,7 +197,7 @@ order by StartTime desc, CloseTime asc
 order by CustomIntField asc
 ``` -->
 
-## Search Attribute
+## What is a Search Attribute? {#Search Attribute}
 
 A Search Attribute is an indexed field used in a <a class="tdlp" href="#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list-filter">Learn more</a></span></span></a> to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 

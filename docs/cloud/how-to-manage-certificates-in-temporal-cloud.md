@@ -15,7 +15,7 @@ This protocol requires a CA certificate from you.
 
 [Worker Processes](/workers/#worker-process) use both CA certificates and private keys to connect to Temporal Cloud. Private keys remain in your control; Temporal Cloud requires no exchange of secrets.
 
-## Certificate requirements
+## Requirements for CA certificates in Temporal Cloud {#Certificate requirements}
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
@@ -48,7 +48,7 @@ Distinguished Names are _not_ case sensitive; that is, uppercase letters (such a
 
 :::
 
-## Issue certificates
+## How to issue root CA and end-entity certificates {#Issue certificates}
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
@@ -132,7 +132,7 @@ The maximum number of CA certificates in a certificate bundle is 16. The payload
 
 :::
 
-## Control authorization
+## How to control authorization for Temporal Cloud Namespaces {#Control authorization}
 
 Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be scoped to a specific Namespace.
 Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
@@ -149,7 +149,7 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
 
-## Manage certificates
+## How to add, update, and remove certificates in a Temporal Cloud Namespace {#Manage certificates}
 
 :::note
 
@@ -222,7 +222,7 @@ One way to meet this requirement is to add a version or a date to the common nam
 
 1. Run the `tcld namespace accepted-client-ca set` command again with the updated CA certificate bundle file.
 
-## Manage certificate filters
+## How to manage certificate filters in Temporal Cloud {#Manage certificate filters}
 
 To limit access to specific [end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud), you can create certificate filters.
 Each filter contains values for one or more of the following fields:

@@ -30,7 +30,7 @@ We generally recommend writing the majority of your tests as integration tests.
 
 Because the test server supports skipping time, use the test server for both end-to-end and integration tests with Workers.
 
-## Test frameworks
+## Test frameworks {#Test frameworks}
 
 Some SDKs have support or examples for popular test frameworks, runners, or libraries.
 
@@ -47,12 +47,12 @@ TypeScript has sample tests for [Jest](https://jestjs.io/) and [Mocha](https://m
 - [Sample test file](https://github.com/temporalio/samples-typescript/blob/main/activities-examples/src/mocha/workflows.test.ts)
 - Test coverage library: [`@temporalio/nyc-test-coverage`](https://github.com/temporalio/sdk-typescript/tree/main/packages/nyc-test-coverage)
 
-## Test Activities
+## Testing Activities {#Test Activities}
 
 An Activity can be tested with a mock Activity environment, which provides a way to mock the Activity context, listen to Heartbeats, and cancel the Activity.
 This behavior allows you to test the Activity in isolation by calling it directly, without needing to create a Worker to run the Activity.
 
-### Run an Activity
+### Run an Activity {#Run an Activity}
 
 If an Activity references its context, you need to mock that context when testing in isolation.
 
@@ -79,7 +79,7 @@ const result = await env.run(activityFoo, 5, 35);
 assert.equal(result, 42);
 ```
 
-### Listen to Heartbeats
+### Listen to Heartbeats {#Listen to Heartbeats}
 
 When an Activity sends a Heartbeat, be sure that you can see the Heartbeats in your test code so that you can verify them.
 
@@ -106,7 +106,7 @@ env.on('heartbeat', (d: unknown) => {
 await env.run(activityFoo);
 ```
 
-### Cancel an Activity
+### Cancel an Activity {#Cancel an Activity}
 
 If an Activity is supposed to react to a Cancellation, you can test whether it reacts correctly by canceling it.
 
@@ -135,9 +135,9 @@ await assert.rejects(env.run(activityFoo), (err) => {
 });
 ```
 
-## Test Workflows
+## Testing Workflows {#Test Workflows}
 
-### Mock Activities
+### How to mock Activities {#Mock Activities}
 
 Mock the Activity invocation when unit testing your Workflows.
 
@@ -160,7 +160,7 @@ const worker = await Worker.create({
 });
 ```
 
-### Skip time
+### How to skip time {#Skip time}
 
 Some long-running Workflows can persist for months or even years.
 Implementing the test framework allows your Workflow code to skip time and complete your tests in seconds rather than the Workflow's specified amount.
@@ -179,7 +179,7 @@ Time is a global property of an instance of `TestWorkflowEnvironment`: skipping 
 If you need different time behaviors for different tests, run your tests in a series or with separate instances of the test server.
 For example, you could run all tests with automatic time skipping in parallel, and then all tests with manual time skipping in series, and then all tests without time skipping in parallel.
 
-#### Setting up
+#### Set up time skipping {#Setting up}
 
 Learn to set up the time-skipping test framework in the SDK of your choice.
 
@@ -233,7 +233,7 @@ test('workflowFoo', async () => {
 This test uses the test connection to create a Worker, runs the Worker until the Workflow is complete, and then makes an assertion about the Workflow’s result.
 The Workflow is executed using `testEnv.workflowClient`, which is connected to the test server.
 
-#### Automatic method
+#### Skip time automatically {#Automatic method}
 
 You can skip time automatically in the SDK of your choice.
 Start a test server process that skips time as needed.
@@ -274,7 +274,7 @@ test('sleep completes almost immediately', async () => {
 });
 ```
 
-#### Manual method
+#### Skip time manually {#Manual method}
 
 Learn to skip time manually in the SDK of your choice.
 
@@ -328,7 +328,7 @@ test('sleeperWorkflow counts days correctly', async () => {
 });
 ```
 
-#### Skip time in Activities
+#### Skip time in Activities {#Skip time in Activities}
 
 Learn to skip time in Activities in the SDK of your choice.
 
@@ -423,7 +423,7 @@ it('sends reminder email if processOrder does not complete in time', async () =>
 
 <!--SNIPEND-->
 
-### Workflow context
+### Test functions in Workflow context {#Workflow context}
 
 For a function or method to run in the Workflow context (where it’s possible to get the current Workflow info, or running inside the sandbox in the case of TypeScript or Python), it needs to be run by the Worker as if it were a Workflow.
 
@@ -479,7 +479,7 @@ export async function functionToTest(): Promise<number> {
 }
 ```
 
-### Assert in Workflow
+### Assert in Workflow {#Assert in Workflow}
 
 The `assert` statement is a convenient way to insert debugging assertions into the Workflow context.
 
@@ -525,7 +525,7 @@ await worker.runUntil(
 );
 ```
 
-## Replay
+## How to Replay a Workflow Execution {#Replay}
 
 Replay recreates the exact state of a Workflow Execution.
 You can replay a Workflow from the beginning of its Event History.

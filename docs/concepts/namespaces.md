@@ -108,7 +108,7 @@ If you do not set a Namespace, all Workflow Executions started using the Client 
 - [How to list Namespaces in a Cluster using tctl](/tctl-v1/namespace#list)
 - [How to view (describe) Namespace metadata and details using tctl](/tctl-v1/namespace#describe)
 
-## Global Namespace
+## What is a Global Namespace? {#Global Namespace}
 
 A Global Namespace is a <a class="tdlp" href="#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a> that exists across Clusters when <a class="tdlp" href="/clusters#multi-cluster-replication">Multi-Cluster Replication<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Multi-Cluster Replication?</span><br /><br /><span class="tdlppd">Multi-Cluster Replication is a feature which asynchronously replicates Workflow Executions from active Clusters to other passive Clusters, for backup and state reconstruction.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#multi-cluster-replication">Learn more</a></span></span></a> is set up.
 
