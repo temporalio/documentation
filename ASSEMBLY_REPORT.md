@@ -1,6 +1,10 @@
 # Docs Assembly Workflow report
 
+<<<<<<< HEAD
 Last assembled: Monday July 24 2023 06:25:16 AM -0700
+=======
+Last assembled: Friday July 07 2023 19:22:48 PM +0200
+>>>>>>> 5531992a (add new cloud metrics (#2184))
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
