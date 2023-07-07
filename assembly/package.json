@@ -6,7 +6,7 @@
   "author": "cully@temporal.io",
   "license": "MIT",
   "scripts": {
-    "worker": "nodemon worker.js"
+    "worker": "nodemon --ext js"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.0",
