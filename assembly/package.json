@@ -2,7 +2,7 @@
   "name": "assembly",
   "type": "module",
   "version": "1.0.0",
-  "main": "assembly.js",
+  "main": "worker.js",
   "author": "cully@temporal.io",
   "license": "MIT",
   "scripts": {
