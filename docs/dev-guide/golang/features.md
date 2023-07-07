@@ -27,16 +27,6 @@ import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - [How to develop Signals](#signals)
@@ -275,20 +265,15 @@ if err != nil {
 // ...
 ```
 
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
+The value of `response` returned by the Query needs to be decoded into `result`.
+Because this is a future, use `Get()` on `response` to get the result, such as a string in this example.
 
 ```go
-// ...
-response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
-    WorkflowID: workflowID,
-    RunID: runID,
-    QueryType: queryType,
-    Args: args,
-})
-if err != nil {
+var result string
+if err != response.Get(&result); err != nil {
   // ...
 }
+log.Println("Received Query result. Result: " + result)
 ```
 
 ## Updates

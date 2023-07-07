@@ -224,33 +224,6 @@ const appDevGuideLinks = {
   ],
 };
 
-const appByLang = {
-  listOne: [
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/go",
-      name: "Go",
-    },
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/java",
-      name: "Java",
-    },
-  ],
-  listTwo: [
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/php/introduction",
-      name: "PHP",
-    },
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/typescript/introduction",
-      name: "TypeScript",
-    },
-  ],
-};
-
 const clusterGuide = {
   listOne: [
     {
@@ -398,23 +371,6 @@ function Explained() {
           <a href="https://dotnet.temporal.io/">API reference</a>.<br />
           For our Ruby SDK, see the <a href="https://github.com/temporalio/sdk-ruby#readme">README</a>.
         </p>
-      </div>
-      <div className="landing-card-section">
-        <a className="header-link" href="https://legacy-documentation-sdks.temporal.io/">
-          <h2 className="h2-landing">Legacy SDK docs</h2>
-        </a>
-        <p className="landing-card-p">
-          Developer's guide by language.{" "}
-          <span className="bold">
-            Most of this information is now included in the{" "}
-            <a className="nowrap" href="/dev-guide">
-              Developer's guide
-            </a>
-            .
-          </span>
-        </p>
-        <ul className="landing-card-list">{displayLinks(appByLang.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(appByLang.listTwo)}</ul>
       </div>
       <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">

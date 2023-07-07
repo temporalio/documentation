@@ -22,16 +22,6 @@ import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - [How to develop Signals](#signals)
@@ -373,23 +363,6 @@ workflow.execute_activity(
     retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
 )
 ```
-
-### Activity retry simulator
-
-Use this tool to visualize total Activity Execution times and experiment with different Activity timeouts and Retry Policies.
-
-The simulator is based on a common Activity use-case, which is to call a third party HTTP API and return the results.
-See the example code snippets below.
-
-Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
-There is an option to generate scenarios.
-The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
-
-Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
-
-import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
-
-<RetrySimulator />
 
 ## Activity Heartbeats
 

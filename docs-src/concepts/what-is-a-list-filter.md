@@ -2,7 +2,7 @@
 id: what-is-a-list-filter
 title: What is a List Filter?
 sidebar_label: List Filter
-description: A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.
+description: A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.
 tags:
   - term
   - explanation
@@ -26,13 +26,14 @@ A List Filter contains [Search Attribute](/concepts/what-is-a-search-attribute) 
 - **AND, OR, ()**
 - **BETWEEN ... AND**
 - **IN**
-- **ORDER BY**
 
-The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
+<!-- - **ORDER BY** -->
+
+<!-- The **ORDER BY** operator is supported only when Elasticsearch is used as the Visibility store.
 
 The **ORDER BY** operator is currently not supported in Temporal Cloud.
 
-Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses.
+Custom Search Attributes of the `Text` type cannot be used in **ORDER BY** clauses. -->
 
 ### Partial string match
 
@@ -80,9 +81,9 @@ WorkflowId = '<workflow-id>' or WorkflowId = '<another-workflow-id>'
 WorkflowId IN ('<workflow-id>', '<another-workflow-id>')
 ```
 
-```sql
+<!-- ```sql
 WorkflowId = '<workflow-id>' order by StartTime desc
-```
+``` -->
 
 ```sql
 WorkflowId = '<workflow-id>' and ExecutionStatus = 'Running'
@@ -104,7 +105,7 @@ ExecutionTime between '2021-08-22T15:04:05+00:00' and '2021-08-28T15:04:05+00:00
 ExecutionTime < '2021-08-28T15:04:05+00:00' or ExecutionTime > '2021-08-22T15:04:05+00:00'
 ```
 
-```sql
+<!-- ```sql
 order by ExecutionTime
 ```
 
@@ -114,4 +115,4 @@ order by StartTime desc, CloseTime asc
 
 ```sql
 order by CustomIntField asc
-```
+``` -->
