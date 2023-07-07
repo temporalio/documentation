@@ -34,7 +34,7 @@ Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#O
 | [`Identity`](#identity)                                                               | No       | `string`                                                                                      |
 | [`DeadlockDetectionTimeout`](#deadlockdetectiontimeout)                               | No       | [`time.Duration`](https://pkg.go.dev/time#Duration)                                           |
 
-### `MaxConcurrentActivityExecutionSize`
+#### MaxConcurrentActivityExecutionSize
 
 Sets the maximum concurrent Activity Executions for the Worker.
 
@@ -53,7 +53,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `WorkerActivitiesPerSecond`
+#### WorkerActivitiesPerSecond
 
 Rate limits the number of Activity Task Executions started per second for the Worker.
 
@@ -78,7 +78,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `MaxConcurrentLocalActivityExecutionSize`
+#### MaxConcurrentLocalActivityExecutionSize
 
 Set the maximum concurrent [Local Activity Executions](/concepts/what-is-a-local-activity) for the Worker.
 
@@ -97,7 +97,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `WorkerLocalActivitiesPerSecond`
+#### WorkerLocalActivitiesPerSecond
 
 Rate limits the number of Local Activity Executions per second executed for the Worker.
 
@@ -122,7 +122,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `TaskQueueActivitiesPerSecond`
+#### TaskQueueActivitiesPerSecond
 
 Rate limits the number of Activity Executions that can be started per second.
 
@@ -147,7 +147,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `MaxConcurrentActivityTaskPollers`
+#### MaxConcurrentActivityTaskPollers
 
 Sets the maximum number of goroutines to concurrently poll the Task Queue for Activity Tasks.
 
@@ -166,7 +166,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `MaxConcurrentWorkflowTaskExecutionSize`
+#### MaxConcurrentWorkflowTaskExecutionSize
 
 Sets the maximum number of concurrent Workflow Task Executions the Worker can have.
 
@@ -185,7 +185,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `MaxConcurrentWorkflowTaskPollers`
+#### MaxConcurrentWorkflowTaskPollers
 
 Sets the maximum number of goroutines that will concurrently poll the Task Queue for Workflow Tasks.
 
@@ -204,7 +204,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `EnableLoggingInReplay`
+#### EnableLoggingInReplay
 
 Set to enable logging in Workflow Execution replays.
 
@@ -226,7 +226,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `DisableStickyExecution`
+#### DisableStickyExecution
 
 :::caution Deprecated
 
@@ -257,7 +257,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `StickyScheduleToStartTimeout`
+#### StickyScheduleToStartTimeout
 
 Sets the Sticky Execution Schedule-To-Start Timeout for Workflow Tasks.
 
@@ -276,7 +276,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `BackgroundActivityContext`
+#### BackgroundActivityContext
 
 :::caution Not recommended
 
@@ -305,7 +305,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `WorkflowPanicPolicy`
+#### WorkflowPanicPolicy
 
 Sets how the Workflow Worker handles a non-deterministic Workflow Execution History Event and other panics from Workflow Definition code.
 
@@ -322,7 +322,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `WorkerStopTimeout`
+#### WorkerStopTimeout
 
 Sets the Worker's graceful stop timeout
 
@@ -341,7 +341,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `EnableSessionWorker`
+#### EnableSessionWorker
 
 Enables Sessions for Activity Workers.
 
@@ -360,7 +360,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `MaxConcurrentSessionExecutionSize`
+#### MaxConcurrentSessionExecutionSize
 
 Sets the maximum number of concurrent Sessions that the Worker can support.
 
@@ -377,7 +377,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `WorkflowInterceptorChainFactories`
+#### WorkflowInterceptorChainFactories
 
 Specifies the factories used to instantiate the Workflow interceptor chain.
 
@@ -385,7 +385,7 @@ Specifies the factories used to instantiate the Workflow interceptor chain.
 
 The chain is instantiated for each replay of a Workflow Execution.
 
-### `LocalActivityWorkerOnly`
+#### LocalActivityWorkerOnly
 
 Sets the Worker to only handle Workflow Tasks and local Activity Tasks.
 
@@ -402,7 +402,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `Identity`
+#### Identity
 
 Sets the Temporal Client-level Identity value, overwriting the existing one.
 
@@ -419,7 +419,7 @@ w := worker.New(c, "your_task_queue_name", workerOptions)
 // ...
 ```
 
-### `DeadlockDetectionTimeout`
+#### DeadlockDetectionTimeout
 
 Sets the maximum time that a Workflow Task can execute for.
 

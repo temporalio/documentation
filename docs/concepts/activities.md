@@ -77,7 +77,7 @@ Therefore, an Activity Definition has no restrictions on the code it contains.
 
 An Activity Definition can support as many parameters as needed.
 
-All values passed through these parameters are recorded in the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> of the Workflow Execution.
+All values passed through these parameters are recorded in the <a class="tdlp" href="/workflows#event-history">Event History<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Event History?</span><br /><br /><span class="tdlppd">An append-only log of Events that represents the full state a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#event-history">Learn more</a></span></span></a> of the Workflow Execution.
 Return values are also captured in the Event History for the calling Workflow Execution.
 
 Activity Definitions must contain the following parameters:
@@ -107,7 +107,7 @@ An Activity Execution is the full chain of <a class="tdlp" href="/workers#activi
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/activity-execution.svg" alt="Activity Execution" height="1780" width="1140" /></div></div>
 
 By default, an Activity Execution has no time limit.
-Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> can be customized.
+You can customize <a class="tdlp" href="#start-to-close-timeout">Activity Execution timeouts<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-to-close-timeout">Learn more</a></span></span></a> and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a>.
 
 If an Activity Execution fails (because it exhausted all retries, threw a <a class="tdlp" href="/retry-policies#non-retryable-errors">non-retryable error<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#non-retryable-errors">Learn more</a></span></span></a>, or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 
@@ -203,8 +203,17 @@ A Start-To-Close Timeout is the maximum time allowed for a single <a class="tdlp
 **The default Start-To-Close Timeout is the same as the default <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#schedule-to-close-timeout">Learn more</a></span></span></a>.**
 
 An Activity Execution must have either this timeout (Start-To-Close) or the <a class="tdlp" href="#schedule-to-close-timeout">Schedule-To-Close Timeout<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Schedule-To-Close Timeout is the maximum amount of time allowed for the overall Activity Execution, from when the first Activity Task is scheduled to when the last Activity Task, in the chain of Activity Tasks that make up the Activity Execution, reaches a Closed status.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#schedule-to-close-timeout">Learn more</a></span></span></a> set.
-We recommend always setting this timeout; however, make sure that it is always set to be longer than the maximum possible time for the Activity Execution to take place.
+We recommend always setting this timeout; however, make sure that Start-To-Close Timeout is always set to be longer than the maximum possible time for the Activity Execution to complete.
 For long running Activity Executions, we recommend also using <a class="tdlp" href="#activity-heartbeat">Activity Heartbeats<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#activity-heartbeat">Learn more</a></span></span></a> and <a class="tdlp" href="#heartbeat-timeout">Heartbeat Timeouts<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Heartbeat Timeout?</span><br /><br /><span class="tdlppd">A Heartbeat Timeout is the maximum time between Activity Heartbeats.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#heartbeat-timeout">Learn more</a></span></span></a>.
+
+:::tip
+
+We strongly recommend setting a Start-To-Close Timeout.
+
+The Temporal Server doesn't detect failures when a Worker loses communication with the Server or crashes.
+Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Activity retries.
+
+:::
 
 The main use case for the Start-To-Close timeout is to detect when a Worker crashes after it has started executing an Activity Task.
 
@@ -243,8 +252,17 @@ Example Schedule-To-Close Timeout period for an Activity Execution that has a ch
 **The default Schedule-To-Close Timeout is ∞ (infinity).**
 
 An Activity Execution must have either this timeout (Schedule-To-Close) or <a class="tdlp" href="#start-to-close-timeout">Start-To-Close<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-to-close-timeout">Learn more</a></span></span></a> set.
-By default, an Activity Execution Retry Policy dictates that retries will occur for up to 10 years.
+By default, an Activity Execution Retry Policy dictates that retries occur for up to 10 years.
 This timeout can be used to control the overall duration of an Activity Execution in the face of failures (repeated Activity Task Executions), without altering the Maximum Attempts field of the Retry Policy.
+
+:::tip
+
+We strongly recommend setting a Start-To-Close Timeout.
+
+The Temporal Server doesn't detect failures when a Worker loses communication with the Server or crashes.
+Therefore, the Temporal Server relies on the Start-To-Close Timeout to force Activity retries.
+
+:::
 
 ### Activity Heartbeat
 

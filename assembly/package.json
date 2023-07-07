@@ -5,6 +5,9 @@
   "main": "assembly.js",
   "author": "cully@temporal.io",
   "license": "MIT",
+  "scripts": {
+    "worker": "nodemon worker.js"
+  },
   "dependencies": {
     "@notionhq/client": "^2.2.0",
     "@octokit/rest": "^19.0.7",
@@ -20,5 +23,8 @@
     "svg-parser": "^2.0.4",
     "tar-fs": "^2.1.1",
     "temporalio": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

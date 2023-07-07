@@ -1648,6 +1648,36 @@
     url-loader "^4.1.1"
     webpack "^5.73.0"
 
+"@dprint/darwin-arm64@0.38.3":
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/@dprint/darwin-arm64/-/darwin-arm64-0.38.3.tgz#65c311a59e72c7ee99be511443c934ee51700bda"
+  integrity sha512-XWHJ8X8VXRoijFNxQkQOczLD6sf1GByfvWUieupeo/cJic/PtyqjtXdIr+mIA5zUc0pwFzjYomdxiaaTBiAkxw==
+
+"@dprint/darwin-x64@0.38.3":
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/@dprint/darwin-x64/-/darwin-x64-0.38.3.tgz#06d20f3fa83506dc80d8b8b5bf0ad180e3128bfd"
+  integrity sha512-7Wt/V+qBdjD1LiC6GBYgFe1QVSAZUUgnaTUHwgzLoWEhDGRXguw08WiViKTEzlBDGDJotUHgax9d9w0Z5k+xUQ==
+
+"@dprint/linux-arm64-glibc@0.38.3":
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/@dprint/linux-arm64-glibc/-/linux-arm64-glibc-0.38.3.tgz#d18d721ef06b4e8d25d4db8f53a29c917e936c11"
+  integrity sha512-ccZKzpb9rhZcDtCnt9Nn/O+z1O21Vu1h5FAhLCjuUoIHey6RmoNhDbtqw7Pmf57PyfqHXJHY7AV6HnDZ1fTBRw==
+
+"@dprint/linux-x64-glibc@0.38.3":
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/@dprint/linux-x64-glibc/-/linux-x64-glibc-0.38.3.tgz#d1840216f7c6a81b68d92142fb1602bae111c756"
+  integrity sha512-ufjtWg76HBkAbbW68SyIzxNk5nLD6dquiwJSulk5dSinutfYV/KEV4zhEJ7azWjWMErBy7WNU2myJWHAksRgMQ==
+
+"@dprint/linux-x64-musl@0.38.3":
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/@dprint/linux-x64-musl/-/linux-x64-musl-0.38.3.tgz#50d04dbb1d67592cf215e6cae0774583f2bb9342"
+  integrity sha512-WGUPAEmgWKgam0h25A7wHP6I6ln8O+Fvnianog6OD911dHKyBznmXGxTKPIUADGV5ojJj+KZ42mTs9V7zL+iOQ==
+
+"@dprint/win32-x64@0.38.3":
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/@dprint/win32-x64/-/win32-x64-0.38.3.tgz#ca3fd7a6ec8f0143ddbf57c064586838bf40352e"
+  integrity sha512-Sa6wfc2l8OE7bZVrCTKi3CVzASZcV76Tz4lYT+w4rnw211ujpUoiS/D3s3SCg7zmEFh+O0mQcVaNr/UodAtMZw==
+
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
   resolved "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-0.4.3.tgz"
@@ -4565,12 +4595,17 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dprint@^0.29.1:
-  version "0.29.1"
-  resolved "https://registry.npmjs.org/dprint/-/dprint-0.29.1.tgz"
-  integrity sha512-6x20DOUzx8/3LhQWU9qix+uEuo1uI1x7x5CN6/KaAsARk9JOJx3qs0kDI5Fp4WUQpRHs7TN5bQ08W5Exe8Yv9g==
-  dependencies:
-    yauzl "=2.10.0"
+dprint@^0.38.3:
+  version "0.38.3"
+  resolved "https://registry.yarnpkg.com/dprint/-/dprint-0.38.3.tgz#30c86781cd335768d50f9d194548f3bbbf8a2c8f"
+  integrity sha512-mN2Fd2e+bZq9g/BhycEDwHsG9QW+6FBkZrJQuPCC8ntzyEzAQpn7/SC2gXUmETep6O0gs9fYr/dgXuXNOBMKOg==
+  optionalDependencies:
+    "@dprint/darwin-arm64" "0.38.3"
+    "@dprint/darwin-x64" "0.38.3"
+    "@dprint/linux-arm64-glibc" "0.38.3"
+    "@dprint/linux-x64-glibc" "0.38.3"
+    "@dprint/linux-x64-musl" "0.38.3"
+    "@dprint/win32-x64" "0.38.3"
 
 duplexer3@^0.1.4:
   version "0.1.5"
@@ -9915,7 +9950,7 @@ yargs@^16.2.0:
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
 
-yauzl@=2.10.0, yauzl@^2.10.0:
+yauzl@^2.10.0:
   version "2.10.0"
   resolved "https://registry.npmjs.org/yauzl/-/yauzl-2.10.0.tgz"
   integrity sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==

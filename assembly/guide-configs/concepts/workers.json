@@ -62,6 +62,10 @@
     {
       "type": "h3",
       "id": "concepts/what-is-a-worker-session"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-worker-versioning"
     }
   ]
 }

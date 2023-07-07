@@ -97,17 +97,38 @@ If you are running this for the first time, you need to run `yarn` directly in t
 **TIP**: Make your changes in the **source files** that are named in the configuration file.
 For example, if you found a typo in the Concept section _What is a Task?_, open [docs/concepts/what-is-a-task.md](docs/concepts/what-is-a-task.md) and make the edit directly there.
 
+## How to lint
+
+[Install](https://vale.sh/docs/vale-cli/installation/) Vale:
+
+```
+brew install vale
+```
+
+Run:
+
+```
+yarn lint
+```
+
 ### Local Cluster
 
-To run the Assembly Workflow using a local Cluster, such as Temporalite, do the following:
+To run the Assembly Workflow using a local Cluster, do the following:
 
-1. Make sure you are in the `assembly` directory and run the Worker:
+1. Run the Cluster:
 
 ```
-./worker.js
+temporal server start-dev
 ```
 
-2. In another terminal, from the root of the repo, run the following command:
+1. In another terminal, run the Worker:
+
+```
+cd assembly
+yarn worker
+```
+
+2. In another terminal, run the following command:
 
 ```
 yarn assemble
