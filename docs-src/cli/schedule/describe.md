@@ -10,7 +10,7 @@ tags:
 The `temporal schedule describe` command shows the current [Schedule](/concepts/what-is-a-schedule) configuration.
 This command also provides information about past, current, and future [Workflow Runs](/concepts/what-is-a-run-id).
 
-`temporal schedule describe --sid 'your-schedule-id' [command options]`
+`temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 
 Use the options below to change this command's output.
 

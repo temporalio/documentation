@@ -13,8 +13,8 @@ Toggling a Schedule requires a reason to be entered on the command line.
 Use `--reason` to note the issue leading to the pause or unpause.
 
 Schedule toggles are passed in this format:
-`temporal schedule toggle --sid 'your-schedule-id' --pause --reason "paused because the database is down"`
-`temporal schedule toggle --sid 'your-schedule-id' --unpause --reason "the database is back up"`
+`temporal schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"`
+`temporal schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"`
 
 Use the options provided below to change this command's behavior.
 
