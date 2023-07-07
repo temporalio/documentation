@@ -13,7 +13,7 @@ Backfilling can be used to fill in [Workflow Runs](/concepts/what-is-a-run-id) f
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
 
 ```
-temporal schedule backfill --sid 'your-schedule-id' \
+temporal schedule backfill ----schedule-id 'your-schedule-id' \
 --overlap-policy 'BufferAll' 				\
 --start-time '2022-05-0101T00:00:00Z'		\
 --end-time '2022-05-31T23:59:59Z'
