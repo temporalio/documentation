@@ -17,3 +17,11 @@ Signal-With-Start is a Client method that takes the following arguments:
 
 If there is a running Workflow Execution with the given Workflow Id, it will be Signaled.
 Otherwise, a new Workflow Execution will be started and immediately Signaled.
+
+How to Signal-With-Start in:
+
+- [Go](/dev-guide/go/features#signal-with-start)
+- [Java](/dev-guide/java/features#signal-with-start)
+- [PHP](/dev-guide/php/features#signal-with-start)
+- [Python](/dev-guide/python/features#signal-with-start)
+- [TypeScript](/dev-guide/typescript/features#signal-with-start)
