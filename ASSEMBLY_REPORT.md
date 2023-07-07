@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 05 2023 09:23:07 AM -0700
+Last assembled: Friday July 07 2023 19:22:48 PM +0200
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly
 
 88 guide configurations found.
 
@@ -957,9 +957,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
 
 
