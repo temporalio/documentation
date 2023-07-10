@@ -95,11 +95,9 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_loggers/your_workflow_dacx.py">View source code</a>
 
 ```python
-
 # ...
         workflow.logger.info("Workflow input parameter: %s" % name)
 ```
-
 
 ### Custom logger
 
@@ -146,12 +144,9 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">View source code</a>
 
 ```python
-
 # ...
         print(f"Workflow: {workflow.id}")
-
 ```
-
 
 ### Custom Search Attributes
 
@@ -162,7 +157,6 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">View source code</a>
 
 ```python
-
 # ...
     handle = await client.start_workflow(
         GreetingWorkflow.run,
@@ -171,7 +165,6 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
         search_attributes={"CustomKeywordField": ["old-value"]},
     )
 ```
-
 
 ### Upsert Search Attributes
 
@@ -184,11 +177,9 @@ The keys are added to or replace the existing Search Attributes, similar to [`di
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">View source code</a>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": ["new-value"]})
 ```
-
 
 ### Remove Search Attribute
 
@@ -199,9 +190,6 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">View source code</a>
 
 ```python
-
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```
-
-

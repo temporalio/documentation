@@ -16,7 +16,6 @@ Available timeouts are:
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
 
 ```python
-
 # ...
         activity_timeout_result = await workflow.execute_activity(
             your_activity,
@@ -27,4 +26,3 @@ Available timeouts are:
             # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
-

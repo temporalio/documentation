@@ -12,10 +12,8 @@ To send a Signal to the Workflow, use the [signal](https://python.temporal.io/te
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/signal_your_workflow/signal_dacx.py">View source code</a>
 
 ```python
-
 from temporalio.client import Client
 # ...
 # ...
     await handle.signal(GreetingWorkflow.submit_greeting, "User 1")
 ```
-

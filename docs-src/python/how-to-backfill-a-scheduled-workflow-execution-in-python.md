@@ -11,7 +11,6 @@ method on the Schedule Handle.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/backfill_schedule_dacx.py">View source code</a>
 
 ```python
-
 # ...
 async def main():
     client = await Client.connect("localhost:7233")
@@ -27,4 +26,3 @@ async def main():
         ),
     ),
 ```
-

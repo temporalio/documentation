@@ -16,7 +16,6 @@ Available timeouts are:
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/workflow_timeouts_retries/workflows_dacx.py">View source code</a>
 
 ```python
-
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
@@ -29,4 +28,3 @@ Available timeouts are:
         # task_timeout=timedelta(seconds=2),
     )
 ```
-
