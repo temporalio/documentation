@@ -10,6 +10,9 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/starter_dacx.py">View source code</a>
 
 ```python
+
 # ...
         print(f"Workflow: {workflow.id}")
+
 ```
+

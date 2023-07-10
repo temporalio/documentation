@@ -12,6 +12,7 @@ The following example updates the Schedule to use a new argument.
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/update_schedule_dacx.py">View source code</a>
 
 ```python
+
 # ...
     async def update_schedule_simple(input: ScheduleUpdateInput) -> ScheduleUpdate:
         schedule_action = input.description.schedule.action
@@ -20,3 +21,4 @@ The following example updates the Schedule to use a new argument.
             schedule_action.args = ["my new schedule arg"]
         return ScheduleUpdate(schedule=input.description.schedule)
 ```
+

@@ -12,6 +12,7 @@ Technically this can be multiple parameters, but Temporal strongly encourages a 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/your_dataobject_dacx.py">View source code</a>
 
 ```python
+
 from dataclasses import dataclass
 # ...
 # ...
@@ -20,3 +21,4 @@ class YourParams:
     greeting: str
     name: str
 ```
+

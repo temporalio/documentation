@@ -10,6 +10,8 @@ To remove a Search Attribute, use the [`upsert_search_attributes()`](https://pyt
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_visibility/workflow_dacx.py">View source code</a>
 
 ```python
+
 # ...
         workflow.upsert_search_attributes({"CustomKeywordField": []})
 ```
+

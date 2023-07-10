@@ -10,6 +10,9 @@ To delete a Scheduled Workflow Execution in Python, use the [delete()](https://p
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/schedule_your_workflow/delete_schedule_dacx.py">View source code</a>
 
 ```python
+
+
+
 async def main():
     client = await Client.connect("localhost:7233")
     handle = client.get_schedule_handle(
@@ -18,3 +21,4 @@ async def main():
 
     await handle.delete()
 ```
+

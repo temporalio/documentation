@@ -20,8 +20,10 @@ You can either set the `name` or the `dynamic` parameter in a Query's decorator,
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/wf_query_dacx.py">View source code</a>
 
 ```python
+
 # ...
     @workflow.query
     def greeting(self) -> str:
         return self._greeting
 ```
+

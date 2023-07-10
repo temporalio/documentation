@@ -12,6 +12,7 @@ The `client_cert` must be combined with `client_private_key` to authenticate the
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_app/connect_cloud_dacx.py">View source code</a>
 
 ```python
+
 from temporalio.client import Client, TLSConfig
 # ...
 # ...
@@ -31,3 +32,4 @@ async def main():
         ),
     )
 ```
+

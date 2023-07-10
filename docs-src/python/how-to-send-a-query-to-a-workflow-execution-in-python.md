@@ -10,6 +10,8 @@ To send a Query to a Workflow Execution from Client code, use the `query()` meth
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/query_your_workflow/query_dacx.py">View source code</a>
 
 ```python
+
 # ...
     result = await handle.query(GreetingWorkflow.greeting)
 ```
+

@@ -18,6 +18,7 @@ This is useful if you want to do something after it has only started, or to get 
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_child_workflow/your_child_workflow_dacx.py">View source code</a>
 
 ```python
+
 # ...
 @workflow.defn
 class ComposeGreetingWorkflow:
@@ -37,3 +38,4 @@ class GreetingWorkflow:
 # ...
         )
 ```
+

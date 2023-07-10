@@ -10,11 +10,12 @@ To create an Activity Retry Policy in Python, set the [RetryPolicy](https://pyth
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
 
 ```python
+
 from temporalio.common import RetryPolicy
 # ...
-        retry_policy_result = await workflow.execute_activity(
+        activity_result = await workflow.execute_activity(
             your_activity,
-            YourParams(greeting, "Retry Policy"),
+            YourParams(greeting, "Retry Policy options"),
             start_to_close_timeout=timedelta(seconds=10),
             # Retry Policy
             retry_policy=RetryPolicy(
@@ -26,3 +27,4 @@ from temporalio.common import RetryPolicy
             ),
         )
 ```
+

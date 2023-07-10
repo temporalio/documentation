@@ -10,12 +10,14 @@ You can set each Workflow to repeat on a schedule with the `cron_schedule` optio
 <a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/your_cron_job/your_cron_dacx.py">View source code</a>
 
 ```python
+
 # ...
     result = await client.execute_workflow(
-        LoopingWorkflow.run,
-        0,
+        CronWorkflow.run,
         id="your-workflow-id",
         task_queue="your-task-queue",
         cron_schedule="* * * * *",
     )
+    print(f"Results: {result}")
 ```
+
