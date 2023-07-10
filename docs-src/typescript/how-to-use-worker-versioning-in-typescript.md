@@ -98,8 +98,8 @@ so:
 ```typescript
 // ...
 const { echo } = proxyActivities<typeof activities>({
-    startToCloseTimeout: '20s',
-    versioningIntent: 'DEFAULT',
+  startToCloseTimeout: '20s',
+  versioningIntent: 'DEFAULT',
 });
 // ...
 ```
