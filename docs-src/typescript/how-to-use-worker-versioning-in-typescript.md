@@ -81,3 +81,25 @@ await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
   buildId: 'deadbeef',
 });
 ```
+
+### Specify versions for Commands
+
+By default, Activities, Child Workflows, and Continue-as-New use the same compatible version set as
+the Workflow that invoked them if they're also using the same Task Queue.
+
+If you want to override this behavior, you can specify your intent via the `versioningIntent`
+field available on options object for each of these commands.
+
+<!-- For more information refer to the [conceptual documentation](/concepts/what-is-worker-versioning). -->
+
+For example, if you want to use the latest default version for an Activity, you can proxy it like
+so:
+
+```typescript
+// ...
+const { echo } = proxyActivities<typeof activities>({
+    startToCloseTimeout: '20s',
+    versioningIntent: 'DEFAULT',
+});
+// ...
+```
