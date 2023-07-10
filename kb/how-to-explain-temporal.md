@@ -107,6 +107,7 @@ _Note: Each of [our SDK docs](/dev-guide) have a Hello World and Run Your First 
   - [Why Temporal - the iPhone of System Design](https://www.swyx.io/why-temporal/) by swyx (19 min read)
   - [Temporal - fault tolerant orchestration platform](https://www.youtube.com/watch?v=7dnutdT24MM&list=PLU1vS0speL2ZbTPg-aU2Rw2s6IPsTVoCF&index=49) at DevConf US by Tihomir Surdilovic (36 min talk + Q&A)
   - [A Practical Approach to Temporal Architecture](https://mikhail.io/2020/10/practical-approach-to-temporal-architecture/) by Mikhail Shilkov (4 min read)
+  - [Temporal Is a Swiss Army Knife For Your Distributed Systems](https://www.bitovi.com/blog/temporal-is-a-swiss-army-knife-for-your-distributed-systems) by Kevin Phillips (7 min read)
 - Alternative Databases
   - [Getting Started with YugabyteDB, Temporal, and the Temporal-Maru Benchmarking Tool](https://blog.yugabyte.com/getting-started-yugabytedb-temporal) by Eric Pratt (7 min read)
   - [Just plug it in - Aiven & Temporal](https://aiven.io/blog/just-plug-it-in-aiven-and-temporal) by Andrew Staller (7 min read)
@@ -128,7 +129,7 @@ _Note: Each of [our SDK docs](/dev-guide) have a Hello World and Run Your First 
   - (Türkçe) [Nedir Bu Temporal.IO?](https://alameddinc.medium.com/nedir-bu-temporal-io-680f3b242136) by Alameddin Çelik
   - (русский) [PHP Russia talks](/dev-guide/php/foundations) by Anton Titov
   - (中文) [Temporal 简介](https://www.yuque.com/abser/txixor/oz3yav) by Abser Ari 杨鼎睿
-- _Submit yours [here](https://github.com/temporalio/documentation/edit/master/kb/how-to-explain-temporal.md)!_
+- _Submit yours [here](https://github.com/temporalio/documentation/edit/main/kb/how-to-explain-temporal.md)!_
 
 ## Temporal users
 
