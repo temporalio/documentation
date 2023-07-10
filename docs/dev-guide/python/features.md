@@ -267,7 +267,7 @@ Available timeouts are:
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
-        "your timeout",
+        "your timeout argument",
         id="your-workflow-id",
         task_queue="your-task-queue",
         # Set Workflow Timeout duration
@@ -293,7 +293,7 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
-        "your retry policy",
+        "your retry policy argument",
         id="your-workflow-id",
         task_queue="your-task-queue",
         retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),
@@ -324,13 +324,13 @@ Available timeouts are:
 
 ```python
 # ...
-        your_activity_timeout = await workflow.execute_activity(
+        activity_timeout_result = await workflow.execute_activity(
             your_activity,
             YourParams(greeting, "Activity Timeout"),
             # Activity Execution Timeout
             start_to_close_timeout=timedelta(seconds=10),
-            # schedule_to_start_timeout=timedelta(seconds=5),
-            # start_to_close_timeout=timedelta(seconds=5),
+            # schedule_to_start_timeout=timedelta(seconds=10),
+            # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
 
@@ -347,7 +347,7 @@ To create an Activity Retry Policy in Python, set the [RetryPolicy](https://pyth
 ```python
 from temporalio.common import RetryPolicy
 # ...
-        your_retry_policy = await workflow.execute_activity(
+        retry_policy_result = await workflow.execute_activity(
             your_activity,
             YourParams(greeting, "Retry Policy"),
             start_to_close_timeout=timedelta(seconds=10),
@@ -594,6 +594,13 @@ To Continue-As-New in Python, call the [`continue_as_new()`](https://python.temp
 
 ```python
 # ...
+@workflow.defn
+class LoopingWorkflow:
+    @workflow.run
+    async def run(self, iteration: int) -> None:
+        if iteration == 5:
+            return
+        await asyncio.sleep(10)
         workflow.continue_as_new(iteration + 1)
 ```
 
@@ -613,7 +620,7 @@ To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3
 
 ```python
 # ...
-        await asyncio.sleep(1)
+        await asyncio.sleep(10)
 ```
 
 ## Schedule a Workflow

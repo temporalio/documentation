@@ -94,6 +94,7 @@ The SDK core uses `WARN` for its default logging level.
 You can log from a Workflow using Python's standard library, by importing the logging module `logging`.
 
 Set your logging configuration to a level you want to expose logs to.
+The following example sets the logging information level to `INFO`.
 
 ```python
 logging.basicConfig(level=logging.INFO)
@@ -105,7 +106,7 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 
 ```python
 # ...
-        workflow.logger.info("Workflow input parameter: %s", name)
+        workflow.logger.info("Workflow input parameter: %s" % name)
 ```
 
 ### Custom logger
@@ -154,7 +155,6 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 
 ```python
 # ...
-    async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
         print(f"Workflow: {workflow.id}")
 ```
 
@@ -172,7 +172,6 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
         GreetingWorkflow.run,
         id="search-attributes-workflow-id",
         task_queue="search-attributes-task-queue",
-        # Start with default set of search attributes
         search_attributes={"CustomKeywordField": ["old-value"]},
     )
 ```

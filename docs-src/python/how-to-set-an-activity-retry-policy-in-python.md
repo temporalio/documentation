@@ -12,7 +12,7 @@ To create an Activity Retry Policy in Python, set the [RetryPolicy](https://pyth
 ```python
 from temporalio.common import RetryPolicy
 # ...
-        your_retry_policy = await workflow.execute_activity(
+        retry_policy_result = await workflow.execute_activity(
             your_activity,
             YourParams(greeting, "Retry Policy"),
             start_to_close_timeout=timedelta(seconds=10),

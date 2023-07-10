@@ -13,7 +13,7 @@ Set the Retry Policy to either the [`start_workflow()`](https://python.temporal.
 # ...
     handle = await client.execute_workflow(
         YourWorkflow.run,
-        "your retry policy",
+        "your retry policy argument",
         id="your-workflow-id",
         task_queue="your-task-queue",
         retry_policy=RetryPolicy(maximum_interval=timedelta(seconds=2)),

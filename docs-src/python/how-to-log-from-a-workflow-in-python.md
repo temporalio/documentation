@@ -8,6 +8,7 @@ description: To log from a Workflow in Python, import the logging module `loggin
 You can log from a Workflow using Python's standard library, by importing the logging module `logging`.
 
 Set your logging configuration to a level you want to expose logs to.
+The following example sets the logging information level to `INFO`.
 
 ```python
 logging.basicConfig(level=logging.INFO)
@@ -19,5 +20,5 @@ Then in your Workflow, set your [`logger`](https://python.temporal.io/temporalio
 
 ```python
 # ...
-        workflow.logger.info("Workflow input parameter: %s", name)
+        workflow.logger.info("Workflow input parameter: %s" % name)
 ```

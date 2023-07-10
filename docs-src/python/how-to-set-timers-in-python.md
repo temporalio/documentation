@@ -11,5 +11,5 @@ To set a Timer in Python, call the [`asyncio.sleep()`](https://docs.python.org/3
 
 ```python
 # ...
-        await asyncio.sleep(1)
+        await asyncio.sleep(10)
 ```

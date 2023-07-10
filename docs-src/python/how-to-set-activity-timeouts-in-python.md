@@ -17,12 +17,12 @@ Available timeouts are:
 
 ```python
 # ...
-        your_activity_timeout = await workflow.execute_activity(
+        activity_timeout_result = await workflow.execute_activity(
             your_activity,
             YourParams(greeting, "Activity Timeout"),
             # Activity Execution Timeout
             start_to_close_timeout=timedelta(seconds=10),
-            # schedule_to_start_timeout=timedelta(seconds=5),
-            # start_to_close_timeout=timedelta(seconds=5),
+            # schedule_to_start_timeout=timedelta(seconds=10),
+            # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```

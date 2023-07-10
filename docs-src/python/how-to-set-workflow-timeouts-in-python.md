@@ -19,7 +19,7 @@ Available timeouts are:
 # ...
     result = await client.execute_workflow(
         YourWorkflow.run,
-        "your timeout",
+        "your timeout argument",
         id="your-workflow-id",
         task_queue="your-task-queue",
         # Set Workflow Timeout duration

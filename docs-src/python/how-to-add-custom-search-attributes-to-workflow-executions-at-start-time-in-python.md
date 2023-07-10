@@ -15,7 +15,6 @@ To set custom Search Attributes, use the `search_attributes` parameter of the ['
         GreetingWorkflow.run,
         id="search-attributes-workflow-id",
         task_queue="search-attributes-task-queue",
-        # Start with default set of search attributes
         search_attributes={"CustomKeywordField": ["old-value"]},
     )
 ```
