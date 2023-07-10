@@ -277,7 +277,7 @@ As you move into production with your app, please review our docs on:
 - [Securing](/typescript/security)
 - [Testing](/typescript/testing)
 - [Patching](/typescript/patching) (aka migrating code to new versions)
-- [Logging](/typescript/logging)
+- [Logging](/typescript/how-to-log-from-a-workflow-in-typescript)
 - [Production Deploy Checklist](/typescript/production-deploy)
 
 You will also want to have a plan for **monitoring and scaling your Temporal Workers** that host and execute your Activity and Workflow code (separately from monitoring and scaling Temporal Server itself).

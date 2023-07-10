@@ -57,13 +57,13 @@ With tctl, create a Schedule like this:
 ```shell
 $ tctl config set version next   # ensure you're using the new tctl
 $ tctl schedule create \
-    --sid 'your-schedule-id' \
+    --schedule-id 'your-schedule-id' \
     --interval '5h/15m' \
-    --cal '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
+    --calendar '{"dayOfWeek":"Fri","hour":"11","minute":"3"}' \
     --overlap-policy 'BufferAll' \
-    --wid 'your-workflow-id' \
-    --tq 'your-task-queue' \
-    --type 'YourWorkflowType'
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
 ```
 
 This Schedule takes action every 5 hours at 15 minutes past the hour and also at 11:03 on Fridays.
@@ -75,14 +75,14 @@ You can also use traditional cron strings, including all features that are suppo
 
 ```shell
 $ tctl schedule create \
-    --sid 'your-schedule-id' \
+    --schedule-id 'your-schedule-id' \
     --cron '3 11 * * Fri' \
-    --wid 'your-workflow-id' \
-    --tq 'your-task-queue' \
-    --type 'YourWorkflowType'
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
 ```
 
-Any combination of `--cal`, `--interval`, and `--cron` is supported and Actions will happen at any of the specified times.
+Any combination of `--calendar`, `--interval`, and `--cron` is supported and Actions will happen at any of the specified times.
 If you use both `--time-zone` and also `CRON_TZ`, they must agree.
 
 See `tctl schedule create --help` for the full set of available options.
@@ -96,7 +96,7 @@ Workflow Executions started by Schedules can be cancelled or terminated using th
 However, Workflow Executions started by a Schedule can be identified by the Search Attributes added to them and can be targeted by a [batch](/tctl-v1/batch/) command for termination.
 
 ```shell
-$ tctl schedule delete --sid 'your-schedule-id'
+$ tctl schedule delete --schedule-id 'your-schedule-id'
 ```
 
 ## describe
@@ -104,7 +104,7 @@ $ tctl schedule delete --sid 'your-schedule-id'
 Display the current Schedule configuration as well as extra information about past, current, and future Runs.
 
 ```shell
-tctl schedule describe --sid 'your-schedule-id'
+tctl schedule describe --schedule-id 'your-schedule-id'
 ```
 
 Because the Schedule Spec is converted to canonical representations, the output might not be in the same form as it was input.
@@ -115,15 +115,15 @@ Because the Schedule Spec is converted to canonical representations, the output 
 tctl schedule list
 ```
 
-Note that if you're using Standard Visibility, listing Schedules will currently only include Schedule Ids and no other information.
+Note that if you're using standard Visibility, listing Schedules will currently only include Schedule Ids and no other information.
 
 Because the Schedule Spec is converted to canonical representations, the output might not be in the same form as it was input.
 
 ## toggle
 
 ```shell
-$ tctl schedule toggle --sid 'your-schedule-id' --pause --reason "paused because the database is down"
-$ tctl schedule toggle --sid 'your-schedule-id' --unpause --reason "the database is back up"
+$ tctl schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"
+$ tctl schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"
 ```
 
 ## trigger
@@ -131,7 +131,7 @@ $ tctl schedule toggle --sid 'your-schedule-id' --unpause --reason "the database
 Starting a Workflow Run immediately with a Schedule, regardless of its configured Spec, is a common use case.
 
 ```shell
-$ tctl schedule trigger --sid 'your-schedule-id'
+$ tctl schedule trigger --schedule-id 'your-schedule-id'
 ```
 
 Note that the action that it takes is subject to the Overlap Policy of the Schedule by default: if the overlap policy is `Skip` and a Workflow is already running, the triggered Action to start the next Workflow Run is skipped!
@@ -140,7 +140,7 @@ Likewise, if the overlap policy is `BufferAll`, the triggered run is buffered be
 If you really want it to run right now, you can override the overlap policy for this request:
 
 ```shell
-$ tctl schedule trigger --sid 'your-schedule-id' --overlap-policy 'AllowAll'
+$ tctl schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'
 ```
 
 ## update

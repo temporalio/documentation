@@ -131,7 +131,7 @@ The Workflow Versioning feature enables the creation of logical branching inside
 This feature is useful for Workflow Definition logic needs to be updated, but there are running Workflow Executions that currently depends on it.
 It is important to note that a practical way to handle different versions of Workflow Definitions, without using the versioning API, is to run the different versions on separate Task Queues.
 
-- [How to version Workflow Definitions in Go](https://legacy-documentation-sdks.temporal.io/go/versioning)
+- <a class="tdlp" href="/dev-guide/go/versioning#">How to version Workflow Definitions in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">Version Workflows in Go</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/versioning#">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/java/versioning#">How to version Workflow Definitions in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to version Workflows in Java</span><br /><br /><span class="tdlppd">Properly version your Workflows to avoid non-deterministic errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/versioning#">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/typescript/versioning#">How to version Workflow Definitions in TypeScript<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Versioning</span><br /><br /><span class="tdlppd">Versioning lets you update Workflow Definitions without causing non-deterministic behavior in current long-running Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/typescript/versioning#">Learn more</a></span></span></a>
 
@@ -875,8 +875,14 @@ Use the Workflow Id in any requests to Cancel or Terminate.
 :::tip Support, stability, and dependency info
 
 - Introduced in Temporal Server version 1.17.0
-- Available in tctl v1.17 and Temporal CLI
-- Available in Temporal Cloud via tctl and CLI
+- Available in Temporal CLI (and tctl v1.17)
+- Available in Temporal Cloud in Public Preview
+- Available in [Go SDK](/dev-guide/go/features#schedule-a-workflow) version [1.22.0](https://github.com/temporalio/sdk-go/releases/tag/v1.22.0)
+- Available in [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/schedules/package-summary.html) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+- Available in [Python SDK](/dev-guide/python/features#schedule-a-workflow) version [1.1.0](https://github.com/temporalio/sdk-python/releases/tag/1.1.0)
+- Available in [TypeScript SDK](https://github.com/temporalio/samples-typescript/tree/main/schedules#schedules) version [1.5.0](https://github.com/temporalio/sdk-typescript/blob/main/CHANGELOG.md#150---2022-12-07)
+- Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Client.Schedules.html) version [0.1.0](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-alpha4)
+- Available in [gRPC API](https://api-docs.temporal.io/#temporal.api.workflowservice.v1.CreateScheduleRequest)
 
 :::
 
@@ -1051,19 +1057,9 @@ A Workflow started by a Schedule can obtain the details of the failure of the mo
 
 ### Limitations
 
-:::info Experimental
-
-The Scheduled Workflows feature is available in Temporal Server version 1.18.
-
 Internally, a Schedule is implemented as a Workflow.
 If you're using Advanced Visibility (Elasticsearch), these Workflow Executions are hidden from normal views.
 If you're using Standard Visibility, they are visible, though there's no need to interact with them directly.
-
-:::
-
-Native support for Schedules in language SDKs is coming soon.
-For now, `tctl` and the web UI are the main interfaces to Schedules.
-For advanced use, you can also use the gRPC API by getting a `WorkflowServiceClient` object from the SDK and calling methods such as `CreateSchedule`.
 
 ## State Transition
 
