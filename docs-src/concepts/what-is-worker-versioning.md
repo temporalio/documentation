@@ -31,7 +31,7 @@ On Task Queues using this feature, the Workflow starter doesn't have to know abo
 
 The new code in the newly deployed Workers executes new [Workflow Executions](#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
-#### Decommision old Workers
+#### Decommission old Workers
 
 You can decommission old Workers after you archive all open Workflows using their version.
 If you have no need to query closed Workflows, you can decommission them when no open Workflows remain at that version.

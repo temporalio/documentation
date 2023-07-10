@@ -9,7 +9,7 @@ tags:
 
 A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#securing-your-data) to decode your data remotely through endpoints.
 
-![](/img/tctl-diagram-codec-server.svg)
+![](/diagrams/tctl-diagram-codec-server.svg)
 
 A Codec Server follows the Temporal [Codec Server Protocol](https://github.com/temporalio/samples-go/tree/main/codec-server#codec-server-protocol).
 It implements two endpoints:

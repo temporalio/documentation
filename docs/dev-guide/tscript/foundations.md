@@ -737,7 +737,7 @@ A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 The <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> is where Workflow Functions and Activity Functions are executed.
 
@@ -750,7 +750,7 @@ A <a class="tdlp" href="/workers#worker-entity">Worker Entity<span class="tdlpiw
 Although multiple Worker Entities can be in a single Worker Process, a single Worker Entity Worker Process may be perfectly sufficient.
 For more information, see the [Worker tuning guide](/dev-guide/worker-performance).
 
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it can make progress for either a Workflow Execution or an Activity Execution.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 ## Run a Worker on Docker
 
