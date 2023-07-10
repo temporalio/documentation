@@ -62,7 +62,7 @@ await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
 
 This code adds `deadbeef` to the existing compatible set containing `some-existing-build-id` and marks it as the new default Build ID for that set.
 
-You can also promote an existing Build ID in a set to be the default for that set:
+You can promote an existing Build ID in a set to be the default for that set:
 
 ```typescript
 // ...
@@ -72,13 +72,25 @@ await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
 });
 ```
 
-You can also promote an entire set to become the default set for the queue. New Workflows will start using that set's default build.
+You can promote an entire set to become the default set for the queue. New Workflows will start using that set's default build.
 
 ```typescript
 // ...
 await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
   operation: 'promoteSetByBuildId',
   buildId: 'deadbeef',
+});
+```
+
+You can merge two sets into one, preserving the primary set's default Build ID as the default
+for the merged set.
+
+```typescript
+// ...
+await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
+  operation: 'mergeSets',
+  primaryBuildId: 'deadbeef',
+  secondaryBuildId: 'some-existing-build-id',
 });
 ```
 
@@ -98,8 +110,8 @@ so:
 ```typescript
 // ...
 const { echo } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '20s',
-  versioningIntent: 'DEFAULT',
+    startToCloseTimeout: '20s',
+    versioningIntent: 'DEFAULT',
 });
 // ...
 ```
