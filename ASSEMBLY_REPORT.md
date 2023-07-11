@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday July 11 2023 11:33:08 AM -0500
+Last assembled: Monday July 10 2023 11:33:23 AM -0700
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -965,5 +965,3 @@ go/selectors -> /dev-guide/go/features#selectors
 cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 
 cloud-context/certificates-filters -> #manage-certificate-filters
-
-
