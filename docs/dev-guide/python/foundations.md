@@ -496,17 +496,17 @@ Available timeouts are:
 - schedule_to_start_timeout
 - start_to_close_timeout
 
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-python/blob/main/activity_timeouts_retires/your_workflows_dacx.py">View source code</a>
+
 ```python
-@workflow.defn
-class YourWorkflow:
-    @workflow.run
-    async def run(self, name: str) -> str:
-        return await workflow.execute_activity(
+# ...
+        activity_timeout_result = await workflow.execute_activity(
             your_activity,
-            name,
-            schedule_to_close_timeout=timedelta(seconds=5),
-            # schedule_to_start_timeout=timedelta(seconds=5),
-            # start_to_close_timeout=timedelta(seconds=5),
+            YourParams(greeting, "Activity Timeout option"),
+            # Activity Execution Timeout
+            start_to_close_timeout=timedelta(seconds=10),
+            # schedule_to_start_timeout=timedelta(seconds=10),
+            # schedule_to_close_timeout=timedelta(seconds=10),
         )
 ```
 
