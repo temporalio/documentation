@@ -9,7 +9,7 @@ tags:
 
 [Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
 
-[Temporal Cloud](https://temporal.io/cloud) access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
+Temporal Cloud access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
 
 [Worker Processes](/workers/#worker-process) require CA certificates and private keys to connect to Temporal Cloud.
 Temporal Cloud does not require an exchange of secrets; only the certificates produced by private keys are used for verification.
