@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday July 10 2023 11:33:23 AM -0700
+Last assembled: Wednesday July 12 2023 11:55:53 AM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -24,6 +24,8 @@ concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
 
 clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
 
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
+
 clusters/how-to-set-up-mysql-visibility-store -> #mysql
 
 clusters/how-to-set-up-postgresql-visibility-store -> #postgresql
@@ -37,6 +39,10 @@ clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearc
 clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
 
 references/configuration -> /references/configuration#sql
+
+references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
+
+concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
 concepts/what-is-archival -> /clusters#archival
 
@@ -352,8 +358,6 @@ concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
 
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
-
 concepts/what-is-a-retry-policy -> /retry-policies#
 
 concepts/what-is-a-workflow-execution -> /workflows#workflow-execution
@@ -484,8 +488,6 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
-references/dynamic-configuration -> /references/dynamic-configuration#
-
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
 go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
@@ -537,6 +539,8 @@ java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
 typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
 
@@ -590,6 +594,8 @@ python/child-workflows -> /dev-guide/python/features#child-workflows
 
 typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
 
+go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
+
 concepts/what-is-a-worker-session -> #worker-session
 
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
@@ -603,6 +609,8 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
+
+go/versioning -> /dev-guide/go/versioning#
 
 java/versioning -> /dev-guide/java/versioning#
 
@@ -693,6 +701,8 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
+
+cloud-context/certificates-filters -> #manage-certificate-filters
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
@@ -944,22 +954,10 @@ go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
 
+go/selectors -> /dev-guide/go/features#selectors
+
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
-
-concepts/what-is-dual-visibility -> /visibility#dual-visibility
-
-clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
-
-go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
-
-go/versioning -> /dev-guide/go/versioning#
-
-go/selectors -> /dev-guide/go/features#selectors
 
 
