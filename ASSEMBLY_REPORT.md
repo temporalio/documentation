@@ -962,8 +962,4 @@ go/versioning -> /dev-guide/go/versioning#
 
 go/selectors -> /dev-guide/go/features#selectors
 
-cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
-
-cloud-context/certificates-filters -> #manage-certificate-filters
-
 
