@@ -7,7 +7,7 @@ tags:
   - explanation
 ---
 
-Versioning is a process that allows for the management and updating of Workflow code or Workflow Definitions without causing non-deterministic behavior in existing Workflows or Tasks.
+Versioning is a process allowing for the management and updating of Workflow code or Workflow Definitions without causing non-deterministic behavior in existing Workflows or Tasks.
 
 In the context of Temporal, there are different methods of Versioning:
 
@@ -22,7 +22,7 @@ Each of these methods has its advantages and disadvantages and is suited for dif
 
 Worker Versioning simplifies the deployment process of changes to Workflow Definitions by assigning a Build ID to the code that defines a Worker.
 
-In the context of deploying changes to Workflow Definitions in a distributed system like Temporal, the Worker Versioning strategy has a number of advantages and disadvantages:
+In the context of deploying changes to Workflow Definitions in a distributed system, the Worker Versioning strategy has a number of advantages and disadvantages:
 
 ### Advantages of Worker Versioning
 
@@ -109,7 +109,7 @@ Task Queue Versioning has several disadvantages:
 
 Patching allows for the update of Workflow Definitions without affecting currently running Workflows.
 
-Patching, is a set of steps or a technique used to manage changes or upgrades to your Workflow’s logic. Because Workflows can run for weeks, months, or years, you may want to change your Workflow code over time with changes that are not backwards compatible.
+Patching, is a set of steps or a technique used to manage changes or upgrades to your Workflow’s logic. Because Workflows can run for weeks, months, or years, you may want to change your Workflow code over time with changes that aren't backwards compatible.
 
 Take the example of needing to modify some business logic that oversees the shipment of an item. Terminating all Workflows midway through delivery would not be a desirable approach. Instead, you would use patching to update your Workflow code.
 
