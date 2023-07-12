@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday July 10 2023 11:33:23 AM -0700
+Last assembled: Wednesday July 12 2023 13:23:45 PM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
-88 guide configurations found.
+89 guide configurations found.
 
-1472 information nodes found.
+1474 information nodes found.
 
-1236 information nodes are attached to guides.
+1238 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -920,6 +920,8 @@ python/logging -> /dev-guide/python/observability#logging
 
 python/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 php/handle-signal -> #handle-signal
 
 php/add-sdk -> #install-a-temporal-sdk
@@ -939,8 +941,6 @@ java/how-to-get-the-result-of-an-activity-execution-in-java -> #activity-executi
 java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-with-start
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
-
-concepts/what-is-worker-versioning -> /workers#worker-versioning
 
 go/testing -> /dev-guide/go/testing#replay
 
