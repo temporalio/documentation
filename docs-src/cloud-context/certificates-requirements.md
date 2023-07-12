@@ -26,7 +26,7 @@ CA certificates _must_ meet the following criteria:
 ### End-entity certificates
 
 An end-entity certificate is a type of X.509v3 certificate used by clients to authenticate themselves.
-Temporal Cloud allows you to [limit access to specific end-entity certificates](/cloud-context/certificates-filters).
+Temporal Cloud lets you limit access to specific end-entity certificates by using [certificate filters](/cloud-context/certificates-filters).
 
 An end-entity (leaf) certificate _must_ meet the following criteria:
 
