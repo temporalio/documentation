@@ -7,7 +7,7 @@ tags:
   - guide-context
 ---
 
-Temporal Cloud requires security certificates for secure access and communication.
+[Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
 
 [Temporal Cloud](https://temporal.io/cloud) access is secured by the mutual Transport Layer Security (mTLS) protocol, which requires a CA certificate from the user.
 
