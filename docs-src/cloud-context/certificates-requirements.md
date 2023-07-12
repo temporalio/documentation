@@ -11,6 +11,9 @@ Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet
 
 ### CA certificates
 
+A CA certificate is a type of X.509v3 certificate used for secure communication and authentication.
+In Temporal Cloud, CA certificates are required for configuring mTLS.
+
 CA certificates _must_ meet the following criteria:
 
 - The certificates must be X.509v3.
@@ -21,6 +24,9 @@ CA certificates _must_ meet the following criteria:
   SHA-1 and MD5 cannot be used.
 
 ### End-entity certificates
+
+An end-entity certificate is a type of X.509v3 certificate used by clients to authenticate themselves.
+Temporal Cloud lets you limit access to specific end-entity certificates by using [certificate filters](/cloud-context/certificates-filters).
 
 An end-entity (leaf) certificate _must_ meet the following criteria:
 
