@@ -962,6 +962,19 @@ go/versioning -> /dev-guide/go/versioning#
 
 go/selectors -> /dev-guide/go/features#selectors
 
+
+typescript/logging -> /dev-guide/typescript/observability#logging
+
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
+
+clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
+
+go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
+
+go/versioning -> /dev-guide/go/versioning#
+
+go/selectors -> /dev-guide/go/features#selectors
+
 cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 
 cloud-context/certificates-filters -> #manage-certificate-filters
