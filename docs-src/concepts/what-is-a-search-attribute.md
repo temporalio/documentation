@@ -12,16 +12,23 @@ tags:
 
 A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-Each Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
+Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's visibility information.
+This information is available in the Visibility store.
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
+:::note
+
+Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+
+:::
+
+Temporal provides some [default Search Attributes](#default-search-attributes), such as the `ExecutionStatus` of your Workflow Execution.
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
 
-Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only for the duration of the specified Namespace [Retention Period](/concepts/what-is-a-retention-period).
+When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
+Search Attribute values are only available for the duration of the Namespace's [Retention Period](/concepts/what-is-a-retention-period).
 
-Note that Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
-
-When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
+Search Attributes are most effective for search purposes or tasks requiring collection-based resultsets.
+For business flow tasks, consider introducing a cache to capture the Workflow's internal state, or use a Query for entity-based state exposure.
 
 ### Default Search Attributes
 
