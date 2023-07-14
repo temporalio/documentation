@@ -28,7 +28,11 @@ When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal C
 Search Attribute values are only available for the duration of the Namespace's [Retention Period](/concepts/what-is-a-retention-period).
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
-For business flow tasks, consider introducing a cache to capture the Workflow's internal state, or use a Query for entity-based state exposure.
+For business flow tasks in which you need to get information about a Workflow Execution, consider either
+- storing state in a local variable and exposing it with a Query.
+- storing state in an external data store via Activities and fetching it directly from the store.
+
+For high throughput or low latency use cases, use the latter; however, note that the external data store may be slightly out of date (since time passes between the Workflow's state changing and the Activity updating the store).
 
 ### Default Search Attributes
 
