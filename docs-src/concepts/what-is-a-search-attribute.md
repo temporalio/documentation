@@ -29,6 +29,7 @@ Search Attribute values are only available for the duration of the Namespace's [
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
 For business flow tasks in which you need to get information about a Workflow Execution, consider either
+
 - storing state in a local variable and exposing it with a Query.
 - storing state in an external data store via Activities and fetching it directly from the store.
 
