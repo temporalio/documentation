@@ -17,12 +17,35 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Versioning.
 
+<!-- What is Versioning -->
+
 Versioning is a process allowing for the management and updating of Workflow code or Workflow Definitions without causing non-deterministic behavior in existing Workflows or Tasks.
+Workflow History contains the Execution History of a Workflow, including its Events, Tasks, Signals, and other information.
+When a Workflow Definition changes in an incompatible way, the new Workflow code can't be used to process the existing Workflow History, as the existing Workflow History and the new Workflow code have taken different code paths.
+Versioning allows Workflow to continue running on the old Workflow code, while new Workflows can start new code. This prevents Workflow Histories incompatibility issues.
+Using Versioning, you can deploy changes to your Workflows, as they evolve, without disrupting existing executions.
+
+<!-- What is Workflow Signature Compatibility -->
+
+## What is Workflow Signature Compatibility?
+
+The Workflow Signature refers to the input and output types of the Workflow Definition.
+If you change the signature of a Workflow in an incompatible way, existing Workflow Executions may fail or behave incorrectly when resumed.
+With Versioning, you can deploy a new Workflow version with a changed signature while existing executions continue unaffected on the old version.
+
+<!-- What is Activity Signature Compatibility -->
+
+## What is Activity Signature Compatibility?
+
+Activities are re-usable units of work called by a Workflow. They have input and output signatures, like Workflows.
+If you change an Activity Signature, existing Workflows may fail when calling the Activity.
+With Versioning, older Workflows can continue calling the previous version of the Activity, while new Workflows use the new Activity version.
+
+<!-- Table of contents -->
 
 In the context of Temporal, there are different methods of Versioning:
 
 - [Worker Versioning](#worker-versioning)
-- [Task Queue-based Versioning](#task-queue-versioning)
 - [Patching](#patching)
 - [Workflow Type Versioning](#workflow-type-versioning)
 
@@ -73,51 +96,49 @@ If you have one Build ID, it's known as the Default Build ID.
 
 ### What is a Version Set?
 
-A Version Set groups multiple Build IDs for compatibility, management, and display purposes within a Workflow.
+A Version Set groups multiple Build IDs for compatibility purposes within a Workflow.
 Each Version Set contains a designated Default Build ID, and the entire Workflow has one overall Default Build ID.
 
 #### What is a Compatible Version Set?
 
-A Compatible Version Set is a user-defined collection of Build IDs that indicates which versions of the Workflow code are mutually compatible.
+A Compatible Version Set is a user-defined collection of Build IDs that indicates which versions of Workflow and Activity code, data converters, and other task handling logic are mutually compatible.
+Each Compatible Version Set contains Build IDs representing full Worker builds that are able to interoperate successfully.
+This includes:
+
+- Workflows
+- Activities
+- Data Converters
+- Interceptors (if mutating any of the above)
+
+Any changes to these components that impact compatibility must result in a new Build ID.
+
+Each Compatible Version Set has a Default Build ID used to handle new Workflow executions and Activity tasks. Existing executions continue unaffected on their original Version Set.
+
+This allows different versions of Workflows and Activities to co-exist, preventing compatibility issues on Workflows, Activities, and Workflow Hiistory processing. The Version Sets enable independent evolution of code.
 Each Compatible Version Set has a Default Build ID.
 
 A Task Queue has a default maximum of 10 Compatible Version Sets and a maximum of 100 Build IDs for a single Task Queue across all Compatible Version Sets.
 
-You can visualize Compatible Version Sets as a tree-like structure, where a branch represents the progressive evolution of each build. Each branch in the tree is a series of versions that are compatible with each other, but not necessarily with versions in other branches.
+You can visualize Compatible Version Sets as a list of lists, where each inner list represents a branch of compatible versions, where each inner list contains a set of compatible versions that can evolve independently. The lists allow simultaneous support for multiple version branches:
 
-For example, Build ID of `1.0` might start a new branch and therefore isn't compatible with Build ID of `0.4` from an earlier branch. However, Build ID of `1.1` is compatible with Build ID of `1.0` because it's a newer version of the same branch.
+```yaml
+Version Sets = [
+  [Version 1.0, Version 1.1, Version 1.2],
+  [Version 2.0, Version 2.1],
+  [Version 3.0]
+]
+```
 
-## Task Queue-based Versioning
-
-While Task Queue-based Versioning is available to use, it's recommended to use the [Worker Versioning](#worker-versioning) approach instead, as it simplifies the process of versioning your Task Queues.
-
-Task Queue-based Versioning is the process of creating a new Task Queue for each version of your Workflow, and then modify the Task Queue the Client points to.
-
-Workers pull from Task Queues, and because of that you start Workflows on Task Queues, and each Task Queues have a unique identifier.
-
-Rather than creating a new Workflow Type for each version of your Workflow, you can create a new Task Queue for each version of your Workflow.
-
-This approach is similar to Workflow Type versioning, but instead of creating a new Workflow Type for each version of your Workflow, you create a new Task Queue for each version of your Workflow.
-
-This helps maintain clean libraries without branching logic.
-
-### Advantages of Task Queue-based Versioning
-
-Task Queue-based Versioning is valuable in several respects:
-
-- **Conceptually easy**: Task Queues are similar to Workflow Type versioning, but with Task Queues, so you don't need to manually update all starters to use the latest Workflow Type.
-- **Easy maintenance**: In comparison to Patching, Task Queue-based Versioning requires less maintenance because you don't need to track which Workflows are running on which version of the Workflow Type.
-
-### Disadvantages of Task Queue-based Versioning
-
-Task Queue Versioning has several disadvantages:
-
-- **Operationally complex**: To run multiple versions of a Task Queue, you need to keep old Workers alive and change which Task Queue Clients point to. This can result in a number of sets of old Workers, which operationally can be complex to manage.
-- **Bug fixes**: This approach can't be used to fix a bug in a currently running or open Workflow. Because the Workflow is already running, you are unable to change the Task Queue it's running on, and thus you can't make changes or fixes to the Workflow.
+Each inner list is a set of Compatible Versions (for example, `1.x` versions in the first list).
+Versions within the same inner list can process each other's Workflows and Tasks.
+Versions from different inner lists are incompatible (or example, `1.x` vs`2.x`).
+Each list represents the evolution of a particular version branch.
+One version in each inner list is marked as the _default_.
+New Workflows and Tasks are assigned to the default version for that list.
 
 ## Patching
 
-Patching allows for the update of Workflow Definitions without affecting currently running Workflows.
+Patching allows for the update of Workflow Definitions without breaking currently running Workflows.
 
 Patching, is a set of steps or a technique used to manage changes or upgrades to your Workflow’s logic. Because Workflows can run for weeks, months, or years, you may want to change your Workflow code over time with changes that aren't backwards compatible.
 
@@ -137,7 +158,6 @@ Patching allows you to update your Workflow code without terminating any running
 
 Patching is valuable in several respects:
 
-- **No Downtime**: Patching allows you to update your Workflow code without terminating any running Workflows.
 - **Quick Migration**: Patching allows you to change the yet-to-be-executed behavior of currently open Workflows while remaining compatible with existing Histories. This is because behavior of new Workflows always takes the _newest_ code path.
 
 ### Disadvantages of Patching
@@ -174,6 +194,7 @@ Workflow Type versioning is valuable in several respects:
 Workflow Type versioning has several drawbacks, including:
 
 - **Version Tracking:** All starters need to be informed about each new Workflow Type and its corresponding version, which might introduce communication overhead and room for error.
+- **Code duplication**: This approach can lead to code duplication, as you need to create a new Workflow Type for each version of your Workflow. This can be especially problematic if you need to make a change to a Workflow that has already branched.
 
 ## Conclusion
 
