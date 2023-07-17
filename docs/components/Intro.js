@@ -270,11 +270,6 @@ const cloudInfo = {
       path: "/cloud/tcld",
       name: "tcld",
     },
-    {
-      exit: true,
-      path: "/cloud/release-notes",
-      name: "Release notes",
-    },
   ],
 };
 
