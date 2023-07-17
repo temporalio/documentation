@@ -31,7 +31,7 @@ Search Attributes are most effective for search purposes or tasks requiring coll
 For business flow tasks in which you need to get information about a Workflow Execution, consider one of the following:
 
 - storing state in a local variable and exposing it with a Query.
-- storing state in an external data store via Activities and fetching it directly from the store.
+- storing state in an external data store through Activities and fetching it directly from the store.
 
 For high throughput or low latency use cases, use the latter; however, note that the external data store may be slightly out of date (since time passes between the Workflow's state changing and the Activity updating the store).
 
