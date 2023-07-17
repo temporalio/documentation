@@ -14,6 +14,16 @@ module.exports = {
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preload',
+        href: 'https://iq.temporal.io',
+        as: 'document',
+      },
+    },
+  ],
   plugins: [
     function preloadFontPlugin() {
       return {
@@ -198,13 +208,6 @@ module.exports = {
           ],
         },
       ],
-    },
-    algolia: {
-      apiKey: "4a2fa646f476d7756a7cdc599b625bec",
-      indexName: "temporal",
-      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
-      // searchParameters: {}, // Optional, if provided by Algolia
-      externalUrlRegex: "temporal\\.io",
     },
   },
   presets: [
