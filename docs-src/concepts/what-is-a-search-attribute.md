@@ -28,7 +28,7 @@ When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal C
 Search Attribute values are only available for as long as the workflow is.
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
-For business flow tasks in which you need to get information about a Workflow Execution, consider either
+For business flow tasks in which you need to get information about a Workflow Execution, consider one of the following:
 
 - storing state in a local variable and exposing it with a Query.
 - storing state in an external data store via Activities and fetching it directly from the store.
