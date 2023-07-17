@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 06 2023 09:31:32 AM -0600
+Last assembled: Thursday July 13 2023 11:28:22 AM -0700
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 88 guide configurations found.
 
@@ -701,6 +701,8 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
+
+cloud-context/certificates-filters -> #manage-certificate-filters
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
