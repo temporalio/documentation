@@ -92,5 +92,3 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -in <infile.key> -out <outfile.key
 ```
 
 You can now use the generated client certificate with Temporal Cloud.
-
-

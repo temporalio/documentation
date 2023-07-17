@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday July 07 2023 19:22:48 PM +0200
+Last assembled: Monday July 17 2023 15:42:04 PM -0500
 
 Assembly Workflow Id: docs-full-assembly
 
@@ -701,6 +701,8 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
+
+cloud-context/certificates-filters -> #manage-certificate-filters
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 

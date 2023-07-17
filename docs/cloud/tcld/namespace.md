@@ -213,13 +213,9 @@ The command has no modifiers.
 
 The `tcld namespace accepted-client-ca` commands manage the client CA certificates of the specified <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud. The certificates are used to verify client connections.
 
-:::important
+:::note
 
-Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
-Such signatures will be rejected.
-Existing CA certificates that use SHA-1 can stop working without warning.
-
-For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+Base64 versions of the CA certificate files are accepted by these commands.
 
 :::
 
@@ -229,6 +225,16 @@ Alias: `ca`
 - <a class="tdlp" href="#list">tcld namespace accepted-client-ca list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca list</span><br /><br /><span class="tdlppd">How to list the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#list">Learn more</a></span></span></a>
 - <a class="tdlp" href="#set">tcld namespace accepted-client-ca set<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca set</span><br /><br /><span class="tdlppd">How to set the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#set">Learn more</a></span></span></a>
 - <a class="tdlp" href="#remove">tcld namespace accepted-client-ca remove<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca remove</span><br /><br /><span class="tdlppd">How to remove client CA certificates from a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#remove">Learn more</a></span></span></a>
+
+:::important
+
+Do not use a CA certificate that is signed with an insecure signature algorithm, such as SHA-1.
+Such signatures will be rejected.
+Existing CA certificates that use SHA-1 can stop working without warning.
+
+For more information about the vulnerabilities of SHA-1, see [SHAttered](https://shattered.io/).
+
+:::
 
 ### add
 
