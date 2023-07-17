@@ -12,7 +12,7 @@ tags:
 
 A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's visibility information.
+Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
 This information is available in the Visibility store.
 
 :::note
@@ -25,15 +25,16 @@ Temporal provides some [default Search Attributes](#default-search-attributes), 
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
 When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
-Search Attribute values are only available for as long as the workflow is.
+Search Attribute values are only available for as long as the Workflow is.
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
-For business flow tasks in which you need to get information about a Workflow Execution, consider one of the following:
+For business logic in which you need to get information about a Workflow Execution, consider one of the following:
 
 - storing state in a local variable and exposing it with a Query.
 - storing state in an external data store through Activities and fetching it directly from the store.
 
-For high throughput or low latency use cases, use the latter; however, note that the external data store may be slightly out of date (since time passes between the Workflow's state changing and the Activity updating the store).
+If your business logic requires high throughput or low latency, store and fetch the data through Activities.
+You may experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
 ### Default Search Attributes
 
