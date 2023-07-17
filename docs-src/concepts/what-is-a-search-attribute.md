@@ -25,7 +25,7 @@ Temporal provides some [default Search Attributes](#default-search-attributes), 
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
 When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
-Search Attribute values are only available for the duration of the Namespace's [Retention Period](/concepts/what-is-a-retention-period).
+Search Attribute values are only available for as long as the workflow is.
 
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
 For business flow tasks in which you need to get information about a Workflow Execution, consider either
