@@ -69,7 +69,7 @@ interface FileProcessingActivities
 
 Activity implementation is an implementation of an Activity interface.
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be _stateless_.
+Therefore, the Activity implementation code must be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the execution history.
 The entire execution history is transferred from the Temporal service to Workflow workers when a Workflow state needs to recover.
