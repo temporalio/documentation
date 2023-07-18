@@ -13,7 +13,7 @@ The following modifiers control the behavior of the command.
 
 #### `--namespace`
 
-Specify a Namespace hosted on Temporal Cloud. 
+Specify a Namespace hosted on Temporal Cloud.
 If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
 
 Alias: `-n`
@@ -26,7 +26,7 @@ tcld namespace certificate-filters add --namespace <namespace_id> --certificate-
 
 #### `--request-id`
 
-Specify a request identifier to use for the asynchronous operation. 
+Specify a request identifier to use for the asynchronous operation.
 If not specified, the server assigns a request identifier.
 
 Alias: `-r`
@@ -39,7 +39,7 @@ tcld namespace certificate-filters add --request-id <request_id> --certificate-f
 
 #### `--resource-version`
 
-Specify a resource version (ETag) to update from. 
+Specify a resource version (ETag) to update from.
 If not specified, the latest version is used.
 
 Alias: `-v`
