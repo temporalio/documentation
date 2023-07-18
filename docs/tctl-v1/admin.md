@@ -662,9 +662,9 @@ The `tctl admin shard close_shard` command closes a shard with an Id that corres
 
 The modifier below will change the behavior and output of the command.
 
-#### --share_id value
+#### --shard_id value
 
-ShareId managed by the Temporal Cluster.
+ShardId managed by the Temporal Cluster.
 
 ### describe_task
 
@@ -770,7 +770,7 @@ The `tctl admin shard describe` command shows the Id for the specified shard.
 
 The modifier below controls the behavior of the command.
 
-#### --share_id value
+#### --shard_id value
 
 The Id of the shard to describe
 
