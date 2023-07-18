@@ -270,6 +270,11 @@ const cloudInfo = {
       path: "/cloud/tcld",
       name: "tcld",
     },
+    {
+      exit: true,
+      path: "https://temporal.io/change-log/product-area/cloud",
+      name: "Release notes",
+    },
   ],
 };
 
