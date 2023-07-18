@@ -55,7 +55,7 @@ Activity Definitions are named and referenced in code by their <a class="tdlp" h
 
 Temporal recommends that Activities be idempotent.
 
-Idempotent means that performing an operation multiple times will have the same result as performing it once. In the context of Temporal, Activities should be designed in a way that it can be safely executed multiple times without causing unexpected or undesired side effects.
+Idempotent means that performing an operation multiple times will have the same result as performing it once. In the context of Temporal, Activities should be designed in a way that they can be safely executed multiple times without causing unexpected or undesired side effects.
 
 An Activity is idempotent if multiple <a class="tdlp" href="/workers#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> do not change the state of the system beyond the first Activity Task Execution.
 
