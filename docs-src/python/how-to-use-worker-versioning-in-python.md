@@ -11,7 +11,7 @@ tags:
 To use [Worker Versioning](/workers#worker-versioning) in Python, you need to do the following:
 
 1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
-2. Tell the Task Queue your Worker is listening on about that Build ID, and whether its compatible with an existing Build ID.
+2. Tell the Task Queue your Worker is listening on that Build ID, and whether it's compatible with an existing Build ID.
 
 ### Assign a Build ID to your Worker
 
@@ -85,7 +85,7 @@ the Workflow that invoked them if they're also using the same Task Queue.
 If you want to override this behavior, you can specify your intent via the `versioning_intent`
 argument available on the methods you use to invoke these Commands.
 
-<!-- For more information refer to the [conceptual documentation](/concepts/what-is-worker-versioning). -->
+For more information refer to the [conceptual documentation](/workers#worker-versioning).
 
 For example, if you want to use the latest default version for an Activity, you can call it like so:
 
