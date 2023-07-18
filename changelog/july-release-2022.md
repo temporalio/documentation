@@ -27,7 +27,8 @@ The [Developer's guide](/dev-guide) is rapidly increasing its coverage of SDK ho
 
 :::
 
-- Temporal Cloud release notes are now available at `docs.temporal.io/cloud/release-notes` (they have since moved to [temporal.io/change-log/product-area/cloud](https://temporal.io/change-log/product-area/cloud)).
+- Temporal Cloud release notes are now available at `docs.temporal.io/cloud/release-notes`.
+  (After this changelog was published, the release notes moved to [temporal.io/change-log/product-area/cloud](https://temporal.io/change-log/product-area/cloud).)
 
 - Experimental [Schedule feature](/workflows/#schedules) documentation is now available.
 
