@@ -211,7 +211,7 @@ Search Attribute values are not encrypted because the Temporal Server must be ab
 
 :::
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as the `ExecutionStatus` of your Workflow Execution.
+Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
 You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
 
 When using <a class="tdlp" href="/workflows#continue-as-new">Continue-As-New<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Continue-As-New?</span><br /><br /><span class="tdlppd">Continue-As-New is the mechanism by which all relevant state is passed to a new Workflow Execution with a fresh Event History.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#continue-as-new">Learn more</a></span></span></a> or a <a class="tdlp" href="/workflows#temporal-cron-job">Temporal Cron Job<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cron Job?</span><br /><br /><span class="tdlppd">A Temporal Cron Job is the series of Workflow Executions that occur when a Cron Schedule is provided in the call to spawn a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#temporal-cron-job">Learn more</a></span></span></a>, Search Attribute keys are carried over to the new Workflow Run by default.
@@ -220,11 +220,11 @@ Search Attribute values are only available for as long as the Workflow is.
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
 For business logic in which you need to get information about a Workflow Execution, consider one of the following:
 
-- storing state in a local variable and exposing it with a Query.
-- storing state in an external data store through Activities and fetching it directly from the store.
+- Storing state in a local variable and exposing it with a Query.
+- Storing state in an external datastore through Activities and fetching it directly from the store.
 
 If your business logic requires high throughput or low latency, store and fetch the data through Activities.
-You may experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
+You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
 ### Default Search Attributes
 
