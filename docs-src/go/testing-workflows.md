@@ -26,7 +26,7 @@ Calling `s.env.ExecuteWorkflow(...)` executes the Workflow logic and any invoked
 After executing the Workflow in the above example, we assert that the Workflow ran through completion via the call to `s.env.IsWorkflowComplete()`. We also assert that no errors were returned by asserting on the return value of `s.env.GetWorkflowError()`.
 If our Workflow returned a value, we could have retrieved that value via a call to `s.env.GetWorkflowResult(&value)` and had additional asserts on that value.
 
-## Query tests
+### Query tests
 
 `TestWorkflowEnvironment` instances have a [`QueryWorkflow()` method](https://pkg.go.dev/go.temporal.io/temporal/internal#TestWorkflowEnvironment.QueryWorkflow) that lets you query the state of the currently running Workflow.
 For example, suppose you have a Workflow that lets you query the progress of a long running task as shown below.
