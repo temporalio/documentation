@@ -1780,6 +1780,14 @@
     {
       "source": "/server/production-deployment/#scaling-and-metrics",
       "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
+    },
+    {
+      "source": "/cloud/release-notes",
+      "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/cloud/release-notes/:path*",
+      "destination": "https://temporal.io/change-log/product-area/cloud"
     }
   ]
 }
