@@ -385,7 +385,6 @@ function Explained() {
           <a className="header-link" href="/cloud">
             <h2 className="h2-landing">Temporal Cloud</h2>
           </a>
-          <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">Temporal Cloud tools and how-to guides</p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>
