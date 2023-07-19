@@ -22,6 +22,7 @@ CA certificates _must_ meet the following criteria:
 - A certificate cannot be a well-known CA (such as DigiCert or Let's Encrypt) _unless_ the user also specifies certificate filters.
 - The signing algorithm must be either RSA or ECDSA and must include SHA-256 or stronger message authentication.
   SHA-1 and MD5 cannot be used.
+- The certificates cannot be generated with a passphrase.
 
 ### End-entity certificates
 
