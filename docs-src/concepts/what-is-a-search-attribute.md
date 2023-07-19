@@ -30,8 +30,8 @@ Search Attribute values are only available for as long as the Workflow is.
 Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
 For business logic in which you need to get information about a Workflow Execution, consider one of the following:
 
-- storing state in a local variable and exposing it with a Query.
-- storing state in an external data store through Activities and fetching it directly from the store.
+- Storing state in a local variable and exposing it with a Query.
+- Storing state in an external datastore through Activities and fetching it directly from the store.
 
 If your business logic requires high throughput or low latency, store and fetch the data through Activities.
 You may experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
