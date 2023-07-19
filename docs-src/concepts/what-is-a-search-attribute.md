@@ -34,7 +34,7 @@ For business logic in which you need to get information about a Workflow Executi
 - Storing state in an external datastore through Activities and fetching it directly from the store.
 
 If your business logic requires high throughput or low latency, store and fetch the data through Activities.
-You may experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
+You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
 ### Default Search Attributes
 
