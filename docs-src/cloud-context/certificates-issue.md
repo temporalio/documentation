@@ -36,7 +36,8 @@ tcld gen leaf --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key --cert clien
 
 :::info
 
-The maximum number of CA certificates in a certificate bundle is 16. The payload size of a certificate bundle (before base64-encoding) is 32 KB.
+The maximum number of CA certificates in a certificate bundle is 16.
+The maximum payload size of a certificate bundle (before base64 encoding) is 32 KB.
 
 :::
 
