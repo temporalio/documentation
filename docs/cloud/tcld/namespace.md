@@ -551,6 +551,79 @@ Alias: `cf`
 - <a class="tdlp" href="#export">tcld namespace certificate-filters export<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters export</span><br /><br /><span class="tdlppd">How to export certificate filters from a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#export">Learn more</a></span></span></a>
 - <a class="tdlp" href="#clear">tcld namespace certificate-filters clear<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters clear</span><br /><br /><span class="tdlppd">How to clear all certificate filters from a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#clear">Learn more</a></span></span></a>
 
+### add
+
+The `tcld namespace certificates-filter add` command adds additional certificate filters to the Namespace of a Temporal Cloud account.
+
+The following modifiers control the behavior of the command.
+
+#### `--namespace`
+
+Specify a Namespace hosted on Temporal Cloud.
+If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --namespace <namespace_id> --certificate-filter-file <file>
+```
+
+#### `--request-id`
+
+Specify a request identifier to use for the asynchronous operation.
+If not specified, the server assigns a request identifier.
+
+Alias: `-r`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --request-id <request_id> --certificate-filter-file <file>
+```
+
+#### `--resource-version`
+
+Specify a resource version (ETag) to update from.
+If not specified, the latest version is used.
+
+Alias: `-v`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --resource-version <etag> --certificate-filter-file <file>
+```
+
+#### `--certificate-filter-file`
+
+_Required modifier unless `--certificate-filter-value` is specified._
+
+Specify a path to a JSON file defining the certificate filters for the Namespace.
+
+Aliases: `-f`, `--file`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --certificate-filter-file <file>
+```
+
+#### `--certificate-filter-input`
+
+_Required modifier unless `--certificate-filter-file` is specified._
+
+The certificate filters, in JSON, that will be added to the Namespace.
+
+Aliases: `-i`, `--input`
+
+**Example**
+
+```bash
+tcld namespace certificate-filters add --certificate-filter-input <JSON>
+```
+
 ### clear
 
 The `tcld namespace certificate-filters clear` command clears all certificate filters from a <a class="tdlp" href="/namespaces#">Namespace<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Namespace?</span><br /><br /><span class="tdlppd">A Namespace is a unit of isolation within the Temporal Platform</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/namespaces#">Learn more</a></span></span></a> in Temporal Cloud.
@@ -953,4 +1026,67 @@ Alias: `--rd`
 
 ```bash
 tcld namespace retention set --namespace <namespace_id> --retention-days <retention_days>
+```
+
+## update-codec-server
+
+The `tcld namespace update-codec-server` command updates the configuration of a codec server for Temporal Cloud, which allows payloads to be decodec through a remote endpoint.
+
+Alias: `ucs`
+
+The following modifiers control the behavior of the command.
+
+#### `--namespace`
+
+_Required modifier._
+
+Specify a Namespace hosted on Temporal Cloud. If not specified, the value of the environment variable $TEMPORAL_CLOUD_NAMESPACE is used.
+
+Alias: `-n`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <http_url>
+```
+
+#### `--endpoint`
+
+_Required modifier._
+
+Specify an endpoint to decode payloads for all users interacting with this Namespace.
+Endpoints must be valid https URLs.
+
+Alias: `-e`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url>
+```
+
+#### `--pass-access-token`
+
+Enables a user access token to be passed with the remote endpoint.
+This is set to `false` by default.
+
+Alias: `--pat`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --pass-access-token <bool>
+```
+
+#### `--include-credentials`
+
+Enables the inclusion of cross-origin credentials.
+This is set to `false` by default.
+
+Alias: `--ic`
+
+**Example**
+
+```bash
+tcld namespace update-codec-server --namespace <namespace_id> --endpoint <https_url> --include-credentials true
 ```
