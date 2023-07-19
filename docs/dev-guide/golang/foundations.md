@@ -701,7 +701,7 @@ Create an instance of [`ActivityOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 The instance of `workflow.Context` is then passed to the `ExecuteActivity()` call.
 
 | Field                                               | Required                          | Type                                                                        |
-|-----------------------------------------------------|-----------------------------------|-----------------------------------------------------------------------------|
+| --------------------------------------------------- | --------------------------------- | --------------------------------------------------------------------------- |
 | [`ActivityID`](#activityid)                         | No                                | `string`                                                                    |
 | [`TaskQueueName`](#taskqueuename)                   | No                                | `string`                                                                    |
 | [`ScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (or `StartToCloseTimeout`)    | `time.Duration`                                                             |
@@ -1025,7 +1025,7 @@ func main() {
 Create an instance of [`Options`](https://pkg.go.dev/go.temporal.io/sdk/worker#Options) from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the [`New`](https://pkg.go.dev/go.temporal.io/sdk/worker#New) call.
 
 | Field                                                                                 | Required | Type                                                                                          |
-|---------------------------------------------------------------------------------------|----------|-----------------------------------------------------------------------------------------------|
+| ------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------- |
 | [`MaxConcurrentActivityExecutionSize`](#maxconcurrentactivityexecutionsize)           | No       | `int`                                                                                         |
 | [`WorkerActivitiesPerSecond`](#workeractivitiespersecond)                             | No       | `float64`                                                                                     |
 | [`MaxConcurrentLocalActivityExecutionSize`](#maxconcurrentlocalactivityexecutionsize) | No       | `int`                                                                                         |
@@ -1556,7 +1556,7 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 - Used to set options for registering a Workflow
 
 | Field                                                             | Required | Type     |
-|-------------------------------------------------------------------|----------|----------|
+| ----------------------------------------------------------------- | -------- | -------- |
 | [`Name`](#name)                                                   | No       | `string` |
 | [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
 
@@ -1589,7 +1589,7 @@ Create an instance of [`RegisterOptions`](https://pkg.go.dev/go.temporal.io/sdk/
 Options for registering an Activity
 
 | Field                                                             | Required | Type     |
-|-------------------------------------------------------------------|----------|----------|
+| ----------------------------------------------------------------- | -------- | -------- |
 | [`Name`](#name)                                                   | No       | `string` |
 | [`DisableAlreadyRegisteredCheck`](#disablealreadyregisteredcheck) | No       | `bool`   |
 | [`SkipInvalidStructFunctions`](#skipinvalidstructfunctions)       | No       | `bool`   |
@@ -1746,7 +1746,7 @@ Create an instance of [`StartWorkflowOptions`](https://pkg.go.dev/go.temporal.io
 The following fields are available:
 
 | Field                                                                                   | Required | Type                                                                                            |
-|-----------------------------------------------------------------------------------------|----------|-------------------------------------------------------------------------------------------------|
+| --------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------- |
 | [`ID`](#id)                                                                             | No       | `string`                                                                                        |
 | [`TaskQueue`](#taskqueue)                                                               | **Yes**  | `string`                                                                                        |
 | [`WorkflowExecutionTimeout`](#workflowexecutiontimeout)                                 | No       | `time.Duration`                                                                                 |

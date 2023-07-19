@@ -857,7 +857,7 @@ Note that if you define options per-Activity Type options with `WorkflowImplemen
 The following table lists all `ActivityOptions` that can be configured for an Activity invocation.
 
 | Option                                                 | Required                                           | Type                     |
-|--------------------------------------------------------|----------------------------------------------------|--------------------------|
+| ------------------------------------------------------ | -------------------------------------------------- | ------------------------ |
 | [`setScheduleToCloseTimeout`](#scheduletoclosetimeout) | Yes (if `StartToCloseTimeout` is not specified)    | Duration                 |
 | [`setScheduleToStartTimeout`](#scheduletostarttimeout) | No                                                 | Duration                 |
 | [`setStartToCloseTimeout`](#starttoclosetimeout)       | Yes (if `ScheduleToCloseTimeout` is not specified) | Duration                 |
@@ -1482,7 +1482,7 @@ Create a [`newWorkflowStub`](https://www.javadoc.io/doc/io.temporal/temporal-sdk
 The following fields are available:
 
 | Option                                                  | Required             | Type                                                                                                                 |
-|---------------------------------------------------------|----------------------|----------------------------------------------------------------------------------------------------------------------|
+| ------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | [`WorkflowId`](#id)                                     | No (but recommended) | String                                                                                                               |
 | [`TaskQueue`](#taskqueue)                               | **Yes**              | String                                                                                                               |
 | [`WorkflowExecutionTimeout`](#workflowexecutiontimeout) | No                   | `Duration`                                                                                                           |
