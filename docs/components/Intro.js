@@ -272,7 +272,7 @@ const cloudInfo = {
     },
     {
       exit: true,
-      path: "/cloud/release-notes",
+      path: "https://temporal.io/change-log/product-area/cloud",
       name: "Release notes",
     },
   ],
