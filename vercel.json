@@ -1826,10 +1826,6 @@
       "destination": "/dev-guide/php/foundations#develop-activities"
     },
     {
-      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates",
-      "destination": "/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates"
-    },
-    {
       "source": "/kb/additional-resources",
       "destination": "/kb/how-to-explain-temporal"
     },
