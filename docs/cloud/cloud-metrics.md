@@ -1,7 +1,7 @@
 ---
 id: metrics
 title: How to monitor Temporal Cloud metrics
-sidebar_label: Cloud metrics
+sidebar_label: Metrics
 sidebar_position: 7
 description: Configure and track performance metrics for Temporal Cloud.
 toc_max_heading_level: 4
@@ -43,7 +43,7 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
 Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
-For more information, see <a class="tdlp" href="#prometheus-&-grafana-setup">Set up Grafana with Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Grafana with Temporal Cloud observability to view metrics?</span><br /><br /><span class="tdlppd">Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#prometheus-&-grafana-setup">Learn more</a></span></span></a>.
+For more information, see <a class="tdlp" href="#prometheus-and-grafana-setup">Set up Grafana with Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Grafana with Temporal Cloud observability to view metrics</span><br /><br /><span class="tdlppd">Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#prometheus-and-grafana-setup">Learn more</a></span></span></a>.
 
 You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
 
@@ -120,7 +120,7 @@ Metrics lag real-time performance by approximately one minute.
 
 We retain raw metrics for seven days.
 
-## Prometheus & Grafana setup
+## Prometheus and Grafana setup
 
 Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.
 

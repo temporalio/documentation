@@ -1519,7 +1519,7 @@
     },
     {
       "source": "/concepts/what-is-a-cloud-namespace-name",
-      "destination": "/cloud#temporal-cloud-namespace-name"
+      "destination": "/cloud/account-setup/namespaces"
     },
     {
       "source": "/concepts/what-is-a-workflow-type",
@@ -1788,6 +1788,30 @@
     {
       "source": "/cloud/release-notes/:path*",
       "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/cloud/how-to-manage-namespaces-in-temporal-cloud:path*",
+      "destination": "/cloud/account-setup/namespaces:path*"
+    },
+    {
+      "source": "/cloud/how-to-manage-certificates-in-temporal-cloud:path*",
+      "destination": "/cloud/account-setup/certificates:path*"
+    },
+    {
+      "source": "/cloud/how-to-monitor-temporal-cloud-metrics",
+      "destination": "/cloud/metrics"
+    },
+    {
+      "source": "/cloud/pricing:path*",
+      "destination": "cloud/introduction/pricing:path*"
+    },
+    {
+      "source": "/cloud/how-to-create-a-ticket-for-temporal-support",
+      "destination": "/cloud/introduction/support#support-ticket"
+    },
+    {
+      "source": "/kb/prometheus-grafana-setup-cloud",
+      "destination": "/cloud/metrics#prometheus-and-grafana-setup"
     }
   ]
 }
