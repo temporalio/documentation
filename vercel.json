@@ -1811,7 +1811,7 @@
     },
     {
       "source": "/tctl-next/workflow#reset",
-      "destination": "/cli"
+      "destination": "/cli/workflow#reset"
     },
     {
       "source": "/tctl-next/modifiers#--event-id",
