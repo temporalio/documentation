@@ -32,6 +32,10 @@
     },
     {
       "type": "h2",
+      "id": "cloud/namespace-setup-considerations"
+    },
+    {
+      "type": "h2",
       "id": "cloud/namespaces-access"
     },
     {

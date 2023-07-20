@@ -1812,6 +1812,10 @@
     {
       "source": "/kb/prometheus-grafana-setup-cloud",
       "destination": "/cloud/metrics#prometheus-and-grafana-setup"
+    },
+    {
+      "source": "/kb/cloud-namespace-naming-considerations",
+      "destination": ""
     }
   ]
 }

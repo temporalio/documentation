@@ -1,19 +1,18 @@
 ---
-slug: cloud-namespace-naming-considerations
-title: Temporal Cloud Namespace naming considerations
+slug: namespace-setup-considerations
+title: What are some Namespace best practices?
+description: This section provides general guidance for organizing Namespaces across use cases, services, applications, or domains.
+sidebar_label: Best practices
 tags:
-  - cloud
+  - temporal-cloud
   - namespaces
-date: 2023-04-20T00:00:00Z
 ---
 
-This article provides general guidance for organizing [Namespaces](/namespaces) across use cases, services, applications, or domains.
+This section provides general guidance for organizing [Namespaces](/namespaces) across use cases, services, applications, or domains.
 Temporal Cloud provides Namespace–as-a-service, so the Namespace is the endpoint.
 Customers should consider not only a Namespace naming convention but also how to group or isolate workloads using the Namespace as a boundary.
 
-<!-- truncate -->
-
-## Constraints and limitations
+### Constraints and limitations
 
 Before considering an appropriate Namespace configuration, you should be aware of the following constraints:
 
@@ -35,7 +34,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
 
-## General Guidance
+### General Guidance
 
 Namespace configuration requires some consideration.
 Following are some general guidelines to consider.
@@ -49,11 +48,11 @@ Following are some general guidelines to consider.
 - Workflows that need to communicate with each other should (for now) be in the same Namespace.
 - If you need to share Namespaces across team or domain boundaries, be sure to ensure the uniqueness of Workflow Ids.
 
-## Examples
+### Examples
 
 Following are some ideas about how to organize Namespaces.
 
-### Example 1: Namespace per use case and environment
+#### Example 1: Namespace per use case and environment
 
 We recommend using one Namespace for each use case and environment combination for simple configurations in which multiple services and team or domain boundaries don't exist.
 
@@ -63,7 +62,7 @@ Sample naming convention:
 &lt;use-case>_&lt;environment>
 </pre>
 
-### Example 2: Namespace per use case, service, and environment
+#### Example 2: Namespace per use case, service, and environment
 
 We recommend using one Namespace for each use case, service, and environment combination when multiple services that are part of same use case communicate externally to Temporal via API (HTTP/gRPC).
 
@@ -73,7 +72,7 @@ Sample naming convention:
 &lt;use-case>_&lt;service>_&lt;environment>
 </pre>
 
-### Example 3: Namespace per use case, domain, and environment
+#### Example 3: Namespace per use case, domain, and environment
 
 We recommend using one namespace per use case, domain, and environment combination when multiple services that are part of the same use case need to communicate with each another via [Signals](/workflows#signal) or by starting [Child Workflows](/workflows#child-workflow).
 In this case, though, you must be mindful about Workflow Id uniqueness by prefixing each Workflow Id with a service-specific string.

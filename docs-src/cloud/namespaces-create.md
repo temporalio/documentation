@@ -59,4 +59,4 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 ### Create a Namespace using tcld
 
-This functionality is in development.
+See the [tcld namespace create](/cloud/tcld/namespace/create) command reference for details.
