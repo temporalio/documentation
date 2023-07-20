@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday June 28 2023 18:31:52 PM -0700
+Last assembled: Thursday July 20 2023 09:40:08 AM -0400
 
-Assembly Workflow Id: docs-full-assembly-dail-macbook
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 89 guide configurations found.
 
-1474 information nodes found.
+1483 information nodes found.
 
-1238 information nodes are attached to guides.
+1247 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -468,12 +468,6 @@ python/async-activity-completion -> /dev-guide/python/features#asynchronous-acti
 
 typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
 
-concepts/what-is-a-reset -> /workflows#reset
-
-concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
-
-concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
-
 concepts/what-is-persistence -> #persistence
 
 concepts/what-is-a-history-shard -> #history-shard
@@ -688,6 +682,10 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
+concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
+
+concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
@@ -696,7 +694,7 @@ typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connec
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
-concepts/what-is-an-action -> /cloud/index#action
+concepts/what-is-a-reset -> /workflows#reset
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id
 
@@ -898,8 +896,6 @@ typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
-cloud-context/namespaces-create -> /cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace
-
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
@@ -944,10 +940,10 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
-cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud/certificates-intro -> /cloud/account-setup/certificates#
 
 

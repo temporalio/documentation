@@ -1,10 +1,10 @@
 {
-  "file_name": "how-to-manage-namespaces-in-temporal-cloud.md",
-  "id": "how-to-manage-namespaces-in-temporal-cloud",
-  "file_dir": "cloud",
+  "file_name": "namespaces.md",
+  "id": "namespaces",
+  "file_dir": "cloud/account-setup",
   "title": "How to manage Namespaces in Temporal Cloud",
   "sidebar_label": "Namespaces",
-  "sidebar_position": 4,
+  "sidebar_position": 1,
   "description": "Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.",
   "use_description": false,
   "toc_max_heading_level": 4,
@@ -12,23 +12,23 @@
   "sections": [
     {
       "type": "p",
-      "id": "cloud-context/namespaces-intro"
+      "id": "cloud/namespaces-intro"
     },
     {
       "type": "h2",
-      "id": "cloud-context/namespaces-create"
+      "id": "cloud/namespaces-create"
     },
     {
       "type": "h2",
-      "id": "cloud-context/namespaces-access"
+      "id": "cloud/namespaces-access"
     },
     {
       "type": "h2",
-      "id": "cloud-context/namespaces-manage"
+      "id": "cloud/namespaces-manage"
     },
     {
       "type": "h2",
-      "id": "cloud-context/namespaces-delete"
+      "id": "cloud/namespaces-delete"
     }
   ]
 }

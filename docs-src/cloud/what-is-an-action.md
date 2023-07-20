@@ -1,16 +1,36 @@
 ---
 id: what-is-an-action
-title: What is an Action?
+title: What is an Action
 sidebar_label: Action
 description: An Action is the fundamental pricing unit in Temporal Cloud.
 tags:
   - term
-  - explanation
+  - Pricing
+  - Temporal Cloud
 ---
 
-An Action is the fundamental pricing unit in [Temporal Cloud](/concepts/what-is-temporal-cloud).
+Actions are the fundamental consumption pricing unit in Temporal Cloud.
+An Action in Temporal occurs as part of an execution of your Workflow.
+Each time you execute a Temporal Workflow (a Workflow Execution), the associated Actions are collected and ultimately represent the state and progress of your Temporal Application.
 
-The following operations result in Actions, which are billed monthly.
+Actions are collected and billed monthly for each Namespace. The base rate is $25 per one million Actions, and you are billed only for the prorated amount of Actions you use. If you use fewer than one million Actions per month, your bill for Actions will be less than $25 for that month.
+
+| **Actions per month** | **Cost per 1M (USD)** |
+| --------------------- | --------------------- |
+| Any number            | $25.00 (prorated)     |
+
+Alternatively, Temporal also offers a credit system. Credits provide an additional discount schedule for both billable Actions and storage. Credits do not expire. The following table outlines cost estimates and discount bands for the credits system. Please reach out to the team if you are interested in this option.
+
+| **Actions per month (millions)** | **Cost per 1M (USD)** | **Cost band**       | **Actions per second** |
+| -------------------------------- | --------------------- | ------------------- | ---------------------- |
+| 0 to 299                         | $23.25                | $0–$7,500           | ~115                   |
+| 300 to 1,499                     | $18.80                | $5,640–$28,200      | ~570                   |
+| 1,500 to 7,499                   | $14.10                | $21,150–$105,750    | ~2,860                 |
+| 7,500 to 29,999                  | $10.50                | $78,750–$315,000    | ~11,400                |
+| 30,000 to 149,999                | $7.90                 | $237,000–$1,185,000 | ~57,000                |
+| 150,000 or more                  | $5.90                 | Begins at $885,000  | n/a                    |
+
+The following operations result in Actions.
 
 **Workflows**
 
@@ -45,3 +65,5 @@ The following operations result in Actions, which are billed monthly.
   Temporal SDKs throttle [Activity Heartbeats](/concepts/what-is-an-activity-heartbeat).
   The default throttle is 80% of the [Heartbeat Timeout](/concepts/what-is-a-heartbeat-timeout).
   Heartbeats don't apply to Local Activities.
+
+[Reach out to our team](https://pages.temporal.io/contact-us) to get more information or to help size your number of Actions.

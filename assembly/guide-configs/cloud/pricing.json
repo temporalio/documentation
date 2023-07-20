@@ -1,8 +1,8 @@
 {
   "file_name": "pricing.md",
   "id": "pricing",
-  "file_dir": "cloud",
-  "title": "Temporal Cloud pricing",
+  "file_dir": "cloud/introduction",
+  "title": "What is the Temporal Cloud pricing",
   "sidebar_label": "Pricing",
   "sidebar_position": 1,
   "description": "Temporal Cloud pricing information",
@@ -12,7 +12,31 @@
   "sections": [
     {
       "type": "p",
-      "id": "cloud-context/pricing"
+      "id": "cloud/pricing-intro"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/what-is-an-action"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/pricing-storage"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/pricing-support"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/pricing-sso-and-saml"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/pricing-estimate"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/pricing-faq"
     }
   ]
 }

@@ -16,11 +16,7 @@
     },
     {
       "type": "p",
-      "id": "cloud-context/cloud-intro"
-    },
-    {
-      "type": "h2",
-      "id": "concepts/what-is-an-action"
+      "id": "cloud/cloud-intro"
     },
     {
       "type": "h2",
@@ -28,7 +24,7 @@
     },
     {
       "type": "h2",
-      "id": "cloud-context/what-are-the-account-level-roles-for-users-in-temporal-cloud"
+      "id": "cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud"
     },
     {
       "type": "h2",
@@ -40,7 +36,7 @@
     },
     {
       "type": "h2",
-      "id": "cloud-context/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
+      "id": "cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
     }
   ]
 }

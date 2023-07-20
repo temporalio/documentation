@@ -1,10 +1,13 @@
 ---
 id: operating-envelope-latency
-title: Temporal Cloud - Latency
+title: What kind of latency can I expect from Temporal Cloud?
 sidebar_label: Latency
 description: Our latency SLO is 200ms per region for p99.
 tags:
-  - guide-context
+  - Temporal Cloud
+  - Latency
+  - Operations concept
+  - Explanation archetype
 ---
 
 Our latency SLO is 200ms per region for p99.

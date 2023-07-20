@@ -12,19 +12,19 @@
   "sections": [
     {
       "type": "p",
-      "id": "cloud-context/saml-intro"
+      "id": "cloud/saml-intro"
     },
     {
       "type": "h2",
-      "id": "cloud-context/saml-how-to-configure-with-azure-ad"
+      "id": "cloud/saml-how-to-configure-with-azure-ad"
     },
     {
       "type": "h2",
-      "id": "cloud-context/saml-how-to-configure-with-okta"
+      "id": "cloud/saml-how-to-configure-with-okta"
     },
     {
       "type": "h2",
-      "id": "cloud-context/saml-finish"
+      "id": "cloud/saml-finish"
     }
   ]
 }

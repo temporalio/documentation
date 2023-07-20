@@ -1,10 +1,11 @@
 ---
 id: operating-envelope-availability
-title: Temporal Cloud - Availability
+title: What is Temporal Cloud's SLA on Availability
 sidebar_label: Availability
 description: Temporal Cloud provides 99.9% availability of the cloud service and a 99.9% guarantee against service errors.
 tags:
-  - guide-context
+  - Availability
+  - Explanation archetype
 ---
 
 The Temporal Cloud service level agreement (SLA) promises 99.9% availability of the cloud service and a 99.9% guarantee against service errors.

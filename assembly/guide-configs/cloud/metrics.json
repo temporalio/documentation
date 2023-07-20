@@ -1,6 +1,6 @@
 {
-  "file_name": "how-to-monitor-temporal-cloud-metrics.md",
-  "id": "how-to-monitor-temporal-cloud-metrics",
+  "file_name": "cloud-metrics.md",
+  "id": "cloud-metrics",
   "file_dir": "cloud",
   "title": "How to monitor Temporal Cloud metrics",
   "sidebar_label": "Cloud metrics",
@@ -12,7 +12,23 @@
   "sections": [
     {
       "type": "p",
-      "id": "cloud-context/how-to-monitor-temporal-cloud-metrics"
+      "id": "cloud/metrics-intro"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/configure-metrics-endpoint-using-ui"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/configure-metrics-endpoint-using-cli"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/emitted-metrics"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/prometheus-grafana-setup"
     }
   ]
 }

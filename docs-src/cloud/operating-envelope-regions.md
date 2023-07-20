@@ -1,10 +1,12 @@
 ---
 id: operating-envelope-regions
-title: Temporal Cloud - Regions
+title: Where is Temporal Cloud hosted and running
 sidebar_label: Regions
 description: Temporal Cloud currently runs in 10 regions in AWS.
 tags:
-  - guide-context
+  - Operations concept
+  - Location
+  - Explanation archetype
 ---
 
 Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS).

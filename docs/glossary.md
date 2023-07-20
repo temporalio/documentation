@@ -13,10 +13,10 @@ tags:
 
 The following terms are used in [Temporal Platform](/temporal) documentation.
 
-#### [Action](/cloud#action)
+#### [Action](/cloud/introduction/pricing#action)
 An Action is the fundamental pricing unit in Temporal Cloud.
 
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [Pricing](/tags/Pricing), [Temporal Cloud](/tags/Temporal Cloud)_
 
 
 #### [Activity](/activities#)
