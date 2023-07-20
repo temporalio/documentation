@@ -1,6 +1,6 @@
 ---
 id: pricing-support
-title: What kind of support do I get with Temporal Cloud
+title: What kind of support do I get with Temporal Cloud?
 sidebar_label: Support
 description: With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects.
 tags:

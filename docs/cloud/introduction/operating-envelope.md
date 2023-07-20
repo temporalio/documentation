@@ -66,7 +66,7 @@ To reduce latency, we recommend that you create your <a class="tdlp" href="/name
 
 ## Throughput
 
-A Namespace has a default quota of 200 <a class="tdlp" href="/cloud/introduction/pricing#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Action</span><br /><br /><span class="tdlppd">An Action is the fundamental pricing unit in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/pricing#action">Learn more</a></span></span></a> per second with spikes up to 400 Actions per second.
+A Namespace has a default quota of 200 <a class="tdlp" href="/cloud/introduction/pricing#action">Actions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Action?</span><br /><br /><span class="tdlppd">An Action is the fundamental pricing unit in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/pricing#action">Learn more</a></span></span></a> per second with spikes up to 400 Actions per second.
 However, Temporal Cloud can provide more than 150,000 Actions per second.
 
 If your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.

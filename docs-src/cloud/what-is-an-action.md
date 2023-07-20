@@ -1,6 +1,6 @@
 ---
 id: what-is-an-action
-title: What is an Action
+title: What is an Action?
 sidebar_label: Action
 description: An Action is the fundamental pricing unit in Temporal Cloud.
 tags:

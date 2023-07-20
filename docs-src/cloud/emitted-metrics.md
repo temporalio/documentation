@@ -1,6 +1,6 @@
 ---
 id: emitted-metrics
-title: What metrics are emitted from Temporal Cloud
+title: What metrics are emitted from Temporal Cloud?
 description: Temporal Cloud emits several metrics.
 sidebar_label: Available metrics
 tags:
