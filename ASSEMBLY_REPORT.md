@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 20 2023 12:51:54 PM -0400
+Last assembled: Thursday July 20 2023 13:44:23 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-90 guide configurations found.
+91 guide configurations found.
 
-1490 information nodes found.
+1491 information nodes found.
 
-1254 information nodes are attached to guides.
+1256 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -698,9 +698,7 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
-concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
-
-concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
 
@@ -710,9 +708,15 @@ typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connec
 
 cloud/certificates-filters -> #manage-certificate-filters
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
+
+concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
+
+concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
 
 cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
+
+cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 concepts/what-is-a-reset -> /workflows#reset
 
@@ -916,8 +920,6 @@ typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
-cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
-
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
@@ -969,7 +971,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 

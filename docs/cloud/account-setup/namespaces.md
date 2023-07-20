@@ -7,6 +7,8 @@ description: Create Namespaces, use Namespace endpoints for access, and obtain N
 toc_max_heading_level: 4
 tags:
 - guide-context
+- term
+- explanation
 - how-to
 ---
 
@@ -18,6 +20,35 @@ A Namespace is a unit of isolation within the Temporal Platform.
 - [Access a Namespace](#access-a-namespace)
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
+
+## Temporal Cloud Namespace Name
+
+A Cloud Namespace Name is a customer-supplied name for a [Namespace](/namespaces) in Temporal Cloud.
+Each Namespace Name, such as `accounting-production`, is unique within the scope of a customer's account.
+It cannot be changed after the Namespace is provisioned.
+
+Each Namespace Name must conform to the following rules:
+
+- A Namespace Name must contain at least 2 characters and no more than 34 characters.
+- A Namespace Name must begin with a letter, end with a letter or number, and contain only letters, numbers, and the hyphen (-) character.
+- Each hyphen (-) character must be immediately preceded _and_ followed by a letter or number; consecutive hyphens are not permitted.
+- All letters in a Namespace Name must be lowercase.
+
+## Temporal Cloud Account Id
+
+A Temporal Cloud Account Id is a unique identifier for a customer for the entire time they use Temporal Cloud.
+Temporal Technologies assigns each Account Id, which is an opaque code of five or six alphanumeric characters, such as `f45a2`.
+
+## Temporal Cloud Namespace Id
+
+A Cloud Namespace Id is a globally unique identifier for a [Namespace](/namespaces) in Temporal Cloud.
+A Namespace Id is formed by concatenating the following:
+
+1. A <a class="tdlp" href="#temporal-cloud-namespace-name">Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cloud-namespace-name">Learn more</a></span></span></a>
+1. A period (.)
+1. The <a class="tdlp" href="#temporal-cloud-account-id">Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-cloud-account-id">Learn more</a></span></span></a> to which the Namespace belongs
+
+For example, for the Account Id `f45a2` and Namespace Name `accounting-production`, the Namespace Id is `accounting-production.f45a2`.
 
 ## Create a Namespace
 

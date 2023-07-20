@@ -17,26 +17,6 @@
     {
       "type": "p",
       "id": "cloud/cloud-intro"
-    },
-    {
-      "type": "h2",
-      "id": "concepts/what-is-a-cloud-account-id"
-    },
-    {
-      "type": "h2",
-      "id": "cloud/what-are-the-account-level-roles-for-users-in-temporal-cloud"
-    },
-    {
-      "type": "h2",
-      "id": "concepts/what-is-a-cloud-namespace-name"
-    },
-    {
-      "type": "h2",
-      "id": "concepts/what-is-a-cloud-namespace-id"
-    },
-    {
-      "type": "h2",
-      "id": "cloud/what-are-the-namespace-level-permissions-for-users-in-temporal-cloud"
     }
   ]
 }

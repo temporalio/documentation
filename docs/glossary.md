@@ -415,19 +415,19 @@ Temporal Cloud is a managed, hosted Temporal environment that provides a platfor
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud Account Id](/cloud#temporal-cloud-account-id)
+#### [Temporal Cloud Account Id](/cloud/account-setup/namespaces#temporal-cloud-account-id)
 A Temporal Cloud Account Id is a unique identifier for a customer.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud Namespace Id](/cloud#temporal-cloud-namespace-id)
+#### [Temporal Cloud Namespace Id](/cloud/account-setup/namespaces#temporal-cloud-namespace-id)
 A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 
 
-#### [Temporal Cloud Namespace Name](/cloud#temporal-cloud-namespace-name)
+#### [Temporal Cloud Namespace Name](/cloud/account-setup/namespaces#temporal-cloud-namespace-name)
 A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.
 
 _Tags: [term](/tags/term), [explanation](/tags/explanation)_

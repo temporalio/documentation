@@ -16,6 +16,18 @@
     },
     {
       "type": "h2",
+      "id": "concepts/what-is-a-cloud-namespace-name"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-cloud-account-id"
+    },
+    {
+      "type": "h2",
+      "id": "concepts/what-is-a-cloud-namespace-id"
+    },
+    {
+      "type": "h2",
       "id": "cloud/namespaces-create"
     },
     {
