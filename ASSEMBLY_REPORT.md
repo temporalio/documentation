@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 20 2023 16:27:13 PM -0400
+Last assembled: Thursday July 20 2023 17:14:44 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -971,5 +971,17 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+
+cloud/pricing-intro -> /cloud/introduction/pricing#
+
+cloud/support-intro -> /cloud/introduction/support#
+
+cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+
+cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+
+cloud/users-intro -> /cloud/account-setup/users#
 
 

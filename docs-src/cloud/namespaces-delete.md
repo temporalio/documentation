@@ -4,7 +4,9 @@ title: How to delete a Namespace in Temporal Cloud
 sidebar_label: Delete a Namespace
 description: To delete a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.
 tags:
-  - guide-context
+  - how-to
+  - temporal-cloud
+  - namespaces
 ---
 
 :::info

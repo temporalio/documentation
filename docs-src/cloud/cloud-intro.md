@@ -7,13 +7,22 @@ tags:
   - explanation
 ---
 
-:::note Sign up for Temporal Cloud
+:::success Sign up for Temporal Cloud!
 
 To request a Temporal Cloud account, complete the [request form](https://pages.temporal.io/cloud-request-access).
 
 :::
 
+- [Introduction to Temporal Cloud](/cloud/introduction)
+  - [Operational envelope](/cloud/operating-envelope-intro)
+  - [Pricing](/cloud/pricing-intro)
+  - [Support](/cloud/support-intro)
 - [Get started with Temporal Cloud](/cloud/get-started)
-- [Manage certificates in Temporal Cloud](/cloud/certificates-intro)
-- [Manage Namespaces in Temporal Cloud](/cloud/namespaces-intro)
+- [Account setup](/cloud/account-setup)
+  - [Manage Namespaces](/cloud/namespaces-intro)
+  - [Manage certificates](/cloud/certificates-intro)
+  - [Manage users](/cloud/users-intro)
+- [Metrics setup](/cloud/metrics-intro)
+- [SAML](/cloud/saml-intro)
+- [Audit logging](/cloud/what-is-audit-logging)
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)

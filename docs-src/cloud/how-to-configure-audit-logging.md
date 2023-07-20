@@ -4,7 +4,9 @@ title: How to configure Audit Logging
 sidebar_label: Configure Audit Logging
 description: To configure Audit Logging, set up Amazon Kinesis and create an Audit Log sink.
 tags:
-  - guide-context
+  - how-to
+  - temporal-cloud
+  - audit-logging
 ---
 
 To set up Audit Logging, you must have an Amazon Web Services (AWS) account and set up Kinesis Data Streams.

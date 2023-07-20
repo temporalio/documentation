@@ -5,6 +5,8 @@ sidebar_label: Manage Namespaces
 description: To manage Namespaces in Temporal Cloud, use either Temporal Cloud UI or tcld.
 tags:
   - how-to
+  - namespaces
+  - temporal-cloud
 ---
 
 <!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->

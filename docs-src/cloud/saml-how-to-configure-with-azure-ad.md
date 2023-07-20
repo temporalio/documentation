@@ -4,7 +4,9 @@ title: How to configure SAML with Azure AD
 sidebar_label: Configure SAML with Azure AD
 description: To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
 tags:
-  - guide-context
+  - how-to
+  - security
+  - temporal-cloud
 ---
 
 If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.

@@ -3,6 +3,11 @@ id: what-are-the-namespace-level-permissions-for-users-in-temporal-cloud
 title: What are the Namespace-level permissions for users in Temporal Cloud?
 sidebar_label: Namespace-level permissions
 description: Namespace-level permissions are Namespace Admin, Write, and Read-Only.
+tags:
+  - temporal-cloud
+  - namespaces
+  - users
+  - explanation
 ---
 
 A [Global Admin](/cloud/#account-level-roles) can assign permissions for any [Namespace](/namespaces) in an account.

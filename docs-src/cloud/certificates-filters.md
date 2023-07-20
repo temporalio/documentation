@@ -4,7 +4,9 @@ title: How to manage certificate filters in Temporal Cloud
 sidebar_label: Manage certificate filters
 description: To limit access to specific CA certificates, you can create certificate filters.
 tags:
-  - guide-context
+  - how-to
+  - temporal-cloud
+  - certificates
 ---
 
 To limit access to specific [end-entity certificates](/cloud/certificates-intro), create certificate filters.

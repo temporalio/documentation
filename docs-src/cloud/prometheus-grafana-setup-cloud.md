@@ -4,10 +4,10 @@ title: How to set up Grafana with Temporal Cloud observability to view metrics
 description: Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.
 sidebar_label: Prometheus and Grafana setup
 tags:
-  - How-to archetype
-  - Grafana
-  - Temporal Cloud
-  - Observability concept
+  - how-to
+  - grafana
+  - temporal-cloud
+  - observability
 ---
 
 Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.

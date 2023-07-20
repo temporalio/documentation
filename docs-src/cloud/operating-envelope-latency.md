@@ -4,10 +4,9 @@ title: What kind of latency can I expect from Temporal Cloud?
 sidebar_label: Latency
 description: Our latency SLO is 200ms per region for p99.
 tags:
-  - Temporal Cloud
-  - Latency
-  - Operations concept
-  - Explanation archetype
+  - temporal-cloud
+  - operations
+  - explanation
 ---
 
 Our latency SLO is 200ms per region for p99.

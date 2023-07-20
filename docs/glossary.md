@@ -16,7 +16,7 @@ The following terms are used in [Temporal Platform](/temporal) documentation.
 #### [Action](/cloud/introduction/pricing#action)
 An Action is the fundamental pricing unit in Temporal Cloud.
 
-_Tags: [term](/tags/term), [Pricing](/tags/Pricing), [Temporal Cloud](/tags/Temporal Cloud)_
+_Tags: [term](/tags/term), [pricing](/tags/pricing), [temporal-cloud](/tags/temporal-cloud), [explanation](/tags/explanation)_
 
 
 #### [Activity](/activities#)
@@ -82,7 +82,7 @@ _Tags: [term](/tags/term), [explanation](/tags/explanation)_
 #### [Audit Logging](/cloud/how-to-manage-audit-logging#)
 Audit Logging is a feature that provides forensic access information for accounts, users, and Namespaces.
 
-_Tags: [term](/tags/term), [explanation](/tags/explanation)_
+_Tags: [term](/tags/term), [explanation](/tags/explanation), [temporal-cloud](/tags/temporal-cloud), [operations](/tags/operations)_
 
 
 #### [Authorizer Plugin](/security#authorizer-plugin)

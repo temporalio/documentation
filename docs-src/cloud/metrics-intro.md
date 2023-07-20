@@ -4,7 +4,9 @@ title: How to monitor Temporal Cloud metrics
 sidebar_label: Cloud metrics
 description: Configure and track performance metrics for Temporal Cloud.
 tags:
-  - how-to
+  - intro
+  - temporal-cloud
+  - metrics
 ---
 
 Beyond the [metrics](/references/sdk-metrics) provided by the Temporal SDKs, some key metrics exist only in Temporal Cloud.

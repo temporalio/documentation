@@ -4,9 +4,10 @@ title: What are the Temporal Cloud storage prices?
 sidebar_label: Storage
 description: Temporal Cloud pricing information
 tags:
-  - Pricing
-  - Temporal Cloud
-  - Storage
+  - pricing
+  - temporal-cloud
+  - storage
+  - explanation
 ---
 
 An execution of a particular Workflow could exist for a few seconds, a day, month, or even forever. Temporal collects the Event History during this time and dispatches work when necessary. In this context, a Workflow Execution has only two states, open (active) or closed.

@@ -4,7 +4,9 @@ title: How to manage Namespaces in Temporal Cloud
 sidebar_label: Manage Namespaces
 description: You can create and manage Namespaces from your Temporal Cloud UI.
 tags:
-  - guide-context
+  - intro
+  - temporal-cloud
+  - namespaces
 ---
 
 A Namespace is a unit of isolation within the Temporal Platform.

@@ -4,9 +4,10 @@ title: Pricing FAQ
 sidebar_label: Pricing FAQ
 description: Temporal Cloud pricing FAQ.
 tags:
-  - Temporal Cloud
-  - Pricing
-  - FAQ
+  - temporal-cloud
+  - pricing
+  - faq
+  - explanation
 ---
 
 Q: What’s the minimum cost to run Temporal Cloud?

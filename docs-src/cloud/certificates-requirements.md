@@ -4,7 +4,9 @@ title: Requirements for CA certificates in Temporal Cloud
 sidebar_label: Certificate requirements
 description: Certificates provided to Temporal for your Namespaces must meet certain requirements.
 tags:
-  - guide-context
+  - explanation
+  - temporal-cloud
+  - certificates
 ---
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.

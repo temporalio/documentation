@@ -6,6 +6,8 @@ description: Audit Logging is a feature that provides forensic access informatio
 tags:
   - term
   - explanation
+  - temporal-cloud
+  - operations
 ---
 
 Audit Logging is a feature of [Temporal Cloud](/concepts/what-is-temporal-cloud) that provides forensic access information at the account level, the user level, and the [Namespace](/concepts/what-is-a-namespace) level.

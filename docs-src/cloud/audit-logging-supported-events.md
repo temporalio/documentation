@@ -4,7 +4,9 @@ title: Which events are supported by Audit Logging?
 sidebar_label: Supported events
 description: Audit Logging currently supports Admin Operation events.
 tags:
-  - guide-context
+  - explanation
+  - temporal-cloud
+  - audit-logging
 ---
 
 The first release of Audit Logging supports Admin Operation events.

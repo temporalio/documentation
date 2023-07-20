@@ -4,10 +4,9 @@ title: What kind of throughput can I get with Temporal Cloud?
 sidebar_label: Throughput
 description: Temporal Cloud can provide more than 150,000 Actions per second.
 tags:
-  - Temporal Cloud
-  - Explanation archetype
-  - Operations concept
-  - Throughput
+  - temporal-cloud
+  - explanation
+  - operations
 ---
 
 A Namespace has a default quota of 200 [Actions](/cloud/what-is-an-action) per second with spikes up to 400 Actions per second.

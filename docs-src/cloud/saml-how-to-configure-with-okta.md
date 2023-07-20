@@ -4,7 +4,9 @@ title: How to configure SAML with Okta
 sidebar_label: Configure SAML with Okta
 description: To use Okta as your SAML IdP, configure a new Okta application integration.
 tags:
-  - guide-context
+  - how-to
+  - security
+  - temporal-cloud
 ---
 
 To use Okta as your SAML IdP, configure a new Okta application integration.
@@ -25,6 +27,7 @@ To use Okta as your SAML IdP, configure a new Okta application integration.
    ```bash
    https://login.tmprl.cloud/login/callback?connection=f45a2-saml
    ```
+
 1. In **Audience URI (SP Entity ID)**, enter the following entity identifier, including your Account Id where indicated:
 
    ```bash

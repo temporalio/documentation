@@ -4,10 +4,10 @@ title: How to configure a metrics endpoint using the tcld CLI
 description: You can configure a metrics endpoint in your Temporal Cloud Account settings.
 sidebar_label: Configure via CLI (tcld)
 tags:
-  - How-to archetype
-  - Observability concept
-  - Temporal Cloud
-  - tcld CLI
+  - how-to
+  - observability
+  - temporal-cloud
+  - cli-tcld
 ---
 
 To add a certificate to a metrics endpoint, use [`tcld account metrics accepted-client-ca add`](/cloud/tcld/account/metrics/accepted-client-ca/add).

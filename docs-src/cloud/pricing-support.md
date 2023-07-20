@@ -4,9 +4,10 @@ title: What kind of support do I get with Temporal Cloud?
 sidebar_label: Support
 description: With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects.
 tags:
-  - Temporal Cloud
-  - Pricing
-  - Support
+  - temporal-cloud
+  - pricing
+  - support
+  - explanation
 ---
 
 With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.

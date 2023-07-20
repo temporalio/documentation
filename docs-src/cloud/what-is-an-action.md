@@ -5,8 +5,9 @@ sidebar_label: Action
 description: An Action is the fundamental pricing unit in Temporal Cloud.
 tags:
   - term
-  - Pricing
-  - Temporal Cloud
+  - pricing
+  - temporal-cloud
+  - explanation
 ---
 
 Actions are the fundamental consumption pricing unit in Temporal Cloud.

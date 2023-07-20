@@ -4,9 +4,9 @@ title: How to configure a metrics endpoint using Temporal Cloud UI
 description: You can configure a metrics endpoint in your Temporal Cloud Account settings.
 sidebar_label: Configure via UI
 tags:
-  - How-to archetype
-  - Observability concept
-  - Temporal Cloud
+  - how-to
+  - observability
+  - temporal-cloud
 ---
 
 :::note

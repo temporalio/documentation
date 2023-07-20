@@ -4,9 +4,9 @@ title: Where is Temporal Cloud hosted and running?
 sidebar_label: Regions
 description: Temporal Cloud currently runs in 10 regions in AWS.
 tags:
-  - Operations concept
-  - Location
-  - Explanation archetype
+  - operations
+  - temporal-cloud
+  - explanation
 ---
 
 Temporal Cloud currently runs in 10 regions in Amazon Web Services (AWS).

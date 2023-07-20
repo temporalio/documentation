@@ -4,7 +4,10 @@ title: How to troubleshoot Audit Logging
 sidebar_label: Troubleshoot Audit Logging
 description: Audit Logging status appears in the Cloud UI. Contact Temporal about issues with an Audit Log sink.
 tags:
-  - guide-context
+  - how-to
+  - temporal-cloud
+  - troubleshooting
+  - audit-logging
 ---
 
 The Audit Logging page of the Temporal Cloud UI provides the current status of an Audit Log sink.

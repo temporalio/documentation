@@ -4,7 +4,10 @@ title: Invite users
 sidebar_label: Invite users
 description: Assign Roles and Namespace permissions, and send invites
 tags:
-  - guide-context
+  - temporal-cloud
+  - how-to
+  - users
+  - temporal-cloud-account
 ---
 
 :::caution

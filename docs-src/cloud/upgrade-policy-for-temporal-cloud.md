@@ -3,6 +3,10 @@ id: upgrade-policy-for-temporal-cloud
 title: What is the upgrade policy for Temporal Cloud?
 sidebar_label: Upgrade policy
 description: Basic upgrade policy for customers of Temporal Cloud
+tags:
+  - explanation
+  - temporal-cloud
+  - operations
 ---
 
 All customers will automatically be upgraded to the latest minor version.

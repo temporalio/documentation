@@ -4,9 +4,10 @@ title: What metrics are emitted from Temporal Cloud?
 description: Temporal Cloud emits several metrics.
 sidebar_label: Available metrics
 tags:
-  - Explanation archetype
-  - Observability concept
-  - Temporal Cloud
+  - explanation
+  - observability
+  - temporal-cloud
+  - reference
 ---
 
 Temporal tracks the following metrics for your various Namespaces.

@@ -4,7 +4,9 @@ title: Get started - Certificates
 sidebar_label: Issue CA certificates
 description: Learn requirements for CA certificates
 tags:
-  - guide-context
+  - explanation
+  - temporal-cloud
+  - certificates
 ---
 
 You must provide your own certificates to access Temporal Cloud.

@@ -4,7 +4,9 @@ title: How to manage certificates in Temporal Cloud
 sidebar_label: Manage certificates
 description: Certificates needed for Temporal Cloud and Worker Processes
 tags:
-  - guide-context
+  - intro
+  - temporal-cloud
+  - certificates
 ---
 
 [Temporal Cloud](https://temporal.io/cloud) requires security certificates for secure access and communication.
