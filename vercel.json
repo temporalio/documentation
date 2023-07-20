@@ -1843,7 +1843,7 @@
     },
     {
       "source": "/go-sessions/#use-cases",
-      "destination": "/dev-guide/go"
+      "destination": "/dev-guide/go/features#recreate-session"
     },
     {
       "source": "/configure-temporal-server#membership---required",
