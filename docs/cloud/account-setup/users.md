@@ -2,7 +2,7 @@
 id: users
 title: How to manage users in Temporal Cloud
 sidebar_label: Users
-sidebar_position: 1
+sidebar_position: 3
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
 toc_max_heading_level: 4
 tags:
