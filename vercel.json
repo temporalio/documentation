@@ -1790,10 +1790,6 @@
       "destination": "https://temporal.io/change-log/product-area/cloud"
     },
     {
-      "source": "/dev-guide/typescript/dev-guide/typescript/foundations#register-types",
-      "destination": "/dev-guide/typescript/foundations#register-types"
-    },
-    {
       "source": "/typescript/versioning",
       "destination": "/dev-guide/typescript/versioning"
     },
