@@ -28,7 +28,7 @@ The process for setting up observability includes the following steps:
 
 If you're following through with the examples provided here, ensure that you have the following:
 
-- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
+- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/certificates-intro#certificate-requirements) for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
   - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
@@ -44,7 +44,7 @@ If you're following through with the examples provided here, ensure that you hav
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - [Global Admin privileges](/cloud#account-level-roles) to the Temporal Cloud account.
-- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
+- [CA certificate and key](/cloud/certificates-intro) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 
@@ -265,7 +265,7 @@ In this article, we will configure our dashboards using the UI.
 3. Add your metrics queries:
    - For Temporal Cloud metrics, expand the **Metrics browser** and select the metrics you want to see.
      You can also select associated labels and values to sort the data on the query.
-     The documentation on [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics#available-performance-metrics) lists metrics emitted from Temporal Cloud.
+     The documentation on [Cloud metrics](/cloud/metrics-intro#available-performance-metrics) lists metrics emitted from Temporal Cloud.
    - For Temporal SDK metrics, expand the **Metrics browser** and select the metrics you want to see.
      A list of metrics on Worker performance are described in [Developer's Guide - Worker performance](/dev-guide/worker-performance).
      All metrics related to SDKs are described in the [SDK metrics](/references/sdk-metrics) reference.

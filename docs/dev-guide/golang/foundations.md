@@ -23,16 +23,6 @@ import TabItem from '@theme/TabItem';
 
 The Foundations section of the Temporal Developer's guide covers the minimum set of concepts and implementation details needed to build and run a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, all the relevant steps to start a [Workflow Execution](#develop-workflows) that executes an [Activity](#develop-activities).
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - <a class="tdlp" href="#run-a-development-server">Run a development Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to install Temporal CLI and run a development server</span><br /><br /><span class="tdlppd">undefined</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#run-a-development-server">Learn more</a></span></span></a>
@@ -243,19 +233,19 @@ When you connect to [Temporal Cloud](/cloud), you need to provide additional con
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Access to Temporal Cloud requires a certificate from you.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 To connect to and run Workflows through Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud-context/certificates-requirements).
+  See <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
 - Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Access to Temporal Cloud requires a certificate from you.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
@@ -479,7 +469,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
 - `workflow.Selector` This is a replacement for the `select` statement.
-  Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
+  Learn more on the <a class="tdlp" href="/dev-guide/go/features#selectors">Go SDK Selectors<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Go SDK Selectors</span><br /><br /><span class="tdlppd">Implementing Selectors in the Temporal Go SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#selectors">Learn more</a></span></span></a> page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/dev-guide/go/observability#tracing) for more information about context propagation.
 
@@ -632,7 +622,7 @@ The call to spawn an Activity Execution generates the [ScheduleActivityTask](/re
 This results in the set of three <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> related Events ([ActivityTaskScheduled](/references/events/#activitytaskscheduled), [ActivityTaskStarted](/references/events/#activitytaskstarted), and ActivityTask[Closed])in your Workflow Execution Event History.
 
 A single instance of the Activities implementation is shared across multiple simultaneous Activity invocations.
-Therefore, the Activity implementation code must be _stateless_.
+Activity implementation code should be _idempotent_.
 
 The values passed to Activities through invocation parameters or returned through a result value are recorded in the Execution history.
 The entire Execution history is transferred from the Temporal service to Workflow Workers when a Workflow state needs to recover.
@@ -1469,19 +1459,19 @@ To run a Worker that uses [Temporal Cloud](/cloud), you need to provide addition
 - mTLS CA certificate.
 - mTLS private key.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Access to Temporal Cloud requires a certificate from you.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 
 To run a Worker that talks to Temporal Cloud, you need the following:
 
 - A compatible mTLS CA certificate and mTLS private key that has been added to your Namespace.
-  See [certificate requirements](/cloud-context/certificates-requirements).
+  See <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Requirements for CA certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates provided to Temporal for your Namespaces must meet certain requirements.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
 - Your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-id">Temporal Cloud Namespace Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Id?</span><br /><br /><span class="tdlppd">A Cloud Namespace Id is a globally unique identifier for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-id">Learn more</a></span></span></a>, which includes your <a class="tdlp" href="/cloud/index#temporal-cloud-namespace-name">Temporal Cloud Namespace Name<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Cloud Namespace Name?</span><br /><br /><span class="tdlppd">A Cloud Namespace Name is a customer-supplied name for a Namespace in Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-namespace-name">Learn more</a></span></span></a> and the unique five- or six-digit <a class="tdlp" href="/cloud/index#temporal-cloud-account-id">Temporal Cloud Account Id<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cloud Account Id?</span><br /><br /><span class="tdlppd">A Temporal Cloud Account Id is a unique identifier for a customer.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/index#temporal-cloud-account-id">Learn more</a></span></span></a> that is appended to it.
   This information can be found in the URL of your Namespace; for example, `https://cloud.temporal.io/namespaces/yournamespace.a2fx6/`.
   Remember that the Namespace Id must include the Account Id: `yournamespace.a2fx6`.
 
-For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Access to Temporal Cloud requires a certificate from you.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+For more information about managing and generating client certificates for Temporal Cloud, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
 
 For more information about configuring TLS to secure inter- and intra-network communication for a Temporal Cluster, see [Temporal Customization Samples](https://github.com/temporalio/samples-server).
 

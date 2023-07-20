@@ -46,7 +46,7 @@ The `tcld account metrics accepted-client-ca` commands manage the end-entity cer
 
 :::info
 
-The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
+The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
 
 :::
 
@@ -63,7 +63,7 @@ The `tcld account metrics accepted-client-ca add` command adds end-entity certif
 
 :::info
 
-The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
+The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
 
 :::
 
@@ -85,7 +85,7 @@ Alias: `-r`
 tcld account metrics accepted-client-ca add --request-id <request_id> --ca-certificate <encoded_certificate>
 ```
 
-##### `--resource-version`
+#### `--resource-version`
 
 Specify a resource version (ETag) to update from. If not specified, the latest version is used.
 
@@ -97,7 +97,7 @@ Alias: `-v`
 tcld account metrics accepted-client-ca add --resource-version <etag> --ca-certificate <encoded_certificate>
 ```
 
-##### `--ca-certificate`
+#### `--ca-certificate`
 
 _Required modifier unless `--ca-certificate-file` is specified_
 
@@ -113,7 +113,7 @@ Alias: `-c`
 tcld account metrics accepted-client-ca add --ca-certificate <encoded_certificate>
 ```
 
-##### `--ca-certificate-file`
+#### `--ca-certificate-file`
 
 _Required modifier unless `--ca-certificate` is specified_
 
@@ -231,7 +231,7 @@ The `tcld account metrics accepted-client-ca set` command sets the end-entity ce
 
 :::info
 
-The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
+The end-entity certificates for the metrics endpoint must chain up to the CA certificate used for the account. For more information, see <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a>.
 
 :::
 

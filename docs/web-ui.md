@@ -45,7 +45,7 @@ Users can list Workflow Executions by any of the following:
 - <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Type?</span><br /><br /><span class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></span></span></a>
 - Start time
 - End time
-- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>
+- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>
 
 For start time and end time, users can set their preferred date and time format as one of the following:
 
@@ -120,7 +120,7 @@ Click a Schedule to see details, such as configured frequency, start and end tim
 
 On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/#account-level-roles).
 
-Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/how-to-monitor-temporal-cloud-metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
+Click **Settings** to see and manage the list of users in your account and to set up integrations such as <a class="tdlp" href="/cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui">Observability<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui">Learn more</a></span></span></a> and [Audit logging](/cloud/how-to-manage-audit-logging).
 
 On self-hosted Temporal Clusters, manage your users, metrics, and logging in your <a class="tdlp" href="/references/configuration#">server configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#">Learn more</a></span></span></a>.
 

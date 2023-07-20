@@ -27,16 +27,6 @@ import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - [How to develop Signals](#signals)
@@ -275,20 +265,15 @@ if err != nil {
 // ...
 ```
 
-The `QueryWorkflowWithOptions()` API provides similar functionality, but with the ability to set additional configurations through [QueryWorkflowWithOptionsRequest](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsRequest).
-When using this API, you will also receive a structured response of type [QueryWorkflowWithOptionsResponse](https://pkg.go.dev/go.temporal.io/sdk/client#QueryWorkflowWithOptionsResponse).
+The value of `response` returned by the Query needs to be decoded into `result`.
+Because this is a future, use `Get()` on `response` to get the result, such as a string in this example.
 
 ```go
-// ...
-response, err := temporalClient.QueryWorkflowWithOptions(context.Background(), &client.QueryWorkflowWithOptionsRequest{
-    WorkflowID: workflowID,
-    RunID: runID,
-    QueryType: queryType,
-    Args: args,
-})
-if err != nil {
+var result string
+if err != response.Get(&result); err != nil {
   // ...
 }
+log.Println("Received Query result. Result: " + result)
 ```
 
 ## Updates
@@ -1203,7 +1188,7 @@ Use Namespaces to isolate your Workflow Executions according to your needs.
 For example, you can use Namespaces to match the development lifecycle by having separate `dev` and `prod` Namespaces.
 You could also use them to ensure Workflow Executions between different teams never communicate - such as ensuring that the `teamA` Namespace never impacts the `teamB` Namespace.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a> to create and manage a Namespace from the UI, or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces from the command-line interface.
 
 On self-hosted Temporal Cluster, you can register and manage your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
@@ -1215,7 +1200,7 @@ You must register a Namespace with the Temporal Cluster before setting it in the
 
 Registering a Namespace creates a Namespace on the Temporal Cluster or Temporal Cloud.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to create Namespaces.
 
 On self-hosted Temporal Cluster, you can register your Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
@@ -1251,7 +1236,7 @@ To update your Namespace using tctl, use the <a class="tdlp" href="/tctl-v1/name
 
 You can get details for your Namespaces, update Namespace configuration, and deprecate or delete your Namespaces.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud-context/namespaces-create) or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a Namespace in Temporal Cloud</span><br /><br /><span class="tdlppd">To create a Namespace in Temporal Cloud, use either Temporal Cloud UI or tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a> or [tcld commands](https://docs.temporal.io/cloud/tcld/namespace/) to manage Namespaces.
 
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 
@@ -1259,7 +1244,7 @@ Use a custom <a class="tdlp" href="/security#authorizer-plugin">Authorizer<span 
 
 You must register a Namespace with the Temporal Cluster before setting it in the Temporal Client.
 
-On Temporal Cloud, use the [Temporal Cloud UI](/cloud/how-to-manage-namespaces-in-temporal-cloud) or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
+On Temporal Cloud, use the <a class="tdlp" href="/cloud/account-setup/namespaces#">Temporal Cloud UI<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#">Learn more</a></span></span></a> or [tcld commands](/cloud/tcld/namespace/) to manage Namespaces.
 
 On self-hosted Temporal Cluster, you can manage your registered Namespaces using tctl (recommended) or programmatically using APIs. Note that these APIs and tctl commands will not work with Temporal Cloud.
 

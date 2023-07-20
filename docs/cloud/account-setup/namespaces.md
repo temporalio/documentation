@@ -32,7 +32,7 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 :::tip
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
+If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/support-create-ticket).
 
 :::
 
@@ -44,7 +44,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/#cloud-namespace) and region.
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
-- [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace.
+- <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">CA certificate<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a> for the Namespace.
 - [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
 - [Permissions](/cloud/#namespace-level-permissions) for each user.
 
@@ -61,7 +61,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
-   (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).)
+   (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/support-create-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
    For details, see [Securing your data](/production-readiness/develop#securing-your-data).
@@ -100,8 +100,8 @@ To edit a Namespace (including custom Search Attributes, certificates, certifica
 On the **Edit** page, you can do the following:
 
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
-- [Manage CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud).
-- [Manage certificate filters](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters-using-temporal-cloud-ui).
+- <a class="tdlp" href="/cloud/account-setup/certificates#">Manage CA certificates<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
+- <a class="tdlp" href="/cloud/account-setup/certificates#manage-certificate-filters-using-temporal-cloud-ui">Manage certificate filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#manage-certificate-filters-using-temporal-cloud-ui">Learn more</a></span></span></a>.
 - Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
   Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
 - Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
@@ -121,10 +121,10 @@ To list Namespaces and get information about them, use the following [tcld](/clo
 - <a class="tdlp" href="/cloud/tcld/namespace#get">tcld namespace get<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace get</span><br /><br /><span class="tdlppd">How to get information about a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#get">Learn more</a></span></span></a>
 
 To manage certificates, use the <a class="tdlp" href="/cloud/tcld/namespace#accepted-client-ca">tcld namespace accepted-client-ca<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace accepted-client-ca</span><br /><br /><span class="tdlppd">How to manage the client CA certificates for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#accepted-client-ca">Learn more</a></span></span></a> commands.
-For more information, see [How to manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud).
+For more information, see <a class="tdlp" href="/cloud/account-setup/certificates#">How to manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>.
 
 To manage certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#certificate-filters">Learn more</a></span></span></a> commands.
-For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
+For more information, see <a class="tdlp" href="/cloud/account-setup/certificates#manage-certificate-filters">How to manage certificate filters in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#manage-certificate-filters">Learn more</a></span></span></a>.
 
 ## Delete a Namespace
 

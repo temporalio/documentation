@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 20 2023 09:40:08 AM -0400
+Last assembled: Thursday July 20 2023 12:51:54 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
-89 guide configurations found.
+90 guide configurations found.
 
-1483 information nodes found.
+1490 information nodes found.
 
-1247 information nodes are attached to guides.
+1254 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -24,6 +24,8 @@ concepts/what-is-advanced-visibility -> /visibility#advanced-visibility
 
 clusters/how-to-upgrade-the-temporal-server-version -> #upgrade-server
 
+concepts/what-is-dual-visibility -> /visibility#dual-visibility
+
 clusters/how-to-set-up-mysql-visibility-store -> #mysql
 
 clusters/how-to-set-up-postgresql-visibility-store -> #postgresql
@@ -37,6 +39,10 @@ clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster -> #elasticsearc
 clusters/how-to-set-up-visibility-in-a-temporal-cluster -> #supported-databases
 
 references/configuration -> /references/configuration#sql
+
+references/dynamic-configuration -> /references/dynamic-configuration#secondary-visibility-settings
+
+concepts/what-is-cluster-configuration -> /clusters#cluster-configuration
 
 concepts/what-is-archival -> /clusters#archival
 
@@ -79,6 +85,8 @@ concepts/what-is-a-run-id -> /workflows#run-id
 concepts/what-is-a-task-queue -> /workers#task-queue
 
 concepts/what-is-a-state-transition -> /workflows#state-transition
+
+cloud/metrics-intro -> /cloud/metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui
 
 concepts/what-is-an-activity-execution -> /activities#activity-execution
 
@@ -264,6 +272,8 @@ cloud/tcld/account/metrics/disable -> #disable
 
 cloud/tcld/account/metrics/accepted-client-ca/index -> #accepted-client-ca
 
+cloud/certificates-intro -> /cloud/account-setup/certificates#certificate-requirements
+
 cloud/tcld/account/metrics/accepted-client-ca/add -> #add
 
 cloud/tcld/account/metrics/accepted-client-ca/list -> #list
@@ -351,8 +361,6 @@ concepts/what-is-a-child-workflow-execution -> /workflows#child-workflow
 concepts/what-is-an-activity -> /activities#
 
 concepts/what-is-an-activity-task -> /workers#activity-task
-
-concepts/what-is-cluster-configuration -> /clusters#dynamicconfiguration
 
 concepts/what-is-a-retry-policy -> /retry-policies#
 
@@ -478,7 +486,7 @@ java/namespaces -> /dev-guide/java/features#namespaces
 
 clusters/how-to-set-up-archival -> /cluster-deployment-guide#set-up-archival
 
-references/dynamic-configuration -> /references/dynamic-configuration#
+cloud/prometheus-grafana-setup -> /cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana
 
 concepts/what-is-a-default-data-converter -> #default-data-converter
 
@@ -487,6 +495,8 @@ go/custom-payload-conversion -> /dev-guide/go/features#custom-payload-conversion
 java/custom-payload-conversion -> /dev-guide/java/features#custom-payload-conversion
 
 concepts/what-is-a-retention-period -> /clusters#retention-period
+
+cloud/namespaces-intro -> #
 
 go/register-namespaces -> /dev-guide/go/features#register-namespace
 
@@ -531,6 +541,8 @@ java/add-sdk -> /dev-guide/java/foundations#install-a-temporal-sdk
 python/add-sdk -> /dev-guide/python/foundations#install-a-temporal-sdk
 
 typescript/add-sdk -> /dev-guide/typescript/foundations#install-a-temporal-sdk
+
+clusters/how-to-set-up-dual-visibility -> /cluster-deployment-guide#dual-visibility
 
 clusters/how-to-create-custom-search-attribute-keys -> /cluster-deployment-guide#create-custom-search-attributes
 
@@ -584,6 +596,8 @@ python/child-workflows -> /dev-guide/python/features#child-workflows
 
 typescript/child-workflows -> /dev-guide/typescript/features#child-workflows
 
+go/how-to-set-workeroptions-in-go -> /dev-guide/go/foundations#stickyscheduletostarttimeout
+
 concepts/what-is-a-worker-session -> #worker-session
 
 go/worker-sessions -> /dev-guide/go/features#worker-sessions
@@ -597,6 +611,8 @@ php/developing-workflows -> /dev-guide/php/foundations#develop-workflows
 python/developing-workflows -> /dev-guide/python/foundations#develop-workflows
 
 typescript/developing-workflows -> /dev-guide/typescript/foundations#develop-workflows
+
+go/versioning -> /dev-guide/go/versioning#
 
 java/versioning -> /dev-guide/java/versioning#
 
@@ -692,7 +708,11 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud/certificates-filters -> #manage-certificate-filters
+
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
+
+cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
 
 concepts/what-is-a-reset -> /workflows#reset
 
@@ -896,6 +916,8 @@ typescript/observability -> /dev-guide/typescript/observability#tracing
 
 concepts/what-is-a-task-token -> /activities#task-token
 
+cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
+
 clusters/how-to-install-temporal-cli -> #run-a-development-server
 
 typescript/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
@@ -940,10 +962,14 @@ go/logging -> /dev-guide/go/observability#logging
 
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
+cloud/certificates-requirements -> /cloud/account-setup/certificates#certificate-requirements
+
+go/selectors -> /dev-guide/go/features#selectors
+
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-cloud/certificates-intro -> /cloud/account-setup/certificates#
+cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
 

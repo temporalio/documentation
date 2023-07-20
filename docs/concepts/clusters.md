@@ -150,7 +150,7 @@ Each History Shard maintains the Workflow Execution Event History, Workflow Exec
 - Internal Timer Task Queue: Durably persists Timers.
 - Internal Replicator Task Queue: Asynchronously replicates Workflow Executions from active Clusters to other passive Clusters.
   (Relies on the experimental Multi-Cluster feature.)
-- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> index.
+- Internal Visibility Task Queue: Pushes data to the <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> index.
 
 ### Matching Service
 
@@ -200,6 +200,8 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
 
+When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
+
 <!-- TODO link up to working API usage examples -->
 
 ## Persistence
@@ -221,9 +223,9 @@ The database stores the following types of data:
 - <a class="tdlp" href="#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#visibility">Learn more</a></span></span></a> data: Enables operations like "show all running Workflow Executions".
   For production environments, we recommend using Elasticsearch as your Visibility store.
 
-An Elasticsearch database must be configured in a self-hosted Cluster to enable <a class="tdlp" href="/visibility#advanced-visibility">Advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
+An Elasticsearch database must be configured in a self-hosted Cluster to enable <a class="tdlp" href="/visibility#advanced-visibility">advanced Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is advanced Visibility?</span><br /><br /><span class="tdlppd">Advanced Visibility, within the Temporal Platform, is the subsystem and APIs that enable the listing, filtering, and sorting of Workflow Executions through an SQL-like query syntax.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#advanced-visibility">Learn more</a></span></span></a> on Temporal Server versions 1.19.1 and earlier.
 
-With Temporal Server version 1.20 and later, Advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later), and Elasticsearch.
+With Temporal Server version 1.20 and later, advanced Visibility features are available on SQL databases like MySQL (version 8.0.17 and later), PostgreSQL (version 12 and later), SQLite (v3.31.0 and later), and Elasticsearch.
 
 #### Dependency versions
 
@@ -243,13 +245,25 @@ You can verify supported databases in the [Temporal Server release notes](https:
 
 ## Visibility
 
+:::tip Support, stability, and dependency info
+
+- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
+- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+
+:::
+
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
 The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
 
 - [How to set up a Visibility store](/cluster-deployment-guide#visibility-store)
 
-A Visibility store can be configured to provide [Standard Visibility](/visibility#standard-visibility) and [Advanced Visibility](/visibility#advanced-visibility) features.
+With Temporal Server v1.21, you can set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> to migrate your Visibility store from one database to another.
+
+<!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
+
+Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
 
 ## Archival
 
@@ -286,7 +300,7 @@ Depending on how you want to deploy your self-hosted Temporal Cluster, your stat
 
 - Temporal Services—Frontend, History, Matching, Worker
 - Membership ports for the Temporal Services
-- Persistence (including History Shard count), Visibility and Advanced Visibility, Archival store setups.
+- Persistence (including History Shard count), Visibility, Archival store setups.
 - TLS, authentication, authorization
 - Server log level
 - Metrics
@@ -343,7 +357,7 @@ Setting mTLS for `internode` and `frontend` separately lets you use different ce
 
 Use CA certificates to authenticate client connections to your Temporal Cluster.
 
-On Temporal Cloud, you can [set your CA certificates in your Temporal Cloud settings](/cloud/how-to-manage-certificates-in-temporal-cloud) and use the end-entity certificates in your client calls.
+On Temporal Cloud, you can <a class="tdlp" href="/cloud/account-setup/certificates#">set your CA certificates in your Temporal Cloud settings<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a> and use the end-entity certificates in your client calls.
 
 On self-hosted Temporal Clusters, you can restrict access to Temporal Cluster endpoints by using the `clientCAFiles` or `clientCAData` property and the <a class="tdlp" href="/references/configuration#tls"> `requireClientAuth`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a> property in your Cluster configuration.
 These properties can be specified in both the `internode` and `frontend` sections of the <a class="tdlp" href="/references/configuration#tls">mTLS configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#tls">Learn more</a></span></span></a>.
@@ -392,8 +406,8 @@ Temporal Cloud emits metrics through a Prometheus HTTP API endpoint, which can b
 
 For details on Cloud metrics and setup, see the following:
 
-- [Temporal Cloud metrics reference](/cloud/how-to-monitor-temporal-cloud-metrics)
-- [Set up Grafana with Temporal Cloud observability to view metrics](/kb/prometheus-grafana-setup-cloud#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana)
+- <a class="tdlp" href="/cloud/metrics#">Temporal Cloud metrics reference<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana">Set up Grafana with Temporal Cloud observability to view metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Grafana with Temporal Cloud observability to view metrics</span><br /><br /><span class="tdlppd">Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/metrics#data-sources-configuration-for-temporal-cloud-and-sdk-metrics-in-grafana">Learn more</a></span></span></a>
 
 On self-hosted Temporal Clusters, expose Prometheus endpoints in your Cluster configuration and configure Prometheus to scrape metrics from the endpoints.
 You can then set up your observability platform (such as Grafana) to use Prometheus as a data source.

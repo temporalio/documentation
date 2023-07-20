@@ -8,7 +8,7 @@ tags:
 ---
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-[Create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) that includes the following information:
+[Create a support ticket](/cloud/support-create-ticket) that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate

@@ -10,10 +10,10 @@ tags:
   - tcld CLI
 ---
 
-To add a certificate to a metrics endpoint, use [tcld account metrics accepted-client-ca add](/cloud/tcld/account/metrics/accepted-client-ca/add).
+To add a certificate to a metrics endpoint, use [`tcld account metrics accepted-client-ca add`](/cloud/tcld/account/metrics/accepted-client-ca/add).
 
-To enable a metrics endpoint, use [tcld account metrics enable](/cloud/tcld/account/metrics/enable).
+To enable a metrics endpoint, use [`tcld account metrics enable`](/cloud/tcld/account/metrics/enable).
 
-To disable a metrics endpoint, use [tcld account metrics disable](/cloud/tcld/account/metrics/disable).
+To disable a metrics endpoint, use [`tcld account metrics disable`](/cloud/tcld/account/metrics/disable).
 
-See the [tcld account metrics command](/cloud/tcld/account/metrics) reference for details.
+See the [tcld account metrics command](/cloud/tcld/account/metrics/index) reference for details.

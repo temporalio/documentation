@@ -111,17 +111,19 @@ If you purchase Temporal Cloud credits (as outlined earlier), running storage co
 
 With a subscription to Temporal Cloud, you also gain access to our support organization of developer success engineers and solution architects. Our experts assist with a range of work streams from Workflow design reviews to setting up observability to break/fix support with an agreed-upon set of SLAs.
 
-The Temporal Developer Success team is composed of open source contributors and is backed by the main contributors to the open source Temporal project. They provide deep knowledge of how Temporal works and how you can optimize your deployment.
+The members of the Temporal Developer Success team are engineers who are Temporal experts and open source contributors. They're backed by the main contributors to the open source Temporal project. They provide deep knowledge of how Temporal works and how you can optimize your deployment.
 
 They also investigate your Workflows to optimize their environments and possibly reduce costs associated with Actions and storage. They ensure your instance is performance tuned and help with other ongoing maintenance, like upgrades of the Temporal software and maintenance of the platform.
 
-If an issue occurs, the team provides support through email, phone, forums, knowledge base, and an optional dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
+If an issue occurs, the team provides support through our <a class="tdlp" href="/cloud/introduction/support#support-ticket">support portal<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a>, [community forum](https://community.temporal.io/), and (with Premium support) a dedicated Slack channel. Temporal offers two levels of support defined by their availability and SLAs.
 
-| **Type**       | **Basic support**                                                                            | **Premium support**                                                                    |
-| -------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Availability   | 0900–1700 Mon–Fri (Pacific Time)                                                             | 24×7                                                                                   |
-| Response times | P0: 1 business hour<br/>P1: 4 business hours<br/>P2: 1 business days<br/>P3: 2 business days | P0: 30 minutes<br/>P1: 1 business hour<br/>P2: 4 business hours<br/>P3: 1 business day |
-| Pricing        | Greater of $200 or 10% monthly usage (per month)                                             | Greater of $2,000 or 10% monthly activity (per month)                                  |
+|                     | **Basic**                                                                                   | **Premium**                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Response times      | P0: 1 business hour<br/>P1: 4 business hours<br/>P2: 1 business day<br/>P3: 2 business days | P0: 30 minutes<br/>P1: 1 business hour<br/>P2: 4 business hours<br/>P3: 1 business day |
+| Pricing (per month) | Greater of $200 or 10% monthly usage                                                        | Greater of $2,000 or 10% monthly activity                                              |
+
+Business hours for Temporal Support are 0500–1700 Monday–Friday (Pacific Time).
+For P0 issues, coverage is 24×7.
 
 ## SSO and SAML
 

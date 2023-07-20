@@ -18,7 +18,7 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 :::tip
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).
+If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/support-create-ticket).
 
 :::
 
@@ -30,7 +30,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 - [Namespace Name](/cloud/#cloud-namespace) and region.
 - [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
-- [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace.
+- [CA certificate](/cloud/certificates-intro#certificate-requirements) for the Namespace.
 - [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
 - [Permissions](/cloud/#namespace-level-permissions) for each user.
 
@@ -47,7 +47,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
-   (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).)
+   (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/support-create-ticket).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
    For details, see [Securing your data](/production-readiness/develop#securing-your-data).

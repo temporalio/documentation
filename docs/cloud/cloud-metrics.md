@@ -1,5 +1,5 @@
 ---
-id: cloud-metrics
+id: metrics
 title: How to monitor Temporal Cloud metrics
 sidebar_label: Cloud metrics
 sidebar_position: 7
@@ -22,7 +22,7 @@ You can use your own observability tool to query an endpoint and review Namespac
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.
 Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
-For more information about CA certificates in Temporal Cloud, see [Certificate requirements](https://docs.temporal.io/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements).
+For more information about CA certificates in Temporal Cloud, see [Certificate requirements](https://docs.temporal.io/cloud/certificates-intro#certificate-requirements).
 
 ## Configure via UI
 
@@ -43,7 +43,7 @@ To assign a certificate and generate your metrics endpoint, follow these steps:
 
 After the page refreshes, the new metrics endpoint appears below **Endpoint**, in the form `https://<account-id>.tmprl.cloud/prometheus`.
 Use the endpoint to configure your observability tool—for example, [Grafana](https://grafana.com/) with [this dashboard](https://github.com/temporalio/dashboards/blob/master/cloud/temporal_cloud.json).
-For more information, see [Set up Grafana with Temporal Cloud](/kb/prometheus-grafana-setup-cloud).
+For more information, see <a class="tdlp" href="#prometheus-&-grafana-setup">Set up Grafana with Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set up Grafana with Temporal Cloud observability to view metrics</span><br /><br /><span class="tdlppd">Temporal Cloud and SDKs generate metrics for monitoring performance and troubleshooting errors.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#prometheus-&-grafana-setup">Learn more</a></span></span></a>.
 
 You can also query via the [Prometheus HTTP API](https://prometheus.io/docs/prometheus/latest/querying/api/) at URLs like:
 
@@ -80,13 +80,13 @@ $ curl --cert client.pem --key client-key.pem "https://<account-id>.tmprl.cloud/
 
 ## Configure via CLI (tcld)
 
-To add a certificate to a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#add">tcld account metrics accepted-client-ca add<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics accepted-client-ca add</span><br /><br /><span class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#add">Learn more</a></span></span></a>.
+To add a certificate to a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#add"> `tcld account metrics accepted-client-ca add`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics accepted-client-ca add</span><br /><br /><span class="tdlppd">How to add end-entity certificates to the metrics endpoint of a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#add">Learn more</a></span></span></a>.
 
-To enable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#enable">tcld account metrics enable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics enable</span><br /><br /><span class="tdlppd">How to enable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#enable">Learn more</a></span></span></a>.
+To enable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#enable"> `tcld account metrics enable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics enable</span><br /><br /><span class="tdlppd">How to enable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#enable">Learn more</a></span></span></a>.
 
-To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#disable">tcld account metrics disable<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics disable</span><br /><br /><span class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#disable">Learn more</a></span></span></a>.
+To disable a metrics endpoint, use <a class="tdlp" href="/cloud/tcld/account#disable"> `tcld account metrics disable`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics disable</span><br /><br /><span class="tdlppd">How to disable the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#disable">Learn more</a></span></span></a>.
 
-See the [tcld account metrics command](/cloud/tcld/account/metrics) reference for details.
+See the <a class="tdlp" href="/cloud/tcld/account#metrics">tcld account metrics command<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld account metrics</span><br /><br /><span class="tdlppd">How to configure the metrics endpoint for a Temporal Cloud account using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/account#metrics">Learn more</a></span></span></a> reference for details.
 
 ## Available metrics
 
@@ -97,6 +97,10 @@ Temporal tracks the following metrics for your various Namespaces.
 - temporal_cloud_v0_poll_success_count
 - temporal_cloud_v0_poll_success_sync_count
 - temporal_cloud_v0_poll_timeout_count
+- temporal_cloud_v0_schedule_action_success_count
+- temporal_cloud_v0_schedule_buffer_overruns_count
+- temporal_cloud_v0_schedule_missed_catchup_window_count
+- temporal_cloud_v0_schedule_rate_limited_count
 - temporal_cloud_v0_service_latency_bucket
 - temporal_cloud_v0_service_latency_count
 - temporal_cloud_v0_service_latency_sum
@@ -112,7 +116,7 @@ Temporal tracks the following metrics for your various Namespaces.
 Metrics for all Namespaces in your account are available from the metrics endpoint.
 The `temporal_namespace` label identifies the Namespace that is associated with each metric so that each user can build their own dashboard to meet their needs.
 
-Metrics lag real-time performance by about one minute.
+Metrics lag real-time performance by approximately one minute.
 
 We retain raw metrics for seven days.
 
@@ -136,7 +140,7 @@ The process for setting up observability includes the following steps:
 
 If you're following through with the examples provided here, ensure that you have the following:
 
-- Root CA certificates and end-entity certificates. See [Certificate requirements](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for details.
+- Root CA certificates and end-entity certificates. See <a class="tdlp" href="/cloud/account-setup/certificates#certificate-requirements">Certificate requirements<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#certificate-requirements">Learn more</a></span></span></a> for details.
 - Set up your connections to Temporal Cloud using an SDK of your choice and have some Workflows running on Temporal Cloud. See Connect to a Cluster for details.
 
   - [Go](/dev-guide/go/foundations#connect-to-a-cluster)
@@ -152,7 +156,7 @@ If you're following through with the examples provided here, ensure that you hav
 Before you set up your Temporal Cloud metrics, ensure that you have the following:
 
 - [Global Admin privileges](/cloud#account-level-roles) to the Temporal Cloud account.
-- [CA certificate and key](/cloud/how-to-manage-certificates-in-temporal-cloud) for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
+- <a class="tdlp" href="/cloud/account-setup/certificates#">CA certificate and key<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a> for the Observability integration. You will need the certificate to set up the Observability endpoint in Temporal Cloud.
 
 The following steps describe how to set up Observability on Temporal Cloud to generate an endpoint:
 
@@ -373,7 +377,7 @@ In this article, we will configure our dashboards using the UI.
 3. Add your metrics queries:
    - For Temporal Cloud metrics, expand the **Metrics browser** and select the metrics you want to see.
      You can also select associated labels and values to sort the data on the query.
-     The documentation on [Cloud metrics](/cloud/how-to-monitor-temporal-cloud-metrics#available-performance-metrics) lists metrics emitted from Temporal Cloud.
+     The documentation on <a class="tdlp" href="#available-performance-metrics">Cloud metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to monitor Temporal Cloud metrics</span><br /><br /><span class="tdlppd">Configure and track performance metrics for Temporal Cloud.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#available-performance-metrics">Learn more</a></span></span></a> lists metrics emitted from Temporal Cloud.
    - For Temporal SDK metrics, expand the **Metrics browser** and select the metrics you want to see.
      A list of metrics on Worker performance are described in [Developer's Guide - Worker performance](/dev-guide/worker-performance).
      All metrics related to SDKs are described in the <a class="tdlp" href="/references/sdk-metrics#">SDK metrics<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">SDK metrics</span><br /><br /><span class="tdlppd">The Temporal SDKs emit metrics from Temporal Client usage and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/sdk-metrics#">Learn more</a></span></span></a> reference.

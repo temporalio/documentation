@@ -1,6 +1,6 @@
 {
   "file_name": "cloud-metrics.md",
-  "id": "cloud-metrics",
+  "id": "metrics",
   "file_dir": "cloud",
   "title": "How to monitor Temporal Cloud metrics",
   "sidebar_label": "Cloud metrics",

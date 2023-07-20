@@ -10,6 +10,6 @@ A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can [create](/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace) and [edit Namespaces](/cloud/how-to-manage-namespaces-in-temporal-cloud#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
+- **Namespace Admin:** Can [create](/cloud/namespaces-intro#create-a-namespace) and [edit Namespaces](/cloud/namespaces-intro#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace

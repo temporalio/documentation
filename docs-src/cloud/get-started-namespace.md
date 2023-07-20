@@ -9,4 +9,4 @@ tags:
 
 If you don't already have a Namespace (or want to create another), see the following:
 
-[Create a Namespace in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud/#create-a-namespace-in-temporal-cloud)
+[Create a Namespace in Temporal Cloud](/cloud/namespaces-create)

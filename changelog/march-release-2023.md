@@ -16,4 +16,4 @@ Since our last change log in January 2023, we published the following content:
 
 - The Temporal Cloud [Audit Logging guide](/cloud/how-to-manage-audit-logging) is now available.
 
-- Guidance on how to [submit a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) for Temporal Cloud users is now available.
+- Guidance on how to [submit a support ticket](/cloud/introduction/support#support-ticket) for Temporal Cloud users is now available.

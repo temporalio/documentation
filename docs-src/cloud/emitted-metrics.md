@@ -16,6 +16,10 @@ Temporal tracks the following metrics for your various Namespaces.
 - temporal_cloud_v0_poll_success_count
 - temporal_cloud_v0_poll_success_sync_count
 - temporal_cloud_v0_poll_timeout_count
+- temporal_cloud_v0_schedule_action_success_count
+- temporal_cloud_v0_schedule_buffer_overruns_count
+- temporal_cloud_v0_schedule_missed_catchup_window_count
+- temporal_cloud_v0_schedule_rate_limited_count
 - temporal_cloud_v0_service_latency_bucket
 - temporal_cloud_v0_service_latency_count
 - temporal_cloud_v0_service_latency_sum
@@ -31,6 +35,6 @@ Temporal tracks the following metrics for your various Namespaces.
 Metrics for all Namespaces in your account are available from the metrics endpoint.
 The `temporal_namespace` label identifies the Namespace that is associated with each metric so that each user can build their own dashboard to meet their needs.
 
-Metrics lag real-time performance by about one minute.
+Metrics lag real-time performance by approximately one minute.
 
 We retain raw metrics for seven days.

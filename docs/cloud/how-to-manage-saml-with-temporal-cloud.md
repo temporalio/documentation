@@ -132,7 +132,7 @@ To finish setting up Okta as your SAML IdP, see the next section, [Finish SAML c
 ## Finish SAML configuration
 
 After you configure SAML with your IdP, we can finish the configuration on our side.
-[Create a support ticket](/cloud/how-to-create-a-ticket-for-temporal-support) that includes the following information:
+<a class="tdlp" href="/cloud/introduction/support#support-ticket">Create a support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a> that includes the following information:
 
 - The sign-in URL from your application
 - The X.509 SAML sign-in certificate

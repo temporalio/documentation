@@ -22,11 +22,10 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 
 :::
 
-- [Get started with Temporal Cloud](/cloud/how-to-get-started-with-temporal-cloud)
-- [Manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud)
-- [Manage Namespaces in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud)
+- [Get started with Temporal Cloud](/cloud/get-started)
+- <a class="tdlp" href="/cloud/account-setup/certificates#">Manage certificates in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage certificates in Temporal Cloud</span><br /><br /><span class="tdlppd">Certificates needed for Temporal Cloud and Worker Processes</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/certificates#">Learn more</a></span></span></a>
+- <a class="tdlp" href="/cloud/account-setup/namespaces#">Manage Namespaces in Temporal Cloud<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#">Learn more</a></span></span></a>
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)
-- [Temporal Cloud release notes](/cloud/release-notes)
 
 ## Temporal Cloud Account Id
 
@@ -76,6 +75,6 @@ A Developer can assign permissions for a Namespace they create.
 
 For a Namespace, a user can have one of the following permissions:
 
-- **Namespace Admin:** Can [create](/cloud/how-to-manage-namespaces-in-temporal-cloud#create-a-namespace) and [edit Namespaces](/cloud/how-to-manage-namespaces-in-temporal-cloud#manage-namespaces); can create, rename, update, and delete [Workflows](/workflows)
+- **Namespace Admin:** Can <a class="tdlp" href="/cloud/account-setup/namespaces#create-a-namespace">create<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#create-a-namespace">Learn more</a></span></span></a> and <a class="tdlp" href="/cloud/account-setup/namespaces#manage-namespaces">edit Namespaces<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to manage Namespaces in Temporal Cloud</span><br /><br /><span class="tdlppd">You can create and manage Namespaces from your Temporal Cloud UI.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/account-setup/namespaces#manage-namespaces">Learn more</a></span></span></a>; can create, rename, update, and delete [Workflows](/workflows)
 - **Write:** Can create, rename, update, and delete Workflows within the Namespace
 - **Read-Only:** Can only read information from the Namespace

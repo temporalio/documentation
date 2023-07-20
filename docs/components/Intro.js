@@ -224,33 +224,6 @@ const appDevGuideLinks = {
   ],
 };
 
-const appByLang = {
-  listOne: [
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/go",
-      name: "Go",
-    },
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/java",
-      name: "Java",
-    },
-  ],
-  listTwo: [
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/php/introduction",
-      name: "PHP",
-    },
-    {
-      book: true,
-      path: "https://legacy-documentation-sdks.temporal.io/typescript/introduction",
-      name: "TypeScript",
-    },
-  ],
-};
-
 const clusterGuide = {
   listOne: [
     {
@@ -277,21 +250,26 @@ const cloudInfo = {
   listOne: [
     {
       book: true,
-      path: "/cloud/how-to-get-started-with-temporal-cloud",
+      path: "/cloud/introduction",
+      name: "Introduction",
+    },
+    {
+      book: true,
+      path: "/cloud/get-started",
       name: "Get started",
     },
     {
       book: true,
-      path: "/cloud/how-to-manage-certificates-in-temporal-cloud",
-      name: "Manage certificates",
-    },
-    {
-      book: true,
-      path: "/cloud/how-to-manage-namespaces-in-temporal-cloud",
-      name: "Manage Namespaces",
+      path: "/cloud/account-setup/",
+      name: "Account setup",
     },
   ],
   listTwo: [
+    {
+      book: true,
+      path: "/cloud/metrics",
+      name: "Metrics",
+    },
     {
       cli: true,
       path: "/cloud/tcld",
@@ -299,7 +277,7 @@ const cloudInfo = {
     },
     {
       exit: true,
-      path: "/cloud/release-notes",
+      path: "https://temporal.io/change-log/product-area/cloud",
       name: "Release notes",
     },
   ],
@@ -400,23 +378,6 @@ function Explained() {
         </p>
       </div>
       <div className="landing-card-section">
-        <a className="header-link" href="https://legacy-documentation-sdks.temporal.io/">
-          <h2 className="h2-landing">Legacy SDK docs</h2>
-        </a>
-        <p className="landing-card-p">
-          Developer's guide by language.{" "}
-          <span className="bold">
-            Most of this information is now included in the{" "}
-            <a className="nowrap" href="/dev-guide">
-              Developer's guide
-            </a>
-            .
-          </span>
-        </p>
-        <ul className="landing-card-list">{displayLinks(appByLang.listOne)}</ul>
-        <ul className="landing-card-list">{displayLinks(appByLang.listTwo)}</ul>
-      </div>
-      <div className="landing-card-section">
         <a className="header-link" href="/cluster-deployment-guide">
           <h2 className="h2-landing">Cluster deployment guide</h2>
         </a>
@@ -429,7 +390,6 @@ function Explained() {
           <a className="header-link" href="/cloud">
             <h2 className="h2-landing">Temporal Cloud</h2>
           </a>
-          <div className="badge-blue">early access</div>
         </div>
         <p className="landing-card-p">Temporal Cloud tools and how-to guides</p>
         <ul className="landing-card-list">{displayLinks(cloudInfo.listOne)}</ul>

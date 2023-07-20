@@ -18,16 +18,6 @@ tags:
 
 The observability section of the Temporal Developer's guide covers the many ways to view the current state of your <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>—that is, ways to view which [Workflow Executions](/workflows#workflow-execution) are tracked by the <a class="tdlp" href="/temporal#temporal-platform">Temporal Platform<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is the Temporal Platform?</span><br /><br /><span class="tdlppd">The Temporal Platform consists of a Temporal Cluster and Worker Processes.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-platform">Learn more</a></span></span></a> and the state of any specified Workflow Execution, either currently or at points of an execution.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 This section covers features related to viewing the state of the application, including:
 
 - [Metrics](#metrics)
@@ -172,7 +162,7 @@ The steps to using custom Search Attributes are:
 - Read the value of the Search Attribute:
   - On the Client by calling `DescribeWorkflow`.
   - In the Workflow by looking at `WorkflowInfo`.
-- Query Workflow Executions by the Search Attribute using a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>:
+- Query Workflow Executions by the Search Attribute using a <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>:
   - <a class="tdlp" href="/tctl-v1/workflow#list">In `tctl`<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tctl workflow list</span><br /><br /><span class="tdlppd">How to list open or closed Workflow Executions using tctl.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tctl-v1/workflow#list">Learn more</a></span></span></a>.
   - In code by calling `ListWorkflowExecutions`.
 
