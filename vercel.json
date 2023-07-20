@@ -1795,7 +1795,7 @@
     },
     {
       "source": "/typescript/versioning",
-      "destination": "/dev-guide/typescript"
+      "destination": "/dev-guide/typescript/versioning"
     },
     {
       "source": "/java/quick-start",
