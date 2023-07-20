@@ -4,7 +4,7 @@ title: Get started with Temporal Cloud
 sidebar_label: Get started
 description: Create an account, issue certificates, create a Namespace, invite users, and connect.
 tags:
-  - intro
+  - introduction
   - temporal-cloud
 ---
 

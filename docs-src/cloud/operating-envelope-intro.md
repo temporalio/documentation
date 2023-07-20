@@ -5,7 +5,7 @@ sidebar_label: Operating envelope
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
 tags:
   - temporal-cloud
-  - intro
+  - introduction
   - operations
 ---
 

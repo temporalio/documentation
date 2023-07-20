@@ -8,7 +8,7 @@ toc_max_heading_level: 4
 tags:
 - temporal-cloud
 - support
-- intro
+- introduction
 - how-to
 ---
 

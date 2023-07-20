@@ -4,7 +4,7 @@ title: How to monitor Temporal Cloud metrics
 sidebar_label: Cloud metrics
 description: Configure and track performance metrics for Temporal Cloud.
 tags:
-  - intro
+  - introduction
   - temporal-cloud
   - metrics
 ---

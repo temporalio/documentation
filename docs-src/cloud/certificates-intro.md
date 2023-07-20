@@ -4,7 +4,7 @@ title: How to manage certificates in Temporal Cloud
 sidebar_label: Manage certificates
 description: Certificates needed for Temporal Cloud and Worker Processes
 tags:
-  - intro
+  - introduction
   - temporal-cloud
   - certificates
 ---

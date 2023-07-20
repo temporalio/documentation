@@ -6,7 +6,7 @@ description: Learn how to invite users and manage their roles and permissions.
 tags:
   - temporal-cloud
   - temporal-cloud-account
-  - intro
+  - introduction
 ---
 
 - How to invite users to your Temporal Cloud Account

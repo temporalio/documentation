@@ -4,7 +4,7 @@ title: How to manage Namespaces in Temporal Cloud
 sidebar_label: Manage Namespaces
 description: You can create and manage Namespaces from your Temporal Cloud UI.
 tags:
-  - intro
+  - introduction
   - temporal-cloud
   - namespaces
 ---

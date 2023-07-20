@@ -7,7 +7,7 @@ description: The operating envelope of Temporal Cloud includes availability, reg
 toc_max_heading_level: 4
 tags:
 - temporal-cloud
-- intro
+- introduction
 - operations
 - explanation
 ---

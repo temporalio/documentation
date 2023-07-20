@@ -6,7 +6,7 @@ sidebar_position: 1
 description: Create Namespaces, use Namespace endpoints for access, and obtain Namespace information.
 toc_max_heading_level: 4
 tags:
-- intro
+- introduction
 - temporal-cloud
 - namespaces
 - term

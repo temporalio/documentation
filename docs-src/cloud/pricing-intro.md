@@ -6,7 +6,7 @@ description: Temporal Cloud pricing information.
 tags:
   - temporal-cloud
   - pricing
-  - intro
+  - introduction
 ---
 
 Temporal Cloud is a consumption-based service; you pay only for what you need when you need it. Pricing is flexible, transparent, and predictable, so you know your costs and never pay for unused capacity.

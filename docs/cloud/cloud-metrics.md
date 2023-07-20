@@ -6,7 +6,7 @@ sidebar_position: 7
 description: Configure and track performance metrics for Temporal Cloud.
 toc_max_heading_level: 4
 tags:
-- intro
+- introduction
 - temporal-cloud
 - metrics
 - how-to
