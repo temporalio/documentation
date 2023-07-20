@@ -1788,6 +1788,82 @@
     {
       "source": "/cloud/release-notes/:path*",
       "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/dev-guide/typescript/dev-guide/typescript/foundations#register-types",
+      "destination": "/dev-guide/typescript/foundations#register-types"
+    },
+    {
+      "source": "/typescript/versioning",
+      "destination": "/dev-guide/typescript"
+    },
+    {
+      "source": "/java/quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/java/how-to-provide-an-authorization-token-in-java",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/go/side-effect",
+      "destination": "/dev-guide/go/features#side-effects"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/tctl-next/workflow#reset",
+      "destination": "/cli"
+    },
+    {
+      "source": "/tctl-next/modifiers#--event-id",
+      "destination": "/cli/cmd-options#event-id"
+    },
+    {
+      "source": "/php/versioning#workflowgetversion",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/php/activities#local-activity",
+      "destination": "/dev-guide/php/foundations#develop-activities"
+    },
+    {
+      "source": "/kb/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates",
+      "destination": "/cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates"
+    },
+    {
+      "source": "/kb/additional-resources",
+      "destination": "/"
+    },
+    {
+      "source": "/external-resources/#how-temporal-works",
+      "destination": "/kb/how-to-explain-temporal#how-temporal-works"
+    },
+    {
+      "source": "/external-resources",
+      "destination": "/"
+    },
+    {
+      "source": "/go-sessions/#use-cases",
+      "destination": "/dev-guide/go"
+    },
+    {
+      "source": "/configure-temporal-server#membership---required",
+      "destination": "/blog/workflow-engine-principles#membership-and-routing-1350"
+    },
+    {
+      "source": "/archive-data#providers",
+      "destination": "/cluster-deployment-guide#providers"
+    },
+    {
+      "source": "/concepts/what-is-a-retention-period",
+      "destination": "/clusters#retention-period"
+    },
+    {
+      "source": "/archive-data",
+      "destination": "/cluster-deployment-guide#archival"
     }
   ]
 }
