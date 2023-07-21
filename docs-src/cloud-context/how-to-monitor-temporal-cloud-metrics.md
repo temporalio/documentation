@@ -12,7 +12,7 @@ You can use your own observability tool to query an endpoint and review Namespac
 
 To ensure security of your metrics, a CA certificate dedicated to observability is required.
 Only clients that use certificates signed by that CA, or that chain up to the CA, can query the metrics endpoint.
-For more information about CA certificates in Temporal Cloud, see [Certificate requirements](/docs-src/cloud-context/certificates-requirements#ca-certificates).
+For more information about CA certificates in Temporal Cloud, see [Certificate requirements](/cloud-context/certificates-requirements).
 
 <!--- How to configure a metrics endpoint in Temporal Cloud using Temporal Cloud UI --->
 
