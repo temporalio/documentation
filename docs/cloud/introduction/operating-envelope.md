@@ -1,6 +1,6 @@
 ---
 id: operating-envelope
-title: What is the operational envelope of Temporal Cloud?
+title: What is the operating envelope of Temporal Cloud?
 sidebar_label: Operating envelope
 sidebar_position: 1
 description: The operating envelope of Temporal Cloud includes availability, regions, throughput, and latency.
@@ -68,7 +68,7 @@ However, Temporal Cloud can provide more than 150,000 Actions per second.
 If your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
 Actions like Start or Signal Workflow Execution always receive higher priority than other Actions, even when throttled.
 
-To raise your quota, <a class="tdlp" href="/cloud/introduction/support#support-ticket">create a ticket for Temporal Support<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a>.
+To raise your quota, create a <a class="tdlp" href="/cloud/introduction/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a>.
 
 ## Latency
 

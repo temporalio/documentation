@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Thursday July 20 2023 17:58:39 PM -0400
+Last assembled: Friday July 21 2023 13:26:20 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
@@ -698,6 +698,18 @@ python/cron-jobs -> /dev-guide/python/features#temporal-cron-jobs
 
 typescript/cron-jobs -> /dev-guide/typescript/features#temporal-cron-jobs
 
+cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
+
+cloud/pricing-intro -> /cloud/introduction/pricing#
+
+cloud/support-intro -> /cloud/introduction/support#
+
+cloud/users-intro -> /cloud/account-setup/users#
+
+cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
+
+cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
+
 cloud/namespaces-create -> /cloud/account-setup/namespaces#create-a-namespace
 
 go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cloud
@@ -712,9 +724,9 @@ concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
 
 concepts/what-is-a-cloud-account-id -> #temporal-cloud-account-id
 
-concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
-
 cloud/support-create-ticket -> /cloud/introduction/support#support-ticket
+
+concepts/what-is-a-cloud-namespace-id -> /cloud/account-setup/namespaces#temporal-cloud-namespace-id
 
 cloud/what-is-an-action -> /cloud/introduction/pricing#action
 
@@ -971,17 +983,5 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-cloud/operating-envelope-intro -> /cloud/introduction/operating-envelope#
-
-cloud/pricing-intro -> /cloud/introduction/pricing#
-
-cloud/support-intro -> /cloud/introduction/support#
-
-cloud/saml-intro -> /cloud/how-to-manage-saml-with-temporal-cloud#
-
-cloud/what-is-audit-logging -> /cloud/how-to-manage-audit-logging#
-
-cloud/users-intro -> /cloud/account-setup/users#
 
 

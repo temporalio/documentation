@@ -65,7 +65,7 @@ To create a Namespace, a user must have the Developer or Global Admin account-le
 :::tip
 
 By default, each account has a quota of 10 Namespaces.
-If you want to increase this limit, open a [support ticket](https://docs.temporal.io/cloud/support-create-ticket).
+If you want to increase this limit, open a <a class="tdlp" href="/cloud/introduction/support#support-ticket">support ticket<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a>.
 
 :::
 
@@ -94,7 +94,7 @@ To create a Namespace in Temporal Cloud, gather the following information:
 1. In **Retention Period**, specify a value from 1 to 90 days.
    When choosing this value, consider your needs for Event History versus the cost of maintaining that Event History.
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
-   (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/support-create-ticket).)
+   (If you need to change this value later, contact <a class="tdlp" href="/cloud/introduction/support#support-ticket">Temporal Support<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to create a ticket for Temporal Support</span><br /><br /><span class="tdlppd">To request assistance from Temporal Support, create a ticket in Zendesk.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/introduction/support#support-ticket">Learn more</a></span></span></a>.)
 1. In **Certificate**, paste the CA certificate for this Namespace.
 1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
    For details, see [Securing your data](/production-readiness/develop#securing-your-data).
@@ -134,7 +134,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
 
-### General Guidance
+### General guidance
 
 Namespace configuration requires some consideration.
 Following are some general guidelines to consider.

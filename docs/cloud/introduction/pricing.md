@@ -1,6 +1,6 @@
 ---
 id: pricing
-title: What is the Temporal Cloud pricing
+title: What is the pricing for Temporal Cloud?
 sidebar_label: Pricing
 sidebar_position: 1
 description: Temporal Cloud pricing information

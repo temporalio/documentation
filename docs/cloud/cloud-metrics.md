@@ -2,7 +2,7 @@
 id: metrics
 title: How to monitor Temporal Cloud metrics
 sidebar_label: Metrics
-sidebar_position: 7
+sidebar_position: 6
 description: Configure and track performance metrics for Temporal Cloud.
 toc_max_heading_level: 4
 tags:
