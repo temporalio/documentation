@@ -10,5 +10,5 @@ tags:
 ---
 
 - How to invite users to your Temporal Cloud Account
-- What are the available Account level roles and permissions
-- What are the Namespace level roles and permissions
+- What are the available Account level roles and permissions?
+- What are the Namespace level roles and permissions?

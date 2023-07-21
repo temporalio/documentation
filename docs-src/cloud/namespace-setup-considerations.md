@@ -34,7 +34,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
 
-### General Guidance
+### General guidance
 
 Namespace configuration requires some consideration.
 Following are some general guidelines to consider.

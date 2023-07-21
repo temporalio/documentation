@@ -15,4 +15,4 @@ However, Temporal Cloud can provide more than 150,000 Actions per second.
 If your Action rate exceeds your quota, Temporal Cloud throttles Actions until the rate matches your quota.
 Actions like Start or Signal Workflow Execution always receive higher priority than other Actions, even when throttled.
 
-To raise your quota, [create a ticket for Temporal Support](/cloud/support-create-ticket).
+To raise your quota, create a [support ticket](/cloud/support-create-ticket).

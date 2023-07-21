@@ -2,7 +2,7 @@
     "file_name": "support.md",
     "id": "support",
     "file_dir": "cloud/introduction",
-    "title": "What kind of support does Temporal Cloud provide",
+    "title": "What kind of support does Temporal Cloud provide?",
     "sidebar_label": "Support",
     "sidebar_position": 2,
     "description": "Create an account, issue certificates, create a Namespace, invite users, and connect.",
