@@ -13,11 +13,15 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
 
 - [Activity retry simulator](/dev-guide/activity-retry-simulator)
 
+---
+
 - [How to set a custom Retry Policy for an Activity in Go](/go/activity-retries)
 - [How to set a custom Retry Policy for an Activity in Java](/java/activity-retries)
 - [How to set a custom Retry Policy for an Activity in PHP](/php/activity-retries)
 - [How to set a custom Retry Policy for an Activity in Python](/python/activity-retries)
 - [How to set a custom Retry Policy for an Activity in TypeScript](/typescript/activity-retries)
+
+---
 
 - [How to set a Retry Policy for a Workflow in Go](/go/workflow-retries)
 - [How to set a Retry Policy for a Workflow in Java](/java/workflow-retries)
