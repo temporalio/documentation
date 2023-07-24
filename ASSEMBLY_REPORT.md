@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday July 07 2023 13:38:20 PM -0600
+Last assembled: Monday July 24 2023 17:37:01 PM -0400
 
 Assembly Workflow Id: docs-full-assembly-flossypurse
 
 88 guide configurations found.
 
-1472 information nodes found.
+1474 information nodes found.
 
-1236 information nodes are attached to guides.
+1238 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -701,6 +701,8 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
+
+cloud-context/certificates-filters -> #manage-certificate-filters
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 

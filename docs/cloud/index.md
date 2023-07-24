@@ -26,7 +26,6 @@ To request a Temporal Cloud account, complete the [request form](https://pages.t
 - [Manage certificates in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud)
 - [Manage Namespaces in Temporal Cloud](/cloud/how-to-manage-namespaces-in-temporal-cloud)
 - [tcld (Temporal Cloud command-line interface)](/cloud/tcld)
-- [Temporal Cloud release notes](/cloud/release-notes)
 
 ## What is an Action? {#Action}
 
