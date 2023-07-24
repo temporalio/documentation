@@ -3,6 +3,8 @@ id: how-to-configure-max-concurrent-sessions
 title: How to configure the maximum concurrent Sessions on the Worker
 sidebar_label: Max concurrent Sessions
 description: Set MaxConcurrentSessionExecutionSize in the Worker options.
+tags:
+  - go-sdk
 ---
 
 To limit the number of concurrent Sessions running on a Worker, set the `MaxConcurrentSessionExecutionSize` field of `worker.Options` to the desired value.

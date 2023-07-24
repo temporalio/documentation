@@ -5,8 +5,8 @@ sidebar_label: clean
 description: How to clean up corrupted Workflows using tctl.
 tags:
   - tctl
-  - admin
   - db
+  - cli-reference
 ---
 
 The `tctl admin db clean` command cleans corrupted [Workflow Executions](/workflows/#workflow-executions) from the targeted database.

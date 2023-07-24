@@ -5,6 +5,7 @@ sidebar_label: get
 description: How to get the status of an asynchronous request in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld request get` command gets the status of the specified request in Temporal Cloud.

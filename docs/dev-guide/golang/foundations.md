@@ -8,8 +8,10 @@ slug: /dev-guide/go/foundations
 toc_max_heading_level: 4
 tags:
 - guide-context
+- cli
 - developer-guide
 - go
+- go-sdk
 - workflow-type
 - how-to
 - options
@@ -360,7 +362,7 @@ type YourWorkflowParam struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 }
 ```
@@ -397,7 +399,7 @@ type YourWorkflowResultObject struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 	if err != nil {
 		return nil, err

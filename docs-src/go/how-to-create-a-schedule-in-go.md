@@ -3,6 +3,8 @@ id: how-to-create-a-schedule-in-go
 title: How to create a Schedule in Go
 sidebar_label: Create Schedule
 description: Create a Schedule for a Workflow in Go.
+tags:
+  - go-sdk
 ---
 
 [Schedules](/concepts/what-is-a-schedule) are initiated with the `create` call.

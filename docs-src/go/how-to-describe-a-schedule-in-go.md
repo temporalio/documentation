@@ -3,6 +3,8 @@ id: how-to-describe-a-schedule-in-go
 title: How to describe a Schedule in Go
 sidebar_label: Describe Schedule
 description: Describe a Schedule in Go.
+tags:
+  - go-sdk
 ---
 
 `Describe` retrieves information about the current [Schedule](/concepts/what-is-a-schedule) configuration.

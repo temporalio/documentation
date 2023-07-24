@@ -3,6 +3,8 @@ id: how-to-define-activity-parameters-in-go
 title: How to define Activity parameters in Go
 sidebar_label: Activity parameters
 description: The only required parameter is `context.Context`, but Activities can support many custom parameters.
+tags:
+  - go-sdk
 ---
 
 The first parameter of an Activity Definition is `context.Context`.

@@ -8,6 +8,7 @@ slug: /dev-guide/java/foundations
 toc_max_heading_level: 4
 tags:
 - guide-context
+- cli
 - developer-guide
 - Java
 - java

@@ -20,6 +20,14 @@ import TabItem from '@theme/TabItem';
 
 This guide provides a comprehensive overview of Temporal Visibility.
 
+:::tip Support, stability, and dependency info
+
+- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
+- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
+- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
+
+:::
+
 The term [Visibility](/visibility), within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view, filter, and search for Workflow Executions that currently exist within a Cluster.
 
 The [Visibility store](/cluster-deployment-guide#visibility-store) in your Temporal Cluster stores persisted Workflow Execution Event History data and is set up as a part of your <a class="tdlp" href="/clusters#persistence">Persistence store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#persistence">Learn more</a></span></span></a> to enable listing and filtering details about Workflow Executions that exist on your Temporal Cluster.
@@ -31,14 +39,6 @@ With Temporal Server v1.21, you can set up <a class="tdlp" href="#dual-visibilit
 <!-- A Visibility store can be configured to provide [atandard Visibility](/visibility#standard-visibility) and [advanced Visibility](/visibility#advanced-visibility) features.
 
 Support for separate standard and advanced Visibility setups will be deprecated from Temporal Server v1.21 onwards. Check [Supported databases](/cluster-deployment-guide#supported-databases) for updates. -->
-
-:::tip Support, stability, and dependency info
-
-- For Temporal Server v1.19 and earlier, all supported databases for Visibility provide standard Visibility features, and an Elasticsearch database is required for advanced Visibility features.
-- For Temporal Server v1.20 and later, advanced Visibility features are enabled on all supported SQL databases, in addition to Elasticsearch.
-- In Temporal Server v1.21 and later, standard Visibility is no longer in development, and we recommend migrating to a [database that supports advanced Visibility features](/cluster-deployment-guide#supported-databases). Visibility configuration in Temporal Cluster is updated and Dual Visibility is enabled. For details, see [Visibility store setup](/cluster-deployment-guide#visibility-store).
-
-:::
 
 ## What is standard Visibility? {#Standard Visibility}
 

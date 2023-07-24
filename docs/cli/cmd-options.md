@@ -5,6 +5,7 @@ sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
 tags:
+- cli-reference
 - cli
 ---
 
@@ -13,61 +14,62 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## temporal  active-cluster {#active-cluster}
+## active-cluster
 
 Active cluster name.
 
-## temporal  activity-id {#activity-id}
+## activity-id
 
 Identifies the Activity Execution.
 
-## temporal  address {#address}
+## address
 
 The host and port (formatted as host:port) for the Temporal Frontend Service.
 
-## temporal  archived {#archived}
+## archived
 
 List archived Workflow Executions.
 Currently an experimental feature.
 
-## temporal  calendar {#calendar}
+## calendar
 
-Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 * * 5" or "@daily").
+Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 \* \* 5" or "@daily").
 
-## temporal  catchup-window {#catchup-window}
+## catchup-window
 
 Maximum allowed catch-up time if server is down.
 
-## temporal  cluster {#cluster}
+## cluster
 
 Cluster name.
 
-## temporal  codec-auth {#codec-auth}
+## codec-auth
 
 Sets the authorization header on requests to the Codec Server.
 
-## temporal  codec-endpoint {#codec-endpoint}
+## codec-endpoint
 
 Endpoint for a remote Codec Server.
 
-## temporal  color {#color}
+## color
 
 when to use color: auto, always, never. (default: auto)
 
-## temporal  concurrency {#concurrency}
+## concurrency
 
 Request concurrency.
 
-## temporal  config {#config}
+## config
 
 Path to config directory.
 
-## temporal  context-timeout {#context-timeout}
+## context-timeout
 
 An optional timeout for the context of an RPC call (in seconds). (default: 5)
 
-## temporal  cron {#cron}
+## temporal cron {#cron}
 
+```text
 Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)
@@ -75,399 +77,398 @@ Optional Cron Schedule for the Workflow.
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
+```
 
----
-
-## temporal  data {#data}
+## data
 
 Namespace data in a key=value format.
 
-## temporal  db-filename {#db-filename}
+## db-filename
 
 File in which to persist Temporal state (by default, Workflows are lost when the process dies).
 
-## temporal  depth {#depth}
+## depth
 
 Number of Child Workflows to expand, -1 to expand all Child Workflows.
 
-## temporal  description {#description}
+## description
 
 Namespace description.
 
-## temporal  detail {#detail}
+## detail
 
 Detail to fail the Activity.
 
-## temporal  dry-run {#dry-run}
+## dry-run
 
 Simulate reset without resetting any Workflow Executions.
 
-## temporal  dynamic-config-value {#dynamic-config-value}
+## dynamic-config-value
 
 Dynamic config value, as KEY=JSON_VALUE (string values need quotes).
 
-## temporal  email {#email}
+## email
 
 Owner email.
 
-## temporal  enable-connection {#enable-connection}
+## enable-connection
 
 Enable cross-cluster connection.
 
-## temporal  end-time {#end-time}
+## end-time
 
 Backfill end time.
 
-## temporal  env {#env}
+## env
 
 Name of the environment to read environmental variables from. (default: default)
 
-## temporal  event-id {#event-id}
+## event-id
 
 The Event Id for any Event after WorkflowTaskStarted you want to reset to (exclusive).
 It can be WorkflowTaskCompleted, WorkflowTaskFailed or others.
 
-## temporal  exclude-file {#exclude-file}
+## exclude-file
 
 Input file that specifies Workflow Executions to exclude from resetting.
 
-## temporal  execution-timeout {#execution-timeout}
+## execution-timeout
 
 Timeout (in seconds) for a WorkflowExecution, including retries and continue-as-new tasks.
 
-## temporal  fields {#fields}
+## fields
 
 Customize fields to print.
 Set to 'long' to automatically print more of main fields.
 
-## temporal  fold {#fold}
+## fold
 
 Statuses for which Child Workflows will be folded in (this will reduce the number of information fetched and displayed).
 Case-insensitive and ignored if --no-fold supplied.
 
-## temporal  follow {#follow}
+## follow
 
 Follow the progress of a Workflow Execution.
 
-## temporal  frontend-address {#frontend-address}
+## frontend-address
 
 Frontend address of the remote Cluster.
 
-## temporal  global {#global}
+## global
 
 Flag to indicate whether namespace is a global namespace.
 
-## temporal  grpc-meta {#grpc-meta}
+## grpc-meta
 
 Contains gRPC metadata to send with requests (format: key=value). Values must be in a valid JSON format.
 
-## temporal  headless {#headless}
+## headless
 
 Disable the Web UI.
 
-## temporal  history-archival-state {#history-archival-state}
+## history-archival-state
 
 Flag to set history archival state, valid values are "disabled" and "enabled".
 
-## temporal  history-uri {#history-uri}
+## history-uri
 
 Optionally specify history archival URI (cannot be changed after first time archival is enabled).
 
-## temporal  identity {#identity}
+## identity
 
 Specify operator's identity.
 
-## temporal  id-reuse-policy {#id-reuse-policy}
+## id-reuse-policy
 
 Allows the same Workflow Id to be used in a new Workflow Execution (AllowDuplicate, AllowDuplicateFailedOnly, RejectDuplicate, TerminateIfRunning).
 
-## temporal  input-file {#input-file}
+## input-file
 
 Passes optional input for the Workflow from a JSON file.
 If there are multiple JSON files, concatenate them and separate by space or newline.
 Input from the command line will overwrite file input.
 
-## temporal  input-parallelism {#input-parallelism}
+## input-parallelism
 
 Number of goroutines to run in parallel.
 Each goroutine processes one line for every second.
 
-## temporal  input-separator {#input-separator}
+## input-separator
 
 Separator for the input file. The default is a tab ('\t'). (default: '\t')
 
-## temporal  input {#input}
+## input
 
 Optional JSON input to provide to the Workflow.
 Pass "null" for null values.
 
-## temporal  interval {#interval}
+## interval
 
 Interval duration, e.g. 90m, or 90m/13m to include phase offset.
 
-## temporal  ip {#ip}
+## ip
 
 IPv4 address to bind the frontend service to.
 (default: 127.0.0.1)
 
-## temporal  jitter {#jitter}
+## jitter
 
 Jitter duration.
 
-## temporal  job-id {#job-id}
+## job-id
 
 Batch Job Id.
 
-## temporal  limit {#limit}
+## limit
 
 Number of items to print on a page.
 By default, `--limit` is set to 0, allowing all results to print to one page.
 
-## temporal  log-format {#log-format}
+## log-format
 
 Set the log formatting.
 Options: ["json", "pretty"].
 
-## temporal  log-level {#log-level}
+## log-level
 
 Set the log level.
 Options: ["debug" "info" "warn" "error" "fatal"].
 
-## temporal  max-field-length {#max-field-length}
+## max-field-length
 
 Maximum length for each attribute field.
 
-## temporal  memo {#memo}
+## memo
 
 Set a memo on a schedule (format: key=value).
 Use valid JSON formats for value.
 
-## temporal  memo-file {#memo-file}
+## memo-file
 
 Set a memo from a file.
 Each line should follow the format key=value.
 Use valid JSON formats for value.
 
-## temporal  metrics-port {#metrics-port}
+## metrics-port
 
 Port for /metrics (default: 0).
 
-## temporal  name {#name}
+## name
 
 Frontend address of the remote Cluster.
 
-## temporal  namespace {#namespace}
+## namespace
 
 Specify namespaces that should be pre-created (namespace "default" is always created).
 
-## temporal  namespace-id {#namespace-id}
+## namespace-id
 
 Namespace Id.
 
-## temporal  no-fold {#no-fold}
+## no-fold
 
 Disable folding.
 All Child Workflows within the set depth will be fetched and displayed.
 
-## temporal  no-pager {#no-pager}
+## no-pager
 
 Disables the interactive pager.
 
-## temporal  non-deterministic {#non-deterministic}
+## non-deterministic
 
 Reset Workflow Execution only if its last Event is WorkflowTaskFailed with a nondeterministic error.
 
-## temporal  notes {#notes}
+## notes
 
 Initial value of notes field.
 
-## temporal  output-filename {#output-filename}
+## output-filename
 
 Serializes Event History to a file.
 
-## temporal  output {#output}
+## output
 
 format output as: table, json, card.
 
-## temporal  overlap-policy {#overlap-policy}
+## overlap-policy
 
 Overlap policy (options: Skip, BufferOne, BufferAll, CancelOther, TerminateOther, AllowAll).
 
-## temporal  pager {#pager}
+## pager
 
 Sets the pager for Temporal CLI to use (options: less, more, favoritePager).
 
-## temporal  pause-on-failure {#pause-on-failure}
+## pause-on-failure
 
 Pause schedule after any workflow failure.
 
-## temporal  pause {#pause}
+## pause
 
 Pauses the Schedule.
 
-## temporal  port {#port}
+## port
 
 Port for the frontend gRPC service.
 
-## temporal  promote-global {#promote-global}
+## promote-global
 
 Promote local namespace to global namespace.
 
-## temporal  query {#query}
+## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
 See https://docs.
 temporal.
 io/docs/tctl/workflow/list#--query.
 
-## temporal  raw {#raw}
+## raw
 
 Print raw data as json (prefer this over -o json for scripting).
 
-## temporal  reapply-type {#reapply-type}
+## reapply-type
 
 Event types to reapply after the reset point: Signal, None.
 
-## temporal  reason {#reason}
+## reason
 
 Reason for the operation.
 
-## temporal  reject-condition {#reject-condition}
+## reject-condition
 
 Optional flag for rejecting Queries based on Workflow state.
 Valid values are "not_open" and "not_completed_cleanly".
 
-## temporal  remaining-actions {#remaining-actions}
+## remaining-actions
 
 Total number of actions allowed.
 
-## temporal  reset-points {#reset-points}
+## reset-points
 
 Only show Workflow Events that are eligible for reset.
 
-## temporal  result {#result}
+## result
 
 Set the result value of Activity completion.
 
-## temporal  retention {#retention}
+## retention
 
 Workflow Execution retention.
 
-## temporal  run-id {#run-id}
+## run-id
 
 Identifies the current Workflow Run.
 
-## temporal  run-timeout {#run-timeout}
+## run-timeout
 
 Timeout (in seconds) of a single Workflow run.
 
-## temporal  schedule-id {#schedule-id}
+## schedule-id
 
 Schedule Id.
 
-## temporal  search-attribute {#search-attribute}
+## search-attribute
 
 Set Search Attribute on a schedule (format: key=value).
 Use valid JSON formats for value.
 
-## temporal  skip-base-is-not-current {#skip-base-is-not-current}
+## skip-base-is-not-current
 
 Skip a Workflow Execution if the base Run is not the current Run.
 
-## temporal  skip-current-open {#skip-current-open}
+## skip-current-open
 
 Skip a Workflow Execution if the current Run is open for the same Workflow Id as the base Run.
 
-## temporal  sqlite-pragma {#sqlite-pragma}
+## sqlite-pragma
 
 Specify sqlite pragma statements in pragma=value format.
 Pragma options: ["journal_mode" "synchronous"].
 
-## temporal  start-time {#start-time}
+## start-time
 
 Backfill start time.
 
-## temporal  task-queue-type {#task-queue-type}
+## task-queue-type
 
 Task Queue type [workflow|activity] (default: workflow).
 
-## temporal  task-queue {#task-queue}
+## task-queue
 
 Task Queue.
 
-## temporal  task-timeout {#task-timeout}
+## task-timeout
 
 Start-to-close timeout for a Workflow Task (in seconds).
 
-## temporal  time-format {#time-format}
+## time-format
 
 Format time as: relative, iso, raw.
 
-## temporal  time-zone {#time-zone}
+## time-zone
 
 Time zone (IANA name).
 
-## temporal  tls-ca-path {#tls-ca-path}
+## tls-ca-path
 
 Path to server CA certificate.
 
-## temporal  tls-cert-path {#tls-cert-path}
+## tls-cert-path
 
 Path to x509 certificate.
 
-## temporal  tls-disable-host-verification {#tls-disable-host-verification}
+## tls-disable-host-verification
 
 Disables TLS host name verification if already enabled.
 
-## temporal  tls-key-path {#tls-key-path}
+## tls-key-path
 
 Path to private certificate key.
 
-## temporal  tls-server-name {#tls-server-name}
+## tls-server-name
 
 Provides an override for the target TLS server name.
 
-## temporal  type {#type}
+## type
 
 Search attribute type: [Text Keyword Int Double Bool Datetime KeywordList].
 
-## temporal  ui-asset-path {#ui-asset-path}
+## ui-asset-path
 
 UI Custom Assets path.
 
-## temporal  ui-codec-endpoint {#ui-codec-endpoint}
+## ui-codec-endpoint
 
 UI Remote data converter HTTP endpoint.
 
-## temporal  ui-ip {#ui-ip}
+## ui-ip
 
 IPv4 address to bind the Web UI to.
 
-## temporal  ui-port {#ui-port}
+## ui-port
 
 Port for the Web UI.
 
-## temporal  unpause {#unpause}
+## unpause
 
 Unpauses the Schedule.
 
-## temporal  visibility-archival-state {#visibility-archival-state}
+## visibility-archival-state
 
 Flag to set visibility archival state, valid values are "disabled" and "enabled".
 
-## temporal  visibility-uri {#visibility-uri}
+## visibility-uri
 
 Optionally specify visibility archival URI (cannot be changed after first time archival is enabled).
 
-## temporal  workflow-id {#workflow-id}
+## workflow-id
 
 Workflow Id.
 
-## temporal  workflow-type {#workflow-type}
+## workflow-type
 
 Workflow type name.
 
-## temporal  yes {#yes}
+## yes
 
 Confirm all prompts.
 

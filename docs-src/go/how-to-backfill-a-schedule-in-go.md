@@ -3,6 +3,8 @@ id: how-to-backfill-a-schedule-in-go
 title: How to backfill a Schedule in Go
 sidebar_label: Backfill Schedule
 description: Backfill a Schedule to execute a Workflow at a later time.
+tags:
+  - go-sdk
 ---
 
 Backfilling a [Schedule](/concepts/what-is-a-schedule) executes Actions ahead of the Schedule's specified time range.
@@ -29,6 +31,6 @@ func main() {
 			},
 		},
 	})
-		
+
 // ...
 ```

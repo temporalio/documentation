@@ -11,6 +11,7 @@ tags:
 - go
 - developer-guide
 - how-to
+- go-sdk
 - timers
 - sleep
 - sdk
@@ -931,7 +932,7 @@ func main() {
 			},
 		},
 	})
-		
+
 // ...
 ```
 
@@ -947,7 +948,7 @@ To delete a Schedule, use `Delete()` on the `ScheduleHandle`.
 ```go
 func main() {
 // ...
-	scheduleHandle.Delete(ctx)	
+	scheduleHandle.Delete(ctx)
 }
 // ...
 ```

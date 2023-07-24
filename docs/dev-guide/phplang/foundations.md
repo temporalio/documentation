@@ -8,6 +8,7 @@ slug: /dev-guide/php/foundations
 toc_max_heading_level: 4
 tags:
 - guide-context
+- cli
 - developer-guide
 - php
 - sdk

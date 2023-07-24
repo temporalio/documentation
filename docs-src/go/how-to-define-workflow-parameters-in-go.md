@@ -3,6 +3,8 @@ id: how-to-define-workflow-parameters-in-go
 title: How to define Workflow parameters in Go
 sidebar_label: Workflow parameters
 description: A Go-based Workflow Definition must accept workflow.Context and may support multiple custom parameters.
+tags:
+  - go-sdk
 ---
 
 The first parameter of a Go-based Workflow Definition must be of the [`workflow.Context`](https://pkg.go.dev/go.temporal.io/sdk/workflow#Context) type.
@@ -38,7 +40,7 @@ type YourWorkflowParam struct {
 }
 // ...
 // YourWorkflowDefinition is your custom Workflow Definition.
-func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {	
+func YourWorkflowDefinition(ctx workflow.Context, param YourWorkflowParam) (*YourWorkflowResultObject, error) {
 // ...
 }
 ```

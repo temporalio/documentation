@@ -8,6 +8,7 @@ slug: /dev-guide/typescript/foundations
 toc_max_heading_level: 3
 tags:
 - guide-context
+- cli
 - developer-guide
 - sdk
 - typescript

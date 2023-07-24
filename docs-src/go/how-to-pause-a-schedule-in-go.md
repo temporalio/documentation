@@ -3,6 +3,8 @@ id: how-to-pause-a-schedule-in-go
 title: How to pause a Schedule in Go
 sidebar_label: Pause Schedule
 description: Show how to unpause and pause a Schedule in Go.
+tags:
+  - go-sdk
 ---
 
 `Pause` and `Unpause` enable the start or stop of all future [Workflow Runs](/concepts/what-is-a-workflow) on a given [Schedule](/concepts/what-is-a-schedule).

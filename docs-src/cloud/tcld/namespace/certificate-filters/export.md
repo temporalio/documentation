@@ -5,6 +5,7 @@ sidebar_label: export
 description: How to export certificate filters from a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld namespace certificate-filters export` command exports existing certificate filters from a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

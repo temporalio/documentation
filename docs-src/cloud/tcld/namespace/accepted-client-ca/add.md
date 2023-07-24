@@ -5,6 +5,7 @@ sidebar_label: add
 description: How to add client CA certificates to a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld namespace accepted-client-ca add` command adds client CA certificates to a [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

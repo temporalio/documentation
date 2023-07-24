@@ -7,6 +7,7 @@ description: The Foundations section of the Temporal Developer's guide covers th
 toc_max_heading_level: 4
 tags:
 - guide-context
+- cli
 - developer-guide
 - python
 - sdk
