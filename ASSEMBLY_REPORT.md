@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Friday July 21 2023 13:51:38 PM +0200
+Last assembled: Monday July 24 2023 03:19:31 AM -0700
 
-Assembly Workflow Id: docs-full-assembly
+Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 88 guide configurations found.
 
@@ -953,8 +953,6 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
-
-go/selectors -> /dev-guide/go/features#selectors
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
