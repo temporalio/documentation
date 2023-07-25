@@ -1780,6 +1780,82 @@
     {
       "source": "/server/production-deployment/#scaling-and-metrics",
       "destination": "/kb/legacy-oss-prod-deploy#scaling-and-metrics"
+    },
+    {
+      "source": "/cloud/release-notes",
+      "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/cloud/release-notes/:path*",
+      "destination": "https://temporal.io/change-log/product-area/cloud"
+    },
+    {
+      "source": "/typescript/versioning",
+      "destination": "/dev-guide/typescript/versioning"
+    },
+    {
+      "source": "/java/quick-start",
+      "destination": "/dev-guide/java"
+    },
+    {
+      "source": "/java/how-to-provide-an-authorization-token-in-java",
+      "destination": "/security#authorizer-plugin"
+    },
+    {
+      "source": "/go/side-effect",
+      "destination": "/dev-guide/go/features#side-effects"
+    },
+    {
+      "source": "/go/how-to-develop-a-workflow-definition-in-go",
+      "destination": "/dev-guide/go/foundations#develop-workflows"
+    },
+    {
+      "source": "/tctl-next/workflow#reset",
+      "destination": "/cli/workflow#reset"
+    },
+    {
+      "source": "/tctl-next/modifiers#--event-id",
+      "destination": "/cli/cmd-options#event-id"
+    },
+    {
+      "source": "/php/versioning#workflowgetversion",
+      "destination": "/dev-guide/php"
+    },
+    {
+      "source": "/php/activities#local-activity",
+      "destination": "/dev-guide/php/foundations#develop-activities"
+    },
+    {
+      "source": "/kb/additional-resources",
+      "destination": "/kb/how-to-explain-temporal"
+    },
+    {
+      "source": "/external-resources/#how-temporal-works",
+      "destination": "/kb/how-to-explain-temporal#how-temporal-works"
+    },
+    {
+      "source": "/external-resources",
+      "destination": "/kb/how-to-explain-temporal"
+    },
+    {
+      "source": "/go-sessions/#use-cases",
+      "destination": "/dev-guide/go/features#recreate-session"
+    },
+    {
+      "source": "/configure-temporal-server#membership---required",
+      "destination": "/blog/workflow-engine-principles#membership-and-routing-1350"
+    },
+    {
+      "source": "/archive-data#providers",
+      "destination": "/cluster-deployment-guide#providers"
+    },
+    {
+      "source": "/concepts/what-is-a-retention-period",
+      "destination": "/clusters#retention-period"
+    },
+    {
+      "source": "/archive-data",
+      "destination": "/cluster-deployment-guide#archival"
     }
   ]
 }
