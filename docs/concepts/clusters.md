@@ -200,6 +200,8 @@ Setting the Retention Period to 0 results in the error _A valid retention period
 If you don't set the Retention Period value when using the [`tctl namespace register`](/tctl-v1/namespace#register) command, it defaults to 3 days.
 If you don't set the Retention Period value when using the Register Namespace Request API, it returns an error.
 
+When changing the Retention Period, the new duration applies to Workflow Executions that close after the change is saved.
+
 <!-- TODO link up to working API usage examples -->
 
 ## Persistence
