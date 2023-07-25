@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Tuesday June 27 2023 12:31:47 PM -0700
+Last assembled: Monday July 24 2023 22:06:28 PM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 88 guide configurations found.
 
@@ -892,7 +892,9 @@ cli/cmd-options/no-fold -> /cli/cmd-options#no-fold
 
 typescript/testing -> /dev-guide/typescript/testing#replay
 
-typescript/observability -> /dev-guide/typescript/observability#tracing
+typescript/tracing -> /dev-guide/typescript/observability#tracing
+
+typescript/logging -> /dev-guide/typescript/observability#logging
 
 concepts/what-is-a-task-token -> /activities#task-token
 
@@ -947,9 +949,5 @@ cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
-
-typescript/tracing -> /dev-guide/typescript/observability#tracing
-
-typescript/logging -> /dev-guide/typescript/observability#logging
 
 
