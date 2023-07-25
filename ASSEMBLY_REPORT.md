@@ -1,16 +1,8 @@
 # Docs Assembly Workflow report
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Last assembled: Monday July 24 2023 06:25:16 AM -0700
-=======
-Last assembled: Friday July 07 2023 19:22:48 PM +0200
->>>>>>> 5531992a (add new cloud metrics (#2184))
-=======
-Last assembled: Friday July 07 2023 14:00:02 PM -0500
->>>>>>> 95b2892c (yarn gen and updated keyword list (#2176))
+Last assembled: Tuesday July 25 2023 14:25:51 PM -0500
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly
 
 88 guide configurations found.
 
@@ -956,9 +948,8 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-<<<<<<< HEAD
 concepts/what-is-the-temporal-cli -> /cli/index#
-=======
+
 typescript/tracing -> /dev-guide/typescript/observability#tracing
 
 typescript/logging -> /dev-guide/typescript/observability#logging
@@ -976,6 +967,5 @@ go/selectors -> /dev-guide/go/features#selectors
 cloud-context/get-started-certificates -> /cloud/how-to-get-started-with-temporal-cloud#issue-ca-certificates
 
 cloud-context/certificates-filters -> #manage-certificate-filters
->>>>>>> 95b2892c (yarn gen and updated keyword list (#2176))
 
 
