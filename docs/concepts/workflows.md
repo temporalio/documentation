@@ -623,7 +623,8 @@ Stack Trace Queries are available only for running Workflow Executions.
 :::tip Support, stability, and dependency info
 
 - Released in [Temporal Server version 1.21](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
-- Available in the Go SDK since [v1.23.0](https://pkg.go.dev/go.temporal.io/sdk/client?tab=versions)
+- Available in the [Go SDK](https://pkg.go.dev/go.temporal.io/sdk@v1.23.1/client#Client.UpdateWorkflowWithOptions) since [v1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+- Available in the [Java SDK](https://www.javadoc.io/doc/io.temporal/temporal-sdk/latest/io/temporal/client/WorkflowStub.html#startUpdate(io.temporal.client.UpdateOptions,java.lang.Object...)) since [v1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
 
 :::
 
