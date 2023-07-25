@@ -156,7 +156,7 @@ A Workflow Type is a name that maps to a Workflow Definition.
 ## What is a Workflow Execution? {#Workflow Execution}
 
 A Temporal Workflow Execution is a durable, reliable, and scalable function execution.
-It is the main unit of execution of a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>.
+It is the main unit of execution of a <a class="tdlp" href="/temporal#temporal-application">Temporal Application<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Application?</span><br /><br /><span class="tdlppd">A Temporal Application is a set of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/temporal#temporal-application">Learn more</a></span></span></a>.
 
 - [How to start a Workflow Execution using tctl](/tctl-v1/workflow#start)
 - <a class="tdlp" href="/dev-guide/go/foundations#start-workflow-execution">How to start a Workflow Execution using the Go SDK<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Workflow Execution</span><br /><br /><span class="tdlppd">Workflow Execution semantics rely on several parameters—that is, to start a Workflow Execution you must supply a Task Queue that will be used for the Tasks (one that a Worker is polling), the Workflow Type, language-specific contextual data, and Workflow Function parameters.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#start-workflow-execution">Learn more</a></span></span></a>
@@ -870,7 +870,7 @@ A Cancellation Request affects only the current Run.
 
 Use the Workflow Id in any requests to Cancel or Terminate.
 
-## What is a Schedule {#Schedule}
+## What is a Schedule? {#Schedule}
 
 :::tip Support, stability, and dependency info
 

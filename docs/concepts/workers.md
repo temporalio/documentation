@@ -251,7 +251,7 @@ This could also mean employing multiple Task Queues, each one paired with a Work
 
 Task Routing has many applicable use cases.
 
-Some SDKs provide a <a class="tdlp" href="#worker-session">Session API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Session</span><br /><br /><span class="tdlppd">A Worker Session is a feature provided by some SDKs that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-session">Learn more</a></span></span></a> that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
+Some SDKs provide a <a class="tdlp" href="#worker-session">Session API<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Session?</span><br /><br /><span class="tdlppd">A Worker Session is a feature provided by some SDKs that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#worker-session">Learn more</a></span></span></a> that provides a straightforward way to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and worker failure detection.
 
 ### Flow control
@@ -316,7 +316,7 @@ Task Routing is the simplest way to version your code.
 
 If you have a new backward-incompatible Activity Definition, start by using a different Task Queue.
 
-### What is a Worker Session {#Worker Session}
+### What is a Worker Session? {#Worker Session}
 
 A Worker Session is a feature provided by some SDKs that provides a straightforward API for <a class="tdlp" href="#task-routing">Task Routing<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Task Routing?</span><br /><br /><span class="tdlppd">Task Routing is when a Task Queue is paired with one or more Worker Processes, primarily for Activity Task Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#task-routing">Learn more</a></span></span></a> to ensure that Activity Tasks are executed with the same Worker without requiring you to manually specify Task Queue names.
 It also includes features like concurrent session limitations and Worker failure detection.

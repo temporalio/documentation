@@ -43,7 +43,7 @@ The Temporal Cloud is a set of Clusters operated by us.
 Worker Processes are hosted by you and execute your code.
 They communicate with a Temporal Cluster via gRPC.
 
-## What is a Temporal Application {#Temporal Application}
+## What is a Temporal Application? {#Temporal Application}
 
 A Temporal Application is a set of [Temporal Workflow Executions](/workflows#workflow-execution).
 Each Temporal Workflow Execution has exclusive access to its local state, executes concurrently to all other Workflow Executions, and communicates with other Workflow Executions and the environment via message passing.
@@ -66,7 +66,7 @@ Therefore, a Temporal Workflow Execution executes a <a class="tdlp" href="/wor
 
 A Temporal SDK is a language-specific library that offers APIs to do the following:
 
-1. Construct and use a <a class="tdlp" href="#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-client">Learn more</a></span></span></a>
+1. Construct and use a <a class="tdlp" href="#temporal-client">Temporal Client<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Client?</span><br /><br /><span class="tdlppd">A Temporal Client, provided by a Temporal SDK, provides a set of APIs to communicate with a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#temporal-client">Learn more</a></span></span></a>
 2. Develop <a class="tdlp" href="/workflows#workflow-definition">Workflow Definitions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Definition?</span><br /><br /><span class="tdlppd">A Workflow Definition is the code that defines the constraints of a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-definition">Learn more</a></span></span></a>
 3. Develop <a class="tdlp" href="/workers#worker-program">Worker Programs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Program?</span><br /><br /><span class="tdlppd">A Worker Program is the static code that defines the constraints of the Worker Process, developed using the APIs of a Temporal SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-program">Learn more</a></span></span></a>
 
@@ -116,7 +116,7 @@ The following third-party SDKs exist but are not supported in the [Developer's g
 - [Scala](https://github.com/vitaliihonta/zio-temporal) from [@vitaliihonta](https://github.com/vitaliihonta)
 - [Ruby](https://github.com/coinbase/temporal-ruby) from [@coinbase](https://github.com/coinbase)
 
-### What is a Temporal Client {#Temporal Client}
+### What is a Temporal Client? {#Temporal Client}
 
 A Temporal Client is available in each SDK and provides a set of APIs to communicate with a <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
 
