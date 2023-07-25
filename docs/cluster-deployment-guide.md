@@ -1285,7 +1285,7 @@ We recommend preparing a staging Cluster and then do the following to verify the
 4. Upgrade the server.
 5. Now do the same to the live environment cluster.
 
-## undefined {#Health checks}
+## How to set up health checks for a Temporal Cluster {#Health checks}
 
 The [Frontend Service](/clusters#frontend-service) supports TCP or [gRPC](https://github.com/grpc/grpc/blob/875066b61e3b57af4bb1d6e36aabe95a4f6ba4f7/src/proto/grpc/health/v1/health.proto#L45) health checks on port 7233.
 
