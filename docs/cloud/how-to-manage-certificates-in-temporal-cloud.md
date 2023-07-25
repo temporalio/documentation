@@ -19,7 +19,7 @@ Temporal Cloud does not require an exchange of secrets; only the certificates pr
 
 All certificates used by Temporal Cloud must meet the following requirements.
 
-## Requirements for CA certificates in Temporal Cloud {#Certificate requirements}
+## Requirements for CA certificates in Temporal Cloud {#certificate-requirements}
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
@@ -59,7 +59,7 @@ Distinguished Names are _not_ case sensitive; that is, uppercase letters (such a
 
 :::
 
-## How to issue root CA and end-entity certificates {#Issue certificates}
+## How to issue root CA and end-entity certificates {#issue-certificates}
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
@@ -148,7 +148,7 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -in <infile.key> -out <outfile.key
 
 You can now use the generated client certificate with Temporal Cloud.
 
-## How to control authorization for Temporal Cloud Namespaces {#Control authorization}
+## How to control authorization for Temporal Cloud Namespaces {#control-authorization}
 
 Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be scoped to a specific Namespace.
 Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
@@ -165,7 +165,7 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
 
-## How to add, update, and remove certificates in a Temporal Cloud Namespace {#Manage certificates}
+## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
 :::note
 
@@ -238,7 +238,7 @@ One way to meet this requirement is to add a version or a date to the common nam
 
 1. Run the `tcld namespace accepted-client-ca set` command again with the updated CA certificate bundle file.
 
-## How to manage certificate filters in Temporal Cloud {#Manage certificate filters}
+## How to manage certificate filters in Temporal Cloud {#manage-certificate-filters}
 
 To limit access to specific [end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud), create certificate filters.
 Each filter contains values for one or more of the following fields:

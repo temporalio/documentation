@@ -1,5 +1,7 @@
 import fs from "fs-extra";
 import path from "path";
+import { localRef } from "../common/index.js";
+
 const plannedText = `Content is planned but not yet available.`;
 
 export async function genMarkdownGuides(config) {
@@ -25,7 +27,7 @@ async function generateGuide(config, guideCfg) {
         if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli-reference")) {
           guideStr = `${guideStr}## ${section.node.label}\n\n`;
         } else {
-          guideStr = `${guideStr}## ${section.node.title} {#${section.node.label}}\n\n`;
+          guideStr = `${guideStr}## ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
         }
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
@@ -34,7 +36,7 @@ async function generateGuide(config, guideCfg) {
         if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli-reference")) {
           guideStr = `${guideStr}### ${section.node.label}\n\n`;
         } else {
-          guideStr = `${guideStr}### ${section.node.title} {#${section.node.label}}\n\n`;
+          guideStr = `${guideStr}### ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
         }
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;
@@ -43,7 +45,7 @@ async function generateGuide(config, guideCfg) {
         if (section.node.tags && Array.isArray(section.node.tags) && section.node.tags.includes("cli-reference")) {
           guideStr = `${guideStr}#### ${section.node.label}\n\n`;
         } else {
-          guideStr = `${guideStr}#### ${section.node.title} {#${section.node.label}}\n\n`;
+          guideStr = `${guideStr}#### ${section.node.title} {#${localRef(section.node.id, section.node.label)}}\n\n`;
         }
         guideStr = `${guideStr}${ssdi(section.node.ssdi)}`;
         guideStr = `${guideStr}${section.node.markdown_content}\n\n`;

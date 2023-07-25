@@ -20,11 +20,11 @@ Because of this you can often encounter the `PotentialDeadlockException` Excepti
 
 To alleviate this issue, you can set the `TEMPORAL_DEBUG` environment variable to true before debugging your Workflow code. Make sure to set `TEMPORAL_DEBUG` to true only during debugging.
 
-## How to debug in a development environment {#Debug in a development environment}
+## How to debug in a development environment {#debug-in-a-development-environment}
 
 In addition to the normal development tools of logging and a debugger, you can also see what’s happening in your Workflow by using the [Web UI](/web-ui) or [`tctl`](/tctl-v1).
 
-## How to debug in a production environment {#Debug in a production environment}
+## How to debug in a production environment {#debug-in-a-production-environment}
 
 You can debug production Workflows using:
 

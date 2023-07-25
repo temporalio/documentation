@@ -51,7 +51,7 @@ Workflow, show Workflow History, and Signal Workflow).
 - [tctl taskqueue](/tctl-v1/taskqueue/)
 - [tctl workflow](/tctl-v1/workflow/)
 
-## How to install tctl {#Install}
+## How to install tctl {#install}
 
 > The Temporal tctl documentation covers version 1.17 of the Temporal CLI.
 
