@@ -316,9 +316,7 @@ Promote local namespace to global namespace.
 ## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-See https://docs.
-temporal.
-io/docs/tctl/workflow/list#--query.
+See https://docs.temporal.io/docs/tctl/workflow/list#--query.
 
 ## raw
 
