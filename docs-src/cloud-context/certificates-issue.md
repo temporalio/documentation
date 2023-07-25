@@ -18,9 +18,20 @@ When you configure the client SDK, you need to present a complete certificate ch
 
 If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using `tcld` or open source tools such as certstrap.
 
-#### Use `tcld` to generate certificates
+:::info
+
+The maximum number of CA certificates in a certificate bundle is 16.
+The maximum payload size of a certificate bundle (before base64 encoding) is 32 KB.
+
+:::
+
+#### Use tcld to generate certificates
 
 CA and end-entity certificates can be generated with `tcld`.
+
+The maximum duration for a CA certificate is 1 year (`-d 1y`).
+
+An end-entity certificate must expire before its root CA certificate, so specify its duration appropriately.
 
 To create a new CA certificate, use `tcld gen ca`.
 
@@ -31,15 +42,8 @@ tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
 To create a new end-entity certificate, use `tcld gen leaf`.
 
 ```
-tcld gen leaf --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
+tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
 ```
-
-:::info
-
-The maximum number of CA certificates in a certificate bundle is 16.
-The maximum payload size of a certificate bundle (before base64 encoding) is 32 KB.
-
-:::
 
 #### Use certstrap
 
