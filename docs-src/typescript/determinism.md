@@ -1,4 +1,11 @@
-# Determinism in Workflows
+---
+id: determinism
+title: Determinism in Workflows
+description: Temporal Workflows are executed differently than conventional code as they can be restored at any point.
+sidebar_label: Determinism
+tags:
+  - guide-context
+---
 
 Temporal Workflows are executed differently than conventional code as they can be restored at any point.
 A Workflow can sleep for months, and even if your Worker crashes or Temporal Cluster is down, timers and timeouts are persisted and will fire as scheduled.
