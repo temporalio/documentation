@@ -901,15 +901,15 @@ For more information, see the [PHP samples](https://github.com/temporalio/sample
 
 Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising determinism in the Workflow. This is done by storing the results of the Side Effect into the Workflow [Event History](/workflows/#event-history).
 
-A Side Effect does not re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
+A Side Effect doesn't re-execute during a Replay. Instead, it returns the recorded result from the Workflow Execution Event History.
 
-Side Effects should not fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
+Side Effects shouldn't fail. An exception that is thrown from the Side Effect causes failure and retry of the current Workflow Task.
 
-An Activity or a Local Activity may also be used instead of a Side effect, as their results are also persisted in Workflow Execution History.
+An Activity or a Local Activity can also be used instead of a Side Effect, as its results are also persisted in Workflow Execution History.
 
 :::note
 
-You shouldn’t modify the Workflow state inside a Side Effect, because they are not reexecuted during Replay. Side Effect functions should only return a value, and that value may be used in Workflow code to alter state.
+You shouldn’t modify the Workflow state inside a Side Effect, because they're not re-executed during Replay. Side Effect functions should only return a value, and that value can be used in Workflow code to alter state.
 
 :::
 
