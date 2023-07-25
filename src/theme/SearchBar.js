@@ -1,46 +1,36 @@
-import React, { useState } from 'react';
-import './search.css';
-
+import React, { useState } from "react";
+import "./search.css";
 
 function SearchIcon({ open }) {
   if (open) {
-    return (
-      <img className="temporal-ball"
-        src='/img/Temporal_Logo_Animation.gif'
-        width='40px'
-        height='40px'
-      />
-    )
+    return <img className="temporal-ball" src="/img/Temporal_Logo_Animation.gif" width="40px" height="40px" />;
   }
-  return (
-    <img className='search' src='/img/search.svg' width='20px' height='20px' />
-  )
+  return <img className="search" src="/img/search.svg" width="20px" height="20px" />;
 }
-
 
 function SearchBar({ onClick, open }) {
   return (
-    <div onClick={onClick} className="widget-container" >
-      <div className="widget"
-      >
-        <div className="widget-text" >
+    <div onClick={onClick} className="widget-container">
+      <div className="widget">
+        <div className="widget-text">
           <SearchIcon open={open} />
-          <div class="ask">Ask</div>
+          <div class="ask">Search</div>
         </div>
         <div className="ai-container">
-          <span className="ai-text"><span class="ai-text-temporal">Temporal</span>IQ</span>
+          <span className="ai-text">
+            <span class="ai-text-temporal">Temporal</span>IQ
+          </span>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
-
 
 function Modal({ show, close }) {
   if (show) {
     return (
-      <div stl className="modal-overlay" onClick={close} >
-        <div className="modal" onClick={e => e.stopPropagation()}>
+      <div stl className="modal-overlay" onClick={close}>
+        <div className="modal" onClick={(e) => e.stopPropagation()}>
           <iframe src="https://iq.temporal.io" />
         </div>
       </div>
@@ -49,7 +39,6 @@ function Modal({ show, close }) {
 
   return null;
 }
-
 
 export default function Search() {
   const [open, setOpen] = useState(false);
