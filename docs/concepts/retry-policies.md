@@ -18,8 +18,8 @@ import TabItem from '@theme/TabItem';
 
 A Retry Policy works in cooperation with the timeouts to provide fine controls to optimize the execution experience.
 
-A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an <a class="tdlp" href="/tasks#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task-execution">Learn more</a></span></span></a>.
-(Retry Policies do not apply to <a class="tdlp" href="/tasks#workflow-task-execution">Workflow Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#workflow-task-execution">Learn more</a></span></span></a>, which always retry indefinitely.)
+A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a [Workflow Execution](/workflows#workflow-execution) or an <a class="tdlp" href="/workers#activity-task-execution">Activity Task Execution<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a>.
+(Retry Policies do not apply to <a class="tdlp" href="/workers#workflow-task-execution">Workflow Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Task Execution?</span><br /><br /><span class="tdlppd">A Workflow Task Execution occurs when a Worker picks up a Workflow Task and uses it to make progress on the execution of a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#workflow-task-execution">Learn more</a></span></span></a>, which always retry indefinitely.)
 
 - [Activity retry simulator](/dev-guide/activity-retry-simulator)
 
@@ -43,7 +43,7 @@ A Retry Policy is a collection of attributes that instructs the Temporal Server 
   The intention is that a Workflow Definition should be written to never fail due to intermittent issues; an Activity is designed to handle such issues.
 
 - **Activity Execution**: When an Activity Execution is spawned, it is associated with a default Retry Policy, and thus Activity Task Executions are retried by default.
-  When an Activity Task Execution is retried, the Cluster places a new <a class="tdlp" href="/tasks#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#activity-task">Learn more</a></span></span></a> into its respective <a class="tdlp" href="/tasks#task-queue">Activity Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/tasks#task-queue">Learn more</a></span></span></a>, which results in a new Activity Task Execution.
+  When an Activity Task Execution is retried, the Cluster places a new <a class="tdlp" href="/workers#activity-task">Activity Task<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task?</span><br /><br /><span class="tdlppd">An Activity Task contains the context needed to make an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task">Learn more</a></span></span></a> into its respective <a class="tdlp" href="/workers#task-queue">Activity Task Queue<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task Queue?</span><br /><br /><span class="tdlppd">A Task Queue is a first-in, first-out queue that a Worker Process polls for Tasks.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task-queue">Learn more</a></span></span></a>, which results in a new Activity Task Execution.
 
 ## Custom Retry Policy
 
@@ -101,10 +101,9 @@ Non-Retryable Errors = []
 
 - **Description**: Specifies errors that shouldn't be retried.
   - **Default is none.**
-  - If one of those errors occurs, the [Activity Task Execution](#activity-task-execution) or [Workflow Execution](#workflow-execution) is not retried.
-  - The errors are matched against the `type` field of the [ApplicationFailure](/kb/failures#application-failure).
-- **Use case**: There may be errors that you know of that should not trigger a retry.
-  In this case, you can specify them such that, if they occur, the given execution is not retried.
+  - Errors are matched against the `type` field of the [Application Failure](/kb/failures#application-failure).
+  - If one of those errors occurs, a retry does not occur.
+- **Use case**: If you know of errors that should not trigger a retry, you can specify that, if they occur, the execution is not retried.
 
 ## Retry interval
 

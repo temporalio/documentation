@@ -2,7 +2,7 @@
 id: data-encryption
 title: How to encrypt data using a custom Data Converter
 description: Configure your custom encryption logic with `PayloadCodec` and set it with a custom Data Converter.
-sidebar_label: Data encryption
+sidebar_label: Securing your data
 tags:
   - guide-context
   - production-readiness

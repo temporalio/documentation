@@ -16,9 +16,32 @@ When you configure the client SDK, you need to present a complete certificate ch
 
 ### Option 2: You don't have certificate management infrastructure
 
-If you don't have an existing certificate management infrastructure, you can issue the CA and client certificates by using tools such as OpenSSL or open source tools like certstrap.
+If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using `tcld` or open source tools such as certstrap.
 
-#### Option 2a: Use certstrap
+#### Use `tcld` to generate certificates
+
+CA and end-entity certificates can be generated with `tcld`.
+
+To create a new CA certificate, use `tcld gen ca`.
+
+```
+tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
+```
+
+To create a new end-entity certificate, use `tcld gen leaf`.
+
+```
+tcld gen leaf --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
+```
+
+:::info
+
+The maximum number of CA certificates in a certificate bundle is 16.
+The maximum payload size of a certificate bundle (before base64 encoding) is 32 KB.
+
+:::
+
+#### Use certstrap
 
 [Certstrap](https://github.com/square/certstrap) is a popular and easy to use tool for issuing certificates.
 
@@ -70,21 +93,3 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -in <infile.key> -out <outfile.key
 ```
 
 You can now use the generated client certificate with Temporal Cloud.
-
-#### Option 2b: Use Temporal's client certificate generation tool
-
-We also provide a tool that issues one root CA and the required end-entity certificate to use on the client SDK.
-The tool can issue multiple end-entity certificates.
-We've kept this tool minimal because it is a demonstration tool; **it is _not_ meant to be used in production.**
-
-You can use this tool in two ways:
-
-- Follow the instructions for the [temporalio/client-certificate-generation](https://hub.docker.com/r/temporalio/client-certificate-generation) image in Docker Hub.
-  This procedure is the easiest because it's independent of your operating system.
-- Follow the README instructions in the [client-only](https://github.com/temporalio/samples-server/tree/main/tls/client-only) directory in our `temporalio/samples-server` repository in GitHub.
-
-:::info
-
-The maximum number of CA certificates in a certificate bundle is 16. The payload size of a certificate bundle (before base64-encoding) is 32 KB.
-
-:::

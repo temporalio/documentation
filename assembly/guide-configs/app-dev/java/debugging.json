@@ -12,15 +12,15 @@
   "add_tabs_support": false,
   "sections": [
     {
-      "type": "h2",
+      "type": "p",
       "id": "java/debugging"
     },
     {
-      "type": "h3",
+      "type": "h2",
       "id": "java/debug-environment-development"
     },
     {
-      "type": "h3",
+      "type": "h2",
       "id": "java/debug-environment-production"
     }
   ]

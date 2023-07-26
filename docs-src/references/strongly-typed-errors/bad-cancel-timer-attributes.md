@@ -8,7 +8,7 @@ tags:
   - strongly-typed
 ---
 
-This error indicates that the [Workflow Task](/tasks#workflow-task) failed while attempting to cancel a Timer.
+This error indicates that the [Workflow Task](/concepts/what-is-a-workflow-task) failed while attempting to cancel a Timer.
 
 <!-- TODO add Timer term definition and link to it -->
 

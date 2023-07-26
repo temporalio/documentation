@@ -6,16 +6,6 @@ sidebar_label: Python
 sidebar_position: 3
 ---
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 This guide is meant to provide a comprehensive overview of the structures, primitives, and features used in [Temporal Application](/temporal#temporal-application) development.
 
 ## Guide structure
@@ -43,6 +33,7 @@ The Developer's guide is divided into the following sections:
    - [Async Activity Completion](/dev-guide/python/features#asynchronous-activity-completion)
    - [Child Workflows](/dev-guide/python/features#child-workflows)
    - [Continue-As-New](/dev-guide/python/features#continue-as-new)
+   - [Schedules](/dev-guide/python/features#schedule-a-workflow)
    - [Cron Jobs](/dev-guide/python/features#temporal-cron-jobs)
 
 3. [**Observability**](/dev-guide/python/observability): Methods for observing a Temporal Application.

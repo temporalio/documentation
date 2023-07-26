@@ -662,9 +662,9 @@ The `tctl admin shard close_shard` command closes a shard with an Id that corres
 
 The modifier below will change the behavior and output of the command.
 
-#### --share_id value
+#### --shard_id value
 
-ShareId managed by the Temporal Cluster.
+ShardId managed by the Temporal Cluster.
 
 ### describe_task
 
@@ -770,7 +770,7 @@ The `tctl admin shard describe` command shows the Id for the specified shard.
 
 The modifier below controls the behavior of the command.
 
-#### --share_id value
+#### --shard_id value
 
 The Id of the shard to describe
 
@@ -1027,7 +1027,7 @@ The Id of the current run.
 
 ## refresh_tasks
 
-The `tctl admin workflow refresh_tasks` command updates all [Tasks](/tasks) in a [Workflow](/workflows), provided that the command can fetch new information for Tasks.
+The `tctl admin workflow refresh_tasks` command updates all <a class="tdlp" href="/workers#task">Tasks<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Task?</span><br /><br /><span class="tdlppd">A Task is the context needed to make progress with a specific Workflow Execution or Activity Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#task">Learn more</a></span></span></a> in a <a class="tdlp" href="/workflows#">Workflow<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow?</span><br /><br /><span class="tdlppd">In day-to-day conversations, the term "Workflow" frequently denotes either a Workflow Type, a Workflow Definition, or a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#">Learn more</a></span></span></a>, provided that the command can fetch new information for Tasks.
 
 #### --workflow_id value
 

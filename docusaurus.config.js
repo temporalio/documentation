@@ -14,16 +14,14 @@ module.exports = {
   favicon: "img/favicon.png",
   organizationName: "temporalio", // Usually your GitHub org/user name.
   projectName: "temporal-documentation", // Usually your repo name.
-  plugins: [
-    function preloadFontPlugin() {
-      return {
-        name: "preload-font-plugin",
-        configureWebpack() {
-          return {
-            plugins: [new FontPreloadPlugin()],
-          };
-        },
-      };
+  headTags: [
+    {
+      tagName: "link",
+      attributes: {
+        rel: "preload",
+        href: "https://iq.temporal.io",
+        as: "document",
+      },
     },
   ],
   themeConfig: {
@@ -56,14 +54,13 @@ module.exports = {
         autoCollapseCategories: true,
       },
     },
-    // announcementBar: {
-    //   id: "replay_announcement",
-    //   content:
-    //     'Content HERE',
-    //      backgroundColor: "#141414",
-    //      textColor: "#ffffff",
-    //      isCloseable: true,
-    //   },
+    announcementBar: {
+      id: "replay_announcement",
+      content: 'Get your tickets for <a href="https://temporal.io/replay">Replay 2023</a>!',
+      backgroundColor: "#141414",
+      textColor: "#ffffff",
+      isCloseable: true,
+    },
     navbar: {
       hideOnScroll: false,
       logo: {
@@ -200,13 +197,6 @@ module.exports = {
         },
       ],
     },
-    algolia: {
-      apiKey: "4a2fa646f476d7756a7cdc599b625bec",
-      indexName: "temporal",
-      appId: "T5D6KNJCQS", // Optional, if you run the DocSearch crawler on your own
-      // searchParameters: {}, // Optional, if provided by Algolia
-      externalUrlRegex: "temporal\\.io",
-    },
   },
   presets: [
     [
@@ -328,43 +318,18 @@ module.exports = {
       async: true,
       defer: true,
     },
-    // {
-    //   src: "/scripts/feedback.js",
-    //   async: true,
-    //   defer: true,
-    // },
-    // {
-    //   src: "/scripts/fullstory.js",
-    //   async: true,
-    //   defer: true,
-    // },
   ],
   plugins: [
-    [
-      "@docusaurus/plugin-content-blog",
-      {
-        /**
-         * Required for any multi-instance plugin
-         */
-        id: "cloud-release-notes",
-        /**
-         * URL route for the blog section of your site.
-         * *DO NOT* include a trailing slash.
-         */
-        routeBasePath: "cloud/release-notes",
-        /**
-         * Path to data on filesystem relative to site dir.
-         */
-        path: "cloud/release-notes",
-        blogTitle: "Temporal Cloud release notes",
-        blogSidebarTitle: "Recent release notes",
-        showReadingTime: false, // Show estimated reading time for the blog post.
-        feedOptions: {
-          type: "all",
-          copyright: `Copyright © ${new Date().getFullYear()} Temporal Technologies Inc.  All rights reserved. Copyright © 2020 Uber Technologies, Inc.`,
+    function preloadFontPlugin() {
+      return {
+        name: "preload-font-plugin",
+        configureWebpack() {
+          return {
+            plugins: [new FontPreloadPlugin()],
+          };
         },
-      },
-    ],
+      };
+    },
     [
       "@docusaurus/plugin-content-blog",
       {

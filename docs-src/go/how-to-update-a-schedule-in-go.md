@@ -2,22 +2,22 @@
 id: how-to-update-a-schedule-in-go
 title: How to update a Schedule in Go
 sidebar_label: Update Schedule
-description: Update the configuration of a Schedule.
+description: To update a Schedule in Go, use `updateSchedule()` on the ScheduleHandle.
 ---
 
-Updating a [Schedule](/concepts/what-is-a-schedule) changes the configuration of an existing Schedule.
-These changes can be made to [Actions](/concepts/what-is-a-schedule#action), Action parameters, [Memos](/concepts/what-is-a-memo), and the Workflow's Cancellation Policy.
+Updating a Schedule changes the configuration of an existing Schedule.
+These changes can be made to Workflow Actions, Action parameters, Memos, and the Workflow's Cancellation Policy.
 
-Use `Update()` on the `ScheduleHandle` to modify a Schedule.
+Use `Update()` on the ScheduleHandle to modify a Schedule.
 
-<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/add-go-schedule-sample/schedule/update/main_dacx.go">View source code</a>
+<a class="dacx-source-link" href="https://github.com/temporalio/documentation-samples-go/blob/main/schedule/update/main_dacx.go">View source code</a>
 
 ```go
 func main() {
 // ...
 	updateSchedule := func(input client.ScheduleUpdateInput) (*client.ScheduleUpdate, error) {
 		return &client.ScheduleUpdate{
-			Schedule:  &input.Description.Schedule,
+			Schedule: &input.Description.Schedule,
 		}, nil
 	}
 

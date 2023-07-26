@@ -31,7 +31,7 @@ Before considering an appropriate Namespace configuration, you should be aware o
 - A Namespace is an endpoint.
   To access a Namespace from a Temporal Client requires mTLS authorization, which requires [CA certificates](cloud/how-to-manage-certificates-in-temporal-cloud#ca-certificates).
 - [Workflow Id](/workflows#workflow-id) uniqueness is per Namespace.
-- [Task Queue](/tasks#task-queue) names are unique per Namespace.
+- [Task Queue](/workers#task-queue) names are unique per Namespace.
 - Closed Workflow retention is per Namespace.
 - RBAC [permissions](/cloud/#namespace-level-permissions) are implemented at the Namespace level.
 
