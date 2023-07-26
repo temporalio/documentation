@@ -11,7 +11,7 @@ tags:
 To use [Worker Versioning](/workers#worker-versioning) in TypeScript, you need to do the following:
 
 1. Determine and assign a Build ID to your built Worker code, and opt in to versioning.
-2. Tell the Task Queue your Worker is listening on about that Build ID, and whether its compatible with an existing Build ID.
+2. Tell the Task Queue your Worker is listening on about that Build ID and whether it's compatible with an existing Build ID.
 
 ### Assign a Build ID to your Worker
 
@@ -97,10 +97,10 @@ await client.taskQueue.updateBuildIdCompatibility('your_task_queue_name', {
 ### Specify versions for Commands
 
 By default, Activities, Child Workflows, and Continue-as-New use the same compatible version set as
-the Workflow that invoked them if they're also using the same Task Queue.
+the Workflow that invoked them, if they're also using the same Task Queue.
 
 If you want to override this behavior, you can specify your intent via the `versioningIntent`
-field available on options object for each of these commands.
+field available on the options object for each of these commands.
 
 <!-- For more information refer to the [conceptual documentation](/concepts/what-is-worker-versioning). -->
 
