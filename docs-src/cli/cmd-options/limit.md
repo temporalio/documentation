@@ -1,10 +1,11 @@
 ---
 id: limit
-title: temporal  limit
+title: temporal limit
 sidebar_label: limit
-description: Number of items to print. 
+description: Number of items to print.
 tags:
-    - cli
+  - cli-reference
 ---
 
-Number of items to print.
+Number of items to print on a page.
+By default, `--limit` is set to 0, allowing all results to print to one page.

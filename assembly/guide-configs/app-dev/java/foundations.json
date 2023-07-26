@@ -129,6 +129,10 @@
     },
     {
       "type": "h3",
+      "id": "java/reference-activityoptions"
+    },
+    {
+      "type": "h3",
       "id": "java/how-to-get-the-result-of-an-activity-execution-in-java"
     },
     {
@@ -162,6 +166,10 @@
     {
       "type": "p",
       "id": "java/how-to-set-a-workflow-id-in-java"
+    },
+    {
+      "type": "h3",
+      "id": "java/reference-workflowoptions"
     },
     {
       "type": "h3",

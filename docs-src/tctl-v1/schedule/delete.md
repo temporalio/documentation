@@ -5,6 +5,7 @@ sidebar_label: delete
 description: How to delete a Schedule using tctl
 tags:
   - tctl
+  - cli-reference
 ---
 
 A Schedule can be deleted.
@@ -14,5 +15,5 @@ Workflow Executions started by Schedules can be cancelled or terminated using th
 However, Workflow Executions started by a Schedule can be identified by the Search Attributes added to them and can be targeted by a [batch](/tctl-v1/batch/) command for termination.
 
 ```shell
-$ tctl schedule delete --sid 'your-schedule-id'
+$ tctl schedule delete --schedule-id 'your-schedule-id'
 ```

@@ -5,6 +5,7 @@ sidebar_label: observeid
 description: How to show the progress of the Event History of a Workflow Execution for a specified Workflow Id and optional Run Id using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl workflow observeid` command shows the progress of the [Event History](/concepts/what-is-an-event-history) of a [Workflow Execution](/workflows#workflow-execution) for the specified [Workflow Id](/concepts/what-is-a-workflow-id) and optional [Run Id](/concepts/what-is-a-run-id).

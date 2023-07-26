@@ -1,4 +1,5 @@
 ---
+id: introduction
 title: TypeScript SDK introduction
 sidebar_label: Introduction
 description: The TypeScript SDK lets developers write highly scalable, reliable, and long-running workflows without being a distributed systems expert.

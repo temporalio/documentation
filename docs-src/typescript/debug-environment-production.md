@@ -11,9 +11,9 @@ You can debug production Workflows using:
 
 - [Web UI](/web-ui)
 - [tctl](/tctl-v1)
-- [Replay](#replay)
-- [Tracing](/typescript/tracing)
-- [Logging](/typescript/logging)
+- [Replay](/typescript/testing#replay)
+- [Tracing](/typescript/observability#tracing)
+- [Logging](/typescript/observability#logging)
 
 You can debug and tune Worker performance with metrics and the [Worker performance guide](/dev-guide/worker-performance).
 For information on setting up SDK metrics, see [Metrics](/dev-guide/typescript/observability#metrics) in the Observability section of the TypeScript SDK developer's guide.

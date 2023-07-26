@@ -5,6 +5,7 @@ sidebar_label: observe
 description: How to show the progress of the Event History of a Workflow Execution using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl workflow observe` command shows the progress of the [Event History](/concepts/what-is-an-event-history) of a [Workflow Execution](/workflows#workflow-execution).

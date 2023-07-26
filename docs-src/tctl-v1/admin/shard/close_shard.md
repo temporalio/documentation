@@ -5,8 +5,8 @@ sidebar_label: close_shard
 description: closing a shard with a given shard Id
 tags:
   - tctl
-  - admin
-  - shard
+  - cli-reference
+  - history-shards
 ---
 
 The `tctl admin shard close_shard` command closes a shard with an Id that corresponds to the value given in the command.
@@ -15,6 +15,6 @@ The `tctl admin shard close_shard` command closes a shard with an Id that corres
 
 The modifier below will change the behavior and output of the command.
 
-#### --share_id value
+#### --shard_id value
 
-ShareId managed by the Temporal Cluster.
+ShardId managed by the Temporal Cluster.

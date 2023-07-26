@@ -5,6 +5,7 @@ sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
 tags:
+- cli-reference
 - cli
 ---
 
@@ -32,7 +33,7 @@ Currently an experimental feature.
 
 ## calendar
 
-Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 * * 5" or "@daily").
+Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 \* \* 5" or "@daily").
 
 ## catchup-window
 
@@ -66,8 +67,9 @@ Path to config directory.
 
 An optional timeout for the context of an RPC call (in seconds). (default: 5)
 
-## cron
+## temporal cron {#cron}
 
+```text
 Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)
@@ -75,8 +77,7 @@ Optional Cron Schedule for the Workflow.
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
-
----
+```
 
 ## data
 
@@ -220,7 +221,8 @@ Batch Job Id.
 
 ## limit
 
-Number of items to print.
+Number of items to print on a page.
+By default, `--limit` is set to 0, allowing all results to print to one page.
 
 ## log-format
 

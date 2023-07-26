@@ -1,10 +1,10 @@
 ---
 id: concurrency
-title: temporal  concurrency
+title: temporal concurrency
 sidebar_label: concurrency
-description: Request concurrency. 
+description: Request concurrency.
 tags:
-    - cli
+  - cli-reference
 ---
 
 Request concurrency.

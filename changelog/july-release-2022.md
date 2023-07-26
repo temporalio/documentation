@@ -23,11 +23,12 @@ Your feedback is invaluable to us as we work to improve the information that is 
 
 :::info Reminder
 
-The [Developer's guide](/dev-guide) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
+The [Developer's guide](/dev-guide) is rapidly increasing its coverage of SDK how-to information, but if you can't find what you are looking for there, it might be in the older docs for SDKs (which is now deprecated, use docs.temporal.io).
 
 :::
 
-- Temporal Cloud release notes are now available at [docs.temporal.io/cloud/release-notes](/cloud/release-notes/).
+- Temporal Cloud release notes are now available at `docs.temporal.io/cloud/release-notes`.
+  (After this changelog was published, the release notes moved to [temporal.io/change-log/product-area/cloud](https://temporal.io/change-log/product-area/cloud).)
 
 - Experimental [Schedule feature](/workflows/#schedules) documentation is now available.
 

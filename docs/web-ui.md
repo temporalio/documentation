@@ -25,11 +25,13 @@ Web UI open source repos:
 
 The Web UI is packed with several features.
 
-### Namespace selection
+### Namespaces
 
-You can search for or select a Namespace by using the Namespace Switcher, located in the left navigational menu.
+All Namespaces in your self-hosted Cluster or Temporal Cloud account are listed under **Namespaces** in the left section of the window.
+You can also switch Namespaces from the Workflows view by selecting from the Namespace switcher at the top right corner of the window.
 After you select a Namespace, the Web UI shows the Recent Workflows page for that Namespace.
 In Temporal Cloud, users can access only the Namespaces that they have been granted access to.
+For details, see [Namespace-level permissions](/cloud/#namespace-level-permissions).
 
 ### Recent Workflows
 
@@ -43,7 +45,7 @@ Users can list Workflow Executions by any of the following:
 - <a class="tdlp" href="/workflows#workflow-type">Workflow Type<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Type?</span><br /><br /><span class="tdlppd">A Workflow Type is a name that maps to a Workflow Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-type">Learn more</a></span></span></a>
 - Start time
 - End time
-- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an Advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>
+- A <a class="tdlp" href="/visibility#list-filter">List Filter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a List Filter?</span><br /><br /><span class="tdlppd">A List Filter is the SQL-like string that is provided as the parameter to an advanced Visibility List API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#list-filter">Learn more</a></span></span></a>
 
 For start time and end time, users can set their preferred date and time format as one of the following:
 
@@ -108,8 +110,22 @@ It works only if a Worker is running and available to return the stack trace.
 
 Lists all Queries sent to the Workflow Execution.
 
+### Schedules
+
+On Temporal Cloud and self-hosted Temporal Cluster Web UI, the Schedules page lists all the [Schedules](/workflows#schedule) created on the selected Namespace.
+
+Click a Schedule to see details, such as configured frequency, start and end times, and recent and upcoming runs.
+
 ### Settings
 
+On Temporal Cloud, **Settings** is visible only to [Global Admins](/cloud/#account-level-roles).
+
+Click **Settings** to see and manage the list of users in your account and to set up integrations such as [Observability](/cloud/how-to-monitor-temporal-cloud-metrics#configure-a-metrics-endpoint-using-temporal-cloud-ui) and [Audit logging](/cloud/how-to-manage-audit-logging).
+
+On self-hosted Temporal Clusters, manage your users, metrics, and logging in your <a class="tdlp" href="/references/configuration#">server configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Temporal Cluster configuration reference</span><br /><br /><span class="tdlppd">Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/references/configuration#">Learn more</a></span></span></a>.
+
+<!--
+AB: Commenting because this is redundant now? Also this needs to be updated for self-hosted clusters.
 Displays the following information:
 
 - Description of the Namespace.
@@ -119,14 +135,21 @@ Displays the following information:
 - History Archival: Whether History Archival is enabled
 - Visibility Archival: Whether Visibility Archival is enabled
 - Failover Version: Namespace Failover Version
-- Clusters: Cluster information
+- Clusters: Cluster information -->
 
-### Archival
+### Archive
 
-<a class="tdlp" href="/clusters#archival">Archival<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> feature information.
+On self-hosted Temporal Clusters, Archive shows <a class="tdlp" href="/clusters#archival">Archived<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a> data of your Workflow Executions on the Namespace.
 
-### Data Encoder
+To see data in your self-hosted Temporal Cluster, you must have [Archival set up and configured](/cluster-deployment-guide#archival).
 
-The Web UI can use the same Data Converter that Workers use for inputs and return values.
-The UI supports both a Remote Codec endpoint and the `tctl` plugin port.
+For information and details on the Archive feature in Temporal Cloud, contact your Temporal representative.
+
+### Codec Server
+
+The Web UI can use a [Codec Server](/dataconversion#codec-server) with a custom Data Converter to decode inputs and return values.
+For details, see [Securing your data](/production-readiness/develop#securing-your-data).
+The UI supports both a [Codec Server endpoint](/production-readiness/develop#web-ui) and the `tctl` plugin port.
+
+For details on setting the Codec Server endpoint, see [Codec Server setup](/production-readiness/develop#codec-server-setup).
 

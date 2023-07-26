@@ -3,7 +3,6 @@ id: what-is-a-custom-data-converter
 title: What is a custom Data Converter?
 sidebar_label: Custom Data Converter
 description: A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.
-
 tags:
   - term
   - explanation
@@ -38,4 +37,4 @@ For details on how to implement custom Payload Converters in your SDK, see Custo
 - [How to implement custom Payload convesion in Go](/go/custom-payload-conversion)
 - [How to implement custom Payload conversion in Java](/java/custom-payload-conversion)
 
-For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-readiness/develop#data-encryption).
+For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-readiness/develop#securing-your-data).

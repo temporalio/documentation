@@ -1,7 +1,7 @@
 ---
 id: configuration
 title: Temporal Cluster configuration reference
-sidebar_label: Cluster config
+sidebar_label: Cluster configuration
 description: Much of the behavior of a Temporal Cluster is configured using the `development.yaml` file.
 toc_max_heading_level: 4
 tags:
@@ -19,9 +19,9 @@ Much of the behavior of a Temporal Cluster is configured using the `development.
 - [`services`](#services)
 - [`publicClient`](#publicclient)
 - [`archival`](#archival)
+- [`namespaceDefaults`](#namespacedefaults)
 - [`dcRedirectionPolicy`](#dcredirectionpolicy)
 - [`dynamicConfigClient`](#dynamicconfigclient)
-- [`namespaceDefaults`](#namespacedefaults)
 
 Changing any properties in the `development.yaml` file requires a process restart for changes to take effect.
 Configuration parsing code is available [here](https://github.com/temporalio/temporal/blob/master/common/config/config.go).
@@ -206,13 +206,14 @@ global:
 
 ## persistence
 
-The `persistence` section holds configuration for the data store / persistence layer.
-Below is an example minimal specification for a password-secured Cluster using Cassandra.
+The `persistence` section holds configuration for the data store/persistence layer.
+The following example shows a minimal specification for a password-secured Cluster using Cassandra.
 
 ```yaml
 persistence:
   defaultStore: default
-  visibilityStore: visibility
+  visibilityStore: cass-visibility # The primary Visibility store.
+  secondaryVisibilityStore: es-visibility # A secondary Visibility store added to enable Dual Visibility.
   numHistoryShards: 512
   datastores:
     default:
@@ -221,10 +222,20 @@ persistence:
         keyspace: "temporal"
         user: "username"
         password: "password"
-    visibility:
+    cass-visibility:
       cassandra:
         hosts: "127.0.0.1"
         keyspace: "temporal_visibility"
+    es-visibility:
+      elasticsearch:
+        version: "v7"
+        logLevel: "error"
+        url:
+          scheme: "http"
+          host: "127.0.0.1:9200"
+        indices:
+          visibility: temporal_visibility_v1_dev
+        closeIdleConnectionsInterval: 15s
 ```
 
 The following top level configuration items are required:
@@ -242,7 +253,11 @@ _Required_ - The name of the data store definition that should be used by the Te
 
 ### visibilityStore
 
-_Required_ - the name of the data store definition that should be used by the Temporal visibility server.
+_Required_ - The name of the primary data store definition that should be used to set up <a class="tdlp" href="/clusters#visibility">Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Visibility?</span><br /><br /><span class="tdlppd">The term Visibility, within the Temporal Platform, refers to the subsystems and APIs that enable an operator to view Workflow Executions that currently exist within a Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#visibility">Learn more</a></span></span></a> on the Temporal Cluster.
+
+### secondaryVisibilityStore
+
+_Optional_ - The name of the secondary data store definition that should be used to set up <a class="tdlp" href="/visibility#dual-visibility">Dual Visibility<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Dual Visibility?</span><br /><br /><span class="tdlppd">Dual Visibility is a feature that lets you set a secondary Visibility store in your Temporal Cluster to facilitate migrating your Visibility data from one database to another.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#dual-visibility">Learn more</a></span></span></a> on the Temporal Cluster.
 
 ### datastores
 
@@ -365,10 +380,10 @@ _Required_
 
 `rpc` contains settings related to the way a service interacts with other services. The following values are supported:
 
-- `grpcPort` is the port on which gRPC will listen.
+- `grpcPort`: Port on which gRPC will listen.
 - `membershipPort`: Port used to communicate with other hosts in the same Cluster for membership info.
   Each service should use different port.
-  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each cCluster should use different membershipPort.
+  If there are multiple Temporal Clusters in your environment (Kubernetes for example), and they have network access to each other, each Cluster should use a different membership port.
 - `bindOnLocalHost`: Determines whether uses `127.0.0.1` as the listener address.
 - `bindOnIP`: Used to bind service on specific IP, or `0.0.0.0`.
   Check `net.ParseIP` for supported syntax, only IPv4 is supported, mutually exclusive with `BindOnLocalHost` option.
@@ -389,4 +404,146 @@ publicClient:
 ```
 
 Use `dns:///` prefix to enable round-robin between IP address for DNS name.
+
+## archival
+
+_Optional_
+
+Archival is an optional configuration needed to set up the <a class="tdlp" href="/clusters#archival">Archival store<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Archival?</span><br /><br /><span class="tdlppd">Archival is a feature that automatically backs up Event Histories from Temporal Cluster persistence to a custom blob store after the Closed Workflow Execution retention period is reached.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#archival">Learn more</a></span></span></a>.
+It can be enabled on `history` and `visibility` data.
+
+The following list describes supported values for each configuration on the `history` and `visibility` data.
+
+- `state`: State for Archival setting. Supported values are `enabled`, `disabled`. This value must be `enabled` to use Archival with any Namespace in your Cluster.
+  - `enabled`: Enables Archival in your Cluster setup. When set to `enabled`, `URI` and `namespaceDefaults` values must be provided.
+  - `disabled`: Disables Archival in your Cluster setup. When set to `disabled`, the `enableRead` value must be set to `false`, and under `namespaceDefaults`, `state` must be set to `disabled`, with no values set for `provider` and `URI` fields.
+- `enableRead`: Supported values are `true` or `false`. Set to `true` to allow read operations from the archived Event History data.
+- `provider`: Location where data should be archived. Subprovider configs are `filestore`, `gstorage`, `s3`, or `your_custom_provider`. Default configuration specifies `filestore`.
+
+Example:
+
+- To enable Archival in your Cluster configuration:
+
+  ```yaml
+  # Cluster-level Archival config enabled
+  archival:
+    # Event History configuration
+    history:
+      # Archival is enabled for the History Service data.
+      state: "enabled"
+      enableRead: true
+      # Namespaces can use either the local filestore provider or the Google Cloud provider.
+      provider:
+        filestore:
+          fileMode: "0666"
+          dirMode: "0766"
+        gstorage:
+          credentialsPath: "/tmp/gcloud/keyfile.json"
+    # Configuration for archiving Visibility data.
+    visibility:
+      # Archival is enabled for Visibility data.
+      state: "enabled"
+      enableRead: true
+      provider:
+        filestore:
+          fileMode: "0666"
+          dirMode: "0766"
+  ```
+
+- To disable Archival in your Cluster configuration:
+
+  ```yaml
+  # Cluster-level Archival config disabled
+  archival:
+    history:
+      state: "disabled"
+      enableRead: false
+    visibility:
+      state: "disabled"
+      enableRead: false
+
+  namespaceDefaults:
+    archival:
+      history:
+        state: "disabled"
+      visibility:
+        state: "disabled"
+  ```
+
+For more details on Archival setup, see [Set up Archival](/cluster-deployment-guide#set-up-archival).
+
+## namespaceDefaults
+
+_Optional_
+
+Sets default Archival configuration for each Namespace using `namespaceDefaults` for `history` and `visibility` data.
+
+- `state`: Default state of the Archival for the Namespace. Supported values are `enabled` or `disabled`.
+- `URI`: Default URI for the Namespace.
+
+For more details on setting Namespace defaults on Archival, see [Namespace creation in Archival setup](/cluster-deployment-guide#namespace-creation)
+
+Example:
+
+```yaml
+# Default values for a Namespace if none are provided at creation.
+namespaceDefaults:
+  # Archival defaults.
+  archival:
+    # Event History defaults.
+    history:
+      state: "enabled"
+      # New Namespaces will default to the local provider.
+      URI: "file:///tmp/temporal_archival/development"
+    visibility:
+      state: "disabled"
+      URI: "file:///tmp/temporal_vis_archival/development"
+```
+
+## dcRedirectionPolicy
+
+_Optional_
+
+Contains the Frontend datacenter API redirection policy that you can use for cross-DC replication.
+
+Supported values:
+
+- `policy`: Supported values are `noop`, `selected-apis-forwarding`, and `all-apis-forwarding`.
+  - `noop`: Not setting a value or setting `noop` means no redirection. This is the default value.
+  - `selected-apis-forwarding`: Sets up forwarding for the following APIs to the active Cluster based on the Namespace.
+    - `StartWorkflowExecution`
+    - `SignalWithStartWorkflowExecution`
+    - `SignalWorkflowExecution`
+    - `RequestCancelWorkflowExecution`
+    - `TerminateWorkflowExecution`
+    - `QueryWorkflow`
+  - `all-apis-forwarding`: Sets up forwarding for all APIs on the Namespace in the active Cluster.
+
+Example:
+
+```yaml
+#...
+dcRedirectionPolicy:
+  policy: "selected-apis-forwarding"
+#...
+```
+
+## dynamicConfigClient
+
+_Optional_
+
+Configuration for setting up file-based <a class="tdlp" href="/clusters#dynamicconfiguration">dynamic configuration<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is Cluster configuration?</span><br /><br /><span class="tdlppd">Cluster Configuration is the setup and configuration details of your Temporal Cluster, defined using YAML.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#dynamicconfiguration">Learn more</a></span></span></a> client for the Cluster.
+
+This setting is required if specifying dynamic configuration. Supported configuration values are as follows:
+
+- `filepath`: Specifies the path where the dynamic configuration YAML file is stored. The path should be relative to the root directory.
+- `pollInterval`: Interval between the file-based client polls to check for dynamic configuration updates. The minimum period you can set is 5 seconds.
+
+Example:
+
+```yaml
+dynamicConfigClient:
+  filepath: "config/dynamicconfig/development-cass.yaml"
+  pollInterval: "10s"
+```
 

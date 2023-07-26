@@ -1,10 +1,10 @@
 ---
 id: identity
-title: temporal  identity
+title: temporal identity
 sidebar_label: identity
 description: Specify operator's identity.
 tags:
-    - cli
+  - cli-reference
 ---
 
 Specify operator's identity.

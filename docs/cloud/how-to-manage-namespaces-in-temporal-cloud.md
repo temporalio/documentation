@@ -18,7 +18,7 @@ A Namespace is a unit of isolation within the Temporal Platform.
 - [Manage Namespaces](#manage-namespaces)
 - [Delete a Namespace](#delete-a-namespace)
 
-## Create a Namespace
+## How to create a Namespace in Temporal Cloud {#create-a-namespace}
 
 :::info
 
@@ -41,10 +41,11 @@ If you want to increase this limit, open a [support ticket](https://docs.tempora
 
 To create a Namespace in Temporal Cloud, gather the following information:
 
-- [Namespace Name](/cloud/#cloud-namespace) and region
-- [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution)
-- [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace
-- [Permissions](/cloud/#namespace-level-permissions) for each user
+- [Namespace Name](/cloud/#cloud-namespace) and region.
+- [Retention Period](/clusters/#retention-period) for the [Event History](/workflows#event-history) of closed [Workflow Executions](/workflows#workflow-execution).
+- [CA certificate](/cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements) for the Namespace.
+- [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) to show decoded payloads to users in the Event History for Workflow Executions in the Namespace. For details, see [Securing your data](/production-readiness/develop#securing-your-data).
+- [Permissions](/cloud/#namespace-level-permissions) for each user.
 
 <!--- How to create a Namespace in Temporal Cloud using Temporal Cloud UI --->
 
@@ -61,6 +62,8 @@ To create a Namespace in Temporal Cloud, gather the following information:
    Typically, a development Namespace has a short retention period and a production Namespace has a longer retention period.
    (If you need to change this value later, contact [Temporal Support](https://docs.temporal.io/cloud/how-to-create-a-ticket-for-temporal-support).)
 1. In **Certificate**, paste the CA certificate for this Namespace.
+1. Optional: In **Codec Server**, enter the URL and port number of your Codec Server endpoint.
+   For details, see [Securing your data](/production-readiness/develop#securing-your-data).
 1. Click **Create Namespace**.
 
 <!--- How to create a Namespace in Temporal Cloud using tcld --->
@@ -69,16 +72,16 @@ To create a Namespace in Temporal Cloud, gather the following information:
 
 This functionality is in development.
 
-## Access Namespaces
+## How to access a Namespace in Temporal Cloud {#access-namespaces}
 
 <!--- How to access a Namespace in Temporal Cloud --->
 
 Each Namespace in Temporal Cloud has two unique endpoints, both of which include the [Namespace Id](/cloud/#cloud-namespace-id).
 
 - For programmatic access, a gRPC endpoint in the form `<NamespaceId>.tmprl.cloud`; for example, `accounting-production.f45a2.tmprl.cloud:7233`.
-- For accessing Temporal Web UI, an HTTPS endpoint in the form `web.<namespaceId>.tmprl.cloud`; for example, `https://web.accounting-production.f45a2.tmprl.cloud`.
+- For accessing Temporal Web UI, an HTTPS endpoint in the form `https://cloud.temporal.io/namespaces/<namespaceId>`; for example, `https://cloud.temporal.io/namespaces/accounting-production.f45a2`.
 
-## Manage Namespaces
+## How to manage Namespaces in Temporal Cloud {#manage-namespaces}
 
 <!--- How to manage Namespaces in Temporal Cloud using Temporal Cloud UI --->
 
@@ -88,7 +91,7 @@ To list Namespaces:
 
 - On the left side of the window, select **Namespaces**.
 
-To edit a Namespace (including custom Search Attributes, certificates, certificate filters, permissions, and users), find the Namespace and do either of the following:
+To edit a Namespace (including custom Search Attributes, certificates, certificate filters, Codec Server endpoint, permissions, and users), find the Namespace and do either of the following:
 
 - On the right end of the Namespace row, select the three vertical dots (⋮). Click **Edit**.
 - Select the Namespace name. In the top-right portion of the page, select **Edit**.
@@ -98,6 +101,8 @@ On the **Edit** page, you can do the following:
 - Add a [custom Search Attribute](/visibility#custom-search-attributes).
 - [Manage CA certificates](/cloud/how-to-manage-certificates-in-temporal-cloud).
 - [Manage certificate filters](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters-using-temporal-cloud-ui).
+- Set [Codec Server endpoint](/production-readiness/develop#set-your-codec-server-endpoints-with-web-ui-and-cli) for all users on the Namespace.
+  Each user on the Namespace has the option to [override this setting](/production-readiness/develop#web-ui) in their browser.
 - Manage [Namespace-level permissions](/cloud/#namespace-level-permissions).
 - Add users.
 
@@ -120,7 +125,7 @@ For more information, see [How to manage certificates in Temporal Cloud](/cloud/
 To manage certificate filters, use the <a class="tdlp" href="/cloud/tcld/namespace#certificate-filters">tcld namespace certificate-filters<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">tcld namespace certificate-filters</span><br /><br /><span class="tdlppd">How to manage certificate filters for a Namespace in Temporal Cloud using tcld.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cloud/tcld/namespace#certificate-filters">Learn more</a></span></span></a> commands.
 For more information, see [How to manage certificate filters in Temporal Cloud](/cloud/how-to-manage-certificates-in-temporal-cloud#manage-certificate-filters).
 
-## Delete a Namespace
+## How to delete a Namespace in Temporal Cloud {#delete-a-namespace}
 
 :::info
 

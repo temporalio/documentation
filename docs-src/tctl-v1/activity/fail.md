@@ -5,6 +5,7 @@ sidebar_label: fail
 description: How to fail an Activity Execution using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl activity fail` command fails an [Activity Execution](/concepts/what-is-an-activity-execution).
