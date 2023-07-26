@@ -10,6 +10,7 @@ tags:
 - guide-context
 - developer-guide
 - go
+- workflow-type
 - how-to
 - options
 - workers
@@ -468,7 +469,7 @@ The Temporal Go SDK has APIs to handle equivalent Go constructs:
 - `workflow.Channel` This is a replacement for the native `chan` type.
   Temporal provides support for both buffered and unbuffered channels.
 - `workflow.Selector` This is a replacement for the `select` statement.
-  Learn more on the [Go SDK Selectors](https://legacy-documentation-sdks.temporal.io/go/selectors) page.
+  Learn more on the <a class="tdlp" href="/dev-guide/go/features#selectors">Go SDK Selectors<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">Go SDK Selectors</span><br /><br /><span class="tdlppd">Implementing Selectors in the Temporal Go SDK.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#selectors">Learn more</a></span></span></a> page.
 - `workflow.Context` This is a replacement for `context.Context`.
   See [Tracing](/dev-guide/go/observability#tracing) for more information about context propagation.
 
@@ -612,7 +613,6 @@ func main() {
 	err = yourWorker.Run(worker.InterruptCh())
 // ...
 }
-// ...
 ```
 
 ## Activity Execution
@@ -1006,7 +1006,7 @@ func main() {
 	number := 100
 	activities := &yourapp.YourActivityObject{
 		Message: &message,
-		Number:  &number,
+		Number: &number,
 	}
 	// Use the RegisterActivity or RegisterActivityWithOptions method for each Activity.
 	yourWorker.RegisterActivity(activities)

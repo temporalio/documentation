@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 26 2023 04:14:03 AM -0700
+Last assembled: Wednesday July 26 2023 07:30:52 AM -0400
 
-Assembly Workflow Id: docs-full-assembly-rachfop-123
+Assembly Workflow Id: docs-full-assembly-flossypurse
 
 89 guide configurations found.
 
@@ -906,6 +906,8 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
@@ -932,8 +934,6 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -943,6 +943,8 @@ go/logging -> /dev-guide/go/observability#logging
 go/connect-to-a-dev-cluster -> #connect-to-a-dev-cluster
 
 cloud-context/certificates-requirements -> /cloud/how-to-manage-certificates-in-temporal-cloud#certificate-requirements
+
+go/selectors -> /dev-guide/go/features#selectors
 
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
