@@ -2,6 +2,8 @@
 id: code-samples-go
 title: Code samples
 sidebar_label: Code samples
+tags:
+  - go-sdk
 ---
 
 - [Go Samples repo](https://github.com/temporalio/samples-go#samples-directory)

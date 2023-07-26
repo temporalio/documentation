@@ -5,6 +5,7 @@ sidebar_label: schedule
 description: How to operate Schedules using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 A [Schedule](/concepts/what-is-a-schedule) is an experimental feature available in `tctl 1.17` and `tctl next`.

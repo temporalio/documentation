@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 26 2023 11:59:29 AM -0700
+Last assembled: Wednesday July 26 2023 14:26:47 PM -0700
 
 Assembly Workflow Id: docs-full-assembly-dail-macbook
 
@@ -723,6 +723,8 @@ cli/cmd-options/detail -> /cli/cmd-options#detail
 cli/cmd-options/reason -> /cli/cmd-options#reason
 
 cli/cmd-options/job-id -> /cli/cmd-options#job-id
+
+cli/workflow/list -> /cli/workflow#list
 
 concepts/what-is-the-temporal-web-ui -> /web-ui#
 

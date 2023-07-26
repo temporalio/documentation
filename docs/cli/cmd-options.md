@@ -5,6 +5,7 @@ sidebar_label: cmd options
 description: How to use the Temporal CLI command options
 toc_max_heading_level: 4
 tags:
+- cli-reference
 - cli
 ---
 
@@ -32,7 +33,7 @@ Currently an experimental feature.
 
 ## calendar
 
-Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 * * 5" or "@daily").
+Calendar specification in JSON ({"dayOfWeek":"Fri","hour":"17","minute":"5"}) or as a Cron string ("30 2 \* \* 5" or "@daily").
 
 ## catchup-window
 
@@ -66,8 +67,9 @@ Path to config directory.
 
 An optional timeout for the context of an RPC call (in seconds). (default: 5)
 
-## cron
+## temporal cron {#cron}
 
+```text
 Optional Cron Schedule for the Workflow.
 ┌───────────── minute (0 - 59)
 │ ┌───────────── hour (0 - 23)
@@ -75,8 +77,7 @@ Optional Cron Schedule for the Workflow.
 │ │ │ ┌───────────── month (1 - 12)
 │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday)
 │ │ │ │ │
-
----
+```
 
 ## data
 
@@ -316,9 +317,7 @@ Promote local namespace to global namespace.
 ## query
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-See https://docs.
-temporal.
-io/docs/tctl/workflow/list#--query.
+For details, see the <a class="tdlp" href="/cli/workflow#list">temporal workflow list<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">temporal workflow list</span><br /><br /><span class="tdlppd">List Workflow Executions based on a Query.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/cli/workflow#list">Learn more</a></span></span></a> command.
 
 ## raw
 

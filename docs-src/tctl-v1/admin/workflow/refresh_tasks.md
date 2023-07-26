@@ -5,8 +5,7 @@ sidebar_label: refresh_tasks
 description: Refreshing Workflow Tasks.
 tags:
   - tctl
-  - admin
-  - workflow
+  - cli-reference
 ---
 
 The `tctl admin workflow refresh_tasks` command updates all [Tasks](/concepts/what-is-a-task) in a [Workflow](/concepts/what-is-a-workflow), provided that the command can fetch new information for Tasks.

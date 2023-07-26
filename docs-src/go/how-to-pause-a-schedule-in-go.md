@@ -2,7 +2,9 @@
 id: how-to-pause-a-schedule-in-go
 title: How to pause a Schedule in Go
 sidebar_label: Pause Schedule
-description: To pause or unpause a Schedule in Go, use `Pause()` or `Unpause()` on the `ScheduleHandle`.
+description: To pause or unpause a Schedule in Go, use Pause() or Unpause() on the ScheduleHandle.
+tags:
+  - go-sdk
 ---
 
 `Pause` and `Unpause` enable the start or stop of all future Workflow Runs on a given Schedule.
