@@ -1,14 +1,14 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 26 2023 04:05:13 AM -0700
+Last assembled: Wednesday July 26 2023 06:41:48 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
 89 guide configurations found.
 
-1476 information nodes found.
+1478 information nodes found.
 
-1240 information nodes are attached to guides.
+1241 information nodes are attached to guides.
 
 The "Link Magic" Activity transformed the following "information node" identifiers into site paths:
 
@@ -462,16 +462,6 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
-
-python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
-
-typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
-
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
@@ -701,8 +691,6 @@ go/connect-to-temporal-cloud -> /dev-guide/go/foundations#connect-to-temporal-cl
 python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-temporal-cloud
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
-
-cloud-context/certificates-filters -> #manage-certificate-filters
 
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
@@ -959,5 +947,17 @@ go/selectors -> /dev-guide/go/features#selectors
 go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
+
+go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
+
+java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
+
+php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
+
+python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
+
+typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
+
+cloud-context/certificates-filters -> #manage-certificate-filters
 
 

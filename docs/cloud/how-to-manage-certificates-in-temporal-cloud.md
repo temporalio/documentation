@@ -74,8 +74,8 @@ If you don't have an existing certificate management infrastructure, issue the C
 
 :::info
 
-The maximum number of CA certificates in a certificate bundle is 16.
-The maximum payload size of a certificate bundle (before base64 encoding) is 32 KB.
+A certificate bundle can contain up to 16 CA certificates.
+A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
 
 :::
 
@@ -83,8 +83,8 @@ The maximum payload size of a certificate bundle (before base64 encoding) is 32 
 
 CA and end-entity certificates can be generated with `tcld`.
 
-The maximum duration for a CA certificate is 1 year (`-d 1y`).
-An end-entity certificate must expire before its root CA certificate, so specify its duration appropriately.
+A CA certificate can last up to 1 year (`-d 1y`).
+You must set an end-entity certificate to expire before its root CA certificate, so specify its duration appropriately.
 
 To create a new CA certificate, use `tcld gen ca`.
 
