@@ -1,10 +1,10 @@
 ---
 id: memo
-title: temporal  memo
+title: temporal memo
 sidebar_label: memo
 description: Set a memo on a schedule (in key=value format).
 tags:
-    - cli
+  - cli-reference
 ---
 
 Set a memo on a schedule (format: key=value).

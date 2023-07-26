@@ -5,6 +5,7 @@ sidebar_label: reset-batch
 description: How to reset a batch of Workflow Executions using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl workflow reset-batch` command resets a batch of [Workflow Executions](/workflows#workflow-execution) by [`resetType`](#resettype).

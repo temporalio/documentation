@@ -5,6 +5,7 @@ sidebar_label: add
 description: How to add end-entity certificates to the Namespace of a Temporal Cloud account using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld namespace certificates-filter add` command adds additional certificate filters to the Namespace of a Temporal Cloud account.

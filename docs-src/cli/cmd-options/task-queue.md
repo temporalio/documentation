@@ -1,10 +1,10 @@
 ---
 id: task-queue
-title: temporal  task-queue
+title: temporal task-queue
 sidebar_label: task-queue
 description: Task Queue
 tags:
-    - cli
+  - cli-reference
 ---
 
 Task Queue.

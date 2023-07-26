@@ -19,7 +19,7 @@ Temporal Cloud does not require an exchange of secrets; only the certificates pr
 
 All certificates used by Temporal Cloud must meet the following requirements.
 
-## Certificate requirements
+## Requirements for CA certificates in Temporal Cloud {#certificate-requirements}
 
 Certificates provided to Temporal for your [Namespaces](/namespaces) _must_ meet the following requirements.
 
@@ -59,7 +59,7 @@ Distinguished Names are _not_ case sensitive; that is, uppercase letters (such a
 
 :::
 
-## Issue certificates
+## How to issue root CA and end-entity certificates {#issue-certificates}
 
 Temporal Cloud authenticates a client connection by validating the client certificate against one or more CA certificates that are configured for the specified Namespace.
 
@@ -72,9 +72,19 @@ When you configure the client SDK, you need to present a complete certificate ch
 
 If you don't have an existing certificate management infrastructure, issue the CA and end-entity certificates using `tcld` or open source tools such as certstrap.
 
-#### Use `tcld` to generate certificates
+:::info
+
+A certificate bundle can contain up to 16 CA certificates.
+A certificate bundle can have a maximum payload size of 32 KB before base64 encoding.
+
+:::
+
+#### Use tcld to generate certificates
 
 CA and end-entity certificates can be generated with `tcld`.
+
+A CA certificate can last up to 1 year (`-d 1y`).
+You must set an end-entity certificate to expire before its root CA certificate, so specify its duration appropriately.
 
 To create a new CA certificate, use `tcld gen ca`.
 
@@ -85,15 +95,8 @@ tcld gen ca --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key
 To create a new end-entity certificate, use `tcld gen leaf`.
 
 ```
-tcld gen leaf --org temporal -d 1y --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
+tcld gen leaf --org temporal -d 364d --ca-cert ca.pem --ca-key ca.key --cert client.pem --key client.key
 ```
-
-:::info
-
-The maximum number of CA certificates in a certificate bundle is 16.
-The maximum payload size of a certificate bundle (before base64 encoding) is 32 KB.
-
-:::
 
 #### Use certstrap
 
@@ -148,7 +151,7 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -in <infile.key> -out <outfile.key
 
 You can now use the generated client certificate with Temporal Cloud.
 
-## Control authorization
+## How to control authorization for Temporal Cloud Namespaces {#control-authorization}
 
 Because Temporal Cloud uses mTLS for authorization, we recommend that an end-entity certificate be scoped to a specific Namespace.
 Temporal Cloud requires full CA chains, so you can achieve authorization in two ways.
@@ -165,7 +168,7 @@ Temporal uses the root CA certificate as the trusted authority for access to you
 
 [How to manage certificate filters in Temporal Cloud](#manage-certificate-filters)
 
-## Manage certificates
+## How to add, update, and remove certificates in a Temporal Cloud Namespace {#manage-certificates}
 
 :::note
 
@@ -238,7 +241,7 @@ One way to meet this requirement is to add a version or a date to the common nam
 
 1. Run the `tcld namespace accepted-client-ca set` command again with the updated CA certificate bundle file.
 
-## Manage certificate filters
+## How to manage certificate filters in Temporal Cloud {#manage-certificate-filters}
 
 To limit access to specific [end-entity certificates](/cloud/how-to-manage-certificates-in-temporal-cloud), create certificate filters.
 Each filter contains values for one or more of the following fields:

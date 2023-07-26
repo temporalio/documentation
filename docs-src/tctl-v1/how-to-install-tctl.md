@@ -4,8 +4,8 @@ title: How to install tctl
 sidebar_label: Install
 description: You can install tctl in four ways, described in this topic.
 tags:
-  - operation-guide
   - tctl
+  - cli
 ---
 
 > The Temporal tctl documentation covers version 1.17 of the Temporal CLI.

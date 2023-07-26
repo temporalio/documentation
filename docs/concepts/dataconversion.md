@@ -46,7 +46,7 @@ For details, see the API references:
 - [Python](https://python.temporal.io/temporalio.converter.DataConverter.html)
 - [TypeScript](https://typescript.temporal.io/api/interfaces/common.DataConverter)
 
-### Payload
+### What is a Payload? {#payload}
 
 A [Payload](https://api-docs.temporal.io/#temporal.api.common.v1.Payload) represents binary data such as input and output from Activities and Workflows.
 Payloads contain metadata that describe the binary data, such as its data type or other arbitrary values for use by custom encoders/converters.
@@ -56,7 +56,7 @@ The default Data Converter processes supported type values to Payloads, and you 
 
 You can additionally apply <a class="tdlp" href="#payload-codec">custom codecs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a> (such as for encryption or compression) on your Payloads to wrap them into new encoded Payloads.
 
-## Default Data Converter
+## What is a default Data Converter? {#default-data-converter}
 
 Each Temporal SDK includes and uses a default Data Converter.
 The default Data Converter converts objects to bytes using a series of Payload Converters and supports binary, Protobufs, and JSON formats.
@@ -77,7 +77,7 @@ For example:
 - If a value isn't null, binary, or a Protobuf, it is encoded as JSON.
   If any part of it is not serializable as JSON, <!--(for example, a Date—see JSON data types)--> an error is thrown.
 
-## Custom Data Converter
+## What is a custom Data Converter? {#custom-data-converter}
 
 A custom Data Converter extends the default <a class="tdlp" href="#">Data Converter<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Data Converter?</span><br /><br /><span class="tdlppd">A Data Converter is a Temporal SDK component that serializes and encodes data entering and exiting a Temporal Cluster.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#">Learn more</a></span></span></a> with custom logic for <a class="tdlp" href="#payload">Payload<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload">Learn more</a></span></span></a> conversion or encoding.
 
@@ -110,7 +110,7 @@ For details on how to implement custom Payload Converters in your SDK, see Custo
 
 For details on how to implement custom encryption and compression in your SDK, see [Data Encryption](/production-readiness/develop#securing-your-data).
 
-## Payload Converter
+## What is a Payload Converter? {#payload-converter}
 
 A Payload Converter serializes data, converting values to bytes and back.
 
@@ -138,7 +138,7 @@ For details on how to use the Payload Converter for custom data types, see Custo
 - <a class="tdlp" href="/dev-guide/go/features#custom-payload-conversion">How to implement custom Payload convesion in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/features#custom-payload-conversion">Learn more</a></span></span></a>
 - <a class="tdlp" href="/dev-guide/java/features#custom-payload-conversion">How to implement custom Payload conversion in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to use custom payload conversion</span><br /><br /><span class="tdlppd">Create your custom `PayloadConverter` and set it on a `DataConverter` in your Client options.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/features#custom-payload-conversion">Learn more</a></span></span></a>
 
-## Failure Converter
+## What is a Failure Converter? {#failure-converter}
 
 A Failure Converter converts error objects to proto Failures and back.
 The default Failure Converter copies error messages and stack traces as plain text.
@@ -156,7 +156,7 @@ Creating a custom Failure Converter is not yet supported in Java.
 Failure messages and stack traces are not encoded as codec-capable Payloads by default; you must explicitly enable encoding these common attributes on failures.
 If your errors might contain sensitive information, you can encrypt the message and stack trace by configuring the default Failure Converter to use your encoded attributes, in which case it moves your `message` and `stack_trace` fields to a Payload that's run through your <a class="tdlp" href="#payload-codec">codec<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload Codec?</span><br /><br /><span class="tdlppd">A Payload Codec transforms an array of Payloads into another array of Payloads.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload-codec">Learn more</a></span></span></a>.
 
-## Payload Codec
+## What is a Payload Codec? {#payload-codec}
 
 A Payload Codec transforms an array of <a class="tdlp" href="#payload">Payloads<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload">Learn more</a></span></span></a> (for example, a list of Workflow arguments) into another array of Payloads.
 
@@ -195,7 +195,7 @@ The following samples use encryption (AES GCM with 256-bit key) in a custom Data
 - [Python sample](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript sample](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 
-## Remote data encoding
+## What is remote data encoding? {#remote-data-encoding}
 
 Remote data encoding is exposing your Payload Codec via HTTP endpoints to support remote encoding and decoding.
 
@@ -229,7 +229,7 @@ Samples:
 - [Python](https://github.com/temporalio/samples-python/tree/main/encryption)
 - [TypeScript](https://github.com/temporalio/samples-typescript/tree/main/encryption)
 
-## Codec Server
+## What is a Codec Server? {#codec-server}
 
 A Codec Server is an HTTP/HTTPS server that uses a [custom Payload Codec](/production-readiness/develop#securing-your-data) to decode your data remotely through endpoints.
 
@@ -266,7 +266,7 @@ After you start your Codec Server, [configure your Codec Server endpoints](/prod
 However, before you use a Codec Server to encode your data, ensure that you consider all the security implications of running codecs remotely.
 For example, codecs that perform encryption might need to be secured to prevent decryption by untrusted callers. -->
 
-### Codec Server setup
+### Codec Server setup {#codec-server-setup}
 
 Use a Codec Server to decode your encoded <a class="tdlp" href="#payload">payloads<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Payload?</span><br /><br /><span class="tdlppd">A Payload represents binary data such as input and output from Activities and Workflows.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#payload">Learn more</a></span></span></a> and integrate it with the Temporal Web UI and CLI commands when debugging your Workflows.
 
