@@ -7,11 +7,11 @@ tags:
   - term
 ---
 
-The History Service is responsible for persisting Workflow Execution state and determining what to do next to progress the Workflow Execution by using [History Shards](/concepts/what-is-a-history-shard).
+The History Service is responsible for persisting Workflow Execution state and determining when the Workflow Execution is able to make progress.
 
 ![History Service](/diagrams/temporal-history-service.svg)
 
-The total number of History Services can be between 1 and the total number of History Shards.
+The total number of History Services can be between 1 and the total number of [History Shards](/concepts/what-is-a-history-shard).
 An individual History Service can support a large number of History Shards.
 Temporal recommends starting at a ratio of 1 History Service for every 500 History Shards.
 
