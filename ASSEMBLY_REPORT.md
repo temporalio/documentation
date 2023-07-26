@@ -1,6 +1,6 @@
 # Docs Assembly Workflow report
 
-Last assembled: Monday July 24 2023 03:19:31 AM -0700
+Last assembled: Wednesday July 26 2023 04:14:03 AM -0700
 
 Assembly Workflow Id: docs-full-assembly-rachfop-123
 
@@ -461,16 +461,6 @@ php/heartbeat-timeout -> /dev-guide/php/features#heartbeat-timeout
 python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
-
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
-
-python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
-
-typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
 
 concepts/what-is-a-reset -> /workflows#reset
 
