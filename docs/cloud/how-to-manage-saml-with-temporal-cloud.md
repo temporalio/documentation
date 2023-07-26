@@ -26,21 +26,21 @@ For more information, contact your account manager.
    The Account Id is the five or six characters following the period (.), such as `f45a2`.
    You will need the Account Id to construct your callback URL and your entity identifier.
 1. Configure SAML with your IdP by following one of these sets of instructions:
-   - [Microsoft Azure Active Directory (Azure AD)](#configure-saml-with-azure-ad)
+   - [Microsoft Azure Active Directory (Microsoft Entra ID)](#configure-saml-with-azure-ad)
    - [Okta](#configure-saml-with-okta)
 1. [Share your connection information with us and test your connection.](#finish-saml-configuration)
 
-## Configure SAML with Azure AD
+## Configure SAML with Microsoft Entra ID
 
-If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Azure AD.
+If you want to use the general Microsoft login mechanism, you don't need to set up SAML with Microsoft Entra ID.
 Just select **Continue with Microsoft** on the Temporal Cloud sign-in page.
 
-To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
+To use Microsoft Entra ID as your SAML IdP, create a Microsoft Entra ID Enterprise application.
 
-1. Sign in to the [Microsoft Azure AD portal](https://portal.azure.com/).
-1. On the home page, under **Manage Azure Active Directory**, select **View**.
+1. Sign in to the [Microsoft Entra ID portal](https://entra.microsoft.com).
+1. On the home page, under **Manage Entra Active Directory**, select **View**.
 1. On the **Overview** page near the top, select **Add > Enterprise application**.
-1. On the **Browse Azure AD Gallery** page near the top, select **Create your own application**.
+1. On the **Browse Entra ID Gallery** page near the top, select **Create your own application**.
 1. In the **Create your own application** pane, provide a name for your application (such as `temporal-cloud`) and select **Integrate any other application you don't find in the gallery**.
 1. Select **Save**.
 1. In the **Getting Started** section, select **2. Set up single sign on**.
@@ -80,7 +80,7 @@ To use Azure AD as your SAML IdP, create an Azure AD Enterprise application.
    - In the **SAML Certificates** section of the **SAML-based Sign-on** page, select the download link for **Certificate (Base64)**.
    - In the **Set up _APPLICATION_NAME_** section of the **SAML-based Sign-on** page, copy the value of **Login URL**.
 
-To finish setting up Azure AD as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
+To finish setting up Entra ID as your SAML IdP, see [Finish SAML configuration](#finish-saml-configuration).
 
 ## Configure SAML with Okta
 
