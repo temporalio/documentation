@@ -35,17 +35,18 @@ Each step in detail:
 ## Changing your worker code & specifying compatibility
 
 Make whatever changes you need to make to your worker code. The safest thing to do most of the time is to assume that
-your changes are *not* compatible with some existing Build ID. However, if you are making a hotfix to some existing 
+your changes are _not_ compatible with some existing Build ID. However, if you are making a hotfix to some existing
 workflow code (ex, by using the [Workflow Versioning apis](/concepts/workflows#workflow-versioning)) - you will want
 to explicitly state that you expect this change to be compatible with an existing Build ID.
 
 Exactly how you do this is up to you, but a simple option is to include a line in your commit message that you
 can parse later, like so:
+
 ```text
 expected-compatible-build-id: some-build-id
 ```
 
-For more information on what is considered a compatible change or not, see our information on 
+For more information on what is considered a compatible change or not, see our information on
 [Workflow Determinism](/concepts/workflows#deterministic-constraints).
 
 ## Releasing the change(s)
@@ -62,6 +63,7 @@ Worker Options. Alternatively, a good option is to use the git commit hash as th
 you'll want to load the commit hash from a file, to avoid a chicken-egg situation.
 
 For example, in typescript:
+
 ```typescript
 import { readFile } from 'node:fs/promises';
 // Your CI system must write this file as part of the build/deployment process
@@ -124,11 +126,13 @@ You can use the Temporal CLI (or your language SDK) to tell the Task Queue about
 workers.
 
 Using the CLI (for a new incompatible Build ID):
+
 ```bash
 temporal task-queue update-build-ids add-new-default --task-queue "your-task-queue" --build-id "the-new-id"
 ```
 
 Alternatively, if you verified the new ID is compatible with some existing one:
+
 ```bash
 temporal task-queue update-build-ids add-new-compatible --task-queue "your-task-queue" --build-id "the-new-id" --existing-compatible-build-id "some-existing-id"
 ```
@@ -141,6 +145,7 @@ Eventually, you'll want to decommission workers that are no longer needed. You c
 be reached by using the Temporal CLI (or your language SDK) to ask about the reachability of one or more Build IDs.
 
 For example, here we can see that the Build ID `1.0` is completely unreachable, and thus can be retired.
+
 ```bash
 λ  ./temporal task-queue get-build-id-reachability --task-queue "your-task-queue" --build-id "1.0" --build-id "2.0"
   BuildId  TaskQueue   Reachability
