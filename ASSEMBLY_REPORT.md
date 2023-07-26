@@ -1,8 +1,8 @@
 # Docs Assembly Workflow report
 
-Last assembled: Wednesday July 26 2023 06:41:48 AM -0700
+Last assembled: Wednesday July 26 2023 14:01:04 PM -0500
 
-Assembly Workflow Id: docs-full-assembly-flossypurse
+Assembly Workflow Id: docs-full-assembly
 
 89 guide configurations found.
 
@@ -462,6 +462,16 @@ python/heartbeat-timeout -> /dev-guide/python/features#heartbeat-timeout
 
 typescript/heartbeat-timeout -> /dev-guide/typescript/features#heartbeat-timeout
 
+go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
+
+java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
+
+php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
+
+python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
+
+typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
+
 concepts/what-is-a-reset -> /workflows#reset
 
 concepts/what-is-a-cloud-namespace-name -> #temporal-cloud-namespace-name
@@ -904,8 +914,6 @@ typescript/how-to-run-a-worker-on-docker -> #run-a-worker-on-docker
 
 concepts/what-is-the-temporal-platform -> /temporal#temporal-platform
 
-concepts/what-is-worker-versioning -> /workers#worker-versioning
-
 python/tracing -> /dev-guide/python/observability#tracing
 
 python/logging -> /dev-guide/python/observability#logging
@@ -932,6 +940,8 @@ java/how-to-send-a-signal-with-start-in-java -> /dev-guide/java/features#signal-
 
 java/how-to-get-the-result-of-a-workflow-execution-in-java -> #get-workflow-results
 
+concepts/what-is-worker-versioning -> /workers#worker-versioning
+
 go/testing -> /dev-guide/go/testing#replay
 
 go/tracing -> /dev-guide/go/observability#tracing-and-context-propogation
@@ -948,16 +958,8 @@ go/how-to-customize-workflow-type-in-go -> #customize-workflow-type
 
 go/how-to-customize-activity-type-in-go -> #customize-activity-type
 
-go/async-activity-completion -> /dev-guide/go/features#asynchronous-activity-completion
-
-java/async-activity-completion -> /dev-guide/java/features#asynchronous-activity-completion
-
-php/async-activity-completion -> /dev-guide/php/features#asynchronous-activity-completion
-
-python/async-activity-completion -> /dev-guide/python/features#asynchronous-activity-completion
-
-typescript/async-activity-completion -> /dev-guide/typescript/features#asynchronous-activity-completion
-
 cloud-context/certificates-filters -> #manage-certificate-filters
+
+cli/workflow/list -> /cli/workflow#list
 
 
