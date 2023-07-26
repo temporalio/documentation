@@ -5,7 +5,7 @@ sidebar_label: proto
 description: Decoding proto payloads.
 tags:
   - tctl
-  - admin
+  - cli-reference
 ---
 
 The `tctl admin decode proto` command decodes the Payload to proto format.

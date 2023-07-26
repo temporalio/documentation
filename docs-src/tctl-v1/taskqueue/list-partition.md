@@ -5,6 +5,7 @@ sidebar_label: list-partition
 description: How to list Task Queue partitions and the hostname for partitions using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl taskqueue list-partition` command lists the partitions of a [Task Queue](/concepts/what-is-a-task-queue) and the hostname for the partitions.

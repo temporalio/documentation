@@ -2,7 +2,9 @@
 id: how-to-create-a-schedule-in-go
 title: How to create a Schedule in Go
 sidebar_label: Create Schedule
-description: To create a Schedule in Go, use `Create()` on the Client.
+description: To create a Schedule in Go, use Create() on the Client.
+tags:
+  - go-sdk
 ---
 
 Schedules are initiated with the `create` call.

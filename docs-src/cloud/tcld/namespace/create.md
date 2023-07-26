@@ -5,6 +5,7 @@ sidebar_label: create
 description: How to create information about a Namespace in Temporal Cloud using tcld.
 tags:
   - tcld
+  - cli-reference
 ---
 
 The `tcld namespace create` command creates a Temporal [Namespace](/concepts/what-is-a-namespace) in Temporal Cloud.

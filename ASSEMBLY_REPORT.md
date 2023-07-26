@@ -702,6 +702,8 @@ python/connect-to-temporal-cloud -> /dev-guide/python/foundations#connect-to-tem
 
 typescript/connect-to-temporal-cloud -> /dev-guide/typescript/foundations#connect-to-temporal-cloud
 
+cloud-context/certificates-filters -> #manage-certificate-filters
+
 concepts/what-is-a-cloud-namespace-id -> /cloud/index#temporal-cloud-namespace-id
 
 cli/cmd-options/activity-id -> /cli/cmd-options#activity-id

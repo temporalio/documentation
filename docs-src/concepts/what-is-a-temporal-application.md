@@ -1,6 +1,6 @@
 ---
 id: what-is-a-temporal-application
-title: What is a Temporal Application
+title: What is a Temporal Application?
 sidebar_label: Temporal Application
 description: A Temporal Application is a set of Workflow Executions.
 tags:

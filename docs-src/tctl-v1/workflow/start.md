@@ -5,6 +5,7 @@ sidebar_label: start
 description: How to start a new Workflow Execution using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl workflow start` command starts a new [Workflow Execution](/workflows#workflow-execution).
