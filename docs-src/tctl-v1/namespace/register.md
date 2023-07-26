@@ -5,6 +5,7 @@ sidebar_label: register
 description: How to register a Namespace using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl namespace register` command registers a [Namespace](/concepts/what-is-a-namespace).

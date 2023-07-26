@@ -89,4 +89,4 @@ async function yourWorkflow() {
 }
 ```
 
-If your environment variables are sensitive, use a [custom Data Converter](https://legacy-documentation-sdks.temporal.io/typescript/data-converters#encryption) to encrypt Activity return values and parameters.
+If your environment variables are sensitive, use a [custom Data Converter](/typescript/data-converters#encryption) to encrypt Activity return values and parameters.

@@ -6,6 +6,14 @@ description: Worker Versioning lets you more easily deploy changes to Workflow D
 tags:
   - explanation
   - versioning
+ssdi:
+  - Introduced in Temporal Server version [1.21.0](https://github.com/temporalio/temporal/releases/tag/v1.21.0)
+  - Available in CLI version [0.10.0](https://github.com/temporalio/cli/releases/tag/v0.10.0)
+  - Available in [Go SDK](/dev-guide/go/versioning#worker-versioning) version [1.23.0](https://github.com/temporalio/sdk-go/releases/tag/v1.23.0)
+  - Available in [Java SDK](/dev-guide/java/versioning#worker-versioning) version [1.20.0](https://github.com/temporalio/sdk-java/releases/tag/v1.20.0)
+  - Available in [Python SDK](https://python.temporal.io/temporalio.worker.Worker.html) version [1.3.0](https://github.com/temporalio/sdk-python/releases/tag/1.3.0)
+  - Available in [.NET SDK](https://dotnet.temporal.io/api/Temporalio.Worker.TemporalWorkerOptions.html#Temporalio_Worker_TemporalWorkerOptions_UseWorkerVersioning) version [0.1.0-beta1](https://github.com/temporalio/sdk-dotnet/releases/tag/0.1.0-beta1)
+  - Not yet available in Temporal Cloud
 ---
 
 Worker Versioning simplifies the process of deploying changes to [Workflow Definitions](/workflows/#workflow-definition).
@@ -25,7 +33,7 @@ On Task Queues using this feature, the Workflow starter doesn't have to know abo
 
 The new code in the newly deployed Workers executes new [Workflow Executions](#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
-#### Decommision old Workers
+#### Decommission old Workers
 
 You can decommission old Workers after you archive all open Workflows using their version.
 If you have no need to query closed Workflows, you can decommission them when no open Workflows remain at that version.

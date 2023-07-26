@@ -1,10 +1,10 @@
 ---
 id: ip
-title: temporal  ip
+title: temporal ip
 sidebar_label: ip
-description: IPv4 address to bind the frontend service to. 
+description: IPv4 address to bind the frontend service to.
 tags:
-    - cli
+  - cli-reference
 ---
 
 IPv4 address to bind the frontend service to.

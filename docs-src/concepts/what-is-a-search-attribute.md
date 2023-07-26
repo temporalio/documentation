@@ -12,16 +12,29 @@ tags:
 
 A Search Attribute is an indexed field used in a [List Filter](/concepts/what-is-a-list-filter) to filter a list of [Workflow Executions](/workflows#workflow-execution) that have the Search Attribute in their metadata.
 
-Each Search Attribute is a key-value pair metadata object and is part of the Workflow Execution visibility information, stored in the Visibility store. Use Search Attributes for metadata and search purposes only, not business logic.
+Each Search Attribute is a key-value pair metadata object included in a Workflow Execution's Visibility information.
+This information is available in the Visibility store.
 
-Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus` of your Workflow Execution.
-You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values in a Workflow Execution.
+:::note
 
-Search Attribute values are assigned to a specific Workflow Execution and are available for that execution only for the duration of the specified Namespace [Retention Period](/concepts/what-is-a-retention-period).
+Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
 
-Note that Search Attribute values are not encrypted because the Temporal Server must be able to read these values from the Visibility store when retrieving Workflow Execution details.
+:::
 
-When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attributes are carried over to the new Workflow Run by default.
+Temporal provides some [default Search Attributes](#default-search-attributes), such as `ExecutionStatus`, the current state of your Workflow Executions.
+You can also create [custom Search Attribute](#custom-search-attributes) keys in your Visibility store and assign values when starting a Workflow Execution or in Workflow code.
+
+When using [Continue-As-New](/concepts/what-is-continue-as-new) or a [Temporal Cron Job](/concepts/what-is-a-temporal-cron-job), Search Attribute keys are carried over to the new Workflow Run by default.
+Search Attribute values are only available for as long as the Workflow is.
+
+Search Attributes are most effective for search purposes or tasks requiring collection-based result sets.
+For business logic in which you need to get information about a Workflow Execution, consider one of the following:
+
+- Storing state in a local variable and exposing it with a Query.
+- Storing state in an external datastore through Activities and fetching it directly from the store.
+
+If your business logic requires high throughput or low latency, store and fetch the data through Activities.
+You might experience lag due to time passing between the Workflow's state change and the Activity updating the Visibility store.
 
 ### Default Search Attributes
 
@@ -32,7 +45,7 @@ These Search Attributes are created when the initial index is created.
 | NAME                       | TYPE         | DEFINITION                                                                                                                                                                                                   |
 | -------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | BatcherUser                | Keyword      | Used by internal batcher Workflow that runs in `TemporalBatcher` Namespace division to indicate the user who started the batch operation.                                                                    |
-| BinaryChecksums            | Keyword      | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
+| BinaryChecksums            | Keyword List | List of binary Ids of Workers that run the Workflow Execution. Deprecated since server version 1.21 in favor of the `BuildIds` search attribute.                                                             |
 | BuildIds                   | Keyword List | List of Worker Build Ids that have processed the Workflow Execution, formatted as `versioned:{BuildId}` or `unversioned:{BuildId}`, or the sentinel `unversioned` value. Available from server version 1.21. |
 | CloseTime                  | Datetime     | The time at which the Workflow Execution completed.                                                                                                                                                          |
 | ExecutionDuration          | Int          | The time needed to run the Workflow Execution (in nanoseconds). Available only for closed Workflows.                                                                                                         |
@@ -44,7 +57,7 @@ These Search Attributes are created when the initial index is created.
 | StartTime                  | Datetime     | The time at which the Workflow Execution started.                                                                                                                                                            |
 | StateTransitionCount       | Int          | The number of times that Workflow Execution has persisted its state. Available only for closed Workflows.                                                                                                    |
 | TaskQueue                  | Keyword      | Task Queue used by Workflow Execution.                                                                                                                                                                       |
-| TemporalChangeVersion      | Keyword      | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
+| TemporalChangeVersion      | Keyword List | Stores change/version pairs if the GetVersion API is enabled.                                                                                                                                                |
 | TemporalScheduledStartTime | Datetime     | The time that the Workflow is schedule to start according to the Schedule Spec. Can be manually triggered. Set on Schedules.                                                                                 |
 | TemporalScheduledById      | Keyword      | The Id of the Schedule that started the Workflow.                                                                                                                                                            |
 | TemporalSchedulePaused     | Boolean      | Indicates whether the Schedule has been paused. Set on Schedules.                                                                                                                                            |
@@ -66,9 +79,9 @@ These Search Attributes are created when the initial index is created.
 
 You can use the default Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
-- Without Advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter.
+- Without advanced Visibility, you can only use the `=` operator with a single default Search Attribute in your List Filter.
   For example: `tctl workflow list -q "ExecutionStatus = 'Completed'"` or `tctl workflow list -q "WorkflowType = 'YourWorkflow'"`.
-- With Advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
+- With advanced Visibility, you can combine default Search Attributes in a List Filter to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and ExecutionStatus != 'Running' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
 
 ### Custom Search Attributes
@@ -77,8 +90,8 @@ You can [create custom Search Attributes](/clusters/how-to-create-custom-search-
 
 Use custom Search Attributes in a List Filter, such as in the Temporal Web UI or with the `tctl workflow list` commands, under the following conditions:
 
-- Without Advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
-- With Advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
+- Without advanced Visibility, you cannot use a custom Search Attribute in your List Filter.
+- With advanced Visibility, you can create multiple custom Search Attributes and use them in combinations with List Filters to get a list of specific Workflow Executions.
   For example: `tctl workflow list -q "WorkflowType = 'main.YourWorkflowDefinition' and YourCustomSA = 'YourCustomSAValue' and (StartTime > '2022-06-07T16:46:34.236-08:00' or CloseTime < '2022-06-08T16:46:34-08:00')"`
   - With Temporal Server v1.19 and earlier, you must [integrate Elasticsearch](/clusters/how-to-integrate-elasticsearch-into-a-temporal-cluster) to use custom Search Attributes with List Filters.
   - With Temporal Server v1.20 and later, custom Search Attribute capabilities are available on MySQL (v8.0.17 or later), PostgreSQL (v12 and later), and SQLite (v3.31.0 and later), in addition to Elasticsearch.
@@ -133,7 +146,7 @@ The following table lists the maximum number of custom Search Attributes you can
 | Text                  |             3             |             3              |             3              |       5        |
 
 Temporal does not impose a limit on the number of custom Search Attributes you can create with Elasticsearch. However, [Elasticsearch sets a default mapping limit](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-settings-limit.html) that may apply.
-Custom Search Attributes are an Advanced Visibility feature and are not supported on Cassandra.
+Custom Search Attributes are an advanced Visibility feature and are not supported on Cassandra.
 
 Size limits for a custom Search Attribute:
 
@@ -148,6 +161,8 @@ Default total maximum number of Search Attribute **keys** per Temporal Cluster i
 - The maximum total Search Attribute size is 40 KB.
 
 <!-- TODO - [How to configure total Search Attribute size limite](#) -->
+
+- The maximum total characters per Search Attribute value is 255.
 
 <!-- temp keeping for reference
 This is configurable with [`SearchAttributesNumberOfKeysLimit`, `SearchAttributesTotalSizeLimit` and `SearchAttributesSizeOfValueLimit`](https://github.com/temporalio/temporal/blob/v1.7.0/service/history/configs/config.go#L440-L442), if you know what you are doing.

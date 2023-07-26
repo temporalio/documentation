@@ -5,6 +5,7 @@ sidebar_label: namespace
 description: How to operate Namespaces using tctl.
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl namespace` commands enable [Namespace](/concepts/what-is-a-namespace) operations.

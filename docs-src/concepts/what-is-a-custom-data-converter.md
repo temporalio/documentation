@@ -3,7 +3,6 @@ id: what-is-a-custom-data-converter
 title: What is a custom Data Converter?
 sidebar_label: Custom Data Converter
 description: A custom Data Converter extends the default Data Converter with custom logic for Payload conversion or Payload encryption.
-
 tags:
   - term
   - explanation

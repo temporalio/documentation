@@ -4,7 +4,7 @@ title: temporal schedule create
 sidebar_label: create
 description: Create a new Schedule.
 tags:
-    - cli
+  - cli-reference
 ---
 
 The `temporal schedule create` command creates a new [Schedule](/concepts/what-is-a-schedule).
@@ -14,13 +14,13 @@ Schedules need to follow a format like the example shown here:
 
 ```
 temporal schedule create \
---sid 'your-schedule-id' \
---wid 'your-workflow-id' \
---tq 'your-task-queue' \
---type 'YourWorkflowType'
+    --schedule-id 'your-schedule-id' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
 ```
 
-Any combination of `--cal`, `--interval`, and `--cron` is supported.
+Any combination of `--calendar`, `--interval`, and `--cron` is supported.
 Actions will be executed at any time specified in the Schedule.
 
 Use the options provided below to change the command's behavior.

@@ -1,10 +1,10 @@
 ---
 id: fields
-title: temporal  fields
+title: temporal fields
 sidebar_label: fields
-description: Customize fields to print. 
+description: Customize fields to print.
 tags:
-    - cli
+  - cli-reference
 ---
 
 Customize fields to print.

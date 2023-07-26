@@ -5,6 +5,7 @@ description: How to operate Activity Executions using tctl.
 sidebar_label: activity
 tags:
   - tctl
+  - cli-reference
 ---
 
 The `tctl activity` commands enable [Activity Execution](/concepts/what-is-an-activity-execution) operations.
