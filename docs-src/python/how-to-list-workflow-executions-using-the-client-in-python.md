@@ -11,5 +11,6 @@ Use the [list_workflows()](https://python.temporal.io/temporalio.client.Client.h
 
 ```python
 # ...
+    async for workflow in client.list_workflows('WorkflowType="GreetingWorkflow"'):
         print(f"Workflow: {workflow.id}")
 ```
