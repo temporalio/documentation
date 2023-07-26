@@ -24,16 +24,6 @@ import TabItem from '@theme/TabItem';
 
 The Features section of the Temporal Developer's guide provides basic implementation guidance on how to use many of the development features available to Workflows and Activities in the Temporal Platform.
 
-:::info WORK IN PROGRESS
-
-This guide is a work in progress.
-Some sections may be incomplete or missing for some languages.
-Information may change at any time.
-
-If you can't find what you are looking for in the Developer's guide, it could be in [older docs for SDKs](https://legacy-documentation-sdks.temporal.io/).
-
-:::
-
 In this section you can find the following:
 
 - [How to develop Signals](#signals)
@@ -599,23 +589,6 @@ To set a Retry Policy, known as the <a class="tdlp" href="/retry-policies#">Retr
                 .build();
   ```
 
-### Activity retry simulator
-
-Use this tool to visualize total Activity Execution times and experiment with different Activity timeouts and Retry Policies.
-
-The simulator is based on a common Activity use-case, which is to call a third party HTTP API and return the results.
-See the example code snippets below.
-
-Use the Activity Retries settings to configure how long the API request takes to succeed or fail.
-There is an option to generate scenarios.
-The _Task Time in Queue_ simulates the time the Activity Task might be waiting in the Task Queue.
-
-Use the Activity Timeouts and Retry Policy settings to see how they impact the success or failure of an Activity Execution.
-
-import RetrySimulator from '/docs/components/RetrySimulator/RetrySimulator';
-
-<RetrySimulator />
-
 ## Activity Heartbeats
 
 An <a class="tdlp" href="/activities#activity-heartbeat">Activity Heartbeat<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Heartbeat?</span><br /><br /><span class="tdlppd">An Activity Heartbeat is a ping from the Worker that is executing the Activity to the Temporal Cluster. Each ping informs the Temporal Cluster that the Activity Execution is making progress and the Worker has not crashed.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/activities#activity-heartbeat">Learn more</a></span></span></a> is a ping from the <a class="tdlp" href="/workers#worker-process">Worker Process<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Worker Process?</span><br /><br /><span class="tdlppd">A Worker Process is responsible for polling a Task Queue, dequeueing a Task, executing your code in response to a Task, and responding to the Temporal Server with the results.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#worker-process">Learn more</a></span></span></a> that is executing the Activity to the <a class="tdlp" href="/clusters#">Temporal Cluster<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Temporal Cluster?</span><br /><br /><span class="tdlppd">A Temporal Cluster is a Temporal Server paired with Persistence and Visibility stores.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/clusters#">Learn more</a></span></span></a>.
@@ -890,7 +863,7 @@ The following examples show how to spawn a Child Workflow:
 
 Related reads:
 
-- [How to set Child Workflow Options in Java](https://legacy-documentation-sdks.temporal.io/java/how-to-set-child-workflow-options-in-java)
+- <a class="tdlp" href="#child-workflows">How to set Child Workflow Options in Java<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to start a Child Workflow Execution</span><br /><br /><span class="tdlppd">A Child Workflow Execution is a Workflow Execution that is scheduled from within another Workflow using a Child Workflow API.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#child-workflows">Learn more</a></span></span></a>
 
 - <a class="tdlp" href="/dev-guide/java/foundations#develop-workflows">How to develop a Workflow Definition<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to develop a Workflow Definition in Java</span><br /><br /><span class="tdlppd">In the Temporal Java SDK programming model, a Workflow is a class which implements a Workflow interface.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/java/foundations#develop-workflows">Learn more</a></span></span></a>
 

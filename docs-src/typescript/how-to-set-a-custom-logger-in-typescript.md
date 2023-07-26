@@ -9,12 +9,12 @@ tags:
   - typescript
 ---
 
-**Logging in Workers and Clients**
+#### Logging in Workers and Clients
 
-The Worker comes with a default logger which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
+The Worker comes with a default logger, which defaults to log any messages with level `INFO` and higher to `STDERR` using `console.error`.
 The following [log levels](https://typescript.temporal.io/api/namespaces/worker#loglevel) are listed in increasing order of severity.
 
-**Customizing the default logger**
+#### Customizing the default logger
 
 Temporal uses a [`DefaultLogger`](https://typescript.temporal.io/api/classes/worker.DefaultLogger/) that implements the basic interface:
 
@@ -27,9 +27,9 @@ const logger = new DefaultLogger('WARN', ({ level, message }) => {
 Runtime.install({ logger });
 ```
 
-The previous code example sets the default logger to only log messages with level `WARN` and higher.
+The previous code example sets the default logger to log only messages with level `WARN` and higher.
 
-**Accumulate logs for testing and reporting**
+#### Accumulate logs for testing and reporting
 
 ```ts
 import { DefaultLogger, LogEntry } from '@temporalio/worker';

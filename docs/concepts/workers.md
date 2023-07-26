@@ -51,7 +51,7 @@ A Worker Program is the static code that defines the constraints of the Worker P
 A Worker Entity is the individual Worker within a Worker Process that listens to a specific Task Queue.
 
 A Worker Entity listens and polls on a single Task Queue.
-A Worker Entity contains both a Workflow Worker and an Activity Worker so that it may make progress of either a Workflow Execution or an Activity Execution.
+A Worker Entity contains a Workflow Worker and/or an Activity Worker, which makes progress on Workflow Executions and Activity Executions, respectively.
 
 **Can a Worker handle more Workflow Executions than its cache size or number of supported threads?**
 
@@ -239,7 +239,7 @@ The Worker Entity caches the Workflow Execution Event History and begins polling
 If the Worker Entity does not pick up a Workflow Task from the dedicated Task Queue in an appropriate amount of time, the Cluster will resume Scheduling Workflow Tasks on the original Task Queue.
 Another Worker Entity can then resume the Workflow Execution, and can set up its own Sticky Execution for future Workflow Tasks.
 
-- [How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go](https://legacy-documentation-sdks.temporal.io/go/how-to-set-workeroptions-in-go/#stickyscheduletostarttimeout)
+- <a class="tdlp" href="/dev-guide/go/foundations#stickyscheduletostarttimeout">How to set a `StickyScheduleToStartTimeout` on a Worker Entity in Go<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">How to set WorkerOptions in Go</span><br /><br /><span class="tdlppd">Create an instance of `Options` from the `go.temporal.io/sdk/worker` package, set any of the optional fields, and pass the instance to the `New` call.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/dev-guide/go/foundations#stickyscheduletostarttimeout">Learn more</a></span></span></a>
 
 Sticky Executions are the default behavior of the Temporal Platform.
 
@@ -354,7 +354,7 @@ On Task Queues using this feature, the Workflow starter doesn't have to know abo
 
 The new code in the newly deployed Workers executes new [Workflow Executions](#workflow-execution), while only Workers with an appropriate version process old Workflow Executions.
 
-#### Decommision old Workers
+#### Decommission old Workers
 
 You can decommission old Workers after you archive all open Workflows using their version.
 If you have no need to query closed Workflows, you can decommission them when no open Workflows remain at that version.

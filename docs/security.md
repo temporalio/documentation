@@ -94,7 +94,7 @@ When these are provided the frontend invokes the implementation of these interfa
 
 See https://github.com/temporalio/samples-server/blob/main/extensibility/authorizer for a sample implementation.
 
-![](/img/docs/frontend-authorization-order-of-operations.png)
+![](/diagrams/frontend-authorization-order-of-operations.png)
 
 ### Single sign-on integration
 
@@ -267,8 +267,6 @@ values={[{label: 'Go', value: 'go'},{label: 'Java', value: 'java'},{label: 'PHP'
 
 Content is planned but not yet available.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
 </TabItem>
 <TabItem value="java">
 
@@ -308,21 +306,15 @@ Related read:
 
 Content is planned but not yet available.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
 </TabItem>
 <TabItem value="python">
 
 Content is planned but not yet available.
 
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
-
 </TabItem>
 <TabItem value="typescript">
 
 Content is planned but not yet available.
-
-The information you are looking for may be found in the [legacy docs](https://legacy-documentation-sdks.temporal.io/).
 
 </TabItem>
 </Tabs>

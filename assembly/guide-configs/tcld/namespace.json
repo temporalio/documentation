@@ -55,6 +55,10 @@
     },
     {
       "type": "h3",
+      "id": "cloud/tcld/namespace/certificate-filters/add"
+    },
+    {
+      "type": "h3",
       "id": "cloud/tcld/namespace/certificate-filters/clear"
     },
     {
@@ -88,6 +92,10 @@
     {
       "type": "h3",
       "id": "cloud/tcld/namespace/retention/set"
+    },
+    {
+      "type": "h2",
+      "id": "cloud/tcld/namespace/update-codec-server"
     }
   ]
 }
