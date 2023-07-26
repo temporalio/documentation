@@ -8,4 +8,4 @@ tags:
 ---
 
 Visibility Query of Search Attributes describing the Workflow Executions to reset.
-See the [temporal workflow list](/cli/workflow/list).
+For details, see the [temporal workflow list](/cli/workflow/list) command.
