@@ -84,7 +84,6 @@ The maximum payload size of a certificate bundle (before base64 encoding) is 32 
 CA and end-entity certificates can be generated with `tcld`.
 
 The maximum duration for a CA certificate is 1 year (`-d 1y`).
-
 An end-entity certificate must expire before its root CA certificate, so specify its duration appropriately.
 
 To create a new CA certificate, use `tcld gen ca`.
