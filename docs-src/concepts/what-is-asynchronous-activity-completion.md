@@ -27,12 +27,12 @@ When an external system has the final result of a computation that is started by
 2. The Activity completes normally, without the result. Later, the external system sends a Signal to the Workflow with the result.
 3. A subsequent Activity [polls the external system](https://community.temporal.io/t/what-is-the-best-practice-for-a-polling-activity/328/2) for the result.
 
-If you don't have control over the external system—that is, you can't add Async Completion or a Signal to its code—then 
+If you don't have control over the external system—that is, you can't add Async Completion or a Signal to its code—then
 
 - you can poll (#3), or
 - if the external system can reliably call a webhook (and retry calling in the case of failure), you can write a webhook handler that sends a Signal to the Workflow (#2).
 
-The decision between using #1 vs #2 involves a few factors. 
+The decision between using #1 vs #2 involves a few factors.
 Use Async Completion if
 
 - the external system is unreliable and might fail to Signal, or
