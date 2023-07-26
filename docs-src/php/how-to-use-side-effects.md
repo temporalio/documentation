@@ -1,6 +1,6 @@
 ---
 id: how-to-use-side-effects-in-php
-title: How use Side Effects in PHP
+title: How to use Side Effects in PHP
 sidebar_label: Side Effects
 description: Side Effects are used to execute non-deterministic code, such as generating a UUID or a random number, without compromising determinism in the Workflow.
 ---
