@@ -55,14 +55,17 @@ Activity Definitions are named and referenced in code by their <a class="tdlp" h
 
 Temporal recommends that Activities be idempotent.
 
+Idempotent means that performing an operation multiple times has the same result as performing it once.
+In the context of Temporal, Activities should be designed to be safely executed multiple times without causing unexpected or undesired side effects.
+
 An Activity is idempotent if multiple <a class="tdlp" href="/workers#activity-task-execution">Activity Task Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is an Activity Task Execution?</span><br /><br /><span class="tdlppd">An Activity Task Execution occurs when a Worker uses the context provided from the Activity Task and executes the Activity Definition.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workers#activity-task-execution">Learn more</a></span></span></a> do not change the state of the system beyond the first Activity Task Execution.
 
 We recommend using idempotency keys for critical side effects.
 
 The lack of idempotency might affect the correctness of your application but does not affect the Temporal Platform.
-In other words, lack of idempotency does not lead to a platform error.
+In other words, lack of idempotency doesn't lead to a platform error.
 
-In some cases, whether something is idempotent does not affect the correctness of an application.
+In some cases, whether something is idempotent doesn't affect the correctness of an application.
 For example, if you have a monotonically incrementing counter, you might not care that retries increment the counter because you don’t care about the actual value, only that the current value is greater than a previous value.
 
 #### Constraints
@@ -107,7 +110,7 @@ An Activity Execution is the full chain of <a class="tdlp" href="/workers#activi
 <div class="tdiw"><div class="tditw"><p class="tdit">Activity Execution</p></div><div class="tdiiw"><img class="img_ev3q" src="/diagrams/activity-execution.svg" alt="Activity Execution" height="1780" width="1140" /></div></div>
 
 By default, an Activity Execution has no time limit.
-Activity Execution timeouts](/concepts/what-is-a-start-to-close-timeout) and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a> can be customized.
+You can customize <a class="tdlp" href="#start-to-close-timeout">Activity Execution timeouts<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Start-To-Close Timeout?</span><br /><br /><span class="tdlppd">A Start-To-Close Timeout is the maximum time allowed for a single Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="#start-to-close-timeout">Learn more</a></span></span></a> and <a class="tdlp" href="/retry-policies#">retry policies<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#">Learn more</a></span></span></a>.
 
 If an Activity Execution fails (because it exhausted all retries, threw a <a class="tdlp" href="/retry-policies#non-retryable-errors">non-retryable error<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Retry Policy?</span><br /><br /><span class="tdlppd">A Retry Policy is a collection of attributes that instructs the Temporal Server how to retry a failure of a Workflow Execution or an Activity Task Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/retry-policies#non-retryable-errors">Learn more</a></span></span></a>, or was canceled), the error is returned to the [Workflow](/workflows), which decides how to handle it.
 

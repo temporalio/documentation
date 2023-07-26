@@ -26,7 +26,7 @@ Backfilling can be used to fill in <a class="tdlp" href="/workflows#run-id">Work
 Schedule backfills require a valid Schedule ID, along with the time in which to run the Schedule and a change to the overlap policy.
 
 ```
-temporal schedule backfill --sid 'your-schedule-id' \
+temporal schedule backfill --schedule-id 'your-schedule-id' \
 --overlap-policy 'BufferAll' 				\
 --start-time '2022-05-0101T00:00:00Z'		\
 --end-time '2022-05-31T23:59:59Z'
@@ -63,13 +63,13 @@ Schedules need to follow a format like the example shown here:
 
 ```
 temporal schedule create \
---sid 'your-schedule-id' \
---wid 'your-workflow-id' \
---tq 'your-task-queue' \
---type 'YourWorkflowType'
+    --schedule-id 'your-schedule-id' \
+    --workflow-id 'your-workflow-id' \
+    --task-queue 'your-task-queue' \
+    --workflow-type 'YourWorkflowType'
 ```
 
-Any combination of `--cal`, `--interval`, and `--cron` is supported.
+Any combination of `--calendar`, `--interval`, and `--cron` is supported.
 Actions will be executed at any time specified in the Schedule.
 
 Use the options provided below to change the command's behavior.
@@ -146,7 +146,7 @@ Deleting a Schedule does not affect any <a class="tdlp" href="/workflows#">Workf
 <a class="tdlp" href="/workflows#workflow-execution">Workflow Executions<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Workflow Execution?</span><br /><br /><span class="tdlppd">A Temporal Workflow Execution is a durable, scalable, reliable, and reactive function execution. It is the main unit of execution of a Temporal Application.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#workflow-execution">Learn more</a></span></span></a> started by Schedules can be cancelled or terminated like other Workflow Executions.
 However, Workflow Executions started by a Schedule can be identified by their <a class="tdlp" href="/visibility#search-attribute">Search Attributes<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Search Attribute?</span><br /><br /><span class="tdlppd">A Search Attribute is an indexed name used in List Filters to filter a list of Workflow Executions that have the Search Attribute in their metadata.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/visibility#search-attribute">Learn more</a></span></span></a>, making them targetable by batch command for termination.
 
-`temporal schedule delete --sid 'your-schedule-id' [command options]`
+`temporal schedule delete --schedule-id 'your-schedule-id' [command options]`
 
 Use the options below to change the behavior of this command.
 
@@ -169,7 +169,7 @@ Use the options below to change the behavior of this command.
 The `temporal schedule describe` command shows the current <a class="tdlp" href="/workflows#schedule">Schedule<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Schedule</span><br /><br /><span class="tdlppd">A Schedule enables the scheduling of Workflow Executions.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#schedule">Learn more</a></span></span></a> configuration.
 This command also provides information about past, current, and future <a class="tdlp" href="/workflows#run-id">Workflow Runs<span class="tdlpiw"><img src="/img/link-preview-icon.svg" alt="Link preview icon" /></span><span class="tdlpc"><span class="tdlppt">What is a Run Id?</span><br /><br /><span class="tdlppd">A Run Id is a globally unique, platform-level identifier for a Workflow Execution.</span><span class="tdlplm"><br /><br /><a class="tdlplma" href="/workflows#run-id">Learn more</a></span></span></a>.
 
-`temporal schedule describe --sid 'your-schedule-id' [command options]`
+`temporal schedule describe --schedule-id 'your-schedule-id' [command options]`
 
 Use the options below to change this command's output.
 
@@ -218,8 +218,8 @@ Toggling a Schedule requires a reason to be entered on the command line.
 Use `--reason` to note the issue leading to the pause or unpause.
 
 Schedule toggles are passed in this format:
-`temporal schedule toggle --sid 'your-schedule-id' --pause --reason "paused because the database is down"`
-`temporal schedule toggle --sid 'your-schedule-id' --unpause --reason "the database is back up"`
+`temporal schedule toggle --schedule-id 'your-schedule-id' --pause --reason "paused because the database is down"`
+`temporal schedule toggle --schedule-id 'your-schedule-id' --unpause --reason "the database is back up"`
 
 Use the options provided below to change this command's behavior.
 
@@ -250,10 +250,10 @@ By default, this action is subject to the Overlap Policy of the Schedule.
 
 Schedule triggers are passed in this format:
 `temporal schedule trigger` can be used to start a Workflow Run immediately.
-`temporal schedule trigger --sid 'your-schedule-id'`
+`temporal schedule trigger --schedule-id 'your-schedule-id'`
 
 The Overlap Policy of the Schedule can be overridden as well.
-`temporal schedule trigger --sid 'your-schedule-id' --overlap-policy 'AllowAll'`
+`temporal schedule trigger --schedule-id 'your-schedule-id' --overlap-policy 'AllowAll'`
 
 Use the options provided below to change this command's behavior.
 
@@ -280,11 +280,11 @@ The `temporal schedule update` command updates an existing <a class="tdlp" href=
 Like `temporal schedule create`, updated Schedules need to follow a certain format:
 
 ```
-temporal schedule update 			\
---sid 'your-schedule-id' 	\
---wid 'your-workflow-id' 	\
---tq 'your-task-queue' 		\
---type 'YourWorkflowType'
+temporal schedule update 			    \
+    --schedule-id 'your-schedule-id' 	\
+    --workflow-id 'your-workflow-id' 	\
+    --task-queue 'your-task-queue' 		\
+    --workflow-type 'YourWorkflowType'
 ```
 
 Updating a Schedule takes the given options and replaces the entire configuration of the Schedule with what's provided.
